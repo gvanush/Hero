@@ -11,7 +11,7 @@ import SwiftUI
 struct HeroApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView(world: World())
         }
     }
 }

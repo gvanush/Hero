@@ -8,18 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		B7316FF824CF376000157455 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7316FF724CF376000157455 /* HeroApp.swift */; };
-		B7316FFA24CF376000157455 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7316FF924CF376000157455 /* ContentView.swift */; };
 		B7316FFC24CF376200157455 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFB24CF376200157455 /* Assets.xcassets */; };
 		B7316FFF24CF376200157455 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFE24CF376200157455 /* Preview Assets.xcassets */; };
+		B731700724CF378F00157455 /* WorldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700624CF378F00157455 /* WorldView.swift */; };
+		B731700924CF38E900157455 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700824CF38E900157455 /* MainView.swift */; };
+		B731700B24CF3B4600157455 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700A24CF3B4600157455 /* World.swift */; };
+		B731700D24CF51E500157455 /* AssetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700C24CF51E500157455 /* AssetSelection.swift */; };
+		B731700F24CF540000157455 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700E24CF540000157455 /* ImagePicker.swift */; };
+		B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */; };
+		B786A8CF24D13B4500F6EE83 /* Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B786A8CE24D13B4500F6EE83 /* Layer.swift */; };
+		B786A8D324D146DB00F6EE83 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B786A8D124D146DB00F6EE83 /* World.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B7316FF424CF376000157455 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7316FF724CF376000157455 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
-		B7316FF924CF376000157455 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B7316FFB24CF376200157455 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B7316FFE24CF376200157455 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B731700024CF376200157455 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B731700624CF378F00157455 /* WorldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldView.swift; sourceTree = "<group>"; };
+		B731700824CF38E900157455 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		B731700A24CF3B4600157455 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
+		B731700C24CF51E500157455 /* AssetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelection.swift; sourceTree = "<group>"; };
+		B731700E24CF540000157455 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelector.swift; sourceTree = "<group>"; };
+		B786A8CE24D13B4500F6EE83 /* Layer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layer.swift; sourceTree = "<group>"; };
+		B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hero-Bridging-Header.h"; sourceTree = "<group>"; };
+		B786A8D124D146DB00F6EE83 /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		B786A8D224D146DB00F6EE83 /* World.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = World.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,10 +69,19 @@
 			isa = PBXGroup;
 			children = (
 				B7316FF724CF376000157455 /* HeroApp.swift */,
-				B7316FF924CF376000157455 /* ContentView.swift */,
-				B7316FFB24CF376200157455 /* Assets.xcassets */,
+				B731700824CF38E900157455 /* MainView.swift */,
+				B731700624CF378F00157455 /* WorldView.swift */,
+				B786A8CE24D13B4500F6EE83 /* Layer.swift */,
+				B731700A24CF3B4600157455 /* World.swift */,
+				B731700C24CF51E500157455 /* AssetSelection.swift */,
+				B731700E24CF540000157455 /* ImagePicker.swift */,
+				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
 				B731700024CF376200157455 /* Info.plist */,
+				B7316FFB24CF376200157455 /* Assets.xcassets */,
 				B7316FFD24CF376200157455 /* Preview Content */,
+				B786A8D124D146DB00F6EE83 /* World.cpp */,
+				B786A8D224D146DB00F6EE83 /* World.hpp */,
+				B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -100,6 +125,7 @@
 				TargetAttributes = {
 					B7316FF324CF376000157455 = {
 						CreatedOnToolsVersion = 12.0;
+						LastSwiftMigration = 1200;
 					};
 				};
 			};
@@ -138,8 +164,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7316FFA24CF376000157455 /* ContentView.swift in Sources */,
+				B731700B24CF3B4600157455 /* World.swift in Sources */,
+				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
+				B786A8D324D146DB00F6EE83 /* World.cpp in Sources */,
+				B731700924CF38E900157455 /* MainView.swift in Sources */,
+				B786A8CF24D13B4500F6EE83 /* Layer.swift in Sources */,
+				B731700D24CF51E500157455 /* AssetSelection.swift in Sources */,
+				B731700F24CF540000157455 /* ImagePicker.swift in Sources */,
 				B7316FF824CF376000157455 /* HeroApp.swift in Sources */,
+				B731700724CF378F00157455 /* WorldView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +300,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
 				DEVELOPMENT_TEAM = M369BC24W9;
@@ -279,6 +313,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Hero-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -289,6 +325,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
 				DEVELOPMENT_TEAM = M369BC24W9;
@@ -301,6 +338,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Hero-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
