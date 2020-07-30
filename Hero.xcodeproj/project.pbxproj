@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B715B23F24D28E2200B4C859 /* libAppleCppAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */; };
 		B7316FF824CF376000157455 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7316FF724CF376000157455 /* HeroApp.swift */; };
 		B7316FFC24CF376200157455 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFB24CF376200157455 /* Assets.xcassets */; };
 		B7316FFF24CF376200157455 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFE24CF376200157455 /* Preview Assets.xcassets */; };
@@ -21,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7316FF424CF376000157455 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7316FF724CF376000157455 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7316FFB24CF376200157455 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -43,17 +47,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B715B23F24D28E2200B4C859 /* libAppleCppAPI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B715B23824D28B0F00B4C859 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */,
+				B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */,
+				B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B7316FEB24CF376000157455 = {
 			isa = PBXGroup;
 			children = (
 				B7316FF624CF376000157455 /* Hero */,
 				B7316FF524CF376000157455 /* Products */,
+				B715B23824D28B0F00B4C859 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -300,6 +316,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
@@ -317,6 +334,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/AppleCppAPI/AppleCppAPI";
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
@@ -325,6 +344,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
@@ -341,6 +361,8 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Hero-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/AppleCppAPI/AppleCppAPI";
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
