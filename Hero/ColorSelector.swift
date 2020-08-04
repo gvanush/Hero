@@ -27,8 +27,7 @@ struct ColorSelector: UIViewControllerRepresentable {
     }
     
     @Environment(\.presentationMode) var presentationMode
-    @Binding var color: UIColor
-    
+    let action: (UIColor) -> Void
     
     class Coordinator: NSObject, UIColorPickerViewControllerDelegate {
         
@@ -40,7 +39,7 @@ struct ColorSelector: UIViewControllerRepresentable {
         
         func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
             // 'UIColorPickerViewController' is buggy, just a workaround
-            self.colorPicker.color = viewController.selectedColor
+            self.colorPicker.action(viewController.selectedColor)
             colorPicker.presentationMode.wrappedValue.dismiss()
         }
      

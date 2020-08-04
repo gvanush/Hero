@@ -8,11 +8,9 @@
 
 import SwiftUI
 import Combine
-
+import MetalKit
 
 struct MainView: View {
-    
-    @ObservedObject var world: World
     
     @State private var showingSelectLayerSourceView = false
     @State private var showingAssetSelector = false
@@ -20,6 +18,9 @@ struct MainView: View {
     
     @State private var pickedImage: UIImage?
     @State private var pickedColor = UIColor.black
+    
+    @Environment(\.canvas) var canvas
+    @Environment(\.gpu) var gpu
     
     enum AssetSelector {
         case image
@@ -40,13 +41,7 @@ struct MainView: View {
     
     var body: some View {
         NavigationView {
-            VStack{
-//                if world.surfaces.isEmpty {
-//                    Text("Add layer to start!")
-//                } else {
-//                    WorldView()
-//                }
-            }
+            CanvasView()
             .navigationBarTitle("Project", displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -78,12 +73,32 @@ struct MainView: View {
         .sheet(isPresented: $showingAssetSelector, content: {
             if assetSelector == .image {
                 ImageSelector() { image in
-                    // create layer
-                    // convert image to metal texture
-                    // set to the layer
+                    
+                    do {
+                        let textureLoader = MTKTextureLoader(device: gpu)
+                        let texture = try textureLoader.newTexture(cgImage: image.cgImage!, options: nil)
+                        
+                        let size = min(canvas.viewportSize.x, canvas.viewportSize.y) / 2.0
+                        let texRatio = Float(texture.width) / Float(texture.height)
+                        
+                        let layer = Layer()
+                        layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                        layer.texture = texture
+                        canvas.addLayer(layer)
+                    } catch {
+                        // TODO
+                        print("something wrong happened")
+                    }
+                    
                 }
             } else if assetSelector == .color {
-                ColorSelector(color: $pickedColor)
+                ColorSelector() { color in
+                    let layer = Layer()
+                    layer.color = color.rgba
+                    let size = min(canvas.viewportSize.x, canvas.viewportSize.y) / 2.0
+                    layer.size = simd_float2(x: size, y: size)
+                    canvas.addLayer(layer)
+                }
             }
         })
     }
@@ -92,7 +107,7 @@ struct MainView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MainView(world: World())
+            MainView()
         }
     }
 }
