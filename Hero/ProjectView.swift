@@ -34,14 +34,20 @@ struct ProjectView: View {
         }
         
         var name: String {
-            if let name = project.name {
-                return name
+            get {
+                if let name = project.name {
+                    return name
+                }
+                
+                let df = DateFormatter()
+                df.dateStyle = .medium
+                df.timeStyle = .none
+                return "Project \(df.string(from: project.creationDate))"
             }
-            
-            let df = DateFormatter()
-            df.dateStyle = .medium
-            df.timeStyle = .none
-            return df.string(from: project.creationDate)
+            set {
+                let trimmedName = newValue.trimmingCharacters(in: .whitespaces)
+                project.name = trimmedName.isEmpty ? nil : trimmedName
+            }
         }
         
         var preview: UIImage {
@@ -52,8 +58,10 @@ struct ProjectView: View {
             self.project = project
             self.isSelected = isSelected
         }
+        
     }
     
+    @State var enteredName: String = ""
     @ObservedObject var viewModel: ViewModel
     var onTapAction: () -> Void
     
@@ -75,9 +83,20 @@ struct ProjectView: View {
                     RoundedRectangle(cornerRadius: ProjectView.imageCornerRadius)
                         .stroke(viewModel.isSelected ? Color.accentColor : Color.clear, lineWidth: ProjectView.imageBorderSize)
                 )
-            Text(viewModel.name)
-                .foregroundColor(viewModel.isSelected ? Color.accentColor : Color(.label))
-                .font(.system(size: 15, weight: .regular))
+            
+            TextField(viewModel.name, text: $enteredName, onEditingChanged: {isEditing in
+                if !isEditing {
+                    viewModel.name = enteredName
+                    enteredName = viewModel.name
+                }
+            })
+            .padding(.horizontal, 5.0)
+            .foregroundColor(viewModel.isSelected ? Color.accentColor : Color(.label))
+            .multilineTextAlignment(.center)
+            .font(.system(size: 15, weight: .regular))
+            .onAppear(perform: {
+                enteredName = viewModel.name
+            })
         }
         .onTapGesture(perform: onTapAction)
     }

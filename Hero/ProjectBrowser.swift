@@ -14,7 +14,6 @@ struct ProjectBrowser: View {
         @Published var projects: [ProjectView.ViewModel]
         @Published var isProjectActionSheetPresented = false
         @Published var isProjectDeleteConfirmationActionSheetPresented = false
-        @Published var isProjectRenameAlertPresented = false
         
         var selectedProject: ProjectView.ViewModel {
             projects.first(where: { $0.isSelected })!
@@ -41,10 +40,6 @@ struct ProjectBrowser: View {
         self.viewModel = viewModel
     }
     
-//    .textInputAlert(isPresented: $viewModel.isProjectRenameAlertPresented, title: "Rename Project", messsage: "Enter a new name", text: nil, placeholder: "projx", cancelAction: nil, doneActionText: "Save") { newName in
-//        print(newName ?? "")
-//    }
-//
     let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 12), count: 2)
     
     var body: some View {
@@ -54,6 +49,7 @@ struct ProjectBrowser: View {
                     NewProjectView()
                     ForEach(viewModel.projects) { projectViewModel in
                         ProjectView(viewModel: projectViewModel) {
+                            UIApplication.shared.hideKeyboard()
                             viewModel.select(project: projectViewModel)
                         }
                     }
@@ -90,9 +86,7 @@ struct ProjectBrowser: View {
                     }
                 }
                 .actionSheet(isPresented: $viewModel.isProjectActionSheetPresented, content: {
-                    ActionSheet(title: Text(viewModel.selectedProject.name), message: nil, buttons: [.default(Text("Rename")) {
-                        
-                    }, .default(Text("Duplicate")) {
+                    ActionSheet(title: Text(viewModel.selectedProject.name), message: nil, buttons: [.default(Text("Duplicate")) {
                         
                     }, .default(Text("Delete")) {
                         viewModel.isProjectDeleteConfirmationActionSheetPresented.toggle()
