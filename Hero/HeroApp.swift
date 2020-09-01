@@ -33,11 +33,22 @@ extension EnvironmentValues {
     }
 }
 
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // MARK: This is a workaround to be able to change SwiftUI action sheet button colors
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor.systemIndigo
+        return true
+    }
+}
+
 @main
 struct HeroApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
-            MainView()
+            RootView()
                 .environment(\.canvas, Canvas())
                 .environment(\.gpu, RenderingContext.device())
             

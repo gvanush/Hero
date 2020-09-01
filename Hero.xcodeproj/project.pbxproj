@@ -24,6 +24,10 @@
 		B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847B2524D9D5BE00026607 /* TextureUtils.cpp */; };
 		B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */; };
 		B786A8D324D146DB00F6EE83 /* Canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B786A8D124D146DB00F6EE83 /* Canvas.cpp */; };
+		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
+		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
+		B7DD545524FD408200163947 /* TextInputAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545424FD408200163947 /* TextInputAlert.swift */; };
+		B7FE5B9224F645A4009DAE53 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FE5B9124F645A4009DAE53 /* ProjectView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +62,10 @@
 		B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hero-Bridging-Header.h"; sourceTree = "<group>"; };
 		B786A8D124D146DB00F6EE83 /* Canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Canvas.cpp; sourceTree = "<group>"; };
 		B786A8D224D146DB00F6EE83 /* Canvas.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Canvas.hpp; sourceTree = "<group>"; };
+		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
+		B7DD545424FD408200163947 /* TextInputAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputAlert.swift; sourceTree = "<group>"; };
+		B7FE5B9124F645A4009DAE53 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,12 +110,12 @@
 		B7316FF624CF376000157455 /* Hero */ = {
 			isa = PBXGroup;
 			children = (
+				B7DD544F24FC194B00163947 /* Util */,
+				B7DD544E24FC190E00163947 /* ProjectBrowser */,
 				B7847AE024D45FC300026607 /* Canvas */,
 				B7316FF724CF376000157455 /* HeroApp.swift */,
 				B731700824CF38E900157455 /* MainView.swift */,
 				B731700624CF378F00157455 /* CanvasView.swift */,
-				B731700E24CF540000157455 /* ImageSelector.swift */,
-				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
 				B731700024CF376200157455 /* Info.plist */,
 				B7316FFB24CF376200157455 /* Assets.xcassets */,
 				B7316FFD24CF376200157455 /* Preview Content */,
@@ -147,6 +155,26 @@
 				B7847B2624D9D5BE00026607 /* TextureUtils.hpp */,
 			);
 			name = Canvas;
+			sourceTree = "<group>";
+		};
+		B7DD544E24FC190E00163947 /* ProjectBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				B7FE5B9124F645A4009DAE53 /* ProjectView.swift */,
+				B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */,
+			);
+			name = ProjectBrowser;
+			sourceTree = "<group>";
+		};
+		B7DD544F24FC194B00163947 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				B7DD545024FC197400163947 /* ViewModifiers.swift */,
+				B731700E24CF540000157455 /* ImageSelector.swift */,
+				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
+				B7DD545424FD408200163947 /* TextInputAlert.swift */,
+			);
+			name = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,7 +258,11 @@
 				B7316FF824CF376000157455 /* HeroApp.swift in Sources */,
 				B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */,
 				B731700724CF378F00157455 /* CanvasView.swift in Sources */,
+				B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */,
 				B7847AE524D4695100026607 /* CanvasViewController.swift in Sources */,
+				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
+				B7DD545524FD408200163947 /* TextInputAlert.swift in Sources */,
+				B7FE5B9224F645A4009DAE53 /* ProjectView.swift in Sources */,
 				B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */,
 				B7847AD824D33AE100026607 /* Layer.cpp in Sources */,
 			);
@@ -364,7 +396,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
-				DEVELOPMENT_TEAM = M369BC24W9;
+				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Hero/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -372,7 +404,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.Hero;
+				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Hero-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -392,7 +424,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
-				DEVELOPMENT_TEAM = M369BC24W9;
+				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Hero/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -400,7 +432,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.Hero;
+				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Hero-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

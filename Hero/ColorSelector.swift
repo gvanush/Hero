@@ -11,6 +11,10 @@ struct ColorSelector: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = UIColorPickerViewController
     
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
     func makeUIViewController(context: Context) -> UIColorPickerViewController {
         let picker = UIColorPickerViewController()
         picker.supportsAlpha = true
@@ -20,10 +24,6 @@ struct ColorSelector: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIColorPickerViewController, context: Context) {
         
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
     }
     
     @Environment(\.presentationMode) var presentationMode
