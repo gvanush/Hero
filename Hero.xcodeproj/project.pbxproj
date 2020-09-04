@@ -28,6 +28,7 @@
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
 		B7DD545524FD408200163947 /* TextInputAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545424FD408200163947 /* TextInputAlert.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
+		B7DD54592501489600163947 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54582501489600163947 /* Project.swift */; };
 		B7FE5B9224F645A4009DAE53 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FE5B9124F645A4009DAE53 /* ProjectView.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,7 @@
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
 		B7DD545424FD408200163947 /* TextInputAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputAlert.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
+		B7DD54582501489600163947 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		B7FE5B9124F645A4009DAE53 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -164,6 +166,7 @@
 			children = (
 				B7FE5B9124F645A4009DAE53 /* ProjectView.swift */,
 				B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */,
+				B7DD54582501489600163947 /* Project.swift */,
 			);
 			name = ProjectBrowser;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 				B7847B1924D6F38A00026607 /* Shaders.metal in Sources */,
 				B7847B1C24D7E48600026607 /* UIColor+Additions.swift in Sources */,
 				B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */,
+				B7DD54592501489600163947 /* Project.swift in Sources */,
 				B7847AE324D4625200026607 /* Layer.mm in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
 				B786A8D324D146DB00F6EE83 /* Canvas.cpp in Sources */,

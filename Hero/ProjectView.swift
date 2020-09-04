@@ -4,10 +4,10 @@
 //
 //  Created by Vanush Grigoryan on 8/26/20.
 //
-
+import CoreFoundation
 import SwiftUI
 
-struct Project: Identifiable {
+class Project: Identifiable {
     var id: UUID
     var name: String?
     var preview: UIImage
@@ -80,8 +80,12 @@ struct ProjectView: View {
                 .cornerRadius(ProjectView.imageCornerRadius - 2)
                 .padding(3)
                 .overlay(
-                    RoundedRectangle(cornerRadius: ProjectView.imageCornerRadius)
-                        .stroke(viewModel.isSelected ? Color.accentColor : Color.clear, lineWidth: ProjectView.imageBorderSize)
+                    Group {
+                        if viewModel.isSelected {
+                            RoundedRectangle(cornerRadius: ProjectView.imageCornerRadius)
+                                .stroke(Color.accentColor, lineWidth: ProjectView.imageBorderSize)
+                        }
+                    }
                 )
             
             TextField(viewModel.name, text: $enteredName, onEditingChanged: {isEditing in
@@ -98,7 +102,10 @@ struct ProjectView: View {
                 enteredName = viewModel.name
             })
         }
+        .scaleEffect(viewModel.isSelected ? 1.03 : 1.0)
         .onTapGesture(perform: onTapAction)
+//        .onLongPressGesture(perform: onTapAction)
+        
     }
     
     // MARK: Drawing constants

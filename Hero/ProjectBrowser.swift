@@ -11,30 +11,43 @@ struct ProjectBrowser: View {
     
     class ViewModel: ObservableObject {
         
-        @Published var projects: [ProjectView.ViewModel]
-        @Published var isProjectActionSheetPresented = false
-        @Published var isProjectDeleteConfirmationActionSheetPresented = false
+        @Published private (set) var projects: [ProjectView.ViewModel]
         
-        var selectedProject: ProjectView.ViewModel {
-            projects.first(where: { $0.isSelected })!
+        var selectedProject: ProjectView.ViewModel! {
+            get {
+                projects.first(where: { $0.isSelected })
+            }
+            set {
+                guard let newlySelected = projects.first(where: { $0.id == newValue.id }) else {
+                    assertionFailure("Invalid project selected")
+                    return
+                }
+                if let selectedProject = self.selectedProject {
+                    selectedProject.isSelected = false
+                }
+                newlySelected.isSelected = true
+            }
         }
         
         init(projects: [ProjectView.ViewModel] = []) {
             self.projects = projects
         }
         
-        func select(project: ProjectView.ViewModel) {
-            selectedProject.isSelected = false
-            
-            if let newlySelected = projects.first(where: { $0.id == project.id }) {
-                newlySelected.isSelected = true
+        func remove(project: ProjectView.ViewModel) {
+            guard let index = projects.firstIndex(where: {$0.id == project.id}) else {return}
+            projects.remove(at: index)
+            if projects.isEmpty {
+                // TODO: create a new project and dismiss
+                return
             }
-            
+            selectedProject = (index < projects.count ? projects[index] : projects.last!)
         }
     }
     
     @ObservedObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
+    @State private var isProjectActionSheetPresented = false
+    @State private var isProjectDeleteConfirmationActionSheetPresented = false
     
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
@@ -50,7 +63,9 @@ struct ProjectBrowser: View {
                     ForEach(viewModel.projects) { projectViewModel in
                         ProjectView(viewModel: projectViewModel) {
                             UIApplication.shared.hideKeyboard()
-                            viewModel.select(project: projectViewModel)
+                            withAnimation(.easeOut(duration: 0.25)) {
+                                viewModel.selectedProject = projectViewModel
+                            }
                         }
                     }
                 }
@@ -64,7 +79,7 @@ struct ProjectBrowser: View {
                         .fontWeight(.regular)
                         .minTappableFrame(alignment: .leading)
                 }), trailing: Button(action: {
-                    viewModel.isProjectActionSheetPresented.toggle()
+                    isProjectActionSheetPresented.toggle()
                 }, label: {
                     Image(systemName: "ellipsis.circle")
                         .font(.system(size: 25, weight: .regular))
@@ -85,18 +100,20 @@ struct ProjectBrowser: View {
                         }
                     }
                 }
-                .actionSheet(isPresented: $viewModel.isProjectActionSheetPresented, content: {
+                .actionSheet(isPresented: $isProjectActionSheetPresented, content: {
                     ActionSheet(title: Text(viewModel.selectedProject.name), message: nil, buttons: [.default(Text("Duplicate")) {
-                        
+                        // TODO: Duplicate
                     }, .default(Text("Delete")) {
-                        viewModel.isProjectDeleteConfirmationActionSheetPresented.toggle()
+                        isProjectDeleteConfirmationActionSheetPresented.toggle()
                     }, .cancel()])
                 })
             }
         }
-        .actionSheet(isPresented: $viewModel.isProjectDeleteConfirmationActionSheetPresented, content: {
+        .actionSheet(isPresented: $isProjectDeleteConfirmationActionSheetPresented, content: {
             ActionSheet(title: Text(viewModel.selectedProject.name), message: nil, buttons: [.destructive(Text("Delete")) {
-                // TODO: Delete project
+                withAnimation {
+                    viewModel.remove(project: viewModel.selectedProject)
+                }
             }, .cancel()])
         })
     }
