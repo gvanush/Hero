@@ -37,6 +37,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // MARK: This is a workaround to be able to change SwiftUI action sheet button colors
         UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor.systemIndigo
+        
+        try! ProjectStore.shared.setup()
+        
         return true
     }
 }

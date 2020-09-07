@@ -12,7 +12,7 @@
 		B7316FFC24CF376200157455 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFB24CF376200157455 /* Assets.xcassets */; };
 		B7316FFF24CF376200157455 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFE24CF376200157455 /* Preview Assets.xcassets */; };
 		B731700724CF378F00157455 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700624CF378F00157455 /* CanvasView.swift */; };
-		B731700924CF38E900157455 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700824CF38E900157455 /* MainView.swift */; };
+		B731700924CF38E900157455 /* MainViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700824CF38E900157455 /* MainViewOld.swift */; };
 		B731700F24CF540000157455 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700E24CF540000157455 /* ImageSelector.swift */; };
 		B7847AD824D33AE100026607 /* Layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847AD624D33AE100026607 /* Layer.cpp */; };
 		B7847ADF24D45F8C00026607 /* Canvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847ADD24D45F8C00026607 /* Canvas.mm */; };
@@ -20,15 +20,17 @@
 		B7847AE524D4695100026607 /* CanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE424D4695100026607 /* CanvasViewController.swift */; };
 		B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1424D6E66900026607 /* RenderingContext.mm */; };
 		B7847B1924D6F38A00026607 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1824D6F38A00026607 /* Shaders.metal */; };
-		B7847B1C24D7E48600026607 /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1B24D7E48600026607 /* UIColor+Additions.swift */; };
+		B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */; };
 		B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847B2524D9D5BE00026607 /* TextureUtils.cpp */; };
 		B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */; };
 		B786A8D324D146DB00F6EE83 /* Canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B786A8D124D146DB00F6EE83 /* Canvas.cpp */; };
+		B7872CFC25027F4800BD403D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7872CFB25027F4800BD403D /* RootView.swift */; };
+		B7872CFE2504340A00BD403D /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7872CFD2504340A00BD403D /* Common.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
-		B7DD545524FD408200163947 /* TextInputAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545424FD408200163947 /* TextInputAlert.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
-		B7DD54592501489600163947 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54582501489600163947 /* Project.swift */; };
+		B7DD54592501489600163947 /* ProjectStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54582501489600163947 /* ProjectStore.swift */; };
+		B7DD54752502657E00163947 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54742502657E00163947 /* TestView.swift */; };
 		B7FE5B9224F645A4009DAE53 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FE5B9124F645A4009DAE53 /* ProjectView.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +45,7 @@
 		B7316FFE24CF376200157455 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B731700024CF376200157455 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B731700624CF378F00157455 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
-		B731700824CF38E900157455 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		B731700824CF38E900157455 /* MainViewOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewOld.swift; sourceTree = "<group>"; };
 		B731700E24CF540000157455 /* ImageSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelector.swift; sourceTree = "<group>"; };
 		B7847AD624D33AE100026607 /* Layer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Layer.cpp; sourceTree = "<group>"; };
 		B7847AD724D33AE100026607 /* Layer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Layer.hpp; sourceTree = "<group>"; };
@@ -57,18 +59,20 @@
 		B7847B1624D6E66900026607 /* RenderingContext.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RenderingContext.hpp; sourceTree = "<group>"; };
 		B7847B1824D6F38A00026607 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		B7847B1A24D6F3B200026607 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
-		B7847B1B24D7E48600026607 /* UIColor+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
+		B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		B7847B2524D9D5BE00026607 /* TextureUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TextureUtils.cpp; sourceTree = "<group>"; };
 		B7847B2624D9D5BE00026607 /* TextureUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TextureUtils.hpp; sourceTree = "<group>"; };
 		B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelector.swift; sourceTree = "<group>"; };
 		B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hero-Bridging-Header.h"; sourceTree = "<group>"; };
 		B786A8D124D146DB00F6EE83 /* Canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Canvas.cpp; sourceTree = "<group>"; };
 		B786A8D224D146DB00F6EE83 /* Canvas.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Canvas.hpp; sourceTree = "<group>"; };
+		B7872CFB25027F4800BD403D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B7872CFD2504340A00BD403D /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
-		B7DD545424FD408200163947 /* TextInputAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputAlert.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
-		B7DD54582501489600163947 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		B7DD54582501489600163947 /* ProjectStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStore.swift; sourceTree = "<group>"; };
+		B7DD54742502657E00163947 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		B7FE5B9124F645A4009DAE53 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,17 +120,14 @@
 			children = (
 				B7DD544F24FC194B00163947 /* Util */,
 				B7DD544E24FC190E00163947 /* ProjectBrowser */,
-				B7847AE024D45FC300026607 /* Canvas */,
 				B7316FF724CF376000157455 /* HeroApp.swift */,
-				B731700824CF38E900157455 /* MainView.swift */,
-				B731700624CF378F00157455 /* CanvasView.swift */,
+				B7872CFB25027F4800BD403D /* RootView.swift */,
+				B7DD54582501489600163947 /* ProjectStore.swift */,
 				B731700024CF376200157455 /* Info.plist */,
+				B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */,
+				B7872CFA25027F0700BD403D /* Old */,
 				B7316FFB24CF376200157455 /* Assets.xcassets */,
 				B7316FFD24CF376200157455 /* Preview Content */,
-				B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */,
-				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
-				B7847B1824D6F38A00026607 /* Shaders.metal */,
-				B7847B1B24D7E48600026607 /* UIColor+Additions.swift */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -161,12 +162,25 @@
 			name = Canvas;
 			sourceTree = "<group>";
 		};
+		B7872CFA25027F0700BD403D /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
+				B7847B1824D6F38A00026607 /* Shaders.metal */,
+				B731700E24CF540000157455 /* ImageSelector.swift */,
+				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
+				B7847AE024D45FC300026607 /* Canvas */,
+				B731700624CF378F00157455 /* CanvasView.swift */,
+				B731700824CF38E900157455 /* MainViewOld.swift */,
+			);
+			name = Old;
+			sourceTree = "<group>";
+		};
 		B7DD544E24FC190E00163947 /* ProjectBrowser */ = {
 			isa = PBXGroup;
 			children = (
 				B7FE5B9124F645A4009DAE53 /* ProjectView.swift */,
 				B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */,
-				B7DD54582501489600163947 /* Project.swift */,
 			);
 			name = ProjectBrowser;
 			sourceTree = "<group>";
@@ -175,10 +189,10 @@
 			isa = PBXGroup;
 			children = (
 				B7DD545024FC197400163947 /* ViewModifiers.swift */,
-				B731700E24CF540000157455 /* ImageSelector.swift */,
-				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
-				B7DD545424FD408200163947 /* TextInputAlert.swift */,
 				B7DD545624FE238500163947 /* UIApplication+Extensions.swift */,
+				B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */,
+				B7872CFD2504340A00BD403D /* Common.swift */,
+				B7DD54742502657E00163947 /* TestView.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -254,13 +268,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7847B1924D6F38A00026607 /* Shaders.metal in Sources */,
-				B7847B1C24D7E48600026607 /* UIColor+Additions.swift in Sources */,
+				B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */,
 				B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */,
-				B7DD54592501489600163947 /* Project.swift in Sources */,
+				B7DD54592501489600163947 /* ProjectStore.swift in Sources */,
+				B7872CFE2504340A00BD403D /* Common.swift in Sources */,
 				B7847AE324D4625200026607 /* Layer.mm in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
 				B786A8D324D146DB00F6EE83 /* Canvas.cpp in Sources */,
-				B731700924CF38E900157455 /* MainView.swift in Sources */,
+				B7872CFC25027F4800BD403D /* RootView.swift in Sources */,
+				B731700924CF38E900157455 /* MainViewOld.swift in Sources */,
 				B7847ADF24D45F8C00026607 /* Canvas.mm in Sources */,
 				B731700F24CF540000157455 /* ImageSelector.swift in Sources */,
 				B7316FF824CF376000157455 /* HeroApp.swift in Sources */,
@@ -269,7 +285,7 @@
 				B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */,
 				B7847AE524D4695100026607 /* CanvasViewController.swift in Sources */,
 				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
-				B7DD545524FD408200163947 /* TextInputAlert.swift in Sources */,
+				B7DD54752502657E00163947 /* TestView.swift in Sources */,
 				B7FE5B9224F645A4009DAE53 /* ProjectView.swift in Sources */,
 				B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */,
 				B7847AD824D33AE100026607 /* Layer.cpp in Sources */,

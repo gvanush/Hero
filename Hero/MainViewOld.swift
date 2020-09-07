@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 import MetalKit
 
-struct MainView: View {
+struct MainViewOld: View {
     
     @State private var showingSelectLayerSourceView = false
     @State private var showingAssetSelector = false
@@ -107,7 +107,7 @@ struct MainView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MainView()
+            MainViewOld()
         }
     }
 }
