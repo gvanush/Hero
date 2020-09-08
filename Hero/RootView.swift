@@ -27,7 +27,10 @@ struct RootView: View {
                 }))
         }
         .fullScreenCover(isPresented: $viewModel.isProjectBrowserViewPresented, content: {
-            ProjectBrowser(viewModel: ProjectBrowser.ViewModel(openedProject: Project.active), onProjectRemoveAction: {project in
+            ProjectBrowser(viewModel: ProjectBrowser.ViewModel(openedProject: Project.active), onProjectCreateAction: { project in
+                Project.active = project
+                viewModel.isProjectBrowserViewPresented = false
+            }, onProjectRemoveAction: { project in
                 if Project.active?.metadata.id == project.metadata.id {
                     Project.active = nil
                 }
