@@ -11,7 +11,7 @@ import UIKit
 class Project: NSCopying {
     
     private(set) var metadata: Metadata
-    fileprivate(set) var preview: OptionalResource<UIImage>
+    @Published fileprivate(set) var preview: OptionalResource<UIImage>
     fileprivate var url: URL?
     
     fileprivate init(metadata: Metadata, url: URL) {
@@ -35,7 +35,6 @@ class Project: NSCopying {
         return project
     }
     
-    static var active: Project?
     private static let version = "1.0.0"
     
     class Metadata: Identifiable, Codable, NSCopying {
@@ -103,11 +102,7 @@ class ProjectStore {
                 do {
                     let metadataData = try Data(contentsOf: metadataURL)
                     let metadata = try Project.Metadata.makeFromJSON(metadataData)
-                    if let activeProject = Project.active, activeProject.metadata.id == metadata.id {
-                        projects.append(activeProject)
-                    } else {
-                        projects.append(Project(metadata: metadata, url: url))
-                    }
+                    projects.append(Project(metadata: metadata, url: url))
                 } catch {
                     // TODO: Log warning
                     print("Skipping potential project \(error.localizedDescription)")

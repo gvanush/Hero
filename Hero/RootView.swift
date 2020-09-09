@@ -7,13 +7,9 @@
 
 import SwiftUI
 
-class RootViewModel: ObservableObject {
-    @Published var isProjectBrowserViewPresented = false
-}
-
 struct RootView: View {
     
-    @ObservedObject var viewModel = RootViewModel()
+    @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
         NavigationView {
@@ -24,20 +20,41 @@ struct RootView: View {
                     Image(systemName: "square.grid.2x2.fill")
                         .font(.system(size: 25, weight: .regular))
                         .minTappableFrame(alignment: .leading)
-                }))
+                }), trailing: Button(action: {
+                    viewModel.saveImage()
+                }, label: {
+                    Text("Save image")
+                }).disabled(viewModel.project == nil))
         }
         .fullScreenCover(isPresented: $viewModel.isProjectBrowserViewPresented, content: {
-            ProjectBrowser(viewModel: ProjectBrowser.ViewModel(openedProject: Project.active), onProjectCreateAction: { project in
-                Project.active = project
+            ProjectBrowser(viewModel: ProjectBrowser.ViewModel(openedProject: viewModel.project), onProjectCreateAction: { project in
+                viewModel.project = project
                 viewModel.isProjectBrowserViewPresented = false
             }, onProjectRemoveAction: { project in
-                if Project.active?.metadata.id == project.metadata.id {
-                    Project.active = nil
+                if viewModel.project?.metadata.id == project.metadata.id {
+                    viewModel.project = nil
                 }
             }) { project in
-                Project.active = project
+                viewModel.project = project
             }
         })
+    }
+    
+    class ViewModel: ObservableObject {
+        @Published var isProjectBrowserViewPresented = false
+        @Published var project: Project?
+        
+        func saveImage() {
+            guard let project = project else {
+                return
+            }
+            let image = UIImage(named: "project_preview_sample")!
+            do {
+                try ProjectStore.shared.savePreview(image, for: project)
+            } catch {
+                assertionFailure(error.localizedDescription)
+            }
+        }
     }
 }
 

@@ -41,13 +41,12 @@ struct ProjectView: View {
         }
         
         var preview: UIImage? {
-            return UIImage(named: "project_preview_sample")!
-//            switch project.preview {
-//            case .notLoaded, .none:
-//                return nil
-//            case .some(let image):
-//                return image
-//            }
+            switch project.preview {
+            case .notLoaded, .none:
+                return nil
+            case .some(let image):
+                return image
+            }
         }
         
         func loadPreview() throws {
@@ -120,6 +119,9 @@ struct ProjectView: View {
         .onAppear() {
             try? viewModel.loadPreview()
         }
+        .onReceive(viewModel.project.$preview, perform: { _ in
+            viewModel.objectWillChange.send()
+        })
     }
     
     // MARK: Drawing constants
