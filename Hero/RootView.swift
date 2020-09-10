@@ -31,7 +31,7 @@ struct RootView: View {
                 viewModel.project = project
                 viewModel.isProjectBrowserViewPresented = false
             }, onProjectRemoveAction: { project in
-                if viewModel.project?.metadata.id == project.metadata.id {
+                if viewModel.project === project {
                     viewModel.project = nil
                 }
             }) { project in

@@ -8,66 +8,57 @@
 import Foundation
 import UIKit
 
-class Project: NSCopying {
+class Project: Identifiable, Codable, ObservableObject {
     
-    private(set) var metadata: Metadata
-    @Published fileprivate(set) var preview: OptionalResource<UIImage>
-    fileprivate var url: URL?
+    let id: UUID
+    let creationDate: Date
+    var lastModifiedDate: Date { willSet { objectWillChange.send() } }
+    var name: String? { willSet { objectWillChange.send() } }
+    var version: String { willSet { objectWillChange.send() } }
     
-    fileprivate init(metadata: Metadata, url: URL) {
-        self.metadata = metadata
+    fileprivate(set) var url: URL? { willSet { objectWillChange.send() } }
+    fileprivate(set) var preview = OptionalResource<UIImage>.notLoaded { willSet { objectWillChange.send() } }
+    
+    convenience init(name: String? = nil) {
+        self.init(name: name, url: nil)
+    }
+    
+    fileprivate init(name: String? = nil, url: URL? = nil) {
+        id = UUID()
+        creationDate = Date()
+        lastModifiedDate = creationDate
+        self.name = name
+        self.version = Project.version
         self.url = url
         self.preview = .notLoaded
     }
     
-    init(metadata: Metadata) {
-        self.metadata = metadata
-        self.preview = .notLoaded
+    fileprivate static func makeFromJSON(_ json: Data, url: URL) throws -> Project {
+        let project = try JSONDecoder().decode(Project.self, from: json)
+        project.url = url
+        return project
     }
         
     fileprivate var isPersisted: Bool {
         url != nil
     }
     
-    func copy(with zone: NSZone? = nil) -> Any {
-        let project = Project(metadata: metadata.copy() as! Metadata)
+    fileprivate func json() throws -> Data {
+        try JSONEncoder().encode(self)
+    }
+    
+    fileprivate func duplicate() -> Project {
+        let project = Project(name: name)
         project.preview = preview
+        project.version = version
         return project
     }
     
-    private static let version = "1.0.0"
-    
-    class Metadata: Identifiable, Codable, NSCopying {
-        
-        let id: UUID
-        let creationDate: Date
-        var lastModifiedDate: Date
-        var name: String?
-        var version: String
-        
-        init(name: String? = nil) {
-            id = UUID()
-            creationDate = Date()
-            lastModifiedDate = creationDate
-            self.name = name
-            self.version = Project.version
-        }
-        
-        func json() throws -> Data {
-            try JSONEncoder().encode(self)
-        }
-        
-        static func makeFromJSON(_ json: Data) throws -> Metadata {
-            try JSONDecoder().decode(Metadata.self, from: json)
-        }
-        
-        func copy(with zone: NSZone? = nil) -> Any {
-            let metadata = Metadata(name: name)
-            metadata.version = version
-            return metadata
-        }
-        
+    private enum CodingKeys: String, CodingKey {
+        case id, creationDate, lastModifiedDate, name, version
     }
+    
+    private static let version = "1.0.0"
     
 }
 
@@ -100,9 +91,8 @@ class ProjectStore {
             let metadataURL = url.appendingPathComponent(ProjectStore.metadataFileName)
             if FileManager.default.fileExists(atPath: metadataURL.path) {
                 do {
-                    let metadataData = try Data(contentsOf: metadataURL)
-                    let metadata = try Project.Metadata.makeFromJSON(metadataData)
-                    projects.append(Project(metadata: metadata, url: url))
+                    let metadata = try Data(contentsOf: metadataURL)
+                    projects.append(try Project.makeFromJSON(metadata, url: url))
                 } catch {
                     // TODO: Log warning
                     print("Skipping potential project \(error.localizedDescription)")
@@ -115,7 +105,7 @@ class ProjectStore {
     func saveProject(_ project: Project) throws {
         try checkProjectURL(project)
         let url = project.url!.appendingPathComponent(ProjectStore.metadataFileName)
-        try project.metadata.json().write(to: url, options: .atomic)
+        try project.json().write(to: url, options: .atomic)
     }
     
     func removeProject(_ project: Project) throws {
@@ -169,7 +159,7 @@ class ProjectStore {
             throw Error.invalidProjectToDuplicate
         }
         
-        let newProject = project.copy() as! Project
+        let newProject = project.duplicate()
         try saveProject(newProject)
         
         switch newProject.preview {
@@ -193,7 +183,7 @@ class ProjectStore {
         if project.isPersisted {
             return
         }
-        let url = projectsURL.appendingPathComponent(project.metadata.id.uuidString)
+        let url = projectsURL.appendingPathComponent(project.id.uuidString)
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
         project.url = url
     }

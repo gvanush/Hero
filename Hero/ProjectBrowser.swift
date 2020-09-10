@@ -23,9 +23,13 @@ struct ProjectBrowser: View {
             setupProjectViewModels(projects: projects)
         }
         
-        func loadProjects() throws {
-            let projects = try ProjectStore.shared.loadProjects()
-            setupProjectViewModels(projects: projects)
+        func loadProjects() {
+            do {
+                setupProjectViewModels(projects: try ProjectStore.shared.loadProjects())
+            } catch {
+                assertionFailure(error.localizedDescription)
+                // TODO: Show alert with 'Failed to load projects, try again later or contact support'
+            }
         }
         
         var isEachProjectLoaded: Bool {
@@ -54,7 +58,7 @@ struct ProjectBrowser: View {
                 assertionFailure()
                 return nil
             }
-            let project = Project(metadata: .init())
+            let project = Project()
             try ProjectStore.shared.saveProject(project)
             let projectViewModel = ProjectView.ViewModel(project: project)
             projectViewModels!.append(projectViewModel)
@@ -113,11 +117,11 @@ struct ProjectBrowser: View {
         private func setupProjectViewModels(projects: [Project]) {
             var projects = projects
             if let openedProject = openedProject {
-                if let index = projects.firstIndex(where: {$0.metadata.id == openedProject.metadata.id}) {
+                if let index = projects.firstIndex(where: {$0.id == openedProject.id}) {
                     projects[index] = openedProject
                 }
             }
-            projects.sort { $0.metadata.lastModifiedDate < $1.metadata.lastModifiedDate }
+            projects.sort { $0.lastModifiedDate < $1.lastModifiedDate }
             var projectViewModels = [ProjectView.ViewModel]()
             projectViewModels.reserveCapacity(projects.count)
             for project in projects {
@@ -125,7 +129,7 @@ struct ProjectBrowser: View {
                 projectViewModels.append(projectViewModel)
             }
             if let openedProject = openedProject {
-                projectViewModels.first {$0.id == openedProject.metadata.id}?.isSelected = true
+                projectViewModels.first {$0.id == openedProject.id}?.isSelected = true
             } else if !projectViewModels.isEmpty {
                 projectViewModels.last!.isSelected = true
             }
@@ -136,11 +140,18 @@ struct ProjectBrowser: View {
     
     @ObservedObject var viewModel: ViewModel
     @Environment(\.presentationMode) var presentationMode
-    @State private var isProjectActionSheetPresented = false
-    @State private var isProjectDeleteConfirmationActionSheetPresented = false
+    @State private var actionSheetType: ActionSheetType? = nil
     private let onProjectOpenAction: ((Project) -> Void)?
     private let onProjectCreateAction: ((Project) -> Void)?
     private let onProjectRemoveAction: ((Project) -> Void)?
+    
+    enum ActionSheetType: Identifiable {
+        
+        var id: ActionSheetType { self }
+        
+        case projectOptions
+        case projectDeleteConfirmation
+    }
     
     init(viewModel: ViewModel, onProjectCreateAction: ((Project) -> Void)? = nil, onProjectRemoveAction: ((Project) -> Void)? = nil, onProjectOpenAction: ((Project) -> Void)? = nil) {
         self.viewModel = viewModel
@@ -155,29 +166,11 @@ struct ProjectBrowser: View {
         NavigationView {
             ScrollView(.vertical) {
                 ScrollViewReader { scrollViewProxy in
-                    if viewModel.isEachProjectLoaded {
-                        LazyVGrid(columns: columns, spacing: 30) {
-                            NewProjectView() {
-                                withAnimation {
-                                    do {
-                                        try createProject()
-                                    } catch {
-                                        assertionFailure(error.localizedDescription)
-                                        // TODO: show error alers?
-                                    }
-                                }
-                            }
-                            ForEach(viewModel.projectViewModels!.reversed()) { projectViewModel in
-                                ProjectView(viewModel: projectViewModel) {
-                                    UIApplication.shared.hideKeyboard()
-                                    withAnimation(.easeOut(duration: 0.25)) {
-                                        viewModel.selectedProjectViewModel = projectViewModel
-                                    }
-                                }
-                            }
+                    Group {
+                        if viewModel.isEachProjectLoaded {
+                            projectsGrid()
                         }
-                        .id(ProjectBrowser.gridId)
-                        .padding()
+                    }
                         .navigationTitle("Projects")
                         .navigationBarTitleDisplayMode(.large)
                         .navigationBarItems(leading: Button(action: {
@@ -186,15 +179,7 @@ struct ProjectBrowser: View {
                             Text("Close")
                                 .fontWeight(.regular)
                                 .minTappableFrame(alignment: .leading)
-                        }), trailing: Button(action: {
-                            if viewModel.selectedProjectViewModel != nil {
-                                isProjectActionSheetPresented.toggle()
-                            }
-                        }, label: {
-                            Image(systemName: "ellipsis.circle")
-                                .font(.system(size: 25, weight: .regular))
-                                .minTappableFrame(alignment: .trailing)
-                        }).disabled(!viewModel.isProjectSelected))
+                        }), trailing: projectOptionsBarItem())
                         .toolbar {
                             ToolbarItem(placement: .bottomBar) {
                                 HStack {
@@ -212,55 +197,98 @@ struct ProjectBrowser: View {
                                 }
                             }
                         }
-                        .actionSheet(isPresented: $isProjectActionSheetPresented, content: {
-                            ActionSheet(title: Text(viewModel.selectedProjectViewModel!.name), message: nil, buttons: [.default(Text("Duplicate")) {
-                                withAnimation {
-                                    do {
-                                        if let projectViewModel = try viewModel.duplicateProject(viewModel.selectedProjectViewModel!) {
-                                            viewModel.selectedProjectViewModel = projectViewModel
-                                            scrollViewProxy.scrollTo(ProjectBrowser.gridId, anchor: .top)
-                                        }
-                                    } catch {
-                                        assertionFailure(error.localizedDescription)
-                                        // TODO: show error alers?
-                                    }
-                                }
-                            }, .default(Text("Delete")) {
-                                isProjectDeleteConfirmationActionSheetPresented.toggle()
-                                onProjectRemoveAction?(viewModel.selectedProjectViewModel!.project)
-                            }, .cancel()])
-                        })
-                    }
+                        .actionSheet(item: $actionSheetType) { type in
+                            switch type {
+                                case .projectOptions:
+                                    return projectOptionsActionSheet(scrollViewProxy: scrollViewProxy)
+                                case .projectDeleteConfirmation:
+                                    return projectDeleteConfirmationActionSheet()
+                            }
+                        }
+                        
                 }
             }
         }
-        .actionSheet(isPresented: $isProjectDeleteConfirmationActionSheetPresented, content: {
-            ActionSheet(title: Text(viewModel.selectedProjectViewModel!.name), message: nil, buttons: [.destructive(Text("Delete")) {
+        .onAppear {
+            viewModel.loadProjects()
+        }
+    }
+    
+    private func projectOptionsBarItem() -> some View {
+        Button(action: {
+            if viewModel.selectedProjectViewModel != nil {
+                actionSheetType = .projectOptions
+            }
+        }, label: {
+            Image(systemName: "ellipsis.circle")
+                .font(.system(size: 25, weight: .regular))
+                .minTappableFrame(alignment: .trailing)
+        })
+            .disabled(!viewModel.isProjectSelected)
+    }
+    
+    private func projectsGrid() -> some View {
+        LazyVGrid(columns: columns, spacing: 30) {
+            NewProjectView() {
                 withAnimation {
                     do {
-                        let selected = viewModel.selectedProjectViewModel!
-                        let projectToSelect = viewModel.prev(to: selected) ?? viewModel.next(to: selected)
-                        try viewModel.removeProject(selected)
-                        if let projectToSelect = projectToSelect {
-                            viewModel.selectedProjectViewModel = projectToSelect
-                        } else {
-                            try createProject()
-                        }
+                        try createProject()
                     } catch {
-                        assertionFailure("Failed to delete project")
-                        // TODO: show alert with message?
+                        assertionFailure(error.localizedDescription)
+                        // TODO: show error alers?
                     }
                 }
-            }, .cancel()])
-        })
-        .onAppear {
-            do {
-                try viewModel.loadProjects()
-            } catch {
-                assertionFailure(error.localizedDescription)
-                // TODO: Show alert with 'Failed to load projects, try again later or contact support'
+            }
+            ForEach(viewModel.projectViewModels!.reversed()) { projectViewModel in
+                ProjectView(viewModel: projectViewModel) {
+                    UIApplication.shared.hideKeyboard()
+                    withAnimation(.easeOut(duration: 0.25)) {
+                        viewModel.selectedProjectViewModel = projectViewModel
+                    }
+                }
             }
         }
+        .id(ProjectBrowser.gridId)
+        .padding()
+    }
+    
+    private func projectOptionsActionSheet(scrollViewProxy: ScrollViewProxy) -> ActionSheet {
+        ActionSheet(title: Text(viewModel.selectedProjectViewModel!.name), message: nil, buttons: [.default(Text("Duplicate")) {
+            withAnimation {
+                do {
+                    if let projectViewModel = try viewModel.duplicateProject(viewModel.selectedProjectViewModel!) {
+                        viewModel.selectedProjectViewModel = projectViewModel
+                        scrollViewProxy.scrollTo(ProjectBrowser.gridId, anchor: .top)
+                    }
+                } catch {
+                    assertionFailure(error.localizedDescription)
+                    // TODO: show error alers?
+                }
+            }
+        }, .default(Text("Delete")) {
+            actionSheetType = .projectDeleteConfirmation
+        }, .cancel()])
+    }
+    
+    private func projectDeleteConfirmationActionSheet() -> ActionSheet {
+        ActionSheet(title: Text(viewModel.selectedProjectViewModel!.name), message: nil, buttons: [.destructive(Text("Delete")) {
+            withAnimation {
+                do {
+                    let selected = viewModel.selectedProjectViewModel!
+                    let projectToSelect = viewModel.prev(to: selected) ?? viewModel.next(to: selected)
+                    try viewModel.removeProject(selected)
+                    onProjectRemoveAction?(selected.project)
+                    if let projectToSelect = projectToSelect {
+                        viewModel.selectedProjectViewModel = projectToSelect
+                    } else {
+                        try createProject()
+                    }
+                } catch {
+                    assertionFailure("Failed to delete project")
+                    // TODO: show alert with message?
+                }
+            }
+        }, .cancel()])
     }
     
     private func createProject() throws {
@@ -278,13 +306,13 @@ struct ProjectView_Previews: PreviewProvider {
     
     static var previews: some View {
         ProjectBrowser(viewModel: ProjectBrowser.ViewModel(projects: [
-            Project(metadata: .init(name: "Blocks")),
-            Project(metadata: .init()),
-            Project(metadata: .init(name: "Dark Effect")),
-            Project(metadata: .init(name: "Inspire")),
-            Project(metadata: .init()),
-            Project(metadata: .init(name: "Salute")),
-            Project(metadata: .init(name: "Beuty")),
+            Project(name: "Blocks"),
+            Project(),
+            Project(name: "Dark Effect"),
+            Project(name: "Inspire"),
+            Project(),
+            Project(name: "Salute"),
+            Project(name: "Beuty"),
         ]))
     }
 }

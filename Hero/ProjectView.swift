@@ -6,37 +6,49 @@
 //
 import CoreFoundation
 import SwiftUI
+import Combine
 
 struct ProjectView: View {
     
     class ViewModel: Identifiable, ObservableObject {
         
-        private(set) var project: Project
+        let project: Project
+        var projectCancellable: AnyCancellable?
         @Published var isSelected: Bool
         
         init(project: Project) {
             self.project = project
             self.isSelected = false
+            projectCancellable = project.objectWillChange.sink { [weak self] in self?.objectWillChange.send() }
         }
         
         var id: UUID {
-            project.metadata.id
+            project.id
         }
         
         var name: String {
             get {
-                if let name = project.metadata.name {
+                if let name = project.name {
                     return name
                 }
                 
                 let df = DateFormatter()
                 df.dateStyle = .medium
                 df.timeStyle = .none
-                return "Project \(df.string(from: project.metadata.creationDate))"
+                return "Project \(df.string(from: project.creationDate))"
             }
             set {
+                let oldName = project.name
                 let trimmedName = newValue.trimmingCharacters(in: .whitespaces)
-                project.metadata.name = trimmedName.isEmpty ? nil : trimmedName
+                project.name = trimmedName.isEmpty ? nil : trimmedName
+                
+                do {
+                    try ProjectStore.shared.saveProject(project)
+                } catch {
+                    project.name = oldName
+                    assertionFailure(error.localizedDescription)
+                    // TODO: Show alert
+                }
             }
         }
         
@@ -49,12 +61,12 @@ struct ProjectView: View {
             }
         }
         
-        func loadPreview() throws {
-            try ProjectStore.shared.loadProjectPreview(project)
-        }
-        
-        func saveProject() throws {
-            try ProjectStore.shared.saveProject(project)
+        func loadPreview() {
+            do {
+                try ProjectStore.shared.loadProjectPreview(project)
+            } catch {
+                assertionFailure(error.localizedDescription)
+            }
         }
         
     }
@@ -98,12 +110,6 @@ struct ProjectView: View {
                 if !isEditing {
                     viewModel.name = enteredName
                     enteredName = viewModel.name
-                    do {
-                        try viewModel.saveProject()
-                    } catch {
-                        assertionFailure(error.localizedDescription)
-                        // TODO: show error alert
-                    }
                 }
             })
             .font(.system(size: 15, weight: .regular))
@@ -117,11 +123,8 @@ struct ProjectView: View {
         .scaleEffect(viewModel.isSelected ? 1.03 : 1.0)
         .onTapGesture(perform: onTapAction)
         .onAppear() {
-            try? viewModel.loadPreview()
+            viewModel.loadPreview()
         }
-        .onReceive(viewModel.project.$preview, perform: { _ in
-            viewModel.objectWillChange.send()
-        })
     }
     
     // MARK: Drawing constants
