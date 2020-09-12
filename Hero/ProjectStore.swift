@@ -33,7 +33,7 @@ class Project: Identifiable, Codable, ObservableObject {
         self.preview = .notLoaded
     }
     
-    fileprivate static func makeFromJSON(_ json: Data, url: URL) throws -> Project {
+    fileprivate static func makeFrom(json: Data, url: URL) throws -> Project {
         let project = try JSONDecoder().decode(Project.self, from: json)
         project.url = url
         return project
@@ -62,7 +62,7 @@ class Project: Identifiable, Codable, ObservableObject {
     
 }
 
-class ProjectStore {
+class ProjectDAO {
     
     private var projectsURL: URL!
     
@@ -70,7 +70,7 @@ class ProjectStore {
     
     func setup() throws {
         projectsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        projectsURL.appendPathComponent(ProjectStore.directoryName)
+        projectsURL.appendPathComponent(ProjectDAO.directoryName)
         
         var isDir: ObjCBool = false
         if FileManager.default.fileExists(atPath: projectsURL.path, isDirectory: &isDir) {
@@ -82,17 +82,17 @@ class ProjectStore {
         try FileManager.default.createDirectory(at: projectsURL, withIntermediateDirectories: true, attributes: nil)
     }
     
-    func loadProjects() throws -> [Project] {
+    func load() throws -> [Project] {
         
         let urls = try FileManager.default.contentsOfDirectory(at: projectsURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         var projects = [Project]()
         for url in urls {
             guard url.hasDirectoryPath else {continue}
-            let metadataURL = url.appendingPathComponent(ProjectStore.metadataFileName)
+            let metadataURL = url.appendingPathComponent(ProjectDAO.metadataFileName)
             if FileManager.default.fileExists(atPath: metadataURL.path) {
                 do {
                     let metadata = try Data(contentsOf: metadataURL)
-                    projects.append(try Project.makeFromJSON(metadata, url: url))
+                    projects.append(try Project.makeFrom(json: metadata, url: url))
                 } catch {
                     // TODO: Log warning
                     print("Skipping potential project \(error.localizedDescription)")
@@ -102,13 +102,13 @@ class ProjectStore {
         return projects
     }
     
-    func saveProject(_ project: Project) throws {
-        try checkProjectURL(project)
-        let url = project.url!.appendingPathComponent(ProjectStore.metadataFileName)
+    func save(_ project: Project) throws {
+        try checkURL(for: project)
+        let url = project.url!.appendingPathComponent(ProjectDAO.metadataFileName)
         try project.json().write(to: url, options: .atomic)
     }
     
-    func removeProject(_ project: Project) throws {
+    func remove(_ project: Project) throws {
         guard project.isPersisted else {
             return
         }
@@ -116,14 +116,14 @@ class ProjectStore {
         project.url = nil
     }
     
-    func loadProjectPreview(_ project: Project) throws {
+    func loadPreview(for project: Project) throws {
         guard project.isPersisted else {
             return
         }
         
         switch project.preview {
         case .notLoaded:
-            let previewURL = project.url!.appendingPathComponent(ProjectStore.previewFileName)
+            let previewURL = project.url!.appendingPathComponent(ProjectDAO.previewFileName)
             if FileManager.default.fileExists(atPath: previewURL.path) {
                 let previewData = try Data(contentsOf: previewURL)
                 if let image = UIImage(data: previewData) {
@@ -141,10 +141,10 @@ class ProjectStore {
     
     func savePreview(_ preview: UIImage, for project: Project) throws {
         if !project.isPersisted {
-            try saveProject(project)
+            try save(project)
         }
         
-        let previewURL = project.url!.appendingPathComponent(ProjectStore.previewFileName)
+        let previewURL = project.url!.appendingPathComponent(ProjectDAO.previewFileName)
         if let previewData = preview.jpegData(compressionQuality: 1.0) {
             try previewData.write(to: previewURL, options: .atomic)
             project.preview = .some(preview)
@@ -153,20 +153,20 @@ class ProjectStore {
         }
     }
     
-    func duplicateProject(_ project: Project) throws -> Project {
+    func duplicate(_ project: Project) throws -> Project {
         guard project.isPersisted else {
             assertionFailure(Error.invalidProjectToDuplicate.localizedDescription)
             throw Error.invalidProjectToDuplicate
         }
         
         let newProject = project.duplicate()
-        try saveProject(newProject)
+        try save(newProject)
         
         switch newProject.preview {
         case .notLoaded:
-            let srcURL = project.url!.appendingPathComponent(ProjectStore.previewFileName)
+            let srcURL = project.url!.appendingPathComponent(ProjectDAO.previewFileName)
             if FileManager.default.fileExists(atPath: srcURL.path) {
-                let destURL = newProject.url!.appendingPathComponent(ProjectStore.previewFileName)
+                let destURL = newProject.url!.appendingPathComponent(ProjectDAO.previewFileName)
                 try FileManager.default.copyItem(at: srcURL, to: destURL)
             }
         case .none:
@@ -179,7 +179,7 @@ class ProjectStore {
         return newProject
     }
     
-    private func checkProjectURL(_ project: Project) throws {
+    private func checkURL(for project: Project) throws {
         if project.isPersisted {
             return
         }
@@ -188,7 +188,7 @@ class ProjectStore {
         project.url = url
     }
     
-    static let shared = ProjectStore()
+    static let shared = ProjectDAO()
     
     private static let directoryName = "Projects"
     private static let metadataFileName = "Metadata.json"
