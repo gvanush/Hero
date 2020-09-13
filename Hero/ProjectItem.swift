@@ -12,7 +12,14 @@ struct ProjectItem: View {
     
     @State var enteredName: String = ""
     @ObservedObject var model: ProjectItemModel
+    @State var alertType: AlertType?
     var onTapAction: () -> Void
+    
+    enum AlertType: Identifiable {
+        case renameFailed
+        
+        var id: AlertType { self }
+    }
     
     init(model: ProjectItemModel, onTapAction: @escaping () -> Void) {
         self.model = model
@@ -45,9 +52,11 @@ struct ProjectItem: View {
                 }
             )
             
-            TextField(model.name, text: $enteredName, onEditingChanged: {isEditing in
+            TextField(model.name, text: $enteredName, onEditingChanged: { isEditing in
                 if !isEditing {
-                    model.name = enteredName
+                    if !model.rename(to: enteredName) {
+                        alertType = .renameFailed
+                    }
                     enteredName = model.name
                 }
             })
@@ -60,9 +69,19 @@ struct ProjectItem: View {
             })
         }
         .scaleEffect(model.isSelected ? 1.03 : 1.0)
+        .alert(item: $alertType) { type in
+            alert(for: type)
+        }
         .onTapGesture(perform: onTapAction)
         .onAppear() {
             model.loadPreview()
+        }
+    }
+    
+    func alert(for type: AlertType) -> Alert {
+        switch type {
+        case .renameFailed:
+            return Alert(title: Text("Failed to rename project"), message: Text(Settings.genericUserErrorMessage), dismissButton: nil)
         }
     }
     

@@ -25,29 +25,14 @@ class ProjectItemModel: Identifiable, ObservableObject {
     }
     
     var name: String {
-        get {
-            if let name = project.name {
-                return name
-            }
-            
-            let df = DateFormatter()
-            df.dateStyle = .medium
-            df.timeStyle = .none
-            return "Project \(df.string(from: project.creationDate))"
+        if let name = project.name {
+            return name
         }
-        set {
-            let oldName = project.name
-            let trimmedName = newValue.trimmingCharacters(in: .whitespaces)
-            project.name = trimmedName.isEmpty ? nil : trimmedName
-            
-            do {
-                try ProjectDAO.shared.save(project)
-            } catch {
-                project.name = oldName
-                assertionFailure(error.localizedDescription)
-                // TODO: Show alert
-            }
-        }
+        
+        let df = DateFormatter()
+        df.dateStyle = .medium
+        df.timeStyle = .none
+        return "Project \(df.string(from: project.creationDate))"
     }
     
     var preview: UIImage? {
@@ -65,6 +50,21 @@ class ProjectItemModel: Identifiable, ObservableObject {
         } catch {
             assertionFailure(error.localizedDescription)
         }
+    }
+    
+    func rename(to newName: String) -> Bool {
+        let oldName = project.name
+        let trimmedName = newName.trimmingCharacters(in: .whitespaces)
+        project.name = trimmedName.isEmpty ? nil : trimmedName
+        
+        do {
+            try ProjectDAO.shared.save(project)
+            return true
+        } catch {
+            project.name = oldName
+            assertionFailure(error.localizedDescription)
+        }
+        return false
     }
     
 }

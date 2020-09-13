@@ -35,14 +35,15 @@ class ProjectBrowserModel: ObservableObject {
         }
     }
     
-    func load() {
-        guard !isLoaded else {return}
+    func load() -> Bool {
+        guard !isLoaded else {return true}
         do {
             setupItemModels(projects: try ProjectDAO.shared.load())
+            return true
         } catch {
             assertionFailure(error.localizedDescription)
-            // TODO: Show alert with 'Failed to load projects, try again later or contact support'
         }
+        return false
     }
     
     var isLoaded: Bool {

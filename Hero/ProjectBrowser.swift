@@ -11,16 +11,25 @@ struct ProjectBrowser: View {
     
     @ObservedObject var model: ProjectBrowserModel
     @Environment(\.presentationMode) var presentationMode
-    @State private var actionSheetType: ActionSheetType? = nil
+    @State private var actionSheetType: ActionSheetType?
+    @State private var alertType: AlertType?
     private let onOpenAction: ((Project) -> Void)?
     private let onRemoveAction: ((Project) -> Void)?
     
     enum ActionSheetType: Identifiable {
-        
-        var id: ActionSheetType { self }
-        
         case projectOptions
         case projectDeleteConfirmation
+        
+        var id: ActionSheetType { self }
+    }
+    
+    enum AlertType: Identifiable {
+        case loadFailed
+        case createFailed
+        case duplicateFailed
+        case removeFailed
+        
+        var id: AlertType { self }
     }
     
     init(model: ProjectBrowserModel, onRemoveAction: ((Project) -> Void)? = nil, onOpenAction: ((Project) -> Void)? = nil) {
@@ -78,12 +87,30 @@ struct ProjectBrowser: View {
                                     return projectDeleteConfirmationActionSheet()
                             }
                         }
+                    .alert(item: $alertType) { type in
+                        alert(for: type)
+                    }
                         
                 }
             }
         }
         .onAppear {
-            model.load()
+            if !model.load() {
+                alertType = .loadFailed
+            }
+        }
+    }
+    
+    private func alert(for type: AlertType) -> Alert {
+        switch type {
+        case .loadFailed:
+            return Alert(title: Text("Failed to load projects"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
+        case .createFailed:
+            return Alert(title: Text("Failed to create a new project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
+        case .duplicateFailed:
+            return Alert(title: Text("Failed to duplicate the project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
+        case .removeFailed:
+            return Alert(title: Text("Failed to remove project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
         }
     }
     
@@ -124,6 +151,8 @@ struct ProjectBrowser: View {
                 if let newProject = model.duplicate(model.selected!) {
                     model.selected = newProject
                     scrollViewProxy.scrollTo(ProjectBrowser.gridId, anchor: .top)
+                } else {
+                    alertType = .duplicateFailed
                 }
             }
         }, .default(Text("Delete")) {
@@ -147,7 +176,7 @@ struct ProjectBrowser: View {
                         createProject()
                     }
                 } else {
-                    // TODO: show error
+                    alertType = .removeFailed
                 }
             }
         }, .cancel()])
@@ -159,7 +188,7 @@ struct ProjectBrowser: View {
             presentationMode.wrappedValue.dismiss()
             onOpenAction?(project)
         } else {
-            // TODO: show error alert
+            alertType = .createFailed
         }
         
     }

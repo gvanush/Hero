@@ -10,6 +10,7 @@
 		B715B23F24D28E2200B4C859 /* libAppleCppAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */; };
 		B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */; };
 		B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */; };
+		B723BB1F250DD229007C989E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B723BB1E250DD229007C989E /* Settings.swift */; };
 		B7316FF824CF376000157455 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7316FF724CF376000157455 /* HeroApp.swift */; };
 		B7316FFC24CF376200157455 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFB24CF376200157455 /* Assets.xcassets */; };
 		B7316FFF24CF376200157455 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFE24CF376200157455 /* Preview Assets.xcassets */; };
@@ -43,6 +44,7 @@
 		B715B24324D2A2DB00B4C859 /* CppWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppWrapper.h; sourceTree = "<group>"; };
 		B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItemModel.swift; sourceTree = "<group>"; };
 		B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowserModel.swift; sourceTree = "<group>"; };
+		B723BB1E250DD229007C989E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B7316FF424CF376000157455 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7316FF724CF376000157455 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7316FFB24CF376200157455 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */,
 				B7872CFD2504340A00BD403D /* Common.swift */,
 				B7DD54742502657E00163947 /* TestView.swift */,
+				B723BB1E250DD229007C989E /* Settings.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				B7847AE324D4625200026607 /* Layer.mm in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
 				B786A8D324D146DB00F6EE83 /* Canvas.cpp in Sources */,
+				B723BB1F250DD229007C989E /* Settings.swift in Sources */,
 				B7872CFC25027F4800BD403D /* RootView.swift in Sources */,
 				B731700924CF38E900157455 /* MainViewOld.swift in Sources */,
 				B7847ADF24D45F8C00026607 /* Canvas.mm in Sources */,
