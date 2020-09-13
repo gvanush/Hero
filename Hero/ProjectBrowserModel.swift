@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 class ProjectBrowserModel: ObservableObject {
     
@@ -20,6 +21,7 @@ class ProjectBrowserModel: ObservableObject {
             }
         }
     }
+    var logger: Logger?
     
     var selectedItemModel: ProjectItemModel? {
         if let selectedProject = selected {
@@ -36,12 +38,15 @@ class ProjectBrowserModel: ObservableObject {
     }
     
     func load() -> Bool {
+        logger?.notice("Loading projects")
         guard !isLoaded else {return true}
         do {
             setupItemModels(projects: try ProjectDAO.shared.load())
+            logger?.notice("Projects loaded")
             return true
         } catch {
             assertionFailure(error.localizedDescription)
+            logger?.error("Failed to load projects with error: \(error.localizedDescription, privacy: .public)")
         }
         return false
     }
@@ -55,8 +60,10 @@ class ProjectBrowserModel: ObservableObject {
     }
     
     func create() -> Project? {
+        logger?.notice("Creating a new project")
         guard isLoaded else {
             assertionFailure()
+            logger?.fault("Creating a new project when projects are not loaded")
             return nil
         }
         
@@ -64,16 +71,20 @@ class ProjectBrowserModel: ObservableObject {
             let project = Project()
             try ProjectDAO.shared.save(project)
             itemModels!.append(.init(project: project))
+            logger?.notice("Project created: \(project, privacy: .public)")
             return project
         } catch {
             assertionFailure(error.localizedDescription)
+            logger?.error("Failed to create a new project with error: \(error.localizedDescription, privacy: .public)")
         }
         return nil
     }
     
     func remove(_ project: Project) -> Bool {
+        logger?.notice("Removing project \(project, privacy: .public)")
         guard isLoaded else {
             assertionFailure()
+            logger?.fault("Removing a project when projects are not loaded")
             return false
         }
         do {
@@ -81,34 +92,36 @@ class ProjectBrowserModel: ObservableObject {
             if let index = itemModelIndexFor(project) {
                 itemModels!.remove(at: index)
             }
+            logger?.notice("Project removed")
             return true
         } catch {
             assertionFailure(error.localizedDescription)
+            logger?.error("Failed to remove project \(project, privacy: .public); with error: \(error.localizedDescription, privacy: .public)")
         }
         return false
     }
     
     func duplicate(_ project: Project) -> Project? {
+        logger?.notice("Duplicating project \(project, privacy: .public)")
         guard isLoaded else {
             assertionFailure()
+            logger?.fault("Duplicating project when projects are not loaded")
             return nil
         }
         do {
-            let project = try ProjectDAO.shared.duplicate(project)
-            let projectViewModel = ProjectItemModel(project: project)
+            let newProject = try ProjectDAO.shared.duplicate(project)
+            let projectViewModel = ProjectItemModel(project: newProject, logger: logger)
             itemModels!.append(projectViewModel)
-            return project
+            logger?.notice("Project duplicated: \(newProject, privacy: .public)")
+            return newProject
         } catch {
             assertionFailure(error.localizedDescription)
+            logger?.error("Failed to duplicate project \(project, privacy: .public); with error: \(error.localizedDescription, privacy: .public)")
         }
         return nil
     }
     
     func next(to project: Project) -> Project? {
-        guard isLoaded else {
-            assertionFailure()
-            return nil
-        }
         if let index = itemModelIndexFor(project), index < itemModels!.count - 1 {
             return itemModels![index + 1].project
         }
@@ -116,10 +129,6 @@ class ProjectBrowserModel: ObservableObject {
     }
     
     func prev(to project: Project) -> Project? {
-        guard isLoaded else {
-            assertionFailure()
-            return nil
-        }
         if let index = itemModelIndexFor(project), index > 0 {
             return itemModels![index - 1].project
         }
@@ -147,7 +156,7 @@ class ProjectBrowserModel: ObservableObject {
         var projectViewModels = [ProjectItemModel]()
         projectViewModels.reserveCapacity(projects.count)
         for project in projects {
-            let projectViewModel = ProjectItemModel(project: project)
+            let projectViewModel = ProjectItemModel(project: project, logger: logger)
             projectViewModels.append(projectViewModel)
         }
         

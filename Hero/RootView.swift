@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os
 
 class RootViewModel: ObservableObject {
     @Published var isProjectBrowserPresented = false
@@ -27,11 +28,13 @@ class RootViewModel: ObservableObject {
 struct RootView: View {
     
     @ObservedObject var model = RootViewModel()
+    private let logger = Logger(category: "rootview")
     
     var body: some View {
         NavigationView {
             Color(.lightGray)
                 .navigationBarItems(leading: Button(action: {
+                    logger.notice("Open project browser")
                     model.isProjectBrowserPresented.toggle()
                 }, label: {
                     Image(systemName: "square.grid.2x2.fill")

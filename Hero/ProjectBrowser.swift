@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os
 
 struct ProjectBrowser: View {
     
@@ -15,6 +16,7 @@ struct ProjectBrowser: View {
     @State private var alertType: AlertType?
     private let onOpenAction: ((Project) -> Void)?
     private let onRemoveAction: ((Project) -> Void)?
+    private let logger: Logger
     
     enum ActionSheetType: Identifiable {
         case projectOptions
@@ -36,6 +38,9 @@ struct ProjectBrowser: View {
         self.model = model
         self.onOpenAction = onOpenAction
         self.onRemoveAction = onRemoveAction
+        logger = Logger(category: "projectbrowser")
+        
+        self.model.logger = logger
     }
     
     let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 12), count: 2)
@@ -52,6 +57,7 @@ struct ProjectBrowser: View {
                         .navigationTitle("Projects")
                         .navigationBarTitleDisplayMode(.large)
                         .navigationBarItems(leading: Button(action: {
+                            logger.notice("Close")
                             presentationMode.wrappedValue.dismiss()
                         }, label: {
                             Text("Close")
@@ -64,10 +70,12 @@ struct ProjectBrowser: View {
                                     Spacer()
                                     Button(action: {
                                         if let selectedProject = model.selected {
+                                            logger.notice("Open project: \(selectedProject, privacy: .public)")
                                             presentationMode.wrappedValue.dismiss()
                                             onOpenAction?(selectedProject)
                                         } else {
                                             assertionFailure()
+                                            logger.fault("There is no selected project but openning project is requested")
                                         }
                                     }, label: {
                                         Text("Open")
@@ -101,19 +109,6 @@ struct ProjectBrowser: View {
         }
     }
     
-    private func alert(for type: AlertType) -> Alert {
-        switch type {
-        case .loadFailed:
-            return Alert(title: Text("Failed to load projects"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
-        case .createFailed:
-            return Alert(title: Text("Failed to create a new project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
-        case .duplicateFailed:
-            return Alert(title: Text("Failed to duplicate the project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
-        case .removeFailed:
-            return Alert(title: Text("Failed to remove project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
-        }
-    }
-    
     private func projectOptionsBarItem() -> some View {
         Button(action: {
             actionSheetType = .projectOptions
@@ -134,6 +129,7 @@ struct ProjectBrowser: View {
             }
             ForEach(model.itemModels!.reversed()) { itemModel in
                 ProjectItem(model: itemModel) {
+                    logger.notice("Select project: \(itemModel.project, privacy: .public)")
                     UIApplication.shared.hideKeyboard()
                     withAnimation(.easeOut(duration: 0.25)) {
                         model.selected = itemModel.project
@@ -165,6 +161,7 @@ struct ProjectBrowser: View {
             withAnimation {
                 guard let selectedProject = model.selected else {
                     assertionFailure()
+                    logger.fault("There is no selected project but deleting project is requested")
                     return
                 }
                 let projectToSelect = model.prev(to: selectedProject) ?? model.next(to: selectedProject)
@@ -191,6 +188,19 @@ struct ProjectBrowser: View {
             alertType = .createFailed
         }
         
+    }
+    
+    private func alert(for type: AlertType) -> Alert {
+        switch type {
+        case .loadFailed:
+            return Alert(title: Text("Failed to load projects"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
+        case .createFailed:
+            return Alert(title: Text("Failed to create a new project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
+        case .duplicateFailed:
+            return Alert(title: Text("Failed to duplicate the project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
+        case .removeFailed:
+            return Alert(title: Text("Failed to remove project"), message: Text(Settings.genericUserErrorMessage), dismissButton:  nil)
+        }
     }
     
     static let gridId = 1

@@ -7,14 +7,23 @@
 
 import Foundation
 import UIKit
+import os
 
-class Project: Identifiable, Codable, ObservableObject {
+class Project: Identifiable, Codable, ObservableObject, CustomStringConvertible {
     
     let id: UUID
     let creationDate: Date
     var lastModifiedDate: Date { willSet { objectWillChange.send() } }
     var name: String? { willSet { objectWillChange.send() } }
     var version: String { willSet { objectWillChange.send() } }
+    
+    var description: String {
+        let invalidProjectDescription = "<invalid>"
+        guard let json = try? json() else {
+            return invalidProjectDescription
+        }
+        return String(data: json, encoding: .utf8) ?? invalidProjectDescription
+    }
     
     fileprivate(set) var url: URL? { willSet { objectWillChange.send() } }
     fileprivate(set) var preview = OptionalResource<UIImage>.notLoaded { willSet { objectWillChange.send() } }
@@ -65,6 +74,7 @@ class Project: Identifiable, Codable, ObservableObject {
 class ProjectDAO {
     
     private var projectsURL: URL!
+    private let logger = Logger(category: "projectdao")
     
     private init() {}
     
@@ -94,8 +104,8 @@ class ProjectDAO {
                     let metadata = try Data(contentsOf: metadataURL)
                     projects.append(try Project.makeFrom(json: metadata, url: url))
                 } catch {
-                    // TODO: Log warning
-                    print("Skipping potential project \(error.localizedDescription)")
+                    assertionFailure(error.localizedDescription)
+                    logger.warning("Failed to load project metadata with error: \(error.localizedDescription)")
                 }
             }
         }
@@ -154,13 +164,13 @@ class ProjectDAO {
     }
     
     func duplicate(_ project: Project) throws -> Project {
-        guard project.isPersisted else {
-            assertionFailure(Error.invalidProjectToDuplicate.localizedDescription)
-            throw Error.invalidProjectToDuplicate
-        }
         
         let newProject = project.duplicate()
         try save(newProject)
+        
+        guard project.isPersisted else {
+            return newProject
+        }
         
         switch newProject.preview {
         case .notLoaded:
@@ -196,14 +206,11 @@ class ProjectDAO {
     
     enum Error: LocalizedError {
         case invalidProjectPreview
-        case invalidProjectToDuplicate
         
         var errorDescription: String? {
             switch self {
             case .invalidProjectPreview:
                 return "The image has no data or the underlying 'CGImageRef' contains data in an unsupported bitmap format."
-            case .invalidProjectToDuplicate:
-                return "Source project must be saved before being duplicated."
             }
         }
     }
