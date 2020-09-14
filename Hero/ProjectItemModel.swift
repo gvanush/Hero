@@ -65,7 +65,7 @@ class ProjectItemModel: Identifiable, ObservableObject {
         
         let oldName = project.name
         let trimmedName = newName.trimmingCharacters(in: .whitespaces)
-        project.name = trimmedName.isEmpty ? nil : trimmedName
+        project.name = trimmedName.isEmpty ? nil : String(trimmedName.prefix(ProjectItemModel.nameMaxLength))
         
         do {
             try ProjectDAO.shared.save(project)
@@ -77,5 +77,7 @@ class ProjectItemModel: Identifiable, ObservableObject {
         }
         return false
     }
+    
+    private static let nameMaxLength = 60
     
 }
