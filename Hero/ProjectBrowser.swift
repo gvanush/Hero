@@ -121,7 +121,7 @@ struct ProjectBrowser: View {
     }
     
     private func projectsGrid() -> some View {
-        LazyVGrid(columns: columns, spacing: 30) {
+        LazyVGrid(columns: columns, spacing: 20) {
             NewProjectItem() {
                 withAnimation {
                     createProject()
@@ -142,7 +142,11 @@ struct ProjectBrowser: View {
     }
     
     private func projectOptionsActionSheet(scrollViewProxy: ScrollViewProxy) -> ActionSheet {
-        ActionSheet(title: Text(model.selectedItemModel!.name), message: nil, buttons: [.default(Text("Duplicate")) {
+        ActionSheet(title: Text(model.selectedItemModel!.name), message: nil, buttons: [.default(Text("Rename")) {
+            if let selectedItemModel = model.selectedItemModel {
+                selectedItemModel.isRenaming = true
+            }
+        }, .default(Text("Duplicate")) {
             withAnimation {
                 if let newProject = model.duplicate(model.selected!) {
                     model.selected = newProject

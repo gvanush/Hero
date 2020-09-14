@@ -10,7 +10,7 @@ import Combine
 
 struct ProjectItem: View {
     
-    @State var enteredName: String = ""
+    @State var enteredName: String?
     @ObservedObject var model: ProjectItemModel
     @State var alertType: AlertType?
     var onTapAction: () -> Void
@@ -28,14 +28,14 @@ struct ProjectItem: View {
     
     var body: some View {
         
-        VStack(spacing: 10) {
+        VStack(spacing: ProjectItem.verticalSpacing) {
             ZStack {
                 Color(.secondarySystemBackground)
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                 if let preview = model.preview {
                     Image(uiImage: preview)
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                 } else {
                     Image(systemName: "folder")
                         .font(.system(size: 30, weight: .light))
@@ -43,33 +43,35 @@ struct ProjectItem: View {
 
             }
             .cornerRadius(ProjectItem.cornerRadius)
-            .padding(3)
+            .padding(ProjectItem.padding)
             .overlay(
                 Group {
                     if model.isSelected {
-                        RoundedRectangle(cornerRadius: ProjectItem.cornerRadius + 3)
+                        RoundedRectangle(cornerRadius: ProjectItem.cornerRadius + 2)
                             .stroke(Color.accentColor, lineWidth: ProjectItem.imageBorderSize)
                     }
                 }
             )
+            .scaleEffect(model.isSelected ? 1.02 : 1.0)
             
-            TextField(model.name, text: $enteredName, onEditingChanged: { isEditing in
-                if !isEditing {
-                    if !model.rename(to: enteredName) {
-                        alertType = .renameFailed
+            Group {
+                if model.isRenaming {
+                    NativeTextField(text: $enteredName, isEditing: $model.isRenaming, placeholder: model.name, textAlignment: .center, font: .systemFont(ofSize: ProjectItem.nameFontSize, weight: .regular)) {
+                        if let enteredName = enteredName, !model.rename(to: enteredName) {
+                            alertType = .renameFailed
+                        }
+                        enteredName = nil
                     }
-                    enteredName = model.name
+                        .padding(.horizontal, 5.0)
+                } else {
+                    Text(model.name)
+                        .lineLimit(1)
+                        .font(.system(size: ProjectItem.nameFontSize, weight: .regular))
+                        .foregroundColor(model.isSelected ? Color.accentColor : Color(.label))
                 }
-            })
-            .font(.system(size: 15, weight: .regular))
-            .foregroundColor(model.isSelected ? Color.accentColor : Color(.label))
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 5.0)
-            .onAppear(perform: {
-                enteredName = model.name
-            })
+            }
+                .padding(.horizontal, 5.0)
         }
-        .scaleEffect(model.isSelected ? 1.03 : 1.0)
         .alert(item: $alertType) { type in
             alert(for: type)
         }
@@ -77,6 +79,7 @@ struct ProjectItem: View {
         .onAppear() {
             model.loadPreview()
         }
+        
     }
     
     func alert(for type: AlertType) -> Alert {
@@ -86,9 +89,12 @@ struct ProjectItem: View {
         }
     }
     
-    // MARK: Drawing constants
+    // MARK: Constants
     static let imageBorderSize: CGFloat = 3.0
     static let cornerRadius: CGFloat = 3.0
+    static let padding: CGFloat = 3.0
+    static let nameFontSize: CGFloat = 15
+    static let verticalSpacing: CGFloat = 8
 }
 
 struct NewProjectItem: View {
@@ -100,16 +106,19 @@ struct NewProjectItem: View {
     }
     
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: ProjectItem.verticalSpacing) {
             ZStack {
                 Color(.secondarySystemBackground)
                     .aspectRatio(contentMode: .fit)
                 Image(systemName: "plus")
                     .font(.system(size: 30, weight: .light))
+                    .foregroundColor(.accentColor)
             }
             .cornerRadius(ProjectItem.cornerRadius)
+            .padding(ProjectItem.padding)
             Text("New")
                 .font(.system(size: 15, weight: .regular))
+                .foregroundColor(.accentColor)
         }
             .onTapGesture(count: 1) {
                 onTapAction()

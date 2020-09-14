@@ -13,6 +13,7 @@ class ProjectItemModel: Identifiable, ObservableObject {
     
     let project: Project
     @Published var isSelected: Bool
+    @Published var isRenaming: Bool
     
     private let logger: Logger?
     private var projectCancellable: AnyCancellable?
@@ -20,6 +21,7 @@ class ProjectItemModel: Identifiable, ObservableObject {
     init(project: Project, logger: Logger? = nil) {
         self.project = project
         self.isSelected = false
+        self.isRenaming = false
         self.logger = logger
         projectCancellable = project.objectWillChange.sink { [weak self] in self?.objectWillChange.send() }
     }

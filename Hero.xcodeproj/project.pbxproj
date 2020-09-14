@@ -12,6 +12,7 @@
 		B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */; };
 		B723BB1F250DD229007C989E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B723BB1E250DD229007C989E /* Settings.swift */; };
 		B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B723BB20250E0965007C989E /* Logger+Extensions.swift */; };
+		B723BB23250F2FC2007C989E /* NativeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B723BB22250F2FC2007C989E /* NativeTextField.swift */; };
 		B7316FF824CF376000157455 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7316FF724CF376000157455 /* HeroApp.swift */; };
 		B7316FFC24CF376200157455 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFB24CF376200157455 /* Assets.xcassets */; };
 		B7316FFF24CF376200157455 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFE24CF376200157455 /* Preview Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowserModel.swift; sourceTree = "<group>"; };
 		B723BB1E250DD229007C989E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B723BB20250E0965007C989E /* Logger+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
+		B723BB22250F2FC2007C989E /* NativeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeTextField.swift; sourceTree = "<group>"; };
 		B7316FF424CF376000157455 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7316FF724CF376000157455 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7316FFB24CF376200157455 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				B7DD54742502657E00163947 /* TestView.swift */,
 				B723BB1E250DD229007C989E /* Settings.swift */,
 				B723BB20250E0965007C989E /* Logger+Extensions.swift */,
+				B723BB22250F2FC2007C989E /* NativeTextField.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				B7847AE524D4695100026607 /* CanvasViewController.swift in Sources */,
 				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
 				B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */,
+				B723BB23250F2FC2007C989E /* NativeTextField.swift in Sources */,
 				B7DD54752502657E00163947 /* TestView.swift in Sources */,
 				B7FE5B9224F645A4009DAE53 /* ProjectItem.swift in Sources */,
 				B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */,
