@@ -52,7 +52,7 @@ struct ProjectItem: View {
                     }
                 }
             )
-            .scaleEffect(model.isSelected ? 1.02 : 1.0)
+            .scaleEffect(model.isSelected ? 1.03 : 1.0)
             
             Group {
                 if model.isRenaming {
@@ -90,7 +90,7 @@ struct ProjectItem: View {
     }
     
     // MARK: Constants
-    static let imageBorderSize: CGFloat = 3.0
+    static let imageBorderSize: CGFloat = 2.0
     static let cornerRadius: CGFloat = 3.0
     static let padding: CGFloat = 3.0
     static let nameFontSize: CGFloat = 15
