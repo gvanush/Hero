@@ -122,7 +122,7 @@ struct ProjectBrowser: View {
     
     private func projectsGrid() -> some View {
         LazyVGrid(columns: columns, spacing: 30) {
-            NewProjectView() {
+            NewProjectItem() {
                 withAnimation {
                     createProject()
                 }

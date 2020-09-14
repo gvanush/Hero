@@ -30,7 +30,8 @@ struct ProjectItem: View {
         
         VStack(spacing: 10) {
             ZStack {
-                ProjectBgrView()
+                Color(.secondarySystemBackground)
+                    .aspectRatio(contentMode: .fit)
                 if let preview = model.preview {
                     Image(uiImage: preview)
                         .resizable()
@@ -41,12 +42,12 @@ struct ProjectItem: View {
                 }
 
             }
-            .cornerRadius(ProjectBgrView.cornerRadius - 2)
+            .cornerRadius(ProjectItem.cornerRadius)
             .padding(3)
             .overlay(
                 Group {
                     if model.isSelected {
-                        RoundedRectangle(cornerRadius: ProjectBgrView.cornerRadius)
+                        RoundedRectangle(cornerRadius: ProjectItem.cornerRadius + 3)
                             .stroke(Color.accentColor, lineWidth: ProjectItem.imageBorderSize)
                     }
                 }
@@ -87,9 +88,10 @@ struct ProjectItem: View {
     
     // MARK: Drawing constants
     static let imageBorderSize: CGFloat = 3.0
+    static let cornerRadius: CGFloat = 3.0
 }
 
-struct NewProjectView: View {
+struct NewProjectItem: View {
     
     let onTapAction: () -> Void
     
@@ -100,10 +102,12 @@ struct NewProjectView: View {
     var body: some View {
         VStack(spacing: 10) {
             ZStack {
-                ProjectBgrView()
+                Color(.secondarySystemBackground)
+                    .aspectRatio(contentMode: .fit)
                 Image(systemName: "plus")
                     .font(.system(size: 30, weight: .light))
             }
+            .cornerRadius(ProjectItem.cornerRadius)
             Text("New")
                 .font(.system(size: 15, weight: .regular))
         }
@@ -113,12 +117,9 @@ struct NewProjectView: View {
     }
 }
 
-struct ProjectBgrView: View {
-    var body: some View {
-        Color(.secondarySystemBackground)
-            .cornerRadius(ProjectBgrView.cornerRadius)
-            .aspectRatio(contentMode: .fit)
+struct ProjectItem_Previews: PreviewProvider {
+    static var previews: some View {
+        ProjectItem(model: ProjectItemModel(project: Project(name: "MyProj"))) {}
+            .preferredColorScheme(.dark)
     }
-    
-    static let cornerRadius: CGFloat = 5.0
 }
