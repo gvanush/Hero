@@ -19,7 +19,7 @@ struct MainViewOld: View {
     @State private var pickedImage: UIImage?
     @State private var pickedColor = UIColor.black
     
-    @Environment(\.canvas) var canvas
+    @Environment(\.scene) var canvas
     @Environment(\.gpu) var gpu
     
     enum AssetSelector {
@@ -41,7 +41,7 @@ struct MainViewOld: View {
     
     var body: some View {
         NavigationView {
-            CanvasView()
+            HeroSceneView()
             .navigationBarTitle("Project", displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {

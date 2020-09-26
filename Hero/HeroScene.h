@@ -1,5 +1,5 @@
 //
-//  Canvas.h
+//  HeroScene.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 7/31/20.
@@ -15,7 +15,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Canvas: NSObject <CppWrapper>
+@interface HeroScene: NSObject <CppWrapper>
 
 @property (nonatomic, readwrite) simd_float4 bgrColor;
 @property (nonatomic, readwrite) simd_float2 viewportSize;

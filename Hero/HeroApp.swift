@@ -7,32 +7,6 @@
 
 import SwiftUI
 
-struct CanvasKey: EnvironmentKey {
-    typealias Value = Canvas
-    
-    static var defaultValue = Canvas()
-}
-
-extension EnvironmentValues {
-    var canvas: Canvas {
-        get { self[CanvasKey.self] }
-        set { self[CanvasKey.self] = newValue }
-    }
-}
-
-struct GpuKey: EnvironmentKey {
-    typealias Value = MTLDevice
-    
-    static var defaultValue = RenderingContext.device()
-}
-
-extension EnvironmentValues {
-    var gpu: MTLDevice {
-        get { self[GpuKey.self] }
-        set { self[GpuKey.self] = newValue }
-    }
-}
-
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // MARK: This is a workaround to be able to change SwiftUI action sheet button colors
@@ -52,7 +26,7 @@ struct HeroApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environment(\.canvas, Canvas())
+                .environment(\.scene, HeroScene())
                 .environment(\.gpu, RenderingContext.device())
             
         }

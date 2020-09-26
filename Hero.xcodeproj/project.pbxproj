@@ -16,21 +16,22 @@
 		B7316FF824CF376000157455 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7316FF724CF376000157455 /* HeroApp.swift */; };
 		B7316FFC24CF376200157455 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFB24CF376200157455 /* Assets.xcassets */; };
 		B7316FFF24CF376200157455 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFE24CF376200157455 /* Preview Assets.xcassets */; };
-		B731700724CF378F00157455 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700624CF378F00157455 /* CanvasView.swift */; };
+		B731700724CF378F00157455 /* HeroSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700624CF378F00157455 /* HeroSceneView.swift */; };
 		B731700924CF38E900157455 /* MainViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700824CF38E900157455 /* MainViewOld.swift */; };
 		B731700F24CF540000157455 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700E24CF540000157455 /* ImageSelector.swift */; };
 		B7847AD824D33AE100026607 /* Layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847AD624D33AE100026607 /* Layer.cpp */; };
-		B7847ADF24D45F8C00026607 /* Canvas.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847ADD24D45F8C00026607 /* Canvas.mm */; };
+		B7847ADF24D45F8C00026607 /* HeroScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847ADD24D45F8C00026607 /* HeroScene.mm */; };
 		B7847AE324D4625200026607 /* Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE124D4625200026607 /* Layer.mm */; };
-		B7847AE524D4695100026607 /* CanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE424D4695100026607 /* CanvasViewController.swift */; };
+		B7847AE524D4695100026607 /* HeroSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE424D4695100026607 /* HeroSceneViewController.swift */; };
 		B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1424D6E66900026607 /* RenderingContext.mm */; };
 		B7847B1924D6F38A00026607 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1824D6F38A00026607 /* Shaders.metal */; };
 		B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */; };
 		B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847B2524D9D5BE00026607 /* TextureUtils.cpp */; };
 		B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */; };
-		B786A8D324D146DB00F6EE83 /* Canvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B786A8D124D146DB00F6EE83 /* Canvas.cpp */; };
+		B786A8D324D146DB00F6EE83 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B786A8D124D146DB00F6EE83 /* Scene.cpp */; };
 		B7872CFC25027F4800BD403D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7872CFB25027F4800BD403D /* RootView.swift */; };
 		B7872CFE2504340A00BD403D /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7872CFD2504340A00BD403D /* Common.swift */; };
+		B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
@@ -54,16 +55,16 @@
 		B7316FFB24CF376200157455 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B7316FFE24CF376200157455 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B731700024CF376200157455 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B731700624CF378F00157455 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		B731700624CF378F00157455 /* HeroSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroSceneView.swift; sourceTree = "<group>"; };
 		B731700824CF38E900157455 /* MainViewOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewOld.swift; sourceTree = "<group>"; };
 		B731700E24CF540000157455 /* ImageSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelector.swift; sourceTree = "<group>"; };
 		B7847AD624D33AE100026607 /* Layer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Layer.cpp; sourceTree = "<group>"; };
 		B7847AD724D33AE100026607 /* Layer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Layer.hpp; sourceTree = "<group>"; };
-		B7847ADD24D45F8C00026607 /* Canvas.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Canvas.mm; sourceTree = "<group>"; };
-		B7847ADE24D45F8C00026607 /* Canvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Canvas.h; sourceTree = "<group>"; };
+		B7847ADD24D45F8C00026607 /* HeroScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = HeroScene.mm; sourceTree = "<group>"; };
+		B7847ADE24D45F8C00026607 /* HeroScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeroScene.h; sourceTree = "<group>"; };
 		B7847AE124D4625200026607 /* Layer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Layer.mm; sourceTree = "<group>"; };
 		B7847AE224D4625200026607 /* Layer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Layer.h; sourceTree = "<group>"; };
-		B7847AE424D4695100026607 /* CanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewController.swift; sourceTree = "<group>"; };
+		B7847AE424D4695100026607 /* HeroSceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroSceneViewController.swift; sourceTree = "<group>"; };
 		B7847B1424D6E66900026607 /* RenderingContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderingContext.mm; sourceTree = "<group>"; };
 		B7847B1524D6E66900026607 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
 		B7847B1624D6E66900026607 /* RenderingContext.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RenderingContext.hpp; sourceTree = "<group>"; };
@@ -74,10 +75,11 @@
 		B7847B2624D9D5BE00026607 /* TextureUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TextureUtils.hpp; sourceTree = "<group>"; };
 		B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelector.swift; sourceTree = "<group>"; };
 		B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hero-Bridging-Header.h"; sourceTree = "<group>"; };
-		B786A8D124D146DB00F6EE83 /* Canvas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Canvas.cpp; sourceTree = "<group>"; };
-		B786A8D224D146DB00F6EE83 /* Canvas.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Canvas.hpp; sourceTree = "<group>"; };
+		B786A8D124D146DB00F6EE83 /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
+		B786A8D224D146DB00F6EE83 /* Scene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
 		B7872CFB25027F4800BD403D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B7872CFD2504340A00BD403D /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -150,26 +152,26 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		B7847AE024D45FC300026607 /* Canvas */ = {
+		B7847AE024D45FC300026607 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
 				B715B24324D2A2DB00B4C859 /* CppWrapper.h */,
 				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
 				B7847B1424D6E66900026607 /* RenderingContext.mm */,
 				B7847B1524D6E66900026607 /* RenderingContext.h */,
-				B786A8D124D146DB00F6EE83 /* Canvas.cpp */,
-				B786A8D224D146DB00F6EE83 /* Canvas.hpp */,
-				B7847ADD24D45F8C00026607 /* Canvas.mm */,
-				B7847ADE24D45F8C00026607 /* Canvas.h */,
+				B786A8D124D146DB00F6EE83 /* Scene.cpp */,
+				B786A8D224D146DB00F6EE83 /* Scene.hpp */,
+				B7847ADD24D45F8C00026607 /* HeroScene.mm */,
+				B7847ADE24D45F8C00026607 /* HeroScene.h */,
 				B7847AD624D33AE100026607 /* Layer.cpp */,
 				B7847AD724D33AE100026607 /* Layer.hpp */,
 				B7847AE124D4625200026607 /* Layer.mm */,
 				B7847AE224D4625200026607 /* Layer.h */,
-				B7847AE424D4695100026607 /* CanvasViewController.swift */,
+				B7847AE424D4695100026607 /* HeroSceneViewController.swift */,
 				B7847B2524D9D5BE00026607 /* TextureUtils.cpp */,
 				B7847B2624D9D5BE00026607 /* TextureUtils.hpp */,
 			);
-			name = Canvas;
+			name = Scene;
 			sourceTree = "<group>";
 		};
 		B7872CFA25027F0700BD403D /* Old */ = {
@@ -179,8 +181,8 @@
 				B7847B1824D6F38A00026607 /* Shaders.metal */,
 				B731700E24CF540000157455 /* ImageSelector.swift */,
 				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
-				B7847AE024D45FC300026607 /* Canvas */,
-				B731700624CF378F00157455 /* CanvasView.swift */,
+				B7847AE024D45FC300026607 /* Scene */,
+				B731700624CF378F00157455 /* HeroSceneView.swift */,
 				B731700824CF38E900157455 /* MainViewOld.swift */,
 			);
 			name = Old;
@@ -208,6 +210,7 @@
 				B723BB1E250DD229007C989E /* Settings.swift */,
 				B723BB20250E0965007C989E /* Logger+Extensions.swift */,
 				B723BB22250F2FC2007C989E /* NativeTextField.swift */,
+				B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -291,17 +294,18 @@
 				B7847AE324D4625200026607 /* Layer.mm in Sources */,
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
-				B786A8D324D146DB00F6EE83 /* Canvas.cpp in Sources */,
+				B786A8D324D146DB00F6EE83 /* Scene.cpp in Sources */,
 				B723BB1F250DD229007C989E /* Settings.swift in Sources */,
 				B7872CFC25027F4800BD403D /* RootView.swift in Sources */,
 				B731700924CF38E900157455 /* MainViewOld.swift in Sources */,
-				B7847ADF24D45F8C00026607 /* Canvas.mm in Sources */,
+				B7847ADF24D45F8C00026607 /* HeroScene.mm in Sources */,
 				B731700F24CF540000157455 /* ImageSelector.swift in Sources */,
 				B7316FF824CF376000157455 /* HeroApp.swift in Sources */,
 				B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */,
-				B731700724CF378F00157455 /* CanvasView.swift in Sources */,
+				B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */,
+				B731700724CF378F00157455 /* HeroSceneView.swift in Sources */,
 				B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */,
-				B7847AE524D4695100026607 /* CanvasViewController.swift in Sources */,
+				B7847AE524D4695100026607 /* HeroSceneViewController.swift in Sources */,
 				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
 				B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */,
 				B723BB23250F2FC2007C989E /* NativeTextField.swift in Sources */,

@@ -1,6 +1,6 @@
 //
-//  World.hpp
-//  Canvas
+//  Scene.hpp
+//  Hero
 //
 //  Created by Vanush Grigoryan on 7/29/20.
 //
@@ -17,10 +17,10 @@ namespace hero {
 class Layer;
 class RenderingContext;
 
-class Canvas {
+class Scene {
 public:
     
-    Canvas();
+    Scene();
     
     inline void setBgrColor(const simd::float4& color);
     inline const simd::float4& bgrColor() const;
@@ -44,27 +44,27 @@ private:
     apple::metal::BufferRef _vertexBuffer;
 };
 
-void Canvas::setViewportSize(const simd::float2& size) {
+void Scene::setViewportSize(const simd::float2& size) {
     _size = size;
 }
 
-const simd::float2& Canvas::viewportSize() const {
+const simd::float2& Scene::viewportSize() const {
     return _size;
 }
 
-void Canvas::setSize(const simd::float2& size) {
+void Scene::setSize(const simd::float2& size) {
     _size = size;
 }
 
-const simd::float2& Canvas::size() const {
+const simd::float2& Scene::size() const {
     return _size;
 }
 
-void Canvas::setBgrColor(const simd::float4& color) {
+void Scene::setBgrColor(const simd::float4& color) {
     _bgrColor = color;
 }
 
-const simd::float4& Canvas::bgrColor() const {
+const simd::float4& Scene::bgrColor() const {
     return _bgrColor;
 }
 

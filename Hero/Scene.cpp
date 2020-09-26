@@ -1,11 +1,11 @@
 //
-//  World.cpp
-//  Canvas
+//  Scene.cpp
+//  Hero
 //
 //  Created by Vanush Grigoryan on 7/29/20.
 //
 
-#include "Canvas.hpp"
+#include "Scene.hpp"
 #include "RenderingContext.hpp"
 #include "ShaderTypes.h"
 #include "Layer.hpp"
@@ -28,7 +28,7 @@ constexpr std::array<LayerVertex, 4> kLayerVertices = {{
 
 }
 
-Canvas::Canvas() {
+Scene::Scene() {
     using namespace apple;
     
     const auto& device = RenderingContext::device;
@@ -54,11 +54,11 @@ Canvas::Canvas() {
     _vertexBuffer = device.newBufferWithBytes(kLayerVertices.data(), kLayerVertices.size() * sizeof(LayerVertex), metal::ResourceOptions::storageModeShared | metal::ResourceOptions::hazardTrackingModeDefault | metal::ResourceOptions::cpuCacheModeDefaultCache);
 }
 
-void Canvas::addLayer(Layer* layer) {
+void Scene::addLayer(Layer* layer) {
     _layers.push_back(layer);
 }
 
-void Canvas::render(RenderingContext* renderingContext) {
+void Scene::render(RenderingContext* renderingContext) {
     
     using namespace apple;
     using namespace apple::metal;

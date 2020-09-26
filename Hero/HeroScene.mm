@@ -1,25 +1,25 @@
 //
-//  Canvas.mm
+//  HeroScene.mm
 //  Hero
 //
 //  Created by Vanush Grigoryan on 7/31/20.
 //
 
-#import "Canvas.h"
+#import "HeroScene.h"
 #import "RenderingContext.h"
 
-#include "Canvas.hpp"
+#include "Scene.hpp"
 
 #include <memory>
 
-@interface Canvas () {
-    std::unique_ptr<hero::Canvas> _cpp;
+@interface HeroScene () {
+    std::unique_ptr<hero::Scene> _cpp;
     NSMutableArray* _layers;
 }
 
 @end
 
-@implementation Canvas
+@implementation HeroScene
 
 -(void) setSize: (simd_float2) size {
     _cpp->setSize(size);
@@ -51,7 +51,7 @@
 
 -(instancetype) init {
     if (self = [super init]) {
-        _cpp = std::make_unique<hero::Canvas>();
+        _cpp = std::make_unique<hero::Scene>();
         _layers = [NSMutableArray array];
     }
     return self;
