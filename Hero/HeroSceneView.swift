@@ -11,7 +11,7 @@ import Metal
 
 struct HeroSceneView: UIViewControllerRepresentable {
     
-    @Environment(\.scene) var scene
+    @Environment(\.scene) private var scene
     
     func makeUIViewController(context: Context) -> HeroSceneViewController {
         HeroSceneViewController(scene: scene)

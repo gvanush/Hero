@@ -32,7 +32,8 @@ struct RootView: View {
     
     var body: some View {
         NavigationView {
-            Color(.lightGray)
+            HeroSceneView()
+                .navigationBarTitleDisplayMode(.inline)
                 .navigationBarItems(leading: Button(action: {
                     logger.notice("Open project browser")
                     model.isProjectBrowserPresented.toggle()

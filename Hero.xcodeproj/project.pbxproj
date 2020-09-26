@@ -132,6 +132,7 @@
 			children = (
 				B7DD544F24FC194B00163947 /* Util */,
 				B7DD544E24FC190E00163947 /* ProjectBrowser */,
+				B7847AE024D45FC300026607 /* Scene */,
 				B7316FF724CF376000157455 /* HeroApp.swift */,
 				B7872CFB25027F4800BD403D /* RootView.swift */,
 				B7DD54582501489600163947 /* Project.swift */,
@@ -155,14 +156,14 @@
 		B7847AE024D45FC300026607 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				B715B24324D2A2DB00B4C859 /* CppWrapper.h */,
+				B731700624CF378F00157455 /* HeroSceneView.swift */,
+				B7847ADD24D45F8C00026607 /* HeroScene.mm */,
+				B7847ADE24D45F8C00026607 /* HeroScene.h */,
+				B786A8D124D146DB00F6EE83 /* Scene.cpp */,
+				B786A8D224D146DB00F6EE83 /* Scene.hpp */,
 				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
 				B7847B1424D6E66900026607 /* RenderingContext.mm */,
 				B7847B1524D6E66900026607 /* RenderingContext.h */,
-				B786A8D124D146DB00F6EE83 /* Scene.cpp */,
-				B786A8D224D146DB00F6EE83 /* Scene.hpp */,
-				B7847ADD24D45F8C00026607 /* HeroScene.mm */,
-				B7847ADE24D45F8C00026607 /* HeroScene.h */,
 				B7847AD624D33AE100026607 /* Layer.cpp */,
 				B7847AD724D33AE100026607 /* Layer.hpp */,
 				B7847AE124D4625200026607 /* Layer.mm */,
@@ -170,6 +171,8 @@
 				B7847AE424D4695100026607 /* HeroSceneViewController.swift */,
 				B7847B2524D9D5BE00026607 /* TextureUtils.cpp */,
 				B7847B2624D9D5BE00026607 /* TextureUtils.hpp */,
+				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
+				B7847B1824D6F38A00026607 /* Shaders.metal */,
 			);
 			name = Scene;
 			sourceTree = "<group>";
@@ -177,12 +180,8 @@
 		B7872CFA25027F0700BD403D /* Old */ = {
 			isa = PBXGroup;
 			children = (
-				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
-				B7847B1824D6F38A00026607 /* Shaders.metal */,
 				B731700E24CF540000157455 /* ImageSelector.swift */,
 				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
-				B7847AE024D45FC300026607 /* Scene */,
-				B731700624CF378F00157455 /* HeroSceneView.swift */,
 				B731700824CF38E900157455 /* MainViewOld.swift */,
 			);
 			name = Old;
@@ -211,6 +210,7 @@
 				B723BB20250E0965007C989E /* Logger+Extensions.swift */,
 				B723BB22250F2FC2007C989E /* NativeTextField.swift */,
 				B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */,
+				B715B24324D2A2DB00B4C859 /* CppWrapper.h */,
 			);
 			name = Util;
 			sourceTree = "<group>";
