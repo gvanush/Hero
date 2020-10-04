@@ -8,6 +8,7 @@
 #include "Scene.hpp"
 #include "RenderingContext.hpp"
 #include "ShaderTypes.h"
+#include "Camera.hpp"
 #include "Layer.hpp"
 
 #include "apple/metal/Metal.h"
@@ -20,10 +21,10 @@ namespace {
 
 constexpr auto kHalfSize = 0.5f;
 constexpr std::array<LayerVertex, 4> kLayerVertices = {{
-    {{-kHalfSize, -kHalfSize}, {0.f, 1.f}},
-    {{kHalfSize, -kHalfSize}, {1.f, 1.f}},
-    {{-kHalfSize, kHalfSize}, {0.f, 0.f}},
-    {{kHalfSize, kHalfSize}, {1.f, 0.f}},
+    {{-kHalfSize, -kHalfSize, 0.f}, {0.f, 1.f}},
+    {{kHalfSize, -kHalfSize, 0.f}, {1.f, 1.f}},
+    {{-kHalfSize, kHalfSize, 0.f}, {0.f, 0.f}},
+    {{kHalfSize, kHalfSize, 0.f}, {1.f, 0.f}},
 }};
 
 }
@@ -59,6 +60,7 @@ void Scene::addLayer(Layer* layer) {
 }
 
 void Scene::render(RenderingContext* renderingContext) {
+    assert(_viewCamera);
     
     using namespace apple;
     using namespace apple::metal;
@@ -75,8 +77,10 @@ void Scene::render(RenderingContext* renderingContext) {
     
     commandEncoderRef.setVertexBuffer(_vertexBuffer, 0, kVertexInputIndexVertices);
     
-    commandEncoderRef.setVertexBytes(&renderingContext->drawableSize(), sizeof(RenderingContext::DrawableSizeType), kVertexInputIndexViewportSize);
-    
+    hero::Uniforms unifroms;
+    unifroms.projectionViewMatrix = _viewCamera->projectionViewMatrix();
+    commandEncoderRef.setVertexBytes(&unifroms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);
+        
     for(auto layer: _layers) {
         
         commandEncoderRef.setVertexBytes(&layer->size(), sizeof(Layer::SizeType), kVertexInputIndexSize);

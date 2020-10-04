@@ -10,45 +10,40 @@
 
 #include "RenderingContext.hpp"
 
-#include <memory>
-
-@interface RenderingContext () {
-    std::unique_ptr<hero::RenderingContext> _cpp;
-}
-
-@end
-
 @implementation RenderingContext
 
+-(instancetype) init {
+    if(self = [super initWithCppHandle: new hero::RenderingContext {}]) {
+    }
+    return self;
+}
+
+-(void) dealloc {
+    delete self.cpp;
+}
+
 -(void) setDrawable: (id<MTLDrawable>) drawable {
-    _cpp->setDrawable(apple::metal::DrawableRef {drawable});
+    self.cpp->setDrawable(apple::metal::DrawableRef {drawable});
 }
 
 -(id<MTLDrawable>) drawable {
-    return _cpp->drawable().obj<id>();
+    return self.cpp->drawable().obj<id>();
 }
 
 -(void) setDrawableSize: (simd_float2) drawableSize {
-    _cpp->setDrawableSize(drawableSize);
+    self.cpp->setDrawableSize(drawableSize);
 }
 
 -(simd_float2) drawableSize {
-    return _cpp->drawableSize();
+    return self.cpp->drawableSize();
 }
 
 -(void) setRenderPassDescriptor: (MTLRenderPassDescriptor*) renderPassDescriptor {
-    _cpp->setRenderpassDescriptor(apple::metal::RenderPassDescriptorRef {renderPassDescriptor});
+    self.cpp->setRenderpassDescriptor(apple::metal::RenderPassDescriptorRef {renderPassDescriptor});
 }
 
 -(MTLRenderPassDescriptor*) renderPassDescriptor {
-    return _cpp->renderpassDescriptor().obj<id>();
-}
-
--(instancetype) init {
-    if(self = [super init]) {
-        _cpp = std::make_unique<hero::RenderingContext>();
-    }
-    return self;
+    return self.cpp->renderpassDescriptor().obj<id>();
 }
 
 +(id<MTLDevice>) device {
@@ -59,8 +54,12 @@
     return to<MTLPixelFormat>(hero::RenderingContext::kColorPixelFormat);
 }
 
--(CppHandle) cppHandle {
-    return _cpp.get();
+@end
+
+@implementation RenderingContext (Cpp)
+
+-(hero::RenderingContext*) cpp {
+    return static_cast<hero::RenderingContext*>(self.cppHandle);
 }
 
 @end

@@ -4,18 +4,24 @@
 
 #include "___FILEBASENAME___.hpp"
 
-#include <memory>
+@implementation ___FILEBASENAME___
 
-@interface ___FILEBASENAME___ () {
-    std::unique_ptr<hero::Test> _cpp;
+-(instancetype) init {
+    if (self = [super initWithCppHandle: new hero::___FILEBASENAME___ {}]) {
+    }
+    return self;
+}
+
+-(void) dealloc {
+    delete self.cpp;
 }
 
 @end
 
-@implementation ___FILEBASENAME___
+@implementation ___FILEBASENAME___ (Cpp)
 
--(CppHandle) cppHandle {
-    return _cpp.get();
+-(hero::___FILEBASENAME___*) cpp {
+    return static_cast<hero::___FILEBASENAME___*>(self.cppHandle);
 }
 
 @end

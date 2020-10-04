@@ -15,7 +15,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RenderingContext : NSObject <CppWrapper>
+@interface RenderingContext : CppWrapper
 
 @property (nonatomic, strong) id<MTLDrawable> drawable;
 @property (nonatomic) simd_float2 drawableSize;
@@ -25,5 +25,17 @@ NS_ASSUME_NONNULL_BEGIN
 +(MTLPixelFormat) colorPixelFormat;
 
 @end
+
+#ifdef __cplusplus
+
+namespace hero { class RenderingContext; }
+
+@interface RenderingContext (Cpp)
+
+-(hero::RenderingContext*) cpp;
+
+@end
+
+#endif
 
 NS_ASSUME_NONNULL_END

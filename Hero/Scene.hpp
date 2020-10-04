@@ -15,6 +15,7 @@
 namespace hero {
 
 class Layer;
+class Camera;
 class RenderingContext;
 
 class Scene {
@@ -31,12 +32,16 @@ public:
     inline void setSize(const simd::float2& size);
     inline const simd::float2& size() const;
     
+    inline void setViewCamera(Camera* viewCamera);
+    inline Camera* viewCamera() const;
+    
     void addLayer(Layer* layer);
     
     void render(RenderingContext* renderingContext);
     
 private:
     std::vector<Layer*> _layers;
+    Camera* _viewCamera;
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     simd::float2 _viewportSize;
     simd::float2 _size;
@@ -66,6 +71,14 @@ void Scene::setBgrColor(const simd::float4& color) {
 
 const simd::float4& Scene::bgrColor() const {
     return _bgrColor;
+}
+
+void Scene::setViewCamera(Camera* viewCamera) {
+    _viewCamera = viewCamera;
+}
+
+Camera* Scene::viewCamera() const {
+    return _viewCamera;
 }
 
 }

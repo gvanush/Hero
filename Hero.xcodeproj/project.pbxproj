@@ -19,6 +19,10 @@
 		B731700724CF378F00157455 /* HeroSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700624CF378F00157455 /* HeroSceneView.swift */; };
 		B731700924CF38E900157455 /* MainViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700824CF38E900157455 /* MainViewOld.swift */; };
 		B731700F24CF540000157455 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700E24CF540000157455 /* ImageSelector.swift */; };
+		B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB2252843C30047B996 /* CppWrapper.mm */; };
+		B749ADB925284BD80047B996 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB825284BD80047B996 /* SceneObject.mm */; };
+		B778783C252922860097F941 /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B778783A252922860097F941 /* SphericalCoord.cpp */; };
+		B7787840252923D20097F941 /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B778783E252923D20097F941 /* SphericalCoord.mm */; };
 		B7847AD824D33AE100026607 /* Layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847AD624D33AE100026607 /* Layer.cpp */; };
 		B7847ADF24D45F8C00026607 /* HeroScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847ADD24D45F8C00026607 /* HeroScene.mm */; };
 		B7847AE324D4625200026607 /* Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE124D4625200026607 /* Layer.mm */; };
@@ -32,6 +36,10 @@
 		B7872CFC25027F4800BD403D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7872CFB25027F4800BD403D /* RootView.swift */; };
 		B7872CFE2504340A00BD403D /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7872CFD2504340A00BD403D /* Common.swift */; };
 		B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */; };
+		B78D7DEF2521B5F30057F066 /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DED2521B5F30057F066 /* Math.cpp */; };
+		B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DF3252306CE0057F066 /* SceneObject.cpp */; };
+		B78D7DF9252312A00057F066 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DF7252312A00057F066 /* Camera.cpp */; };
+		B78D7E012524AE8F0057F066 /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DFF2524AE8F0057F066 /* Camera.mm */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
@@ -58,6 +66,13 @@
 		B731700624CF378F00157455 /* HeroSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroSceneView.swift; sourceTree = "<group>"; };
 		B731700824CF38E900157455 /* MainViewOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewOld.swift; sourceTree = "<group>"; };
 		B731700E24CF540000157455 /* ImageSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelector.swift; sourceTree = "<group>"; };
+		B749ADB2252843C30047B996 /* CppWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
+		B749ADB725284BD80047B996 /* SceneObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
+		B749ADB825284BD80047B996 /* SceneObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneObject.mm; sourceTree = "<group>"; };
+		B778783A252922860097F941 /* SphericalCoord.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
+		B778783B252922860097F941 /* SphericalCoord.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
+		B778783E252923D20097F941 /* SphericalCoord.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SphericalCoord.mm; sourceTree = "<group>"; };
+		B778783F252923D20097F941 /* SphericalCoord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B7847AD624D33AE100026607 /* Layer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Layer.cpp; sourceTree = "<group>"; };
 		B7847AD724D33AE100026607 /* Layer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Layer.hpp; sourceTree = "<group>"; };
 		B7847ADD24D45F8C00026607 /* HeroScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = HeroScene.mm; sourceTree = "<group>"; };
@@ -80,6 +95,15 @@
 		B7872CFB25027F4800BD403D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B7872CFD2504340A00BD403D /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
+		B78D7DED2521B5F30057F066 /* Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
+		B78D7DEE2521B5F30057F066 /* Math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
+		B78D7DF3252306CE0057F066 /* SceneObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SceneObject.cpp; sourceTree = "<group>"; };
+		B78D7DF4252306CE0057F066 /* SceneObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
+		B78D7DF7252312A00057F066 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		B78D7DF8252312A00057F066 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		B78D7DFC2523CDAC0057F066 /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
+		B78D7DFF2524AE8F0057F066 /* Camera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
+		B78D7E002524AE8F0057F066 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -153,14 +177,58 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		B7847AE024D45FC300026607 /* Scene */ = {
+		B778782B252906380097F941 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				B731700624CF378F00157455 /* HeroSceneView.swift */,
+				B78D7DF7252312A00057F066 /* Camera.cpp */,
+				B78D7DF8252312A00057F066 /* Camera.hpp */,
+				B78D7DFF2524AE8F0057F066 /* Camera.mm */,
+				B78D7E002524AE8F0057F066 /* Camera.h */,
+			);
+			name = Camera;
+			sourceTree = "<group>";
+		};
+		B778782C252906460097F941 /* SceneObject */ = {
+			isa = PBXGroup;
+			children = (
+				B78D7DF3252306CE0057F066 /* SceneObject.cpp */,
+				B78D7DF4252306CE0057F066 /* SceneObject.hpp */,
+				B749ADB825284BD80047B996 /* SceneObject.mm */,
+				B749ADB725284BD80047B996 /* SceneObject.h */,
+			);
+			name = SceneObject;
+			sourceTree = "<group>";
+		};
+		B778782D252906700097F941 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
 				B7847ADD24D45F8C00026607 /* HeroScene.mm */,
 				B7847ADE24D45F8C00026607 /* HeroScene.h */,
 				B786A8D124D146DB00F6EE83 /* Scene.cpp */,
 				B786A8D224D146DB00F6EE83 /* Scene.hpp */,
+			);
+			name = Scene;
+			sourceTree = "<group>";
+		};
+		B77878392529225F0097F941 /* SphericalCoord */ = {
+			isa = PBXGroup;
+			children = (
+				B778783A252922860097F941 /* SphericalCoord.cpp */,
+				B778783B252922860097F941 /* SphericalCoord.hpp */,
+				B778783E252923D20097F941 /* SphericalCoord.mm */,
+				B778783F252923D20097F941 /* SphericalCoord.h */,
+			);
+			name = SphericalCoord;
+			sourceTree = "<group>";
+		};
+		B7847AE024D45FC300026607 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				B77878392529225F0097F941 /* SphericalCoord */,
+				B778782D252906700097F941 /* Scene */,
+				B778782C252906460097F941 /* SceneObject */,
+				B778782B252906380097F941 /* Camera */,
+				B731700624CF378F00157455 /* HeroSceneView.swift */,
 				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
 				B7847B1424D6E66900026607 /* RenderingContext.mm */,
 				B7847B1524D6E66900026607 /* RenderingContext.h */,
@@ -205,12 +273,16 @@
 				B7DD545624FE238500163947 /* UIApplication+Extensions.swift */,
 				B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */,
 				B7872CFD2504340A00BD403D /* Common.swift */,
-				B7DD54742502657E00163947 /* TestView.swift */,
 				B723BB1E250DD229007C989E /* Settings.swift */,
 				B723BB20250E0965007C989E /* Logger+Extensions.swift */,
 				B723BB22250F2FC2007C989E /* NativeTextField.swift */,
 				B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */,
 				B715B24324D2A2DB00B4C859 /* CppWrapper.h */,
+				B749ADB2252843C30047B996 /* CppWrapper.mm */,
+				B7DD54742502657E00163947 /* TestView.swift */,
+				B78D7DED2521B5F30057F066 /* Math.cpp */,
+				B78D7DEE2521B5F30057F066 /* Math.hpp */,
+				B78D7DFC2523CDAC0057F066 /* Geometry.h */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -295,12 +367,19 @@
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
 				B786A8D324D146DB00F6EE83 /* Scene.cpp in Sources */,
+				B7787840252923D20097F941 /* SphericalCoord.mm in Sources */,
 				B723BB1F250DD229007C989E /* Settings.swift in Sources */,
+				B778783C252922860097F941 /* SphericalCoord.cpp in Sources */,
 				B7872CFC25027F4800BD403D /* RootView.swift in Sources */,
 				B731700924CF38E900157455 /* MainViewOld.swift in Sources */,
+				B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */,
+				B78D7E012524AE8F0057F066 /* Camera.mm in Sources */,
+				B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */,
+				B78D7DEF2521B5F30057F066 /* Math.cpp in Sources */,
 				B7847ADF24D45F8C00026607 /* HeroScene.mm in Sources */,
 				B731700F24CF540000157455 /* ImageSelector.swift in Sources */,
 				B7316FF824CF376000157455 /* HeroApp.swift in Sources */,
+				B78D7DF9252312A00057F066 /* Camera.cpp in Sources */,
 				B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */,
 				B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */,
 				B731700724CF378F00157455 /* HeroSceneView.swift in Sources */,
@@ -311,6 +390,7 @@
 				B723BB23250F2FC2007C989E /* NativeTextField.swift in Sources */,
 				B7DD54752502657E00163947 /* TestView.swift in Sources */,
 				B7FE5B9224F645A4009DAE53 /* ProjectItem.swift in Sources */,
+				B749ADB925284BD80047B996 /* SceneObject.mm in Sources */,
 				B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */,
 				B7847AD824D33AE100026607 /* Layer.cpp in Sources */,
 			);

@@ -1,0 +1,83 @@
+//
+//  SceneObject.hpp
+//  Hero
+//
+//  Created by Vanush Grigoryan on 9/29/20.
+//
+
+#pragma once
+
+#include "Geometry.h"
+
+#include <simd/simd.h>
+
+namespace hero {
+
+class SceneObject {
+public:
+    
+    inline void setPosition(const simd::float3& pos);
+    inline void setPosition(float x, float y, float z);
+    inline const simd::float3& position() const;
+    
+    inline void setScale(const simd::float3& scale);
+    inline const simd::float3& scale() const;
+    
+    inline void setRotation(const simd::float3& rotation);
+    inline const simd::float3& rotation() const;
+    
+    inline void setEulerOrder(EulerOrder eulerOrder);
+    inline EulerOrder eulerOrder() const;
+    
+    const simd::float4x4& worldMatrix() const;
+    
+private:
+    mutable simd::float4x4 _worldMatrix {1};
+    simd::float3 _position {};
+    simd::float3 _scale {1.f, 1.f, 1.f};
+    simd::float3 _rotation {};
+    EulerOrder _eulerOrder = EulerOrder_yxz;
+    mutable bool _isWorldMatrixValid = false;
+};
+
+void SceneObject::setPosition(const simd::float3& pos) {
+    _isWorldMatrixValid = false;
+    _position = pos;
+}
+
+void SceneObject::setPosition(float x, float y, float z) {
+    setPosition(simd::float3 {x, y, z});
+}
+
+const simd::float3& SceneObject::position() const {
+    return _position;
+}
+
+void SceneObject::setScale(const simd::float3& scale) {
+    _isWorldMatrixValid = false;
+    _scale = scale;
+}
+
+const simd::float3& SceneObject::scale() const {
+    return _scale;
+}
+
+void SceneObject::setRotation(const simd::float3& rotation) {
+    _isWorldMatrixValid = false;
+    _rotation = rotation;
+}
+
+const simd::float3& SceneObject::rotation() const {
+    return _rotation;
+}
+
+void SceneObject::setEulerOrder(EulerOrder eulerOrder) {
+    _isWorldMatrixValid = false;
+    _eulerOrder = eulerOrder;
+}
+
+EulerOrder SceneObject::eulerOrder() const {
+    return _eulerOrder;
+}
+
+}

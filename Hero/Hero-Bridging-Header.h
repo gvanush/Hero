@@ -3,5 +3,7 @@
 //
 
 #import "HeroScene.h"
+#import "Camera.h"
+#import "SphericalCoord.h"
 #import "Layer.h"
 #import "RenderingContext.h"

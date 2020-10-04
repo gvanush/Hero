@@ -11,57 +11,58 @@
 
 #include "apple/metal/Metal.h"
 
-#include <memory>
+@interface Layer ()
 
-@interface Layer () {
-    std::unique_ptr<hero::Layer> _cpp;
-}
+-(hero::Layer*) cpp;
 
 @end
 
 @implementation Layer
 
+-(hero::Layer*) cpp {
+    return static_cast<hero::Layer*>(self.cppHandle);
+}
+
 -(void) setPosition: (simd_float3) position {
-    _cpp->setPosition(position);
+    self.cpp->setPosition(position);
 }
 
 -(simd_float3) position {
-    return _cpp->position();
+    return self.cpp->position();
 }
 
 -(void) setSize: (simd_float2) size {
-    _cpp->setSize(size);
+    self.cpp->setSize(size);
 }
 
 -(simd_float2) size {
-    return _cpp->size();
+    return self.cpp->size();
 }
 
 -(void) setColor: (simd_float4) color {
-    _cpp->setColor(color);
+    self.cpp->setColor(color);
 }
 
 -(simd_float4) color {
-    return _cpp->color();
+    return self.cpp->color();
 }
 
 -(void) setTexture: (id<MTLTexture>) texture {
-    _cpp->setTexture(apple::metal::TextureRef {texture});
+    self.cpp->setTexture(apple::metal::TextureRef {texture});
 }
 
 -(id<MTLTexture>) texture {
-    return _cpp->texture().obj<id<MTLTexture>>();
+    return self.cpp->texture().obj<id<MTLTexture>>();
 }
 
 -(instancetype) init {
-    if(self = [super init]) {
-        _cpp = std::make_unique<hero::Layer>();
+    if (self = [super initWithCppHandle: new hero::Layer {}]) {
     }
     return self;
 }
 
--(CppHandle) cppHandle {
-    return _cpp.get();
+-(void) dealloc {
+    delete self.cpp;
 }
 
 @end

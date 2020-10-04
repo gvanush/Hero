@@ -19,16 +19,15 @@ typedef struct {
 vertex LayerRasterizerData
 layerVertexShader(uint vertexID [[vertex_id]],
                   device const hero::LayerVertex* vertices [[buffer(hero::kVertexInputIndexVertices)]],
-                  constant float2& viewportSize_ [[buffer(hero::kVertexInputIndexViewportSize)]],
-                  constant float2& layerSize_ [[buffer(hero::kVertexInputIndexSize)]],
-                  constant float3& position_ [[buffer(hero::kVertexInputIndexPosition)]]) {
+                  constant float2& layerSize [[buffer(hero::kVertexInputIndexSize)]],
+                  constant float3& position [[buffer(hero::kVertexInputIndexPosition)]],
+                  constant hero::Uniforms& uniforms [[buffer(hero::kVertexInputIndexUniforms)]]) {
     LayerRasterizerData out;
 
-    float2 vertexPixelSpacePosition = position_.xy + vertices[vertexID].position * layerSize_;
-    
-    out.position.xy = vertexPixelSpacePosition / (viewportSize_ / 2.0);
-    out.position.zw = float2(position_.z, 1.0);
-    
+    float4 pos = float4 {position.x, position.y, position.z, 1.f};
+    pos.xy += vertices[vertexID].position.xy * layerSize;
+    pos.z += vertices[vertexID].position.z;
+    out.position = pos * uniforms.projectionViewMatrix;
     out.texCoord = vertices[vertexID].texCoord;
     
     return out;

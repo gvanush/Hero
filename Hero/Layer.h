@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Layer: NSObject <CppWrapper>
+@interface Layer: CppWrapper
 
 @property (nonatomic, readwrite) simd_float3 position;
 @property (nonatomic, readwrite) simd_float2 size;
