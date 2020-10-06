@@ -15,8 +15,20 @@ const simd::float4x4& SceneObject::worldMatrix() const {
         return _worldMatrix;
     }
     
-    simd::float4x4 rotationMatrix;
+    _worldMatrix = makeScaleMatrix(_scale) * simd::float4x4 {orientation()} * makeTranslationMatrix(_position);
     
+    _isWorldMatrixValid = true;
+    
+    return _worldMatrix;
+}
+
+const simd::quatf& SceneObject::orientation() const {
+    
+    if(_isOrientationValid) {
+        return _orientation;
+    }
+    
+    simd::float4x4 rotationMatrix;
     switch (_eulerOrder) {
         case EulerOrder_xyz: {
             rotationMatrix = makeRotationXMatrix(_rotation.x) * makeRotationXMatrix(_rotation.y) * makeRotationXMatrix(_rotation.z);
@@ -44,11 +56,19 @@ const simd::float4x4& SceneObject::worldMatrix() const {
         }
     }
     
-    _worldMatrix = makeScaleMatrix(_scale) * rotationMatrix * makeTranslationMatrix(_position);
+    _orientation = simd::quatf(rotationMatrix);
+    _isOrientationValid = true;
     
-    _isWorldMatrixValid = true;
-    
-    return _worldMatrix;
+    return _orientation;
 }
+
+void SceneObject::orientToRotationMatrix(const simd::float3x3& rotationMatrix) {
+    _orientation = simd::quatf(rotationMatrix);
+    _isOrientationValid = true;
+    _rotation = getRotationMatrixEulerAngles(rotationMatrix, _eulerOrder);
+    _isWorldMatrixValid = false;
+}
+
+
 
 }

@@ -78,8 +78,12 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
             let layer = Layer()
             layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
             layer.texture = texture
-            let positionRange = Float(-70.0)...Float(70.0)
-            layer.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...500.0))
+            if i == 0 {
+                layer.position = simd_float3.zero
+            } else {
+                let positionRange = Float(-70.0)...Float(70.0)
+                layer.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...500.0))
+            }
             scene.addLayer(layer)
         }
     }
@@ -104,10 +108,11 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         case .changed:
             
             let loc = panGR.location(in: sceneView)
-            let delta = 0.01 * SIMD2<Float>(Float(loc.x - gesturePrevLoc.x), Float(loc.y - gesturePrevLoc.y))
+            let delta = 0.005 * SIMD2<Float>(Float(loc.x - gesturePrevLoc.x), Float(loc.y - gesturePrevLoc.y))
             viewCameraSphericalCoord.longitude += delta.x
             viewCameraSphericalCoord.latitude -= delta.y
             scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
+            scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: SIMD3<Float>.up)
             
             gesturePrevLoc = loc
         default:
@@ -127,7 +132,8 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
                 let prevScenePos = scene.viewCamera.convert(toWorld: SIMD4<Float>(Float(gesturePrevLoc.x), Float(gesturePrevLoc.y), 0.0, 1.0), fromViewportWith: viewportSize())
                 let scenePos = scene.viewCamera.convert(toWorld: SIMD4<Float>(Float(loc.x), Float(loc.y), 0.0, 1.0), fromViewportWith: viewportSize())
                 let delta = scenePos - prevScenePos
-                scene.viewCamera.position -= SIMD3<Float>(delta.x, delta.y, delta.z)
+                viewCameraSphericalCoord.center -= SIMD3<Float>(delta.x, delta.y, delta.z)
+                scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
             }
             
             gesturePrevLoc = loc

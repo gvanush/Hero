@@ -29,15 +29,21 @@ public:
     inline void setEulerOrder(EulerOrder eulerOrder);
     inline EulerOrder eulerOrder() const;
     
+    const simd::quatf& orientation() const;
     const simd::float4x4& worldMatrix() const;
+    
+protected:
+    void orientToRotationMatrix(const simd::float3x3& rotationMatrix);
     
 private:
     mutable simd::float4x4 _worldMatrix {1};
+    mutable simd::quatf _orientation {};
     simd::float3 _position {};
     simd::float3 _scale {1.f, 1.f, 1.f};
     simd::float3 _rotation {};
     EulerOrder _eulerOrder = EulerOrder_yxz;
-    mutable bool _isWorldMatrixValid = false;
+    mutable bool _isWorldMatrixValid = true;
+    mutable bool _isOrientationValid = true;
 };
 
 void SceneObject::setPosition(const simd::float3& pos) {
@@ -64,6 +70,7 @@ const simd::float3& SceneObject::scale() const {
 
 void SceneObject::setRotation(const simd::float3& rotation) {
     _isWorldMatrixValid = false;
+    _isOrientationValid = false;
     _rotation = rotation;
 }
 

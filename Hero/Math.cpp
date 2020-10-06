@@ -6,6 +6,7 @@
 //
 
 #include "Math.hpp"
+#include "Numeric.hpp"
 
 namespace hero {
 
@@ -96,6 +97,89 @@ simd::float4x4 makeViewportMatrix(const Size2& screenSize) {
         float4 {0.f, 0.f, 1.f, 0.f},
         float4 {0.f, 0.f, 0.f, 1.f}
     };
+}
+
+simd::float3x3 makeLookAtMatrix(const simd::float3& pos, const simd::float3& target, const simd::float3& up) {
+    using namespace simd;
+    auto zAxis = normalize(target - pos);
+    auto xAxis = normalize(cross(up, zAxis));
+    auto yAxis = normalize(cross(zAxis, xAxis));
+    return float3x3 {
+        float3 {xAxis.x, yAxis.x, zAxis.x},
+        float3 {xAxis.y, yAxis.y, zAxis.y},
+        float3 {xAxis.z, yAxis.z, zAxis.z}
+    };
+}
+
+simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrder eulerOrder) {
+    using namespace simd;
+    
+    constexpr auto kTolerance = 0.0001f;
+    simd::float3 angles {};
+    switch (eulerOrder) {
+        case EulerOrder_xyz: {
+            angles.y = asinf(-rotMat.columns[2][0]);
+            if (isNearlyZero(cosf(angles.y), kTolerance)) {
+                angles.z = atan2f(-rotMat.columns[0][1], rotMat.columns[1][1]);
+            } else {
+                angles.x = atan2f(rotMat.columns[2][1], rotMat.columns[2][2]);
+                angles.z = atan2f(rotMat.columns[1][0], rotMat.columns[0][0]);
+            }
+            break;
+        }
+        case EulerOrder_xzy: {
+            angles.z = asinf(rotMat.columns[1][0]);
+            if (isNearlyZero(cosf(angles.z), kTolerance)) {
+                angles.x = atan2f(rotMat.columns[2][1], rotMat.columns[2][2]);
+            } else {
+                angles.x = atan2f(-rotMat.columns[1][2], rotMat.columns[1][1]);
+                angles.y = atan2f(-rotMat.columns[2][0], rotMat.columns[0][0]);
+            }
+            break;
+        }
+        case EulerOrder_yxz: {
+            angles.x = asinf(rotMat.columns[2][1]);
+            if (isNearlyZero(cosf(angles.x), kTolerance)) {
+                angles.y = atan2f(rotMat.columns[0][2], rotMat.columns[0][0]);
+            } else {
+                angles.y = atan2f(-rotMat.columns[0][2], rotMat.columns[2][2]);
+                angles.z = atan2f(-rotMat.columns[0][1], rotMat.columns[1][1]);
+            }
+            break;
+        }
+        case EulerOrder_yzx: {
+            angles.z = asinf(-rotMat.columns[0][1]);
+            if (isNearlyZero(cosf(angles.z), kTolerance)) {
+                angles.x = atan2f(-rotMat.columns[1][2], rotMat.columns[2][2]);
+            } else {
+                angles.y = atan2f(rotMat.columns[0][2], rotMat.columns[0][0]);
+                angles.x = atan2f(rotMat.columns[2][1], rotMat.columns[1][1]);
+            }
+            break;
+        }
+        case EulerOrder_zxy: {
+            angles.x = asinf(-rotMat.columns[1][2]);
+            if (isNearlyZero(cosf(angles.x), kTolerance)) {
+                angles.z = atan2f(-rotMat.columns[0][1], rotMat.columns[0][0]);
+            } else {
+                angles.y = atan2f(rotMat.columns[0][2], rotMat.columns[2][2]);
+                angles.z = atan2f(rotMat.columns[1][0], rotMat.columns[1][1]);
+            }
+            break;
+        }
+        case EulerOrder_zyx: {
+            angles.y = asinf(rotMat.columns[0][2]);
+            if (isNearlyZero(cosf(angles.y), kTolerance)) {
+                angles.z = atan2f(rotMat.columns[1][0], rotMat.columns[1][1]);
+            } else {
+                angles.x = atan2f(-rotMat.columns[1][2], rotMat.columns[2][2]);
+                angles.z = atan2f(-rotMat.columns[0][1], rotMat.columns[0][0]);
+            }
+            break;
+        }
+    }
+    
+    return angles;
 }
 
 }

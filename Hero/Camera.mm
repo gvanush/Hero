@@ -77,6 +77,10 @@
     return self.cpp->projection();
 }
 
+-(void) lookAt: (simd_float3) point up: (simd_float3) up {
+    self.cpp->lookAt(point, up);
+}
+
 @end
 
 @implementation Camera (Cpp)

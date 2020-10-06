@@ -23,6 +23,7 @@
 		B749ADB925284BD80047B996 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB825284BD80047B996 /* SceneObject.mm */; };
 		B778783C252922860097F941 /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B778783A252922860097F941 /* SphericalCoord.cpp */; };
 		B7787840252923D20097F941 /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B778783E252923D20097F941 /* SphericalCoord.mm */; };
+		B7787863252C51980097F941 /* SIMD3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7787862252C51980097F941 /* SIMD3+Extensions.swift */; };
 		B7847AD824D33AE100026607 /* Layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847AD624D33AE100026607 /* Layer.cpp */; };
 		B7847ADF24D45F8C00026607 /* HeroScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847ADD24D45F8C00026607 /* HeroScene.mm */; };
 		B7847AE324D4625200026607 /* Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE124D4625200026607 /* Layer.mm */; };
@@ -73,6 +74,8 @@
 		B778783B252922860097F941 /* SphericalCoord.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
 		B778783E252923D20097F941 /* SphericalCoord.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SphericalCoord.mm; sourceTree = "<group>"; };
 		B778783F252923D20097F941 /* SphericalCoord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
+		B7787843252BA2580097F941 /* Numeric.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Numeric.hpp; sourceTree = "<group>"; };
+		B7787862252C51980097F941 /* SIMD3+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIMD3+Extensions.swift"; sourceTree = "<group>"; };
 		B7847AD624D33AE100026607 /* Layer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Layer.cpp; sourceTree = "<group>"; };
 		B7847AD724D33AE100026607 /* Layer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Layer.hpp; sourceTree = "<group>"; };
 		B7847ADD24D45F8C00026607 /* HeroScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = HeroScene.mm; sourceTree = "<group>"; };
@@ -283,6 +286,8 @@
 				B78D7DED2521B5F30057F066 /* Math.cpp */,
 				B78D7DEE2521B5F30057F066 /* Math.hpp */,
 				B78D7DFC2523CDAC0057F066 /* Geometry.h */,
+				B7787843252BA2580097F941 /* Numeric.hpp */,
+				B7787862252C51980097F941 /* SIMD3+Extensions.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -364,6 +369,7 @@
 				B7DD54592501489600163947 /* Project.swift in Sources */,
 				B7872CFE2504340A00BD403D /* Common.swift in Sources */,
 				B7847AE324D4625200026607 /* Layer.mm in Sources */,
+				B7787863252C51980097F941 /* SIMD3+Extensions.swift in Sources */,
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
 				B786A8D324D146DB00F6EE83 /* Scene.cpp in Sources */,

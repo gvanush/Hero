@@ -9,6 +9,7 @@
 
 #include "SceneObject.hpp"
 #include "Geometry.h"
+#include "Math.hpp"
 
 #include <simd/simd.h>
 
@@ -42,6 +43,8 @@ public:
     simd::float4x4 projectionViewMatrix() const;
     
     simd::float4 convertViewportToWorld(const simd::float4& vec, const Size2& viewportSize);
+    
+    void lookAt(const simd::float3& point, const simd::float3& up = kUp);
     
 private:
     float _aspectRatio;

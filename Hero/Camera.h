@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite) float far;
 @property (nonatomic, readwrite) Projection projection;
 
+-(void) lookAt: (simd_float3) point up: (simd_float3) up;
+
 @end
 
 #ifdef __cplusplus

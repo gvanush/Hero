@@ -56,4 +56,8 @@ simd::float4 Camera::convertViewportToWorld(const simd::float4& vec, const Size2
     return result;
 }
 
+void Camera::lookAt(const simd::float3& point, const simd::float3& up) {
+    orientToRotationMatrix(makeLookAtMatrix(position(), point, up));
+}
+
 }
