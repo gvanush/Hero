@@ -53,6 +53,14 @@
     return self.cpp->eulerOrder();
 }
 
+-(simd_float4x4) worldMatrix {
+    return self.cpp->worldMatrix();
+}
+
+-(void) setWorldMatrix: (simd_float4x4) worldMatrix {
+    
+}
+
 @end
 
 @implementation SceneObject (Cpp)

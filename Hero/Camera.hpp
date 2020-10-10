@@ -42,7 +42,10 @@ public:
     simd::float4x4 viewMatrix() const;
     simd::float4x4 projectionViewMatrix() const;
     
-    simd::float4 convertViewportToWorld(const simd::float4& vec, const Size2& viewportSize);
+    simd::float3 convertWorldToViewport(const simd::float3& point, const simd::float2& viewportSize);
+    simd::float3 convertViewportToWorld(const simd::float3& point, const simd::float2& viewportSize);
+    
+    simd::float3 convertWorldToNDC(const simd::float3& point);
     
     void lookAt(const simd::float3& point, const simd::float3& up = kUp);
     

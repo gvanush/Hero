@@ -35,8 +35,8 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         addGestureRecognizers()
         
 //        scene.viewCamera.projection = Projection_ortographic
-        scene.viewCamera.orthographicScale = 70.0;
-        scene.viewCamera.fovy = Float.pi * 0.3
+        scene.viewCamera.orthographicScale = 70.0
+        scene.viewCamera.fovy = Float.pi / 3.0
         
         viewCameraSphericalCoord.radius = 100.0
         viewCameraSphericalCoord.longitude = Float.pi
@@ -67,22 +67,25 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         
         for i in 0..<sampleImageCount {
             let texture = try! textureLoader.newTexture(name: "sample_image_\(i)", scaleFactor: 1.0, bundle: nil, options: nil)
-            
-            let sizeRange = Float(10.0)...Float(100.0)
-            let width = Float.random(in: sizeRange)
-            let height = Float.random(in: sizeRange)
-            
-            let size = min(width, height) / 2.0
             let texRatio = Float(texture.width) / Float(texture.height)
             
             let layer = Layer()
-            layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
             layer.texture = texture
             if i == 0 {
+                let size = Float(30.0)
+                layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                 layer.position = simd_float3.zero
             } else {
+                
+                let sizeRange = Float(10.0)...Float(100.0)
+                let width = Float.random(in: sizeRange)
+                let height = Float.random(in: sizeRange)
+                
+                let size = min(width, height) / 2.0
+                
                 let positionRange = Float(-70.0)...Float(70.0)
-                layer.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...500.0))
+                layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                layer.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
             }
             scene.addLayer(layer)
         }
@@ -95,9 +98,26 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         sceneView.addGestureRecognizer(panGR)
         
         let twoFingerPanGR = UIPanGestureRecognizer(target: self, action: #selector(onTwoFingerPan))
+        twoFingerPanGR.delegate = self
         twoFingerPanGR.minimumNumberOfTouches = 2
         twoFingerPanGR.maximumNumberOfTouches = 2
         sceneView.addGestureRecognizer(twoFingerPanGR)
+        
+        let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(onPinch))
+        pinchGR.delegate = self
+        sceneView.addGestureRecognizer(pinchGR)
+        
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        sceneView.addGestureRecognizer(tapGR)
+    }
+    
+    @objc func onTap(tapGR: UIRotationGestureRecognizer) {
+        if tapGR.state == .recognized {
+        }
+    }
+    
+    @objc func onPinch(pinchGR: UIPinchGestureRecognizer) {
+//        print("inPinch: \(pinchGR.scale)")
     }
     
     @objc func onPan(panGR: UIPanGestureRecognizer) {
@@ -108,11 +128,11 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         case .changed:
             
             let loc = panGR.location(in: sceneView)
-            let delta = 0.005 * SIMD2<Float>(Float(loc.x - gesturePrevLoc.x), Float(loc.y - gesturePrevLoc.y))
-            viewCameraSphericalCoord.longitude += delta.x
-            viewCameraSphericalCoord.latitude -= delta.y
+            let angleDelta = Float.pi * SIMD2<Float>(Float(loc.x - gesturePrevLoc.x), Float(loc.y - gesturePrevLoc.y)) / viewportSize().min()
+            viewCameraSphericalCoord.longitude += angleDelta.x
+            viewCameraSphericalCoord.latitude -= angleDelta.y
             scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
-            scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: SIMD3<Float>.up)
+            scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: (sinf(viewCameraSphericalCoord.latitude) >= 0.0 ? SIMD3<Float>.up : SIMD3<Float>.down))
             
             gesturePrevLoc = loc
         default:
@@ -129,13 +149,15 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
             let loc = panGR.location(ofTouch: 0, in: sceneView)
             
             if panGR.numberOfTouches == 2 {
-                let prevScenePos = scene.viewCamera.convert(toWorld: SIMD4<Float>(Float(gesturePrevLoc.x), Float(gesturePrevLoc.y), 0.0, 1.0), fromViewportWith: viewportSize())
-                let scenePos = scene.viewCamera.convert(toWorld: SIMD4<Float>(Float(loc.x), Float(loc.y), 0.0, 1.0), fromViewportWith: viewportSize())
-                let delta = scenePos - prevScenePos
-                viewCameraSphericalCoord.center -= SIMD3<Float>(delta.x, delta.y, delta.z)
+                
+                let ndcZ = scene.viewCamera.convertWorldToNDC(viewCameraSphericalCoord.center).z
+                
+                let prevScenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(Float(gesturePrevLoc.x), Float(gesturePrevLoc.y), ndcZ), viewportSize: viewportSize())
+                let scenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(Float(loc.x), Float(loc.y), ndcZ), viewportSize: viewportSize())
+                
+                viewCameraSphericalCoord.center += (prevScenePos - scenePos)
                 scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
             }
-            
             gesturePrevLoc = loc
             
         default:
@@ -144,8 +166,8 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         
     }
     
-    func viewportSize() ->Size2 {
-        Size2(width: Float(self.sceneView.bounds.size.width), height: Float(self.sceneView.bounds.size.height))
+    func viewportSize() -> SIMD2<Float> {
+        SIMD2<Float>(Float(self.sceneView.bounds.size.width), Float(self.sceneView.bounds.size.height))
     }
     
     var sceneView: MTKView!
@@ -153,4 +175,11 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
     var gesturePrevLoc = CGPoint.zero
     var viewCameraSphericalCoord = SphericalCoord()
     var renderingContext = RenderingContext()
+}
+
+
+extension HeroSceneViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
+    }
 }

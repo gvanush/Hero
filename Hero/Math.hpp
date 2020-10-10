@@ -31,13 +31,14 @@ simd::float4x4 makeRotationXMatrix(float rx);
 simd::float4x4 makeRotationYMatrix(float ry);
 
 simd::float4x4 makeRotationZMatrix(float rz);
+simd::float3x3 makeRotationZMatrix3x3(float rz);
 
 simd::float4x4 makeOrthographicMatrix(float l, float r, float b, float t, float n, float f);
 
 simd::float4x4 makePerspectiveMatrix(float fovy, float aspectRatio, float n, float f);
 
 // transofrms ndc to viewport coordinates
-simd::float4x4 makeViewportMatrix(const Size2& screenSize);
+simd::float4x4 makeViewportMatrix(const simd::float2& viewportSize);
 
 simd::float3x3 makeLookAtMatrix(const simd::float3& pos, const simd::float3& target, const simd::float3& up);
 

@@ -31,27 +31,27 @@ const simd::quatf& SceneObject::orientation() const {
     simd::float4x4 rotationMatrix;
     switch (_eulerOrder) {
         case EulerOrder_xyz: {
-            rotationMatrix = makeRotationXMatrix(_rotation.x) * makeRotationXMatrix(_rotation.y) * makeRotationXMatrix(_rotation.z);
+            rotationMatrix = makeRotationXMatrix(_rotation.x) * makeRotationYMatrix(_rotation.y) * makeRotationZMatrix(_rotation.z);
             break;
         }
         case EulerOrder_xzy: {
-            rotationMatrix = makeRotationXMatrix(_rotation.x) * makeRotationXMatrix(_rotation.z) * makeRotationXMatrix(_rotation.y);
+            rotationMatrix = makeRotationXMatrix(_rotation.x) * makeRotationZMatrix(_rotation.z) * makeRotationYMatrix(_rotation.y);
             break;
         }
         case EulerOrder_yxz: {
-            rotationMatrix = makeRotationXMatrix(_rotation.y) * makeRotationXMatrix(_rotation.x) * makeRotationXMatrix(_rotation.z);
+            rotationMatrix = makeRotationYMatrix(_rotation.y) * makeRotationXMatrix(_rotation.x) * makeRotationZMatrix(_rotation.z);
             break;
         }
         case EulerOrder_yzx: {
-            rotationMatrix = makeRotationXMatrix(_rotation.y) * makeRotationXMatrix(_rotation.z) * makeRotationXMatrix(_rotation.x);
+            rotationMatrix = makeRotationYMatrix(_rotation.y) * makeRotationZMatrix(_rotation.z) * makeRotationXMatrix(_rotation.x);
             break;
         }
         case EulerOrder_zxy: {
-            rotationMatrix = makeRotationXMatrix(_rotation.z) * makeRotationXMatrix(_rotation.x) * makeRotationXMatrix(_rotation.y);
+            rotationMatrix = makeRotationZMatrix(_rotation.z) * makeRotationXMatrix(_rotation.x) * makeRotationYMatrix(_rotation.y);
             break;
         }
         case EulerOrder_zyx: {
-            rotationMatrix = makeRotationXMatrix(_rotation.z) * makeRotationXMatrix(_rotation.y) * makeRotationXMatrix(_rotation.x);
+            rotationMatrix = makeRotationZMatrix(_rotation.z) * makeRotationYMatrix(_rotation.y) * makeRotationXMatrix(_rotation.x);
             break;
         }
     }

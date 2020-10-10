@@ -7,11 +7,6 @@
 
 #pragma once
 
-typedef struct {
-    float width;
-    float height;
-} Size2;
-
 typedef enum {
     EulerOrder_xyz,
     EulerOrder_xzy,

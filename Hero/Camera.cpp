@@ -49,11 +49,23 @@ simd::float4x4 Camera::projectionViewMatrix() const {
     return viewMatrix() * projectionMatrix();
 }
 
-simd::float4 Camera::convertViewportToWorld(const simd::float4& vec, const Size2& viewportSize) {
-    auto result = vec * simd::inverse(makeViewportMatrix(viewportSize)) * simd::inverse(projectionMatrix()) * worldMatrix();
-    result *= result.w;
-    result.w = 1.f;
-    return result;
+simd::float3 Camera::convertWorldToViewport(const simd::float3& point, const simd::float2& viewportSize) {
+    auto pos = simd::make_float4(point, 1.f) * projectionViewMatrix();
+    pos /= pos.w;
+    pos = pos * makeViewportMatrix(viewportSize);
+    return simd::float3 {pos.x, pos.y, pos.z};
+}
+
+simd::float3 Camera::convertViewportToWorld(const simd::float3& point, const simd::float2& viewportSize) {
+    auto pos = simd::make_float4(point, 1.f) * simd::inverse(makeViewportMatrix(viewportSize)) * simd::inverse(projectionMatrix()) * worldMatrix();
+    pos /= pos.w;
+    return simd::float3 {pos.x, pos.y, pos.z};
+}
+
+simd::float3 Camera::convertWorldToNDC(const simd::float3& point) {
+    auto ndc = simd::make_float4(point, 1.f) * projectionViewMatrix();
+    ndc /= ndc.w;
+    return simd::float3 {ndc.x, ndc.y, ndc.z};
 }
 
 void Camera::lookAt(const simd::float3& point, const simd::float3& up) {

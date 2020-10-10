@@ -16,7 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(instancetype) initWithNear: (float) near far: (float) far aspectRatio: (float) aspectRatio;
 
--(simd_float4) convertToWorld: (simd_float4) vec fromViewportWithSize: (Size2) viewportSize;
+-(simd_float3) convertWorldToViewport: (simd_float3) point viewportSize: (simd_float2) viewportSize NS_SWIFT_NAME(convertWorldToViewport(_:viewportSize:));
+-(simd_float3) convertViewportToWorld: (simd_float3) point viewportSize: (simd_float2) viewportSize NS_SWIFT_NAME(convertViewportToWorld(_:viewportSize:));
+-(simd_float3) convertWorldToNDC: (simd_float3) point NS_SWIFT_NAME(convertWorldToNDC(_:));
 
 @property (nonatomic, readwrite) float aspectRatio;
 @property (nonatomic, readwrite) float fovy;

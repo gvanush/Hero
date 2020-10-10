@@ -21,8 +21,16 @@
     return [self initWithNear: 0.0001 far: 1000.f aspectRatio: 1.f];
 }
 
--(simd_float4) convertToWorld: (simd_float4) vec fromViewportWithSize: (Size2) viewportSize {
-    return self.cpp->convertViewportToWorld(vec, viewportSize);
+-(simd_float3) convertWorldToViewport: (simd_float3) point viewportSize: (simd_float2) viewportSize {
+    return self.cpp->convertWorldToViewport(point, viewportSize);
+}
+
+-(simd_float3) convertViewportToWorld: (simd_float3) point viewportSize: (simd_float2) viewportSize {
+    return self.cpp->convertViewportToWorld(point, viewportSize);
+}
+
+-(simd_float3) convertWorldToNDC: (simd_float3) point {
+    return self.cpp->convertWorldToNDC(point);
 }
 
 -(void) dealloc {

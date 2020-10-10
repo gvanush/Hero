@@ -68,6 +68,17 @@ simd::float4x4 makeRotationZMatrix(float rz) {
     };
 }
 
+simd::float3x3 makeRotationZMatrix3x3(float rz) {
+    const auto c = cosf(rz);
+    const auto s = sinf(rz);
+    using namespace simd;
+    return simd::float3x3 {
+        float3 {c, -s, 0.f},
+        float3 {s, c, 0.f},
+        float3 {0.f, 0.f, 1.f},
+    };
+}
+
 simd::float4x4 makeOrthographicMatrix(float l, float r, float b, float t, float n, float f) {
     using namespace simd;
     return float4x4 {
@@ -89,11 +100,11 @@ simd::float4x4 makePerspectiveMatrix(float fovy, float aspectRatio, float n, flo
     };
 }
 
-simd::float4x4 makeViewportMatrix(const Size2& screenSize) {
+simd::float4x4 makeViewportMatrix(const simd::float2& screenSize) {
     using namespace simd;
     return float4x4 {
-        float4 {0.5f * screenSize.width, 0.f, 0.f, 0.5f * screenSize.width},
-        float4 {0.f, -0.5f * screenSize.height, 0.f, 0.5f * screenSize.height},
+        float4 {0.5f * screenSize.x, 0.f, 0.f, 0.5f * screenSize.x},
+        float4 {0.f, -0.5f * screenSize.y, 0.f, 0.5f * screenSize.y},
         float4 {0.f, 0.f, 1.f, 0.f},
         float4 {0.f, 0.f, 0.f, 1.f}
     };
