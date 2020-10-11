@@ -16,7 +16,7 @@ struct SphericalCoord {
     float radius = 1.f;
     float longitude = 0.f; // relative to z
     float latitude = 0.f; // relative to y
-    
+    float radiusFactor = 1.f;
     simd::float3 getPosition() const;
     
 };

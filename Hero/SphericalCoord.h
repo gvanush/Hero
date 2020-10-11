@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite) float radius;
 @property (nonatomic, readwrite) float longitude;
 @property (nonatomic, readwrite) float latitude;
+@property (nonatomic, readwrite) float radiusFactor;
 
 @end
 

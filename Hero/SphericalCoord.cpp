@@ -14,7 +14,7 @@ simd::float3 SphericalCoord::getPosition() const {
     const auto lngCos = cosf(longitude);
     const auto latSin = sinf(latitude);
     const auto latCos = cosf(latitude);
-    return center + radius * simd::float3 {lngSin * latSin, latCos, lngCos * latSin};
+    return center + radiusFactor * radius * simd::float3 {lngSin * latSin, latCos, lngCos * latSin};
 }
 
 }

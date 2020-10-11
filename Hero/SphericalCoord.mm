@@ -57,6 +57,14 @@
     return self.cpp->latitude;
 }
 
+-(void) setRadiusFactor: (float) radiusFactor {
+    self.cpp->radiusFactor = radiusFactor;
+}
+
+-(float) radiusFactor {
+    return self.cpp->radiusFactor;
+}
+
 @end
 
 @implementation SphericalCoord (Cpp)
