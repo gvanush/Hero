@@ -94,62 +94,22 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
     func addGestureRecognizers() {
         
         panGR = UIPanGestureRecognizer(target: self, action: #selector(onPan))
-        panGR.isEnabled = false
         panGR.delegate = self
         panGR.maximumNumberOfTouches = 1
         sceneView.addGestureRecognizer(panGR)
         
         let twoFingerPanGR = UIPanGestureRecognizer(target: self, action: #selector(onTwoFingerPan))
-        twoFingerPanGR.isEnabled = false
         twoFingerPanGR.delegate = self
         twoFingerPanGR.minimumNumberOfTouches = 2
         twoFingerPanGR.maximumNumberOfTouches = 2
         sceneView.addGestureRecognizer(twoFingerPanGR)
         
         let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(onPinch))
+//        pinchGR.isEnabled = false
         pinchGR.delegate = self
         sceneView.addGestureRecognizer(pinchGR)
         
     }
-    
-    @objc func onPinch(pinchGR: UIPinchGestureRecognizer) {
-        
-        guard pinchGR.numberOfTouches == 2 else {
-            pinchGR.cancel()
-            return
-        }
-        
-        switch pinchGR.state {
-        case .began:
-            let loc0 = pinchGR.location(ofTouch: 0, in: self.sceneView)
-            let loc1 = pinchGR.location(ofTouch: 1, in: self.sceneView)
-            let dist = length(SIMD2<Float>(Float(loc0.x - loc1.x), Float(loc0.y - loc1.y)))
-            prevDist = dist
-        case .changed:
-        
-            let loc0 = pinchGR.location(ofTouch: 0, in: self.sceneView)
-            let loc1 = pinchGR.location(ofTouch: 1, in: self.sceneView)
-            let dist = length(SIMD2<Float>(Float(loc0.x - loc1.x), Float(loc0.y - loc1.y)))
-            
-            let centerViewportPos = scene.viewCamera.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: viewportSize())
-            
-            let scenePos = scene.viewCamera.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * 0.5 * (dist - prevDist), viewportSize: viewportSize())
-            
-            let angle = 0.5 * scene.viewCamera.fovy * (dist / viewportSize().y)
-            let radiusDelta = length(scenePos - viewCameraSphericalCoord.center) / tanf(angle)
-            viewCameraSphericalCoord.radius += (dist > prevDist ? -radiusDelta : radiusDelta)
-            
-            scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
-
-            prevDist = dist
-            
-        default:
-            
-            break
-        }
-    }
-    
-    private var prevDist: Float = 0.0
     
     @objc func onPan(panGR: UIPanGestureRecognizer) {
         
@@ -162,7 +122,7 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
             
             let loc = panGR.location(in: sceneView)
             let pos = SIMD2<Float>(Float(loc.x), Float(loc.y))
-            let angleDelta = Float.pi * (pos - gesturePrevPos) / viewportSize().min()
+            let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / viewportSize().min()
             viewCameraSphericalCoord.longitude += angleDelta.x
             viewCameraSphericalCoord.latitude -= angleDelta.y
             scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
@@ -182,25 +142,25 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
             return 0.5 * SIMD2<Float>(Float(loc0.x + loc1.x), Float(loc0.y + loc1.y))
         }
         
-        struct Statics {
-            static var shouldResetPos = false
-        }
-        
         switch panGR.state {
         case .began:
+            guard panGR.numberOfTouches == 2 else {
+                panGR.cancel()
+                return
+            }
             gesturePrevPos = averagePosition()
         case .changed:
         
             guard panGR.numberOfTouches == 2 else {
-                Statics.shouldResetPos = true
+                shouldResetTwoFingerPan = true
                 return
             }
                 
             let pos = averagePosition()
             
-            if Statics.shouldResetPos {
+            if shouldResetTwoFingerPan {
                 gesturePrevPos = pos
-                Statics.shouldResetPos = false
+                shouldResetTwoFingerPan = false
                 return
             }
             
@@ -220,16 +180,95 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         
     }
     
+    @objc func onPinch(pinchGR: UIPinchGestureRecognizer) {
+        
+        let fingerDistance = { () -> Float in
+            let loc0 = pinchGR.location(ofTouch: 0, in: self.sceneView)
+            let loc1 = pinchGR.location(ofTouch: 1, in: self.sceneView)
+            return length(SIMD2<Float>(Float(loc0.x - loc1.x), Float(loc0.y - loc1.y)))
+        }
+        
+        switch pinchGR.state {
+        case .began:
+            guard pinchGR.numberOfTouches == 2 else {
+                pinchGR.cancel()
+                return
+            }
+            
+            switch scene.viewCamera.projection {
+            case Projection_perspective:
+                pinchPrevFingerDist = fingerDistance()
+            case Projection_ortographic:
+                initialOrtohraphicScale = scene.viewCamera.orthographicScale
+            default:
+                assertionFailure()
+                break
+            }
+            
+        case .changed:
+            
+            switch scene.viewCamera.projection {
+            case Projection_perspective:
+                
+                guard pinchGR.numberOfTouches == 2 else {
+                    shouldResetPinch = true
+                    return
+                }
+            
+                let dist = fingerDistance()
+                
+                if shouldResetPinch {
+                    pinchPrevFingerDist = dist
+                    shouldResetPinch = false
+                    return
+                }
+                
+                let centerViewportPos = scene.viewCamera.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: viewportSize())
+                var scenePos = scene.viewCamera.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * 0.5 * (dist - pinchPrevFingerDist), viewportSize: viewportSize())
+                
+                // NOTE: This is needed, because coverting from world to viewport and back gives low precision z value.
+                // It is becasue of uneven distribution of world z into ndc z, especially far objects.
+                // Alternative could be to make near plane larger but that limits zooming since object will be clipped
+                scenePos.z = viewCameraSphericalCoord.center.z
+                
+                let angle = 0.5 * scene.viewCamera.fovy * (dist / viewportSize().y)
+                let radiusDelta = length(scenePos - viewCameraSphericalCoord.center) / tanf(angle)
+                
+                viewCameraSphericalCoord.radius = max(viewCameraSphericalCoord.radius + (dist > pinchPrevFingerDist ? -radiusDelta : radiusDelta), 0.01)
+                
+                scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
+
+                pinchPrevFingerDist = dist
+                
+            case Projection_ortographic:
+                
+                scene.viewCamera.orthographicScale = max(initialOrtohraphicScale / Float(pinchGR.scale), 0.01)
+                
+            default:
+                assertionFailure()
+                break
+            }
+            
+        default:
+            
+            break
+        }
+    }
+    
     func viewportSize() -> SIMD2<Float> {
         SIMD2<Float>(Float(self.sceneView.bounds.size.width), Float(self.sceneView.bounds.size.height))
     }
     
-    var sceneView: MTKView!
-    var scene: HeroScene
-    var panGR: UIPanGestureRecognizer!
-    var gesturePrevPos = SIMD2<Float>.zero
-    var viewCameraSphericalCoord = SphericalCoord()
-    var renderingContext = RenderingContext()
+    private var sceneView: MTKView!
+    private var scene: HeroScene
+    private var panGR: UIPanGestureRecognizer!
+    private var gesturePrevPos = SIMD2<Float>.zero
+    private var shouldResetTwoFingerPan = false
+    private var shouldResetPinch = false
+    private var pinchPrevFingerDist: Float = 0.0
+    private var initialOrtohraphicScale: Float = 1.0
+    private var viewCameraSphericalCoord = SphericalCoord()
+    private var renderingContext = RenderingContext()
 }
 
 

@@ -47,6 +47,7 @@ struct RootView: View {
                     Text("Save image")
                 }).disabled(model.project == nil))
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .fullScreenCover(isPresented: $model.isProjectBrowserPresented, content: {
             ProjectBrowser(model: ProjectBrowserModel(selectedProject: model.project), onRemoveAction: { project in
                 if model.project === project {
