@@ -123,10 +123,12 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
             let loc = panGR.location(in: sceneView)
             let pos = SIMD2<Float>(Float(loc.x), Float(loc.y))
             let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / viewportSize().min()
-            viewCameraSphericalCoord.longitude += angleDelta.x
+            let isInFrontOfSphere = sinf(viewCameraSphericalCoord.latitude) >= 0.0
+            
+            viewCameraSphericalCoord.longitude += (isInFrontOfSphere ? angleDelta.x : -angleDelta.x)
             viewCameraSphericalCoord.latitude -= angleDelta.y
             scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
-            scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: (sinf(viewCameraSphericalCoord.latitude) >= 0.0 ? SIMD3<Float>.up : SIMD3<Float>.down))
+            scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
             
             gesturePrevPos = pos
         default:
