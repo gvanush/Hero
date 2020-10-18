@@ -23,27 +23,27 @@
 }
 
 -(void) setDrawable: (id<MTLDrawable>) drawable {
-    self.cpp->setDrawable(apple::metal::DrawableRef {drawable});
+    self.cpp->drawable = apple::metal::DrawableRef {drawable};
 }
 
 -(id<MTLDrawable>) drawable {
-    return self.cpp->drawable().obj<id>();
+    return self.cpp->drawable.obj<id>();
 }
 
 -(void) setDrawableSize: (simd_float2) drawableSize {
-    self.cpp->setDrawableSize(drawableSize);
+    self.cpp->drawableSize = drawableSize;
 }
 
 -(simd_float2) drawableSize {
-    return self.cpp->drawableSize();
+    return self.cpp->drawableSize;
 }
 
 -(void) setRenderPassDescriptor: (MTLRenderPassDescriptor*) renderPassDescriptor {
-    self.cpp->setRenderpassDescriptor(apple::metal::RenderPassDescriptorRef {renderPassDescriptor});
+    self.cpp->renderPassDescriptor = apple::metal::RenderPassDescriptorRef {renderPassDescriptor};
 }
 
 -(MTLRenderPassDescriptor*) renderPassDescriptor {
-    return self.cpp->renderpassDescriptor().obj<id>();
+    return self.cpp->renderPassDescriptor.obj<id>();
 }
 
 +(id<MTLDevice>) device {

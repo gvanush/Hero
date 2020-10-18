@@ -19,7 +19,7 @@ class Camera;
 }
 
 @interface HeroScene () {
-    NSMutableArray* _layers;
+    NSMutableArray* _sceneObjects;
 }
 
 @end
@@ -28,7 +28,7 @@ class Camera;
 
 -(instancetype) init {
     if (self = [super initWithCppHandle: new hero::Scene {}]) {
-        _layers = [NSMutableArray array];
+        _sceneObjects = [NSMutableArray array];
         _viewCamera = [[Camera alloc] initWithNear: 0.01f far: 1000.f aspectRatio: 1.f];
         self.cpp->setViewCamera(_viewCamera.cpp);
     }
@@ -39,13 +39,13 @@ class Camera;
     delete self.cpp;
 }
 
--(void) addLayer: (Layer*) layer {
-    [_layers addObject: layer];
-    self.cpp->addLayer(static_cast<hero::Layer*>(layer.cppHandle));
+-(void) addSceneObject: (SceneObject*) sceneObject {
+    [_sceneObjects addObject: sceneObject];
+    self.cpp->addSceneObject(sceneObject.cpp);
 }
 
 -(void) render: (RenderingContext*) renderingContext {
-    self.cpp->render(static_cast<hero::RenderingContext*>(renderingContext.cpp));
+    self.cpp->render(*renderingContext.cpp);
 }
 
 -(void) setSize: (simd_float2) size {
@@ -73,8 +73,12 @@ class Camera;
     return self.cpp->bgrColor();
 }
 
--(NSArray*) layers {
-    return _layers;
+-(NSArray*) sceneObjects {
+    return _sceneObjects;
+}
+
++(void) setup {
+    hero::Scene::setup();
 }
 
 @end

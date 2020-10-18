@@ -87,7 +87,7 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
                 layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                 layer.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
             }
-            scene.addLayer(layer)
+            scene.add(layer)
         }
     }
     

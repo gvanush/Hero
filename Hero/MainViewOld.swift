@@ -84,7 +84,7 @@ struct MainViewOld: View {
                         let layer = Layer()
                         layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                         layer.texture = texture
-                        canvas.addLayer(layer)
+                        canvas.add(layer)
                     } catch {
                         // TODO
                         print("something wrong happened")
@@ -97,7 +97,7 @@ struct MainViewOld: View {
                     layer.color = color.rgba
                     let size = min(canvas.viewportSize.x, canvas.viewportSize.y) / 2.0
                     layer.size = simd_float2(x: size, y: size)
-                    canvas.addLayer(layer)
+                    canvas.add(layer)
                 }
             }
         })

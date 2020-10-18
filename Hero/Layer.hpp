@@ -15,6 +15,8 @@
 
 namespace hero {
 
+class RenderingContext;
+
 class Layer: public SceneObject {
 public:
     
@@ -23,6 +25,7 @@ public:
     using ColorType = simd::float4;
     
     Layer();
+    ~Layer();
     
     inline void setSize(const SizeType& size);
     inline const SizeType& size() const;
@@ -32,6 +35,9 @@ public:
     
     void setTexture(const apple::metal::TextureRef& texture);
     inline const apple::metal::TextureRef& texture() const;
+    
+    static void setup();
+    static void render(RenderingContext& renderingContext);
     
 private:
     SizeType _size;

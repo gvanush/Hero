@@ -14,7 +14,7 @@
 
 namespace hero {
 
-class Layer;
+class SceneObject;
 class Camera;
 class RenderingContext;
 
@@ -35,18 +35,18 @@ public:
     inline void setViewCamera(Camera* viewCamera);
     inline Camera* viewCamera() const;
     
-    void addLayer(Layer* layer);
+    void addSceneObject(SceneObject* sceneObject);
     
-    void render(RenderingContext* renderingContext);
+    void render(RenderingContext& renderingContext);
+    
+    static void setup();
     
 private:
-    std::vector<Layer*> _layers;
+    std::vector<SceneObject*> _sceneObjects;
     Camera* _viewCamera;
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     simd::float2 _viewportSize;
     simd::float2 _size;
-    apple::metal::RenderPipelineStateRef _pipelineStateRef;
-    apple::metal::BufferRef _vertexBuffer;
 };
 
 void Scene::setViewportSize(const simd::float2& size) {

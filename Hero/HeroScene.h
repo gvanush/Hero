@@ -6,7 +6,7 @@
 //
 
 #import "CppWrapper.h"
-#import "Layer.h"
+#import "SceneObject.h"
 
 #import <Foundation/Foundation.h>
 #import <simd/simd.h>
@@ -18,15 +18,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HeroScene: CppWrapper
 
--(void) addLayer: (Layer*) layer;
+-(void) addSceneObject: (SceneObject*) sceneObject;
 
 -(void) render: (RenderingContext*) renderingContext;
 
 @property (nonatomic, readwrite) simd_float4 bgrColor;
 @property (nonatomic, readwrite) simd_float2 viewportSize;
 @property (nonatomic, readwrite) simd_float2 size;
-@property (nonatomic, readonly) NSArray* layers;
+@property (nonatomic, readonly) NSArray* sceneObjects;
 @property (nonatomic, readonly) Camera* viewCamera;
+
++(void) setup;
 
 @end
 

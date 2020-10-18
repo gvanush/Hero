@@ -14,6 +14,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         try! ProjectDAO.shared.setup()
         
+        HeroScene.setup()
+        
         return true
     }
 }
