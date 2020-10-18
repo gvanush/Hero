@@ -16,4 +16,8 @@
     return self;
 }
 
+-(void) dealloc {
+    _cppHandle = nullptr;
+}
+
 @end

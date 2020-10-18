@@ -21,6 +21,8 @@
 		B731700F24CF540000157455 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700E24CF540000157455 /* ImageSelector.swift */; };
 		B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB2252843C30047B996 /* CppWrapper.mm */; };
 		B749ADB925284BD80047B996 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB825284BD80047B996 /* SceneObject.mm */; };
+		B74ECB37253C7D2800C0301E /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB35253C7D2800C0301E /* Line.cpp */; };
+		B74ECB3C253C7FA800C0301E /* Line.mm in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB3A253C7FA800C0301E /* Line.mm */; };
 		B75C31F52531872600CD612C /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F32531872600CD612C /* SphericalCoord.cpp */; };
 		B75C31F62531872600CD612C /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F42531872600CD612C /* SphericalCoord.mm */; };
 		B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76960862531940F0000F362 /* UIGestureRecognizer+Extensions.swift */; };
@@ -71,6 +73,10 @@
 		B749ADB2252843C30047B996 /* CppWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
 		B749ADB725284BD80047B996 /* SceneObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
 		B749ADB825284BD80047B996 /* SceneObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneObject.mm; sourceTree = "<group>"; };
+		B74ECB35253C7D2800C0301E /* Line.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
+		B74ECB36253C7D2800C0301E /* Line.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Line.hpp; sourceTree = "<group>"; };
+		B74ECB3A253C7FA800C0301E /* Line.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Line.mm; sourceTree = "<group>"; };
+		B74ECB3B253C7FA800C0301E /* Line.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Line.h; sourceTree = "<group>"; };
 		B75C31F12531872600CD612C /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
 		B75C31F22531872600CD612C /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B75C31F32531872600CD612C /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
@@ -182,6 +188,17 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		B74ECB34253C7D0600C0301E /* Line */ = {
+			isa = PBXGroup;
+			children = (
+				B74ECB35253C7D2800C0301E /* Line.cpp */,
+				B74ECB36253C7D2800C0301E /* Line.hpp */,
+				B74ECB3A253C7FA800C0301E /* Line.mm */,
+				B74ECB3B253C7FA800C0301E /* Line.h */,
+			);
+			name = Line;
+			sourceTree = "<group>";
+		};
 		B778782B252906380097F941 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
@@ -233,6 +250,7 @@
 				B778782D252906700097F941 /* Scene */,
 				B778782C252906460097F941 /* SceneObject */,
 				B778782B252906380097F941 /* Camera */,
+				B74ECB34253C7D0600C0301E /* Line */,
 				B731700624CF378F00157455 /* HeroSceneView.swift */,
 				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
 				B7847B1424D6E66900026607 /* RenderingContext.mm */,
@@ -372,6 +390,7 @@
 				B7DD54592501489600163947 /* Project.swift in Sources */,
 				B7872CFE2504340A00BD403D /* Common.swift in Sources */,
 				B7847AE324D4625200026607 /* Layer.mm in Sources */,
+				B74ECB3C253C7FA800C0301E /* Line.mm in Sources */,
 				B7787863252C51980097F941 /* SIMD3+Extensions.swift in Sources */,
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
@@ -380,6 +399,7 @@
 				B7872CFC25027F4800BD403D /* RootView.swift in Sources */,
 				B731700924CF38E900157455 /* MainViewOld.swift in Sources */,
 				B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */,
+				B74ECB37253C7D2800C0301E /* Line.cpp in Sources */,
 				B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B78D7E012524AE8F0057F066 /* Camera.mm in Sources */,
 				B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */,
