@@ -21,6 +21,10 @@
     return [self initWithNear: 0.0001 far: 1000.f aspectRatio: 1.f];
 }
 
+-(void) dealloc {
+    delete self.cpp;
+}
+
 -(simd_float3) convertWorldToViewport: (simd_float3) point viewportSize: (simd_float2) viewportSize {
     return self.cpp->convertWorldToViewport(point, viewportSize);
 }
@@ -31,10 +35,6 @@
 
 -(simd_float3) convertWorldToNDC: (simd_float3) point {
     return self.cpp->convertWorldToNDC(point);
-}
-
--(void) dealloc {
-    delete self.cpp;
 }
 
 -(void) setAspectRatio: (float) aspectRatio {

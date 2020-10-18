@@ -11,8 +11,7 @@
 namespace hero {
 
 Layer::Layer()
-: _position {0.f, 0.f, 0.f}
-, _size {1.f, 1.f}
+: _size {1.f, 1.f}
 , _color {1.f, 1.f, 1.f, 1.f}
 , _texture {whiteUnitTexture()} {
     

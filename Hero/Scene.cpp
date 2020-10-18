@@ -21,10 +21,10 @@ namespace {
 
 constexpr auto kHalfSize = 0.5f;
 constexpr std::array<LayerVertex, 4> kLayerVertices = {{
-    {{-kHalfSize, -kHalfSize, 0.f}, {0.f, 1.f}},
-    {{kHalfSize, -kHalfSize, 0.f}, {1.f, 1.f}},
-    {{-kHalfSize, kHalfSize, 0.f}, {0.f, 0.f}},
-    {{kHalfSize, kHalfSize, 0.f}, {1.f, 0.f}},
+    {{-kHalfSize, -kHalfSize}, {0.f, 1.f}},
+    {{kHalfSize, -kHalfSize}, {1.f, 1.f}},
+    {{-kHalfSize, kHalfSize}, {0.f, 0.f}},
+    {{kHalfSize, kHalfSize}, {1.f, 0.f}},
 }};
 
 }
@@ -84,7 +84,7 @@ void Scene::render(RenderingContext* renderingContext) {
     for(auto layer: _layers) {
         
         commandEncoderRef.setVertexBytes(&layer->size(), sizeof(Layer::SizeType), kVertexInputIndexSize);
-        commandEncoderRef.setVertexBytes(&layer->position(), sizeof(Layer::PositionType), kVertexInputIndexPosition);
+        commandEncoderRef.setVertexBytes(&layer->worldMatrix(), sizeof(layer->worldMatrix()), kVertexInputIndexWorldMatrix);
         commandEncoderRef.setFragmentBytes(&layer->color(), sizeof(Layer::ColorType), kFragmentInputIndexColor);
         commandEncoderRef.setFragmentTexture(layer->texture(), kFragmentInputIndexTexture);
         

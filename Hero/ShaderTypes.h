@@ -8,7 +8,7 @@ enum VertexInputIndex: unsigned int {
     kVertexInputIndexVertices     = 0,
     kVertexInputIndexViewportSize = 1,
     kVertexInputIndexSize = 2,
-    kVertexInputIndexPosition = 3,
+    kVertexInputIndexWorldMatrix = 3,
     kVertexInputIndexUniforms = 4,
 };
 
@@ -18,7 +18,7 @@ enum FragmentInputIndex: unsigned int {
 };
 
 struct LayerVertex {
-    simd::float3 position;
+    simd::float2 position;
     simd::float2 texCoord;
 };
 

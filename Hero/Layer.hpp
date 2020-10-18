@@ -7,13 +7,15 @@
 
 #pragma once
 
+#include "SceneObject.hpp"
+
 #include "apple/metal/Metal.h"
 
 #include <simd/simd.h>
 
 namespace hero {
 
-class Layer {
+class Layer: public SceneObject {
 public:
     
     using PositionType = simd::float3;
@@ -21,9 +23,6 @@ public:
     using ColorType = simd::float4;
     
     Layer();
-    
-    inline void setPosition(const PositionType& pos);
-    inline const PositionType& position() const;
     
     inline void setSize(const SizeType& size);
     inline const SizeType& size() const;
@@ -35,19 +34,10 @@ public:
     inline const apple::metal::TextureRef& texture() const;
     
 private:
-    PositionType _position;
     SizeType _size;
     ColorType _color;
     apple::metal::TextureRef _texture;
 };
-
-void Layer::setPosition(const PositionType& pos) {
-    _position = pos;
-}
-
-const Layer::PositionType& Layer::position() const {
-    return _position;
-}
 
 void Layer::setSize(const SizeType& size) {
     _size = size;

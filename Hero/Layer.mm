@@ -11,24 +11,16 @@
 
 #include "apple/metal/Metal.h"
 
-@interface Layer ()
-
--(hero::Layer*) cpp;
-
-@end
-
 @implementation Layer
 
--(hero::Layer*) cpp {
-    return static_cast<hero::Layer*>(self.cppHandle);
+-(instancetype) init {
+    if (self = [super initWithCppHandle: new hero::Layer {}]) {
+    }
+    return self;
 }
 
--(void) setPosition: (simd_float3) position {
-    self.cpp->setPosition(position);
-}
-
--(simd_float3) position {
-    return self.cpp->position();
+-(void) dealloc {
+    delete self.cpp;
 }
 
 -(void) setSize: (simd_float2) size {
@@ -55,14 +47,12 @@
     return self.cpp->texture().obj<id<MTLTexture>>();
 }
 
--(instancetype) init {
-    if (self = [super initWithCppHandle: new hero::Layer {}]) {
-    }
-    return self;
-}
+@end
 
--(void) dealloc {
-    delete self.cpp;
+@implementation Layer (Cpp)
+
+-(hero::Layer*) cpp {
+    return static_cast<hero::Layer*>(self.cppHandle);
 }
 
 @end
