@@ -54,6 +54,10 @@
     return to<MTLPixelFormat>(hero::RenderingContext::kColorPixelFormat);
 }
 
++(MTLPixelFormat) depthPixelFormat {
+    return to<MTLPixelFormat>(hero::RenderingContext::kDepthPixelFormat);
+}
+
 @end
 
 @implementation RenderingContext (Cpp)

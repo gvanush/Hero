@@ -17,6 +17,12 @@
 
 namespace hero {
 
+namespace {
+
+apple::metal::DepthStencilStateRef __depthStencilState;
+
+}
+
 Scene::Scene() {
     
 }
@@ -39,6 +45,8 @@ void Scene::render(RenderingContext& renderingContext) {
     assert(commandEncoderRef);
     commandEncoderRef.setLabel(String::createWithUTF8String(u8"SceneRenderCommandEncoder"));
     
+    commandEncoderRef.setDepthStencilState(__depthStencilState);
+    
     renderingContext.commandBuffer = commandBufferRef;
     renderingContext.renderCommandEncoder = commandEncoderRef;
     renderingContext.uniforms.projectionViewMatrix = _viewCamera->projectionViewMatrix();
@@ -57,6 +65,11 @@ void Scene::render(RenderingContext& renderingContext) {
 void Scene::setup() {
     Line::setup();
     Layer::setup();
+    
+    apple::metal::DepthStencilDescriptorRef descr = apple::metal::DepthStencilDescriptor::create();
+    descr.setDepthWriteEnabled(true);
+    descr.setDepthCompareFunction(apple::metal::CompareFunction::less);
+    __depthStencilState = RenderingContext::device.newDepthStencilState(descr);
 }
 
 }

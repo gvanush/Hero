@@ -26,9 +26,6 @@ public:
     inline void setBgrColor(const simd::float4& color);
     inline const simd::float4& bgrColor() const;
     
-    inline void setViewportSize(const simd::float2& size);
-    inline const simd::float2& viewportSize() const;
-    
     inline void setSize(const simd::float2& size);
     inline const simd::float2& size() const;
     
@@ -47,14 +44,6 @@ private:
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     simd::float2 _size;
 };
-
-void Scene::setViewportSize(const simd::float2& size) {
-    _size = size;
-}
-
-const simd::float2& Scene::viewportSize() const {
-    return _size;
-}
 
 void Scene::setSize(const simd::float2& size) {
     _size = size;

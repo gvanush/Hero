@@ -27,8 +27,8 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         sceneView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         sceneView.autoResizeDrawable = true
         sceneView.colorPixelFormat = RenderingContext.colorPixelFormat()
+        sceneView.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
         sceneView.clearColor = MTLClearColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
-//        sceneView.depthStencilPixelFormat = .depth32Float
 //        sceneView.sampleCount = 2
         sceneView.delegate = self
         view.addSubview(sceneView)

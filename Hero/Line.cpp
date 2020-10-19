@@ -57,7 +57,7 @@ void Line::setup() {
     pipelineStateDescriptorRef.setVertexFunction(vertexFunctionRef);
     pipelineStateDescriptorRef.setFragmentFunction(fragmentFunctionRef);
     pipelineStateDescriptorRef.colorAttachments().objectAtIndex(0).setPixelFormat(RenderingContext::kColorPixelFormat);
-    
+    pipelineStateDescriptorRef.setDepthAttachmentPixelFormat(RenderingContext::kDepthPixelFormat);
 //    pipelineStateDescriptorRef.setSampleCount(2);
     
     ErrorRef errorRef;

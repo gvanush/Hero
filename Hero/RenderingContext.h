@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(id<MTLDevice>) device;
 +(MTLPixelFormat) colorPixelFormat;
++(MTLPixelFormat) depthPixelFormat;
 
 @end
 
