@@ -134,7 +134,7 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
             
             let loc = panGR.location(in: sceneView)
             let pos = SIMD2<Float>(Float(loc.x), Float(loc.y))
-            let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / viewportSize().min()
+            let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / sceneViewSize().min()
             
             viewCameraSphericalCoord.latitude -= angleDelta.y
             
@@ -182,8 +182,8 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
             
             let ndcZ = scene.viewCamera.convertWorldToNDC(viewCameraSphericalCoord.center).z
             
-            let prevScenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(gesturePrevPos, ndcZ), viewportSize: viewportSize())
-            let scenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(pos, ndcZ), viewportSize: viewportSize())
+            let prevScenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(gesturePrevPos, ndcZ), viewportSize: sceneViewSize())
+            let scenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(pos, ndcZ), viewportSize: sceneViewSize())
             
             viewCameraSphericalCoord.center += (prevScenePos - scenePos)
             scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
@@ -239,15 +239,15 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
                     return
                 }
                 
-                let centerViewportPos = scene.viewCamera.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: viewportSize())
-                var scenePos = scene.viewCamera.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * 0.5 * (dist - pinchPrevFingerDist), viewportSize: viewportSize())
+                let centerViewportPos = scene.viewCamera.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: sceneViewSize())
+                var scenePos = scene.viewCamera.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * 0.5 * (dist - pinchPrevFingerDist), viewportSize: sceneViewSize())
                 
                 // NOTE: This is needed, because coverting from world to viewport and back gives low precision z value.
                 // It is becasue of uneven distribution of world z into ndc z, especially far objects.
                 // Alternative could be to make near plane larger but that limits zooming since object will be clipped
                 scenePos.z = viewCameraSphericalCoord.center.z
                 
-                let angle = 0.5 * scene.viewCamera.fovy * (dist / viewportSize().y)
+                let angle = 0.5 * scene.viewCamera.fovy * (dist / sceneViewSize().y)
                 let radiusDelta = length(scenePos - viewCameraSphericalCoord.center) / tanf(angle)
                 
                 viewCameraSphericalCoord.radius = max(viewCameraSphericalCoord.radius + (dist > pinchPrevFingerDist ? -radiusDelta : radiusDelta), 0.01)
@@ -271,7 +271,7 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         }
     }
     
-    func viewportSize() -> SIMD2<Float> {
+    func sceneViewSize() -> SIMD2<Float> {
         SIMD2<Float>(Float(self.sceneView.bounds.size.width), Float(self.sceneView.bounds.size.height))
     }
     
