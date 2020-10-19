@@ -23,8 +23,7 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
     
     auto pos = float4 (vertices[vertexID], 1.f) * uniforms.projectionViewModelMatrix;
-    pos /= pos.w;
-    auto normViewportPos = pos.xy;
+    auto normViewportPos = pos.xy / pos.w;
     normViewportPos.x *= aspect;
     
     auto otherPos = float4 (vertices[(vertexID + 1) % kLineVertexCount], 1.f) * uniforms.projectionViewModelMatrix;
@@ -38,7 +37,7 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
     
     BasicRasterizerData out;
     auto side = (2 * (static_cast<int>(vertexID) / 2) - 1) * (1 - 2 * (static_cast<int>(vertexID) % 2));
-    out.position = pos + float4(normal * side, 0.f, 0.f);
+    out.position = pos + float4(normal * side * pos.w, 0.f, 0.f);
     return out;
 }
 

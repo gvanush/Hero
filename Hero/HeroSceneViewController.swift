@@ -37,11 +37,12 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         addGestureRecognizers()
         
 //        scene.viewCamera.projection = Projection_ortographic
+//        scene.viewCamera.near = 0.1
         scene.viewCamera.orthographicScale = 70.0
         scene.viewCamera.fovy = Float.pi / 3.0
         
         let axisHalfLength: Float = 100.0
-        let axisThickness: Float = 5.0
+        let axisThickness: Float = 4.0
         let xAxis = Line(point1: SIMD3<Float>(-axisHalfLength, 0.0, 0.0), point2: SIMD3<Float>(axisHalfLength, 0.0, 0.0), thickness: axisThickness, color: SIMD4<Float>.red)
         scene.add(xAxis)
         

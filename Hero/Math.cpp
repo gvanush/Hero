@@ -91,11 +91,12 @@ simd::float4x4 makeOrthographicMatrix(float l, float r, float b, float t, float 
 
 simd::float4x4 makePerspectiveMatrix(float fovy, float aspectRatio, float n, float f) {
     const auto c = 1.f / tanf(0.5f * fovy);
+    const auto q = f / (f - n);
     using namespace simd;
     return float4x4 {
         float4 {c / aspectRatio, 0.f, 0.f, 0.f},
         float4 {0.f, c, 0.f, 0.f},
-        float4 {0.f, 0.f, f / (f - n), f * n / (n - f)},
+        float4 {0.f, 0.f, q, -n * q},
         float4 {0.f, 0.f, 1.f, 0.f}
     };
 }
