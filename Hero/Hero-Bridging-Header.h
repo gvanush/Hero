@@ -5,5 +5,6 @@
 #import "HeroScene.h"
 #import "Camera.h"
 #import "SphericalCoord.h"
+#import "Line.h"
 #import "Layer.h"
 #import "RenderingContext.h"

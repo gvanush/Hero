@@ -23,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(void) render: (RenderingContext*) renderingContext;
 
 @property (nonatomic, readwrite) simd_float4 bgrColor;
-@property (nonatomic, readwrite) simd_float2 viewportSize;
 @property (nonatomic, readwrite) simd_float2 size;
 @property (nonatomic, readonly) NSArray* sceneObjects;
 @property (nonatomic, readonly) Camera* viewCamera;

@@ -30,12 +30,12 @@
     return self.cpp->drawable.obj<id>();
 }
 
--(void) setDrawableSize: (simd_float2) drawableSize {
-    self.cpp->drawableSize = drawableSize;
+-(void) setViewportSize: (simd_float2) viewportSize {
+    self.cpp->uniforms.viewportSize = viewportSize;
 }
 
--(simd_float2) drawableSize {
-    return self.cpp->drawableSize;
+-(simd_float2) viewportSize {
+    return self.cpp->uniforms.viewportSize;
 }
 
 -(void) setRenderPassDescriptor: (MTLRenderPassDescriptor*) renderPassDescriptor {

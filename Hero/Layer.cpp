@@ -73,6 +73,7 @@ void Layer::setup() {
     pipelineStateDescriptorRef.setVertexFunction(vertexFunctionRef);
     pipelineStateDescriptorRef.setFragmentFunction(fragmentFunctionRef);
     pipelineStateDescriptorRef.colorAttachments().objectAtIndex(0).setPixelFormat(RenderingContext::kColorPixelFormat);
+//    pipelineStateDescriptorRef.setSampleCount(2);
     
     ErrorRef errorRef;
     __pipelineStateRef = device.newRenderPipelineState(pipelineStateDescriptorRef, &errorRef);
@@ -84,30 +85,29 @@ void Layer::setup() {
 
 void Layer::render(RenderingContext& renderingContext) {
     
+    if (__layers.empty()) {
+        return;
+    }
+    
     using namespace apple;
     using namespace apple::metal;
     
-    auto commandEncoderRef = renderingContext.commandBuffer.newRenderCommandEncoder(renderingContext.renderPassDescriptor);
-    assert(commandEncoderRef);
-    commandEncoderRef.setLabel(String::createWithUTF8String(u8"LayerRenderEncoder"));
+    renderingContext.renderCommandEncoder.setRenderPipelineState(__pipelineStateRef);
     
-    commandEncoderRef.setRenderPipelineState(__pipelineStateRef);
-    
-    commandEncoderRef.setVertexBuffer(__vertexBuffer, 0, kVertexInputIndexVertices);
-    
-    commandEncoderRef.setVertexBytes(&renderingContext.uniforms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);
+    renderingContext.renderCommandEncoder.setVertexBuffer(__vertexBuffer, 0, kVertexInputIndexVertices);
         
     for(auto layer: __layers) {
         
-        commandEncoderRef.setVertexBytes(&layer->size(), sizeof(Layer::SizeType), kVertexInputIndexSize);
-        commandEncoderRef.setVertexBytes(&layer->worldMatrix(), sizeof(layer->worldMatrix()), kVertexInputIndexWorldMatrix);
-        commandEncoderRef.setFragmentBytes(&layer->color(), sizeof(Layer::ColorType), kFragmentInputIndexColor);
-        commandEncoderRef.setFragmentTexture(layer->texture(), kFragmentInputIndexTexture);
+        renderingContext.uniforms.projectionViewModelMatrix = layer->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
+        renderingContext.renderCommandEncoder.setVertexBytes(&renderingContext.uniforms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);
         
-        commandEncoderRef.drawPrimitives(PrimitiveType::triangleStrip, 0, kLayerVertices.size());
+        renderingContext.renderCommandEncoder.setVertexBytes(&layer->size(), sizeof(Layer::SizeType), kVertexInputIndexSize);
+        
+        renderingContext.renderCommandEncoder.setFragmentBytes(&layer->color(), sizeof(Layer::ColorType), kFragmentInputIndexColor);
+        renderingContext.renderCommandEncoder.setFragmentTexture(layer->texture(), kFragmentInputIndexTexture);
+        
+        renderingContext.renderCommandEncoder.drawPrimitives(PrimitiveType::triangleStrip, 0, kLayerVertices.size());
     }
-    
-    commandEncoderRef.endEncoding();
     
 }
 

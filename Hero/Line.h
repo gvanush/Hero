@@ -5,13 +5,13 @@
 //  Created by Vanush Grigoryan on 10/18/20.
 //
 
-#import "CppWrapper.h"
+#import "SceneObject.h"
 
 #import <simd/simd.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Line: CppWrapper
+@interface Line: SceneObject
 
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color NS_DESIGNATED_INITIALIZER;
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2;

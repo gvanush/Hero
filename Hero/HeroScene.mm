@@ -56,15 +56,6 @@ class Camera;
     return self.cpp->size();
 }
 
--(void) setViewportSize: (simd_float2) viewportSize {
-    self.cpp->setViewportSize(viewportSize);
-    _viewCamera.aspectRatio = viewportSize.x / viewportSize.y;
-}
-
--(simd_float2) viewportSize {
-    return self.cpp->viewportSize();
-}
-
 -(void) setBgrColor: (simd_float4) bgrColor {
     self.cpp->setBgrColor(bgrColor);
 }

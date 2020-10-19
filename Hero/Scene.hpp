@@ -45,7 +45,6 @@ private:
     std::vector<SceneObject*> _sceneObjects;
     Camera* _viewCamera;
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
-    simd::float2 _viewportSize;
     simd::float2 _size;
 };
 

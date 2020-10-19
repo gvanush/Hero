@@ -13,10 +13,13 @@
 
 namespace hero {
 
+class RenderingContext;
+
 class Line: public SceneObject {
 public:
     
     Line(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color);
+    ~Line();
     
     inline void setPoint1(const simd::float3& p1);
     inline const simd::float3& point1() const;
@@ -29,6 +32,9 @@ public:
     
     inline void setColor(const simd::float4& c);
     inline const simd::float4& color() const;
+    
+    static void setup();
+    static void render(RenderingContext& renderingContext);
     
 private:
     simd::float4 _color;

@@ -70,7 +70,7 @@ struct MainViewOld: View {
                 }
             }
         }
-        .sheet(isPresented: $showingAssetSelector, content: {
+        /*.sheet(isPresented: $showingAssetSelector, content: {
             if assetSelector == .image {
                 ImageSelector() { image in
                     
@@ -100,7 +100,7 @@ struct MainViewOld: View {
                     canvas.add(layer)
                 }
             }
-        })
+        })*/
     }
 }
 

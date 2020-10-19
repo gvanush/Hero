@@ -28,6 +28,8 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         sceneView.autoResizeDrawable = true
         sceneView.colorPixelFormat = RenderingContext.colorPixelFormat()
         sceneView.clearColor = MTLClearColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
+//        sceneView.depthStencilPixelFormat = .depth32Float
+//        sceneView.sampleCount = 2
         sceneView.delegate = self
         view.addSubview(sceneView)
         
@@ -38,6 +40,14 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         scene.viewCamera.orthographicScale = 70.0
         scene.viewCamera.fovy = Float.pi / 3.0
         
+        let axisHalfLength: Float = 100.0
+        let axisThickness: Float = 5.0
+        let xAxis = Line(point1: SIMD3<Float>(-axisHalfLength, 0.0, 0.0), point2: SIMD3<Float>(axisHalfLength, 0.0, 0.0), thickness: axisThickness, color: SIMD4<Float>.red)
+        scene.add(xAxis)
+        
+        let zAxis = Line(point1: SIMD3<Float>(0.0, 0.0, -axisHalfLength), point2: SIMD3<Float>(0.0, 0.0, axisHalfLength), thickness: axisThickness, color: SIMD4<Float>.blue)
+        scene.add(zAxis)
+        
         viewCameraSphericalCoord.radius = 100.0
         viewCameraSphericalCoord.longitude = Float.pi
         viewCameraSphericalCoord.latitude = 0.5 * Float.pi
@@ -45,8 +55,9 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        renderingContext.drawableSize = simd_float2(x: Float(size.width), y: Float(size.height))
-        scene.viewportSize = renderingContext.drawableSize
+        let size = SIMD2<Float>(x: Float(size.width), y: Float(size.height))
+        renderingContext.viewportSize = size
+        scene.viewCamera.aspectRatio = size.x / size.y
     }
     
     func draw(in view: MTKView) {
@@ -123,10 +134,12 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
             let loc = panGR.location(in: sceneView)
             let pos = SIMD2<Float>(Float(loc.x), Float(loc.y))
             let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / viewportSize().min()
-            let isInFrontOfSphere = sinf(viewCameraSphericalCoord.latitude) >= 0.0
             
-            viewCameraSphericalCoord.longitude += (isInFrontOfSphere ? angleDelta.x : -angleDelta.x)
             viewCameraSphericalCoord.latitude -= angleDelta.y
+            
+            let isInFrontOfSphere = sinf(viewCameraSphericalCoord.latitude) >= 0.0
+            viewCameraSphericalCoord.longitude += (isInFrontOfSphere ? angleDelta.x : -angleDelta.x)
+            
             scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
             scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
             

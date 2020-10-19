@@ -8,8 +8,10 @@
 
 #pragma once
 
-#include "apple/metal/Metal.h"
 #include "ShaderTypes.h"
+
+#include "apple/metal/Metal.h"
+
 #include <simd/simd.h>
 
 namespace hero {
@@ -28,7 +30,7 @@ public:
     apple::metal::DrawableRef drawable;
     apple::metal::RenderPassDescriptorRef renderPassDescriptor;
     apple::metal::CommandBufferRef commandBuffer;
-    simd::float2 drawableSize;
+    apple::metal::RenderCommandEncoderRef renderCommandEncoder;
 };
 
 }
