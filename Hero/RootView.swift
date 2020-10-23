@@ -75,7 +75,7 @@ struct RootView: View {
     
     var body: some View {
         ZStack {
-            HeroSceneView()
+            SceneView()
                 .ignoresSafeArea()
             
             VStack {

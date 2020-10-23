@@ -41,7 +41,7 @@ struct MainViewOld: View {
     
     var body: some View {
         NavigationView {
-            HeroSceneView()
+            SceneView()
             .navigationBarTitle("Project", displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {

@@ -14,7 +14,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         try! ProjectDAO.shared.setup()
         
-        HeroScene.setup()
+        Hero.Scene.setup()
         
         return true
     }
@@ -25,10 +25,10 @@ struct HeroApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
-    var body: some Scene {
+    var body: some SwiftUI.Scene {
         WindowGroup {
             RootView()
-                .environment(\.scene, HeroScene())
+                .environment(\.scene, Hero.Scene())
                 .environment(\.gpu, RenderingContext.device())
             
         }

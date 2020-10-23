@@ -1,11 +1,11 @@
 //
-//  HeroScene.mm
+//  Scene.mm
 //  Hero
 //
 //  Created by Vanush Grigoryan on 7/31/20.
 //
 
-#import "HeroScene.h"
+#import "Scene.h"
 #import "RenderingContext.h"
 #import "Camera.h"
 
@@ -18,13 +18,13 @@ class Camera;
 
 }
 
-@interface HeroScene () {
+@interface Scene () {
     NSMutableArray* _sceneObjects;
 }
 
 @end
 
-@implementation HeroScene
+@implementation Scene
 
 -(instancetype) init {
     if (self = [super initWithCppHandle: new hero::Scene {}]) {
@@ -74,7 +74,7 @@ class Camera;
 
 @end
 
-@implementation HeroScene (Cpp)
+@implementation Scene (Cpp)
 
 -(hero::Scene*) cpp {
     return static_cast<hero::Scene*>(self.cppHandle);

@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct HeroSceneKey: EnvironmentKey {
-    typealias Value = HeroScene
+struct SceneKey: EnvironmentKey {
+    typealias Value = Hero.Scene
     
-    static var defaultValue = HeroScene()
+    static var defaultValue = Scene()
 }
 
 extension EnvironmentValues {
-    var scene: HeroScene {
-        get { self[HeroSceneKey.self] }
-        set { self[HeroSceneKey.self] = newValue }
+    var scene: Hero.Scene {
+        get { self[SceneKey.self] }
+        set { self[SceneKey.self] = newValue }
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  HeroScene.h
+//  Scene.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 7/31/20.
@@ -16,7 +16,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HeroScene: CppWrapper
+@interface Scene: CppWrapper
 
 -(void) addSceneObject: (SceneObject*) sceneObject;
 
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 namespace hero { class Scene; }
 
-@interface HeroScene (Cpp)
+@interface Scene (Cpp)
 
 -(hero::Scene*) cpp;
 

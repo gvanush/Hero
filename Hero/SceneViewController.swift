@@ -1,5 +1,5 @@
 //
-//  HeroSceneViewController.swift
+//  SceneViewController.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 7/31/20.
@@ -9,9 +9,9 @@ import UIKit
 import MetalKit
 import Metal
 
-class HeroSceneViewController: UIViewController, MTKViewDelegate {
+class SceneViewController: UIViewController, MTKViewDelegate {
     
-    init(scene: HeroScene) {
+    init(scene: Scene) {
         self.scene = scene
         super.init(nibName: nil, bundle: nil)
     }
@@ -282,7 +282,7 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
     }
     
     private var sceneView: MTKView!
-    private var scene: HeroScene
+    private var scene: Scene
     private var panGR: UIPanGestureRecognizer!
     private var gesturePrevPos = SIMD2<Float>.zero
     private var shouldResetTwoFingerPan = false
@@ -294,7 +294,7 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
 }
 
 
-extension HeroSceneViewController: UIGestureRecognizerDelegate {
+extension SceneViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if panGR === gestureRecognizer || panGR === otherGestureRecognizer {
             return false
