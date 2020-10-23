@@ -28,7 +28,8 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         sceneView.autoResizeDrawable = true
         sceneView.colorPixelFormat = RenderingContext.colorPixelFormat()
         sceneView.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
-        sceneView.clearColor = MTLClearColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
+        sceneView.clearColor = MTLClearColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+        sceneView.autoResizeDrawable = true
 //        sceneView.sampleCount = 2
         sceneView.delegate = self
         view.addSubview(sceneView)
@@ -53,10 +54,15 @@ class HeroSceneViewController: UIViewController, MTKViewDelegate {
         viewCameraSphericalCoord.longitude = Float.pi
         viewCameraSphericalCoord.latitude = 0.5 * Float.pi
         scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
+        
+        updateViewportSize(SIMD2<Float>(x: Float(sceneView.drawableSize.width), y: Float(sceneView.drawableSize.height)))
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        let size = SIMD2<Float>(x: Float(size.width), y: Float(size.height))
+        updateViewportSize(SIMD2<Float>(x: Float(size.width), y: Float(size.height)))
+    }
+    
+    func updateViewportSize(_ size: SIMD2<Float>) {
         renderingContext.viewportSize = size
         scene.viewCamera.aspectRatio = size.x / size.y
     }

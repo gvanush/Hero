@@ -28,18 +28,34 @@ class TestViewModel: ObservableObject {
 
 struct TestView: View {
     
-    @ObservedObject var viewModel: TestViewModel
-    
+    @State private var isTopBarVisible = true
+    @State private var isBottomBarVisible = true
+
     var body: some View {
-        Text("Hello \(viewModel.model.x)")
-            .onTapGesture(count: 1, perform: {
-                viewModel.model.x = 5
+        ZStack {
+            Color.red
+                .ignoresSafeArea()
+            Button(action: {
+                withAnimation {
+                    isTopBarVisible.toggle()
+                    isBottomBarVisible.toggle()
+                }
+            }, label: {
+                Text("Button")
             })
+            VStack {
+                TopBar()
+                    .opacity(isTopBarVisible ? 1.0 : 0.0)
+                ObjectToolbar()
+                    .opacity(isBottomBarVisible ? 1.0 : 0.0)
+            }
+        }
+        .statusBar(hidden: !isTopBarVisible)
     }
 }
 
 struct TestView_Previews: PreviewProvider {
     static var previews: some View {
-        TestView(viewModel: TestViewModel())
+        TestView()
     }
 }

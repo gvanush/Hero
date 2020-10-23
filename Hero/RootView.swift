@@ -10,6 +10,9 @@ import os
 
 class RootViewModel: ObservableObject {
     @Published var isProjectBrowserPresented = false
+    @Published private var isTopBarVisible = true
+    @Published private var isObjectToolbarVisible = true
+    
     var project: Project?
     
     func saveImage() {
@@ -25,29 +28,35 @@ class RootViewModel: ObservableObject {
     }
 }
 
-struct RootView: View {
+struct TopBar: View {
     
     @ObservedObject var model = RootViewModel()
-    private let logger = Logger(category: "rootview")
+    private let logger = Logger(category: "topbar")
     
     var body: some View {
-        NavigationView {
-            HeroSceneView()
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(leading: Button(action: {
+        GeometryReader { proxy in
+            HStack {
+                Button(action: {
                     logger.notice("Open project browser")
                     model.isProjectBrowserPresented.toggle()
                 }, label: {
                     Image(systemName: "square.grid.2x2.fill")
                         .font(.system(size: 25, weight: .regular))
                         .minTappableFrame(alignment: .leading)
-                }), trailing: Button(action: {
+                })
+                Spacer()
+                Button(action: {
                     model.saveImage()
                 }, label: {
                     Text("Save image")
-                }).disabled(model.project == nil))
+                }).disabled(model.project == nil)
+            }
+            .padding()
+            .frame(minWidth: proxy.size.width, idealWidth: proxy.size.width, maxWidth: proxy.size.width, minHeight: height, idealHeight: height, maxHeight: height, alignment: .center)
+            .padding(.top, proxy.safeAreaInsets.top)
+            .background(BlurView(style: .systemUltraThinMaterial))
+            .edgesIgnoringSafeArea(.top)
         }
-        .navigationViewStyle(StackNavigationViewStyle())
         .fullScreenCover(isPresented: $model.isProjectBrowserPresented, content: {
             ProjectBrowser(model: ProjectBrowserModel(selectedProject: model.project), onRemoveAction: { project in
                 if model.project === project {
@@ -57,6 +66,23 @@ struct RootView: View {
                 model.project = project
             }
         })
+    }
+    
+    let height: CGFloat = 50.0
+}
+
+struct RootView: View {
+    
+    var body: some View {
+        ZStack {
+            HeroSceneView()
+                .ignoresSafeArea()
+            
+            VStack {
+                TopBar()
+                ObjectToolbar()
+            }
+        }
     }
 }
 

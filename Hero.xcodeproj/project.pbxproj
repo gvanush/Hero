@@ -44,6 +44,8 @@
 		B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DF3252306CE0057F066 /* SceneObject.cpp */; };
 		B78D7DF9252312A00057F066 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DF7252312A00057F066 /* Camera.cpp */; };
 		B78D7E012524AE8F0057F066 /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DFF2524AE8F0057F066 /* Camera.mm */; };
+		B79E0456253F526500042719 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79E0455253F526500042719 /* BlurView.swift */; };
+		B7AEE00E2541E741002061F5 /* ObjectToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AEE00D2541E741002061F5 /* ObjectToolbar.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
@@ -115,6 +117,8 @@
 		B78D7DFC2523CDAC0057F066 /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
 		B78D7DFF2524AE8F0057F066 /* Camera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
 		B78D7E002524AE8F0057F066 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		B79E0455253F526500042719 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		B7AEE00D2541E741002061F5 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -264,6 +268,7 @@
 				B7847B2624D9D5BE00026607 /* TextureUtils.hpp */,
 				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
 				B7847B1824D6F38A00026607 /* Shaders.metal */,
+				B7AEE00D2541E741002061F5 /* ObjectToolbar.swift */,
 			);
 			name = Scene;
 			sourceTree = "<group>";
@@ -299,6 +304,7 @@
 				B723BB1E250DD229007C989E /* Settings.swift */,
 				B723BB20250E0965007C989E /* Logger+Extensions.swift */,
 				B723BB22250F2FC2007C989E /* NativeTextField.swift */,
+				B79E0455253F526500042719 /* BlurView.swift */,
 				B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */,
 				B715B24324D2A2DB00B4C859 /* CppWrapper.h */,
 				B749ADB2252843C30047B996 /* CppWrapper.mm */,
@@ -401,6 +407,7 @@
 				B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */,
 				B74ECB37253C7D2800C0301E /* Line.cpp in Sources */,
 				B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */,
+				B79E0456253F526500042719 /* BlurView.swift in Sources */,
 				B78D7E012524AE8F0057F066 /* Camera.mm in Sources */,
 				B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */,
 				B78D7DEF2521B5F30057F066 /* Math.cpp in Sources */,
@@ -416,6 +423,7 @@
 				B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */,
 				B7847AE524D4695100026607 /* HeroSceneViewController.swift in Sources */,
 				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
+				B7AEE00E2541E741002061F5 /* ObjectToolbar.swift in Sources */,
 				B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */,
 				B723BB23250F2FC2007C989E /* NativeTextField.swift in Sources */,
 				B7DD54752502657E00163947 /* TestView.swift in Sources */,
@@ -557,7 +565,7 @@
 				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Hero/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -585,7 +593,7 @@
 				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Hero/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
