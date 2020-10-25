@@ -11,8 +11,13 @@ import Metal
 
 class SceneViewController: UIViewController, MTKViewDelegate {
     
-    init(scene: Scene) {
+    private var rootViewModel: RootViewModel
+    private var sceneViewModel: SceneViewModel
+    
+    init(scene: Scene, rootViewModel: RootViewModel, sceneViewModel: SceneViewModel) {
         self.scene = scene
+        self.rootViewModel = rootViewModel
+        self.sceneViewModel = sceneViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -133,6 +138,8 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         
         switch panGR.state {
         case .began:
+            isNavigating = true
+            
             let loc = panGR.location(in: sceneView)
             gesturePrevPos.x = Float(loc.x)
             gesturePrevPos.y = Float(loc.y)
@@ -151,8 +158,9 @@ class SceneViewController: UIViewController, MTKViewDelegate {
             scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
             
             gesturePrevPos = pos
+            
         default:
-            break
+            isNavigating = false
         }
     }
     
@@ -170,6 +178,7 @@ class SceneViewController: UIViewController, MTKViewDelegate {
                 panGR.cancel()
                 return
             }
+            isNavigating = true
             gesturePrevPos = averagePosition()
         case .changed:
         
@@ -197,6 +206,7 @@ class SceneViewController: UIViewController, MTKViewDelegate {
             gesturePrevPos = pos
             
         default:
+            isNavigating = false
             break
         }
         
@@ -212,6 +222,7 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         
         switch pinchGR.state {
         case .began:
+            isNavigating = true
             guard pinchGR.numberOfTouches == 2 else {
                 pinchGR.cancel()
                 return
@@ -272,8 +283,15 @@ class SceneViewController: UIViewController, MTKViewDelegate {
             }
             
         default:
-            
+            isNavigating = false
             break
+        }
+    }
+    
+    var isNavigating = false {
+        willSet {
+            rootViewModel.setFullScreenMode(enabled: newValue, animated: true)
+            sceneViewModel.setFullScreenMode(enabled: newValue, animated: true)
         }
     }
     

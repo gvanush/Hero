@@ -139,6 +139,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B70CFB8A2542B68D00E8E30A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B7847AE424D4695100026607 /* SceneViewController.swift */,
+				B731700624CF378F00157455 /* SceneView.swift */,
+				B7AEE00D2541E741002061F5 /* ObjectToolbar.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		B715B23824D28B0F00B4C859 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,12 +260,12 @@
 		B7847AE024D45FC300026607 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				B70CFB8A2542B68D00E8E30A /* View */,
 				B77878392529225F0097F941 /* SphericalCoord */,
 				B778782D252906700097F941 /* Scene */,
 				B778782C252906460097F941 /* SceneObject */,
 				B778782B252906380097F941 /* Camera */,
 				B74ECB34253C7D0600C0301E /* Line */,
-				B731700624CF378F00157455 /* SceneView.swift */,
 				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
 				B7847B1424D6E66900026607 /* RenderingContext.mm */,
 				B7847B1524D6E66900026607 /* RenderingContext.h */,
@@ -263,12 +273,10 @@
 				B7847AD724D33AE100026607 /* Layer.hpp */,
 				B7847AE124D4625200026607 /* Layer.mm */,
 				B7847AE224D4625200026607 /* Layer.h */,
-				B7847AE424D4695100026607 /* SceneViewController.swift */,
 				B7847B2524D9D5BE00026607 /* TextureUtils.cpp */,
 				B7847B2624D9D5BE00026607 /* TextureUtils.hpp */,
 				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
 				B7847B1824D6F38A00026607 /* Shaders.metal */,
-				B7AEE00D2541E741002061F5 /* ObjectToolbar.swift */,
 			);
 			name = Scene;
 			sourceTree = "<group>";

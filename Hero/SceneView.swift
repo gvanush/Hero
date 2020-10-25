@@ -9,17 +9,54 @@ import SwiftUI
 import MetalKit
 import Metal
 
-struct SceneView: UIViewControllerRepresentable {
+class SceneViewModel: ObservableObject {
     
-    @Environment(\.scene) private var scene
+    @Published var isObjectToolbarVisible = true
     
-    func makeUIViewController(context: Context) -> SceneViewController {
-        SceneViewController(scene: scene)
+    func setFullScreenMode(enabled: Bool, animated: Bool = false) {
+        if animated {
+            withAnimation {
+                isObjectToolbarVisible = !enabled
+            }
+        } else {
+            isObjectToolbarVisible = !enabled
+        }
     }
     
-    func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {
+}
+
+struct SceneView: View {
+    
+    @ObservedObject private var model: SceneViewModel
+    @EnvironmentObject private var rootViewModel: RootViewModel
+    
+    init(model: SceneViewModel) {
+        self.model = model
     }
     
-    typealias UIViewControllerType = SceneViewController
+    var body: some View {
+        ZStack {
+            SceneViewControllerProxy(sceneViewModel: model, rootViewModel: rootViewModel)
+                .ignoresSafeArea()
+            ObjectToolbar()
+                .opacity(model.isObjectToolbarVisible ? 1.0 : 0.0)
+        }
+    }
     
+    struct SceneViewControllerProxy: UIViewControllerRepresentable {
+        
+        let sceneViewModel: SceneViewModel
+        let rootViewModel: RootViewModel
+        @Environment(\.scene) private var scene
+        
+        func makeUIViewController(context: Context) -> SceneViewController {
+            SceneViewController(scene: scene, rootViewModel: rootViewModel, sceneViewModel: sceneViewModel)
+        }
+        
+        func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {
+        }
+        
+        typealias UIViewControllerType = SceneViewController
+        
+    }
 }

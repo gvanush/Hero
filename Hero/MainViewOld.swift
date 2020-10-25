@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 import MetalKit
 
-struct MainViewOld: View {
+/*struct MainViewOld: View {
     
     @State private var showingSelectLayerSourceView = false
     @State private var showingAssetSelector = false
@@ -70,7 +70,7 @@ struct MainViewOld: View {
                 }
             }
         }
-        /*.sheet(isPresented: $showingAssetSelector, content: {
+        .sheet(isPresented: $showingAssetSelector, content: {
             if assetSelector == .image {
                 ImageSelector() { image in
                     
@@ -100,7 +100,7 @@ struct MainViewOld: View {
                     canvas.add(layer)
                 }
             }
-        })*/
+        })
     }
 }
 
@@ -110,4 +110,4 @@ struct ContentView_Previews: PreviewProvider {
             MainViewOld()
         }
     }
-}
+}*/

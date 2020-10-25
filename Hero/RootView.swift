@@ -10,8 +10,9 @@ import os
 
 class RootViewModel: ObservableObject {
     @Published var isProjectBrowserPresented = false
-    @Published private var isTopBarVisible = true
-    @Published private var isObjectToolbarVisible = true
+    @Published var isTopBarVisible = true
+    @Published var isStatusBarVisible = true
+    let sceneViewModel = SceneViewModel()
     
     var project: Project?
     
@@ -26,11 +27,49 @@ class RootViewModel: ObservableObject {
             assertionFailure(error.localizedDescription)
         }
     }
+    
+    func setTopBar(visible: Bool, animated: Bool = false) {
+        if animated {
+            withAnimation {
+                isTopBarVisible = visible
+            }
+        } else {
+            isTopBarVisible = visible
+        }
+    }
+    
+    func setFullScreenMode(enabled: Bool, animated: Bool = false) {
+        if animated {
+            withAnimation {
+                isTopBarVisible = !enabled
+                isStatusBarVisible = !enabled
+            }
+        } else {
+            isTopBarVisible = !enabled
+            isStatusBarVisible = !enabled
+        }
+    }
+}
+
+struct RootView: View {
+    
+    @ObservedObject var model = RootViewModel()
+    
+    var body: some View {
+        ZStack {
+            SceneView(model: model.sceneViewModel)
+            TopBar()
+                .opacity(model.isTopBarVisible ? 1.0 : 0.0)
+        }
+            .statusBar(hidden: !model.isStatusBarVisible)
+            .environmentObject(model)
+    }
 }
 
 struct TopBar: View {
     
-    @ObservedObject var model = RootViewModel()
+    @EnvironmentObject private var rootViewModel: RootViewModel
+    
     private let logger = Logger(category: "topbar")
     
     var body: some View {
@@ -38,7 +77,7 @@ struct TopBar: View {
             HStack {
                 Button(action: {
                     logger.notice("Open project browser")
-                    model.isProjectBrowserPresented.toggle()
+                    rootViewModel.isProjectBrowserPresented.toggle()
                 }, label: {
                     Image(systemName: "square.grid.2x2.fill")
                         .font(.system(size: 25, weight: .regular))
@@ -46,10 +85,10 @@ struct TopBar: View {
                 })
                 Spacer()
                 Button(action: {
-                    model.saveImage()
+                    rootViewModel.saveImage()
                 }, label: {
                     Text("Save image")
-                }).disabled(model.project == nil)
+                }).disabled(rootViewModel.project == nil)
             }
             .padding()
             .frame(minWidth: proxy.size.width, idealWidth: proxy.size.width, maxWidth: proxy.size.width, minHeight: height, idealHeight: height, maxHeight: height, alignment: .center)
@@ -57,33 +96,18 @@ struct TopBar: View {
             .background(BlurView(style: .systemUltraThinMaterial))
             .edgesIgnoringSafeArea(.top)
         }
-        .fullScreenCover(isPresented: $model.isProjectBrowserPresented, content: {
-            ProjectBrowser(model: ProjectBrowserModel(selectedProject: model.project), onRemoveAction: { project in
-                if model.project === project {
-                    model.project = nil
+        .fullScreenCover(isPresented: $rootViewModel.isProjectBrowserPresented, content: {
+            ProjectBrowser(model: ProjectBrowserModel(selectedProject: rootViewModel.project), onRemoveAction: { project in
+                if rootViewModel.project === project {
+                    rootViewModel.project = nil
                 }
             }) { project in
-                model.project = project
+                rootViewModel.project = project
             }
         })
     }
     
     let height: CGFloat = 50.0
-}
-
-struct RootView: View {
-    
-    var body: some View {
-        ZStack {
-            SceneView()
-                .ignoresSafeArea()
-            
-            VStack {
-                TopBar()
-                ObjectToolbar()
-            }
-        }
-    }
 }
 
 struct RootView_Previews: PreviewProvider {
