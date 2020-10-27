@@ -56,15 +56,39 @@ struct ObjectToolbar: View {
 
 struct ObjectInspector: View {
     
-    @State var normOffsetY: CGFloat = 0.0
-    @State var isOpen = false {
-        willSet {
-            normOffsetY = (newValue ? 1.0 : 0.0)
+    enum DragState {
+        case inactive
+        case dragging(normTranslationY: CGFloat)
+        
+        var normTranslationY: CGFloat {
+            switch self {
+            case .inactive:
+                return .zero
+            case .dragging(let normTranslationY):
+                return normTranslationY
+            }
+        }
+        
+        var isDragging: Bool {
+            switch self {
+            case .inactive:
+                return false
+            case .dragging:
+                return true
+            }
         }
     }
-    @State var lastDragValue: DragGesture.Value?
-    @State var isDragging = false
     
+    @GestureState var dragState = DragState.inactive
+    @State var isOpen = false {
+        willSet {
+            normOffsetY = (newValue ? 0.0 : 1.0)
+        }
+    }
+    @State var normOffsetY: CGFloat = 1.0
+    @State var lastDragValue: DragGesture.Value?
+    @State var objectToolbarVisible = true
+        
     var body: some View {
         GeometryReader { proxy in
             Group {
@@ -72,11 +96,12 @@ struct ObjectInspector: View {
                     header(proxy)
                     body(proxy)
                 }
-                .offset(x: 0.0, y: normOffsetY * proxy.safeAreaInsets.top)
+                .offset(x: 0.0, y: contentOffset(proxy))
             }
-//                .padding(.top, proxy.safeAreaInsets.top)
-                .background(BlurView(style: .systemUltraThinMaterial))
+//                .background(BlurView(style: .systemUltraThinMaterial))
+                .background(Color.yellow)
                 .offset(x: 0.0, y: offsetY(proxy))
+                .gesture(self.dragGesture(proxy))
                 .edgesIgnoringSafeArea([.bottom, .top])
         }
     }
@@ -88,32 +113,45 @@ struct ObjectInspector: View {
                     ObjectToolbar()
                     Divider()
                 }
-                    .opacity(isDragging || isOpen ? 0.0 : 1.0)
-//                    .offset(x: 0.0, y: isDragging || isOpen ? -proxy.safeAreaInsets.top : 0.0)
+                    .opacity(objectToolbarVisible ? 1.0 : 0.0)
                 objectOptionsControl
             }
             Text("Object 0")
                 .font(.system(size: 30, weight: .regular))
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .padding()
-                .opacity(isOpen || isDragging ? 1.0 : 0.0)
-                .offset(x: 0.0, y: isOpen || isDragging ? 0.0 : proxy.safeAreaInsets.top)
+                .opacity(objectToolbarVisible ? 0.0 : 1.0)
+                .offset(x: 0.0, y: objectToolbarVisible ? proxy.safeAreaInsets.top : 0.0)
             
             handle
         }
             .frame(maxWidth: .infinity, maxHeight: ObjectInspector.topBarHeight, alignment: .center)
-            .contentShape(Rectangle())
-            .gesture(self.dragGesture(proxy))
     }
     
     func body(_ proxy: GeometryProxy) -> some View {
         HStack(spacing: 0.0) {
-            edgeDragArea(proxy)
-            ScrollView() {
-
+            ScrollView(.vertical, showsIndicators: true) {
+                ZStack {
+                    Color.black
+                    Text("dadas")
+                }
             }
-//                        .background(Color.red)
-            edgeDragArea(proxy)
+            .opacity(objectToolbarVisible ? 0.0 : 1.0)
+            .offset(x: 0.0, y: objectToolbarVisible ? proxy.safeAreaInsets.top : 0.0)
+            .padding(.horizontal, 20)
+        }
+    }
+    
+    func contentOffset(_ proxy: GeometryProxy) -> CGFloat {
+        switch dragState {
+        case .dragging(let normTranslationY):
+            if isOpen {
+                return (1.0 - max(normTranslationY, 0.0)) * proxy.safeAreaInsets.top
+            } else {
+                return (-min(normTranslationY, 0.0)) * proxy.safeAreaInsets.top
+            }
+        case .inactive:
+            return (1.0 - normOffsetY) * proxy.safeAreaInsets.top
         }
     }
     
@@ -137,48 +175,55 @@ struct ObjectInspector: View {
     }
     
     func offsetY(_ proxy: GeometryProxy) -> CGFloat {
-        (1.0 - normOffsetY) * (proxy.size.height + proxy.safeAreaInsets.top - ObjectInspector.topBarHeight)
+        let maxOffset = proxy.size.height + proxy.safeAreaInsets.top - ObjectInspector.topBarHeight
+        switch dragState {
+        case .dragging(let normTranslationY):
+            if isOpen {
+                return max(normTranslationY, 0.0) * maxOffset
+            } else {
+                return (1.0 + min(normTranslationY, 0.0)) * maxOffset
+            }
+        case .inactive:
+            return normOffsetY * maxOffset
+        }
     }
     
-    func computeNormOffsetY(_ value: DragGesture.Value, _ proxy: GeometryProxy) -> CGFloat {
-        if isOpen {
-            return 1.0 - clamp(value.translation.height / (proxy.size.height - ObjectInspector.topBarHeight), lower: 0.0, upper: 1.0)
-        } else {
-            return -clamp(value.translation.height / (proxy.size.height - ObjectInspector.topBarHeight), lower: -1.0, upper: 0.0)
-        }
+    func normTranslationY(_ value: DragGesture.Value, _ proxy: GeometryProxy) -> CGFloat {
+        clamp(value.translation.height / (proxy.size.height - ObjectInspector.topBarHeight), lower: -1.0, upper: 1.0)
     }
     
     func dragGesture(_ proxy: GeometryProxy) -> some Gesture {
         DragGesture(coordinateSpace: .global)
+            .updating($dragState, body: { value, state, _ in
+                state = .dragging(normTranslationY: normTranslationY(value, proxy))
+            })
             .onChanged { value in
-                normOffsetY = computeNormOffsetY(value, proxy)
                 lastDragValue = value
-                if !isDragging {
-                    withAnimation {
-                        isDragging = true
-                    }
+                withAnimation(.easeOut(duration: 0.15)) {
+                    objectToolbarVisible = false
                 }
             }
             .onEnded { value in
                 guard let lastDragValue = self.lastDragValue else {
-                    isDragging = false
                     return
                 }
                 
-                let normOffset = computeNormOffsetY(value, proxy)
-                let normDist = abs(normOffset - self.normOffsetY)
-                let speed = max(normDist / CGFloat(value.time.timeIntervalSince(lastDragValue.time)), 1.5)
+                let normTranY = normTranslationY(value, proxy)
+                normOffsetY = clamp(normOffsetY + normTranY, lower: 0.0, upper: 1.0)
                 
-                let normPredictedTranslation = value.predictedEndTranslation.height / (proxy.size.height - ObjectInspector.topBarHeight)
+                let normTranDelta = abs(normTranY - dragState.normTranslationY)
+                let speed = max(normTranDelta / CGFloat(value.time.timeIntervalSince(lastDragValue.time)), 1.5)
+                
+                let normPredictedTran = value.predictedEndTranslation.height / (proxy.size.height - ObjectInspector.topBarHeight)
                 var shouldToggle = true
-                if normPredictedTranslation > 0.0 {
-                    shouldToggle = (isOpen && normPredictedTranslation > 0.5)
+                if normPredictedTran > 0.0 {
+                    shouldToggle = (isOpen && normPredictedTran > 0.5)
                 } else {
-                    shouldToggle = (!isOpen && normPredictedTranslation < -0.5)
+                    shouldToggle = (!isOpen && normPredictedTran < -0.5)
                 }
                 
-                let shouldAnimateUp = (shouldToggle && !isOpen) || (!shouldToggle && isOpen)
-                let normRemainingDist = (shouldAnimateUp ? 1.0 - normOffset : normOffset)
+//                let shouldAnimateUp = (shouldToggle && !isOpen) || (!shouldToggle && isOpen)
+                let normRemainingDist = (shouldToggle ? 1.0 - abs(normTranY) : abs(normTranY))
                 let duration = max(Double(normRemainingDist / speed), 0.15)
                     
                 withAnimation(.easeOut(duration: duration)) {
@@ -187,22 +232,13 @@ struct ObjectInspector: View {
                     } else {
                         isOpen = (isOpen ? true : false)
                     }
-                    isDragging = false
+                    objectToolbarVisible = !isOpen
                 }
                 
             }
     }
-    
-    func edgeDragArea(_ proxy: GeometryProxy) -> some View {
-        Color.clear
-            .frame(minWidth: ObjectInspector.edgeDragAreaWidth, idealWidth: ObjectInspector.edgeDragAreaWidth, maxWidth: ObjectInspector.edgeDragAreaWidth, minHeight: 0.0, idealHeight: 0.0, maxHeight: .infinity
-                   , alignment: .center)
-            .contentShape(Rectangle())
-            .gesture(dragGesture(proxy))
-    }
-    
+        
     static let topBarHeight: CGFloat = 70.0
-    static let edgeDragAreaWidth: CGFloat = 20.0
     
 }
 
