@@ -11,15 +11,15 @@ import Metal
 
 class SceneViewModel: ObservableObject {
     
-    @Published var isObjectToolbarVisible = true
+    @Published var isObjectInspectorVisible = true
     
     func setFullScreenMode(enabled: Bool, animated: Bool = false) {
         if animated {
             withAnimation {
-                isObjectToolbarVisible = !enabled
+                isObjectInspectorVisible = !enabled
             }
         } else {
-            isObjectToolbarVisible = !enabled
+            isObjectInspectorVisible = !enabled
         }
     }
     
@@ -38,8 +38,8 @@ struct SceneView: View {
         ZStack {
             SceneViewControllerProxy(sceneViewModel: model, rootViewModel: rootViewModel)
                 .ignoresSafeArea()
-            ObjectToolbar()
-                .opacity(model.isObjectToolbarVisible ? 1.0 : 0.0)
+            ObjectInspector()
+                .opacity(model.isObjectInspectorVisible ? 1.0 : 0.0)
         }
     }
     

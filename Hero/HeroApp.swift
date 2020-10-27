@@ -27,6 +27,7 @@ struct HeroApp: App {
     
     var body: some SwiftUI.Scene {
         WindowGroup {
+//            ObjectInspector()
             RootView()
                 .environment(\.scene, Hero.Scene())
                 .environment(\.gpu, RenderingContext.device())

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B70CFB8D2545EE2400E8E30A /* MathUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70CFB8C2545EE2400E8E30A /* MathUtils.swift */; };
 		B715B23F24D28E2200B4C859 /* libAppleCppAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */; };
 		B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */; };
 		B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */; };
@@ -45,7 +46,7 @@
 		B78D7DF9252312A00057F066 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DF7252312A00057F066 /* Camera.cpp */; };
 		B78D7E012524AE8F0057F066 /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DFF2524AE8F0057F066 /* Camera.mm */; };
 		B79E0456253F526500042719 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79E0455253F526500042719 /* BlurView.swift */; };
-		B7AEE00E2541E741002061F5 /* ObjectToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AEE00D2541E741002061F5 /* ObjectToolbar.swift */; };
+		B7AEE00E2541E741002061F5 /* ObjectInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AEE00D2541E741002061F5 /* ObjectInspector.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B70CFB8C2545EE2400E8E30A /* MathUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtils.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,7 +120,7 @@
 		B78D7DFF2524AE8F0057F066 /* Camera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
 		B78D7E002524AE8F0057F066 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		B79E0455253F526500042719 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		B7AEE00D2541E741002061F5 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
+		B7AEE00D2541E741002061F5 /* ObjectInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectInspector.swift; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -144,7 +146,7 @@
 			children = (
 				B7847AE424D4695100026607 /* SceneViewController.swift */,
 				B731700624CF378F00157455 /* SceneView.swift */,
-				B7AEE00D2541E741002061F5 /* ObjectToolbar.swift */,
+				B7AEE00D2541E741002061F5 /* ObjectInspector.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -323,6 +325,7 @@
 				B7787843252BA2580097F941 /* Numeric.hpp */,
 				B7787862252C51980097F941 /* SIMD+Extensions.swift */,
 				B76960862531940F0000F362 /* UIGestureRecognizer+Extensions.swift */,
+				B70CFB8C2545EE2400E8E30A /* MathUtils.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B70CFB8D2545EE2400E8E30A /* MathUtils.swift in Sources */,
 				B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */,
 				B7847B1924D6F38A00026607 /* Shaders.metal in Sources */,
 				B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */,
@@ -431,7 +435,7 @@
 				B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */,
 				B7847AE524D4695100026607 /* SceneViewController.swift in Sources */,
 				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
-				B7AEE00E2541E741002061F5 /* ObjectToolbar.swift in Sources */,
+				B7AEE00E2541E741002061F5 /* ObjectInspector.swift in Sources */,
 				B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */,
 				B723BB23250F2FC2007C989E /* NativeTextField.swift in Sources */,
 				B7DD54752502657E00163947 /* TestView.swift in Sources */,

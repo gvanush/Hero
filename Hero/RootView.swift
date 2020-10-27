@@ -10,7 +10,7 @@ import os
 
 class RootViewModel: ObservableObject {
     @Published var isProjectBrowserPresented = false
-    @Published var isTopBarVisible = true
+    @Published var isTopBarVisible = false
     @Published var isStatusBarVisible = true
     let sceneViewModel = SceneViewModel()
     
