@@ -88,6 +88,7 @@ struct ObjectInspector: View {
     @State var normOffsetY: CGFloat = 1.0
     @State var lastDragValue: DragGesture.Value?
     @State var objectToolbarVisible = true
+    @EnvironmentObject private var rootViewModel: RootViewModel
         
     var body: some View {
         GeometryReader { proxy in
@@ -201,6 +202,7 @@ struct ObjectInspector: View {
                 if objectToolbarVisible {
                     withAnimation(.easeOut(duration: 0.15)) {
                         objectToolbarVisible = false
+                        rootViewModel.isTopBarVisible = false
                     }
                 }
             }
@@ -234,6 +236,7 @@ struct ObjectInspector: View {
                         isOpen = (isOpen ? true : false)
                     }
                     objectToolbarVisible = !isOpen
+                    rootViewModel.isTopBarVisible = !isOpen
                 }
                 
             }
