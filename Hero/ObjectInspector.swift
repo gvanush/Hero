@@ -214,7 +214,7 @@ struct ObjectInspector: View {
                 let normTranY = normTranslationY(value, proxy)
                 normOffsetY = clamp(normOffsetY + normTranY, lower: 0.0, upper: 1.0)
                 
-                let normTranDelta = abs(normTranY - dragState.normTranslationY)
+                let normTranDelta = abs(normTranY - normTranslationY(lastDragValue, proxy))
                 let speed = max(normTranDelta / CGFloat(value.time.timeIntervalSince(lastDragValue.time)), 1.5)
                 
                 let normPredictedTran = value.predictedEndTranslation.height / (proxy.size.height - ObjectInspector.topBarHeight)
@@ -225,7 +225,6 @@ struct ObjectInspector: View {
                     shouldToggle = (!isOpen && normPredictedTran < -0.5)
                 }
                 
-//                let shouldAnimateUp = (shouldToggle && !isOpen) || (!shouldToggle && isOpen)
                 let normRemainingDist = (shouldToggle ? 1.0 - abs(normTranY) : abs(normTranY))
                 let duration = max(Double(normRemainingDist / speed), 0.15)
                     
