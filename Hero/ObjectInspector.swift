@@ -98,8 +98,7 @@ struct ObjectInspector: View {
                 }
                 .offset(x: 0.0, y: contentOffset(proxy))
             }
-//                .background(BlurView(style: .systemUltraThinMaterial))
-                .background(Color.yellow)
+                .background(BlurView(style: .systemUltraThinMaterial))
                 .offset(x: 0.0, y: offsetY(proxy))
                 .gesture(self.dragGesture(proxy))
                 .edgesIgnoringSafeArea([.bottom, .top])
@@ -199,8 +198,10 @@ struct ObjectInspector: View {
             })
             .onChanged { value in
                 lastDragValue = value
-                withAnimation(.easeOut(duration: 0.15)) {
-                    objectToolbarVisible = false
+                if objectToolbarVisible {
+                    withAnimation(.easeOut(duration: 0.15)) {
+                        objectToolbarVisible = false
+                    }
                 }
             }
             .onEnded { value in
