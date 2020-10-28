@@ -12,6 +12,7 @@ import Metal
 class SceneViewModel: ObservableObject {
     
     @Published var isObjectInspectorVisible = true
+    @Published var frameRate: Int = 60
     
     func setFullScreenMode(enabled: Bool, animated: Bool = false) {
         if animated {
@@ -41,11 +42,12 @@ struct SceneView: View {
             ObjectInspector()
                 .opacity(model.isObjectInspectorVisible ? 1.0 : 0.0)
         }
+            .environmentObject(model)
     }
     
     struct SceneViewControllerProxy: UIViewControllerRepresentable {
         
-        let sceneViewModel: SceneViewModel
+        @ObservedObject var sceneViewModel: SceneViewModel
         let rootViewModel: RootViewModel
         @Environment(\.scene) private var scene
         
@@ -54,6 +56,7 @@ struct SceneView: View {
         }
         
         func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {
+            uiViewController.frameRate = sceneViewModel.frameRate
         }
         
         typealias UIViewControllerType = SceneViewController

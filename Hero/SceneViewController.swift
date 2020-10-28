@@ -35,6 +35,8 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         sceneView.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
         sceneView.clearColor = MTLClearColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
         sceneView.autoResizeDrawable = true
+        sceneView.preferredFramesPerSecond = 11
+//        sceneView.isPaused = true
 //        sceneView.sampleCount = 2
         sceneView.delegate = self
         view.addSubview(sceneView)
@@ -297,6 +299,15 @@ class SceneViewController: UIViewController, MTKViewDelegate {
     
     func sceneViewSize() -> SIMD2<Float> {
         SIMD2<Float>(Float(self.sceneView.bounds.size.width), Float(self.sceneView.bounds.size.height))
+    }
+    
+    var frameRate: Int {
+        set {
+            sceneView.preferredFramesPerSecond = newValue
+        }
+        get {
+            sceneView.preferredFramesPerSecond
+        }
     }
     
     private var sceneView: MTKView!

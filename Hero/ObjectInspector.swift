@@ -88,6 +88,7 @@ struct ObjectInspector: View {
     @State var normOffsetY: CGFloat = 1.0
     @State var lastDragValue: DragGesture.Value?
     @State var objectToolbarVisible = true
+    @EnvironmentObject private var sceneViewModel: SceneViewModel
     @EnvironmentObject private var rootViewModel: RootViewModel
         
     var body: some View {
@@ -200,10 +201,11 @@ struct ObjectInspector: View {
             .onChanged { value in
                 lastDragValue = value
                 if objectToolbarVisible {
-                    withAnimation(.easeOut(duration: 0.15)) {
+                    withAnimation(.easeOut(duration: ObjectInspector.editingModeSwitchDuration)) {
                         objectToolbarVisible = false
                         rootViewModel.isTopBarVisible = false
                     }
+                    sceneViewModel.frameRate = 10
                 }
             }
             .onEnded { value in
@@ -226,14 +228,13 @@ struct ObjectInspector: View {
                 }
                 
                 let normRemainingDist = (shouldToggle ? 1.0 - abs(normTranY) : abs(normTranY))
-                let duration = max(Double(normRemainingDist / speed), 0.15)
+                let duration = max(Double(normRemainingDist / speed), ObjectInspector.editingModeSwitchDuration)
+                
+                let isOpen = (shouldToggle ? !self.isOpen : self.isOpen)
+                sceneViewModel.frameRate = (isOpen ? 10 : 60)
                     
                 withAnimation(.easeOut(duration: duration)) {
-                    if shouldToggle {
-                        isOpen.toggle()
-                    } else {
-                        isOpen = (isOpen ? true : false)
-                    }
+                    self.isOpen = isOpen
                     objectToolbarVisible = !isOpen
                     rootViewModel.isTopBarVisible = !isOpen
                 }
@@ -241,6 +242,7 @@ struct ObjectInspector: View {
             }
     }
         
+    static let editingModeSwitchDuration = 0.2
     static let topBarHeight: CGFloat = 70.0
     
 }
