@@ -131,7 +131,7 @@ struct ObjectInspector: View {
     
     func body(_ proxy: GeometryProxy) -> some View {
         HStack(spacing: 0.0) {
-            ScrollView(.vertical, showsIndicators: true) {
+            ScrollView(.vertical, showsIndicators: false) {
                 ZStack {
                     Color.black
                     Text("dadas")

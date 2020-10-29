@@ -310,6 +310,15 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         }
     }
     
+    var isPaused: Bool {
+        set {
+            sceneView.isPaused = newValue
+        }
+        get {
+            sceneView.isPaused
+        }
+    }
+    
     private var sceneView: MTKView!
     private var scene: Scene
     private var panGR: UIPanGestureRecognizer!

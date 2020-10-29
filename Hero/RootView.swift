@@ -9,7 +9,11 @@ import SwiftUI
 import os
 
 class RootViewModel: ObservableObject {
-    @Published var isProjectBrowserPresented = false
+    @Published var isProjectBrowserPresented = false {
+        willSet {
+            sceneViewModel.isPaused = newValue
+        }
+    }
     @Published var isTopBarVisible = true
     @Published var isStatusBarVisible = true
     let sceneViewModel = SceneViewModel()

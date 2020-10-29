@@ -13,6 +13,7 @@ class SceneViewModel: ObservableObject {
     
     @Published var isObjectInspectorVisible = true
     @Published var frameRate: Int = 60
+    @Published var isPaused = false
     
     func setFullScreenMode(enabled: Bool, animated: Bool = false) {
         if animated {
@@ -57,6 +58,7 @@ struct SceneView: View {
         
         func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {
             uiViewController.frameRate = sceneViewModel.frameRate
+            uiViewController.isPaused = sceneViewModel.isPaused
         }
         
         typealias UIViewControllerType = SceneViewController

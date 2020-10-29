@@ -47,7 +47,7 @@ struct ProjectBrowser: View {
     
     var body: some View {
         NavigationView {
-            ScrollView(.vertical) {
+            ScrollView(.vertical, showsIndicators: false) {
                 ScrollViewReader { scrollViewProxy in
                     Group {
                         if model.isLoaded {
