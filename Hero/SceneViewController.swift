@@ -33,7 +33,7 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         sceneView.autoResizeDrawable = true
         sceneView.colorPixelFormat = RenderingContext.colorPixelFormat()
         sceneView.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
-        sceneView.clearColor = MTLClearColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+        sceneView.clearColor = UIColor.sceneBgrColor.mtlClearColor
         sceneView.autoResizeDrawable = true
         sceneView.preferredFramesPerSecond = 11
 //        sceneView.isPaused = true
@@ -316,6 +316,13 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         }
         get {
             sceneView.isPaused
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            sceneView.clearColor = UIColor.sceneBgrColor.mtlClearColor
         }
     }
     

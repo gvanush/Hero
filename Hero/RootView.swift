@@ -89,10 +89,11 @@ struct TopBar: View {
                 })
                 Spacer()
                 Button(action: {
-                    rootViewModel.saveImage()
+//                    rootViewModel.saveImage()
                 }, label: {
-                    Text("Save image")
-                }).disabled(rootViewModel.project == nil)
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 25, weight: .regular))
+                })
             }
             .padding()
             .frame(minWidth: proxy.size.width, idealWidth: proxy.size.width, maxWidth: proxy.size.width, minHeight: height, idealHeight: height, maxHeight: height, alignment: .center)

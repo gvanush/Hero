@@ -48,7 +48,7 @@ struct ObjectToolbar: View {
                 ObjectToolbarItem(iconName: tool.iconName) {
                     self.selectedTool = tool
                 }
-                .foregroundColor(tool == selectedTool ? Color.accentColor : Color.white.opacity(0.5))
+                .foregroundColor(tool == selectedTool ? Color.accentColor : Color(.tertiaryLabel))
             }
         }
     }
@@ -98,9 +98,9 @@ struct ObjectInspector: View {
                     header(proxy)
                     body(proxy)
                 }
-                .offset(x: 0.0, y: contentOffset(proxy))
+                    .offset(x: 0.0, y: contentOffset(proxy))
             }
-                .background(BlurView(style: .systemUltraThinMaterial))
+                .background(BlurView(style: .systemMaterial))
                 .offset(x: 0.0, y: offsetY(proxy))
                 .gesture(self.dragGesture(proxy))
                 .edgesIgnoringSafeArea([.bottom, .top])
@@ -123,6 +123,7 @@ struct ObjectInspector: View {
                 .padding()
                 .opacity(isToolEditingModeEnabled ? 0.0 : 1.0)
                 .offset(x: 0.0, y: isToolEditingModeEnabled ? proxy.safeAreaInsets.top : 0.0)
+                .foregroundColor(Color(.label))
             
             handle
         }
@@ -164,7 +165,7 @@ struct ObjectInspector: View {
     var objectOptionsControl: some View {
         Image(systemName: "ellipsis")
             .font(.system(size: 25, weight: .regular))
-            .foregroundColor(Color.white)
+            .foregroundColor(Color(.label))
             .frame(maxHeight: .infinity)
             .padding(20)
             .contentShape(Rectangle())

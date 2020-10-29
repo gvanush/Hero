@@ -113,7 +113,7 @@ struct ProjectBrowser: View {
         Button(action: {
             actionSheetType = .projectOptions
         }, label: {
-            Image(systemName: "ellipsis.circle")
+            Image(systemName: "ellipsis")
                 .font(.system(size: 25, weight: .regular))
                 .minTappableFrame(alignment: .trailing)
         })
