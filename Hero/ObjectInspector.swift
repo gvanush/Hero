@@ -113,6 +113,7 @@ struct ObjectInspector: View {
                 Group {
                     ObjectToolbar()
                     Divider()
+                        .background(Color(.opaqueSeparator))
                 }
                     .opacity(isToolEditingModeEnabled ? 1.0 : 0.0)
                 objectOptionsControl
