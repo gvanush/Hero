@@ -54,8 +54,8 @@ struct ProjectBrowser: View {
                             projectsGrid()
                         }
                     }
-                        .navigationTitle("Projects")
                         .navigationBarTitleDisplayMode(.large)
+                        .navigationTitle("Projects")
                         .navigationBarItems(leading: Button(action: {
                             logger.notice("Close")
                             presentationMode.wrappedValue.dismiss()
@@ -95,9 +95,9 @@ struct ProjectBrowser: View {
                                     return projectDeleteConfirmationActionSheet()
                             }
                         }
-                    .alert(item: $alertType) { type in
-                        alert(for: type)
-                    }
+                        .alert(item: $alertType) { type in
+                            alert(for: type)
+                        }
                         
                 }
             }

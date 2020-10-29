@@ -87,7 +87,7 @@ struct ObjectInspector: View {
     }
     @State var normOffsetY: CGFloat = 1.0
     @State var lastDragValue: DragGesture.Value?
-    @State var objectToolbarVisible = true
+    @State var isToolEditingModeEnabled = true
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     @EnvironmentObject private var rootViewModel: RootViewModel
         
@@ -114,32 +114,37 @@ struct ObjectInspector: View {
                     ObjectToolbar()
                     Divider()
                 }
-                    .opacity(objectToolbarVisible ? 1.0 : 0.0)
+                    .opacity(isToolEditingModeEnabled ? 1.0 : 0.0)
                 objectOptionsControl
             }
             Text("Object 0")
                 .font(.system(size: 30, weight: .regular))
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .padding()
-                .opacity(objectToolbarVisible ? 0.0 : 1.0)
-                .offset(x: 0.0, y: objectToolbarVisible ? proxy.safeAreaInsets.top : 0.0)
+                .opacity(isToolEditingModeEnabled ? 0.0 : 1.0)
+                .offset(x: 0.0, y: isToolEditingModeEnabled ? proxy.safeAreaInsets.top : 0.0)
             
             handle
         }
             .frame(maxWidth: .infinity, maxHeight: ObjectInspector.topBarHeight, alignment: .center)
     }
     
+    @State private var isAnimating = false
+    
     func body(_ proxy: GeometryProxy) -> some View {
-        HStack(spacing: 0.0) {
-            ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.vertical, showsIndicators: false) {
+            if isOpen || isAnimating || dragState.isDragging {
                 ZStack {
                     Color.black
                     Text("dadas")
                 }
             }
-            .opacity(objectToolbarVisible ? 0.0 : 1.0)
-            .offset(x: 0.0, y: objectToolbarVisible ? proxy.safeAreaInsets.top : 0.0)
-            .padding(.horizontal, 20)
+        }
+        .opacity(isToolEditingModeEnabled ? 0.0 : 1.0)
+        .offset(x: 0.0, y: isToolEditingModeEnabled ? proxy.safeAreaInsets.top : 0.0)
+        .padding(.horizontal, 20)
+        .onAnimationCompleted(for: normOffsetY) {
+            isAnimating = false
         }
     }
     
@@ -200,9 +205,9 @@ struct ObjectInspector: View {
             })
             .onChanged { value in
                 lastDragValue = value
-                if objectToolbarVisible {
+                if isToolEditingModeEnabled {
                     withAnimation(.easeOut(duration: ObjectInspector.editingModeSwitchDuration)) {
-                        objectToolbarVisible = false
+                        isToolEditingModeEnabled = false
                         rootViewModel.isTopBarVisible = false
                     }
                     sceneViewModel.frameRate = 10
@@ -232,10 +237,11 @@ struct ObjectInspector: View {
                 
                 let isOpen = (shouldToggle ? !self.isOpen : self.isOpen)
                 sceneViewModel.frameRate = (isOpen ? 10 : 60)
-                    
+                
+                isAnimating = true
                 withAnimation(.easeOut(duration: duration)) {
                     self.isOpen = isOpen
-                    objectToolbarVisible = !isOpen
+                    isToolEditingModeEnabled = !isOpen
                     rootViewModel.isTopBarVisible = !isOpen
                 }
                 
