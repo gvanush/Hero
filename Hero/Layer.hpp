@@ -39,6 +39,11 @@ public:
     static void setup();
     static void render(RenderingContext& renderingContext);
     
+    inline static uint32_t nextLayerNumber() {
+        static uint32_t number = 0;
+        return number++;
+    }
+    
 private:
     SizeType _size;
     ColorType _color;

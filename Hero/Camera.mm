@@ -13,6 +13,11 @@
 
 -(instancetype) initWithNear: (float) near far: (float) far aspectRatio: (float) aspectRatio {
     if (self = [super initWithCppHandle: new hero::Camera {near, far, aspectRatio}]) {
+        if (auto number = hero::Camera::nextCameraNumber(); number > 0) {
+            self.name = [NSString stringWithFormat: @"Camera %d", number];
+        } else {
+            self.name = @"Camera";
+        }
     }
     return self;
 }

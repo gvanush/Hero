@@ -1,5 +1,5 @@
 //
-//  ObjectInspector.swift
+//  Inspector.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 10/22/20.
@@ -7,54 +7,7 @@
 
 import SwiftUI
 
-enum ObjectTool: CaseIterable {
-    case move
-    case scale
-    case rotate
-    
-    var iconName: String {
-        switch self {
-        case .move:
-            return "move.3d"
-        case .scale:
-            return "scale.3d"
-        case .rotate:
-            return "rotate.3d"
-        }
-    }
-}
-
-struct ObjectToolbarItem: View {
-    
-    let iconName: String
-    let onSelected: () -> Void
-        
-    var body: some View {
-        Image(systemName: iconName)
-            .font(.system(size: 25, weight: .regular))
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: onSelected)
-    }
-}
-
-struct ObjectToolbar: View {
-    
-    @State var selectedTool = ObjectTool.move
-    
-    var body: some View {
-        HStack(alignment: .center, spacing: 0.0) {
-            ForEach(ObjectTool.allCases, id: \.self) {tool in
-                ObjectToolbarItem(iconName: tool.iconName) {
-                    self.selectedTool = tool
-                }
-                .foregroundColor(tool == selectedTool ? Color.accentColor : Color(.tertiaryLabel))
-            }
-        }
-    }
-}
-
-struct ObjectInspector: View {
+struct Inspector: View {
     
     enum DragState {
         case inactive
@@ -128,7 +81,7 @@ struct ObjectInspector: View {
             
             handle
         }
-            .frame(maxWidth: .infinity, maxHeight: ObjectInspector.topBarHeight, alignment: .center)
+            .frame(maxWidth: .infinity, maxHeight: Inspector.topBarHeight, alignment: .center)
     }
     
     @State private var isAnimating = false
@@ -179,11 +132,11 @@ struct ObjectInspector: View {
         Image(systemName: "minus")
             .font(.system(size: 45, weight: .regular))
             .foregroundColor(Color.white.opacity(0.5))
-            .offset(x: 0, y: -0.5 * ObjectInspector.topBarHeight + 8.0)
+            .offset(x: 0, y: -0.5 * Inspector.topBarHeight + 8.0)
     }
     
     func offsetY(_ proxy: GeometryProxy) -> CGFloat {
-        let maxOffset = proxy.size.height + proxy.safeAreaInsets.top - ObjectInspector.topBarHeight
+        let maxOffset = proxy.size.height + proxy.safeAreaInsets.top - Inspector.topBarHeight
         switch dragState {
         case .dragging(let normTranslationY):
             if isOpen {
@@ -197,7 +150,7 @@ struct ObjectInspector: View {
     }
     
     func normTranslationY(_ value: DragGesture.Value, _ proxy: GeometryProxy) -> CGFloat {
-        clamp(value.translation.height / (proxy.size.height - ObjectInspector.topBarHeight), lower: -1.0, upper: 1.0)
+        clamp(value.translation.height / (proxy.size.height - Inspector.topBarHeight), lower: -1.0, upper: 1.0)
     }
     
     func dragGesture(_ proxy: GeometryProxy) -> some Gesture {
@@ -208,7 +161,7 @@ struct ObjectInspector: View {
             .onChanged { value in
                 lastDragValue = value
                 if isToolEditingModeEnabled {
-                    withAnimation(.easeOut(duration: ObjectInspector.editingModeSwitchDuration)) {
+                    withAnimation(.easeOut(duration: Inspector.editingModeSwitchDuration)) {
                         isToolEditingModeEnabled = false
                         rootViewModel.isTopBarVisible = false
                     }
@@ -226,7 +179,7 @@ struct ObjectInspector: View {
                 let normTranDelta = abs(normTranY - normTranslationY(lastDragValue, proxy))
                 let speed = max(normTranDelta / CGFloat(value.time.timeIntervalSince(lastDragValue.time)), 1.5)
                 
-                let normPredictedTran = value.predictedEndTranslation.height / (proxy.size.height - ObjectInspector.topBarHeight)
+                let normPredictedTran = value.predictedEndTranslation.height / (proxy.size.height - Inspector.topBarHeight)
                 var shouldToggle = true
                 if normPredictedTran > 0.0 {
                     shouldToggle = (isOpen && normPredictedTran > 0.5)
@@ -235,7 +188,7 @@ struct ObjectInspector: View {
                 }
                 
                 let normRemainingDist = (shouldToggle ? 1.0 - abs(normTranY) : abs(normTranY))
-                let duration = max(Double(normRemainingDist / speed), ObjectInspector.editingModeSwitchDuration)
+                let duration = max(Double(normRemainingDist / speed), Inspector.editingModeSwitchDuration)
                 
                 let isOpen = (shouldToggle ? !self.isOpen : self.isOpen)
                 sceneViewModel.frameRate = (isOpen ? 10 : 60)
@@ -257,7 +210,6 @@ struct ObjectInspector: View {
 
 struct ObjectToolbar_Previews: PreviewProvider {
     static var previews: some View {
-//        ObjectToolbar()
-        ObjectInspector()
+        Inspector()
     }
 }

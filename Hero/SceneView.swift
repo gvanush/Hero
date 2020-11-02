@@ -11,17 +11,17 @@ import Metal
 
 class SceneViewModel: ObservableObject {
     
-    @Published var isObjectInspectorVisible = true
+    @Published var isInspectorVisible = true
     @Published var frameRate: Int = 60
     @Published var isPaused = false
     
     func setFullScreenMode(enabled: Bool, animated: Bool = false) {
         if animated {
             withAnimation {
-                isObjectInspectorVisible = !enabled
+                isInspectorVisible = !enabled
             }
         } else {
-            isObjectInspectorVisible = !enabled
+            isInspectorVisible = !enabled
         }
     }
     
@@ -40,8 +40,8 @@ struct SceneView: View {
         ZStack {
             SceneViewControllerProxy(sceneViewModel: model, rootViewModel: rootViewModel)
                 .ignoresSafeArea()
-            ObjectInspector()
-                .opacity(model.isObjectInspectorVisible ? 1.0 : 0.0)
+            Inspector()
+                .opacity(model.isInspectorVisible ? 1.0 : 0.0)
         }
             .environmentObject(model)
     }

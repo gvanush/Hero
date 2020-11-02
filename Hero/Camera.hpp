@@ -49,6 +49,11 @@ public:
     
     void lookAt(const simd::float3& point, const simd::float3& up = kUp);
     
+    inline static uint32_t nextCameraNumber() {
+        static uint32_t number = 0;
+        return number++;
+    }
+    
 private:
     float _aspectRatio;
     float _fovy = M_PI_4;

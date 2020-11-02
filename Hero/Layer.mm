@@ -15,6 +15,11 @@
 
 -(instancetype) init {
     if (self = [super initWithCppHandle: new hero::Layer {}]) {
+        if (auto number = hero::Layer::nextLayerNumber(); number > 0) {
+            self.name = [NSString stringWithFormat: @"Layer %d", number];
+        } else {
+            self.name = @"Layer";
+        }
     }
     return self;
 }

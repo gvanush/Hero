@@ -46,7 +46,9 @@
 		B78D7DF9252312A00057F066 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DF7252312A00057F066 /* Camera.cpp */; };
 		B78D7E012524AE8F0057F066 /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = B78D7DFF2524AE8F0057F066 /* Camera.mm */; };
 		B79E0456253F526500042719 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79E0455253F526500042719 /* BlurView.swift */; };
-		B7AEE00E2541E741002061F5 /* ObjectInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AEE00D2541E741002061F5 /* ObjectInspector.swift */; };
+		B7AEE00E2541E741002061F5 /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AEE00D2541E741002061F5 /* Inspector.swift */; };
+		B7C36239255000C0007734C1 /* ObjectToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C36238255000C0007734C1 /* ObjectToolbar.swift */; };
+		B7C3623C2550015B007734C1 /* InspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C3623B2550015B007734C1 /* InspectorModel.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
@@ -120,7 +122,9 @@
 		B78D7DFF2524AE8F0057F066 /* Camera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
 		B78D7E002524AE8F0057F066 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		B79E0455253F526500042719 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		B7AEE00D2541E741002061F5 /* ObjectInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectInspector.swift; sourceTree = "<group>"; };
+		B7AEE00D2541E741002061F5 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
+		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
+		B7C3623B2550015B007734C1 /* InspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorModel.swift; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -141,14 +145,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B70CFB8A2542B68D00E8E30A /* View */ = {
+		B70CFB8A2542B68D00E8E30A /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				B7847AE424D4695100026607 /* SceneViewController.swift */,
 				B731700624CF378F00157455 /* SceneView.swift */,
-				B7AEE00D2541E741002061F5 /* ObjectInspector.swift */,
+				B7C36238255000C0007734C1 /* ObjectToolbar.swift */,
+				B7AEE00D2541E741002061F5 /* Inspector.swift */,
+				B7C3623B2550015B007734C1 /* InspectorModel.swift */,
 			);
-			name = View;
+			name = Views;
 			sourceTree = "<group>";
 		};
 		B715B23824D28B0F00B4C859 /* Frameworks */ = {
@@ -183,7 +189,7 @@
 			children = (
 				B7DD544F24FC194B00163947 /* Util */,
 				B7DD544E24FC190E00163947 /* ProjectBrowser */,
-				B7847AE024D45FC300026607 /* Scene */,
+				B7847AE024D45FC300026607 /* SceneView */,
 				B7316FF724CF376000157455 /* HeroApp.swift */,
 				B7872CFB25027F4800BD403D /* RootView.swift */,
 				B7DD54582501489600163947 /* Project.swift */,
@@ -259,10 +265,10 @@
 			name = SphericalCoord;
 			sourceTree = "<group>";
 		};
-		B7847AE024D45FC300026607 /* Scene */ = {
+		B7847AE024D45FC300026607 /* SceneView */ = {
 			isa = PBXGroup;
 			children = (
-				B70CFB8A2542B68D00E8E30A /* View */,
+				B70CFB8A2542B68D00E8E30A /* Views */,
 				B77878392529225F0097F941 /* SphericalCoord */,
 				B778782D252906700097F941 /* Scene */,
 				B778782C252906460097F941 /* SceneObject */,
@@ -280,7 +286,7 @@
 				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
 				B7847B1824D6F38A00026607 /* Shaders.metal */,
 			);
-			name = Scene;
+			name = SceneView;
 			sourceTree = "<group>";
 		};
 		B7872CFA25027F0700BD403D /* Old */ = {
@@ -404,6 +410,7 @@
 				B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */,
 				B7847B1924D6F38A00026607 /* Shaders.metal in Sources */,
 				B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */,
+				B7C3623C2550015B007734C1 /* InspectorModel.swift in Sources */,
 				B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */,
 				B7DD54592501489600163947 /* Project.swift in Sources */,
 				B7872CFE2504340A00BD403D /* Common.swift in Sources */,
@@ -435,7 +442,8 @@
 				B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */,
 				B7847AE524D4695100026607 /* SceneViewController.swift in Sources */,
 				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
-				B7AEE00E2541E741002061F5 /* ObjectInspector.swift in Sources */,
+				B7AEE00E2541E741002061F5 /* Inspector.swift in Sources */,
+				B7C36239255000C0007734C1 /* ObjectToolbar.swift in Sources */,
 				B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */,
 				B723BB23250F2FC2007C989E /* NativeTextField.swift in Sources */,
 				B7DD54752502657E00163947 /* TestView.swift in Sources */,
