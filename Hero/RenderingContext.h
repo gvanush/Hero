@@ -6,7 +6,7 @@
 //  Copyright © 2020 Vanush Grigoryan. All rights reserved.
 //
 
-#import "CppWrapper.h"
+#import "CppOwner.h"
 
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
@@ -15,7 +15,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RenderingContext : CppWrapper
+@interface RenderingContext : CppOwner
 
 @property (nonatomic, strong) id<MTLDrawable> drawable;
 @property (nonatomic) simd_float2 viewportSize;

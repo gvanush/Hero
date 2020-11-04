@@ -11,10 +11,10 @@ import Metal
 
 class SceneViewController: UIViewController, MTKViewDelegate {
     
-    private var rootViewModel: RootViewModel
     private var sceneViewModel: SceneViewModel
+    private var rootViewModel: RootViewModel
     
-    init(scene: Scene, rootViewModel: RootViewModel, sceneViewModel: SceneViewModel) {
+    init(scene: Scene, sceneViewModel: SceneViewModel, rootViewModel: RootViewModel) {
         self.scene = scene
         self.rootViewModel = rootViewModel
         self.sceneViewModel = sceneViewModel
@@ -118,6 +118,10 @@ class SceneViewController: UIViewController, MTKViewDelegate {
     
     func addGestureRecognizers() {
         
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        tapGR.delegate = self
+        sceneView.addGestureRecognizer(tapGR)
+        
         panGR = UIPanGestureRecognizer(target: self, action: #selector(onPan))
         panGR.delegate = self
         panGR.maximumNumberOfTouches = 1
@@ -130,10 +134,14 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         sceneView.addGestureRecognizer(twoFingerPanGR)
         
         let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(onPinch))
-//        pinchGR.isEnabled = false
         pinchGR.delegate = self
         sceneView.addGestureRecognizer(pinchGR)
         
+    }
+    
+    @objc func onTap(tapGR: UITapGestureRecognizer) {
+        let selected = scene.rayCast()
+        print("Selected: \(selected?.name ?? "none")")
     }
     
     @objc func onPan(panGR: UIPanGestureRecognizer) {

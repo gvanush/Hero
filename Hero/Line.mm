@@ -12,7 +12,7 @@
 @implementation Line
 
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
-    if (self = [super initWithCppHandle: new hero::Line {point1, point2, thickness, color}]) {
+    if (self = [super initWithCpp: new hero::Line {point1, point2, thickness, color}]) {
     }
     return self;
 }

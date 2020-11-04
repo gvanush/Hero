@@ -7,13 +7,14 @@
 
 #pragma once
 
+#include "Object.hpp"
 #include "Geometry.h"
 
 #include <simd/simd.h>
 
 namespace hero {
 
-class SceneObject {
+class SceneObject: public Object {
 public:
     
     inline void setPosition(const simd::float3& pos);

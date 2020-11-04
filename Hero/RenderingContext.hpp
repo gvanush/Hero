@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "Object.hpp"
 #include "ShaderTypes.h"
 
 #include "apple/metal/Metal.h"
@@ -16,7 +17,7 @@
 
 namespace hero {
 
-class RenderingContext {
+class RenderingContext: public Object {
 public:
     
     static inline const auto device = apple::metal::createSystemDefaultDevice();

@@ -13,7 +13,7 @@
 @implementation RenderingContext
 
 -(instancetype) init {
-    if(self = [super initWithCppHandle: new hero::RenderingContext {}]) {
+    if(self = [super initWithCpp: new hero::RenderingContext {}]) {
     }
     return self;
 }

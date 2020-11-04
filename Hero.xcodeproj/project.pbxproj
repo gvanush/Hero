@@ -20,7 +20,7 @@
 		B731700724CF378F00157455 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700624CF378F00157455 /* SceneView.swift */; };
 		B731700924CF38E900157455 /* MainViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700824CF38E900157455 /* MainViewOld.swift */; };
 		B731700F24CF540000157455 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700E24CF540000157455 /* ImageSelector.swift */; };
-		B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB2252843C30047B996 /* CppWrapper.mm */; };
+		B749ADB3252843C30047B996 /* CppOwner.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB2252843C30047B996 /* CppOwner.mm */; };
 		B749ADB925284BD80047B996 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB825284BD80047B996 /* SceneObject.mm */; };
 		B74ECB37253C7D2800C0301E /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB35253C7D2800C0301E /* Line.cpp */; };
 		B74ECB3C253C7FA800C0301E /* Line.mm in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB3A253C7FA800C0301E /* Line.mm */; };
@@ -62,7 +62,7 @@
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B715B24324D2A2DB00B4C859 /* CppWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppWrapper.h; sourceTree = "<group>"; };
+		B715B24324D2A2DB00B4C859 /* CppOwner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppOwner.h; sourceTree = "<group>"; };
 		B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItemModel.swift; sourceTree = "<group>"; };
 		B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowserModel.swift; sourceTree = "<group>"; };
 		B723BB1E250DD229007C989E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		B731700624CF378F00157455 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
 		B731700824CF38E900157455 /* MainViewOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewOld.swift; sourceTree = "<group>"; };
 		B731700E24CF540000157455 /* ImageSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelector.swift; sourceTree = "<group>"; };
-		B749ADB2252843C30047B996 /* CppWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
+		B749ADB2252843C30047B996 /* CppOwner.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CppOwner.mm; sourceTree = "<group>"; };
 		B749ADB725284BD80047B996 /* SceneObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
 		B749ADB825284BD80047B996 /* SceneObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneObject.mm; sourceTree = "<group>"; };
 		B74ECB35253C7D2800C0301E /* Line.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
@@ -123,6 +123,7 @@
 		B78D7E002524AE8F0057F066 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		B79E0455253F526500042719 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		B7AEE00D2541E741002061F5 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
+		B7C170B62550A8D9008B0CE6 /* Object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
 		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
 		B7C3623B2550015B007734C1 /* InspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorModel.swift; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
@@ -299,6 +300,16 @@
 			name = Old;
 			sourceTree = "<group>";
 		};
+		B7C170B32550A7DD008B0CE6 /* Cpp ObjC Interop */ = {
+			isa = PBXGroup;
+			children = (
+				B715B24324D2A2DB00B4C859 /* CppOwner.h */,
+				B749ADB2252843C30047B996 /* CppOwner.mm */,
+				B7C170B62550A8D9008B0CE6 /* Object.hpp */,
+			);
+			name = "Cpp ObjC Interop";
+			sourceTree = "<group>";
+		};
 		B7DD544E24FC190E00163947 /* ProjectBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,6 +324,7 @@
 		B7DD544F24FC194B00163947 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				B7C170B32550A7DD008B0CE6 /* Cpp ObjC Interop */,
 				B7DD545024FC197400163947 /* ViewModifiers.swift */,
 				B7DD545624FE238500163947 /* UIApplication+Extensions.swift */,
 				B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */,
@@ -322,8 +334,6 @@
 				B723BB22250F2FC2007C989E /* NativeTextField.swift */,
 				B79E0455253F526500042719 /* BlurView.swift */,
 				B78D7DE6251F79000057F066 /* EnvironmentValues+Extensions.swift */,
-				B715B24324D2A2DB00B4C859 /* CppWrapper.h */,
-				B749ADB2252843C30047B996 /* CppWrapper.mm */,
 				B7DD54742502657E00163947 /* TestView.swift */,
 				B78D7DED2521B5F30057F066 /* Math.cpp */,
 				B78D7DEE2521B5F30057F066 /* Math.hpp */,
@@ -428,7 +438,7 @@
 				B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B79E0456253F526500042719 /* BlurView.swift in Sources */,
 				B78D7E012524AE8F0057F066 /* Camera.mm in Sources */,
-				B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */,
+				B749ADB3252843C30047B996 /* CppOwner.mm in Sources */,
 				B78D7DEF2521B5F30057F066 /* Math.cpp in Sources */,
 				B7847ADF24D45F8C00026607 /* Scene.mm in Sources */,
 				B75C31F62531872600CD612C /* SphericalCoord.mm in Sources */,

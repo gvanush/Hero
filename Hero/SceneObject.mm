@@ -12,7 +12,7 @@
 @implementation SceneObject
 
 -(instancetype) init {
-    if (self = [super initWithCppHandle: new hero::SceneObject {}]) {
+    if (self = [super initWithCpp: new hero::SceneObject {}]) {
     }
     return self;
 }

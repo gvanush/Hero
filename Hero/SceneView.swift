@@ -11,6 +11,7 @@ import Metal
 
 class SceneViewModel: ObservableObject {
     
+    @Environment(\.scene) var scene
     @Published var isInspectorVisible = true
     @Published var frameRate: Int = 60
     @Published var isPaused = false
@@ -40,8 +41,10 @@ struct SceneView: View {
         ZStack {
             SceneViewControllerProxy(sceneViewModel: model, rootViewModel: rootViewModel)
                 .ignoresSafeArea()
-            Inspector()
-                .opacity(model.isInspectorVisible ? 1.0 : 0.0)
+            if let selected = model.scene.selectedObject {
+                Inspector(model: InspectorModel(sceneObject: selected))
+                    .opacity(model.isInspectorVisible ? 1.0 : 0.0)
+            }
         }
             .environmentObject(model)
     }
@@ -50,10 +53,9 @@ struct SceneView: View {
         
         @ObservedObject var sceneViewModel: SceneViewModel
         let rootViewModel: RootViewModel
-        @Environment(\.scene) private var scene
         
         func makeUIViewController(context: Context) -> SceneViewController {
-            SceneViewController(scene: scene, rootViewModel: rootViewModel, sceneViewModel: sceneViewModel)
+            SceneViewController(scene: sceneViewModel.scene, sceneViewModel: sceneViewModel, rootViewModel: rootViewModel)
         }
         
         func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {

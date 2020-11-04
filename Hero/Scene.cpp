@@ -31,6 +31,14 @@ void Scene::addSceneObject(SceneObject* sceneObject) {
     _sceneObjects.push_back(sceneObject);
 }
 
+SceneObject* Scene::raycast() const {
+    if(_sceneObjects.empty()) {
+        return  nullptr;
+    }
+    static size_t index = 0;
+    return _sceneObjects[(index++) % _sceneObjects.size()];
+}
+
 void Scene::render(RenderingContext& renderingContext) {
     assert(_viewCamera);
     

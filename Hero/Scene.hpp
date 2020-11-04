@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "Object.hpp"
+
 #include "apple/metal/Metal.h"
 
 #include <vector>
@@ -18,7 +20,7 @@ class SceneObject;
 class Camera;
 class RenderingContext;
 
-class Scene {
+class Scene: public Object {
 public:
     
     Scene();
@@ -32,7 +34,12 @@ public:
     inline void setViewCamera(Camera* viewCamera);
     inline Camera* viewCamera() const;
     
+    inline void setSelectedObject(SceneObject* selected);
+    inline SceneObject* selectedObject() const;
+    
     void addSceneObject(SceneObject* sceneObject);
+    
+    SceneObject* raycast() const;
     
     void render(RenderingContext& renderingContext);
     
@@ -43,6 +50,7 @@ private:
     Camera* _viewCamera;
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     simd::float2 _size;
+    SceneObject* _selectedObject = nullptr;
 };
 
 void Scene::setSize(const simd::float2& size) {
@@ -67,6 +75,14 @@ void Scene::setViewCamera(Camera* viewCamera) {
 
 Camera* Scene::viewCamera() const {
     return _viewCamera;
+}
+
+void Scene::setSelectedObject(SceneObject* object) {
+    _selectedObject = object;
+}
+
+SceneObject* Scene::selectedObject() const {
+    return _selectedObject;
 }
 
 }

@@ -5,14 +5,14 @@
 //  Created by Vanush Grigoryan on 10/3/20.
 //
 
-#import "CppWrapper.h"
+#import "CppOwner.h"
 #import "Geometry.h"
 
 #import <simd/simd.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SceneObject : CppWrapper
+@interface SceneObject : CppOwner
 
 @property (nonatomic, readwrite) simd_float3 position;
 @property (nonatomic, readwrite) simd_float3 scale;

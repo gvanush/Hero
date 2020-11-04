@@ -12,7 +12,7 @@
 @implementation SphericalCoord
 
 -(instancetype) init {
-    if (self = [super initWithCppHandle: new hero::SphericalCoord {}]) {
+    if (self = [super initWithCpp: new hero::SphericalCoord {}]) {
     }
     return self;
 }

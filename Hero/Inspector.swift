@@ -32,6 +32,7 @@ struct Inspector: View {
         }
     }
     
+    @ObservedObject var model: InspectorModel
     @GestureState var dragState = DragState.inactive
     @State var isOpen = false {
         willSet {
@@ -41,6 +42,7 @@ struct Inspector: View {
     @State var normOffsetY: CGFloat = 1.0
     @State var lastDragValue: DragGesture.Value?
     @State var isToolEditingModeEnabled = true
+    @State private var isAnimating = false
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     @EnvironmentObject private var rootViewModel: RootViewModel
         
@@ -71,7 +73,7 @@ struct Inspector: View {
                     .opacity(isToolEditingModeEnabled ? 1.0 : 0.0)
                 objectOptionsControl
             }
-            Text("Object 0")
+            Text(model.sceneObject.name)
                 .font(.system(size: 30, weight: .regular))
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .padding()
@@ -83,8 +85,6 @@ struct Inspector: View {
         }
             .frame(maxWidth: .infinity, maxHeight: Inspector.topBarHeight, alignment: .center)
     }
-    
-    @State private var isAnimating = false
     
     func body(_ proxy: GeometryProxy) -> some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -210,6 +210,6 @@ struct Inspector: View {
 
 struct ObjectToolbar_Previews: PreviewProvider {
     static var previews: some View {
-        Inspector()
+        Inspector(model: InspectorModel(sceneObject: SceneObject()))
     }
 }
