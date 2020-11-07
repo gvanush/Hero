@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Object.hpp"
+#include "UIRepresentable.hpp"
 
 #include "apple/metal/Metal.h"
 
@@ -20,7 +20,7 @@ class SceneObject;
 class Camera;
 class RenderingContext;
 
-class Scene: public Object {
+class Scene: public UIRepresentable {
 public:
     
     Scene();
@@ -41,7 +41,7 @@ public:
     
     SceneObject* raycast() const;
     
-    void render(RenderingContext& renderingContext);
+    void render(RenderingContext& renderingContext, const std::function<void ()>& onComplete);
     
     static void setup();
     
@@ -79,6 +79,7 @@ Camera* Scene::viewCamera() const {
 
 void Scene::setSelectedObject(SceneObject* object) {
     _selectedObject = object;
+    setNeedsUIUpdate();
 }
 
 SceneObject* Scene::selectedObject() const {

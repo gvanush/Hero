@@ -29,9 +29,6 @@ struct HeroApp: App {
         WindowGroup {
 //            ObjectInspector()
             RootView()
-                .environment(\.scene, Hero.Scene())
-                .environment(\.gpu, RenderingContext.device())
-            
         }
     }
 }

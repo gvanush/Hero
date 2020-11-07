@@ -11,9 +11,6 @@ import Metal
 
 class SceneViewController: UIViewController, MTKViewDelegate {
     
-    private var sceneViewModel: SceneViewModel
-    private var rootViewModel: RootViewModel
-    
     init(scene: Scene, sceneViewModel: SceneViewModel, rootViewModel: RootViewModel) {
         self.scene = scene
         self.rootViewModel = rootViewModel
@@ -35,7 +32,7 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         sceneView.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
         sceneView.clearColor = UIColor.sceneBgrColor.mtlClearColor
         sceneView.autoResizeDrawable = true
-        sceneView.preferredFramesPerSecond = 11
+        sceneView.presentsWithTransaction = true
 //        sceneView.isPaused = true
 //        sceneView.sampleCount = 2
         sceneView.delegate = self
@@ -83,7 +80,11 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         renderingContext.drawable = drawable
         renderingContext.renderPassDescriptor = renderPassDescriptor
         
-        scene.render(renderingContext)
+        scene.render(renderingContext) {
+            DispatchQueue.main.async {
+                UpdateLoop.shared().update()
+            }
+        }
     }
     
     func addLayers() {
@@ -140,8 +141,12 @@ class SceneViewController: UIViewController, MTKViewDelegate {
     }
     
     @objc func onTap(tapGR: UITapGestureRecognizer) {
-        let selected = scene.rayCast()
-        print("Selected: \(selected?.name ?? "none")")
+        if let selected = scene.rayCast() {
+            print("Selected: \(selected.name)")
+            sceneView.clearColor = UIColor.red.mtlClearColor
+            scene.selectedObject = selected
+            selected.position.y = 30.0;
+        }
     }
     
     @objc func onPan(panGR: UIPanGestureRecognizer) {
@@ -334,6 +339,8 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         }
     }
     
+    private var sceneViewModel: SceneViewModel
+    private var rootViewModel: RootViewModel
     private var sceneView: MTKView!
     private var scene: Scene
     private var panGR: UIPanGestureRecognizer!

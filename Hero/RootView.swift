@@ -16,7 +16,7 @@ class RootViewModel: ObservableObject {
     }
     @Published var isTopBarVisible = true
     @Published var isStatusBarVisible = true
-    let sceneViewModel = SceneViewModel()
+    let sceneViewModel = SceneViewModel(scene: Hero.Scene.shared())
     
     var project: Project?
     

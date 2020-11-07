@@ -81,6 +81,7 @@ const simd::float3& SceneObject::rotation() const {
 
 void SceneObject::setEulerOrder(EulerOrder eulerOrder) {
     _isWorldMatrixValid = false;
+    _isOrientationValid = false;
     _eulerOrder = eulerOrder;
 }
 

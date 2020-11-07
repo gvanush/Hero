@@ -14,6 +14,7 @@
 #include "apple/metal/Metal.h"
 
 #include <array>
+#include <iostream>
 
 namespace hero {
 
@@ -39,7 +40,7 @@ SceneObject* Scene::raycast() const {
     return _sceneObjects[(index++) % _sceneObjects.size()];
 }
 
-void Scene::render(RenderingContext& renderingContext) {
+void Scene::render(RenderingContext& renderingContext, const std::function<void ()>& onComplete) {
     assert(_viewCamera);
     
     using namespace apple;
@@ -64,10 +65,14 @@ void Scene::render(RenderingContext& renderingContext) {
     
     commandEncoderRef.endEncoding();
     
-    commandBufferRef.present(renderingContext.drawable);
+    commandBufferRef.addCompletedHandler([onComplete] (CommandBufferRef cmdBufRef) {
+        // TODO: Error handling
+        onComplete();
+    });
     
     commandBufferRef.commit();
     
+    commandBufferRef.present(renderingContext.drawable);
 }
 
 void Scene::setup() {

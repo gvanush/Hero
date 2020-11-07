@@ -5,7 +5,7 @@
 //  Created by Vanush Grigoryan on 7/31/20.
 //
 
-#import "CppOwner.h"
+#import "UIRepresentable.h"
 #import "SceneObject.h"
 
 #import <Foundation/Foundation.h>
@@ -16,13 +16,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Scene: CppOwner
+@interface Scene: UIRepresentable
+
+-(instancetype) init;
 
 -(void) addSceneObject: (SceneObject*) sceneObject;
 
 -(SceneObject* _Nullable) rayCast;
 
--(void) render: (RenderingContext*) renderingContext;
+-(void) render: (RenderingContext*) renderingContext onComplete: (void (^)(void)) onComplete;
 
 @property (nonatomic, readwrite) simd_float4 bgrColor;
 @property (nonatomic, readwrite) simd_float2 size;
@@ -30,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) Camera* viewCamera;
 @property (nonatomic, readwrite) SceneObject* _Nullable selectedObject;
 
++(instancetype) shared;
 +(void) setup;
 
 @end

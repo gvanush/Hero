@@ -9,12 +9,21 @@ import SwiftUI
 import MetalKit
 import Metal
 
-class SceneViewModel: ObservableObject {
+class SceneViewModel: ObservableObject, UIRepresentableObserver {
     
-    @Environment(\.scene) var scene
+    let scene: Hero.Scene
     @Published var isInspectorVisible = true
     @Published var frameRate: Int = 60
     @Published var isPaused = false
+    
+    init(scene: Hero.Scene) {
+        self.scene = scene
+        UpdateLoop.shared().addObserver(self, for: scene);
+    }
+    
+    deinit {
+        UpdateLoop.shared().removeObserver(self, for: scene)
+    }
     
     func setFullScreenMode(enabled: Bool, animated: Bool = false) {
         if animated {
@@ -26,6 +35,9 @@ class SceneViewModel: ObservableObject {
         }
     }
     
+    func onUIUpdateRequested() {
+        objectWillChange.send()
+    }
 }
 
 struct SceneView: View {
@@ -41,6 +53,7 @@ struct SceneView: View {
         ZStack {
             SceneViewControllerProxy(sceneViewModel: model, rootViewModel: rootViewModel)
                 .ignoresSafeArea()
+            Text(model.scene.selectedObject?.name ?? "None")
             if let selected = model.scene.selectedObject {
                 Inspector(model: InspectorModel(sceneObject: selected))
                     .opacity(model.isInspectorVisible ? 1.0 : 0.0)

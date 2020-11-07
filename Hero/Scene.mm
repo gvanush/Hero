@@ -49,8 +49,10 @@ class Camera;
     return self.cpp->raycast()->objC<SceneObject*>();
 }
 
--(void) render: (RenderingContext*) renderingContext {
-    self.cpp->render(*renderingContext.cpp);
+-(void) render: (RenderingContext*) renderingContext onComplete: (void (^)(void)) onComplete {
+    self.cpp->render(*renderingContext.cpp, [onComplete] () {
+        onComplete();
+    });
 }
 
 -(void) setBgrColor: (simd_float4) bgrColor {
@@ -82,6 +84,15 @@ class Camera;
         return selected->objC<SceneObject*>();
     }
     return nil;
+}
+
++(instancetype) shared {
+    static Scene* scene = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        scene = [[self alloc] init];
+    });
+    return scene;
 }
 
 +(void) setup {
