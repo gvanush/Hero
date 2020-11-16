@@ -157,16 +157,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B70CFB8A2542B68D00E8E30A /* Views */ = {
+		B70CFB8A2542B68D00E8E30A /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				B7440FEC2552960200005EEC /* UIRepresentable.hpp */,
+				B7440FEE255319F000005EEC /* UIRepresentable.mm */,
+				B7440FEF255319F000005EEC /* UIRepresentable.h */,
+				B7440FF425531D9800005EEC /* UIRepresentableObserver.h */,
 				B7847AE424D4695100026607 /* SceneViewController.swift */,
 				B731700624CF378F00157455 /* SceneView.swift */,
-				B7C36238255000C0007734C1 /* ObjectToolbar.swift */,
-				B7AEE00D2541E741002061F5 /* Inspector.swift */,
-				B7C3623B2550015B007734C1 /* InspectorModel.swift */,
 			);
-			name = Views;
+			name = UI;
 			sourceTree = "<group>";
 		};
 		B715B23824D28B0F00B4C859 /* Frameworks */ = {
@@ -201,7 +202,8 @@
 			children = (
 				B7DD544F24FC194B00163947 /* Util */,
 				B7DD544E24FC190E00163947 /* ProjectBrowser */,
-				B7847AE024D45FC300026607 /* Scene */,
+				B797C87E25619BA4007CE7E5 /* Inspector */,
+				B7847AE024D45FC300026607 /* Graphics */,
 				B7316FF724CF376000157455 /* HeroApp.swift */,
 				B7872CFB25027F4800BD403D /* RootView.swift */,
 				B7DD54582501489600163947 /* Project.swift */,
@@ -277,34 +279,27 @@
 			name = SphericalCoord;
 			sourceTree = "<group>";
 		};
-		B7847AE024D45FC300026607 /* Scene */ = {
+		B7847AE024D45FC300026607 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
-				B70CFB8A2542B68D00E8E30A /* Views */,
+				B70CFB8A2542B68D00E8E30A /* UI */,
 				B77878392529225F0097F941 /* SphericalCoord */,
 				B778782D252906700097F941 /* Scene */,
 				B778782C252906460097F941 /* SceneObject */,
 				B778782B252906380097F941 /* Camera */,
 				B74ECB34253C7D0600C0301E /* Line */,
+				B797C87F25619C9E007CE7E5 /* Layer */,
 				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
 				B7847B1424D6E66900026607 /* RenderingContext.mm */,
 				B7847B1524D6E66900026607 /* RenderingContext.h */,
-				B7847AD624D33AE100026607 /* Layer.cpp */,
-				B7847AD724D33AE100026607 /* Layer.hpp */,
-				B7847AE124D4625200026607 /* Layer.mm */,
-				B7847AE224D4625200026607 /* Layer.h */,
 				B7847B2524D9D5BE00026607 /* TextureUtils.cpp */,
 				B7847B2624D9D5BE00026607 /* TextureUtils.hpp */,
 				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
 				B7847B1824D6F38A00026607 /* Shaders.metal */,
-				B7440FEC2552960200005EEC /* UIRepresentable.hpp */,
-				B7440FEE255319F000005EEC /* UIRepresentable.mm */,
-				B7440FEF255319F000005EEC /* UIRepresentable.h */,
-				B7440FF425531D9800005EEC /* UIRepresentableObserver.h */,
 				B7440FF62553329D00005EEC /* UpdateLoop.h */,
 				B7440FF72553329D00005EEC /* UpdateLoop.m */,
 			);
-			name = Scene;
+			name = Graphics;
 			sourceTree = "<group>";
 		};
 		B7872CFA25027F0700BD403D /* Old */ = {
@@ -315,6 +310,27 @@
 				B731700824CF38E900157455 /* MainViewOld.swift */,
 			);
 			name = Old;
+			sourceTree = "<group>";
+		};
+		B797C87E25619BA4007CE7E5 /* Inspector */ = {
+			isa = PBXGroup;
+			children = (
+				B7C36238255000C0007734C1 /* ObjectToolbar.swift */,
+				B7AEE00D2541E741002061F5 /* Inspector.swift */,
+				B7C3623B2550015B007734C1 /* InspectorModel.swift */,
+			);
+			name = Inspector;
+			sourceTree = "<group>";
+		};
+		B797C87F25619C9E007CE7E5 /* Layer */ = {
+			isa = PBXGroup;
+			children = (
+				B7847AD624D33AE100026607 /* Layer.cpp */,
+				B7847AD724D33AE100026607 /* Layer.hpp */,
+				B7847AE124D4625200026607 /* Layer.mm */,
+				B7847AE224D4625200026607 /* Layer.h */,
+			);
+			name = Layer;
 			sourceTree = "<group>";
 		};
 		B7C170B32550A7DD008B0CE6 /* Cpp ObjC Interop */ = {

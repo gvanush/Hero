@@ -32,7 +32,6 @@ class SceneViewController: UIViewController, MTKViewDelegate {
         sceneView.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
         sceneView.clearColor = UIColor.sceneBgrColor.mtlClearColor
         sceneView.autoResizeDrawable = true
-        sceneView.presentsWithTransaction = true
 //        sceneView.isPaused = true
 //        sceneView.sampleCount = 2
         sceneView.delegate = self

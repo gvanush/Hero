@@ -70,9 +70,10 @@ void Scene::render(RenderingContext& renderingContext, const std::function<void 
         onComplete();
     });
     
+    commandBufferRef.present(renderingContext.drawable);
+    
     commandBufferRef.commit();
     
-    commandBufferRef.present(renderingContext.drawable);
 }
 
 void Scene::setup() {
