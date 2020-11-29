@@ -23,6 +23,8 @@ typedef void* CppHandle;
 
 -(instancetype) initWithCpp: (hero::Object*) cpp;
 
+-(void) resetCpp;
+
 #endif
 
 @end

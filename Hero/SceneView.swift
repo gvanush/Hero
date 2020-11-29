@@ -1,5 +1,5 @@
 //
-//  SceneView.swift
+//  MainGraphicsView.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 7/27/20.
@@ -12,71 +12,101 @@ import Metal
 class SceneViewModel: ObservableObject, UIRepresentableObserver {
     
     let scene: Hero.Scene
+    lazy var graphicsViewModel = GraphicsViewModel(scene: scene, isNavigating: Binding(get: {
+        self.isNavigating
+    }, set: { (value) in
+        self.isNavigating = value
+    }) )
+    
     @Published var isInspectorVisible = true
-    @Published var frameRate: Int = 60
-    @Published var isPaused = false
-    
-    init(scene: Hero.Scene) {
-        self.scene = scene
-        UpdateLoop.shared().addObserver(self, for: scene);
-    }
-    
-    deinit {
-        UpdateLoop.shared().removeObserver(self, for: scene)
-    }
-    
-    func setFullScreenMode(enabled: Bool, animated: Bool = false) {
-        if animated {
-            withAnimation {
-                isInspectorVisible = !enabled
-            }
-        } else {
-            isInspectorVisible = !enabled
+    var isNavigating: Bool = false {
+        willSet {
+            isTopBarVisible = !newValue
         }
     }
+    @Binding var isTopBarVisible: Bool
     
-    func onUIUpdateRequested() {
+    init(isTopBarVisible: Binding<Bool>) {
+        scene = Hero.Scene()
+        _isTopBarVisible = isTopBarVisible
+        graphicsViewModel.renderer.addObserver(self, for: scene)
+    }
+
+    deinit {
+        graphicsViewModel.renderer.removeObserver(self, for: scene)
+    }
+
+    func onUIUpdateRequired() {
         objectWillChange.send()
+    }
+    
+    func setupScene() {
+        
+        scene.viewCamera.orthographicScale = 70.0
+        scene.viewCamera.fovy = Float.pi / 3.0
+        
+        setupAxis()
+        addLayers()
+        
+    }
+    
+    private func setupAxis() {
+        let axisHalfLength: Float = 100.0
+        let axisThickness: Float = 4.0
+        let xAxis = Line(point1: SIMD3<Float>(-axisHalfLength, 0.0, 0.0), point2: SIMD3<Float>(axisHalfLength, 0.0, 0.0), thickness: axisThickness, color: SIMD4<Float>.red)
+        scene.add(xAxis)
+        
+        let zAxis = Line(point1: SIMD3<Float>(0.0, 0.0, -axisHalfLength), point2: SIMD3<Float>(0.0, 0.0, axisHalfLength), thickness: axisThickness, color: SIMD4<Float>.blue)
+        scene.add(zAxis)
+    }
+    
+    private func addLayers() {
+        let sampleImageCount = 5
+        let textureLoader = MTKTextureLoader(device: RenderingContext.device())
+        
+        for i in 0..<sampleImageCount {
+            let texture = try! textureLoader.newTexture(name: "sample_image_\(i)", scaleFactor: 1.0, bundle: nil, options: nil)
+            let texRatio = Float(texture.width) / Float(texture.height)
+            
+            let layer = Layer()
+            layer.texture = texture
+            if i == 0 {
+                let size = Float(30.0)
+                layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                layer.position = simd_float3.zero
+            } else {
+                
+                let sizeRange = Float(10.0)...Float(100.0)
+                let width = Float.random(in: sizeRange)
+                let height = Float.random(in: sizeRange)
+                
+                let size = min(width, height) / 2.0
+                
+                let positionRange = Float(-70.0)...Float(70.0)
+                layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                layer.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
+            }
+            scene.add(layer)
+        }
     }
 }
 
 struct SceneView: View {
     
-    @ObservedObject private var model: SceneViewModel
-    @EnvironmentObject private var rootViewModel: RootViewModel
-    
-    init(model: SceneViewModel) {
-        self.model = model
-    }
+    @ObservedObject var model: SceneViewModel
     
     var body: some View {
         ZStack {
-            SceneViewControllerProxy(sceneViewModel: model, rootViewModel: rootViewModel)
+            GraphicsViewProxy(model: model.graphicsViewModel)
                 .ignoresSafeArea()
             Text(model.scene.selectedObject?.name ?? "None")
-            if let selected = model.scene.selectedObject {
-                Inspector(model: InspectorModel(sceneObject: selected))
+            if let selectedObject = model.scene.selectedObject {
+                Inspector(model: InspectorModel(sceneObject: selectedObject, isTopBarVisible: $model.isTopBarVisible))
                     .opacity(model.isInspectorVisible ? 1.0 : 0.0)
             }
         }
-            .environmentObject(model)
-    }
-    
-    struct SceneViewControllerProxy: UIViewControllerRepresentable {
-        
-        @ObservedObject var sceneViewModel: SceneViewModel
-        let rootViewModel: RootViewModel
-        
-        func makeUIViewController(context: Context) -> SceneViewController {
-            SceneViewController(scene: sceneViewModel.scene, sceneViewModel: sceneViewModel, rootViewModel: rootViewModel)
+        .onAppear {
+            model.setupScene()
         }
-        
-        func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {
-            uiViewController.frameRate = sceneViewModel.frameRate
-            uiViewController.isPaused = sceneViewModel.isPaused
-        }
-        
-        typealias UIViewControllerType = SceneViewController
-        
     }
 }

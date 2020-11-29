@@ -14,7 +14,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         try! ProjectDAO.shared.setup()
         
-        Hero.Scene.setup()
+        Renderer.setup()
         
         return true
     }

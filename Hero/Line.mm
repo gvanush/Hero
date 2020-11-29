@@ -23,6 +23,7 @@
 
 -(void) dealloc {
     delete self.cpp;
+    [self resetCpp];
 }
 
 -(void) setPoint1: (simd_float3) point1 {

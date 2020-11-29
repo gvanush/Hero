@@ -41,7 +41,7 @@ import MetalKit
     
     var body: some View {
         NavigationView {
-            SceneView()
+            MainGraphicsView()
             .navigationBarTitle("Project", displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {

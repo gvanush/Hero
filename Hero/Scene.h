@@ -11,7 +11,6 @@
 #import <Foundation/Foundation.h>
 #import <simd/simd.h>
 
-@class RenderingContext;
 @class Camera;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,16 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(SceneObject* _Nullable) rayCast;
 
--(void) render: (RenderingContext*) renderingContext onComplete: (void (^)(void)) onComplete;
-
 @property (nonatomic, readwrite) simd_float4 bgrColor;
-@property (nonatomic, readwrite) simd_float2 size;
 @property (nonatomic, readonly) NSArray* sceneObjects;
 @property (nonatomic, readonly) Camera* viewCamera;
 @property (nonatomic, readwrite) SceneObject* _Nullable selectedObject;
-
-+(instancetype) shared;
-+(void) setup;
 
 @end
 

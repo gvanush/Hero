@@ -6,18 +6,10 @@
 //
 
 #import "Scene.h"
-#import "RenderingContext.h"
 #import "Camera.h"
 
 #include "Scene.hpp"
 #include "SceneObject.hpp"
-
-namespace hero {
-
-class RenderingContext;
-class Camera;
-
-}
 
 @interface Scene () {
     NSMutableArray* _sceneObjects;
@@ -38,6 +30,7 @@ class Camera;
 
 -(void) dealloc {
     delete self.cpp;
+    [self resetCpp];
 }
 
 -(void) addSceneObject: (SceneObject*) sceneObject {
@@ -49,26 +42,12 @@ class Camera;
     return self.cpp->raycast()->objC<SceneObject*>();
 }
 
--(void) render: (RenderingContext*) renderingContext onComplete: (void (^)(void)) onComplete {
-    self.cpp->render(*renderingContext.cpp, [onComplete] () {
-        onComplete();
-    });
-}
-
 -(void) setBgrColor: (simd_float4) bgrColor {
     self.cpp->setBgrColor(bgrColor);
 }
 
 -(simd_float4) bgrColor {
     return self.cpp->bgrColor();
-}
-
--(void) setSize: (simd_float2) size {
-    self.cpp->setSize(size);
-}
-
--(simd_float2) size {
-    return self.cpp->size();
 }
 
 -(NSArray*) sceneObjects {
@@ -84,19 +63,6 @@ class Camera;
         return selected->objC<SceneObject*>();
     }
     return nil;
-}
-
-+(instancetype) shared {
-    static Scene* scene = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        scene = [[self alloc] init];
-    });
-    return scene;
-}
-
-+(void) setup {
-    hero::Scene::setup();
 }
 
 @end

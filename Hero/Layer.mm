@@ -26,6 +26,7 @@
 
 -(void) dealloc {
     delete self.cpp;
+    [self resetCpp];
 }
 
 -(void) setSize: (simd_float2) size {

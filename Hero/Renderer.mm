@@ -1,34 +1,37 @@
 //
-//  UpdateLoop.m
+//  Renderer.mm
 //  Hero
 //
 //  Created by Vanush Grigoryan on 11/4/20.
 //
 
-#import "UpdateLoop.h"
-
+#import "Renderer.h"
 #import "UIRepresentable.h"
 #import "NSPointerArray+Extensions.h"
+#import "RenderingContext.h"
+#import "Scene.h"
 
-@interface UpdateLoop () {
+#include "Renderer.hpp"
+
+@interface Renderer () {
     NSMapTable<UIRepresentable*, NSPointerArray*>* _uiRepresentableToObservers;
-    Scene* _scene;
     BOOL _isUpdatingUI;
 }
 
 @end
 
-@implementation UpdateLoop
+@implementation Renderer
 
--(instancetype) initWithScene: (Scene*) scene {
-    if (self = [super init]) {
-        _uiRepresentableToObservers = [NSMapTable weakToStrongObjectsMapTable];
-        _isUpdatingUI = false;
-        _scene = scene;
++(instancetype __nullable) make {
+    if (Renderer* renderer = [[Renderer alloc] initWithCpp: hero::Renderer::make()]) {
+        renderer->_uiRepresentableToObservers = [NSMapTable weakToStrongObjectsMapTable];
+        renderer->_isUpdatingUI = false;
+        return renderer;
     }
-    return self;
+    return nil;
 }
 
+#pragma mark - UI update
 -(void) addObserver: (id<UIRepresentableObserver>) observer for: (UIRepresentable*) uiRepresentable {
     NSAssert(!_isUpdatingUI, @"");
     
@@ -60,35 +63,44 @@
     [_uiRepresentableToObservers removeObjectForKey: uiRepresentable];
 }
 
--(void) update {
-    // TODO
++(void) removeAllObserversFor: (UIRepresentable*) uiRepresentable {
+    for(auto renderer: hero::Renderer::allRenderers()) {
+        if (renderer) {
+            [renderer->objC<Renderer*>() removeAllObserversFor: uiRepresentable];
+        }
+    }
+}
+
+-(void) render: (Scene*) scene context: (RenderingContext*) context onComplete: (void (^)(void)) onComplete {
+    self.cpp->render(*scene.cpp, *context.cpp, [onComplete] () {
+        onComplete();
+    });
     
     _isUpdatingUI = true;
     
     for (UIRepresentable* uiRepresentable in _uiRepresentableToObservers) {
-        if (uiRepresentable.needsUIUpdate) {
+        if ([uiRepresentable needsUIUpdate: self.cpp->flag()]) {
             NSPointerArray* observers = [_uiRepresentableToObservers objectForKey: uiRepresentable];
             for (id<UIRepresentableObserver> observer in observers) {
-                [observer onUIUpdateRequested];
+                [observer onUIUpdateRequired];
             }
-            [uiRepresentable onUIUpdated];
+            [uiRepresentable onUIUpdated: self.cpp->flag()];
         }
     }
     
     _isUpdatingUI = false;
 }
 
--(Scene*) scene {
-    return _scene;
++(void) setup {
+    hero::Renderer::setup();
 }
 
-+(instancetype) shared {
-    static UpdateLoop* updateLoop = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        updateLoop = [[self alloc] initWithScene: Scene.shared];
-    });
-    return updateLoop;
+@end
+
+@implementation Renderer (Cpp)
+
+-(hero::Renderer*) cpp {
+    return static_cast<hero::Renderer*>(self.cppHandle);
 }
 
 @end

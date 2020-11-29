@@ -1,5 +1,5 @@
 //
-//  NativeTextField.swift
+//  UITextFieldProxy.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 9/14/20.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NativeTextField: UIViewRepresentable {
+struct UITextFieldProxy: UIViewRepresentable {
     
     @Binding var text: String?
     @Binding var isEditing: Bool

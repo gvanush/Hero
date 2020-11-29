@@ -8,6 +8,9 @@
 #pragma once
 
 #include "Object.hpp"
+#include "Renderer+Common.h"
+
+#include <limits>
 
 namespace hero {
 
@@ -15,26 +18,28 @@ class UIRepresentable: public Object {
 public:
     
     inline void setNeedsUIUpdate() {
-        _needsUIUpdate = true;
+        _rendererFlags = std::numeric_limits<RendererFlag>::max();
     }
     
-    inline bool needsUIUpdate() const {
-        return _needsUIUpdate;
+    inline bool needsUIUpdate(RendererFlag flag) const {
+        return flag & _rendererFlags;
     }
     
 #ifdef __OBJC__
     
-    inline void onUIUpdated() {
-        _needsUIUpdate = false;
+    inline void onUIUpdated(RendererFlag flag) {
+        _rendererFlags &= (~flag);
     }
     
 #endif
     
 protected:
-    UIRepresentable() = default;
+    UIRepresentable() {
+        setNeedsUIUpdate();
+    }
     
 private:
-    bool _needsUIUpdate = true;
+    RendererFlag _rendererFlags;
 };
 
 }

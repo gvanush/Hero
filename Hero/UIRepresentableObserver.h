@@ -10,6 +10,6 @@
 @protocol UIRepresentableObserver
 @required
 
--(void) onUIUpdateRequested;
+-(void) onUIUpdateRequired;
 
 @end

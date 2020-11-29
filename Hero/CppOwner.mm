@@ -10,6 +10,9 @@
 @implementation CppOwner
 
 -(instancetype) initWithCpp: (hero::Object*) cpp {
+    if (!cpp) {
+        return nil;
+    }
     if (self = [super init]) {
         _cppHandle = cpp;
         cpp->setObjCHandle((__bridge hero::ObjCHandle) self);
@@ -17,7 +20,7 @@
     return self;
 }
 
--(void) dealloc {
+-(void) resetCpp; {
     _cppHandle = nullptr;
 }
 

@@ -43,7 +43,7 @@ struct Inspector: View {
     @State var lastDragValue: DragGesture.Value?
     @State var isToolEditingModeEnabled = true
     @State private var isAnimating = false
-    @EnvironmentObject private var sceneViewModel: SceneViewModel
+    @EnvironmentObject private var graphicsViewModel: GraphicsViewModel
     @EnvironmentObject private var rootViewModel: RootViewModel
         
     var body: some View {
@@ -163,9 +163,9 @@ struct Inspector: View {
                 if isToolEditingModeEnabled {
                     withAnimation(.easeOut(duration: Inspector.editingModeSwitchDuration)) {
                         isToolEditingModeEnabled = false
-                        rootViewModel.isTopBarVisible = false
+                        model.isTopBarVisible = false
                     }
-                    sceneViewModel.frameRate = 10
+                    graphicsViewModel.preferredFramesPerSecond = 10
                 }
             }
             .onEnded { value in
@@ -191,13 +191,13 @@ struct Inspector: View {
                 let duration = max(Double(normRemainingDist / speed), Inspector.editingModeSwitchDuration)
                 
                 let isOpen = (shouldToggle ? !self.isOpen : self.isOpen)
-                sceneViewModel.frameRate = (isOpen ? 10 : 60)
+                graphicsViewModel.preferredFramesPerSecond = (isOpen ? 10 : 60)
                 
                 isAnimating = true
                 withAnimation(.easeOut(duration: duration)) {
                     self.isOpen = isOpen
                     isToolEditingModeEnabled = !isOpen
-                    rootViewModel.isTopBarVisible = !isOpen
+                    model.isTopBarVisible = !isOpen
                 }
                 
             }
@@ -210,6 +210,6 @@ struct Inspector: View {
 
 struct ObjectToolbar_Previews: PreviewProvider {
     static var previews: some View {
-        Inspector(model: InspectorModel(sceneObject: SceneObject()))
+        Inspector(model: InspectorModel(sceneObject: SceneObject(), isTopBarVisible: Binding.constant(true)))
     }
 }

@@ -10,8 +10,10 @@ import SwiftUI
 class InspectorModel: ObservableObject {
     
     let sceneObject: SceneObject
+    @Binding var isTopBarVisible: Bool
     
-    init(sceneObject: SceneObject) {
+    init(sceneObject: SceneObject, isTopBarVisible: Binding<Bool>) {
         self.sceneObject = sceneObject
+        _isTopBarVisible = isTopBarVisible
     }
 }

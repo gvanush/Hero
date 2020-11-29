@@ -56,7 +56,7 @@ struct ProjectItem: View {
             
             Group {
                 if model.isRenaming {
-                    NativeTextField(text: $enteredName, isEditing: $model.isRenaming, placeholder: model.name, textAlignment: .center, font: .systemFont(ofSize: ProjectItem.nameFontSize, weight: .regular)) {
+                    UITextFieldProxy(text: $enteredName, isEditing: $model.isRenaming, placeholder: model.name, textAlignment: .center, font: .systemFont(ofSize: ProjectItem.nameFontSize, weight: .regular)) {
                         if let enteredName = enteredName, !model.rename(to: enteredName) {
                             alertType = .renameFailed
                         }

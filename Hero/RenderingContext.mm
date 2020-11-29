@@ -20,6 +20,7 @@
 
 -(void) dealloc {
     delete self.cpp;
+    [self resetCpp];
 }
 
 -(void) setDrawable: (id<MTLDrawable>) drawable {

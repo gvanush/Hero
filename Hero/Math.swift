@@ -1,5 +1,5 @@
 //
-//  MathUtils.swift
+//  Math.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 10/25/20.

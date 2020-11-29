@@ -6,6 +6,7 @@
 //
 
 #import "CppOwner.h"
+#import "Renderer+Common.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,9 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(instancetype) init NS_UNAVAILABLE;
 
--(void) onUIUpdated;
-
-@property (nonatomic, readonly) bool needsUIUpdate;
+-(void) onUIUpdated: (RendererFlag) flag;
+-(bool) needsUIUpdate: (RendererFlag) flag;
 
 @end
 

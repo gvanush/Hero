@@ -7,16 +7,20 @@
 
 import SwiftUI
 import os
+import Combine
 
 class RootViewModel: ObservableObject {
     @Published var isProjectBrowserPresented = false {
         willSet {
-            sceneViewModel.isPaused = newValue
+            sceneViewModel.graphicsViewModel.isPaused = newValue
         }
     }
     @Published var isTopBarVisible = true
-    @Published var isStatusBarVisible = true
-    let sceneViewModel = SceneViewModel(scene: Hero.Scene.shared())
+    lazy var sceneViewModel = SceneViewModel(isTopBarVisible: Binding(get: {
+        self.isTopBarVisible
+    }, set: { (value) in
+        self.isTopBarVisible = value
+    }))
     
     var project: Project?
     
@@ -32,27 +36,6 @@ class RootViewModel: ObservableObject {
         }
     }
     
-    func setTopBar(visible: Bool, animated: Bool = false) {
-        if animated {
-            withAnimation {
-                isTopBarVisible = visible
-            }
-        } else {
-            isTopBarVisible = visible
-        }
-    }
-    
-    func setFullScreenMode(enabled: Bool, animated: Bool = false) {
-        if animated {
-            withAnimation {
-                isTopBarVisible = !enabled
-                isStatusBarVisible = !enabled
-            }
-        } else {
-            isTopBarVisible = !enabled
-            isStatusBarVisible = !enabled
-        }
-    }
 }
 
 struct RootView: View {
@@ -65,8 +48,9 @@ struct RootView: View {
             TopBar()
                 .opacity(model.isTopBarVisible ? 1.0 : 0.0)
         }
-            .statusBar(hidden: !model.isStatusBarVisible)
+            .statusBar(hidden: model.sceneViewModel.graphicsViewModel.isNavigating)
             .environmentObject(model)
+            .environmentObject(model.sceneViewModel.graphicsViewModel)
     }
 }
 

@@ -28,6 +28,7 @@
 
 -(void) dealloc {
     delete self.cpp;
+    [self resetCpp];
 }
 
 -(simd_float3) convertWorldToViewport: (simd_float3) point viewportSize: (simd_float2) viewportSize {

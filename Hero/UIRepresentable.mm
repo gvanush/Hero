@@ -6,21 +6,24 @@
 //
 
 #import "UIRepresentable.h"
+#import "Renderer.h"
 
 #include "UIRepresentable.hpp"
 
 @implementation UIRepresentable
 
--(void) onUIUpdated {
-    self.cpp->onUIUpdated();
+-(void) onUIUpdated: (RendererFlag) flag {
+    self.cpp->onUIUpdated(flag);
 }
 
--(bool) needsUIUpdate {
-    return self.cpp->needsUIUpdate();
+-(bool) needsUIUpdate: (RendererFlag) flag {
+    return self.cpp->needsUIUpdate(flag);
 }
 
 -(void) dealloc {
+    [Renderer removeAllObserversFor: self];
     delete self.cpp;
+    [self resetCpp];
 }
 
 @end

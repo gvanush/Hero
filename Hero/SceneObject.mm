@@ -19,6 +19,7 @@
 
 -(void) dealloc {
     delete self.cpp;
+    [self resetCpp];
 }
 
 -(void) setPosition: (simd_float3) position {

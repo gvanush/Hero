@@ -1,34 +1,49 @@
 //
-//  UpdateLoop.h
+//  Renderer.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 11/4/20.
 //
 
+#import "CppOwner.h"
 #import "UIRepresentableObserver.h"
-#import "Scene.h"
 
-#import <Foundation/Foundation.h>
+#import <MetalKit/MetalKit.h>
 
 @class UIRepresentable;
+@class Scene;
+@class RenderingContext;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UpdateLoop : NSObject
+@interface Renderer : CppOwner
 
 -(instancetype) init NS_UNAVAILABLE;
--(instancetype) initWithScene: (Scene*) scene;
+
++(instancetype __nullable) make;
 
 -(void) addObserver: (id<UIRepresentableObserver>) observer for: (UIRepresentable*) uiRepresentable NS_SWIFT_NAME(addObserver(_:for:));
 -(void) removeObserver: (id<UIRepresentableObserver>) observer for: (UIRepresentable*) uiRepresentable NS_SWIFT_NAME(removeObserver(_:for:));
 -(void) removeAllObserversFor: (UIRepresentable*) uiRepresentable;
 
--(void) update;
++(void) removeAllObserversFor: (UIRepresentable*) uiRepresentable;
 
-@property (nonatomic, readonly) Scene* scene;
+-(void) render: (Scene*) scene context: (RenderingContext*) context onComplete: (void (^)(void)) onComplete;
 
-+(instancetype) shared;
++(void) setup;
 
 @end
+
+#ifdef __cplusplus
+
+namespace hero { class Renderer; }
+
+@interface Renderer (Cpp)
+
+-(hero::Renderer*) cpp;
+
+@end
+
+#endif
 
 NS_ASSUME_NONNULL_END
