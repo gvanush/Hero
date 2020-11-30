@@ -11,10 +11,10 @@ import SwiftUI
 
 class SceneNavigationController {
     let scene: Hero.Scene
-    let sceneView: UIView
+    let sceneView: MTKView
     @Binding var isNavigating: Bool
     
-    init(scene: Hero.Scene, sceneView: UIView, isNavigating: Binding<Bool>) {
+    init(scene: Hero.Scene, sceneView: MTKView, isNavigating: Binding<Bool>) {
         self.scene = scene
         self.sceneView = sceneView
         _isNavigating = isNavigating
@@ -29,7 +29,8 @@ class SceneNavigationController {
         if let selected = scene.rayCast() {
             print("Selected: \(selected.name)")
             scene.selectedObject = selected
-//            selected.position.y = 30.0;
+//            sceneView.clearColor = UIColor.red.mtlClearColor
+            selected.position.y = 30.0;
         }
     }
     

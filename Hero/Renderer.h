@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(void) removeAllObserversFor: (UIRepresentable*) uiRepresentable;
 
--(void) render: (Scene*) scene context: (RenderingContext*) context onComplete: (void (^)(void)) onComplete;
+-(void) render: (Scene*) scene context: (RenderingContext*) context;
 
 +(void) setup;
 

@@ -23,14 +23,6 @@
     [self resetCpp];
 }
 
--(void) setDrawable: (id<MTLDrawable>) drawable {
-    self.cpp->drawable = apple::metal::DrawableRef {drawable};
-}
-
--(id<MTLDrawable>) drawable {
-    return self.cpp->drawable.obj<id>();
-}
-
 -(void) setViewportSize: (simd_float2) viewportSize {
     self.cpp->uniforms.viewportSize = viewportSize;
 }

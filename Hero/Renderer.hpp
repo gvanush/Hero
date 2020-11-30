@@ -25,7 +25,7 @@ public:
     
     ~Renderer();
     
-    void render(const Scene& scene, RenderingContext& renderingContext, const std::function<void ()>& onComplete);
+    void render(const Scene& scene, RenderingContext& renderingContext);
     
     inline RendererFlag flag() const;
     

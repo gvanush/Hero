@@ -71,10 +71,8 @@
     }
 }
 
--(void) render: (Scene*) scene context: (RenderingContext*) context onComplete: (void (^)(void)) onComplete {
-    self.cpp->render(*scene.cpp, *context.cpp, [onComplete] () {
-        onComplete();
-    });
+-(void) render: (Scene*) scene context: (RenderingContext*) context {
+    self.cpp->render(*scene.cpp, *context.cpp);
     
     _isUpdatingUI = true;
     
@@ -89,6 +87,9 @@
     }
     
     _isUpdatingUI = false;
+    
+    
+    
 }
 
 +(void) setup {

@@ -30,6 +30,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate, UIGestureRecogn
         viewModel.view.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
         viewModel.view.clearColor = UIColor.sceneBgrColor.mtlClearColor
         viewModel.view.autoResizeDrawable = true
+        viewModel.view.presentsWithTransaction = true
         viewModel.view.delegate = self
         view.addSubview(viewModel.view)
         
@@ -43,22 +44,20 @@ class GraphicsViewController: UIViewController, MTKViewDelegate, UIGestureRecogn
     }
     
     func draw(in view: MTKView) {
-        guard let drawable = viewModel.view.currentDrawable else {
-            return
-        }
         
+        // IMPROVEMENT: @Vanush preferably this should be done as late as possible (at least after command buffer is created)
         guard let renderPassDescriptor = viewModel.view.currentRenderPassDescriptor else {
             return
         }
         
-        renderingContext.drawable = drawable
         renderingContext.renderPassDescriptor = renderPassDescriptor
         
-        viewModel.renderer.render(viewModel.scene, context: renderingContext) {
-//            DispatchQueue.main.async {
-          //                Renderer.shared().update()
-          //            }
+        viewModel.renderer.render(viewModel.scene, context: renderingContext)
+        
+        if let drawable = viewModel.view.currentDrawable {
+            drawable.present()
         }
+        
     }
     
     private func updateViewportSize(_ size: SIMD2<Float>) {

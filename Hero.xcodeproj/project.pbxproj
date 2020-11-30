@@ -35,7 +35,6 @@
 		B7847AD824D33AE100026607 /* Layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847AD624D33AE100026607 /* Layer.cpp */; };
 		B7847ADF24D45F8C00026607 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847ADD24D45F8C00026607 /* Scene.mm */; };
 		B7847AE324D4625200026607 /* Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE124D4625200026607 /* Layer.mm */; };
-		B7847AE524D4695100026607 /* SceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE424D4695100026607 /* SceneViewController.swift */; };
 		B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1424D6E66900026607 /* RenderingContext.mm */; };
 		B7847B1924D6F38A00026607 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1824D6F38A00026607 /* Shaders.metal */; };
 		B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */; };
@@ -112,7 +111,6 @@
 		B7847ADE24D45F8C00026607 /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		B7847AE124D4625200026607 /* Layer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Layer.mm; sourceTree = "<group>"; };
 		B7847AE224D4625200026607 /* Layer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Layer.h; sourceTree = "<group>"; };
-		B7847AE424D4695100026607 /* SceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewController.swift; sourceTree = "<group>"; };
 		B7847B1424D6E66900026607 /* RenderingContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderingContext.mm; sourceTree = "<group>"; };
 		B7847B1524D6E66900026607 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
 		B7847B1624D6E66900026607 /* RenderingContext.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RenderingContext.hpp; sourceTree = "<group>"; };
@@ -173,7 +171,6 @@
 				B7440FEE255319F000005EEC /* UIRepresentable.mm */,
 				B7440FEF255319F000005EEC /* UIRepresentable.h */,
 				B7440FF425531D9800005EEC /* UIRepresentableObserver.h */,
-				B7847AE424D4695100026607 /* SceneViewController.swift */,
 				B731700624CF378F00157455 /* SceneView.swift */,
 				B797C8872562E355007CE7E5 /* GraphicsViewProxy.swift */,
 				B7B30351256589A50060DFC4 /* SceneNavigationController.swift */,
@@ -529,7 +526,6 @@
 				B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */,
 				B731700724CF378F00157455 /* SceneView.swift in Sources */,
 				B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */,
-				B7847AE524D4695100026607 /* SceneViewController.swift in Sources */,
 				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
 				B7AEE00E2541E741002061F5 /* Inspector.swift in Sources */,
 				B7C36239255000C0007734C1 /* ObjectToolbar.swift in Sources */,

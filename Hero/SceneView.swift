@@ -22,6 +22,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
     var isNavigating: Bool = false {
         willSet {
             isTopBarVisible = !newValue
+            isInspectorVisible = !newValue
         }
     }
     @Binding var isTopBarVisible: Bool

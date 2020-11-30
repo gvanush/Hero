@@ -25,7 +25,7 @@ apple::metal::DepthStencilStateRef __depthStencilState;
 
 }
 
-void Renderer::render(const Scene& scene, RenderingContext& renderingContext, const std::function<void ()>& onComplete) {
+void Renderer::render(const Scene& scene, RenderingContext& renderingContext) {
     assert(scene.viewCamera());
     
     using namespace apple;
@@ -50,16 +50,12 @@ void Renderer::render(const Scene& scene, RenderingContext& renderingContext, co
     
     commandEncoderRef.endEncoding();
     
-    if(onComplete) {
-        commandBufferRef.addCompletedHandler([onComplete] (CommandBufferRef cmdBufRef) {
-            // TODO: Error handling
-            onComplete();
-        });
-    }
-    
-    commandBufferRef.present(renderingContext.drawable);
-    
     commandBufferRef.commit();
+    
+    // This guarantees that
+    // 1. all command buffer work will be completed before the drawable is actually presented
+    // 2. Core Animation transaction will be available at the time the drawable is presented
+    commandBufferRef.waitUntilScheduled();
 }
 
 void Renderer::setup() {

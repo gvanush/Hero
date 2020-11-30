@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RenderingContext : CppOwner
 
-@property (nonatomic, strong) id<MTLDrawable> drawable;
 @property (nonatomic) simd_float2 viewportSize;
 @property (nonatomic, strong) MTLRenderPassDescriptor* renderPassDescriptor;
 

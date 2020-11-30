@@ -29,7 +29,6 @@ public:
     using DrawableSizeType = simd::float2;
     
     Uniforms uniforms;
-    apple::metal::DrawableRef drawable;
     apple::metal::RenderPassDescriptorRef renderPassDescriptor;
     apple::metal::CommandBufferRef commandBuffer;
     apple::metal::RenderCommandEncoderRef renderCommandEncoder;
