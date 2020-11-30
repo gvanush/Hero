@@ -70,15 +70,18 @@ class GraphicsViewController: UIViewController, MTKViewDelegate, UIGestureRecogn
         viewModel.view.addGestureRecognizer(tapGR)
         
         panGR = UIPanGestureRecognizer(target: sceneNavigationController, action: #selector(SceneNavigationController.onPan))
+        panGR.delegate = self
         panGR.maximumNumberOfTouches = 1
         viewModel.view.addGestureRecognizer(panGR)
         
         let twoFingerPanGR = UIPanGestureRecognizer(target: sceneNavigationController, action: #selector(SceneNavigationController.onTwoFingerPan))
+        twoFingerPanGR.delegate = self
         twoFingerPanGR.minimumNumberOfTouches = 2
         twoFingerPanGR.maximumNumberOfTouches = 2
         viewModel.view.addGestureRecognizer(twoFingerPanGR)
         
         let pinchGR = UIPinchGestureRecognizer(target: sceneNavigationController, action: #selector(SceneNavigationController.onPinch))
+        pinchGR.delegate = self
         viewModel.view.addGestureRecognizer(pinchGR)
     }
     

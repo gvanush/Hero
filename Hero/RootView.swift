@@ -16,11 +16,12 @@ class RootViewModel: ObservableObject {
         }
     }
     @Published var isTopBarVisible = true
-    lazy var sceneViewModel = SceneViewModel(isTopBarVisible: Binding(get: {
-        self.isTopBarVisible
-    }, set: { (value) in
-        self.isTopBarVisible = value
-    }))
+    @Published var isStatusBarVisible = true
+    
+    lazy var sceneViewModel = SceneViewModel(
+        isTopBarVisible: Binding(get: { self.isTopBarVisible }, set: { self.isTopBarVisible = $0 }),
+        isStatusBarVisible: Binding(get: { self.isStatusBarVisible }, set: { self.isStatusBarVisible = $0 })
+    )
     
     var project: Project?
     
@@ -48,7 +49,7 @@ struct RootView: View {
             TopBar()
                 .opacity(model.isTopBarVisible ? 1.0 : 0.0)
         }
-            .statusBar(hidden: model.sceneViewModel.graphicsViewModel.isNavigating)
+            .statusBar(hidden: !model.isStatusBarVisible)
             .environmentObject(model)
             .environmentObject(model.sceneViewModel.graphicsViewModel)
     }

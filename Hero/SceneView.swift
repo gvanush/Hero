@@ -23,13 +23,16 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
         willSet {
             isTopBarVisible = !newValue
             isInspectorVisible = !newValue
+            isStatusBarVisible = !newValue
         }
     }
     @Binding var isTopBarVisible: Bool
+    @Binding var isStatusBarVisible: Bool
     
-    init(isTopBarVisible: Binding<Bool>) {
+    init(isTopBarVisible: Binding<Bool>, isStatusBarVisible: Binding<Bool>) {
         scene = Hero.Scene()
         _isTopBarVisible = isTopBarVisible
+        _isStatusBarVisible = isStatusBarVisible
         graphicsViewModel.renderer.addObserver(self, for: scene)
     }
 
