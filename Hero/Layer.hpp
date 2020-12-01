@@ -8,6 +8,7 @@
 #pragma once
 
 #include "SceneObject.hpp"
+#include "GeometryUtils_Common.h"
 
 #include "apple/metal/Metal.h"
 
@@ -38,6 +39,7 @@ public:
     
     static void setup();
     static void render(RenderingContext& renderingContext);
+    static Layer* raycast(const Ray& ray);
     
     inline static uint32_t nextLayerNumber() {
         static uint32_t number = 0;

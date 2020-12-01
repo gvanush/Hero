@@ -52,6 +52,8 @@
 		B79E0456253F526500042719 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79E0455253F526500042719 /* BlurView.swift */; };
 		B7AEE00E2541E741002061F5 /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AEE00D2541E741002061F5 /* Inspector.swift */; };
 		B7B30352256589A50060DFC4 /* SceneNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B30351256589A50060DFC4 /* SceneNavigationController.swift */; };
+		B7B7C4CF257574B4007643D7 /* GeometryUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B7C4CD257574B4007643D7 /* GeometryUtils.cpp */; };
+		B7B7C4D225763ABA007643D7 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B7B7C4D125763ABA007643D7 /* GeometryUtils_Common.c */; };
 		B7C36239255000C0007734C1 /* ObjectToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C36238255000C0007734C1 /* ObjectToolbar.swift */; };
 		B7C3623C2550015B007734C1 /* InspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C3623B2550015B007734C1 /* InspectorModel.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
@@ -132,15 +134,18 @@
 		B78D7DF4252306CE0057F066 /* SceneObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
 		B78D7DF7252312A00057F066 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		B78D7DF8252312A00057F066 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
-		B78D7DFC2523CDAC0057F066 /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
+		B78D7DFC2523CDAC0057F066 /* GeometryUtils_Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeometryUtils_Common.h; sourceTree = "<group>"; };
 		B78D7DFF2524AE8F0057F066 /* Camera.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
 		B78D7E002524AE8F0057F066 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		B797C8872562E355007CE7E5 /* GraphicsViewProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewProxy.swift; sourceTree = "<group>"; };
 		B79E0455253F526500042719 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		B79E0D152570339300AB524F /* Renderer+Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Renderer+Common.h"; sourceTree = "<group>"; };
+		B79E0D152570339300AB524F /* Renderer_Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer_Common.h; sourceTree = "<group>"; };
 		B79E0D1C2572A7E600AB524F /* BitwiseUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BitwiseUtils.hpp; sourceTree = "<group>"; };
 		B7AEE00D2541E741002061F5 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		B7B30351256589A50060DFC4 /* SceneNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneNavigationController.swift; sourceTree = "<group>"; };
+		B7B7C4CD257574B4007643D7 /* GeometryUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryUtils.cpp; sourceTree = "<group>"; };
+		B7B7C4CE257574B4007643D7 /* GeometryUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GeometryUtils.hpp; sourceTree = "<group>"; };
+		B7B7C4D125763ABA007643D7 /* GeometryUtils_Common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GeometryUtils_Common.c; sourceTree = "<group>"; };
 		B7C170B62550A8D9008B0CE6 /* Object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
 		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
 		B7C3623B2550015B007734C1 /* InspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorModel.swift; sourceTree = "<group>"; };
@@ -309,8 +314,11 @@
 				B78D7DED2521B5F30057F066 /* Math.cpp */,
 				B78D7DEE2521B5F30057F066 /* Math.hpp */,
 				B7787843252BA2580097F941 /* Numeric.hpp */,
-				B78D7DFC2523CDAC0057F066 /* Geometry.h */,
 				B79E0D1C2572A7E600AB524F /* BitwiseUtils.hpp */,
+				B78D7DFC2523CDAC0057F066 /* GeometryUtils_Common.h */,
+				B7B7C4D125763ABA007643D7 /* GeometryUtils_Common.c */,
+				B7B7C4CD257574B4007643D7 /* GeometryUtils.cpp */,
+				B7B7C4CE257574B4007643D7 /* GeometryUtils.hpp */,
 			);
 			name = Graphics;
 			sourceTree = "<group>";
@@ -353,7 +361,7 @@
 				B7440FF72553329D00005EEC /* Renderer.mm */,
 				B76508072570230F00F09086 /* Renderer.cpp */,
 				B76508082570230F00F09086 /* Renderer.hpp */,
-				B79E0D152570339300AB524F /* Renderer+Common.h */,
+				B79E0D152570339300AB524F /* Renderer_Common.h */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -511,6 +519,7 @@
 				B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */,
 				B74ECB37253C7D2800C0301E /* Line.cpp in Sources */,
 				B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */,
+				B7B7C4D225763ABA007643D7 /* GeometryUtils_Common.c in Sources */,
 				B76508092570230F00F09086 /* Renderer.cpp in Sources */,
 				B79E0456253F526500042719 /* BlurView.swift in Sources */,
 				B78D7E012524AE8F0057F066 /* Camera.mm in Sources */,
@@ -525,6 +534,7 @@
 				B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */,
 				B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */,
 				B731700724CF378F00157455 /* SceneView.swift in Sources */,
+				B7B7C4CF257574B4007643D7 /* GeometryUtils.cpp in Sources */,
 				B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */,
 				B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */,
 				B7AEE00E2541E741002061F5 /* Inspector.swift in Sources */,

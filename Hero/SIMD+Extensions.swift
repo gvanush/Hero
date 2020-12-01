@@ -7,6 +7,13 @@
 
 import simd
 
+
+extension SIMD2 where Scalar == Float {
+    init(from point: CGPoint) {
+        self.init(x: Float(point.x), y: Float(point.y))
+    }
+}
+
 extension SIMD3 where Scalar == Float {
     static let left = Self(-1.0, 0.0, 0.0)
     static let right = Self(1.0, 0.0, 0.0)

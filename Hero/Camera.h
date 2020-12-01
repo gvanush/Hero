@@ -6,7 +6,7 @@
 //
 
 #import "SceneObject.h"
-#import "Geometry.h"
+#import "GeometryUtils_Common.h"
 
 #import <Foundation/Foundation.h>
 

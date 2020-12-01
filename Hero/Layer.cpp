@@ -9,6 +9,7 @@
 #include "TextureUtils.hpp"
 #include "RenderingContext.hpp"
 #include "ShaderTypes.h"
+#include "GeometryUtils.hpp"
 
 #include <array>
 #include <vector>
@@ -110,6 +111,37 @@ void Layer::render(RenderingContext& renderingContext) {
         renderingContext.renderCommandEncoder.drawPrimitives(PrimitiveType::triangleStrip, 0, kLayerVertices.size());
     }
     
+}
+
+Layer* Layer::raycast(const Ray& ray) {
+    constexpr auto kTolerance = 0.0001f;
+    
+    Layer* result = nullptr;
+    float minNormDistance = std::numeric_limits<float>::max();
+    
+    for(auto layer: __layers) {
+        const auto localRay = transform(ray, simd::inverse(layer->worldMatrix()));
+        const auto plane = makePlane(kZero, kBackward);
+        
+        float normDistance;
+        if(!intersect(localRay, plane, kTolerance, normDistance)) {
+            continue;
+        }
+        
+        const auto intersectionPoint = simd_make_float2(getRayPoint(localRay, normDistance));
+    
+        const AABR aabr {-0.5f * layer->size(), 0.5f * layer->size()};
+        if(!contains(intersectionPoint, aabr)) {
+            continue;
+        }
+        
+        if(minNormDistance > normDistance) {
+            result = layer;
+            minNormDistance = normDistance;
+        }
+        
+    }
+    return result;
 }
 
 }

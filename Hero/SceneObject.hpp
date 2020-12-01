@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Object.hpp"
-#include "Geometry.h"
+#include "GeometryUtils_Common.h"
 
 #include <simd/simd.h>
 

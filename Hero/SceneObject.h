@@ -6,7 +6,7 @@
 //
 
 #import "CppOwner.h"
-#import "Geometry.h"
+#import "GeometryUtils_Common.h"
 
 #import <simd/simd.h>
 

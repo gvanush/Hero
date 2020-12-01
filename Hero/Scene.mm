@@ -38,8 +38,11 @@
     self.cpp->addSceneObject(sceneObject.cpp);
 }
 
--(SceneObject* _Nullable) rayCast {
-    return self.cpp->raycast()->objC<SceneObject*>();
+-(SceneObject* _Nullable) rayCast: (Ray) ray {
+    if(auto sceneObject = self.cpp->raycast(ray)) {
+        return sceneObject->objC<SceneObject*>();
+    }
+    return nil;
 }
 
 -(void) setBgrColor: (simd_float4) bgrColor {

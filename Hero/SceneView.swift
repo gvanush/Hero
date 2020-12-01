@@ -103,7 +103,6 @@ struct SceneView: View {
         ZStack {
             GraphicsViewProxy(model: model.graphicsViewModel)
                 .ignoresSafeArea()
-            Text(model.scene.selectedObject?.name ?? "None")
             if let selectedObject = model.scene.selectedObject {
                 Inspector(model: InspectorModel(sceneObject: selectedObject, isTopBarVisible: $model.isTopBarVisible))
                     .opacity(model.isInspectorVisible ? 1.0 : 0.0)

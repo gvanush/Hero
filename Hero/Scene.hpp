@@ -8,6 +8,7 @@
 #pragma once
 
 #include "UIRepresentable.hpp"
+#include "GeometryUtils_Common.h"
 
 #include "apple/metal/Metal.h"
 
@@ -35,7 +36,7 @@ public:
     
     void addSceneObject(SceneObject* sceneObject);
     
-    SceneObject* raycast() const;
+    SceneObject* raycast(const Ray& ray) const;
     
 private:
     std::vector<SceneObject*> _sceneObjects;

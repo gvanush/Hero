@@ -7,6 +7,7 @@
 
 #import "UIRepresentable.h"
 #import "SceneObject.h"
+#import "GeometryUtils_Common.h"
 
 #import <Foundation/Foundation.h>
 #import <simd/simd.h>
@@ -21,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void) addSceneObject: (SceneObject*) sceneObject;
 
--(SceneObject* _Nullable) rayCast;
+-(SceneObject* _Nullable) rayCast: (Ray) ray;
 
 @property (nonatomic, readwrite) simd_float4 bgrColor;
 @property (nonatomic, readonly) NSArray* sceneObjects;

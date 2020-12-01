@@ -26,11 +26,21 @@ class SceneNavigationController {
     }
     
     @objc func onTap(tapGR: UITapGestureRecognizer) {
-        if let selected = scene.rayCast() {
+        guard tapGR.state == .recognized else {
+            return
+        }
+        
+        let pos = SIMD2<Float>(from: tapGR.location(in: sceneView))
+        let scenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(pos, 1.0), viewportSize: sceneViewSize())
+        
+        if let selected = scene.rayCast(makeRay(scene.viewCamera.position, scenePos - scene.viewCamera.position)) {
             print("Selected: \(selected.name)")
             scene.selectedObject = selected
 //            sceneView.clearColor = UIColor.red.mtlClearColor
-            selected.position.y = 30.0;
+//            selected.position.y = 30.0;
+        } else {
+            print("None")
+            scene.selectedObject = nil
         }
     }
     
@@ -41,13 +51,11 @@ class SceneNavigationController {
                 isNavigating = true
             }
             
-            let loc = panGR.location(in: sceneView)
-            gesturePrevPos.x = Float(loc.x)
-            gesturePrevPos.y = Float(loc.y)
+            gesturePrevPos = SIMD2<Float>(from: panGR.location(in: sceneView))
+            
         case .changed:
             
-            let loc = panGR.location(in: sceneView)
-            let pos = SIMD2<Float>(Float(loc.x), Float(loc.y))
+            let pos = SIMD2<Float>(from: panGR.location(in: sceneView))
             let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / sceneViewSize().min()
             
             viewCameraSphericalCoord.latitude -= angleDelta.y

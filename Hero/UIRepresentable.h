@@ -6,7 +6,7 @@
 //
 
 #import "CppOwner.h"
-#import "Renderer+Common.h"
+#import "Renderer_Common.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

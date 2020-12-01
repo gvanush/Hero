@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Geometry.h"
+#include "GeometryUtils_Common.h"
 
 #include <simd/simd.h>
 
