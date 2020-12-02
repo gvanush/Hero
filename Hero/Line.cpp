@@ -81,8 +81,7 @@ void Line::render(RenderingContext& renderingContext) {
         renderingContext.uniforms.projectionViewModelMatrix = line->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
         renderingContext.renderCommandEncoder.setVertexBytes(&renderingContext.uniforms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);
         
-        simd::float3 offset {0.f, 0.f, 0.f};
-        std::array<simd::float3, 4> vertices {line->_point1 - offset, line->_point2 - offset, line->_point1 + offset, line->_point2 + offset};
+        std::array<simd::float3, 4> vertices {line->_point1, line->_point2, line->_point1, line->_point2};
         renderingContext.renderCommandEncoder.setVertexBytes(vertices.data(), sizeof(vertices), kVertexInputIndexVertices);
         
         renderingContext.renderCommandEncoder.setVertexBytes(&line->_thickness, sizeof(float), kVertexInputIndexThickness);

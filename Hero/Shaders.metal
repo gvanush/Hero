@@ -36,7 +36,8 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
     normal.x /= aspect;
     
     BasicRasterizerData out;
-    auto side = (2 * (static_cast<int>(vertexID) / 2) - 1) * (1 - 2 * (static_cast<int>(vertexID) % 2));
+//    const auto side = (2 * (static_cast<int>(vertexID) / 2) - 1) * (1 - 2 * (static_cast<int>(vertexID) % 2));
+    const auto side = 2 * (static_cast<int>(vertexID) / 2) - 1;
     out.position = pos + float4(normal * side * pos.w, 0.f, 0.f);
     return out;
 }
