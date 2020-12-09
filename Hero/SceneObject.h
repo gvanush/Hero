@@ -6,9 +6,8 @@
 //
 
 #import "CppWrapper.h"
-#import "GeometryUtils_Common.h"
 
-#import <simd/simd.h>
+@class Transform;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,12 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(instancetype) init;
 
-@property (nonatomic, readwrite) simd_float3 position;
-@property (nonatomic, readwrite) simd_float3 scale;
-@property (nonatomic, readwrite) simd_float3 rotation;
-@property (nonatomic, readwrite) EulerOrder eulerOrder;
-@property (nonatomic, readwrite) simd_float4x4 worldMatrix;
 @property (nonatomic, copy) NSString* name;
+@property (nonatomic, readonly) Transform* transform;
 
 @end
 

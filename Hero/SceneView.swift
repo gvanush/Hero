@@ -77,7 +77,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
             if i == 0 {
                 let size = Float(30.0)
                 layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                layer.position = simd_float3.zero
+                layer.transform.position = simd_float3.zero
             } else {
                 
                 let sizeRange = Float(10.0)...Float(100.0)
@@ -88,7 +88,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
                 
                 let positionRange = Float(-70.0)...Float(70.0)
                 layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                layer.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
+                layer.transform.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
             }
             scene.add(layer)
         }

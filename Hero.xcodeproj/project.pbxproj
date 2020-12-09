@@ -54,6 +54,9 @@
 		B7B30352256589A50060DFC4 /* SceneNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B30351256589A50060DFC4 /* SceneNavigationController.swift */; };
 		B7B7C4CF257574B4007643D7 /* GeometryUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B7C4CD257574B4007643D7 /* GeometryUtils.cpp */; };
 		B7B7C4D225763ABA007643D7 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B7B7C4D125763ABA007643D7 /* GeometryUtils_Common.c */; };
+		B7BA37822581294800118E6A /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BA377D2581294800118E6A /* Transform.cpp */; };
+		B7BA37832581294800118E6A /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BA377F2581294800118E6A /* Component.cpp */; };
+		B7BA378925812B9500118E6A /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7BA378725812B9500118E6A /* Transform.mm */; };
 		B7C36239255000C0007734C1 /* ObjectToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C36238255000C0007734C1 /* ObjectToolbar.swift */; };
 		B7C3623C2550015B007734C1 /* InspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C3623B2550015B007734C1 /* InspectorModel.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
@@ -146,6 +149,13 @@
 		B7B7C4CD257574B4007643D7 /* GeometryUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryUtils.cpp; sourceTree = "<group>"; };
 		B7B7C4CE257574B4007643D7 /* GeometryUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GeometryUtils.hpp; sourceTree = "<group>"; };
 		B7B7C4D125763ABA007643D7 /* GeometryUtils_Common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GeometryUtils_Common.c; sourceTree = "<group>"; };
+		B7BA377D2581294800118E6A /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
+		B7BA377E2581294800118E6A /* Transform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
+		B7BA377F2581294800118E6A /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
+		B7BA37802581294800118E6A /* Component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Component.hpp; sourceTree = "<group>"; };
+		B7BA37812581294800118E6A /* ComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentRegistry.hpp; sourceTree = "<group>"; };
+		B7BA378725812B9500118E6A /* Transform.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
+		B7BA378825812B9500118E6A /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		B7C170B62550A8D9008B0CE6 /* ObjCWrappee.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjCWrappee.hpp; sourceTree = "<group>"; };
 		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
 		B7C3623B2550015B007734C1 /* InspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorModel.swift; sourceTree = "<group>"; };
@@ -296,6 +306,8 @@
 		B7847AE024D45FC300026607 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				B7BA377A2581292B00118E6A /* Core */,
+				B7BA378525812A4500118E6A /* Components */,
 				B70CFB8A2542B68D00E8E30A /* UI */,
 				B797C8842562E300007CE7E5 /* Renderer */,
 				B77878392529225F0097F941 /* SphericalCoord */,
@@ -389,6 +401,35 @@
 				B723BB22250F2FC2007C989E /* UITextFieldProxy.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		B7BA377A2581292B00118E6A /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B7BA377F2581294800118E6A /* Component.cpp */,
+				B7BA37802581294800118E6A /* Component.hpp */,
+				B7BA37812581294800118E6A /* ComponentRegistry.hpp */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		B7BA378525812A4500118E6A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B7BA378625812A5300118E6A /* Transform */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		B7BA378625812A5300118E6A /* Transform */ = {
+			isa = PBXGroup;
+			children = (
+				B7BA377D2581294800118E6A /* Transform.cpp */,
+				B7BA377E2581294800118E6A /* Transform.hpp */,
+				B7BA378725812B9500118E6A /* Transform.mm */,
+				B7BA378825812B9500118E6A /* Transform.h */,
+			);
+			name = Transform;
 			sourceTree = "<group>";
 		};
 		B7C170B32550A7DD008B0CE6 /* Cpp ObjC Interop */ = {
@@ -509,11 +550,13 @@
 				B7787863252C51980097F941 /* SIMD+Extensions.swift in Sources */,
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
+				B7BA37822581294800118E6A /* Transform.cpp in Sources */,
 				B7B30352256589A50060DFC4 /* SceneNavigationController.swift in Sources */,
 				B786A8D324D146DB00F6EE83 /* Scene.cpp in Sources */,
 				B723BB1F250DD229007C989E /* Settings.swift in Sources */,
 				B7440FF0255319F000005EEC /* UIRepresentable.mm in Sources */,
 				B7872CFC25027F4800BD403D /* RootView.swift in Sources */,
+				B7BA378925812B9500118E6A /* Transform.mm in Sources */,
 				B731700924CF38E900157455 /* MainViewOld.swift in Sources */,
 				B74410172556984400005EEC /* NSPointerArray+Extensions.m in Sources */,
 				B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */,
@@ -531,6 +574,7 @@
 				B7316FF824CF376000157455 /* HeroApp.swift in Sources */,
 				B75C31F52531872600CD612C /* SphericalCoord.cpp in Sources */,
 				B78D7DF9252312A00057F066 /* Camera.cpp in Sources */,
+				B7BA37832581294800118E6A /* Component.cpp in Sources */,
 				B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */,
 				B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */,
 				B731700724CF378F00157455 /* SceneView.swift in Sources */,

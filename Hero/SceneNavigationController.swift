@@ -22,7 +22,7 @@ class SceneNavigationController {
         viewCameraSphericalCoord.radius = 100.0
         viewCameraSphericalCoord.longitude = Float.pi
         viewCameraSphericalCoord.latitude = 0.5 * Float.pi
-        scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
+        scene.viewCamera.transform.position = viewCameraSphericalCoord.getPosition()
     }
     
     @objc func onTap(tapGR: UITapGestureRecognizer) {
@@ -33,7 +33,7 @@ class SceneNavigationController {
         let pos = SIMD2<Float>(from: tapGR.location(in: sceneView))
         let scenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(pos, 1.0), viewportSize: sceneViewSize())
         
-        if let selected = scene.rayCast(makeRay(scene.viewCamera.position, scenePos - scene.viewCamera.position)) {
+        if let selected = scene.rayCast(makeRay(scene.viewCamera.transform.position, scenePos - scene.viewCamera.transform.position)) {
             print("Selected: \(selected.name)")
             scene.selectedObject = selected
 //            sceneView.clearColor = UIColor.red.mtlClearColor
@@ -63,7 +63,7 @@ class SceneNavigationController {
             let isInFrontOfSphere = sinf(viewCameraSphericalCoord.latitude) >= 0.0
             viewCameraSphericalCoord.longitude += (isInFrontOfSphere ? angleDelta.x : -angleDelta.x)
             
-            scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
+            scene.viewCamera.transform.position = viewCameraSphericalCoord.getPosition()
             scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
             
             gesturePrevPos = pos
@@ -113,7 +113,7 @@ class SceneNavigationController {
             let scenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(pos, ndcZ), viewportSize: sceneViewSize())
             
             viewCameraSphericalCoord.center += (prevScenePos - scenePos)
-            scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
+            scene.viewCamera.transform.position = viewCameraSphericalCoord.getPosition()
             
             gesturePrevPos = pos
             
@@ -184,7 +184,7 @@ class SceneNavigationController {
                 
                 viewCameraSphericalCoord.radius = max(viewCameraSphericalCoord.radius + (dist > pinchPrevFingerDist ? -radiusDelta : radiusDelta), 0.01)
                 
-                scene.viewCamera.position = viewCameraSphericalCoord.getPosition()
+                scene.viewCamera.transform.position = viewCameraSphericalCoord.getPosition()
 
                 pinchPrevFingerDist = dist
                 
