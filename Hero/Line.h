@@ -13,9 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Line: SceneObject
 
--(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color NS_DESIGNATED_INITIALIZER;
+-(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color;
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2;
--(instancetype) init NS_UNAVAILABLE;
 
 @property (nonatomic, readwrite) simd_float3 point1;
 @property (nonatomic, readwrite) simd_float3 point2;

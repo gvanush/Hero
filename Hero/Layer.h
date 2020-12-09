@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Layer: SceneObject
 
+-(instancetype) init;
+
 @property (nonatomic, readwrite) simd_float2 size;
 @property (nonatomic, readwrite) simd_float4 color;
 @property (nonatomic, readwrite) id<MTLTexture> texture;

@@ -23,7 +23,9 @@
 @implementation Renderer
 
 +(instancetype __nullable) make {
-    if (Renderer* renderer = [[Renderer alloc] initWithCpp: hero::Renderer::make()]) {
+    if (Renderer* renderer = [[Renderer alloc] initWithOwnedCpp: hero::Renderer::make() deleter:^(CppHandle handle) {
+        delete static_cast<hero::Renderer*>(handle);
+    }]) {
         renderer->_uiRepresentableToObservers = [NSMapTable weakToStrongObjectsMapTable];
         renderer->_isUpdatingUI = false;
         return renderer;
@@ -87,8 +89,6 @@
     }
     
     _isUpdatingUI = false;
-    
-    
     
 }
 

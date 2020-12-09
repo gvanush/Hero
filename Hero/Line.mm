@@ -12,18 +12,13 @@
 @implementation Line
 
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
-    if (self = [super initWithCpp: new hero::Line {point1, point2, thickness, color}]) {
-    }
-    return self;
+    return [self initWithOwnedCpp: new hero::Line {point1, point2, thickness, color} deleter:^(CppHandle handle) {
+        delete static_cast<hero::Line*>(handle);
+    }];
 }
 
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 {
     return [self initWithPoint1: point1 point2: point2 thickness: 1.f color: simd_make_float4(1.f, 1.f, 1.f, 1.f)];
-}
-
--(void) dealloc {
-    delete self.cpp;
-    [self resetCpp];
 }
 
 -(void) setPoint1: (simd_float3) point1 {

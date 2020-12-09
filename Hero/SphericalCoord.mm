@@ -12,14 +12,9 @@
 @implementation SphericalCoord
 
 -(instancetype) init {
-    if (self = [super initWithCpp: new hero::SphericalCoord {}]) {
-    }
-    return self;
-}
-
--(void) dealloc {
-    delete self.cpp;
-    [self resetCpp];
+    return [self initWithOwnedCpp: new hero::SphericalCoord {} deleter:^(CppHandle handle) {
+        delete static_cast<hero::SphericalCoord*>(handle);
+    }];
 }
 
 -(simd_float3) getPosition {

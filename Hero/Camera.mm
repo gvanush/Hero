@@ -11,8 +11,8 @@
 
 @implementation Camera
 
--(instancetype) initWithNear: (float) near far: (float) far aspectRatio: (float) aspectRatio {
-    if (self = [super initWithCpp: new hero::Camera {near, far, aspectRatio}]) {
+-(instancetype) initWithOwnedCpp:(hero::ObjCWrappee *)cpp deleter:(CppHandleDeleter)deleter {
+    if(self = [super initWithOwnedCpp: cpp deleter: deleter]) {
         if (auto number = hero::Camera::nextCameraNumber(); number > 0) {
             self.name = [NSString stringWithFormat: @"Camera %d", number];
         } else {
@@ -22,13 +22,10 @@
     return self;
 }
 
--(instancetype) init {
-    return [self initWithNear: 0.0001 far: 1000.f aspectRatio: 1.f];
-}
-
--(void) dealloc {
-    delete self.cpp;
-    [self resetCpp];
+-(instancetype) initWithNear: (float) near far: (float) far aspectRatio: (float) aspectRatio {
+    return [self initWithOwnedCpp: new hero::Camera {near, far, aspectRatio} deleter:^(CppHandle handle) {
+        delete static_cast<hero::Camera*>(handle);
+    }];
 }
 
 -(simd_float3) convertWorldToViewport: (simd_float3) point viewportSize: (simd_float2) viewportSize {

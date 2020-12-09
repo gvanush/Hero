@@ -22,8 +22,6 @@
 
 -(void) dealloc {
     [Renderer removeAllObserversFor: self];
-    delete self.cpp;
-    [self resetCpp];
 }
 
 @end

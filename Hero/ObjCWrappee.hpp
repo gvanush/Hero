@@ -1,5 +1,5 @@
 //
-//  Object.hpp
+//  ObjCWrappee.hpp
 //  Hero
 //
 //  Created by Vanush Grigoryan on 11/2/20.
@@ -13,15 +13,11 @@ namespace hero {
 
 using ObjCHandle = CFTypeRef;
 
-class Object {
+class ObjCWrappee {
 public:
 
-    ~Object() {
+    ~ObjCWrappee() {
         _objCHandle = nullptr;
-    }
-    
-    inline ObjCHandle objCHandle() const {
-        return _objCHandle;
     }
     
 #ifdef __OBJC__

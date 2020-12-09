@@ -20,17 +20,18 @@
 @implementation Scene
 
 -(instancetype) init {
-    if (self = [super initWithCpp: new hero::Scene {}]) {
+    return [self initWithOwnedCpp: new hero::Scene {} deleter:^(CppHandle handle) {
+        delete static_cast<hero::Scene*>(handle);
+    }];
+}
+
+-(instancetype)initWithOwnedCpp:(hero::ObjCWrappee *)cpp deleter:(CppHandleDeleter)deleter {
+    if(self = [super initWithOwnedCpp: cpp deleter: deleter]) {
         _sceneObjects = [NSMutableArray array];
         _viewCamera = [[Camera alloc] initWithNear: 0.01f far: 1000.f aspectRatio: 1.f];
         self.cpp->setViewCamera(_viewCamera.cpp);
     }
     return self;
-}
-
--(void) dealloc {
-    delete self.cpp;
-    [self resetCpp];
 }
 
 -(void) addSceneObject: (SceneObject*) sceneObject {

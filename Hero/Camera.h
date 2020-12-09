@@ -14,8 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Camera: SceneObject
 
--(instancetype) initWithNear: (float) near far: (float) far aspectRatio: (float) aspectRatio NS_DESIGNATED_INITIALIZER;
--(instancetype) init NS_UNAVAILABLE;
+-(instancetype) initWithNear: (float) near far: (float) far aspectRatio: (float) aspectRatio;
 
 -(simd_float3) convertWorldToViewport: (simd_float3) point viewportSize: (simd_float2) viewportSize NS_SWIFT_NAME(convertWorldToViewport(_:viewportSize:));
 -(simd_float3) convertViewportToWorld: (simd_float3) point viewportSize: (simd_float2) viewportSize NS_SWIFT_NAME(convertViewportToWorld(_:viewportSize:));

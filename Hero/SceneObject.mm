@@ -12,14 +12,9 @@
 @implementation SceneObject
 
 -(instancetype) init {
-    if (self = [super initWithCpp: new hero::SceneObject {}]) {
-    }
-    return self;
-}
-
--(void) dealloc {
-    delete self.cpp;
-    [self resetCpp];
+    return [self initWithOwnedCpp: new hero::SceneObject {} deleter:^(CppHandle handle) {
+        delete static_cast<hero::SceneObject*>(handle);
+    }];
 }
 
 -(void) setPosition: (simd_float3) position {

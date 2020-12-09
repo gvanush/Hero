@@ -5,7 +5,7 @@
 //  Created by Vanush Grigoryan on 11/4/20.
 //
 
-#import "CppOwner.h"
+#import "CppWrapper.h"
 #import "UIRepresentableObserver.h"
 
 #import <MetalKit/MetalKit.h>
@@ -16,7 +16,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Renderer : CppOwner
+@interface Renderer : CppWrapper
 
 -(instancetype) init NS_UNAVAILABLE;
 

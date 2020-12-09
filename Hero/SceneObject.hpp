@@ -7,14 +7,14 @@
 
 #pragma once
 
-#include "Object.hpp"
+#include "ObjCWrappee.hpp"
 #include "GeometryUtils_Common.h"
 
 #include <simd/simd.h>
 
 namespace hero {
 
-class SceneObject: public Object {
+class SceneObject: public ObjCWrappee {
 public:
     
     inline void setPosition(const simd::float3& pos);

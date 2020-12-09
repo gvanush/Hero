@@ -6,7 +6,7 @@
 //  Copyright © 2020 Vanush Grigoryan. All rights reserved.
 //
 
-#import "CppOwner.h"
+#import "CppWrapper.h"
 
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
@@ -15,7 +15,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RenderingContext : CppOwner
+@interface RenderingContext : CppWrapper
+
+-(instancetype) init;
 
 @property (nonatomic) simd_float2 viewportSize;
 @property (nonatomic, strong) MTLRenderPassDescriptor* renderPassDescriptor;

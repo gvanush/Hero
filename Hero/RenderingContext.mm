@@ -13,14 +13,9 @@
 @implementation RenderingContext
 
 -(instancetype) init {
-    if(self = [super initWithCpp: new hero::RenderingContext {}]) {
-    }
-    return self;
-}
-
--(void) dealloc {
-    delete self.cpp;
-    [self resetCpp];
+    return [self initWithOwnedCpp: new hero::RenderingContext {} deleter:^(CppHandle handle) {
+        delete static_cast<hero::RenderingContext*>(handle);
+    }];
 }
 
 -(void) setViewportSize: (simd_float2) viewportSize {

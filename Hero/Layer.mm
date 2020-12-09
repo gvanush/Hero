@@ -14,7 +14,13 @@
 @implementation Layer
 
 -(instancetype) init {
-    if (self = [super initWithCpp: new hero::Layer {}]) {
+    return [self initWithOwnedCpp: new hero::Layer {} deleter:^(CppHandle handle) {
+        delete static_cast<hero::Layer*>(handle);
+    }];
+}
+
+-(instancetype)initWithOwnedCpp:(hero::ObjCWrappee *)cpp deleter:(CppHandleDeleter)deleter {
+    if (self = [super initWithOwnedCpp: cpp deleter: deleter]) {
         if (auto number = hero::Layer::nextLayerNumber(); number > 0) {
             self.name = [NSString stringWithFormat: @"Layer %d", number];
         } else {
@@ -22,11 +28,6 @@
         }
     }
     return self;
-}
-
--(void) dealloc {
-    delete self.cpp;
-    [self resetCpp];
 }
 
 -(void) setSize: (simd_float2) size {

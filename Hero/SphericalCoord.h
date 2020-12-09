@@ -5,13 +5,15 @@
 //  Created by Vanush Grigoryan on 10/3/20.
 //
 
-#import "CppOwner.h"
+#import "CppWrapper.h"
 
 #include <simd/simd.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SphericalCoord: CppOwner
+@interface SphericalCoord: CppWrapper
+
+-(instancetype) init;
 
 -(simd_float3) getPosition;
 

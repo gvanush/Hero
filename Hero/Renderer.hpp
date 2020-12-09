@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Object.hpp"
+#include "ObjCWrappee.hpp"
 #include "Renderer_Common.h"
 
 #include <cstdint>
@@ -20,7 +20,7 @@ namespace hero {
 class Scene;
 class RenderingContext;
 
-class Renderer: public Object {
+class Renderer: public ObjCWrappee {
 public:
     
     ~Renderer();

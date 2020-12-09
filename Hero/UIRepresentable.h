@@ -5,12 +5,12 @@
 //  Created by Vanush Grigoryan on 11/4/20.
 //
 
-#import "CppOwner.h"
+#import "CppWrapper.h"
 #import "Renderer_Common.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIRepresentable: CppOwner
+@interface UIRepresentable: CppWrapper
 
 -(instancetype) init NS_UNAVAILABLE;
 
