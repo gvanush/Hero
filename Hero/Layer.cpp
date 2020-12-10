@@ -100,7 +100,7 @@ void Layer::render(RenderingContext& renderingContext) {
         
     for(auto layer: __layers) {
         
-        renderingContext.uniforms.projectionViewModelMatrix = layer->transform()->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
+        renderingContext.uniforms.projectionViewModelMatrix = layer->get<Transform>()->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
         renderingContext.renderCommandEncoder.setVertexBytes(&renderingContext.uniforms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);
         
         renderingContext.renderCommandEncoder.setVertexBytes(&layer->size(), sizeof(Layer::SizeType), kVertexInputIndexSize);
@@ -120,7 +120,7 @@ Layer* Layer::raycast(const Ray& ray) {
     float minNormDistance = std::numeric_limits<float>::max();
     
     for(auto layer: __layers) {
-        const auto localRay = hero::transform(ray, simd::inverse(layer->transform()->worldMatrix()));
+        const auto localRay = hero::transform(ray, simd::inverse(layer->get<Transform>()->worldMatrix()));
         const auto plane = makePlane(kZero, kBackward);
         
         float normDistance;

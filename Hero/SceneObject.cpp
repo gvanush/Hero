@@ -10,4 +10,20 @@
 
 namespace hero {
 
+SceneObject::SceneObject() {
+    // TODO: Remove this
+    set<Transform>();
+}
+
+SceneObject::~SceneObject() {
+    // TODO: Remove this
+    delete get<Transform>();
+}
+
+SceneObject* SceneObject::makeBasic() {
+    auto sceneObject = new SceneObject {};
+    sceneObject->set<Transform>();
+    return sceneObject;
+}
+
 }

@@ -78,7 +78,7 @@ void Line::render(RenderingContext& renderingContext) {
     
     for(auto line: __lines) {
         
-        renderingContext.uniforms.projectionViewModelMatrix = line->transform()->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
+        renderingContext.uniforms.projectionViewModelMatrix = line->get<Transform>()->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
         renderingContext.renderCommandEncoder.setVertexBytes(&renderingContext.uniforms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);
         
         std::array<simd::float3, 4> vertices {line->_point1, line->_point2, line->_point1, line->_point2};

@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString* name;
 @property (nonatomic, readonly) Transform* transform;
 
++(SceneObject*) makeBasic;
+
 @end
 
 #ifdef __cplusplus

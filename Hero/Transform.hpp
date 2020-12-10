@@ -14,8 +14,12 @@
 
 namespace hero {
 
+class SceneObject;
+
 class Transform: public Component {
 public:
+    
+    using Component::Component;
     
     inline void setPosition(const simd::float3& pos);
     inline void setPosition(float x, float y, float z);

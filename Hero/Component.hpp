@@ -11,7 +11,31 @@
 
 namespace hero {
 
+class SceneObject;
+
 class Component: public ObjCWrappee {
+public:
+    
+    inline Component(const SceneObject& sceneObject);
+    
+    inline void die();
+    inline bool isAlive() const;
+    
+private:
+    const SceneObject& _sceneObject;
+    bool _alive = true;
 };
+
+Component::Component(const SceneObject& sceneObject)
+: _sceneObject {sceneObject} {
+}
+
+void Component::die() {
+    _alive = true;
+}
+
+bool Component::isAlive() const {
+    return _alive;
+}
 
 }

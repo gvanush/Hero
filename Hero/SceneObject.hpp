@@ -9,27 +9,43 @@
 
 #include "ObjCWrappee.hpp"
 #include "Transform.hpp"
-#include "GeometryUtils_Common.h"
+#include "TypeId.hpp"
 
-#include <simd/simd.h>
+#include <unordered_map>
 
 namespace hero {
 
 class SceneObject: public ObjCWrappee {
 public:
     
-    inline Transform* transform() const;
-    ~SceneObject() {
-        delete _transform;
-        _transform = nullptr;
-    }
+    SceneObject();
+    ~SceneObject();
+    
+    template <typename CT>
+    inline CT* set();
+    
+    template <typename CT>
+    inline CT* get() const;
+    
+    static SceneObject* makeBasic();
     
 private:
-    Transform* _transform = new Transform {};
+    std::unordered_map<TypeId, Component*> _components;
 };
 
-Transform* SceneObject::transform() const {
-    return _transform;
+template <typename CT>
+CT* SceneObject::set() {
+    assert(_components.find(typeId<CT>) == _components.end());
+    // TODO:
+    auto component = new CT {*this};
+    _components[typeId<CT>] = component;
+    return component;
+}
+
+template <typename CT>
+CT* SceneObject::get() const {
+    auto it = _components.find(typeId<CT>);
+    return it == _components.end() ? nullptr : static_cast<CT*>(it->second);
 }
 
 }

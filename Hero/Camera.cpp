@@ -6,6 +6,7 @@
 //
 
 #include "Camera.hpp"
+#include "Transform.hpp"
 #include "Math.hpp"
 
 #include <cassert>
@@ -42,7 +43,7 @@ simd::float4x4 Camera::projectionMatrix() const {
 }
 
 simd::float4x4 Camera::viewMatrix() const {
-    return simd::inverse(transform()->worldMatrix());
+    return simd::inverse(get<Transform>()->worldMatrix());
 }
 
 simd::float4x4 Camera::projectionViewMatrix() const {
@@ -57,7 +58,7 @@ simd::float3 Camera::convertWorldToViewport(const simd::float3& point, const sim
 }
 
 simd::float3 Camera::convertViewportToWorld(const simd::float3& point, const simd::float2& viewportSize) {
-    auto pos = simd::make_float4(point, 1.f) * simd::inverse(makeViewportMatrix(viewportSize)) * simd::inverse(projectionMatrix()) * transform()->worldMatrix();
+    auto pos = simd::make_float4(point, 1.f) * simd::inverse(makeViewportMatrix(viewportSize)) * simd::inverse(projectionMatrix()) * get<Transform>()->worldMatrix();
     pos /= pos.w;
     return simd::float3 {pos.x, pos.y, pos.z};
 }
@@ -69,7 +70,7 @@ simd::float3 Camera::convertWorldToNDC(const simd::float3& point) {
 }
 
 void Camera::lookAt(const simd::float3& point, const simd::float3& up) {
-    transform()->orientToRotationMatrix(makeLookAtMatrix(transform()->position(), point, up));
+    get<Transform>()->orientToRotationMatrix(makeLookAtMatrix(get<Transform>()->position(), point, up));
 }
 
 }

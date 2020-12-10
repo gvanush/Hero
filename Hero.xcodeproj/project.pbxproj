@@ -156,6 +156,7 @@
 		B7BA37812581294800118E6A /* ComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentRegistry.hpp; sourceTree = "<group>"; };
 		B7BA378725812B9500118E6A /* Transform.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
 		B7BA378825812B9500118E6A /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
+		B7BA378C25814F0800118E6A /* TypeId.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TypeId.hpp; sourceTree = "<group>"; };
 		B7C170B62550A8D9008B0CE6 /* ObjCWrappee.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjCWrappee.hpp; sourceTree = "<group>"; };
 		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
 		B7C3623B2550015B007734C1 /* InspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorModel.swift; sourceTree = "<group>"; };
@@ -462,6 +463,7 @@
 				B7872CFD2504340A00BD403D /* Common.swift */,
 				B70CFB8C2545EE2400E8E30A /* Math.swift */,
 				B7DD545024FC197400163947 /* ViewModifiers.swift */,
+				B7BA378C25814F0800118E6A /* TypeId.hpp */,
 			);
 			name = Util;
 			sourceTree = "<group>";

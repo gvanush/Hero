@@ -19,7 +19,14 @@
 }
 
 -(Transform *)transform {
-    return [[Transform alloc] initWithCpp: self.cpp->transform()];
+    return [[Transform alloc] initWithCpp: self.cpp->get<hero::Transform>()];
+}
+
++(SceneObject*) makeBasic {
+    // TODO: must not be owned
+    return [[SceneObject alloc] initWithOwnedCpp: hero::SceneObject::makeBasic() deleter:^(CppHandle handle) {
+        delete static_cast<hero::SceneObject*>(handle);
+    }];
 }
 
 @end
