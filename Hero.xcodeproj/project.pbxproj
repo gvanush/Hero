@@ -316,7 +316,6 @@
 				B77878392529225F0097F941 /* SphericalCoord */,
 				B778782D252906700097F941 /* Scene */,
 				B778782C252906460097F941 /* SceneObject */,
-				B778782B252906380097F941 /* Camera */,
 				B74ECB34253C7D0600C0301E /* Line */,
 				B797C87F25619C9E007CE7E5 /* Layer */,
 				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
@@ -422,6 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				B7BA378625812A5300118E6A /* Transform */,
+				B778782B252906380097F941 /* Camera */,
 			);
 			name = Components;
 			sourceTree = "<group>";

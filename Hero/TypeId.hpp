@@ -20,6 +20,6 @@ inline TypeId typeIdCount = 0;
 }
 
 template<typename T>
-inline const TypeId typeId = ++_internal::typeIdCount;
+inline const TypeId typeIdOf = ++_internal::typeIdCount;
 
 }

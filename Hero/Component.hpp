@@ -114,14 +114,14 @@ template <typename CT, typename... Args>
 std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::setChild(Args&&... args) {
     assert(!isRemoved());
     assert(_childrenUnlocked);
-    assert(_children.find(typeId<CT>) == _children.end());
+    assert(_children.find(typeIdOf<CT>) == _children.end());
     // TODO:
     auto component = new CT {_sceneObject, std::forward<Args>(args)...};
     component->_parent = this;
-    _children[typeId<CT>] = component;
+    _children[typeIdOf<CT>] = component;
     if (isActive()) {
         component->enter();
-        notifyNewComponent(typeId<CT>, component);
+        notifyNewComponent(typeIdOf<CT>, component);
     }
     return component;
 }
@@ -130,12 +130,12 @@ template <typename CT>
 std::enable_if_t<isConcreteComponent<CT>, void> CompositeComponent::removeChild() {
     assert(!isRemoved());
     assert(_childrenUnlocked);
-    auto it = _children.find(typeId<CT>);
+    auto it = _children.find(typeIdOf<CT>);
     if (it == _children.end()) {
         return;
     }
     if (isActive()) {
-        notifyRemoveComponent(typeId<CT>, it->second);
+        notifyRemoveComponent(typeIdOf<CT>, it->second);
         it->second->exit();
     }
     _children.erase(it);
@@ -143,7 +143,7 @@ std::enable_if_t<isConcreteComponent<CT>, void> CompositeComponent::removeChild(
 
 template <typename CT>
 std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::getChild() const {
-    auto it = _children.find(typeId<CT>);
+    auto it = _children.find(typeIdOf<CT>);
     return it == _children.end() ? nullptr : static_cast<CT*>(it->second);
 }
 

@@ -78,9 +78,8 @@ void Camera::onEnter() {
     _transform = get<Transform>();
 }
 
-void Camera::onRemoveComponent([[maybe_unused]] TypeId typeId1, Component*) {
-    // TODO: typeId1
-    assert(typeId<Transform> != typeId1);
+void Camera::onRemoveComponent([[maybe_unused]] TypeId typeId, Component*) {
+    assert(typeIdOf<Transform> != typeId);
 }
 
 }
