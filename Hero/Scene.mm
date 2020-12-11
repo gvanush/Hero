@@ -28,8 +28,6 @@
 -(instancetype)initWithOwnedCpp:(CppHandle) cpp deleter:(CppHandleDeleter)deleter {
     if(self = [super initWithOwnedCpp: cpp deleter: deleter]) {
         _sceneObjects = [NSMutableArray array];
-        _viewCamera = [[Camera alloc] initWithNear: 0.01f far: 1000.f aspectRatio: 1.f];
-        self.cpp->setViewCamera(_viewCamera.cpp);
     }
     return self;
 }
@@ -56,6 +54,10 @@
 
 -(NSArray*) sceneObjects {
     return _sceneObjects;
+}
+
+-(SceneObject *)viewCamera {
+    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->viewCamera()];
 }
 
 -(void)setSelectedObject:(SceneObject *)selectedObject {

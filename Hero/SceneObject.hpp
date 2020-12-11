@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Component.hpp"
-#include "Transform.hpp"
 #include "TypeId.hpp"
 
 #include <unordered_map>
@@ -21,8 +20,8 @@ public:
     SceneObject();
     ~SceneObject();
     
-    template <typename CT>
-    inline CT* set();
+    template <typename CT, typename... Args>
+    inline CT* set(Args&&... args);
     
     template <typename CT>
     inline void remove();
@@ -31,15 +30,16 @@ public:
     inline CT* get() const;
     
     static SceneObject* makeBasic();
+    static SceneObject* makeCamera();
     
 private:
     CompositeComponent _compositeComponent;
     bool _active = false;
 };
 
-template <typename CT>
-CT* SceneObject::set() {
-    return _compositeComponent.setChild<CT>();
+template <typename CT, typename... Args>
+CT* SceneObject::set(Args&&... args) {
+    return _compositeComponent.setChild<CT>(std::forward<Args>(args)...);
 }
 
 template <typename CT>

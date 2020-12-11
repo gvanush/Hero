@@ -14,7 +14,12 @@
 namespace hero {
 
 Scene::Scene() {
-    
+    _viewCamera = SceneObject::makeCamera();
+}
+
+Scene::~Scene() {
+    // TODO:
+    delete _viewCamera;
 }
 
 void Scene::addSceneObject(SceneObject* sceneObject) {

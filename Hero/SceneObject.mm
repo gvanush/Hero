@@ -7,8 +7,11 @@
 
 #import "SceneObject.h"
 #import "Transform.h"
+#import "Camera.h"
 
 #include "SceneObject.hpp"
+#include "Transform.hpp"
+#include "Camera.hpp"
 
 @implementation SceneObject
 
@@ -20,6 +23,10 @@
 
 -(Transform *)transform {
     return [[Transform alloc] initWithUnownedCpp: self.cpp->get<hero::Transform>()];
+}
+
+-(Camera *)camera {
+    return [[Camera alloc] initWithUnownedCpp: self.cpp->get<hero::Camera>()];
 }
 
 +(SceneObject*) makeBasic {

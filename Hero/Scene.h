@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readwrite) simd_float4 bgrColor;
 @property (nonatomic, readonly) NSArray* sceneObjects;
-@property (nonatomic, readonly) Camera* viewCamera;
+@property (nonatomic, readonly) SceneObject* viewCamera;
 @property (nonatomic, readwrite) SceneObject* _Nullable selectedObject;
 
 @end

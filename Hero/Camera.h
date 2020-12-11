@@ -5,16 +5,14 @@
 //  Created by Vanush Grigoryan on 9/30/20.
 //
 
-#import "SceneObject.h"
+#import "Component.h"
 #import "GeometryUtils_Common.h"
 
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Camera: SceneObject
-
--(instancetype) initWithNear: (float) near far: (float) far aspectRatio: (float) aspectRatio;
+@interface Camera: Component
 
 -(simd_float3) convertWorldToViewport: (simd_float3) point viewportSize: (simd_float2) viewportSize NS_SWIFT_NAME(convertWorldToViewport(_:viewportSize:));
 -(simd_float3) convertViewportToWorld: (simd_float3) point viewportSize: (simd_float2) viewportSize NS_SWIFT_NAME(convertViewportToWorld(_:viewportSize:));

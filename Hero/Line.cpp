@@ -6,6 +6,7 @@
 //
 
 #include "Line.hpp"
+#include "Transform.hpp"
 #include "RenderingContext.hpp"
 
 #include "apple/metal/Metal.h"

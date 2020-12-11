@@ -31,7 +31,7 @@ class SceneNavigationController {
         }
         
         let pos = SIMD2<Float>(from: tapGR.location(in: sceneView))
-        let scenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(pos, 1.0), viewportSize: sceneViewSize())
+        let scenePos = scene.viewCamera.camera.convertViewportToWorld(SIMD3<Float>(pos, 1.0), viewportSize: sceneViewSize())
         
         if let selected = scene.rayCast(makeRay(scene.viewCamera.transform.position, scenePos - scene.viewCamera.transform.position)) {
             print("Selected: \(selected.name)")
@@ -64,7 +64,7 @@ class SceneNavigationController {
             viewCameraSphericalCoord.longitude += (isInFrontOfSphere ? angleDelta.x : -angleDelta.x)
             
             scene.viewCamera.transform.position = viewCameraSphericalCoord.getPosition()
-            scene.viewCamera.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
+            scene.viewCamera.camera.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
             
             gesturePrevPos = pos
             
@@ -107,10 +107,10 @@ class SceneNavigationController {
                 return
             }
             
-            let ndcZ = scene.viewCamera.convertWorldToNDC(viewCameraSphericalCoord.center).z
+            let ndcZ = scene.viewCamera.camera.convertWorldToNDC(viewCameraSphericalCoord.center).z
             
-            let prevScenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(gesturePrevPos, ndcZ), viewportSize: sceneViewSize())
-            let scenePos = scene.viewCamera.convertViewportToWorld(SIMD3<Float>(pos, ndcZ), viewportSize: sceneViewSize())
+            let prevScenePos = scene.viewCamera.camera.convertViewportToWorld(SIMD3<Float>(gesturePrevPos, ndcZ), viewportSize: sceneViewSize())
+            let scenePos = scene.viewCamera.camera.convertViewportToWorld(SIMD3<Float>(pos, ndcZ), viewportSize: sceneViewSize())
             
             viewCameraSphericalCoord.center += (prevScenePos - scenePos)
             scene.viewCamera.transform.position = viewCameraSphericalCoord.getPosition()
@@ -143,11 +143,11 @@ class SceneNavigationController {
                 return
             }
             
-            switch scene.viewCamera.projection {
+            switch scene.viewCamera.camera.projection {
             case Projection_perspective:
                 pinchPrevFingerDist = fingerDistance()
             case Projection_ortographic:
-                initialOrtohraphicScale = scene.viewCamera.orthographicScale
+                initialOrtohraphicScale = scene.viewCamera.camera.orthographicScale
             default:
                 assertionFailure()
                 break
@@ -155,7 +155,7 @@ class SceneNavigationController {
             
         case .changed:
             
-            switch scene.viewCamera.projection {
+            switch scene.viewCamera.camera.projection {
             case Projection_perspective:
                 
                 guard pinchGR.numberOfTouches == 2 else {
@@ -171,15 +171,15 @@ class SceneNavigationController {
                     return
                 }
                 
-                let centerViewportPos = scene.viewCamera.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: sceneViewSize())
-                var scenePos = scene.viewCamera.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * 0.5 * (dist - pinchPrevFingerDist), viewportSize: sceneViewSize())
+                let centerViewportPos = scene.viewCamera.camera.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: sceneViewSize())
+                var scenePos = scene.viewCamera.camera.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * 0.5 * (dist - pinchPrevFingerDist), viewportSize: sceneViewSize())
                 
                 // NOTE: This is needed, because coverting from world to viewport and back gives low precision z value.
                 // It is becasue of uneven distribution of world z into ndc z, especially far objects.
                 // Alternative could be to make near plane larger but that limits zooming since object will be clipped
                 scenePos.z = viewCameraSphericalCoord.center.z
                 
-                let angle = 0.5 * scene.viewCamera.fovy * (dist / sceneViewSize().y)
+                let angle = 0.5 * scene.viewCamera.camera.fovy * (dist / sceneViewSize().y)
                 let radiusDelta = length(scenePos - viewCameraSphericalCoord.center) / tanf(angle)
                 
                 viewCameraSphericalCoord.radius = max(viewCameraSphericalCoord.radius + (dist > pinchPrevFingerDist ? -radiusDelta : radiusDelta), 0.01)
@@ -190,7 +190,7 @@ class SceneNavigationController {
                 
             case Projection_ortographic:
                 
-                scene.viewCamera.orthographicScale = max(initialOrtohraphicScale / Float(pinchGR.scale), 0.01)
+                scene.viewCamera.camera.orthographicScale = max(initialOrtohraphicScale / Float(pinchGR.scale), 0.01)
                 
             default:
                 assertionFailure()

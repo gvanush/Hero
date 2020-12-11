@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "SceneObject.hpp"
+#include "Component.hpp"
 #include "GeometryUtils_Common.h"
 #include "Math.hpp"
 
@@ -15,10 +15,12 @@
 
 namespace hero {
 
-class Camera: public SceneObject {
+class Transform;
+
+class Camera: public Component {
 public:
     
-    Camera(float near, float far, float aspectRatio);
+    Camera(const SceneObject& sceneObject, float near, float far, float aspectRatio);
     
     inline void setAspectRatio(float aspectRatio);
     inline float aspectRatio() const;
@@ -49,12 +51,17 @@ public:
     
     void lookAt(const simd::float3& point, const simd::float3& up = kUp);
     
+    // TODO:
     inline static uint32_t nextCameraNumber() {
         static uint32_t number = 0;
         return number++;
     }
     
+    void onEnter() override;
+    void onRemoveComponent(TypeId typeId, Component *component) override;
+    
 private:
+    Transform* _transform = nullptr;
     float _aspectRatio;
     float _fovy = M_PI_4;
     float _orthographicScale = 1.f;

@@ -62,7 +62,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate, UIGestureRecogn
     
     private func updateViewportSize(_ size: SIMD2<Float>) {
         renderingContext.viewportSize = size
-        viewModel.scene.viewCamera.aspectRatio = size.x / size.y
+        viewModel.scene.viewCamera.camera.aspectRatio = size.x / size.y
     }
     
     private func setupGestures() {

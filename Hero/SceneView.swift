@@ -46,8 +46,8 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
     
     func setupScene() {
         
-        scene.viewCamera.orthographicScale = 70.0
-        scene.viewCamera.fovy = Float.pi / 3.0
+        scene.viewCamera.camera.orthographicScale = 70.0
+        scene.viewCamera.camera.fovy = Float.pi / 3.0
         
         setupAxis()
         addLayers()

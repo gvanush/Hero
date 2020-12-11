@@ -43,7 +43,7 @@ void Renderer::render(const Scene& scene, RenderingContext& renderingContext) {
     
     renderingContext.commandBuffer = commandBufferRef;
     renderingContext.renderCommandEncoder = commandEncoderRef;
-    renderingContext.uniforms.projectionViewMatrix = scene.viewCamera()->projectionViewMatrix();
+    renderingContext.uniforms.projectionViewMatrix = scene.viewCamera()->get<Camera>()->projectionViewMatrix();
     
     Line::render(renderingContext);
     Layer::render(renderingContext);

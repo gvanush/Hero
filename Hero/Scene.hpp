@@ -24,12 +24,12 @@ class Scene: public UIRepresentable {
 public:
     
     Scene();
+    ~Scene();
     
     inline void setBgrColor(const simd::float4& color);
     inline const simd::float4& bgrColor() const;
     
-    inline void setViewCamera(Camera* viewCamera);
-    inline Camera* viewCamera() const;
+    inline SceneObject* viewCamera() const;
     
     inline void setSelectedObject(SceneObject* selected);
     inline SceneObject* selectedObject() const;
@@ -40,7 +40,7 @@ public:
     
 private:
     std::vector<SceneObject*> _sceneObjects;
-    Camera* _viewCamera;
+    SceneObject* _viewCamera;
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     SceneObject* _selectedObject = nullptr;
 };
@@ -53,11 +53,7 @@ const simd::float4& Scene::bgrColor() const {
     return _bgrColor;
 }
 
-void Scene::setViewCamera(Camera* viewCamera) {
-    _viewCamera = viewCamera;
-}
-
-Camera* Scene::viewCamera() const {
+SceneObject* Scene::viewCamera() const {
     return _viewCamera;
 }
 

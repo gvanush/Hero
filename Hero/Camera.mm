@@ -11,23 +11,6 @@
 
 @implementation Camera
 
--(instancetype) initWithOwnedCpp:(CppHandle)cpp deleter:(CppHandleDeleter)deleter {
-    if(self = [super initWithOwnedCpp: cpp deleter: deleter]) {
-        if (auto number = hero::Camera::nextCameraNumber(); number > 0) {
-            self.name = [NSString stringWithFormat: @"Camera %d", number];
-        } else {
-            self.name = @"Camera";
-        }
-    }
-    return self;
-}
-
--(instancetype) initWithNear: (float) near far: (float) far aspectRatio: (float) aspectRatio {
-    return [self initWithOwnedCpp: new hero::Camera {near, far, aspectRatio} deleter:^(CppHandle handle) {
-        delete static_cast<hero::Camera*>(handle);
-    }];
-}
-
 -(simd_float3) convertWorldToViewport: (simd_float3) point viewportSize: (simd_float2) viewportSize {
     return self.cpp->convertWorldToViewport(point, viewportSize);
 }

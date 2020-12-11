@@ -64,12 +64,13 @@ class CompositeComponent: public Component {
 public:
     using Component::Component;
     
+    friend class Component;
     friend class SceneObject;
     
 protected:
     
-    template <typename CT>
-    std::enable_if_t<isConcreteComponent<CT>, CT*> setChild();
+    template <typename CT, typename... Args>
+    std::enable_if_t<isConcreteComponent<CT>, CT*> setChild(Args&&... args);
     
     template <typename CT>
     std::enable_if_t<isConcreteComponent<CT>, void> removeChild();
@@ -109,13 +110,13 @@ std::enable_if_t<isConcreteComponent<CT>, CT*> Component::get() const {
 }
 
 // MARK: CompositeComponent definition
-template <typename CT>
-std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::setChild() {
+template <typename CT, typename... Args>
+std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::setChild(Args&&... args) {
     assert(!isRemoved());
     assert(_childrenUnlocked);
     assert(_children.find(typeId<CT>) == _children.end());
     // TODO:
-    auto component = new CT {_sceneObject};
+    auto component = new CT {_sceneObject, std::forward<Args>(args)...};
     component->_parent = this;
     _children[typeId<CT>] = component;
     if (isActive()) {

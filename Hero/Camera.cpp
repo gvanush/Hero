@@ -13,8 +13,9 @@
 
 namespace hero {
 
-Camera::Camera(float near, float far, float aspectRatio)
-: _aspectRatio {aspectRatio}
+Camera::Camera(const SceneObject& sceneObject, float near, float far, float aspectRatio)
+: Component {sceneObject}
+, _aspectRatio {aspectRatio}
 , _near {near}
 , _far {far} {
 }
@@ -43,7 +44,7 @@ simd::float4x4 Camera::projectionMatrix() const {
 }
 
 simd::float4x4 Camera::viewMatrix() const {
-    return simd::inverse(get<Transform>()->worldMatrix());
+    return simd::inverse(_transform->worldMatrix());
 }
 
 simd::float4x4 Camera::projectionViewMatrix() const {
@@ -58,7 +59,7 @@ simd::float3 Camera::convertWorldToViewport(const simd::float3& point, const sim
 }
 
 simd::float3 Camera::convertViewportToWorld(const simd::float3& point, const simd::float2& viewportSize) {
-    auto pos = simd::make_float4(point, 1.f) * simd::inverse(makeViewportMatrix(viewportSize)) * simd::inverse(projectionMatrix()) * get<Transform>()->worldMatrix();
+    auto pos = simd::make_float4(point, 1.f) * simd::inverse(makeViewportMatrix(viewportSize)) * simd::inverse(projectionMatrix()) * _transform->worldMatrix();
     pos /= pos.w;
     return simd::float3 {pos.x, pos.y, pos.z};
 }
@@ -70,7 +71,16 @@ simd::float3 Camera::convertWorldToNDC(const simd::float3& point) {
 }
 
 void Camera::lookAt(const simd::float3& point, const simd::float3& up) {
-    get<Transform>()->orientToRotationMatrix(makeLookAtMatrix(get<Transform>()->position(), point, up));
+    _transform->orientToRotationMatrix(makeLookAtMatrix(_transform->position(), point, up));
+}
+
+void Camera::onEnter() {
+    _transform = get<Transform>();
+}
+
+void Camera::onRemoveComponent([[maybe_unused]] TypeId typeId1, Component*) {
+    // TODO: typeId1
+    assert(typeId<Transform> != typeId1);
 }
 
 }

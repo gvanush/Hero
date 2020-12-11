@@ -6,6 +6,7 @@
 //
 
 #include "Layer.hpp"
+#include "Transform.hpp"
 #include "TextureUtils.hpp"
 #include "RenderingContext.hpp"
 #include "ShaderTypes.h"
