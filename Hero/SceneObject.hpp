@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "ObjCWrappee.hpp"
+#include "Component.hpp"
 #include "Transform.hpp"
 #include "TypeId.hpp"
 
@@ -15,7 +15,7 @@
 
 namespace hero {
 
-class SceneObject: public ObjCWrappee {
+class SceneObject {
 public:
     
     SceneObject();
@@ -25,27 +25,31 @@ public:
     inline CT* set();
     
     template <typename CT>
+    inline void remove();
+    
+    template <typename CT>
     inline CT* get() const;
     
     static SceneObject* makeBasic();
     
 private:
-    std::unordered_map<TypeId, Component*> _components;
+    CompositeComponent _compositeComponent;
+    bool _active = false;
 };
 
 template <typename CT>
 CT* SceneObject::set() {
-    assert(_components.find(typeId<CT>) == _components.end());
-    // TODO:
-    auto component = new CT {*this};
-    _components[typeId<CT>] = component;
-    return component;
+    return _compositeComponent.setChild<CT>();
+}
+
+template <typename CT>
+void SceneObject::remove() {
+    _compositeComponent.removeChild<CT>();
 }
 
 template <typename CT>
 CT* SceneObject::get() const {
-    auto it = _components.find(typeId<CT>);
-    return it == _components.end() ? nullptr : static_cast<CT*>(it->second);
+    return _compositeComponent.getChild<CT>();
 }
 
 }

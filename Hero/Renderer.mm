@@ -66,11 +66,14 @@
 }
 
 +(void) removeAllObserversFor: (UIRepresentable*) uiRepresentable {
+    // TODO: 
+    /*
     for(auto renderer: hero::Renderer::allRenderers()) {
         if (renderer) {
             [renderer->objC<Renderer*>() removeAllObserversFor: uiRepresentable];
         }
     }
+     */
 }
 
 -(void) render: (Scene*) scene context: (RenderingContext*) context {

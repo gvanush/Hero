@@ -15,20 +15,25 @@
 
 @implementation CppWrapper
 
--(instancetype) initWithOwnedCpp: (hero::ObjCWrappee*) cpp deleter: (CppHandleDeleter) deleter {
+-(instancetype) initWithOwnedCpp: (CppHandle) cpp deleter: (CppHandleDeleter) deleter {
     if (self = [super init]) {
         if (!cpp) {
             return nil;
         }
         _cppHandle = cpp;
         _deleter = deleter;
-        cpp->setObjCHandle((__bridge hero::ObjCHandle) self);
     }
     return self;
 }
 
--(instancetype) initWithCpp: (hero::ObjCWrappee*) cpp {
-    return [self initWithOwnedCpp: cpp deleter: nil];
+-(instancetype) initWithUnownedCpp: (CppHandle) cpp {
+    if (self = [super init]) {
+        if (!cpp) {
+            return nil;
+        }
+        _cppHandle = cpp;
+    }
+    return self;
 }
 
 -(void)dealloc {

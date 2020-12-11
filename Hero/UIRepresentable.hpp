@@ -7,14 +7,13 @@
 
 #pragma once
 
-#include "ObjCWrappee.hpp"
 #include "Renderer_Common.h"
 
 #include <limits>
 
 namespace hero {
 
-class UIRepresentable: public ObjCWrappee {
+class UIRepresentable {
 public:
     
     inline void setNeedsUIUpdate() {

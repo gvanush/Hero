@@ -57,6 +57,7 @@
 		B7BA37822581294800118E6A /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BA377D2581294800118E6A /* Transform.cpp */; };
 		B7BA37832581294800118E6A /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BA377F2581294800118E6A /* Component.cpp */; };
 		B7BA378925812B9500118E6A /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7BA378725812B9500118E6A /* Transform.mm */; };
+		B7BA3796258376CB00118E6A /* Component.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7BA3794258376CB00118E6A /* Component.mm */; };
 		B7C36239255000C0007734C1 /* ObjectToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C36238255000C0007734C1 /* ObjectToolbar.swift */; };
 		B7C3623C2550015B007734C1 /* InspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C3623B2550015B007734C1 /* InspectorModel.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
@@ -157,7 +158,8 @@
 		B7BA378725812B9500118E6A /* Transform.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
 		B7BA378825812B9500118E6A /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		B7BA378C25814F0800118E6A /* TypeId.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TypeId.hpp; sourceTree = "<group>"; };
-		B7C170B62550A8D9008B0CE6 /* ObjCWrappee.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjCWrappee.hpp; sourceTree = "<group>"; };
+		B7BA3794258376CB00118E6A /* Component.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
+		B7BA3795258376CB00118E6A /* Component.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
 		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
 		B7C3623B2550015B007734C1 /* InspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorModel.swift; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
@@ -410,6 +412,8 @@
 				B7BA377F2581294800118E6A /* Component.cpp */,
 				B7BA37802581294800118E6A /* Component.hpp */,
 				B7BA37812581294800118E6A /* ComponentRegistry.hpp */,
+				B7BA3794258376CB00118E6A /* Component.mm */,
+				B7BA3795258376CB00118E6A /* Component.h */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -438,7 +442,6 @@
 			children = (
 				B715B24324D2A2DB00B4C859 /* CppWrapper.h */,
 				B749ADB2252843C30047B996 /* CppWrapper.mm */,
-				B7C170B62550A8D9008B0CE6 /* ObjCWrappee.hpp */,
 			);
 			name = "Cpp ObjC Interop";
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				B75C31F52531872600CD612C /* SphericalCoord.cpp in Sources */,
 				B78D7DF9252312A00057F066 /* Camera.cpp in Sources */,
 				B7BA37832581294800118E6A /* Component.cpp in Sources */,
+				B7BA3796258376CB00118E6A /* Component.mm in Sources */,
 				B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */,
 				B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */,
 				B731700724CF378F00157455 /* SceneView.swift in Sources */,

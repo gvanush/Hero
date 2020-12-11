@@ -18,7 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Renderer : CppWrapper
 
--(instancetype) init NS_UNAVAILABLE;
+-(instancetype) initWithOwnedCpp: (CppHandle)cpp deleter: (CppHandleDeleter) deleter NS_UNAVAILABLE;
+-(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_UNAVAILABLE;
 
 +(instancetype __nullable) make;
 

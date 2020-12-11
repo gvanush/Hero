@@ -25,7 +25,7 @@
     }];
 }
 
--(instancetype)initWithOwnedCpp:(hero::ObjCWrappee *)cpp deleter:(CppHandleDeleter)deleter {
+-(instancetype)initWithOwnedCpp:(CppHandle) cpp deleter:(CppHandleDeleter)deleter {
     if(self = [super initWithOwnedCpp: cpp deleter: deleter]) {
         _sceneObjects = [NSMutableArray array];
         _viewCamera = [[Camera alloc] initWithNear: 0.01f far: 1000.f aspectRatio: 1.f];
@@ -41,7 +41,7 @@
 
 -(SceneObject* _Nullable) rayCast: (Ray) ray {
     if(auto sceneObject = self.cpp->raycast(ray)) {
-        return sceneObject->objC<SceneObject*>();
+        return [[SceneObject alloc] initWithUnownedCpp: sceneObject];
     }
     return nil;
 }
@@ -64,7 +64,7 @@
 
 -(SceneObject* _Nullable) selectedObject {
     if (auto selected = self.cpp->selectedObject(); selected) {
-        return selected->objC<SceneObject*>();
+        return [[SceneObject alloc] initWithUnownedCpp: selected];
     }
     return nil;
 }

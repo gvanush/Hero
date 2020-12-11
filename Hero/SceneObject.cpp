@@ -10,7 +10,11 @@
 
 namespace hero {
 
-SceneObject::SceneObject() {
+SceneObject::SceneObject()
+: _compositeComponent {*this} {
+    // TODO:
+    _compositeComponent.enter();
+    
     // TODO: Remove this
     set<Transform>();
 }

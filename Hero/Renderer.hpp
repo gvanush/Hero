@@ -7,11 +7,10 @@
 
 #pragma once
 
-#include "ObjCWrappee.hpp"
 #include "Renderer_Common.h"
 
 #include <cstdint>
-#include <limits>
+#include <climits>
 #include <cstddef>
 #include <array>
 
@@ -20,7 +19,7 @@ namespace hero {
 class Scene;
 class RenderingContext;
 
-class Renderer: public ObjCWrappee {
+class Renderer {
 public:
     
     ~Renderer();

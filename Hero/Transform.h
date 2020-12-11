@@ -5,14 +5,14 @@
 //  Created by Vanush Grigoryan on 12/9/20.
 //
 
-#import "CppWrapper.h"
+#import "Component.h"
 #import "GeometryUtils_Common.h"
 
 #import <simd/simd.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Transform: CppWrapper
+@interface Transform: Component
 
 @property (nonatomic, readwrite) simd_float3 position;
 @property (nonatomic, readwrite) simd_float3 scale;

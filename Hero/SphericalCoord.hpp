@@ -7,13 +7,11 @@
 
 #pragma once
 
-#include "ObjCWrappee.hpp"
-
 #include <simd/simd.h>
 
 namespace hero {
 
-struct SphericalCoord: public ObjCWrappee {
+struct SphericalCoord {
     simd::float3 center {};
     float radius = 1.f;
     float longitude = 0.f; // relative to z

@@ -11,7 +11,7 @@
 
 @implementation Camera
 
--(instancetype) initWithOwnedCpp:(hero::ObjCWrappee *)cpp deleter:(CppHandleDeleter)deleter {
+-(instancetype) initWithOwnedCpp:(CppHandle)cpp deleter:(CppHandleDeleter)deleter {
     if(self = [super initWithOwnedCpp: cpp deleter: deleter]) {
         if (auto number = hero::Camera::nextCameraNumber(); number > 0) {
             self.name = [NSString stringWithFormat: @"Camera %d", number];

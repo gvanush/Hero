@@ -19,7 +19,7 @@
 }
 
 -(Transform *)transform {
-    return [[Transform alloc] initWithCpp: self.cpp->get<hero::Transform>()];
+    return [[Transform alloc] initWithUnownedCpp: self.cpp->get<hero::Transform>()];
 }
 
 +(SceneObject*) makeBasic {

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ObjCWrappee.hpp"
 #include "ShaderTypes.h"
 
 #include "apple/metal/Metal.h"
@@ -17,7 +16,7 @@
 
 namespace hero {
 
-class RenderingContext: public ObjCWrappee {
+class RenderingContext {
 public:
     
     static inline const auto device = apple::metal::createSystemDefaultDevice();

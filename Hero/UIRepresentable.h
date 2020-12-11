@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIRepresentable: CppWrapper
 
--(instancetype) init NS_UNAVAILABLE;
-
 -(void) onUIUpdated: (RendererFlag) flag;
 -(bool) needsUIUpdate: (RendererFlag) flag;
 

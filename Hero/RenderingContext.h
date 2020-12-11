@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RenderingContext : CppWrapper
 
 -(instancetype) init;
+-(instancetype) initWithOwnedCpp: (CppHandle)cpp deleter:(CppHandleDeleter)deleter NS_UNAVAILABLE;
+-(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_UNAVAILABLE;
 
 @property (nonatomic) simd_float2 viewportSize;
 @property (nonatomic, strong) MTLRenderPassDescriptor* renderPassDescriptor;

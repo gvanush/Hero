@@ -7,11 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef __cplusplus
-
-#include "ObjCWrappee.hpp"
-
-#endif
+NS_ASSUME_NONNULL_BEGIN
 
 typedef void* CppHandle;
 typedef void (^CppHandleDeleter) (CppHandle handle);
@@ -22,10 +18,12 @@ typedef void (^CppHandleDeleter) (CppHandle handle);
 
 #ifdef __cplusplus
 
--(instancetype) initWithOwnedCpp: (hero::ObjCWrappee*) cpp deleter: (CppHandleDeleter) deleter NS_DESIGNATED_INITIALIZER;
--(instancetype) initWithCpp: (hero::ObjCWrappee*) cpp;
+-(instancetype) initWithOwnedCpp: (CppHandle) cpp deleter: (CppHandleDeleter) deleter NS_DESIGNATED_INITIALIZER;
+-(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_DESIGNATED_INITIALIZER;
 -(instancetype) init NS_UNAVAILABLE;
 
 #endif
 
 @end
+
+NS_ASSUME_NONNULL_END
