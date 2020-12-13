@@ -7,74 +7,98 @@
 
 #pragma once
 
-#include "ComponentUtils.hpp"
+#include "Singleton.hpp"
+#include "GraphicsCoreUtils.hpp"
+#include "RemovedComponentRegistry.hpp"
 
 #include <vector>
-#include <memory>
-#include <algorithm>
-#include <assert>
 
 namespace hero {
 
-class SceneObject__;
+class SceneObject;
 
-template <typename T>
-class ComponentRegistry {
+namespace _internal {
+
+// MARK: ComponentRegistryImpl
+template <typename CT, ComponentCategory CC>
+class ComponentRegistryImpl: public Singleton<ComponentRegistryImpl<CT, CC>> {
 public:
     
     template <typename... Args>
-    T* createCompoent(SceneObject__& sceneObject, Args&&... args);
+    CT* createCompoent(const SceneObject& sceneObject, Args&&... args) {
+        return new CT {sceneObject, std::forward<Args>(args)...};
+    }
     
-    void onFrameStart();
-    void onUpdate();
-    void onRender();
+    void removeCompoent(CT* component);
     
-    static ComponentRegistry& shared();
-    
-private:
-    ComponentRegistry() = default;
-    
-    std::vector<T*> _newComponents;
-    std::vector<T*> _components;
 };
 
-template <typename T>
+template <typename CT, ComponentCategory CC>
+void ComponentRegistryImpl<CT, CC>::removeCompoent(CT* component) {
+    RemovedComponentRegistry::shared().addComponent(component);
+}
+
+template <ComponentCategory C>
+class ComponentRegistryImpl<Component, C>;
+
+template <ComponentCategory C>
+class ComponentRegistryImpl<CompositeComponent, C>;
+
+// MARK: Renderer ComponentRegistryImpl
+template <typename CT>
+class ComponentRegistryImpl<CT, ComponentCategory::renderer>: public Singleton<ComponentRegistryImpl<CT, ComponentCategory::renderer>> {
+public:
+    
+    template <typename... Args>
+    CT* createCompoent(const SceneObject& sceneObject, Args&&... args);
+    
+    void removeCompoent(CT* component);
+    
+    void cleanRemovedComponents();
+    
+    void update();
+    
+private:
+    std::vector<CT*> _components;
+    bool _unlocked = true;
+};
+
+template <typename CT>
 template <typename... Args>
-T* ComponentRegistry<T>::createCompoent(SceneObject__& sceneObject, Args&&... args) {
-    return _newComponents.emplace_back(new T {sceneObject, std::forward<Args>(args)...});
+CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::createCompoent(const SceneObject& sceneObject, Args&&... args) {
+    assert(_unlocked);
+    auto component = new CT {sceneObject, std::forward<Args>(args)...};
+    _components.push_back(component);
+    return component;
 }
 
-template <typename T>
-void ComponentRegistry<T>::onFrameStart() {
-    
-    auto initialSize = _components.size();
-    
-    std::copy_if(_newComponents.begin(), _newComponents.end(), std::back_inserter(_components), [] (auto newComp) {
-        assert(newComp->parent());
-        if(newComp->parent()) {
-            newComp->_state = ComponentState::active;
-            return true;
-        }
-        return false;
+template <typename CT>
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::removeCompoent(CT* component) {
+    RemovedComponentRegistry::shared().addComponent(component);
+}
+
+template <typename CT>
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedComponents() {
+    auto rit = std::remove_if(_components.begin(), _components.end(), [] (const auto component) {
+        return component->isRemoved();
     });
-    _newComponents.clear();
+    _components.erase(rit, _components.end());
+}
+
+template <typename CT>
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update() {
     
-    // TODO
-    if constexpr(false) {
-        for(auto it = _components.begin() + initialSize; it != _components.end(); ++it) {
-            (*it)->onEnter();
-        }
+    _unlocked = false;
+    for(auto component: _components) {
+        assert(component->isActive());
+        component->render();
     }
+    _unlocked = true;
 }
 
-template <typename T>
-void ComponentRegistry<T>::onUpdate() {
-    
-}
+} // namespace _internal
 
-template <typename T>
-void ComponentRegistry<T>::onRender() {
-    
-}
+template <typename CT>
+using ComponentRegistry = _internal::ComponentRegistryImpl<CT, CT::category>;
 
 }

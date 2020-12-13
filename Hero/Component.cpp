@@ -15,13 +15,13 @@ Component::Component(const SceneObject& sceneObject)
 }
 
 void Component::enter() {
-    _state = State::active;
+    _state = ComponentState::active;
     onEnter();
 }
 
 void Component::exit() {
     onExit();
-    _state = State::removed;
+    _state = ComponentState::removed;
 }
 
 void Component::notifyNewComponent(TypeId typeId, Component* component) {

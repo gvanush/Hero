@@ -30,4 +30,12 @@ SceneObject* Scene::raycast(const Ray& ray) const {
     return Layer::raycast(ray);
 }
 
+void Scene::step(float /*dt*/) {
+    // Update components
+    //
+    
+    // Increase step number after update
+    ++_stepNumber;
+}
+
 }

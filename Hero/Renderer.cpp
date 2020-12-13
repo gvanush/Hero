@@ -10,8 +10,9 @@
 #include "RenderingContext.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
-#include "Line.hpp"
+#include "LineRenderer.hpp"
 #include "Layer.hpp"
+#include "RemovedComponentRegistry.hpp"
 
 #include "apple/metal/Metal.h"
 
@@ -25,9 +26,17 @@ apple::metal::DepthStencilStateRef __depthStencilState;
 
 }
 
-void Renderer::render(const Scene& scene, RenderingContext& renderingContext) {
+void Renderer::render(Scene& scene, RenderingContext& renderingContext) {
     assert(scene.viewCamera());
     
+    auto stepNumber = scene.stepNumber();
+    // TODO: delta time
+    scene.step(0.f);
+    
+    // Clean rempved components
+    // TODO
+    
+    // Update renderers
     using namespace apple;
     using namespace apple::metal;
 
@@ -45,10 +54,16 @@ void Renderer::render(const Scene& scene, RenderingContext& renderingContext) {
     renderingContext.renderCommandEncoder = commandEncoderRef;
     renderingContext.uniforms.projectionViewMatrix = scene.viewCamera()->get<Camera>()->projectionViewMatrix();
     
-    Line::render(renderingContext);
+    LineRenderer::render(renderingContext);
     Layer::render(renderingContext);
     
     commandEncoderRef.endEncoding();
+    
+    commandBufferRef.addCompletedHandler([stepNumber, &scene] (CommandBufferRef) {
+        // TODO: 'scene' may not be alive at this point (maybe moving to ObjC/Swift layet with weak ref?)
+        // TODO: check the thread of execution of this callback
+        RemovedComponentRegistry::shared().destroyComponents(scene, stepNumber);
+    });
     
     commandBufferRef.commit();
     
@@ -59,7 +74,7 @@ void Renderer::render(const Scene& scene, RenderingContext& renderingContext) {
 }
 
 void Renderer::setup() {
-    Line::setup();
+    LineRenderer::setup();
     Layer::setup();
     
     apple::metal::DepthStencilDescriptorRef descr = apple::metal::DepthStencilDescriptor::create();

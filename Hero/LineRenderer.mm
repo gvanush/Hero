@@ -5,15 +5,15 @@
 //  Created by Vanush Grigoryan on 10/18/20.
 //
 
-#import "Line.h"
+#import "LineRenderer.h"
 
-#include "Line.hpp"
+#include "LineRenderer.hpp"
 
-@implementation Line
+@implementation LineRenderer
 
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
-    return [self initWithOwnedCpp: new hero::Line {point1, point2, thickness, color} deleter:^(CppHandle handle) {
-        delete static_cast<hero::Line*>(handle);
+    return [self initWithOwnedCpp: new hero::LineRenderer {point1, point2, thickness, color} deleter:^(CppHandle handle) {
+        delete static_cast<hero::LineRenderer*>(handle);
     }];
 }
 
@@ -55,10 +55,10 @@
 
 @end
 
-@implementation Line (Cpp)
+@implementation LineRenderer (Cpp)
 
--(hero::Line*) cpp {
-    return static_cast<hero::Line*>(self.cppHandle);
+-(hero::LineRenderer*) cpp {
+    return static_cast<hero::LineRenderer*>(self.cppHandle);
 }
 
 @end

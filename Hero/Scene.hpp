@@ -7,12 +7,14 @@
 
 #pragma once
 
+#include "GraphicsCoreUtils.hpp"
 #include "UIRepresentable.hpp"
 #include "GeometryUtils_Common.h"
 
 #include "apple/metal/Metal.h"
 
 #include <vector>
+#include <unordered_map>
 #include <simd/simd.h>
 
 namespace hero {
@@ -38,11 +40,17 @@ public:
     
     SceneObject* raycast(const Ray& ray) const;
     
+    inline StepNumber stepNumber() const;
+    
+    void step(float dt);
+    
 private:
     std::vector<SceneObject*> _sceneObjects;
+    
     SceneObject* _viewCamera;
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     SceneObject* _selectedObject = nullptr;
+    StepNumber _stepNumber = 0u;
 };
 
 void Scene::setBgrColor(const simd::float4& color) {
@@ -64,6 +72,10 @@ void Scene::setSelectedObject(SceneObject* object) {
 
 SceneObject* Scene::selectedObject() const {
     return _selectedObject;
+}
+
+StepNumber Scene::stepNumber() const {
+    return _stepNumber;
 }
 
 }

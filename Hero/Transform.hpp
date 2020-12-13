@@ -39,6 +39,8 @@ public:
     
     void orientToRotationMatrix(const simd::float3x3& rotationMatrix);
     
+    static constexpr auto category = ComponentCategory::basic;
+    
 private:
     mutable simd::float4x4 _worldMatrix {1};
     mutable simd::quatf _orientation {};

@@ -1,5 +1,5 @@
 //
-//  Line.h
+//  LineRenderer.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 10/18/20.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Line: SceneObject
+@interface LineRenderer: SceneObject
 
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color;
 -(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2;
@@ -25,11 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #ifdef __cplusplus
 
-namespace hero { class Line; }
+namespace hero { class LineRenderer; }
 
-@interface Line (Cpp)
+@interface LineRenderer (Cpp)
 
--(hero::Line*) cpp;
+-(hero::LineRenderer*) cpp;
 
 @end
 

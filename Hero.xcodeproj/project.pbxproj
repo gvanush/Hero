@@ -18,15 +18,14 @@
 		B7316FFC24CF376200157455 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFB24CF376200157455 /* Assets.xcassets */; };
 		B7316FFF24CF376200157455 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7316FFE24CF376200157455 /* Preview Assets.xcassets */; };
 		B731700724CF378F00157455 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700624CF378F00157455 /* SceneView.swift */; };
-		B731700924CF38E900157455 /* MainViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700824CF38E900157455 /* MainViewOld.swift */; };
 		B731700F24CF540000157455 /* ImageSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B731700E24CF540000157455 /* ImageSelector.swift */; };
 		B7440FF0255319F000005EEC /* UIRepresentable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7440FEE255319F000005EEC /* UIRepresentable.mm */; };
 		B7440FF82553329D00005EEC /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7440FF72553329D00005EEC /* Renderer.mm */; };
 		B74410172556984400005EEC /* NSPointerArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B74410152556984400005EEC /* NSPointerArray+Extensions.m */; };
 		B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB2252843C30047B996 /* CppWrapper.mm */; };
 		B749ADB925284BD80047B996 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB825284BD80047B996 /* SceneObject.mm */; };
-		B74ECB37253C7D2800C0301E /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB35253C7D2800C0301E /* Line.cpp */; };
-		B74ECB3C253C7FA800C0301E /* Line.mm in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB3A253C7FA800C0301E /* Line.mm */; };
+		B74ECB37253C7D2800C0301E /* LineRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB35253C7D2800C0301E /* LineRenderer.cpp */; };
+		B74ECB3C253C7FA800C0301E /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB3A253C7FA800C0301E /* LineRenderer.mm */; };
 		B75C31F52531872600CD612C /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F32531872600CD612C /* SphericalCoord.cpp */; };
 		B75C31F62531872600CD612C /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F42531872600CD612C /* SphericalCoord.mm */; };
 		B76508092570230F00F09086 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76508072570230F00F09086 /* Renderer.cpp */; };
@@ -58,6 +57,7 @@
 		B7BA37832581294800118E6A /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BA377F2581294800118E6A /* Component.cpp */; };
 		B7BA378925812B9500118E6A /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7BA378725812B9500118E6A /* Transform.mm */; };
 		B7BA3796258376CB00118E6A /* Component.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7BA3794258376CB00118E6A /* Component.mm */; };
+		B7BA37A42585351800118E6A /* RemovedComponentRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BA37A22585351800118E6A /* RemovedComponentRegistry.cpp */; };
 		B7C36239255000C0007734C1 /* ObjectToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C36238255000C0007734C1 /* ObjectToolbar.swift */; };
 		B7C3623C2550015B007734C1 /* InspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C3623B2550015B007734C1 /* InspectorModel.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
@@ -85,7 +85,6 @@
 		B7316FFE24CF376200157455 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B731700024CF376200157455 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B731700624CF378F00157455 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
-		B731700824CF38E900157455 /* MainViewOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewOld.swift; sourceTree = "<group>"; };
 		B731700E24CF540000157455 /* ImageSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelector.swift; sourceTree = "<group>"; };
 		B7440FEC2552960200005EEC /* UIRepresentable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UIRepresentable.hpp; sourceTree = "<group>"; };
 		B7440FEE255319F000005EEC /* UIRepresentable.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = UIRepresentable.mm; sourceTree = "<group>"; };
@@ -98,10 +97,10 @@
 		B749ADB2252843C30047B996 /* CppWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
 		B749ADB725284BD80047B996 /* SceneObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
 		B749ADB825284BD80047B996 /* SceneObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneObject.mm; sourceTree = "<group>"; };
-		B74ECB35253C7D2800C0301E /* Line.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
-		B74ECB36253C7D2800C0301E /* Line.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Line.hpp; sourceTree = "<group>"; };
-		B74ECB3A253C7FA800C0301E /* Line.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Line.mm; sourceTree = "<group>"; };
-		B74ECB3B253C7FA800C0301E /* Line.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Line.h; sourceTree = "<group>"; };
+		B74ECB35253C7D2800C0301E /* LineRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LineRenderer.cpp; sourceTree = "<group>"; };
+		B74ECB36253C7D2800C0301E /* LineRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LineRenderer.hpp; sourceTree = "<group>"; };
+		B74ECB3A253C7FA800C0301E /* LineRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LineRenderer.mm; sourceTree = "<group>"; };
+		B74ECB3B253C7FA800C0301E /* LineRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineRenderer.h; sourceTree = "<group>"; };
 		B75C31F12531872600CD612C /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
 		B75C31F22531872600CD612C /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B75C31F32531872600CD612C /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
@@ -160,6 +159,10 @@
 		B7BA378C25814F0800118E6A /* TypeId.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TypeId.hpp; sourceTree = "<group>"; };
 		B7BA3794258376CB00118E6A /* Component.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
 		B7BA3795258376CB00118E6A /* Component.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
+		B7BA379C2583B44A00118E6A /* GraphicsCoreUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GraphicsCoreUtils.hpp; sourceTree = "<group>"; };
+		B7BA37A02585274500118E6A /* Singleton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Singleton.hpp; sourceTree = "<group>"; };
+		B7BA37A22585351800118E6A /* RemovedComponentRegistry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RemovedComponentRegistry.cpp; sourceTree = "<group>"; };
+		B7BA37A32585351800118E6A /* RemovedComponentRegistry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RemovedComponentRegistry.hpp; sourceTree = "<group>"; };
 		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
 		B7C3623B2550015B007734C1 /* InspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorModel.swift; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
@@ -236,7 +239,6 @@
 				B723BB1E250DD229007C989E /* Settings.swift */,
 				B731700024CF376200157455 /* Info.plist */,
 				B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */,
-				B7872CFA25027F0700BD403D /* Old */,
 				B7316FFB24CF376200157455 /* Assets.xcassets */,
 				B7316FFD24CF376200157455 /* Preview Content */,
 			);
@@ -251,15 +253,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		B74ECB34253C7D0600C0301E /* Line */ = {
+		B74ECB34253C7D0600C0301E /* LineRenderer */ = {
 			isa = PBXGroup;
 			children = (
-				B74ECB35253C7D2800C0301E /* Line.cpp */,
-				B74ECB36253C7D2800C0301E /* Line.hpp */,
-				B74ECB3A253C7FA800C0301E /* Line.mm */,
-				B74ECB3B253C7FA800C0301E /* Line.h */,
+				B74ECB35253C7D2800C0301E /* LineRenderer.cpp */,
+				B74ECB36253C7D2800C0301E /* LineRenderer.hpp */,
+				B74ECB3A253C7FA800C0301E /* LineRenderer.mm */,
+				B74ECB3B253C7FA800C0301E /* LineRenderer.h */,
 			);
-			name = Line;
+			name = LineRenderer;
 			sourceTree = "<group>";
 		};
 		B778782B252906380097F941 /* Camera */ = {
@@ -316,7 +318,6 @@
 				B77878392529225F0097F941 /* SphericalCoord */,
 				B778782D252906700097F941 /* Scene */,
 				B778782C252906460097F941 /* SceneObject */,
-				B74ECB34253C7D0600C0301E /* Line */,
 				B797C87F25619C9E007CE7E5 /* Layer */,
 				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
 				B7847B1424D6E66900026607 /* RenderingContext.mm */,
@@ -335,16 +336,6 @@
 				B7B7C4CE257574B4007643D7 /* GeometryUtils.hpp */,
 			);
 			name = Graphics;
-			sourceTree = "<group>";
-		};
-		B7872CFA25027F0700BD403D /* Old */ = {
-			isa = PBXGroup;
-			children = (
-				B731700E24CF540000157455 /* ImageSelector.swift */,
-				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
-				B731700824CF38E900157455 /* MainViewOld.swift */,
-			);
-			name = Old;
 			sourceTree = "<group>";
 		};
 		B797C87E25619BA4007CE7E5 /* Inspector */ = {
@@ -398,6 +389,8 @@
 		B79E0D1A2572A65200AB524F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B731700E24CF540000157455 /* ImageSelector.swift */,
+				B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */,
 				B79E0455253F526500042719 /* BlurView.swift */,
 				B7DD54742502657E00163947 /* TestView.swift */,
 				B723BB22250F2FC2007C989E /* UITextFieldProxy.swift */,
@@ -408,11 +401,14 @@
 		B7BA377A2581292B00118E6A /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B7BA379C2583B44A00118E6A /* GraphicsCoreUtils.hpp */,
 				B7BA377F2581294800118E6A /* Component.cpp */,
 				B7BA37802581294800118E6A /* Component.hpp */,
-				B7BA37812581294800118E6A /* ComponentRegistry.hpp */,
 				B7BA3794258376CB00118E6A /* Component.mm */,
 				B7BA3795258376CB00118E6A /* Component.h */,
+				B7BA37812581294800118E6A /* ComponentRegistry.hpp */,
+				B7BA37A22585351800118E6A /* RemovedComponentRegistry.cpp */,
+				B7BA37A32585351800118E6A /* RemovedComponentRegistry.hpp */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -422,6 +418,7 @@
 			children = (
 				B7BA378625812A5300118E6A /* Transform */,
 				B778782B252906380097F941 /* Camera */,
+				B74ECB34253C7D0600C0301E /* LineRenderer */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -467,6 +464,7 @@
 				B70CFB8C2545EE2400E8E30A /* Math.swift */,
 				B7DD545024FC197400163947 /* ViewModifiers.swift */,
 				B7BA378C25814F0800118E6A /* TypeId.hpp */,
+				B7BA37A02585274500118E6A /* Singleton.hpp */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -544,6 +542,7 @@
 				B70CFB8D2545EE2400E8E30A /* Math.swift in Sources */,
 				B797C8882562E355007CE7E5 /* GraphicsViewProxy.swift in Sources */,
 				B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */,
+				B7BA37A42585351800118E6A /* RemovedComponentRegistry.cpp in Sources */,
 				B7847B1924D6F38A00026607 /* Shaders.metal in Sources */,
 				B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */,
 				B7C3623C2550015B007734C1 /* InspectorModel.swift in Sources */,
@@ -551,7 +550,7 @@
 				B7DD54592501489600163947 /* Project.swift in Sources */,
 				B7872CFE2504340A00BD403D /* Common.swift in Sources */,
 				B7847AE324D4625200026607 /* Layer.mm in Sources */,
-				B74ECB3C253C7FA800C0301E /* Line.mm in Sources */,
+				B74ECB3C253C7FA800C0301E /* LineRenderer.mm in Sources */,
 				B7787863252C51980097F941 /* SIMD+Extensions.swift in Sources */,
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
@@ -562,10 +561,9 @@
 				B7440FF0255319F000005EEC /* UIRepresentable.mm in Sources */,
 				B7872CFC25027F4800BD403D /* RootView.swift in Sources */,
 				B7BA378925812B9500118E6A /* Transform.mm in Sources */,
-				B731700924CF38E900157455 /* MainViewOld.swift in Sources */,
 				B74410172556984400005EEC /* NSPointerArray+Extensions.m in Sources */,
 				B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */,
-				B74ECB37253C7D2800C0301E /* Line.cpp in Sources */,
+				B74ECB37253C7D2800C0301E /* LineRenderer.cpp in Sources */,
 				B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B7B7C4D225763ABA007643D7 /* GeometryUtils_Common.c in Sources */,
 				B76508092570230F00F09086 /* Renderer.cpp in Sources */,

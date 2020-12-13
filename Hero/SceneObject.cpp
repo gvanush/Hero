@@ -26,6 +26,11 @@ SceneObject::~SceneObject() {
     delete get<Transform>();
 }
 
+Scene* SceneObject::scene() const {
+    // TODO
+    return nullptr;
+}
+
 SceneObject* SceneObject::makeBasic() {
     auto sceneObject = new SceneObject {};
     sceneObject->set<Transform>();

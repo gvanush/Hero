@@ -24,7 +24,7 @@ public:
     
     ~Renderer();
     
-    void render(const Scene& scene, RenderingContext& renderingContext);
+    void render(Scene& scene, RenderingContext& renderingContext);
     
     inline RendererFlag flag() const;
     

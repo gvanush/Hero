@@ -14,6 +14,8 @@
 
 namespace hero {
 
+class Scene;
+
 class SceneObject {
 public:
     
@@ -28,6 +30,8 @@ public:
     
     template <typename CT>
     inline CT* get() const;
+    
+    Scene* scene() const;
     
     static SceneObject* makeBasic();
     static SceneObject* makeCamera();

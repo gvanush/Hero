@@ -7,7 +7,7 @@
 #import "Transform.h"
 #import "Camera.h"
 #import "SphericalCoord.h"
-#import "Line.h"
+#import "LineRenderer.h"
 #import "Layer.h"
 #import "RenderingContext.h"
 #import "UIRepresentableObserver.h"

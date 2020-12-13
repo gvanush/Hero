@@ -8,6 +8,8 @@
 #pragma once
 
 #include "TypeId.hpp"
+#include "GraphicsCoreUtils.hpp"
+#include "ComponentRegistry.hpp"
 
 #include <unordered_map>
 #include <type_traits>
@@ -19,23 +21,16 @@ class SceneObject;
 class Component;
 class CompositeComponent;
 
-template <typename CT>
-constexpr bool isConcreteComponent = std::is_base_of_v<Component, CT> && !std::is_same_v<CompositeComponent, CT>;
-
 // MARK: Component declaration
 class Component {
 public:
     
-    enum class State {
-        new_,
-        active,
-        removed
-    };
-    
     Component(const SceneObject& sceneObject);
+    virtual ~Component() {}
     
     inline bool isRemoved() const;
     inline bool isActive() const;
+    inline const SceneObject& sceneObject() const;
     
 protected:
     template <typename CT>
@@ -56,7 +51,7 @@ private:
     
     const SceneObject& _sceneObject;
     CompositeComponent* _parent = nullptr;
-    State _state = State::new_;
+    ComponentState _state = ComponentState::new_;
 };
 
 // MARK: CompositeComponent declaration
@@ -90,11 +85,15 @@ private:
 
 // MARK: Component definition
 bool Component::isRemoved() const {
-    return _state == State::removed;
+    return _state == ComponentState::removed;
 }
 
 bool Component::isActive() const {
-    return _state == State::active;
+    return _state == ComponentState::active;
+}
+
+const SceneObject& Component::sceneObject() const {
+    return _sceneObject;
 }
 
 template <typename CT>
@@ -116,7 +115,7 @@ std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::setChild(Args
     assert(_childrenUnlocked);
     assert(_children.find(typeIdOf<CT>) == _children.end());
     // TODO:
-    auto component = new CT {_sceneObject, std::forward<Args>(args)...};
+    CT* component = ComponentRegistry<CT>::shared().createCompoent(_sceneObject, std::forward<Args>(args)...);
     component->_parent = this;
     _children[typeIdOf<CT>] = component;
     if (isActive()) {
@@ -134,9 +133,14 @@ std::enable_if_t<isConcreteComponent<CT>, void> CompositeComponent::removeChild(
     if (it == _children.end()) {
         return;
     }
+    auto component = it->second;
     if (isActive()) {
-        notifyRemoveComponent(typeIdOf<CT>, it->second);
-        it->second->exit();
+        notifyRemoveComponent(typeIdOf<CT>, component);
+        component->exit();
+    }
+    ComponentRegistry<CT>::shared().removeComponent(component);
+    if constexpr (CT::category == ComponentCategory::basic) {
+        delete component;
     }
     _children.erase(it);
 }

@@ -66,7 +66,7 @@
 }
 
 +(void) removeAllObserversFor: (UIRepresentable*) uiRepresentable {
-    // TODO: 
+    // TODO:
     /*
     for(auto renderer: hero::Renderer::allRenderers()) {
         if (renderer) {
@@ -77,6 +77,7 @@
 }
 
 -(void) render: (Scene*) scene context: (RenderingContext*) context {
+    
     self.cpp->render(*scene.cpp, *context.cpp);
     
     _isUpdatingUI = true;

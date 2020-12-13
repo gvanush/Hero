@@ -60,6 +60,8 @@ public:
     void onEnter() override;
     void onRemoveComponent(TypeId typeId, Component *component) override;
     
+    static constexpr auto category = ComponentCategory::basic;
+    
 private:
     Transform* _transform = nullptr;
     float _aspectRatio;

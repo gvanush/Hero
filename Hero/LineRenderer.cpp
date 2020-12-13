@@ -5,7 +5,7 @@
 //  Created by Vanush Grigoryan on 10/18/20.
 //
 
-#include "Line.hpp"
+#include "LineRenderer.hpp"
 #include "Transform.hpp"
 #include "RenderingContext.hpp"
 
@@ -19,11 +19,11 @@ namespace hero {
 
 namespace {
 
-std::vector<Line*> __lines;
+std::vector<LineRenderer*> __lines;
 
 }
 
-Line::Line(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color)
+LineRenderer::LineRenderer(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color)
 : _color {color}
 , _point1 {point1}
 , _point2 {point2}
@@ -31,7 +31,7 @@ Line::Line(const simd::float3& point1, const simd::float3& point2, float thickne
     __lines.push_back(this);
 }
 
-Line::~Line() {
+LineRenderer::~LineRenderer() {
     __lines.erase(std::find(__lines.begin(), __lines.end(), this));
 }
 
@@ -41,7 +41,7 @@ apple::metal::RenderPipelineStateRef __pipelineStateRef;
 
 }
 
-void Line::setup() {
+void LineRenderer::setup() {
     using namespace apple;
     
     const auto& device = RenderingContext::device;
@@ -66,7 +66,7 @@ void Line::setup() {
     assert(!errorRef);
 }
 
-void Line::render(RenderingContext& renderingContext) {
+void LineRenderer::render(RenderingContext& renderingContext) {
     
     if (__lines.empty()) {
         return;
