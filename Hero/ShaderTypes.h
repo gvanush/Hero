@@ -17,7 +17,7 @@ enum FragmentInputIndex: unsigned int {
     kFragmentInputIndexTexture = 1,
 };
 
-struct LayerVertex {
+struct ImageVertex {
     simd::float2 position;
     simd::float2 texCoord;
 };

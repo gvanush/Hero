@@ -21,7 +21,7 @@ namespace hero {
 namespace {
 
 constexpr auto kHalfSize = 0.5f;
-constexpr std::array<LayerVertex, 4> kImageVertices = {{
+constexpr std::array<ImageVertex, 4> kImageVertices = {{
     {{-kHalfSize, -kHalfSize}, {0.f, 1.f}},
     {{kHalfSize, -kHalfSize}, {1.f, 1.f}},
     {{-kHalfSize, kHalfSize}, {0.f, 0.f}},
@@ -73,7 +73,7 @@ void ImageRenderer::setup() {
     assert(!errorRef);
     
     // TODO: change storage mode to private using blit command encoder
-    __vertexBuffer = device.newBufferWithBytes(kImageVertices.data(), kImageVertices.size() * sizeof(LayerVertex), metal::ResourceOptions::storageModeShared | metal::ResourceOptions::hazardTrackingModeDefault | metal::ResourceOptions::cpuCacheModeDefaultCache);
+    __vertexBuffer = device.newBufferWithBytes(kImageVertices.data(), kImageVertices.size() * sizeof(ImageVertex), metal::ResourceOptions::storageModeShared | metal::ResourceOptions::hazardTrackingModeDefault | metal::ResourceOptions::cpuCacheModeDefaultCache);
 }
 
 void ImageRenderer::render(RenderingContext& renderingContext) {

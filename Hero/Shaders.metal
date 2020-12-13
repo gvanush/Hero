@@ -54,7 +54,7 @@ typedef struct {
 
 vertex LayerRasterizerData
 layerVertexShader(uint vertexID [[vertex_id]],
-                  device const hero::LayerVertex* vertices [[buffer(hero::kVertexInputIndexVertices)]],
+                  device const hero::ImageVertex* vertices [[buffer(hero::kVertexInputIndexVertices)]],
                   constant float2& layerSize [[buffer(hero::kVertexInputIndexSize)]],
                   constant hero::Uniforms& uniforms [[buffer(hero::kVertexInputIndexUniforms)]]) {
     LayerRasterizerData out;
