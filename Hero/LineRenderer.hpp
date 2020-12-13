@@ -7,24 +7,25 @@
 
 #pragma once
 
-#include "SceneObject.hpp"
+#include "Component.hpp"
+
+#include "apple/metal/Metal.h"
 
 #include <simd/simd.h>
 
 namespace hero {
 
+class SceneObject;
+class Transform;
 class RenderingContext;
 
-class LineRenderer: public SceneObject {
+class LineRenderer: public Component {
 public:
     
-    LineRenderer(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color);
-    ~LineRenderer();
+    LineRenderer(const SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness = 1.f, const simd::float4& color = simd::float4 {1.f});
     
-    inline void setPoint1(const simd::float3& p1);
     inline const simd::float3& point1() const;
     
-    inline void setPoint2(const simd::float3& p2);
     inline const simd::float3& point2() const;
     
     inline void setThickness(float t);
@@ -33,27 +34,29 @@ public:
     inline void setColor(const simd::float4& c);
     inline const simd::float4& color() const;
     
+    void render(RenderingContext& renderingContext);
+    
+    void onEnter() override;
+    void onRemoveComponent(TypeId typeId, Component*) override;
+    
     static void setup();
-    static void render(RenderingContext& renderingContext);
+    
+    static constexpr auto category = ComponentCategory::renderer;
     
 private:
+    static apple::metal::RenderPipelineStateRef _pipelineStateRef;
+    
     simd::float4 _color;
     simd::float3 _point1;
     simd::float3 _point2;
+    Transform* _transform = nullptr;
     float _thickness;
 };
-
-void LineRenderer::setPoint1(const simd::float3& p1) {
-    _point1 = p1;
-}
 
 const simd::float3& LineRenderer::point1() const {
     return _point1;
 }
 
-void LineRenderer::setPoint2(const simd::float3& p2) {
-    _point2 = p2;
-}
 const simd::float3& LineRenderer::point2() const {
     return _point2;
 }

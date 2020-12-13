@@ -160,7 +160,6 @@
 		B7BA3794258376CB00118E6A /* Component.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
 		B7BA3795258376CB00118E6A /* Component.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
 		B7BA379C2583B44A00118E6A /* GraphicsCoreUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GraphicsCoreUtils.hpp; sourceTree = "<group>"; };
-		B7BA37A02585274500118E6A /* Singleton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Singleton.hpp; sourceTree = "<group>"; };
 		B7BA37A22585351800118E6A /* RemovedComponentRegistry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RemovedComponentRegistry.cpp; sourceTree = "<group>"; };
 		B7BA37A32585351800118E6A /* RemovedComponentRegistry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RemovedComponentRegistry.hpp; sourceTree = "<group>"; };
 		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
@@ -464,7 +463,6 @@
 				B70CFB8C2545EE2400E8E30A /* Math.swift */,
 				B7DD545024FC197400163947 /* ViewModifiers.swift */,
 				B7BA378C25814F0800118E6A /* TypeId.hpp */,
-				B7BA37A02585274500118E6A /* Singleton.hpp */,
 			);
 			name = Util;
 			sourceTree = "<group>";

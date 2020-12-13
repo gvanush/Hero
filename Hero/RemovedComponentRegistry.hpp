@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "Singleton.hpp"
 #include "GraphicsCoreUtils.hpp"
 
 #include <unordered_map>
@@ -18,14 +17,25 @@ namespace hero {
 class Component;
 class Scene;
 
-class RemovedComponentRegistry: public Singleton<RemovedComponentRegistry> {
+class RemovedComponentRegistry {
 public:
     
     void addComponent(Component* component);
     
     void destroyComponents(Scene& scene, StepNumber stepNumber);
     
+    static RemovedComponentRegistry& shared() {
+        static RemovedComponentRegistry obj;
+        return obj;
+    }
+    
 private:
+    
+    RemovedComponentRegistry() = default;
+    
+    RemovedComponentRegistry(const RemovedComponentRegistry&) = delete;
+    RemovedComponentRegistry& operator=(const RemovedComponentRegistry&) = delete;
+    
     std::unordered_map<StepNumber, std::vector<Component*>> _components;
 };
 

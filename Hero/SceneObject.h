@@ -7,6 +7,8 @@
 
 #import "CppWrapper.h"
 
+#import <simd/simd.h>
+
 @class Transform;
 @class Camera;
 
@@ -24,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) Camera* camera;
 
 +(SceneObject*) makeBasic;
++(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color;
 
 @end
 

@@ -13,6 +13,7 @@
 #include "LineRenderer.hpp"
 #include "Layer.hpp"
 #include "RemovedComponentRegistry.hpp"
+#include "ComponentRegistry.hpp"
 
 #include "apple/metal/Metal.h"
 
@@ -33,7 +34,7 @@ void Renderer::render(Scene& scene, RenderingContext& renderingContext) {
     // TODO: delta time
     scene.step(0.f);
     
-    // Clean rempved components
+    // Clean removed components
     // TODO
     
     // Update renderers
@@ -54,7 +55,8 @@ void Renderer::render(Scene& scene, RenderingContext& renderingContext) {
     renderingContext.renderCommandEncoder = commandEncoderRef;
     renderingContext.uniforms.projectionViewMatrix = scene.viewCamera()->get<Camera>()->projectionViewMatrix();
     
-    LineRenderer::render(renderingContext);
+    ComponentRegistry<LineRenderer>::shared().update(renderingContext);
+    
     Layer::render(renderingContext);
     
     commandEncoderRef.endEncoding();
@@ -74,7 +76,6 @@ void Renderer::render(Scene& scene, RenderingContext& renderingContext) {
 }
 
 void Renderer::setup() {
-    LineRenderer::setup();
     Layer::setup();
     
     apple::metal::DepthStencilDescriptorRef descr = apple::metal::DepthStencilDescriptor::create();

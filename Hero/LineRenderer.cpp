@@ -9,36 +9,21 @@
 #include "Transform.hpp"
 #include "RenderingContext.hpp"
 
-#include "apple/metal/Metal.h"
-
 #include <vector>
 #include <array>
 #include <algorithm>
 
 namespace hero {
 
-namespace {
+apple::metal::RenderPipelineStateRef LineRenderer::_pipelineStateRef;
 
-std::vector<LineRenderer*> __lines;
-
-}
-
-LineRenderer::LineRenderer(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color)
-: _color {color}
+LineRenderer::LineRenderer(const SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color)
+: Component {sceneObject}
+, _color {color}
 , _point1 {point1}
 , _point2 {point2}
 , _thickness {thickness} {
-    __lines.push_back(this);
-}
-
-LineRenderer::~LineRenderer() {
-    __lines.erase(std::find(__lines.begin(), __lines.end(), this));
-}
-
-namespace {
-
-apple::metal::RenderPipelineStateRef __pipelineStateRef;
-
+    
 }
 
 void LineRenderer::setup() {
@@ -62,36 +47,38 @@ void LineRenderer::setup() {
 //    pipelineStateDescriptorRef.setSampleCount(2);
     
     ErrorRef errorRef;
-    __pipelineStateRef = device.newRenderPipelineState(pipelineStateDescriptorRef, &errorRef);
+    _pipelineStateRef = device.newRenderPipelineState(pipelineStateDescriptorRef, &errorRef);
     assert(!errorRef);
 }
 
 void LineRenderer::render(RenderingContext& renderingContext) {
     
-    if (__lines.empty()) {
-        return;
-    }
-    
+    // TODO: Move points to buffer
     using namespace apple;
     using namespace apple::metal;
     
-    renderingContext.renderCommandEncoder.setRenderPipelineState(__pipelineStateRef);
+    renderingContext.renderCommandEncoder.setRenderPipelineState(_pipelineStateRef);
     
-    for(auto line: __lines) {
-        
-        renderingContext.uniforms.projectionViewModelMatrix = line->get<Transform>()->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
-        renderingContext.renderCommandEncoder.setVertexBytes(&renderingContext.uniforms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);
-        
-        std::array<simd::float3, 4> vertices {line->_point1, line->_point2, line->_point1, line->_point2};
-        renderingContext.renderCommandEncoder.setVertexBytes(vertices.data(), sizeof(vertices), kVertexInputIndexVertices);
-        
-        renderingContext.renderCommandEncoder.setVertexBytes(&line->_thickness, sizeof(float), kVertexInputIndexThickness);
-        
-        renderingContext.renderCommandEncoder.setFragmentBytes(&line->color(), sizeof(line->color()), kFragmentInputIndexColor);
-        
-        renderingContext.renderCommandEncoder.drawPrimitives(PrimitiveType::triangleStrip, 0, vertices.size());
-    }
+    renderingContext.uniforms.projectionViewModelMatrix = _transform->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
+    renderingContext.renderCommandEncoder.setVertexBytes(&renderingContext.uniforms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);
     
+    std::array<simd::float3, 4> vertices {_point1, _point2, _point1, _point2};
+    renderingContext.renderCommandEncoder.setVertexBytes(vertices.data(), sizeof(vertices), kVertexInputIndexVertices);
+    
+    renderingContext.renderCommandEncoder.setVertexBytes(&_thickness, sizeof(_thickness), kVertexInputIndexThickness);
+    
+    renderingContext.renderCommandEncoder.setFragmentBytes(&_color, sizeof(_color), kFragmentInputIndexColor);
+    
+    renderingContext.renderCommandEncoder.drawPrimitives(PrimitiveType::triangleStrip, 0, vertices.size());
+    
+}
+
+void LineRenderer::onEnter() {
+    _transform = get<Transform>();
+}
+
+void LineRenderer::onRemoveComponent([[maybe_unused]] TypeId typeId, Component*) {
+    assert(typeIdOf<Transform> != typeId);
 }
 
 }

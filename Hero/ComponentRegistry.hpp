@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "Singleton.hpp"
 #include "GraphicsCoreUtils.hpp"
 #include "RemovedComponentRegistry.hpp"
 
@@ -16,22 +15,37 @@
 namespace hero {
 
 class SceneObject;
+class RenderingContext;
 
 namespace _internal {
 
 // MARK: ComponentRegistryImpl
 template <typename CT, ComponentCategory CC>
-class ComponentRegistryImpl: public Singleton<ComponentRegistryImpl<CT, CC>> {
+class ComponentRegistryImpl {
 public:
     
     template <typename... Args>
-    CT* createCompoent(const SceneObject& sceneObject, Args&&... args) {
-        return new CT {sceneObject, std::forward<Args>(args)...};
-    }
+    CT* createCompoent(const SceneObject& sceneObject, Args&&... args);
     
     void removeCompoent(CT* component);
     
+    static ComponentRegistryImpl& shared() {
+        static ComponentRegistryImpl obj;
+        return obj;
+    }
+    
+private:
+    ComponentRegistryImpl() = default;
+    ComponentRegistryImpl(const ComponentRegistryImpl&) = delete;
+    ComponentRegistryImpl& operator=(const ComponentRegistryImpl&) = delete;
+
 };
+
+template <typename CT, ComponentCategory CC>
+template <typename... Args>
+CT* ComponentRegistryImpl<CT, CC>::createCompoent(const SceneObject& sceneObject, Args&&... args) {
+    return new CT {sceneObject, std::forward<Args>(args)...};
+}
 
 template <typename CT, ComponentCategory CC>
 void ComponentRegistryImpl<CT, CC>::removeCompoent(CT* component) {
@@ -46,7 +60,7 @@ class ComponentRegistryImpl<CompositeComponent, C>;
 
 // MARK: Renderer ComponentRegistryImpl
 template <typename CT>
-class ComponentRegistryImpl<CT, ComponentCategory::renderer>: public Singleton<ComponentRegistryImpl<CT, ComponentCategory::renderer>> {
+class ComponentRegistryImpl<CT, ComponentCategory::renderer> {
 public:
     
     template <typename... Args>
@@ -56,12 +70,27 @@ public:
     
     void cleanRemovedComponents();
     
-    void update();
+    void update(RenderingContext& renderingContext);
+    
+    static ComponentRegistryImpl& shared() {
+        static ComponentRegistryImpl obj;
+        return obj;
+    }
     
 private:
+    
+    ComponentRegistryImpl();
+    ComponentRegistryImpl(const ComponentRegistryImpl&) = delete;
+    ComponentRegistryImpl& operator=(const ComponentRegistryImpl&) = delete;
+    
     std::vector<CT*> _components;
     bool _unlocked = true;
 };
+
+template <typename CT>
+ComponentRegistryImpl<CT, ComponentCategory::renderer>::ComponentRegistryImpl() {
+    CT::setup();
+}
 
 template <typename CT>
 template <typename... Args>
@@ -86,12 +115,12 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedCompone
 }
 
 template <typename CT>
-void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update() {
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(RenderingContext& renderingContext) {
     
     _unlocked = false;
     for(auto component: _components) {
         assert(component->isActive());
-        component->render();
+        component->render(renderingContext);
     }
     _unlocked = true;
 }

@@ -57,10 +57,10 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
     private func setupAxis() {
         let axisHalfLength: Float = 100.0
         let axisThickness: Float = 4.0
-        let xAxis = LineRenderer(point1: SIMD3<Float>(-axisHalfLength, 0.0, 0.0), point2: SIMD3<Float>(axisHalfLength, 0.0, 0.0), thickness: axisThickness, color: SIMD4<Float>.red)
+        let xAxis = SceneObject.makeLinePoint1(SIMD3<Float>(-axisHalfLength, 0.0, 0.0), point2: SIMD3<Float>(axisHalfLength, 0.0, 0.0), thickness: axisThickness, color: SIMD4<Float>.red)
         scene.add(xAxis)
         
-        let zAxis = LineRenderer(point1: SIMD3<Float>(0.0, 0.0, -axisHalfLength), point2: SIMD3<Float>(0.0, 0.0, axisHalfLength), thickness: axisThickness, color: SIMD4<Float>.blue)
+        let zAxis = SceneObject.makeLinePoint1(SIMD3<Float>(0.0, 0.0, -axisHalfLength), point2: SIMD3<Float>(0.0, 0.0, axisHalfLength), thickness: axisThickness, color: SIMD4<Float>.blue)
         scene.add(zAxis)
     }
     

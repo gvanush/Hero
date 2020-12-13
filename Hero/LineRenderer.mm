@@ -11,26 +11,8 @@
 
 @implementation LineRenderer
 
--(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
-    return [self initWithOwnedCpp: new hero::LineRenderer {point1, point2, thickness, color} deleter:^(CppHandle handle) {
-        delete static_cast<hero::LineRenderer*>(handle);
-    }];
-}
-
--(instancetype) initWithPoint1: (simd_float3) point1 point2: (simd_float3) point2 {
-    return [self initWithPoint1: point1 point2: point2 thickness: 1.f color: simd_make_float4(1.f, 1.f, 1.f, 1.f)];
-}
-
--(void) setPoint1: (simd_float3) point1 {
-    self.cpp->setPoint1(point1);
-}
-
 -(simd_float3) point1 {
     return self.cpp->point1();
-}
-
--(void) setPoint2: (simd_float3) point2 {
-    self.cpp->setPoint2(point2);
 }
 
 -(simd_float3) point2 {

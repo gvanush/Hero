@@ -12,6 +12,7 @@
 #include "SceneObject.hpp"
 #include "Transform.hpp"
 #include "Camera.hpp"
+#include "LineRenderer.hpp"
 
 @implementation SceneObject
 
@@ -31,7 +32,15 @@
 
 +(SceneObject*) makeBasic {
     // TODO: must not be owned
-    return [[SceneObject alloc] initWithOwnedCpp: hero::SceneObject::makeBasic() deleter:^(CppHandle handle) {
+    return [[SceneObject alloc] initWithOwnedCpp: hero::SceneObject::makeBasic() deleter:^(CppHandle _Nonnull handle) {
+        delete static_cast<hero::SceneObject*>(handle);
+    }];
+}
+
++(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
+    auto sceneObject = new hero::SceneObject {};
+    sceneObject->set<hero::LineRenderer>(point1, point2, thickness, color);
+    return [[SceneObject alloc] initWithOwnedCpp: sceneObject deleter: ^(CppHandle  _Nonnull handle) {
         delete static_cast<hero::SceneObject*>(handle);
     }];
 }
