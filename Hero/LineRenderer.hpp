@@ -44,7 +44,6 @@ public:
     static constexpr auto category = ComponentCategory::renderer;
     
 private:
-    static apple::metal::RenderPipelineStateRef _pipelineStateRef;
     
     simd::float4 _color;
     simd::float3 _point1;

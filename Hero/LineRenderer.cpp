@@ -15,7 +15,11 @@
 
 namespace hero {
 
-apple::metal::RenderPipelineStateRef LineRenderer::_pipelineStateRef;
+namespace {
+
+apple::metal::RenderPipelineStateRef __pipelineStateRef;
+
+}
 
 LineRenderer::LineRenderer(const SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color)
 : Component {sceneObject}
@@ -47,7 +51,7 @@ void LineRenderer::setup() {
 //    pipelineStateDescriptorRef.setSampleCount(2);
     
     ErrorRef errorRef;
-    _pipelineStateRef = device.newRenderPipelineState(pipelineStateDescriptorRef, &errorRef);
+    __pipelineStateRef = device.newRenderPipelineState(pipelineStateDescriptorRef, &errorRef);
     assert(!errorRef);
 }
 
@@ -57,7 +61,7 @@ void LineRenderer::render(RenderingContext& renderingContext) {
     using namespace apple;
     using namespace apple::metal;
     
-    renderingContext.renderCommandEncoder.setRenderPipelineState(_pipelineStateRef);
+    renderingContext.renderCommandEncoder.setRenderPipelineState(__pipelineStateRef);
     
     renderingContext.uniforms.projectionViewModelMatrix = _transform->worldMatrix() * renderingContext.uniforms.projectionViewMatrix;
     renderingContext.renderCommandEncoder.setVertexBytes(&renderingContext.uniforms, sizeof(hero::Uniforms), kVertexInputIndexUniforms);

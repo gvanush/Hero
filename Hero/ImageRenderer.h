@@ -5,7 +5,7 @@
 //  Created by Vanush Grigoryan on 7/31/20.
 //
 
-#import "SceneObject.h"
+#import "Component.h"
 
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
@@ -13,9 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Layer: SceneObject
-
--(instancetype) init;
+@interface ImageRenderer: Component
 
 @property (nonatomic, readwrite) simd_float2 size;
 @property (nonatomic, readwrite) simd_float4 color;
@@ -25,11 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #ifdef __cplusplus
 
-namespace hero { class Layer; }
+namespace hero { class ImageRenderer; }
 
-@interface Layer (Cpp)
+@interface ImageRenderer (Cpp)
 
--(hero::Layer*) cpp;
+-(hero::ImageRenderer*) cpp;
 
 @end
 

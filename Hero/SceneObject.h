@@ -11,6 +11,7 @@
 
 @class Transform;
 @class Camera;
+@class ImageRenderer;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,9 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString* name;
 @property (nonatomic, readonly) Transform* transform;
 @property (nonatomic, readonly) Camera* camera;
+@property (nonatomic, readonly) ImageRenderer* imageRenderer;
 
 +(SceneObject*) makeBasic;
 +(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color;
++(SceneObject*) makeImage;
 
 @end
 

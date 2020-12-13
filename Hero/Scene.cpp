@@ -6,7 +6,8 @@
 //
 
 #include "Scene.hpp"
-#include "Layer.hpp"
+#include "ImageRenderer.hpp"
+#include "SceneObject.hpp"
 
 #include <array>
 #include <iostream>
@@ -27,7 +28,9 @@ void Scene::addSceneObject(SceneObject* sceneObject) {
 }
 
 SceneObject* Scene::raycast(const Ray& ray) const {
-    return Layer::raycast(ray);
+    // TODO
+//    return ImageRenderer::raycast(ray);
+    return nullptr;
 }
 
 void Scene::step(float /*dt*/) {

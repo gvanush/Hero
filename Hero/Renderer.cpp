@@ -11,9 +11,10 @@
 #include "Scene.hpp"
 #include "Camera.hpp"
 #include "LineRenderer.hpp"
-#include "Layer.hpp"
+#include "ImageRenderer.hpp"
 #include "RemovedComponentRegistry.hpp"
 #include "ComponentRegistry.hpp"
+#include "SceneObject.hpp"
 
 #include "apple/metal/Metal.h"
 
@@ -56,8 +57,7 @@ void Renderer::render(Scene& scene, RenderingContext& renderingContext) {
     renderingContext.uniforms.projectionViewMatrix = scene.viewCamera()->get<Camera>()->projectionViewMatrix();
     
     ComponentRegistry<LineRenderer>::shared().update(renderingContext);
-    
-    Layer::render(renderingContext);
+    ComponentRegistry<ImageRenderer>::shared().update(renderingContext);
     
     commandEncoderRef.endEncoding();
     
@@ -76,8 +76,6 @@ void Renderer::render(Scene& scene, RenderingContext& renderingContext) {
 }
 
 void Renderer::setup() {
-    Layer::setup();
-    
     apple::metal::DepthStencilDescriptorRef descr = apple::metal::DepthStencilDescriptor::create();
     descr.setDepthWriteEnabled(true);
     descr.setDepthCompareFunction(apple::metal::CompareFunction::less);

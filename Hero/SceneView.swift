@@ -50,7 +50,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
         scene.viewCamera.camera.fovy = Float.pi / 3.0
         
         setupAxis()
-        addLayers()
+        addImages()
         
     }
     
@@ -64,7 +64,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
         scene.add(zAxis)
     }
     
-    private func addLayers() {
+    private func addImages() {
         let sampleImageCount = 5
         let textureLoader = MTKTextureLoader(device: RenderingContext.device())
         
@@ -72,12 +72,12 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
             let texture = try! textureLoader.newTexture(name: "sample_image_\(i)", scaleFactor: 1.0, bundle: nil, options: nil)
             let texRatio = Float(texture.width) / Float(texture.height)
             
-            let layer = Layer()
-            layer.texture = texture
+            let imageObject = SceneObject.makeImage()
+            imageObject.imageRenderer.texture = texture
             if i == 0 {
                 let size = Float(30.0)
-                layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                layer.transform.position = simd_float3.zero
+                imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                imageObject.transform.position = simd_float3.zero
             } else {
                 
                 let sizeRange = Float(10.0)...Float(100.0)
@@ -87,10 +87,10 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
                 let size = min(width, height) / 2.0
                 
                 let positionRange = Float(-70.0)...Float(70.0)
-                layer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                layer.transform.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
+                imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                imageObject.transform.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
             }
-            scene.add(layer)
+            scene.add(imageObject)
         }
     }
 }
