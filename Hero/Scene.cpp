@@ -6,8 +6,9 @@
 //
 
 #include "Scene.hpp"
-#include "ImageRenderer.hpp"
 #include "SceneObject.hpp"
+#include "Camera.hpp"
+#include "Transform.hpp"
 
 #include <array>
 #include <iostream>
@@ -15,16 +16,16 @@
 namespace hero {
 
 Scene::Scene() {
-    _viewCamera = SceneObject::makeCamera();
+    _viewCamera = createObject();
+    _viewCamera->set<Transform>();
+    _viewCamera->set<Camera>(0.01f, 1000.f, 1.f);
 }
 
 Scene::~Scene() {
+    // This causes all components to exit and be removed
+    _objects.clear();
     // TODO:
-    delete _viewCamera;
-}
-
-void Scene::addSceneObject(SceneObject* sceneObject) {
-    _sceneObjects.push_back(sceneObject);
+//    RemovedComponentRegistry::destroyAllComponents(*this)
 }
 
 SceneObject* Scene::raycast(const Ray& ray) const {

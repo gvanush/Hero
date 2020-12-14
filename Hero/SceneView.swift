@@ -57,11 +57,12 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
     private func setupAxis() {
         let axisHalfLength: Float = 100.0
         let axisThickness: Float = 4.0
-        let xAxis = SceneObject.makeLinePoint1(SIMD3<Float>(-axisHalfLength, 0.0, 0.0), point2: SIMD3<Float>(axisHalfLength, 0.0, 0.0), thickness: axisThickness, color: SIMD4<Float>.red)
-        scene.add(xAxis)
         
-        let zAxis = SceneObject.makeLinePoint1(SIMD3<Float>(0.0, 0.0, -axisHalfLength), point2: SIMD3<Float>(0.0, 0.0, axisHalfLength), thickness: axisThickness, color: SIMD4<Float>.blue)
-        scene.add(zAxis)
+        // xAxis
+        scene.makeLine(point1: SIMD3<Float>(-axisHalfLength, 0.0, 0.0), point2: SIMD3<Float>(axisHalfLength, 0.0, 0.0), thickness: axisThickness, color: SIMD4<Float>.red)
+        
+        // zAxis
+        scene.makeLine(point1: SIMD3<Float>(0.0, 0.0, -axisHalfLength), point2: SIMD3<Float>(0.0, 0.0, axisHalfLength), thickness: axisThickness, color: SIMD4<Float>.blue)
     }
     
     private func addImages() {
@@ -72,7 +73,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
             let texture = try! textureLoader.newTexture(name: "sample_image_\(i)", scaleFactor: 1.0, bundle: nil, options: nil)
             let texRatio = Float(texture.width) / Float(texture.height)
             
-            let imageObject = SceneObject.makeImage()
+            let imageObject = scene.makeImage()
             imageObject.imageRenderer.texture = texture
             if i == 0 {
                 let size = Float(30.0)
@@ -90,7 +91,6 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
                 imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                 imageObject.transform.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
             }
-            scene.add(imageObject)
         }
     }
 }

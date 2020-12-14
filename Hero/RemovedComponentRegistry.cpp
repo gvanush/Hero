@@ -16,7 +16,7 @@ namespace hero {
 
 void RemovedComponentRegistry::addComponent(Component* component) {
     assert(component->isRemoved());
-    _components[component->sceneObject().scene()->stepNumber()].push_back(component);
+    _components[component->sceneObject().scene().stepNumber()].push_back(component);
 }
 
 void RemovedComponentRegistry::destroyComponents(Scene& scene, StepNumber stepNumber) {

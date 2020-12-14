@@ -10,23 +10,25 @@
 #include "GraphicsCoreUtils.hpp"
 #include "UIRepresentable.hpp"
 #include "GeometryUtils_Common.h"
+#include "SceneObject.hpp"
 
 #include "apple/metal/Metal.h"
 
 #include <vector>
-#include <unordered_map>
 #include <simd/simd.h>
 
 namespace hero {
 
 class SceneObject;
-class Camera;
 
 class Scene: public UIRepresentable {
 public:
     
     Scene();
     ~Scene();
+    
+    inline SceneObject* createObject();
+    inline void removeObject(SceneObject* object);
     
     inline void setBgrColor(const simd::float4& color);
     inline const simd::float4& bgrColor() const;
@@ -36,17 +38,17 @@ public:
     inline void setSelectedObject(SceneObject* selected);
     inline SceneObject* selectedObject() const;
     
-    void addSceneObject(SceneObject* sceneObject);
-    
     SceneObject* raycast(const Ray& ray) const;
     
     inline StepNumber stepNumber() const;
     
     void step(float dt);
     
-private:
-    std::vector<SceneObject*> _sceneObjects;
+    friend class SceneObject;
     
+private:
+    
+    std::vector<std::unique_ptr<SceneObject>> _objects;
     SceneObject* _viewCamera;
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     SceneObject* _selectedObject = nullptr;
@@ -76,6 +78,23 @@ SceneObject* Scene::selectedObject() const {
 
 StepNumber Scene::stepNumber() const {
     return _stepNumber;
+}
+
+SceneObject* Scene::createObject() {
+    return _objects.emplace_back(new SceneObject {*this}).get();
+}
+
+void Scene::removeObject(SceneObject* object) {
+    assert(object);
+    assert(&object->scene() == this);
+    
+    auto it = std::find_if(_objects.begin(), _objects.end(), [object] (const auto& item) {
+        return item.get() == object;
+    });
+    if (it == _objects.end()) {
+        return;
+    }
+    _objects.erase(it);
 }
 
 }

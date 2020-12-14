@@ -12,37 +12,15 @@
 
 namespace hero {
 
-SceneObject::SceneObject()
-: _compositeComponent {*this} {
+SceneObject::SceneObject(Scene& scene)
+: _compositeComponent {*this}
+, _scene {scene} {
     // TODO:
     _compositeComponent.enter();
-    
-    // TODO: Remove this
-    set<Transform>();
 }
 
 SceneObject::~SceneObject() {
-    // TODO: Remove this
-    delete get<Transform>();
-}
-
-Scene* SceneObject::scene() const {
-    // TODO
-    return nullptr;
-}
-
-SceneObject* SceneObject::makeBasic() {
-    auto sceneObject = new SceneObject {};
-    sceneObject->set<Transform>();
-    return sceneObject;
-}
-
-SceneObject* SceneObject::makeCamera() {
-    auto sceneObject = new SceneObject {};
-    // TODO: uncomment after removing from constructor
-//    sceneObject->set<Transform>();
-    sceneObject->set<Camera>(0.01f, 1000.f, 1.f);
-    return sceneObject;
+    _compositeComponent.exit();
 }
 
 }

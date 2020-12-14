@@ -19,13 +19,17 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Scene: UIRepresentable
 
 -(instancetype) init;
+-(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_UNAVAILABLE;
 
--(void) addSceneObject: (SceneObject*) sceneObject;
+-(SceneObject*) createObject;
+-(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color NS_SWIFT_NAME(makeLine(point1:point2:thickness:color:));
+-(SceneObject*) makeImage;
+
+-(void) removeObject: (SceneObject*) object;
 
 -(SceneObject* _Nullable) rayCast: (Ray) ray;
 
 @property (nonatomic, readwrite) simd_float4 bgrColor;
-@property (nonatomic, readonly) NSArray* sceneObjects;
 @property (nonatomic, readonly) SceneObject* viewCamera;
 @property (nonatomic, readwrite) SceneObject* _Nullable selectedObject;
 

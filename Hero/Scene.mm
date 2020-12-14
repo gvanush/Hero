@@ -10,12 +10,9 @@
 
 #include "Scene.hpp"
 #include "SceneObject.hpp"
-
-@interface Scene () {
-    NSMutableArray* _sceneObjects;
-}
-
-@end
+#include "Transform.hpp"
+#include "LineRenderer.hpp"
+#include "ImageRenderer.hpp"
 
 @implementation Scene
 
@@ -27,14 +24,30 @@
 
 -(instancetype)initWithOwnedCpp:(CppHandle) cpp deleter:(CppHandleDeleter)deleter {
     if(self = [super initWithOwnedCpp: cpp deleter: deleter]) {
-        _sceneObjects = [NSMutableArray array];
     }
     return self;
 }
 
--(void) addSceneObject: (SceneObject*) sceneObject {
-    [_sceneObjects addObject: sceneObject];
-    self.cpp->addSceneObject(sceneObject.cpp);
+-(SceneObject*) createObject {
+    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->createObject()];
+}
+
+-(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
+    auto sceneObject = self.cpp->createObject();
+    sceneObject->set<hero::Transform>();
+    sceneObject->set<hero::LineRenderer>(point1, point2, thickness, color);
+    return [[SceneObject alloc] initWithUnownedCpp: sceneObject];
+}
+
+-(SceneObject*) makeImage {
+    auto sceneObject = self.cpp->createObject();
+    sceneObject->set<hero::Transform>();
+    sceneObject->set<hero::ImageRenderer>();
+    return [[SceneObject alloc] initWithUnownedCpp: sceneObject];
+}
+
+-(void) removeObject: (SceneObject*) object {
+    self.cpp->removeObject(object.cpp);
 }
 
 -(SceneObject* _Nullable) rayCast: (Ray) ray {
@@ -50,10 +63,6 @@
 
 -(simd_float4) bgrColor {
     return self.cpp->bgrColor();
-}
-
--(NSArray*) sceneObjects {
-    return _sceneObjects;
 }
 
 -(SceneObject *)viewCamera {

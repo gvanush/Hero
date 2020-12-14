@@ -19,7 +19,7 @@ class Scene;
 class SceneObject {
 public:
     
-    SceneObject();
+    SceneObject(Scene& scene);
     ~SceneObject();
     
     template <typename CT, typename... Args>
@@ -31,13 +31,11 @@ public:
     template <typename CT>
     inline CT* get() const;
     
-    Scene* scene() const;
-    
-    static SceneObject* makeBasic();
-    static SceneObject* makeCamera();
+    inline Scene& scene() const;
     
 private:
     CompositeComponent _compositeComponent;
+    Scene& _scene;
     bool _active = false;
 };
 
@@ -54,6 +52,10 @@ void SceneObject::remove() {
 template <typename CT>
 CT* SceneObject::get() const {
     return _compositeComponent.getChild<CT>();
+}
+
+Scene& SceneObject::scene() const {
+    return _scene;
 }
 
 }
