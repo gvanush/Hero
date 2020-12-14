@@ -9,16 +9,17 @@
 #include "SceneObject.hpp"
 #include "Camera.hpp"
 #include "Transform.hpp"
+#include "LineRenderer.hpp"
 #include "ImageRenderer.hpp"
 #include "ComponentRegistry.hpp"
 
 #include <array>
-#include <iostream>
+#include <sstream>
 
 namespace hero {
 
 Scene::Scene() {
-    _viewCamera = createObject();
+    _viewCamera = makeObject();
     _viewCamera->set<Transform>();
     _viewCamera->set<Camera>(0.01f, 1000.f, 1.f);
 }
@@ -28,6 +29,26 @@ Scene::~Scene() {
     _objects.clear();
     // TODO:
 //    RemovedComponentRegistry::destroyAllComponents(*this)
+}
+
+SceneObject* Scene::makeLine(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color) {
+    auto sceneObject = makeObject();
+    sceneObject->set<hero::Transform>();
+    sceneObject->set<hero::LineRenderer>(point1, point2, thickness, color);
+    return sceneObject;
+}
+
+SceneObject* Scene::makeImage() {
+    auto sceneObject = makeObject();
+    
+    std::ostringstream oss;
+    oss << "Image ";
+    oss << (++_lastImageNumber % 1000);
+    
+    sceneObject->setName(oss.str());
+    sceneObject->set<hero::Transform>();
+    sceneObject->set<hero::ImageRenderer>();
+    return sceneObject;
 }
 
 SceneObject* Scene::raycast(const Ray& ray) const {

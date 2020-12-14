@@ -11,6 +11,7 @@
 #include "TypeId.hpp"
 
 #include <unordered_map>
+#include <string>
 
 namespace hero {
 
@@ -31,10 +32,14 @@ public:
     template <typename CT>
     inline CT* get() const;
     
+    inline void setName(const std::string& name);
+    inline const std::string& name() const;
+    
     inline Scene& scene() const;
     
 private:
     CompositeComponent _compositeComponent;
+    std::string _name;
     Scene& _scene;
     bool _active = false;
 };
@@ -52,6 +57,14 @@ void SceneObject::remove() {
 template <typename CT>
 CT* SceneObject::get() const {
     return _compositeComponent.getChild<CT>();
+}
+
+void SceneObject::setName(const std::string& name) {
+    _name = name;
+}
+
+const std::string& SceneObject::name() const {
+    return _name;
 }
 
 Scene& SceneObject::scene() const {

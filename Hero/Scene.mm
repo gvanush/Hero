@@ -10,9 +10,6 @@
 
 #include "Scene.hpp"
 #include "SceneObject.hpp"
-#include "Transform.hpp"
-#include "LineRenderer.hpp"
-#include "ImageRenderer.hpp"
 
 @implementation Scene
 
@@ -28,22 +25,16 @@
     return self;
 }
 
--(SceneObject*) createObject {
-    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->createObject()];
+-(SceneObject*) makeObject {
+    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->makeObject()];
 }
 
 -(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
-    auto sceneObject = self.cpp->createObject();
-    sceneObject->set<hero::Transform>();
-    sceneObject->set<hero::LineRenderer>(point1, point2, thickness, color);
-    return [[SceneObject alloc] initWithUnownedCpp: sceneObject];
+    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->makeLine(point1, point2, thickness, color)];
 }
 
 -(SceneObject*) makeImage {
-    auto sceneObject = self.cpp->createObject();
-    sceneObject->set<hero::Transform>();
-    sceneObject->set<hero::ImageRenderer>();
-    return [[SceneObject alloc] initWithUnownedCpp: sceneObject];
+    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->makeImage()];
 }
 
 -(void) removeObject: (SceneObject*) object {

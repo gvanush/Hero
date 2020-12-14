@@ -30,6 +30,14 @@
     return [[ImageRenderer alloc] initWithUnownedCpp: self.cpp->get<hero::ImageRenderer>()];
 }
 
+-(void)setName:(NSString *)name {
+    self.cpp->setName(name.UTF8String);
+}
+
+-(NSString *)name {
+    return [[NSString alloc] initWithUTF8String: self.cpp->name().c_str()];
+}
+
 @end
 
 @implementation SceneObject (Cpp)

@@ -27,7 +27,10 @@ public:
     Scene();
     ~Scene();
     
-    inline SceneObject* createObject();
+    inline SceneObject* makeObject();
+    SceneObject* makeLine(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color);
+    SceneObject* makeImage();
+    
     inline void removeObject(SceneObject* object);
     
     inline void setBgrColor(const simd::float4& color);
@@ -53,6 +56,7 @@ private:
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     SceneObject* _selectedObject = nullptr;
     StepNumber _stepNumber = 0u;
+    std::uint8_t _lastImageNumber = 0;
 };
 
 void Scene::setBgrColor(const simd::float4& color) {
@@ -80,7 +84,7 @@ StepNumber Scene::stepNumber() const {
     return _stepNumber;
 }
 
-SceneObject* Scene::createObject() {
+SceneObject* Scene::makeObject() {
     return _objects.emplace_back(new SceneObject {*this}).get();
 }
 

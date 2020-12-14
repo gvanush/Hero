@@ -44,7 +44,6 @@ struct Inspector: View {
     @State var isToolEditingModeEnabled = true
     @State private var isAnimating = false
     @EnvironmentObject private var graphicsViewModel: GraphicsViewModel
-    @EnvironmentObject private var rootViewModel: RootViewModel
         
     var body: some View {
         GeometryReader { proxy in
