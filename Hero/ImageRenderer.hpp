@@ -23,7 +23,7 @@ class Transform;
 class ImageRenderer: public Component {
 public:
     
-    ImageRenderer(const SceneObject& sceneObject);
+    ImageRenderer(SceneObject& sceneObject);
     
     inline void setSize(const simd::float2& size);
     inline const simd::float2& size() const;
@@ -36,14 +36,14 @@ public:
     
     void render(RenderingContext& renderingContext);
     
+    bool raycast(const Ray& ray, float& normDistance);
+    
     void onEnter() override;
     void onRemoveComponent(TypeId typeId, Component*) override;
     
     static void setup();
     
     static constexpr auto category = ComponentCategory::renderer;
-    // TODO
-//    static ImageRenderer* raycast(const Ray& ray);
     
 private:
     simd::float4 _color;

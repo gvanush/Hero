@@ -21,7 +21,7 @@ apple::metal::RenderPipelineStateRef __pipelineStateRef;
 
 }
 
-LineRenderer::LineRenderer(const SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color)
+LineRenderer::LineRenderer(SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color)
 : Component {sceneObject}
 , _color {color}
 , _point1 {point1}

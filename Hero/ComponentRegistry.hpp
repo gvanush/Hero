@@ -9,6 +9,7 @@
 
 #include "GraphicsCoreUtils.hpp"
 #include "RemovedComponentRegistry.hpp"
+#include "GeometryUtils_Common.h"
 
 #include <vector>
 
@@ -25,7 +26,7 @@ class ComponentRegistryImpl {
 public:
     
     template <typename... Args>
-    CT* createCompoent(const SceneObject& sceneObject, Args&&... args);
+    CT* createCompoent(SceneObject& sceneObject, Args&&... args);
     
     void removeCompoent(CT* component);
     
@@ -43,7 +44,7 @@ private:
 
 template <typename CT, ComponentCategory CC>
 template <typename... Args>
-CT* ComponentRegistryImpl<CT, CC>::createCompoent(const SceneObject& sceneObject, Args&&... args) {
+CT* ComponentRegistryImpl<CT, CC>::createCompoent(SceneObject& sceneObject, Args&&... args) {
     return new CT {sceneObject, std::forward<Args>(args)...};
 }
 
@@ -64,13 +65,15 @@ class ComponentRegistryImpl<CT, ComponentCategory::renderer> {
 public:
     
     template <typename... Args>
-    CT* createCompoent(const SceneObject& sceneObject, Args&&... args);
+    CT* createCompoent(SceneObject& sceneObject, Args&&... args);
     
     void removeCompoent(CT* component);
     
     void cleanRemovedComponents();
     
     void update(RenderingContext& renderingContext);
+    
+    CT* raycast(const Ray& ray);
     
     static ComponentRegistryImpl& shared() {
         static ComponentRegistryImpl obj;
@@ -94,7 +97,7 @@ ComponentRegistryImpl<CT, ComponentCategory::renderer>::ComponentRegistryImpl() 
 
 template <typename CT>
 template <typename... Args>
-CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::createCompoent(const SceneObject& sceneObject, Args&&... args) {
+CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::createCompoent(SceneObject& sceneObject, Args&&... args) {
     assert(_unlocked);
     auto component = new CT {sceneObject, std::forward<Args>(args)...};
     _components.push_back(component);
@@ -123,6 +126,23 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(RenderingCon
         component->render(renderingContext);
     }
     _unlocked = true;
+}
+
+template <typename CT>
+CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Ray& ray) {
+    CT* result = nullptr;
+    float minNormDistance = std::numeric_limits<float>::max();
+    
+    for(auto component: _components) {
+        float normDistance;
+        if (component->isActive() && component->raycast(ray, normDistance)) {
+            if (minNormDistance > normDistance) {
+                result = component;
+                minNormDistance = normDistance;
+            }
+        }
+    }
+    return result;
 }
 
 } // namespace _internal

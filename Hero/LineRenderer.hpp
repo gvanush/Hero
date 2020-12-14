@@ -22,7 +22,7 @@ class RenderingContext;
 class LineRenderer: public Component {
 public:
     
-    LineRenderer(const SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness = 1.f, const simd::float4& color = simd::float4 {1.f});
+    LineRenderer(SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness = 1.f, const simd::float4& color = simd::float4 {1.f});
     
     inline const simd::float3& point1() const;
     

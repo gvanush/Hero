@@ -35,8 +35,8 @@ void Renderer::render(Scene& scene, RenderingContext& renderingContext) {
     // TODO: delta time
     scene.step(0.f);
     
-    // Clean removed components
-    // TODO
+    // Clean removed components for types that may change as part of the step
+    // ...
     
     // Update renderers
     using namespace apple;
@@ -63,7 +63,7 @@ void Renderer::render(Scene& scene, RenderingContext& renderingContext) {
     
     commandBufferRef.addCompletedHandler([stepNumber, &scene] (CommandBufferRef) {
         // TODO: 'scene' may not be alive at this point (maybe moving to ObjC/Swift layet with weak ref?)
-        // TODO: check the thread of execution of this callback
+        // TODO: must be moved to main thread
         RemovedComponentRegistry::shared().destroyComponents(scene, stepNumber);
     });
     

@@ -10,7 +10,7 @@
 namespace hero {
 
 // MARK: Component definition
-Component::Component(const SceneObject& sceneObject)
+Component::Component(SceneObject& sceneObject)
 : _sceneObject {sceneObject} {
 }
 

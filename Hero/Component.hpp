@@ -25,12 +25,12 @@ class CompositeComponent;
 class Component {
 public:
     
-    Component(const SceneObject& sceneObject);
+    Component(SceneObject& sceneObject);
     virtual ~Component() {}
     
     inline bool isRemoved() const;
     inline bool isActive() const;
-    inline const SceneObject& sceneObject() const;
+    inline SceneObject& sceneObject() const;
     
 protected:
     template <typename CT>
@@ -49,7 +49,7 @@ private:
     virtual void notifyNewComponent(TypeId typeId, Component* component);
     virtual void notifyRemoveComponent(TypeId typeId, Component* component);
     
-    const SceneObject& _sceneObject;
+    SceneObject& _sceneObject;
     CompositeComponent* _parent = nullptr;
     ComponentState _state = ComponentState::new_;
 };
@@ -92,7 +92,7 @@ bool Component::isActive() const {
     return _state == ComponentState::active;
 }
 
-const SceneObject& Component::sceneObject() const {
+SceneObject& Component::sceneObject() const {
     return _sceneObject;
 }
 
@@ -114,7 +114,7 @@ std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::setChild(Args
     assert(!isRemoved());
     assert(_childrenUnlocked);
     assert(_children.find(typeIdOf<CT>) == _children.end());
-    // TODO:
+    
     CT* component = ComponentRegistry<CT>::shared().createCompoent(_sceneObject, std::forward<Args>(args)...);
     component->_parent = this;
     _children[typeIdOf<CT>] = component;

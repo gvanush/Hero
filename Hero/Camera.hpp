@@ -20,7 +20,7 @@ class Transform;
 class Camera: public Component {
 public:
     
-    Camera(const SceneObject& sceneObject, float near, float far, float aspectRatio);
+    Camera(SceneObject& sceneObject, float near, float far, float aspectRatio);
     
     inline void setAspectRatio(float aspectRatio);
     inline float aspectRatio() const;

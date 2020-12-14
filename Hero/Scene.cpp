@@ -9,6 +9,8 @@
 #include "SceneObject.hpp"
 #include "Camera.hpp"
 #include "Transform.hpp"
+#include "ImageRenderer.hpp"
+#include "ComponentRegistry.hpp"
 
 #include <array>
 #include <iostream>
@@ -29,8 +31,9 @@ Scene::~Scene() {
 }
 
 SceneObject* Scene::raycast(const Ray& ray) const {
-    // TODO
-//    return ImageRenderer::raycast(ray);
+    if (auto component = ComponentRegistry<ImageRenderer>::shared().raycast(ray); component) {
+        return &component->sceneObject();
+    }
     return nullptr;
 }
 

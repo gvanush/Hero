@@ -33,7 +33,7 @@ apple::metal::BufferRef __vertexBuffer;
 
 }
 
-ImageRenderer::ImageRenderer(const SceneObject& sceneObject)
+ImageRenderer::ImageRenderer(SceneObject& sceneObject)
 : Component(sceneObject)
 , _size {1.f, 1.f}
 , _color {1.f, 1.f, 1.f, 1.f}
@@ -97,6 +97,22 @@ void ImageRenderer::render(RenderingContext& renderingContext) {
     
 }
 
+bool ImageRenderer::raycast(const Ray& ray, float& normDistance) {
+    constexpr auto kTolerance = 0.0001f;
+    
+    const auto localRay = hero::transform(ray, simd::inverse(_transform->worldMatrix()));
+    const auto plane = makePlane(kZero, kBackward);
+    
+    if(!intersect(localRay, plane, kTolerance, normDistance)) {
+        return false;;
+    }
+    
+    const auto intersectionPoint = simd_make_float2(getRayPoint(localRay, normDistance));
+
+    const AABR aabr {-0.5f * _size, 0.5f * _size};
+    return contains(intersectionPoint, aabr);
+}
+
 void ImageRenderer::onEnter() {
     _transform = get<Transform>();
 }
@@ -104,36 +120,5 @@ void ImageRenderer::onEnter() {
 void ImageRenderer::onRemoveComponent([[maybe_unused]] TypeId typeId, Component*) {
     assert(typeIdOf<Transform> != typeId);
 }
-
-/*ImageRenderer* ImageRenderer::raycast(const Ray& ray) {
-    constexpr auto kTolerance = 0.0001f;
-    
-    ImageRenderer* result = nullptr;
-    float minNormDistance = std::numeric_limits<float>::max();
-    
-    for(auto layer: __layers) {
-        const auto localRay = hero::transform(ray, simd::inverse(layer->get<Transform>()->worldMatrix()));
-        const auto plane = makePlane(kZero, kBackward);
-        
-        float normDistance;
-        if(!intersect(localRay, plane, kTolerance, normDistance)) {
-            continue;
-        }
-        
-        const auto intersectionPoint = simd_make_float2(getRayPoint(localRay, normDistance));
-    
-        const AABR aabr {-0.5f * layer->size(), 0.5f * layer->size()};
-        if(!contains(intersectionPoint, aabr)) {
-            continue;
-        }
-        
-        if(minNormDistance > normDistance) {
-            result = layer;
-            minNormDistance = normDistance;
-        }
-        
-    }
-    return result;
-}*/
 
 }

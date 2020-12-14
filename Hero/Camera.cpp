@@ -13,7 +13,7 @@
 
 namespace hero {
 
-Camera::Camera(const SceneObject& sceneObject, float near, float far, float aspectRatio)
+Camera::Camera(SceneObject& sceneObject, float near, float far, float aspectRatio)
 : Component {sceneObject}
 , _aspectRatio {aspectRatio}
 , _near {near}
