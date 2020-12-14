@@ -17,7 +17,6 @@ namespace hero {
 
 class SceneObject;
 class Transform;
-class RenderingContext;
 
 class LineRenderer: public Component {
 public:
@@ -34,7 +33,7 @@ public:
     inline void setColor(const simd::float4& c);
     inline const simd::float4& color() const;
     
-    void render(RenderingContext& renderingContext);
+    void render(void* renderingContext);
     
     void onEnter() override;
     void onRemoveComponent(TypeId typeId, Component*) override;

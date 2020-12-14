@@ -16,7 +16,6 @@
 namespace hero {
 
 class SceneObject;
-class RenderingContext;
 
 namespace _internal {
 
@@ -71,7 +70,7 @@ public:
     
     void cleanRemovedComponents();
     
-    void update(RenderingContext& renderingContext);
+    void update(void* renderingContext);
     
     CT* raycast(const Ray& ray);
     
@@ -118,7 +117,7 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedCompone
 }
 
 template <typename CT>
-void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(RenderingContext& renderingContext) {
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(void* renderingContext) {
     
     _unlocked = false;
     for(auto component: _components) {

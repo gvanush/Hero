@@ -16,9 +16,9 @@ typedef struct {
 } BasicRasterizerData;
 
 vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
-                                  device const float3* vertices [[buffer(hero::kVertexInputIndexVertices)]],
-                                  constant hero::Uniforms& uniforms [[buffer(hero::kVertexInputIndexUniforms)]],
-                                  constant float& thickness [[buffer(hero::kVertexInputIndexThickness)]]) {
+                                  device const float3* vertices [[buffer(kVertexInputIndexVertices)]],
+                                  constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]],
+                                  constant float& thickness [[buffer(kVertexInputIndexThickness)]]) {
     constexpr uint kLineVertexCount = 4;
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
     
@@ -43,7 +43,7 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
 }
 
 
-fragment float4 uniformColorFS(constant float4& color [[buffer(hero::kFragmentInputIndexColor)]]) {
+fragment float4 uniformColorFS(constant float4& color [[buffer(kFragmentInputIndexColor)]]) {
     return color;
 }
 
@@ -54,9 +54,9 @@ typedef struct {
 
 vertex LayerRasterizerData
 layerVertexShader(uint vertexID [[vertex_id]],
-                  device const hero::ImageVertex* vertices [[buffer(hero::kVertexInputIndexVertices)]],
-                  constant float2& layerSize [[buffer(hero::kVertexInputIndexSize)]],
-                  constant hero::Uniforms& uniforms [[buffer(hero::kVertexInputIndexUniforms)]]) {
+                  device const ImageVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+                  constant float2& layerSize [[buffer(kVertexInputIndexSize)]],
+                  constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     LayerRasterizerData out;
     out.position = float4 (vertices[vertexID].position.xy * layerSize, 0.f, 1.f) * uniforms.projectionViewModelMatrix;
     out.texCoord = vertices[vertexID].texCoord;
@@ -64,8 +64,8 @@ layerVertexShader(uint vertexID [[vertex_id]],
 }
 
 fragment float4 layerFragmentShader(LayerRasterizerData in [[stage_in]],
-                                    constant float4& color [[buffer(hero::kFragmentInputIndexColor)]],
-                                    texture2d<half> texture [[ texture(hero::kFragmentInputIndexTexture) ]]) {
+                                    constant float4& color [[buffer(kFragmentInputIndexColor)]],
+                                    texture2d<half> texture [[ texture(kFragmentInputIndexTexture) ]]) {
     constexpr sampler texSampler (mag_filter::linear, min_filter::linear);
     return color * (float4) texture.sample(texSampler, in.texCoord);
 }

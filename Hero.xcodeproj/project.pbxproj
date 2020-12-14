@@ -24,20 +24,17 @@
 		B74410172556984400005EEC /* NSPointerArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B74410152556984400005EEC /* NSPointerArray+Extensions.m */; };
 		B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB2252843C30047B996 /* CppWrapper.mm */; };
 		B749ADB925284BD80047B996 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB825284BD80047B996 /* SceneObject.mm */; };
-		B74ECB37253C7D2800C0301E /* LineRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB35253C7D2800C0301E /* LineRenderer.cpp */; };
 		B74ECB3C253C7FA800C0301E /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB3A253C7FA800C0301E /* LineRenderer.mm */; };
 		B75C31F52531872600CD612C /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F32531872600CD612C /* SphericalCoord.cpp */; };
 		B75C31F62531872600CD612C /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F42531872600CD612C /* SphericalCoord.mm */; };
-		B76508092570230F00F09086 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76508072570230F00F09086 /* Renderer.cpp */; };
 		B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76960862531940F0000F362 /* UIGestureRecognizer+Extensions.swift */; };
 		B7787863252C51980097F941 /* SIMD+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7787862252C51980097F941 /* SIMD+Extensions.swift */; };
-		B7847AD824D33AE100026607 /* ImageRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847AD624D33AE100026607 /* ImageRenderer.cpp */; };
 		B7847ADF24D45F8C00026607 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847ADD24D45F8C00026607 /* Scene.mm */; };
 		B7847AE324D4625200026607 /* ImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847AE124D4625200026607 /* ImageRenderer.mm */; };
-		B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1424D6E66900026607 /* RenderingContext.mm */; };
+		B7847B1724D6E66900026607 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1424D6E66900026607 /* RenderingContext.m */; };
 		B7847B1924D6F38A00026607 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1824D6F38A00026607 /* Shaders.metal */; };
 		B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */; };
-		B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7847B2524D9D5BE00026607 /* TextureUtils.cpp */; };
+		B7847B2724D9D5BE00026607 /* TextureUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = B7847B2524D9D5BE00026607 /* TextureUtils.m */; };
 		B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */; };
 		B786A8D324D146DB00F6EE83 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B786A8D124D146DB00F6EE83 /* Scene.cpp */; };
 		B7872CFC25027F4800BD403D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7872CFB25027F4800BD403D /* RootView.swift */; };
@@ -97,7 +94,6 @@
 		B749ADB2252843C30047B996 /* CppWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
 		B749ADB725284BD80047B996 /* SceneObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
 		B749ADB825284BD80047B996 /* SceneObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneObject.mm; sourceTree = "<group>"; };
-		B74ECB35253C7D2800C0301E /* LineRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LineRenderer.cpp; sourceTree = "<group>"; };
 		B74ECB36253C7D2800C0301E /* LineRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LineRenderer.hpp; sourceTree = "<group>"; };
 		B74ECB3A253C7FA800C0301E /* LineRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LineRenderer.mm; sourceTree = "<group>"; };
 		B74ECB3B253C7FA800C0301E /* LineRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineRenderer.h; sourceTree = "<group>"; };
@@ -105,25 +101,21 @@
 		B75C31F22531872600CD612C /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B75C31F32531872600CD612C /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
 		B75C31F42531872600CD612C /* SphericalCoord.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphericalCoord.mm; sourceTree = "<group>"; };
-		B76508072570230F00F09086 /* Renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
-		B76508082570230F00F09086 /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		B76960862531940F0000F362 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		B7787843252BA2580097F941 /* Numeric.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Numeric.hpp; sourceTree = "<group>"; };
 		B7787862252C51980097F941 /* SIMD+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIMD+Extensions.swift"; sourceTree = "<group>"; };
-		B7847AD624D33AE100026607 /* ImageRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ImageRenderer.cpp; sourceTree = "<group>"; };
 		B7847AD724D33AE100026607 /* ImageRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ImageRenderer.hpp; sourceTree = "<group>"; };
 		B7847ADD24D45F8C00026607 /* Scene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Scene.mm; sourceTree = "<group>"; };
 		B7847ADE24D45F8C00026607 /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		B7847AE124D4625200026607 /* ImageRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageRenderer.mm; sourceTree = "<group>"; };
 		B7847AE224D4625200026607 /* ImageRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageRenderer.h; sourceTree = "<group>"; };
-		B7847B1424D6E66900026607 /* RenderingContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderingContext.mm; sourceTree = "<group>"; };
+		B7847B1424D6E66900026607 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
 		B7847B1524D6E66900026607 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
-		B7847B1624D6E66900026607 /* RenderingContext.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RenderingContext.hpp; sourceTree = "<group>"; };
 		B7847B1824D6F38A00026607 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		B7847B1A24D6F3B200026607 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		B7847B1B24D7E48600026607 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
-		B7847B2524D9D5BE00026607 /* TextureUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TextureUtils.cpp; sourceTree = "<group>"; };
-		B7847B2624D9D5BE00026607 /* TextureUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TextureUtils.hpp; sourceTree = "<group>"; };
+		B7847B2524D9D5BE00026607 /* TextureUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextureUtils.m; sourceTree = "<group>"; };
+		B7847B2624D9D5BE00026607 /* TextureUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
 		B786A8CC24D0AF4800F6EE83 /* ColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelector.swift; sourceTree = "<group>"; };
 		B786A8D024D146DA00F6EE83 /* Hero-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hero-Bridging-Header.h"; sourceTree = "<group>"; };
 		B786A8D124D146DB00F6EE83 /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
@@ -142,7 +134,7 @@
 		B78D7E002524AE8F0057F066 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		B797C8872562E355007CE7E5 /* GraphicsViewProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewProxy.swift; sourceTree = "<group>"; };
 		B79E0455253F526500042719 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
-		B79E0D152570339300AB524F /* Renderer_Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer_Common.h; sourceTree = "<group>"; };
+		B79E0D152570339300AB524F /* RendererFlag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RendererFlag.h; sourceTree = "<group>"; };
 		B79E0D1C2572A7E600AB524F /* BitwiseUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BitwiseUtils.hpp; sourceTree = "<group>"; };
 		B7AEE00D2541E741002061F5 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		B7B30351256589A50060DFC4 /* SceneNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneNavigationController.swift; sourceTree = "<group>"; };
@@ -255,7 +247,6 @@
 		B74ECB34253C7D0600C0301E /* LineRenderer */ = {
 			isa = PBXGroup;
 			children = (
-				B74ECB35253C7D2800C0301E /* LineRenderer.cpp */,
 				B74ECB36253C7D2800C0301E /* LineRenderer.hpp */,
 				B74ECB3A253C7FA800C0301E /* LineRenderer.mm */,
 				B74ECB3B253C7FA800C0301E /* LineRenderer.h */,
@@ -317,11 +308,10 @@
 				B77878392529225F0097F941 /* SphericalCoord */,
 				B778782D252906700097F941 /* Scene */,
 				B778782C252906460097F941 /* SceneObject */,
-				B7847B1624D6E66900026607 /* RenderingContext.hpp */,
-				B7847B1424D6E66900026607 /* RenderingContext.mm */,
+				B7847B1424D6E66900026607 /* RenderingContext.m */,
 				B7847B1524D6E66900026607 /* RenderingContext.h */,
-				B7847B2524D9D5BE00026607 /* TextureUtils.cpp */,
-				B7847B2624D9D5BE00026607 /* TextureUtils.hpp */,
+				B7847B2524D9D5BE00026607 /* TextureUtils.m */,
+				B7847B2624D9D5BE00026607 /* TextureUtils.h */,
 				B7847B1A24D6F3B200026607 /* ShaderTypes.h */,
 				B7847B1824D6F38A00026607 /* Shaders.metal */,
 				B78D7DED2521B5F30057F066 /* Math.cpp */,
@@ -349,7 +339,6 @@
 		B797C87F25619C9E007CE7E5 /* ImageRenderer */ = {
 			isa = PBXGroup;
 			children = (
-				B7847AD624D33AE100026607 /* ImageRenderer.cpp */,
 				B7847AD724D33AE100026607 /* ImageRenderer.hpp */,
 				B7847AE124D4625200026607 /* ImageRenderer.mm */,
 				B7847AE224D4625200026607 /* ImageRenderer.h */,
@@ -362,9 +351,7 @@
 			children = (
 				B7440FF62553329D00005EEC /* Renderer.h */,
 				B7440FF72553329D00005EEC /* Renderer.mm */,
-				B76508072570230F00F09086 /* Renderer.cpp */,
-				B76508082570230F00F09086 /* Renderer.hpp */,
-				B79E0D152570339300AB524F /* Renderer_Common.h */,
+				B79E0D152570339300AB524F /* RendererFlag.h */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -561,10 +548,8 @@
 				B7BA378925812B9500118E6A /* Transform.mm in Sources */,
 				B74410172556984400005EEC /* NSPointerArray+Extensions.m in Sources */,
 				B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */,
-				B74ECB37253C7D2800C0301E /* LineRenderer.cpp in Sources */,
 				B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B7B7C4D225763ABA007643D7 /* GeometryUtils_Common.c in Sources */,
-				B76508092570230F00F09086 /* Renderer.cpp in Sources */,
 				B79E0456253F526500042719 /* BlurView.swift in Sources */,
 				B78D7E012524AE8F0057F066 /* Camera.mm in Sources */,
 				B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */,
@@ -577,7 +562,7 @@
 				B78D7DF9252312A00057F066 /* Camera.cpp in Sources */,
 				B7BA37832581294800118E6A /* Component.cpp in Sources */,
 				B7BA3796258376CB00118E6A /* Component.mm in Sources */,
-				B7847B2724D9D5BE00026607 /* TextureUtils.cpp in Sources */,
+				B7847B2724D9D5BE00026607 /* TextureUtils.m in Sources */,
 				B78D7DE7251F79000057F066 /* EnvironmentValues+Extensions.swift in Sources */,
 				B731700724CF378F00157455 /* SceneView.swift in Sources */,
 				B7B7C4CF257574B4007643D7 /* GeometryUtils.cpp in Sources */,
@@ -591,8 +576,7 @@
 				B7DD54752502657E00163947 /* TestView.swift in Sources */,
 				B7FE5B9224F645A4009DAE53 /* ProjectItem.swift in Sources */,
 				B749ADB925284BD80047B996 /* SceneObject.mm in Sources */,
-				B7847B1724D6E66900026607 /* RenderingContext.mm in Sources */,
-				B7847AD824D33AE100026607 /* ImageRenderer.cpp in Sources */,
+				B7847B1724D6E66900026607 /* RenderingContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,26 +11,47 @@
 #import "RenderingContext.h"
 #import "Scene.h"
 
-#include "Renderer.hpp"
+#include "ComponentRegistry.hpp"
+#include "RemovedComponentRegistry.hpp"
+#include "Scene.hpp"
+#include "Camera.hpp"
+#include "LineRenderer.hpp"
+#include "ImageRenderer.hpp"
 
 @interface Renderer () {
     NSMapTable<UIRepresentable*, NSPointerArray*>* _uiRepresentableToObservers;
     BOOL _isUpdatingUI;
+    RendererFlag _flag;
 }
 
 @end
 
 @implementation Renderer
 
-+(instancetype __nullable) make {
-    if (Renderer* renderer = [[Renderer alloc] initWithOwnedCpp: hero::Renderer::make() deleter:^(CppHandle handle) {
-        delete static_cast<hero::Renderer*>(handle);
-    }]) {
-        renderer->_uiRepresentableToObservers = [NSMapTable weakToStrongObjectsMapTable];
-        renderer->_isUpdatingUI = false;
-        return renderer;
+static RendererFlag __allRendererFlags = 0;
+
+-(instancetype) init {
+    if (self = [super init]) {
+        _uiRepresentableToObservers = [NSMapTable weakToStrongObjectsMapTable];
+        _isUpdatingUI = false;
+        _flag = 0x1;
+        while (_flag) {
+            if(!(__allRendererFlags & _flag)) {
+                __allRendererFlags |= _flag;
+                break;
+            }
+            _flag <<= 1;
+        }
     }
-    return nil;
+    return self;
+}
+
++(instancetype __nullable) make {
+    return [[Renderer alloc] init];
+}
+
+-(void) dealloc {
+    __allRendererFlags &= ~_flag;
 }
 
 #pragma mark - UI update
@@ -42,7 +63,7 @@
         observers = [NSPointerArray weakObjectsPointerArray];
         [_uiRepresentableToObservers setObject: observers forKey: uiRepresentable];
     }
-    [observers addPointer: (__bridge void * _Nullable)(observer)];
+    [observers addPointer: (__bridge void * _Nonnull)(observer)];
 }
 
 -(void) removeObserver: (id<UIRepresentableObserver>) observer for: (UIRepresentable*) uiRepresentable {
@@ -78,34 +99,55 @@
 
 -(void) render: (Scene*) scene context: (RenderingContext*) context {
     
-    self.cpp->render(*scene.cpp, *context.cpp);
+    auto stepNumber = scene.cpp->stepNumber();
+    // TODO: delta time
+    scene.cpp->step(0.f);
     
+    id<MTLCommandBuffer> commandBuffer = [[RenderingContext defaultCommandQueue] commandBuffer];
+    commandBuffer.label = @"CommandBuffer";
+    
+    id<MTLRenderCommandEncoder> commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor: context.renderPassDescriptor];
+    commandEncoder.label = @"SceneRenderCommandEncoder";
+    
+    [commandEncoder setDepthStencilState: [RenderingContext defaultDepthStencilState]];
+    
+    context.commandBuffer = commandBuffer;
+    context.renderCommandEncoder = commandEncoder;
+    context.projectionViewMatrix = scene.cpp->viewCamera()->get<hero::Camera>()->projectionViewMatrix();
+    
+    hero::ComponentRegistry<hero::LineRenderer>::shared().update((__bridge void* _Nonnull) context);
+    hero::ComponentRegistry<hero::ImageRenderer>::shared().update((__bridge void* _Nonnull) context);
+    
+    [commandEncoder endEncoding];
+    
+    __weak Scene* weakScene = scene;
+    [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (weakScene) {
+                hero::RemovedComponentRegistry::shared().destroyComponents(*weakScene.cpp, stepNumber);
+            }
+        });
+    }];
+    
+    [commandBuffer commit];
+    
+    [commandBuffer waitUntilScheduled];
+    
+    // UI update
     _isUpdatingUI = true;
     
     for (UIRepresentable* uiRepresentable in _uiRepresentableToObservers) {
-        if ([uiRepresentable needsUIUpdate: self.cpp->flag()]) {
+        if ([uiRepresentable needsUIUpdate: _flag]) {
             NSPointerArray* observers = [_uiRepresentableToObservers objectForKey: uiRepresentable];
             for (id<UIRepresentableObserver> observer in observers) {
                 [observer onUIUpdateRequired];
             }
-            [uiRepresentable onUIUpdated: self.cpp->flag()];
+            [uiRepresentable onUIUpdated: _flag];
         }
     }
     
     _isUpdatingUI = false;
     
-}
-
-+(void) setup {
-    hero::Renderer::setup();
-}
-
-@end
-
-@implementation Renderer (Cpp)
-
--(hero::Renderer*) cpp {
-    return static_cast<hero::Renderer*>(self.cppHandle);
 }
 
 @end

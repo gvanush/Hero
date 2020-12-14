@@ -10,20 +10,18 @@
 #include "Component.hpp"
 #include "GeometryUtils_Common.h"
 
-#include "apple/metal/Metal.h"
-
 #include <simd/simd.h>
 
 namespace hero {
 
 class SceneObject;
-class RenderingContext;
 class Transform;
 
 class ImageRenderer: public Component {
 public:
     
     ImageRenderer(SceneObject& sceneObject);
+    ~ImageRenderer();
     
     inline void setSize(const simd::float2& size);
     inline const simd::float2& size() const;
@@ -31,10 +29,10 @@ public:
     inline void setColor(const simd::float4& color);
     inline const simd::float4& color() const;
     
-    void setTexture(const apple::metal::TextureRef& texture);
-    inline const apple::metal::TextureRef& texture() const;
+    void setTexture(void* texture);
+    inline void* texture() const;
     
-    void render(RenderingContext& renderingContext);
+    void render(void* renderingContext);
     
     bool raycast(const Ray& ray, float& normDistance);
     
@@ -48,7 +46,8 @@ public:
 private:
     simd::float4 _color;
     simd::float2 _size;
-    apple::metal::TextureRef _texture;
+    // TODO: 
+    void* _texture;
     Transform* _transform = nullptr;
 };
 
@@ -68,7 +67,7 @@ const simd::float4& ImageRenderer::color() const {
     return _color;
 }
 
-const apple::metal::TextureRef& ImageRenderer::texture() const {
+void* ImageRenderer::texture() const {
     return _texture;
 }
 

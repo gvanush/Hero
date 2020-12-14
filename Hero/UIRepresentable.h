@@ -6,7 +6,7 @@
 //
 
 #import "CppWrapper.h"
-#import "Renderer_Common.h"
+#import "RendererFlag.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -14,7 +14,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         try! ProjectDAO.shared.setup()
         
-        Renderer.setup()
+        RenderingContext.setup()
         
         return true
     }

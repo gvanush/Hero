@@ -2,8 +2,6 @@
 
 #include <simd/simd.h>
 
-namespace hero {
-
 enum VertexInputIndex: unsigned int {
     kVertexInputIndexVertices     = 0,
     kVertexInputIndexViewportSize = 1,
@@ -18,14 +16,12 @@ enum FragmentInputIndex: unsigned int {
 };
 
 struct ImageVertex {
-    simd::float2 position;
-    simd::float2 texCoord;
+    simd_float2 position;
+    simd_float2 texCoord;
 };
 
-struct Uniforms {
-    simd::float4x4 projectionViewMatrix;
-    simd::float4x4 projectionViewModelMatrix;
-    simd::float2 viewportSize;
-};
-
-}
+typedef struct {
+    simd_float4x4 projectionViewMatrix;
+    simd_float4x4 projectionViewModelMatrix;
+    simd_float2 viewportSize;
+} Uniforms;

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Renderer_Common.h"
+#include "RendererFlag.h"
 
 #include <limits>
 

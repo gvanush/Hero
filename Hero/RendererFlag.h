@@ -1,5 +1,5 @@
 //
-//  Renderer_Common.h
+//  RendererFlag.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 11/26/20.

@@ -6,8 +6,6 @@
 //  Copyright © 2020 Vanush Grigoryan. All rights reserved.
 //
 
-#import "CppWrapper.h"
-
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 
@@ -15,31 +13,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RenderingContext : CppWrapper
+@interface RenderingContext: NSObject
 
--(instancetype) init;
--(instancetype) initWithOwnedCpp: (CppHandle)cpp deleter:(CppHandleDeleter)deleter NS_UNAVAILABLE;
--(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_UNAVAILABLE;
-
+@property (nonatomic) simd_float4x4 projectionViewMatrix;
 @property (nonatomic) simd_float2 viewportSize;
 @property (nonatomic, strong) MTLRenderPassDescriptor* renderPassDescriptor;
+@property (nonatomic, strong) id<MTLCommandBuffer> commandBuffer;
+@property (nonatomic, strong) id<MTLRenderCommandEncoder> renderCommandEncoder;
 
 +(id<MTLDevice>) device;
++(id<MTLCommandQueue>) defaultCommandQueue;
++(id<MTLLibrary>) defaultLibrary;
++(id<MTLDepthStencilState>) defaultDepthStencilState;
+
 +(MTLPixelFormat) colorPixelFormat;
 +(MTLPixelFormat) depthPixelFormat;
 
-@end
-
-#ifdef __cplusplus
-
-namespace hero { class RenderingContext; }
-
-@interface RenderingContext (Cpp)
-
--(hero::RenderingContext*) cpp;
++(void) setup;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END
