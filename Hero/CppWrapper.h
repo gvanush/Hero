@@ -19,8 +19,9 @@ typedef void (^CppHandleDeleter) (CppHandle handle);
 #ifdef __cplusplus
 
 -(instancetype) initWithOwnedCpp: (CppHandle) cpp deleter: (CppHandleDeleter) deleter NS_DESIGNATED_INITIALIZER;
--(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_DESIGNATED_INITIALIZER;
 -(instancetype) init NS_UNAVAILABLE;
+
++(instancetype) wrapperWithUnownedCpp: (CppHandle) cpp;
 
 #endif
 

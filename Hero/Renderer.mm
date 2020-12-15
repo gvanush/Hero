@@ -28,30 +28,30 @@
 
 @implementation Renderer
 
-static RendererFlag __allRendererFlags = 0;
+constexpr std::size_t kLimit = sizeof(RendererFlag) * CHAR_BIT;
+static __weak Renderer* __allRenderers[kLimit] {};
 
 -(instancetype) init {
     if (self = [super init]) {
-        _uiRepresentableToObservers = [NSMapTable weakToStrongObjectsMapTable];
-        _isUpdatingUI = false;
-        _flag = 0x1;
-        while (_flag) {
-            if(!(__allRendererFlags & _flag)) {
-                __allRendererFlags |= _flag;
+        _flag = 0x0;
+        for(std::size_t i = 0; i < kLimit; ++i) {
+            if (!__allRenderers[i]) {
+                __allRenderers[i] = self;
+                _flag = (0x1 << i);
                 break;
             }
-            _flag <<= 1;
         }
+        if (!_flag) {
+            return nil;
+        }
+        _uiRepresentableToObservers = [NSMapTable weakToStrongObjectsMapTable];
+        _isUpdatingUI = false;
     }
     return self;
 }
 
 +(instancetype __nullable) make {
     return [[Renderer alloc] init];
-}
-
--(void) dealloc {
-    __allRendererFlags &= ~_flag;
 }
 
 #pragma mark - UI update
@@ -72,7 +72,7 @@ static RendererFlag __allRendererFlags = 0;
     NSPointerArray* observers = [_uiRepresentableToObservers objectForKey: uiRepresentable];
     NSUInteger index = [observers indexOfObjectPassingTest:^BOOL(id  _Nonnull object) {
         // Checking for 'nil' is needed becasue if the method is called
-        // from the destructor of observer it is alread 'nil' in observers array
+        // from the destructor of observer it is already 'nil' in observers array
         return object == observer || object == nil;
     }];
     if(index != NSNotFound) {
@@ -87,14 +87,11 @@ static RendererFlag __allRendererFlags = 0;
 }
 
 +(void) removeAllObserversFor: (UIRepresentable*) uiRepresentable {
-    // TODO:
-    /*
-    for(auto renderer: hero::Renderer::allRenderers()) {
+    for(auto renderer: __allRenderers) {
         if (renderer) {
-            [renderer->objC<Renderer*>() removeAllObserversFor: uiRepresentable];
+            [renderer removeAllObserversFor: uiRepresentable];
         }
     }
-     */
 }
 
 -(void) render: (Scene*) scene context: (RenderingContext*) context {

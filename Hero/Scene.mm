@@ -26,15 +26,15 @@
 }
 
 -(SceneObject*) makeObject {
-    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->makeObject()];
+    return [SceneObject wrapperWithUnownedCpp: self.cpp->makeObject()];
 }
 
 -(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
-    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->makeLine(point1, point2, thickness, color)];
+    return [SceneObject wrapperWithUnownedCpp: self.cpp->makeLine(point1, point2, thickness, color)];
 }
 
 -(SceneObject*) makeImage {
-    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->makeImage()];
+    return [SceneObject wrapperWithUnownedCpp: self.cpp->makeImage()];
 }
 
 -(void) removeObject: (SceneObject*) object {
@@ -43,7 +43,7 @@
 
 -(SceneObject* _Nullable) rayCast: (Ray) ray {
     if(auto sceneObject = self.cpp->raycast(ray)) {
-        return [[SceneObject alloc] initWithUnownedCpp: sceneObject];
+        return [SceneObject wrapperWithUnownedCpp: sceneObject];
     }
     return nil;
 }
@@ -57,7 +57,7 @@
 }
 
 -(SceneObject *)viewCamera {
-    return [[SceneObject alloc] initWithUnownedCpp: self.cpp->viewCamera()];
+    return [SceneObject wrapperWithUnownedCpp: self.cpp->viewCamera()];
 }
 
 -(void)setSelectedObject:(SceneObject *)selectedObject {
@@ -66,7 +66,7 @@
 
 -(SceneObject* _Nullable) selectedObject {
     if (auto selected = self.cpp->selectedObject(); selected) {
-        return [[SceneObject alloc] initWithUnownedCpp: selected];
+        return [SceneObject wrapperWithUnownedCpp: selected];
     }
     return nil;
 }

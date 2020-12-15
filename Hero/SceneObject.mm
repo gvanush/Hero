@@ -19,15 +19,15 @@
 @implementation SceneObject
 
 -(Transform *)transform {
-    return [[Transform alloc] initWithUnownedCpp: self.cpp->get<hero::Transform>()];
+    return [Transform wrapperWithUnownedCpp: self.cpp->get<hero::Transform>()];
 }
 
 -(Camera *)camera {
-    return [[Camera alloc] initWithUnownedCpp: self.cpp->get<hero::Camera>()];
+    return [Camera wrapperWithUnownedCpp: self.cpp->get<hero::Camera>()];
 }
 
 -(ImageRenderer *)imageRenderer {
-    return [[ImageRenderer alloc] initWithUnownedCpp: self.cpp->get<hero::ImageRenderer>()];
+    return [ImageRenderer wrapperWithUnownedCpp: self.cpp->get<hero::ImageRenderer>()];
 }
 
 -(void)setName:(NSString *)name {

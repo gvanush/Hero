@@ -26,7 +26,7 @@ class Component {
 public:
     
     Component(SceneObject& sceneObject);
-    virtual ~Component() {}
+    virtual ~Component();
     
     inline bool isRemoved() const;
     inline bool isActive() const;

@@ -19,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Scene: UIRepresentable
 
 -(instancetype) init;
--(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_UNAVAILABLE;
 
 -(SceneObject*) makeObject;
 -(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color NS_SWIFT_NAME(makeLine(point1:point2:thickness:color:));

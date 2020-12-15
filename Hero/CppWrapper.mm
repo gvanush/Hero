@@ -6,9 +6,12 @@
 //
 
 #import "CppWrapper.h"
+#import "UnownedCppWrapperRegistry.h"
 
 @interface CppWrapper ()
     
+-(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_DESIGNATED_INITIALIZER;
+
 @property (nonatomic, readwrite) CppHandleDeleter deleter;
 
 @end
@@ -34,6 +37,15 @@
         _cppHandle = cpp;
     }
     return self;
+}
+
++(instancetype) wrapperWithUnownedCpp: (CppHandle) cpp {
+    CppWrapper* wrapper = hero::UnownedCppWrapperRegistry::shared().getWrapperFor(cpp);
+    if (!wrapper) {
+        wrapper = [[self alloc] initWithUnownedCpp: cpp];
+        hero::UnownedCppWrapperRegistry::shared().addWrapper(wrapper);
+    }
+    return wrapper;
 }
 
 -(void)dealloc {

@@ -6,12 +6,17 @@
 //
 
 #include "Component.hpp"
+#include "UnownedCppWrapperRegistry.h"
 
 namespace hero {
 
 // MARK: Component definition
 Component::Component(SceneObject& sceneObject)
 : _sceneObject {sceneObject} {
+}
+
+Component::~Component() {
+    UnownedCppWrapperRegistry::shared().removeWrapperFor(this);
 }
 
 void Component::enter() {

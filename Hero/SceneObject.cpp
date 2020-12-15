@@ -9,6 +9,7 @@
 #include "Transform.hpp"
 #include "Camera.hpp"
 #include "Math.hpp"
+#include "UnownedCppWrapperRegistry.h"
 
 namespace hero {
 
@@ -21,6 +22,7 @@ SceneObject::SceneObject(Scene& scene)
 
 SceneObject::~SceneObject() {
     _compositeComponent.exit();
+    UnownedCppWrapperRegistry::shared().removeWrapperFor(this);
 }
 
 }

@@ -62,6 +62,7 @@
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
 		B7DD54592501489600163947 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54582501489600163947 /* Project.swift */; };
 		B7DD54752502657E00163947 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54742502657E00163947 /* TestView.swift */; };
+		B7FA59882588A828003854CE /* UnownedCppWrapperRegistry.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */; };
 		B7FE5B9224F645A4009DAE53 /* ProjectItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FE5B9124F645A4009DAE53 /* ProjectItem.swift */; };
 /* End PBXBuildFile section */
 
@@ -161,6 +162,8 @@
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		B7DD54582501489600163947 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		B7DD54742502657E00163947 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = UnownedCppWrapperRegistry.mm; sourceTree = "<group>"; };
+		B7FA59872588A828003854CE /* UnownedCppWrapperRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnownedCppWrapperRegistry.h; sourceTree = "<group>"; };
 		B7FE5B9124F645A4009DAE53 /* ProjectItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -394,6 +397,8 @@
 				B7BA37812581294800118E6A /* ComponentRegistry.hpp */,
 				B7BA37A22585351800118E6A /* RemovedComponentRegistry.cpp */,
 				B7BA37A32585351800118E6A /* RemovedComponentRegistry.hpp */,
+				B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */,
+				B7FA59872588A828003854CE /* UnownedCppWrapperRegistry.h */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -535,6 +540,7 @@
 				B7DD54592501489600163947 /* Project.swift in Sources */,
 				B7872CFE2504340A00BD403D /* Common.swift in Sources */,
 				B7847AE324D4625200026607 /* ImageRenderer.mm in Sources */,
+				B7FA59882588A828003854CE /* UnownedCppWrapperRegistry.mm in Sources */,
 				B74ECB3C253C7FA800C0301E /* LineRenderer.mm in Sources */,
 				B7787863252C51980097F941 /* SIMD+Extensions.swift in Sources */,
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
