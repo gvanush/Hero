@@ -60,11 +60,12 @@ public:
     template <typename... Args>
     CT* createCompoent(SceneObject& sceneObject, Args&&... args);
     
-    void cleanRemovedComponents(const Scene& scene);
+    void cleanRemovedComponents(const Scene* scene);
+    void cleanComponents(const Scene* scene);
     
-    void update(const Scene& scene, void* renderingContext);
+    void update(const Scene* scene, void* renderingContext);
     
-    CT* raycast(const Scene& scene, const Ray& ray);
+    CT* raycast(const Scene* scene, const Ray& ray);
     
     static ComponentRegistryImpl& shared() {
         static ComponentRegistryImpl obj;
@@ -96,8 +97,8 @@ CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::createCompoent(Scene
 }
 
 template <typename CT>
-void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedComponents(const Scene& scene) {
-    auto it = _components.find(&scene);
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedComponents(const Scene* scene) {
+    auto it = _components.find(scene);
     if (it == _components.end()) {
         return;
     }
@@ -111,9 +112,18 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedCompone
 }
 
 template <typename CT>
-void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene& scene, void* renderingContext) {
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanComponents(const Scene* scene) {
+    auto it = _components.find(scene);
+    if (it == _components.end()) {
+        return;
+    }
+    _components.erase(it);
+}
+
+template <typename CT>
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene* scene, void* renderingContext) {
     
-    auto it = _components.find(&scene);
+    auto it = _components.find(scene);
     if (it == _components.end()) {
         return;
     }
@@ -127,9 +137,9 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene&
 }
 
 template <typename CT>
-CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Scene& scene, const Ray& ray) {
+CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Scene* scene, const Ray& ray) {
     
-    auto it = _components.find(&scene);
+    auto it = _components.find(scene);
     if (it == _components.end()) {
         return nullptr;
     }

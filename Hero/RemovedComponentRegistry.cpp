@@ -20,8 +20,8 @@ void RemovedComponentRegistry::addComponent(Component* component) {
     _components[&scene].emplace_back(scene.stepNumber(), component);
 }
 
-void RemovedComponentRegistry::destroyComponents(const Scene& scene, StepNumber stepNumber) {
-    auto it = _components.find(&scene);
+void RemovedComponentRegistry::destroyComponents(const Scene* scene, StepNumber stepNumber) {
+    auto it = _components.find(scene);
     if (it == _components.end()) {
         return;
     }
@@ -36,14 +36,15 @@ void RemovedComponentRegistry::destroyComponents(const Scene& scene, StepNumber 
     sceneComponents.erase(rit, sceneComponents.end());
 }
 
-void RemovedComponentRegistry::destroyComponents(const Scene& scene) {
-    auto it = _components.find(&scene);
+void RemovedComponentRegistry::destroyComponents(const Scene* scene) {
+    auto it = _components.find(scene);
     if (it == _components.end()) {
         return;
     }
     for(const auto& item: it->second) {
         delete item.second;
     }
+    _components.erase(it);
 }
 
 }

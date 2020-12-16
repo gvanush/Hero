@@ -123,7 +123,8 @@ struct Inspector: View {
             .padding(20)
             .contentShape(Rectangle())
             .onTapGesture {
-                
+                // TODO: temporary testing for object removal
+                graphicsViewModel.scene.remove(graphicsViewModel.scene.selectedObject!)
             }
     }
     

@@ -33,8 +33,14 @@ Scene::~Scene() {
         delete object;
     }
     
+    // Clean renderer registry
+    hero::ComponentRegistry<hero::LineRenderer>::shared().cleanComponents(this);
+    hero::ComponentRegistry<hero::ImageRenderer>::shared().cleanComponents(this);
+    
     // Destroy all components
-    RemovedComponentRegistry::shared().destroyComponents(*this);
+    RemovedComponentRegistry::shared().destroyComponents(this);
+    
+    _viewCamera = nullptr;
 }
 
 void Scene::setTurnedOn(bool turnedOn) {
@@ -88,6 +94,10 @@ void Scene::removeObject(SceneObject* object) {
     assert(&object->scene() == this);
     assert(_objectsUnlocked);
     
+    if(_selectedObject == object) {
+        setSelectedObject(nullptr);
+    }
+    
     if (_turnedOn) {
         object->stop();
     }
@@ -97,7 +107,7 @@ void Scene::removeObject(SceneObject* object) {
 
 SceneObject* Scene::raycast(const Ray& ray) const {
     assert(_turnedOn);
-    if (auto component = ComponentRegistry<ImageRenderer>::shared().raycast(*this, ray); component) {
+    if (auto component = ComponentRegistry<ImageRenderer>::shared().raycast(this, ray); component) {
         return &component->sceneObject();
     }
     return nullptr;

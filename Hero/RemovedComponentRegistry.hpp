@@ -22,8 +22,8 @@ public:
     
     void addComponent(Component* component);
     
-    void destroyComponents(const Scene& scene, StepNumber stepNumber);
-    void destroyComponents(const Scene& scene);
+    void destroyComponents(const Scene* scene, StepNumber stepNumber);
+    void destroyComponents(const Scene* scene);
     
     static RemovedComponentRegistry& shared() {
         static RemovedComponentRegistry obj;
