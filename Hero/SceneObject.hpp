@@ -19,7 +19,6 @@ class Scene;
 class SceneObject {
 public:
     
-    SceneObject(Scene& scene);
     ~SceneObject();
     
     template <typename CT, typename... Args>
@@ -39,6 +38,8 @@ public:
     friend class Scene;
     
 private:
+    
+    SceneObject(Scene& scene);
     
     void start();
     void stop();

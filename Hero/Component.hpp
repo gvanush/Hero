@@ -27,7 +27,6 @@ class CompositeComponent;
 class Component {
 public:
     
-    Component(SceneObject& sceneObject);
     virtual ~Component();
     
     inline bool isRemoved() const;
@@ -36,6 +35,10 @@ public:
     Scene& scene() const;
     
 protected:
+    Component(SceneObject& sceneObject);
+    Component(const Component&) = delete;
+    Component& operator=(const Component&) = delete;
+    
     template <typename CT>
     std::enable_if_t<isConcreteComponent<CT>, CT*> get() const;
     
@@ -52,6 +55,9 @@ private:
     
     friend class CompositeComponent;
     friend class SceneObject;
+    
+    template<typename CT, ComponentCategory CC>
+    friend class _internal::ComponentRegistryImpl;
     
     SceneObject& _sceneObject;
     CompositeComponent* _parent = nullptr;
