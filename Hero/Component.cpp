@@ -44,7 +44,6 @@ void Component::notifyRemovedComponent(ComponentTypeInfo typeInfo, Component* co
 // MARK: CompositeComponent definition
 CompositeComponent::~CompositeComponent() {
     for(const auto& item: _children) {
-        // TODO: TypeID based
         const auto component = item.second;
         component->_state = ComponentState::removed;
         if (item.first.isComposite()) {
