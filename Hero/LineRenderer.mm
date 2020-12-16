@@ -76,8 +76,8 @@ void LineRenderer::onStart() {
     _transform = get<hero::Transform>();
 }
 
-void LineRenderer::onComponentWillRemove([[maybe_unused]] TypeId typeId, Component*) {
-    assert(typeIdOf<Transform> != typeId);
+void LineRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typeInfo, Component*) {
+    assert(ComponentTypeInfo::get<Transform>() != typeInfo);
 }
 
 }

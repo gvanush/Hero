@@ -37,7 +37,7 @@ public:
     bool raycast(const Ray& ray, float& normDistance);
     
     void onStart() override;
-    void onComponentWillRemove(TypeId typeId, Component*) override;
+    void onComponentWillRemove(ComponentTypeInfo typeInfo, Component*) override;
     
     static void setup();
     

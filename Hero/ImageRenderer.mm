@@ -122,8 +122,8 @@ void ImageRenderer::onStart() {
     _transform = get<Transform>();
 }
 
-void ImageRenderer::onComponentWillRemove([[maybe_unused]] TypeId typeId, Component*) {
-    assert(typeIdOf<Transform> != typeId);
+void ImageRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typeInfo, Component*) {
+    assert(ComponentTypeInfo::get<Transform>() != typeInfo);
 }
 
 }

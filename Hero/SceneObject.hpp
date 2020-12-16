@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Component.hpp"
-#include "TypeId.hpp"
 
 #include <unordered_map>
 #include <string>

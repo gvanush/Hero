@@ -63,6 +63,7 @@
 		B7DD54592501489600163947 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54582501489600163947 /* Project.swift */; };
 		B7DD54752502657E00163947 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54742502657E00163947 /* TestView.swift */; };
 		B7FA59882588A828003854CE /* UnownedCppWrapperRegistry.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */; };
+		B7FA598D258A444E003854CE /* ComponentTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7FA598B258A444E003854CE /* ComponentTypeInfo.cpp */; };
 		B7FE5B9224F645A4009DAE53 /* ProjectItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FE5B9124F645A4009DAE53 /* ProjectItem.swift */; };
 /* End PBXBuildFile section */
 
@@ -149,7 +150,6 @@
 		B7BA37812581294800118E6A /* ComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentRegistry.hpp; sourceTree = "<group>"; };
 		B7BA378725812B9500118E6A /* Transform.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
 		B7BA378825812B9500118E6A /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
-		B7BA378C25814F0800118E6A /* TypeId.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TypeId.hpp; sourceTree = "<group>"; };
 		B7BA3794258376CB00118E6A /* Component.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
 		B7BA3795258376CB00118E6A /* Component.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
 		B7BA379C2583B44A00118E6A /* GraphicsCoreUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GraphicsCoreUtils.hpp; sourceTree = "<group>"; };
@@ -164,6 +164,8 @@
 		B7DD54742502657E00163947 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = UnownedCppWrapperRegistry.mm; sourceTree = "<group>"; };
 		B7FA59872588A828003854CE /* UnownedCppWrapperRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnownedCppWrapperRegistry.h; sourceTree = "<group>"; };
+		B7FA598B258A444E003854CE /* ComponentTypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentTypeInfo.cpp; sourceTree = "<group>"; };
+		B7FA598C258A444E003854CE /* ComponentTypeInfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComponentTypeInfo.hpp; sourceTree = "<group>"; };
 		B7FE5B9124F645A4009DAE53 /* ProjectItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -399,6 +401,8 @@
 				B7BA37A32585351800118E6A /* RemovedComponentRegistry.hpp */,
 				B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */,
 				B7FA59872588A828003854CE /* UnownedCppWrapperRegistry.h */,
+				B7FA598B258A444E003854CE /* ComponentTypeInfo.cpp */,
+				B7FA598C258A444E003854CE /* ComponentTypeInfo.hpp */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -454,7 +458,6 @@
 				B7872CFD2504340A00BD403D /* Common.swift */,
 				B70CFB8C2545EE2400E8E30A /* Math.swift */,
 				B7DD545024FC197400163947 /* ViewModifiers.swift */,
-				B7BA378C25814F0800118E6A /* TypeId.hpp */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
 				B786A8CD24D0AF4800F6EE83 /* ColorSelector.swift in Sources */,
 				B7BA37822581294800118E6A /* Transform.cpp in Sources */,
+				B7FA598D258A444E003854CE /* ComponentTypeInfo.cpp in Sources */,
 				B7B30352256589A50060DFC4 /* SceneNavigationController.swift in Sources */,
 				B786A8D324D146DB00F6EE83 /* Scene.cpp in Sources */,
 				B723BB1F250DD229007C989E /* Settings.swift in Sources */,

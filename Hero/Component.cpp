@@ -33,12 +33,12 @@ void Component::stop() {
     onStop();
 }
 
-void Component::notifyNewComponent(TypeId typeId, Component* component) {
-    onComponentDidAdd(typeId, component);
+void Component::notifyNewComponent(ComponentTypeInfo typeInfo, Component* component) {
+    onComponentDidAdd(typeInfo, component);
 }
 
-void Component::notifyRemovedComponent(TypeId typeId, Component* component) {
-    onComponentWillRemove(typeId, component);
+void Component::notifyRemovedComponent(ComponentTypeInfo typeInfo, Component* component) {
+    onComponentWillRemove(typeInfo, component);
 }
 
 // MARK: CompositeComponent definition
@@ -46,11 +46,11 @@ CompositeComponent::~CompositeComponent() {
     for(const auto& item: _children) {
         // TODO: TypeID based
         const auto component = item.second;
-        if (component->isLeaf()) {
-            component->_state = ComponentState::removed;
-            RemovedComponentRegistry::shared().addComponent(component);
-        } else {
+        component->_state = ComponentState::removed;
+        if (item.first.isComposite()) {
             delete component;
+        } else {
+            RemovedComponentRegistry::shared().addComponent(component);
         }
     }
 }
@@ -75,14 +75,14 @@ void CompositeComponent::stop() {
     _childrenUnlocked = true;
 }
 
-void CompositeComponent::processNewComponent(TypeId typeId, Component* component) {
+void CompositeComponent::processNewComponent(ComponentTypeInfo typeInfo, Component* component) {
     if (scene().isTurnedOn()) {
         component->start();
-        notifyNewComponent(typeId, component);
+        notifyNewComponent(typeInfo, component);
     }
 }
 
-void CompositeComponent::notifyNewComponent(TypeId typeId, Component* component) {
+void CompositeComponent::notifyNewComponent(ComponentTypeInfo typeId, Component* component) {
     
     if (component->_parent != this) {
         Component::notifyNewComponent(typeId, component);
@@ -98,23 +98,23 @@ void CompositeComponent::notifyNewComponent(TypeId typeId, Component* component)
     }
 }
 
-void CompositeComponent::processRemovedComponent(TypeId typeId, Component* component) {
+void CompositeComponent::processRemovedComponent(ComponentTypeInfo typeInfo, Component* component) {
     if (scene().isTurnedOn()) {
-        notifyRemovedComponent(typeId, component);
+        notifyRemovedComponent(typeInfo, component);
         component->stop();
     }
 }
 
-void CompositeComponent::notifyRemovedComponent(TypeId typeId, Component* component) {
+void CompositeComponent::notifyRemovedComponent(ComponentTypeInfo typeInfo, Component* component) {
     if (component->_parent != this) {
-        Component::notifyRemovedComponent(typeId, component);
-        if (_children.find(typeId) != _children.end()) {
+        Component::notifyRemovedComponent(typeInfo, component);
+        if (_children.find(typeInfo) != _children.end()) {
             return;
         }
     }
     
     for(const auto& item: _children) {
-        item.second->notifyRemovedComponent(typeId, component);
+        item.second->notifyRemovedComponent(typeInfo, component);
     }
 }
 

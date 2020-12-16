@@ -52,7 +52,7 @@ public:
     void lookAt(const simd::float3& point, const simd::float3& up = kUp);
     
     void onStart() override;
-    void onComponentWillRemove(TypeId typeId, Component *component) override;
+    void onComponentWillRemove(ComponentTypeInfo typeInfo, Component *component) override;
     
     static constexpr auto category = ComponentCategory::basic;
     

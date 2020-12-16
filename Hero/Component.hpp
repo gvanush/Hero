@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "TypeId.hpp"
+#include "ComponentTypeInfo.hpp"
 #include "GraphicsCoreUtils.hpp"
 #include "ComponentRegistry.hpp"
 #include "RemovedComponentRegistry.hpp"
@@ -41,15 +41,14 @@ protected:
     
     virtual void onStart() {};
     virtual void onStop() {};
-    virtual void onComponentDidAdd(TypeId typeId, Component* component) {};
-    virtual void onComponentWillRemove(TypeId typeId, Component* component) {};
+    virtual void onComponentDidAdd(ComponentTypeInfo typeInfo, Component* component) {};
+    virtual void onComponentWillRemove(ComponentTypeInfo typeInfo, Component* component) {};
     
 private:
     virtual void start();
     virtual void stop();
-    virtual void notifyNewComponent(TypeId typeId, Component* component);
-    virtual void notifyRemovedComponent(TypeId typeId, Component* component);
-    virtual bool isLeaf() const { return true; }
+    virtual void notifyNewComponent(ComponentTypeInfo typeInfo, Component* component);
+    virtual void notifyRemovedComponent(ComponentTypeInfo typeInfo, Component* component);
     
     friend class CompositeComponent;
     friend class SceneObject;
@@ -82,13 +81,12 @@ protected:
 private:
     void start() override;
     void stop() override;
-    void processNewComponent(TypeId typeId, Component* component);
-    void notifyNewComponent(TypeId typeId, Component* component) override;
-    void processRemovedComponent(TypeId typeId, Component* component);
-    void notifyRemovedComponent(TypeId typeId, Component* component) override;
-    bool isLeaf() const final { return false; }
+    void processNewComponent(ComponentTypeInfo typeInfo, Component* component);
+    void notifyNewComponent(ComponentTypeInfo typeInfo, Component* component) override;
+    void processRemovedComponent(ComponentTypeInfo typeInfo, Component* component);
+    void notifyRemovedComponent(ComponentTypeInfo typeInfo, Component* component) override;
     
-    std::unordered_map<TypeId, Component*> _children;
+    std::unordered_map<ComponentTypeInfo, Component*> _children;
     bool _childrenUnlocked = true;
 };
 
@@ -122,7 +120,10 @@ template <typename CT, typename... Args>
 std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::setChild(Args&&... args) {
     assert(!isRemoved());
     assert(_childrenUnlocked);
-    assert(_children.find(typeIdOf<CT>) == _children.end());
+    
+    auto typeInfo = ComponentTypeInfo::get<CT>();
+    
+    assert(_children.find(typeInfo) == _children.end());
     
     CT* component;
     if constexpr (isCompositeComponent<CT>) {
@@ -132,9 +133,9 @@ std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::setChild(Args
     }
     
     component->_parent = this;
-    _children[typeIdOf<CT>] = component;
+    _children[typeInfo] = component;
 
-    processNewComponent(typeIdOf<CT>, component);
+    processNewComponent(typeInfo, component);
     
     return component;
 }
@@ -143,12 +144,15 @@ template <typename CT>
 std::enable_if_t<isConcreteComponent<CT>, void> CompositeComponent::removeChild() {
     assert(!isRemoved());
     assert(_childrenUnlocked);
-    auto it = _children.find(typeIdOf<CT>);
+    
+    auto typeInfo = ComponentTypeInfo::get<CT>();
+    
+    auto it = _children.find(typeInfo);
     if (it == _children.end()) {
         return;
     }
     auto component = it->second;
-    processRemovedComponent(typeIdOf<CT>, component);
+    processRemovedComponent(typeInfo, component);
     _children.erase(it);
     
     component->_state = ComponentState::removed;
@@ -161,7 +165,7 @@ std::enable_if_t<isConcreteComponent<CT>, void> CompositeComponent::removeChild(
 
 template <typename CT>
 std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::getChild() const {
-    auto it = _children.find(typeIdOf<CT>);
+    auto it = _children.find(ComponentTypeInfo::get<CT>());
     return it == _children.end() ? nullptr : static_cast<CT*>(it->second);
 }
 
