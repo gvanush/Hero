@@ -8,14 +8,15 @@
 #pragma once
 
 #include "GraphicsCoreUtils.hpp"
-#include "RemovedComponentRegistry.hpp"
 #include "GeometryUtils_Common.h"
 
+#include <unordered_map>
 #include <vector>
 
 namespace hero {
 
 class SceneObject;
+class Scene;
 
 namespace _internal {
 
@@ -26,8 +27,6 @@ public:
     
     template <typename... Args>
     CT* createCompoent(SceneObject& sceneObject, Args&&... args);
-    
-    void removeCompoent(CT* component);
     
     static ComponentRegistryImpl& shared() {
         static ComponentRegistryImpl obj;
@@ -47,11 +46,6 @@ CT* ComponentRegistryImpl<CT, CC>::createCompoent(SceneObject& sceneObject, Args
     return new CT {sceneObject, std::forward<Args>(args)...};
 }
 
-template <typename CT, ComponentCategory CC>
-void ComponentRegistryImpl<CT, CC>::removeCompoent(CT* component) {
-    RemovedComponentRegistry::shared().addComponent(component);
-}
-
 template <ComponentCategory C>
 class ComponentRegistryImpl<Component, C>;
 
@@ -66,13 +60,11 @@ public:
     template <typename... Args>
     CT* createCompoent(SceneObject& sceneObject, Args&&... args);
     
-    void removeCompoent(CT* component);
+    void cleanRemovedComponents(const Scene& scene);
     
-    void cleanRemovedComponents();
+    void update(const Scene& scene, void* renderingContext);
     
-    void update(void* renderingContext);
-    
-    CT* raycast(const Ray& ray);
+    CT* raycast(const Scene& scene, const Ray& ray);
     
     static ComponentRegistryImpl& shared() {
         static ComponentRegistryImpl obj;
@@ -85,7 +77,7 @@ private:
     ComponentRegistryImpl(const ComponentRegistryImpl&) = delete;
     ComponentRegistryImpl& operator=(const ComponentRegistryImpl&) = delete;
     
-    std::vector<CT*> _components;
+    std::unordered_map<const Scene*, std::vector<CT*>> _components;
     bool _unlocked = true;
 };
 
@@ -99,28 +91,35 @@ template <typename... Args>
 CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::createCompoent(SceneObject& sceneObject, Args&&... args) {
     assert(_unlocked);
     auto component = new CT {sceneObject, std::forward<Args>(args)...};
-    _components.push_back(component);
+    _components[&component->scene()].push_back(component);
     return component;
 }
 
 template <typename CT>
-void ComponentRegistryImpl<CT, ComponentCategory::renderer>::removeCompoent(CT* component) {
-    RemovedComponentRegistry::shared().addComponent(component);
-}
-
-template <typename CT>
-void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedComponents() {
-    auto rit = std::remove_if(_components.begin(), _components.end(), [] (const auto component) {
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedComponents(const Scene& scene) {
+    auto it = _components.find(&scene);
+    if (it == _components.end()) {
+        return;
+    }
+    
+    auto& sceneComponents = it->second;
+    
+    auto rit = std::remove_if(sceneComponents.begin(), sceneComponents.end(), [] (const auto component) {
         return component->isRemoved();
     });
-    _components.erase(rit, _components.end());
+    sceneComponents.erase(rit, sceneComponents.end());
 }
 
 template <typename CT>
-void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(void* renderingContext) {
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene& scene, void* renderingContext) {
     
+    auto it = _components.find(&scene);
+    if (it == _components.end()) {
+        return;
+    }
+
     _unlocked = false;
-    for(auto component: _components) {
+    for(auto component: it->second) {
         assert(component->isActive());
         component->render(renderingContext);
     }
@@ -128,11 +127,17 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(void* render
 }
 
 template <typename CT>
-CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Ray& ray) {
+CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Scene& scene, const Ray& ray) {
+    
+    auto it = _components.find(&scene);
+    if (it == _components.end()) {
+        return nullptr;
+    }
+    
     CT* result = nullptr;
     float minNormDistance = std::numeric_limits<float>::max();
     
-    for(auto component: _components) {
+    for(auto component: it->second) {
         float normDistance;
         if (component->isActive() && component->raycast(ray, normDistance)) {
             if (minNormDistance > normDistance) {

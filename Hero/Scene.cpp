@@ -25,10 +25,42 @@ Scene::Scene() {
 }
 
 Scene::~Scene() {
-    // This causes all components to exit and be removed
-    _objects.clear();
-    // TODO:
-//    RemovedComponentRegistry::destroyAllComponents(*this)
+    // Stop all components
+    setTurnedOn(false);
+    
+    // Delete all objects, this will cause all components to be removed
+    for(auto object: _objects) {
+        delete object;
+    }
+    
+    // Destroy all components
+    RemovedComponentRegistry::shared().destroyComponents(*this);
+}
+
+void Scene::setTurnedOn(bool turnedOn) {
+    if (_turnedOn == turnedOn) { return; }
+    _turnedOn = turnedOn;
+    
+    _objectsUnlocked = false;
+    if (turnedOn) {
+        for(const auto& object: _objects) {
+            object->start();
+        }
+    } else {
+        for(const auto& object: _objects) {
+            object->stop();
+        }
+    }
+    _objectsUnlocked = true;
+}
+
+SceneObject* Scene::makeObject() {
+    assert(_objectsUnlocked);
+    auto object = *_objects.emplace(new SceneObject {*this}).first;
+    if (_turnedOn) {
+        object->start();
+    }
+    return object;
 }
 
 SceneObject* Scene::makeLine(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color) {
@@ -42,7 +74,7 @@ SceneObject* Scene::makeImage() {
     auto sceneObject = makeObject();
     
     std::ostringstream oss;
-    oss << "Image ";
+    oss << u8"Image ";
     oss << (++_lastImageNumber % 1000);
     
     sceneObject->setName(oss.str());
@@ -51,14 +83,29 @@ SceneObject* Scene::makeImage() {
     return sceneObject;
 }
 
+void Scene::removeObject(SceneObject* object) {
+    assert(object);
+    assert(&object->scene() == this);
+    assert(_objectsUnlocked);
+    
+    if (_turnedOn) {
+        object->stop();
+    }
+    _objects.erase(object);
+    delete object;
+}
+
 SceneObject* Scene::raycast(const Ray& ray) const {
-    if (auto component = ComponentRegistry<ImageRenderer>::shared().raycast(ray); component) {
+    assert(_turnedOn);
+    if (auto component = ComponentRegistry<ImageRenderer>::shared().raycast(*this, ray); component) {
         return &component->sceneObject();
     }
     return nullptr;
 }
 
 void Scene::step(float /*dt*/) {
+    assert(_turnedOn);
+    
     // Update components
     //
     

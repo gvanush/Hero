@@ -48,6 +48,14 @@
     return nil;
 }
 
+-(void)setTurnedOn:(BOOL)turnedOn {
+    self.cpp->setTurnedOn(turnedOn);
+}
+
+-(BOOL)isTurnedOn {
+    return self.cpp->isTurnedOn();
+}
+
 -(void) setBgrColor: (simd_float4) bgrColor {
     self.cpp->setBgrColor(bgrColor);
 }

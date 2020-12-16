@@ -100,6 +100,9 @@ static __weak Renderer* __allRenderers[kLimit] {};
     // TODO: delta time
     scene.cpp->step(0.f);
     
+    hero::ComponentRegistry<hero::LineRenderer>::shared().cleanRemovedComponents(*scene.cpp);
+    
+    // Render
     id<MTLCommandBuffer> commandBuffer = [[RenderingContext defaultCommandQueue] commandBuffer];
     commandBuffer.label = @"CommandBuffer";
     
@@ -112,17 +115,16 @@ static __weak Renderer* __allRenderers[kLimit] {};
     context.renderCommandEncoder = commandEncoder;
     context.projectionViewMatrix = scene.cpp->viewCamera()->get<hero::Camera>()->projectionViewMatrix();
     
-    hero::ComponentRegistry<hero::LineRenderer>::shared().update((__bridge void* _Nonnull) context);
-    hero::ComponentRegistry<hero::ImageRenderer>::shared().update((__bridge void* _Nonnull) context);
+    hero::ComponentRegistry<hero::LineRenderer>::shared().update(*scene.cpp, (__bridge void* _Nonnull) context);
+    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(*scene.cpp, (__bridge void* _Nonnull) context);
     
     [commandEncoder endEncoding];
     
-    __weak Scene* weakScene = scene;
     [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (weakScene) {
-                hero::RemovedComponentRegistry::shared().destroyComponents(*weakScene.cpp, stepNumber);
-            }
+            // Destroying components removed during 'stepNumber' for the scene, additionally
+            // strongly capturing 'scene' so that as long as it is being rendered its components must be alive
+            hero::RemovedComponentRegistry::shared().destroyComponents(*scene.cpp, stepNumber);
         });
     }];
     

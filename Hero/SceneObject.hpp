@@ -37,7 +37,13 @@ public:
     
     inline Scene& scene() const;
     
+    friend class Scene;
+    
 private:
+    
+    void start();
+    void stop();
+    
     CompositeComponent _compositeComponent;
     std::string _name;
     Scene& _scene;
@@ -69,6 +75,14 @@ const std::string& SceneObject::name() const {
 
 Scene& SceneObject::scene() const {
     return _scene;
+}
+
+inline void SceneObject::start() {
+    _compositeComponent.start();
+}
+
+inline void SceneObject::stop() {
+    _compositeComponent.stop();
 }
 
 }

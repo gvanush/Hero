@@ -16,12 +16,10 @@ namespace hero {
 SceneObject::SceneObject(Scene& scene)
 : _compositeComponent {*this}
 , _scene {scene} {
-    // TODO:
-    _compositeComponent.enter();
 }
 
 SceneObject::~SceneObject() {
-    _compositeComponent.exit();
+    _compositeComponent._state = ComponentState::removed;
     UnownedCppWrapperRegistry::shared().removeWrapperFor(this);
 }
 

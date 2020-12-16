@@ -6,6 +6,8 @@
 //
 
 #include "Component.hpp"
+#include "SceneObject.hpp"
+#include "Scene.hpp"
 #include "UnownedCppWrapperRegistry.h"
 
 namespace hero {
@@ -19,43 +21,65 @@ Component::~Component() {
     UnownedCppWrapperRegistry::shared().removeWrapperFor(this);
 }
 
-void Component::enter() {
-    _state = ComponentState::active;
-    onEnter();
+Scene& Component::scene() const {
+    return _sceneObject.scene();
 }
 
-void Component::exit() {
-    onExit();
-    _state = ComponentState::removed;
+void Component::start() {
+    onStart();
+}
+
+void Component::stop() {
+    onStop();
 }
 
 void Component::notifyNewComponent(TypeId typeId, Component* component) {
-    onNewComponent(typeId, component);
+    onComponentDidAdd(typeId, component);
 }
 
-void Component::notifyRemoveComponent(TypeId typeId, Component* component) {
-    onRemoveComponent(typeId, component);
+void Component::notifyRemovedComponent(TypeId typeId, Component* component) {
+    onComponentWillRemove(typeId, component);
 }
 
 // MARK: CompositeComponent definition
-void CompositeComponent::enter() {
-    _childrenUnlocked = false;
+CompositeComponent::~CompositeComponent() {
     for(const auto& item: _children) {
-        item.second->enter();
+        // TODO: TypeID based
+        const auto component = item.second;
+        if (component->isLeaf()) {
+            component->_state = ComponentState::removed;
+            RemovedComponentRegistry::shared().addComponent(component);
+        } else {
+            delete component;
+        }
     }
-    _childrenUnlocked = true;
-    
-    Component::enter();
 }
 
-void CompositeComponent::exit() {
-    Component::exit();
+void CompositeComponent::start() {
+    _childrenUnlocked = false;
+    for(const auto& item: _children) {
+        item.second->start();
+    }
+    _childrenUnlocked = true;
+    
+    Component::start();
+}
+
+void CompositeComponent::stop() {
+    Component::stop();
     
     _childrenUnlocked = false;
     for(const auto& item: _children) {
-        item.second->exit();
+        item.second->stop();
     }
     _childrenUnlocked = true;
+}
+
+void CompositeComponent::processNewComponent(TypeId typeId, Component* component) {
+    if (scene().isTurnedOn()) {
+        component->start();
+        notifyNewComponent(typeId, component);
+    }
 }
 
 void CompositeComponent::notifyNewComponent(TypeId typeId, Component* component) {
@@ -74,16 +98,23 @@ void CompositeComponent::notifyNewComponent(TypeId typeId, Component* component)
     }
 }
 
-void CompositeComponent::notifyRemoveComponent(TypeId typeId, Component* component) {
+void CompositeComponent::processRemovedComponent(TypeId typeId, Component* component) {
+    if (scene().isTurnedOn()) {
+        notifyRemovedComponent(typeId, component);
+        component->stop();
+    }
+}
+
+void CompositeComponent::notifyRemovedComponent(TypeId typeId, Component* component) {
     if (component->_parent != this) {
-        Component::notifyRemoveComponent(typeId, component);
+        Component::notifyRemovedComponent(typeId, component);
         if (_children.find(typeId) != _children.end()) {
             return;
         }
     }
     
     for(const auto& item: _children) {
-        item.second->notifyRemoveComponent(typeId, component);
+        item.second->notifyRemovedComponent(typeId, component);
     }
 }
 

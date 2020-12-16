@@ -36,8 +36,8 @@ public:
     
     bool raycast(const Ray& ray, float& normDistance);
     
-    void onEnter() override;
-    void onRemoveComponent(TypeId typeId, Component*) override;
+    void onStart() override;
+    void onComponentWillRemove(TypeId typeId, Component*) override;
     
     static void setup();
     
@@ -46,7 +46,7 @@ public:
 private:
     simd::float4 _color;
     simd::float2 _size;
-    // TODO: 
+    // TODO:
     void* _texture;
     Transform* _transform = nullptr;
 };

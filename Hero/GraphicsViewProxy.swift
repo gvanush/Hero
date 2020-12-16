@@ -39,6 +39,14 @@ class GraphicsViewController: UIViewController, MTKViewDelegate, UIGestureRecogn
         setupGestures()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.scene.isTurnedOn = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        viewModel.scene.isTurnedOn = false
+    }
+    
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         updateViewportSize(SIMD2<Float>(x: Float(size.width), y: Float(size.height)))
     }

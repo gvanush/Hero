@@ -74,11 +74,11 @@ void Camera::lookAt(const simd::float3& point, const simd::float3& up) {
     _transform->orientToRotationMatrix(makeLookAtMatrix(_transform->position(), point, up));
 }
 
-void Camera::onEnter() {
+void Camera::onStart() {
     _transform = get<Transform>();
 }
 
-void Camera::onRemoveComponent([[maybe_unused]] TypeId typeId, Component*) {
+void Camera::onComponentWillRemove([[maybe_unused]] TypeId typeId, Component*) {
     assert(typeIdOf<Transform> != typeId);
 }
 

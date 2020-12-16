@@ -22,7 +22,8 @@ public:
     
     void addComponent(Component* component);
     
-    void destroyComponents(Scene& scene, StepNumber stepNumber);
+    void destroyComponents(const Scene& scene, StepNumber stepNumber);
+    void destroyComponents(const Scene& scene);
     
     static RemovedComponentRegistry& shared() {
         static RemovedComponentRegistry obj;
@@ -36,7 +37,7 @@ private:
     RemovedComponentRegistry(const RemovedComponentRegistry&) = delete;
     RemovedComponentRegistry& operator=(const RemovedComponentRegistry&) = delete;
     
-    std::unordered_map<StepNumber, std::vector<Component*>> _components;
+    std::unordered_map<const Scene*, std::vector<std::pair<StepNumber, Component*>>> _components;
 };
 
 }

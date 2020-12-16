@@ -10,6 +10,7 @@
 #include "TypeId.hpp"
 #include "GraphicsCoreUtils.hpp"
 #include "ComponentRegistry.hpp"
+#include "RemovedComponentRegistry.hpp"
 
 #include <unordered_map>
 #include <type_traits>
@@ -18,6 +19,7 @@
 namespace hero {
 
 class SceneObject;
+class Scene;
 class Component;
 class CompositeComponent;
 
@@ -31,33 +33,37 @@ public:
     inline bool isRemoved() const;
     inline bool isActive() const;
     inline SceneObject& sceneObject() const;
+    Scene& scene() const;
     
 protected:
     template <typename CT>
     std::enable_if_t<isConcreteComponent<CT>, CT*> get() const;
     
-    virtual void onEnter() {};
-    virtual void onExit() {};
-    virtual void onNewComponent(TypeId typeId, Component* component) {};
-    virtual void onRemoveComponent(TypeId typeId, Component* component) {};
-    
-    friend class CompositeComponent;
+    virtual void onStart() {};
+    virtual void onStop() {};
+    virtual void onComponentDidAdd(TypeId typeId, Component* component) {};
+    virtual void onComponentWillRemove(TypeId typeId, Component* component) {};
     
 private:
-    virtual void enter();
-    virtual void exit();
+    virtual void start();
+    virtual void stop();
     virtual void notifyNewComponent(TypeId typeId, Component* component);
-    virtual void notifyRemoveComponent(TypeId typeId, Component* component);
+    virtual void notifyRemovedComponent(TypeId typeId, Component* component);
+    virtual bool isLeaf() const { return true; }
+    
+    friend class CompositeComponent;
+    friend class SceneObject;
     
     SceneObject& _sceneObject;
     CompositeComponent* _parent = nullptr;
-    ComponentState _state = ComponentState::new_;
+    ComponentState _state = ComponentState::active;
 };
 
 // MARK: CompositeComponent declaration
 class CompositeComponent: public Component {
 public:
     using Component::Component;
+    ~CompositeComponent() override;
     
     friend class Component;
     friend class SceneObject;
@@ -74,10 +80,13 @@ protected:
     std::enable_if_t<isConcreteComponent<CT>, CT*> getChild() const;
     
 private:
-    void enter() override;
-    void exit() override;
+    void start() override;
+    void stop() override;
+    void processNewComponent(TypeId typeId, Component* component);
     void notifyNewComponent(TypeId typeId, Component* component) override;
-    void notifyRemoveComponent(TypeId typeId, Component* component) override;
+    void processRemovedComponent(TypeId typeId, Component* component);
+    void notifyRemovedComponent(TypeId typeId, Component* component) override;
+    bool isLeaf() const final { return false; }
     
     std::unordered_map<TypeId, Component*> _children;
     bool _childrenUnlocked = true;
@@ -115,13 +124,18 @@ std::enable_if_t<isConcreteComponent<CT>, CT*> CompositeComponent::setChild(Args
     assert(_childrenUnlocked);
     assert(_children.find(typeIdOf<CT>) == _children.end());
     
-    CT* component = ComponentRegistry<CT>::shared().createCompoent(_sceneObject, std::forward<Args>(args)...);
+    CT* component;
+    if constexpr (isCompositeComponent<CT>) {
+        component = new CT {_sceneObject, std::forward<Args>(args)...};
+    } else {
+        component = ComponentRegistry<CT>::shared().createCompoent(_sceneObject, std::forward<Args>(args)...);
+    }
+    
     component->_parent = this;
     _children[typeIdOf<CT>] = component;
-    if (isActive()) {
-        component->enter();
-        notifyNewComponent(typeIdOf<CT>, component);
-    }
+
+    processNewComponent(typeIdOf<CT>, component);
+    
     return component;
 }
 
@@ -134,15 +148,15 @@ std::enable_if_t<isConcreteComponent<CT>, void> CompositeComponent::removeChild(
         return;
     }
     auto component = it->second;
-    if (isActive()) {
-        notifyRemoveComponent(typeIdOf<CT>, component);
-        component->exit();
-    }
-    ComponentRegistry<CT>::shared().removeComponent(component);
-    if constexpr (CT::category == ComponentCategory::basic) {
-        delete component;
-    }
+    processRemovedComponent(typeIdOf<CT>, component);
     _children.erase(it);
+    
+    component->_state = ComponentState::removed;
+    if constexpr (isCompositeComponent<CT>) {
+        delete component;
+    } else {
+        RemovedComponentRegistry::shared().addComponent(component);
+    }
 }
 
 template <typename CT>

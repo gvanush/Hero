@@ -16,18 +16,34 @@ namespace hero {
 
 void RemovedComponentRegistry::addComponent(Component* component) {
     assert(component->isRemoved());
-    _components[component->sceneObject().scene().stepNumber()].push_back(component);
+    const auto& scene = component->sceneObject().scene();
+    _components[&scene].emplace_back(scene.stepNumber(), component);
 }
 
-void RemovedComponentRegistry::destroyComponents(Scene& scene, StepNumber stepNumber) {
-    auto it = _components.find(stepNumber);
+void RemovedComponentRegistry::destroyComponents(const Scene& scene, StepNumber stepNumber) {
+    auto it = _components.find(&scene);
     if (it == _components.end()) {
         return;
     }
-    for (auto component: it->second) {
-        delete component;
+    auto& sceneComponents = it->second;
+    auto rit = std::remove_if(sceneComponents.begin(), sceneComponents.end(), [stepNumber] (const auto& item) {
+        if (item.first == stepNumber) {
+            delete item.second;
+            return true;
+        }
+        return false;
+    });
+    sceneComponents.erase(rit, sceneComponents.end());
+}
+
+void RemovedComponentRegistry::destroyComponents(const Scene& scene) {
+    auto it = _components.find(&scene);
+    if (it == _components.end()) {
+        return;
     }
-    _components.erase(it);
+    for(const auto& item: it->second) {
+        delete item.second;
+    }
 }
 
 }

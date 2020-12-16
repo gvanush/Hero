@@ -118,11 +118,11 @@ bool ImageRenderer::raycast(const Ray& ray, float& normDistance) {
     return contains(intersectionPoint, aabr);
 }
 
-void ImageRenderer::onEnter() {
+void ImageRenderer::onStart() {
     _transform = get<Transform>();
 }
 
-void ImageRenderer::onRemoveComponent([[maybe_unused]] TypeId typeId, Component*) {
+void ImageRenderer::onComponentWillRemove([[maybe_unused]] TypeId typeId, Component*) {
     assert(typeIdOf<Transform> != typeId);
 }
 

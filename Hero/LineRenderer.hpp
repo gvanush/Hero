@@ -35,8 +35,8 @@ public:
     
     void render(void* renderingContext);
     
-    void onEnter() override;
-    void onRemoveComponent(TypeId typeId, Component*) override;
+    void onStart() override;
+    void onComponentWillRemove(TypeId typeId, Component*) override;
     
     static void setup();
     

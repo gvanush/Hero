@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(SceneObject* _Nullable) rayCast: (Ray) ray;
 
+@property (nonatomic, readwrite, getter=isTurnedOn) BOOL turnedOn;
 @property (nonatomic, readwrite) simd_float4 bgrColor;
 @property (nonatomic, readonly) SceneObject* viewCamera;
 @property (nonatomic, readwrite) SceneObject* _Nullable selectedObject;

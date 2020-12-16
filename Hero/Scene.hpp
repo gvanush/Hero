@@ -14,7 +14,7 @@
 
 #include "apple/metal/Metal.h"
 
-#include <vector>
+#include <unordered_set>
 #include <simd/simd.h>
 
 namespace hero {
@@ -27,11 +27,14 @@ public:
     Scene();
     ~Scene();
     
-    inline SceneObject* makeObject();
+    void setTurnedOn(bool turnedOn);
+    bool isTurnedOn() const;
+    
+    SceneObject* makeObject();
     SceneObject* makeLine(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color);
     SceneObject* makeImage();
     
-    inline void removeObject(SceneObject* object);
+    void removeObject(SceneObject* object);
     
     inline void setBgrColor(const simd::float4& color);
     inline const simd::float4& bgrColor() const;
@@ -51,12 +54,14 @@ public:
     
 private:
     
-    std::vector<std::unique_ptr<SceneObject>> _objects;
+    std::unordered_set<SceneObject*> _objects;
     SceneObject* _viewCamera;
     simd::float4 _bgrColor = {0.f, 0.f, 0.f, 1.f};
     SceneObject* _selectedObject = nullptr;
     StepNumber _stepNumber = 0u;
     std::uint8_t _lastImageNumber = 0;
+    bool _turnedOn = false;
+    bool _objectsUnlocked = true;
 };
 
 void Scene::setBgrColor(const simd::float4& color) {
@@ -84,21 +89,8 @@ StepNumber Scene::stepNumber() const {
     return _stepNumber;
 }
 
-SceneObject* Scene::makeObject() {
-    return _objects.emplace_back(new SceneObject {*this}).get();
-}
-
-void Scene::removeObject(SceneObject* object) {
-    assert(object);
-    assert(&object->scene() == this);
-    
-    auto it = std::find_if(_objects.begin(), _objects.end(), [object] (const auto& item) {
-        return item.get() == object;
-    });
-    if (it == _objects.end()) {
-        return;
-    }
-    _objects.erase(it);
+inline bool Scene::isTurnedOn() const {
+    return _turnedOn;
 }
 
 }

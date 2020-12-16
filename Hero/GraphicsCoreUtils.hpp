@@ -15,10 +15,12 @@ class Component;
 class CompositeComponent;
 
 template <typename CT>
-constexpr bool isConcreteComponent = std::is_base_of_v<Component, CT> && !std::is_same_v<CompositeComponent, CT>;
+constexpr bool isConcreteComponent = std::is_base_of_v<Component, CT> && !std::is_same_v<Component, CT>;
+
+template <typename CT>
+constexpr bool isCompositeComponent = std::is_base_of_v<CompositeComponent, CT>;
 
 enum class ComponentState {
-    new_,
     active,
     removed
 };
