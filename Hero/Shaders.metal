@@ -34,11 +34,20 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
     float2 normal (-dir.y, dir.x);
     normal *= (0.5f * thickness / min(uniforms.viewportSize.x, uniforms.viewportSize.y));
     normal.x /= aspect;
-    
+        
     BasicRasterizerData out;
-//    const auto side = (2 * (static_cast<int>(vertexID) / 2) - 1) * (1 - 2 * (static_cast<int>(vertexID) % 2));
-    const auto side = 2 * (static_cast<int>(vertexID) / 2) - 1;
-    out.position = pos + float4(normal * side * pos.w, 0.f, 0.f);
+    const auto side = (2 * (static_cast<int>(vertexID) / 2) - 1) * (1 - 2 * (static_cast<int>(vertexID) % 2));
+//    const auto side = 2 * (static_cast<int>(vertexID) / 2) - 1;
+    if(pos.w < 0.f) {
+        // When 'w' is negative the resulting ndc z becomes more than 1.
+        // Therefore the formula is used to compute the point on near plane.
+        out.position = (pos + (-pos.z / (otherPos.z - pos.z)) * (otherPos - pos));
+    } else {
+        out.position = pos;
+    }
+    
+    out.position = out.position / out.position.w + float4(normal * side, 0.f, 0.f);
+    
     return out;
 }
 

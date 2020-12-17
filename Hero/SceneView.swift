@@ -55,8 +55,8 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
     }
     
     private func setupAxis() {
-        let axisHalfLength: Float = 100.0
-        let axisThickness: Float = 4.0
+        let axisHalfLength: Float = 10000.0
+        let axisThickness: Float = 5.0
         
         // xAxis
         scene.makeLine(point1: SIMD3<Float>(-axisHalfLength, 0.0, 0.0), point2: SIMD3<Float>(axisHalfLength, 0.0, 0.0), thickness: axisThickness, color: SIMD4<Float>.red)
@@ -78,7 +78,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
             if i == 0 {
                 let size = Float(30.0)
                 imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                imageObject.transform.position = simd_float3.zero
+                imageObject.transform.position = simd_float3(0.0, 0.0, 10)
             } else {
                 
                 let sizeRange = Float(10.0)...Float(100.0)

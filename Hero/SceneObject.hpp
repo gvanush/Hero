@@ -47,7 +47,6 @@ private:
     CompositeComponent _compositeComponent;
     std::string _name;
     Scene& _scene;
-    bool _active = false;
 };
 
 template <typename CT, typename... Args>
