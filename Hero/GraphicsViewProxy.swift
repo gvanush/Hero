@@ -12,8 +12,8 @@ class GraphicsViewController: UIViewController, MTKViewDelegate, UIGestureRecogn
     
     init(viewModel: GraphicsViewModel) {
         self.viewModel = viewModel
+        self.sceneNavigationController = SceneNavigationController(scene: viewModel.scene, sceneView: viewModel.view)
         super.init(nibName: nil, bundle: nil)
-        self.sceneNavigationController = SceneNavigationController(scene: viewModel.scene, sceneView: viewModel.view, isNavigating: $viewModel.isNavigating)
     }
     
     required init?(coder: NSCoder) {
@@ -29,7 +29,6 @@ class GraphicsViewController: UIViewController, MTKViewDelegate, UIGestureRecogn
         viewModel.view.colorPixelFormat = RenderingContext.colorPixelFormat()
         viewModel.view.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
         viewModel.view.clearColor = UIColor.sceneBgrColor.mtlClearColor
-        viewModel.view.autoResizeDrawable = true
         viewModel.view.presentsWithTransaction = true
         viewModel.view.delegate = self
         view.addSubview(viewModel.view)
@@ -108,20 +107,18 @@ class GraphicsViewController: UIViewController, MTKViewDelegate, UIGestureRecogn
     }
     
     @ObservedObject var viewModel: GraphicsViewModel
-    private var sceneNavigationController: SceneNavigationController!
+    fileprivate var sceneNavigationController: SceneNavigationController
     private var renderingContext = RenderingContext()
     private var panGR: UIPanGestureRecognizer!
 }
 
 class GraphicsViewModel: ObservableObject {
     
-    @Binding fileprivate(set) var isNavigating: Bool
     let scene: Hero.Scene
     let renderer: Renderer
     
-    init(scene: Hero.Scene, isNavigating: Binding<Bool>) {
+    init(scene: Hero.Scene) {
         self.scene = scene
-        _isNavigating = isNavigating
         self.renderer = Renderer.make()!
     }
     
@@ -141,14 +138,40 @@ class GraphicsViewModel: ObservableObject {
 struct GraphicsViewProxy: UIViewControllerRepresentable {
     
     @StateObject var model: GraphicsViewModel
+    @Binding var isNavigating: Bool
     
     func makeUIViewController(context: Context) -> GraphicsViewController {
-        GraphicsViewController(viewModel: model)
+        let graphicsVC = GraphicsViewController(viewModel: model)
+        graphicsVC.sceneNavigationController.delegate = context.coordinator
+        return graphicsVC
     }
     
     func updateUIViewController(_ uiViewController: GraphicsViewController, context: Context) {
     }
     
     typealias UIViewControllerType = GraphicsViewController
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: SceneNavigationControllerDelegate {
+        
+        var parent: GraphicsViewProxy
+        
+        init(_ graphicsViewProxy: GraphicsViewProxy) {
+            parent = graphicsViewProxy
+        }
+        
+        func sceneNavigationControllerWillStartNavigation(_ controller: SceneNavigationController) {
+            parent.isNavigating = true
+        }
+        
+        func sceneNavigationControllerWillEndNavigation(_ controller: SceneNavigationController) {
+            parent.isNavigating = false
+        }
+        
+        
+    }
     
 }

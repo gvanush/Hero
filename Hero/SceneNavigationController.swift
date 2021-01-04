@@ -7,17 +7,20 @@
 
 import Foundation
 import UIKit
-import SwiftUI
+
+protocol SceneNavigationControllerDelegate {
+    func sceneNavigationControllerWillStartNavigation(_ controller: SceneNavigationController)
+    func sceneNavigationControllerWillEndNavigation(_ controller: SceneNavigationController)
+}
 
 class SceneNavigationController {
     let scene: Hero.Scene
     let sceneView: MTKView
-    @Binding var isNavigating: Bool
+    var delegate: SceneNavigationControllerDelegate?
     
-    init(scene: Hero.Scene, sceneView: MTKView, isNavigating: Binding<Bool>) {
+    init(scene: Hero.Scene, sceneView: MTKView) {
         self.scene = scene
         self.sceneView = sceneView
-        _isNavigating = isNavigating
         
         viewCameraSphericalCoord.radius = 100.0
         viewCameraSphericalCoord.longitude = Float.pi
@@ -47,10 +50,7 @@ class SceneNavigationController {
     @objc func onPan(panGR: UIPanGestureRecognizer) {
         switch panGR.state {
         case .began:
-            withAnimation {
-                isNavigating = true
-            }
-            
+            delegate?.sceneNavigationControllerWillStartNavigation(self)
             gesturePrevPos = SIMD2<Float>(from: panGR.location(in: sceneView))
             
         case .changed:
@@ -69,9 +69,7 @@ class SceneNavigationController {
             gesturePrevPos = pos
             
         default:
-            withAnimation {
-                isNavigating = false
-            }
+            delegate?.sceneNavigationControllerWillEndNavigation(self)
         }
     }
     
@@ -89,9 +87,10 @@ class SceneNavigationController {
                 return
             }
             gesturePrevPos = averagePosition()
-            withAnimation {
+            // TODO
+            /*withAnimation {
                 isNavigating = true
-            }
+            }*/
         case .changed:
         
             guard panGR.numberOfTouches == 2 else {
@@ -118,9 +117,12 @@ class SceneNavigationController {
             gesturePrevPos = pos
             
         default:
+            // TODO
+            /*
             withAnimation {
                 isNavigating = false
             }
+            */
             break
         }
     }
@@ -135,9 +137,10 @@ class SceneNavigationController {
         
         switch pinchGR.state {
         case .began:
-            withAnimation {
+            // TODO
+            /*withAnimation {
                 isNavigating = true
-            }
+            }*/
             guard pinchGR.numberOfTouches == 2 else {
                 pinchGR.cancel()
                 return
@@ -198,9 +201,10 @@ class SceneNavigationController {
             }
             
         default:
-            withAnimation {
+            // TODO
+            /*withAnimation {
                 isNavigating = false
-            }
+            }*/
             break
         }
         

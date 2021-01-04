@@ -12,27 +12,10 @@ import Metal
 class SceneViewModel: ObservableObject, UIRepresentableObserver {
     
     let scene: Hero.Scene
-    lazy var graphicsViewModel = GraphicsViewModel(scene: scene, isNavigating: Binding(get: {
-        self.isNavigating
-    }, set: { (value) in
-        self.isNavigating = value
-    }) )
+    lazy var graphicsViewModel = GraphicsViewModel(scene: scene)
     
-    @Published var isInspectorVisible = true
-    var isNavigating: Bool = false {
-        willSet {
-            isTopBarVisible = !newValue
-            isInspectorVisible = !newValue
-            isStatusBarVisible = !newValue
-        }
-    }
-    @Binding var isTopBarVisible: Bool
-    @Binding var isStatusBarVisible: Bool
-    
-    init(isTopBarVisible: Binding<Bool>, isStatusBarVisible: Binding<Bool>) {
+    init() {
         scene = Hero.Scene()
-        _isTopBarVisible = isTopBarVisible
-        _isStatusBarVisible = isStatusBarVisible
         graphicsViewModel.renderer.addObserver(self, for: scene)
     }
 
@@ -97,17 +80,21 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
 
 struct SceneView: View {
     
+    @State private var isNavigating = false
+    @State private var isTooleditingModeEnabled = true
     @ObservedObject var model: SceneViewModel
     
     var body: some View {
         ZStack {
-            GraphicsViewProxy(model: model.graphicsViewModel)
+            GraphicsViewProxy(model: model.graphicsViewModel, isNavigating: $isNavigating.animation())
                 .ignoresSafeArea()
             if let selectedObject = model.scene.selectedObject {
-                Inspector(model: InspectorModel(sceneObject: selectedObject, isTopBarVisible: $model.isTopBarVisible))
-                    .opacity(model.isInspectorVisible ? 1.0 : 0.0)
+                Inspector(model: InspectorModel(sceneObject: selectedObject), isToolEditingModeEnabled: $isTooleditingModeEnabled)
+                    .opacity(isNavigating ? 0.0 : 1.0)
             }
         }
+        .statusBar(hidden: isNavigating)
+        .preference(key: TopBarVisibilityPreferenceKey.self, value: !isNavigating && isTooleditingModeEnabled)
         .onAppear {
             model.setupScene()
         }

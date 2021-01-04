@@ -41,7 +41,7 @@ struct Inspector: View {
     }
     @State var normOffsetY: CGFloat = 1.0
     @State var lastDragValue: DragGesture.Value?
-    @State var isToolEditingModeEnabled = true
+    @Binding var isToolEditingModeEnabled: Bool
     @State private var isAnimating = false
     @EnvironmentObject private var graphicsViewModel: GraphicsViewModel
         
@@ -54,10 +54,10 @@ struct Inspector: View {
                 }
                     .offset(x: 0.0, y: contentOffset(proxy))
             }
-                .background(BlurView(style: .systemMaterial))
-                .offset(x: 0.0, y: offsetY(proxy))
-                .gesture(self.dragGesture(proxy))
-                .edgesIgnoringSafeArea([.bottom, .top])
+            .background(BlurView(style: .systemMaterial))
+            .offset(x: 0.0, y: offsetY(proxy))
+            .gesture(self.dragGesture(proxy))
+            .edgesIgnoringSafeArea([.bottom, .top])
         }
     }
     
@@ -163,7 +163,6 @@ struct Inspector: View {
                 if isToolEditingModeEnabled {
                     withAnimation(.easeOut(duration: Inspector.editingModeSwitchDuration)) {
                         isToolEditingModeEnabled = false
-                        model.isTopBarVisible = false
                     }
                     graphicsViewModel.preferredFramesPerSecond = 10
                 }
@@ -197,7 +196,6 @@ struct Inspector: View {
                 withAnimation(.easeOut(duration: duration)) {
                     self.isOpen = isOpen
                     isToolEditingModeEnabled = !isOpen
-                    model.isTopBarVisible = !isOpen
                 }
                 
             }
@@ -210,6 +208,6 @@ struct Inspector: View {
 
 struct ObjectToolbar_Previews: PreviewProvider {
     static var previews: some View {
-        Inspector(model: InspectorModel(sceneObject: SceneObject(), isTopBarVisible: Binding.constant(true)))
+        Inspector(model: InspectorModel(sceneObject: SceneObject()), isToolEditingModeEnabled: .constant(true))
     }
 }

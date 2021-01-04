@@ -9,19 +9,26 @@ import SwiftUI
 import os
 import Combine
 
+struct TopBarVisibilityPreferenceKey: PreferenceKey {
+    
+    typealias Value = Bool
+    
+    static var defaultValue = true
+    
+    static func reduce(value: inout Bool, nextValue: () -> Bool) {
+        value = nextValue()
+    }
+    
+}
+
 class RootViewModel: ObservableObject {
     @Published var isProjectBrowserPresented = false {
         willSet {
             sceneViewModel.graphicsViewModel.isPaused = newValue
         }
     }
-    @Published var isTopBarVisible = true
-    @Published var isStatusBarVisible = true
     
-    lazy var sceneViewModel = SceneViewModel(
-        isTopBarVisible: Binding(get: { self.isTopBarVisible }, set: { self.isTopBarVisible = $0 }),
-        isStatusBarVisible: Binding(get: { self.isStatusBarVisible }, set: { self.isStatusBarVisible = $0 })
-    )
+    var sceneViewModel = SceneViewModel()
     
     var project: Project?
     
@@ -41,17 +48,22 @@ class RootViewModel: ObservableObject {
 
 struct RootView: View {
     
-    @ObservedObject var model = RootViewModel()
+    @StateObject var model = RootViewModel()
+    @State var isTopBarVisible = true
     
     var body: some View {
         ZStack {
             SceneView(model: model.sceneViewModel)
+                .onPreferenceChange(TopBarVisibilityPreferenceKey.self) { value in
+                    withAnimation {
+                        isTopBarVisible = value
+                    }
+                }
             TopBar()
-                .opacity(model.isTopBarVisible ? 1.0 : 0.0)
+                .opacity(isTopBarVisible ? 1.0 : 0.0)
         }
-            .statusBar(hidden: !model.isStatusBarVisible)
-            .environmentObject(model)
-            .environmentObject(model.sceneViewModel.graphicsViewModel)
+        .environmentObject(model)
+        .environmentObject(model.sceneViewModel.graphicsViewModel)
     }
 }
 
