@@ -87,10 +87,7 @@ class SceneNavigationController {
                 return
             }
             gesturePrevPos = averagePosition()
-            // TODO
-            /*withAnimation {
-                isNavigating = true
-            }*/
+            delegate?.sceneNavigationControllerWillStartNavigation(self)
         case .changed:
         
             guard panGR.numberOfTouches == 2 else {
@@ -117,13 +114,7 @@ class SceneNavigationController {
             gesturePrevPos = pos
             
         default:
-            // TODO
-            /*
-            withAnimation {
-                isNavigating = false
-            }
-            */
-            break
+            delegate?.sceneNavigationControllerWillEndNavigation(self)
         }
     }
     
@@ -137,10 +128,7 @@ class SceneNavigationController {
         
         switch pinchGR.state {
         case .began:
-            // TODO
-            /*withAnimation {
-                isNavigating = true
-            }*/
+            delegate?.sceneNavigationControllerWillStartNavigation(self)
             guard pinchGR.numberOfTouches == 2 else {
                 pinchGR.cancel()
                 return
@@ -201,11 +189,7 @@ class SceneNavigationController {
             }
             
         default:
-            // TODO
-            /*withAnimation {
-                isNavigating = false
-            }*/
-            break
+            delegate?.sceneNavigationControllerWillEndNavigation(self)
         }
         
     }
