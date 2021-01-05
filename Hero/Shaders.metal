@@ -15,8 +15,8 @@ typedef struct {
     float4 position [[position]];
 } BasicRasterizerData;
 
-constant constexpr uint kLineVertexCount = 4;
-constant constexpr int kLineVertexSides[kLineVertexCount] = {1, -1, -1, 1};
+constant constexpr uint kSegmentVertexCount = 4;
+constant constexpr int kSegmentVertexSides[kSegmentVertexCount] = {1, -1, -1, 1};
 
 vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
                                   device const float3* vertices [[buffer(kVertexInputIndexVertices)]],
@@ -24,11 +24,12 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
                                   constant float& thickness [[buffer(kVertexInputIndexThickness)]]) {
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
     
-    auto pos = float4 (vertices[vertexID], 1.f) * uniforms.projectionViewModelMatrix;
+    const auto pos = float4 (vertices[vertexID], 1.f) * uniforms.projectionViewModelMatrix;
     auto normViewportPos = pos.xy / pos.w;
     normViewportPos.x *= aspect;
     
-    auto otherPos = float4 (vertices[(vertexID + 1) % kLineVertexCount], 1.f) * uniforms.projectionViewModelMatrix;
+    const uint otherVertexIndex = (vertexID / kSegmentVertexCount) * kSegmentVertexCount + (vertexID + 1) % kSegmentVertexCount;
+    const auto otherPos = float4 (vertices[otherVertexIndex], 1.f) * uniforms.projectionViewModelMatrix;
     auto otherNormViewportPos = otherPos.xy / otherPos.w;
     otherNormViewportPos.x *= aspect;
     
@@ -47,7 +48,7 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
         out.position = pos;
     }
 
-    out.position = out.position / out.position.w + float4(normal * kLineVertexSides[vertexID], 0.f, 0.f);
+    out.position = out.position / out.position.w + float4(normal * kSegmentVertexSides[vertexID % kSegmentVertexCount], 0.f, 0.f);
     
     return out;
 }

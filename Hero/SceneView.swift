@@ -35,7 +35,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
         setupAxis()
         addImages()
         
-        scene.makeLine(point1: SIMD3<Float>(0.0, -10.0, 0.0), point2: SIMD3<Float>(0.0, 10.0, 0.0), thickness: 50, color: SIMD4<Float>.green)
+        scene.makeLineSegment(point1: SIMD3<Float>(0.0, -10.0, 0.0), point2: SIMD3<Float>(0.0, 10.0, 0.0), point3: SIMD3<Float>(20.0, 10.0, 0.0), thickness: 50, color: SIMD4<Float>.green)
     }
     
     private func setupAxis() {

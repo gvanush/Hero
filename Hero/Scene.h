@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(SceneObject*) makeObject;
 -(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color NS_SWIFT_NAME(makeLine(point1:point2:thickness:color:));
+-(SceneObject*) makeLineSegmentPoint1: (simd_float3) point1 point2: (simd_float3) point2 point3: (simd_float3) point3 thickness: (float) thickness color: (simd_float4) color NS_SWIFT_NAME(makeLineSegment(point1:point2:point3:thickness:color:));
 -(SceneObject*) makeImage;
 
 -(void) removeObject: (SceneObject*) object;
