@@ -22,13 +22,12 @@ id<MTLRenderPipelineState> __pipelineState;
 
 }
 
-LineRenderer::LineRenderer(SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color)
+LineRenderer::LineRenderer(SceneObject& sceneObject, const std::vector<simd::float3>& points, float thickness, const simd::float4& color)
 : Component {sceneObject}
 , _color {color}
-, _point1 {point1}
-, _point2 {point2}
+, _points {points}
 , _thickness {thickness} {
-    
+    assert(_points.size() > 1);
 }
 
 void LineRenderer::setup() {
@@ -48,8 +47,6 @@ void LineRenderer::setup() {
 
 void LineRenderer::render(void* renderingContext) {
     
-    // TODO: Move points to buffer
-    
     RenderingContext* context = (__bridge RenderingContext*) renderingContext;
     
     [context.renderCommandEncoder setRenderPipelineState: __pipelineState];
@@ -61,19 +58,34 @@ void LineRenderer::render(void* renderingContext) {
 
     [context.renderCommandEncoder setVertexBytes: &uniforms length: sizeof(Uniforms) atIndex: kVertexInputIndexUniforms];
     
-    std::array<simd::float3, 4> vertices {_point1, _point2, _point1, _point2};
-    [context.renderCommandEncoder setVertexBytes: vertices.data() length: sizeof(vertices) atIndex: kVertexInputIndexVertices];
+    id<MTLBuffer> pointsBuffer = (__bridge id<MTLBuffer>) _pointsBuffer;
+    [context.renderCommandEncoder setVertexBuffer: pointsBuffer offset: 0 atIndex: kVertexInputIndexVertices];
     
     [context.renderCommandEncoder setVertexBytes: &_thickness length: sizeof(_thickness) atIndex: kVertexInputIndexThickness];
     
     [context.renderCommandEncoder setFragmentBytes: &_color length: sizeof(_color) atIndex: kFragmentInputIndexColor];
     
-    [context.renderCommandEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: vertices.size()];
+    [context.renderCommandEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: pointsBuffer.length / sizeof(simd::float3)];
     
 }
 
 void LineRenderer::onStart() {
     _transform = get<hero::Transform>();
+    
+    id<MTLBuffer> pointsBuffer = [[RenderingContext device] newBufferWithLength: 4 * (_points.size() - 1) * sizeof(simd::float3) options: MTLResourceStorageModeShared | MTLResourceCPUCacheModeWriteCombined | MTLHazardTrackingModeUntracked];
+    auto data = static_cast<simd::float3*>(pointsBuffer.contents);
+    
+    for(std::size_t segInd = 0, i = 0; segInd < _points.size() - 1; ++segInd, i += 4) {
+        data[i] = _points[segInd];
+        data[i + 1] = _points[segInd + 1];
+        data[i + 2] = _points[segInd];
+        data[i + 3] = _points[segInd + 1];
+    }
+    _pointsBuffer = (void*) CFBridgingRetain(pointsBuffer);
+}
+
+void LineRenderer::onStop() {
+    CFRelease(_pointsBuffer);
 }
 
 void LineRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typeInfo, Component*) {
@@ -86,12 +98,12 @@ void LineRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo type
 // MARK: ObjC API
 @implementation LineRenderer
 
--(simd_float3) point1 {
-    return self.cpp->point1();
+-(const simd_float3 *)points {
+    return self.cpp->points().data();
 }
 
--(simd_float3) point2 {
-    return self.cpp->point2();
+-(NSUInteger)pointsCount {
+    return self.cpp->points().size();
 }
 
 -(void) setThickness: (float) thickness {

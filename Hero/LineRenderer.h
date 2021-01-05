@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LineRenderer: Component
 
-@property (nonatomic, readonly) simd_float3 point1;
-@property (nonatomic, readonly) simd_float3 point2;
+@property (nonatomic, readonly) const simd_float3* points;
+@property (nonatomic, readonly) NSUInteger pointsCount;
 @property (nonatomic, readwrite) float thickness;
 @property (nonatomic, readwrite) simd_float4 color;
 

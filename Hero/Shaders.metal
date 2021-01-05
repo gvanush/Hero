@@ -15,11 +15,13 @@ typedef struct {
     float4 position [[position]];
 } BasicRasterizerData;
 
+constant constexpr uint kLineVertexCount = 4;
+constant constexpr int kLineVertexSides[kLineVertexCount] = {1, -1, -1, 1};
+
 vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
                                   device const float3* vertices [[buffer(kVertexInputIndexVertices)]],
                                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]],
                                   constant float& thickness [[buffer(kVertexInputIndexThickness)]]) {
-    constexpr uint kLineVertexCount = 4;
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
     
     auto pos = float4 (vertices[vertexID], 1.f) * uniforms.projectionViewModelMatrix;
@@ -36,8 +38,7 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
     normal.x /= aspect;
         
     BasicRasterizerData out;
-    const auto side = (2 * (static_cast<int>(vertexID) / 2) - 1) * (1 - 2 * (static_cast<int>(vertexID) % 2));
-//    const auto side = 2 * (static_cast<int>(vertexID) / 2) - 1;
+    
     if(pos.w < 0.f) {
         // When 'w' is negative the resulting ndc z becomes more than 1.
         // Therefore the formula is used to compute the point on near plane.
@@ -45,8 +46,8 @@ vertex BasicRasterizerData lineVS(uint vertexID [[vertex_id]],
     } else {
         out.position = pos;
     }
-    
-    out.position = out.position / out.position.w + float4(normal * side, 0.f, 0.f);
+
+    out.position = out.position / out.position.w + float4(normal * kLineVertexSides[vertexID], 0.f, 0.f);
     
     return out;
 }

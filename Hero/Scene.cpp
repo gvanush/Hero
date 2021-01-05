@@ -72,7 +72,7 @@ SceneObject* Scene::makeObject() {
 SceneObject* Scene::makeLine(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color) {
     auto sceneObject = makeObject();
     sceneObject->set<hero::Transform>();
-    sceneObject->set<hero::LineRenderer>(point1, point2, thickness, color);
+    sceneObject->set<hero::LineRenderer>(std::vector<simd::float3> {point1, point2}, thickness, color);
     return sceneObject;
 }
 

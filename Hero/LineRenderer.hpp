@@ -11,6 +11,7 @@
 
 #include "apple/metal/Metal.h"
 
+#include <vector>
 #include <simd/simd.h>
 
 namespace hero {
@@ -21,11 +22,9 @@ class Transform;
 class LineRenderer: public Component {
 public:
     
-    LineRenderer(SceneObject& sceneObject, const simd::float3& point1, const simd::float3& point2, float thickness = 1.f, const simd::float4& color = simd::float4 {1.f});
+    LineRenderer(SceneObject& sceneObject, const std::vector<simd::float3>& points, float thickness = 1.f, const simd::float4& color = simd::float4 {1.f});
     
-    inline const simd::float3& point1() const;
-    
-    inline const simd::float3& point2() const;
+    inline const std::vector<simd::float3>& points() const;
     
     inline void setThickness(float t);
     inline float thickness() const;
@@ -36,6 +35,7 @@ public:
     void render(void* renderingContext);
     
     void onStart() override;
+    void onStop() override;
     void onComponentWillRemove(ComponentTypeInfo typeInfo, Component*) override;
     
     static void setup();
@@ -43,20 +43,15 @@ public:
     static constexpr auto category = ComponentCategory::renderer;
     
 private:
-    
+    const std::vector<simd::float3> _points;
     simd::float4 _color;
-    simd::float3 _point1;
-    simd::float3 _point2;
     Transform* _transform = nullptr;
+    void* _pointsBuffer;
     float _thickness;
 };
 
-const simd::float3& LineRenderer::point1() const {
-    return _point1;
-}
-
-const simd::float3& LineRenderer::point2() const {
-    return _point2;
+const std::vector<simd::float3>& LineRenderer::points() const {
+    return _points;
 }
 
 void LineRenderer::setThickness(float t) {
