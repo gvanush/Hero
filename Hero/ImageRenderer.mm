@@ -33,8 +33,8 @@ id<MTLBuffer> __vertexBuffer;
 
 }
 
-ImageRenderer::ImageRenderer(SceneObject& sceneObject)
-: Component(sceneObject)
+ImageRenderer::ImageRenderer(SceneObject& sceneObject, Layer layer)
+: Renderer {sceneObject, layer}
 , _size {1.f, 1.f}
 , _color {1.f, 1.f, 1.f, 1.f}
 , _texture {(__bridge_retained void*) [TextureUtils whiteUnitTexture]} {
@@ -123,7 +123,7 @@ void ImageRenderer::onStart() {
 }
 
 void ImageRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typeInfo, Component*) {
-    assert(ComponentTypeInfo::get<Transform>() != typeInfo);
+    assert(!typeInfo.is<Transform>());
 }
 
 }

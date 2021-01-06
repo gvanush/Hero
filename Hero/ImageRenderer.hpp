@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Component.hpp"
+#include "Renderer.hpp"
 #include "GeometryUtils_Common.h"
 
 #include <simd/simd.h>
@@ -17,10 +17,10 @@ namespace hero {
 class SceneObject;
 class Transform;
 
-class ImageRenderer: public Component {
+class ImageRenderer: public Renderer {
 public:
     
-    ImageRenderer(SceneObject& sceneObject);
+    ImageRenderer(SceneObject& sceneObject, Layer layer = kLayerContent);
     ~ImageRenderer();
     
     inline void setSize(const simd::float2& size);

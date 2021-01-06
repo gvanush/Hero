@@ -15,6 +15,7 @@
 namespace hero {
 
 class Scene;
+class SelectedObjectMarker;
 
 class SceneObject {
 public:
@@ -32,6 +33,8 @@ public:
     
     inline void setName(const std::string& name);
     inline const std::string& name() const;
+    
+    bool isSelected() const;
     
     inline Scene& scene() const;
     

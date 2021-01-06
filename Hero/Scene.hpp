@@ -42,7 +42,7 @@ public:
     
     inline SceneObject* viewCamera() const;
     
-    inline void setSelectedObject(SceneObject* selected);
+    void setSelectedObject(SceneObject* selected);
     inline SceneObject* selectedObject() const;
     
     SceneObject* raycast(const Ray& ray) const;
@@ -75,11 +75,6 @@ const simd::float4& Scene::bgrColor() const {
 
 SceneObject* Scene::viewCamera() const {
     return _viewCamera;
-}
-
-void Scene::setSelectedObject(SceneObject* object) {
-    _selectedObject = object;
-    setNeedsUIUpdate();
 }
 
 SceneObject* Scene::selectedObject() const {

@@ -35,6 +35,7 @@ public:
     Scene& scene() const;
     
 protected:
+    
     Component(SceneObject& sceneObject);
     Component(const Component&) = delete;
     Component& operator=(const Component&) = delete;

@@ -7,9 +7,7 @@
 
 #pragma once
 
-#include "Component.hpp"
-
-#include "apple/metal/Metal.h"
+#include "Renderer.hpp"
 
 #include <vector>
 #include <simd/simd.h>
@@ -19,10 +17,10 @@ namespace hero {
 class SceneObject;
 class Transform;
 
-class LineRenderer: public Component {
+class LineRenderer: public Renderer {
 public:
     
-    LineRenderer(SceneObject& sceneObject, const std::vector<simd::float3>& points, float thickness = 1.f, const simd::float4& color = simd::float4 {1.f});
+    LineRenderer(SceneObject& sceneObject, const std::vector<simd::float3>& points, float thickness = 1.f, const simd::float4& color = simd::float4 {1.f}, Layer layer = kLayerContent);
     
     inline const std::vector<simd::float3>& points() const;
     

@@ -79,7 +79,7 @@ void Camera::onStart() {
 }
 
 void Camera::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typeInfo, Component*) {
-    assert(ComponentTypeInfo::get<Transform>() != typeInfo);
+    assert(!typeInfo.is<Transform>());
 }
 
 }

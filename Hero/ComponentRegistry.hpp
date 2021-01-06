@@ -12,6 +12,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include <array>
 
 namespace hero {
 
@@ -63,7 +64,7 @@ public:
     void cleanRemovedComponents(const Scene* scene);
     void cleanComponents(const Scene* scene);
     
-    void update(const Scene* scene, void* renderingContext);
+    void update(const Scene* scene, Layer layer, void* renderingContext);
     
     CT* raycast(const Scene* scene, const Ray& ray);
     
@@ -78,7 +79,7 @@ private:
     ComponentRegistryImpl(const ComponentRegistryImpl&) = delete;
     ComponentRegistryImpl& operator=(const ComponentRegistryImpl&) = delete;
     
-    std::unordered_map<const Scene*, std::vector<CT*>> _components;
+    std::unordered_map<const Scene*, std::array<std::vector<CT*>, _kLayerCount>> _components;
     bool _unlocked = true;
 };
 
@@ -92,7 +93,7 @@ template <typename... Args>
 CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::createCompoent(SceneObject& sceneObject, Args&&... args) {
     assert(_unlocked);
     auto component = new CT {sceneObject, std::forward<Args>(args)...};
-    _components[&component->scene()].push_back(component);
+    _components[&component->scene()][component->layer()].push_back(component);
     return component;
 }
 
@@ -103,12 +104,12 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanRemovedCompone
         return;
     }
     
-    auto& sceneComponents = it->second;
-    
-    auto rit = std::remove_if(sceneComponents.begin(), sceneComponents.end(), [] (const auto component) {
-        return component->isRemoved();
-    });
-    sceneComponents.erase(rit, sceneComponents.end());
+    for(auto& layerComponents: it->second) {
+        auto rit = std::remove_if(layerComponents.begin(), layerComponents.end(), [] (const auto component) {
+            return component->isRemoved();
+        });
+        layerComponents.erase(rit, layerComponents.end());
+    }
 }
 
 template <typename CT>
@@ -121,7 +122,7 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanComponents(con
 }
 
 template <typename CT>
-void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene* scene, void* renderingContext) {
+void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene* scene, Layer layer, void* renderingContext) {
     
     auto it = _components.find(scene);
     if (it == _components.end()) {
@@ -129,7 +130,7 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene*
     }
 
     _unlocked = false;
-    for(auto component: it->second) {
+    for(auto component: it->second[layer]) {
         assert(component->isActive());
         component->render(renderingContext);
     }
@@ -147,7 +148,7 @@ CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Scene*
     CT* result = nullptr;
     float minNormDistance = std::numeric_limits<float>::max();
     
-    for(auto component: it->second) {
+    for(auto component: it->second[kLayerContent]) {
         float normDistance;
         if (component->isActive() && component->raycast(ray, normDistance)) {
             if (minNormDistance > normDistance) {

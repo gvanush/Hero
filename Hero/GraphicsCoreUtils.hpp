@@ -33,4 +33,11 @@ enum class ComponentCategory {
 
 using StepNumber = std::size_t;
 
+enum Layer: unsigned int {
+    kLayerContent = 0,
+    kLayerUI,
+    
+    _kLayerCount
+};
+
 }

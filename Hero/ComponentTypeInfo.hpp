@@ -20,6 +20,7 @@ public:
     ComponentTypeInfo& operator=(const ComponentTypeInfo&) = default;
     
     using Id = std::uint32_t;
+    using TypeNumber = std::uint8_t;
     
     template <typename CT>
     static std::enable_if_t<isConcreteComponent<CT>, ComponentTypeInfo> get() {
@@ -28,6 +29,11 @@ public:
             id |= kCompositeFlag;
         }
         return ComponentTypeInfo {id};
+    }
+    
+    template <typename CT>
+    bool is() const {
+        return static_cast<TypeNumber>(_id) == ComponentTypeInfo::typeNumber<CT>;
     }
     
     bool isComposite() const {
@@ -44,10 +50,10 @@ private:
     : _id {id} {
     }
     
-    static std::uint8_t typeCount;
+    static TypeNumber typeCount;
     
     template <typename  CT>
-    static inline const std::uint8_t typeNumber = ++typeCount;
+    static inline const TypeNumber typeNumber = ++typeCount;
     
     static constexpr Id kCompositeFlag = (0x1 << 31);
     

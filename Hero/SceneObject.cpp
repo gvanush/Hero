@@ -8,6 +8,7 @@
 #include "SceneObject.hpp"
 #include "Transform.hpp"
 #include "Camera.hpp"
+#include "SelectedObjectMarker.hpp"
 #include "Math.hpp"
 #include "UnownedCppWrapperRegistry.h"
 
@@ -21,6 +22,10 @@ SceneObject::SceneObject(Scene& scene)
 SceneObject::~SceneObject() {
     _compositeComponent._state = ComponentState::removed;
     UnownedCppWrapperRegistry::shared().removeWrapperFor(this);
+}
+
+bool SceneObject::isSelected() const {
+    return _compositeComponent.getChild<SelectedObjectMarker>();
 }
 
 }

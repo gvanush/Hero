@@ -103,21 +103,36 @@ static __weak Renderer* __allRenderers[kLimit] {};
     hero::ComponentRegistry<hero::LineRenderer>::shared().cleanRemovedComponents(scene.cpp);
     hero::ComponentRegistry<hero::ImageRenderer>::shared().cleanRemovedComponents(scene.cpp);
     
+    context.projectionViewMatrix = scene.cpp->viewCamera()->get<hero::Camera>()->projectionViewMatrix();
+    
     // Render
     id<MTLCommandBuffer> commandBuffer = [[RenderingContext defaultCommandQueue] commandBuffer];
     commandBuffer.label = @"CommandBuffer";
+    context.commandBuffer = commandBuffer;
     
+    // Content render pass
     id<MTLRenderCommandEncoder> commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor: context.renderPassDescriptor];
-    commandEncoder.label = @"SceneRenderCommandEncoder";
+    commandEncoder.label = @"ContentRenderCommandEncoder";
     
     [commandEncoder setDepthStencilState: [RenderingContext defaultDepthStencilState]];
     
-    context.commandBuffer = commandBuffer;
     context.renderCommandEncoder = commandEncoder;
-    context.projectionViewMatrix = scene.cpp->viewCamera()->get<hero::Camera>()->projectionViewMatrix();
     
-    hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, (__bridge void* _Nonnull) context);
-    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, (__bridge void* _Nonnull) context);
+    hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerContent, (__bridge void* _Nonnull) context);
+    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, hero::kLayerContent, (__bridge void* _Nonnull) context);
+    
+    [commandEncoder endEncoding];
+    
+    // UI render pass
+    // Without depth testing for now
+    context.renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
+    commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor: context.renderPassDescriptor];
+    commandEncoder.label = @"UIRenderCommandEncoder";
+    
+    context.renderCommandEncoder = commandEncoder;
+    
+    hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerUI, (__bridge void* _Nonnull) context);
+    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, hero::kLayerUI, (__bridge void* _Nonnull) context);
     
     [commandEncoder endEncoding];
     

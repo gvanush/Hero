@@ -22,12 +22,24 @@ id<MTLRenderPipelineState> __pipelineState;
 
 }
 
-LineRenderer::LineRenderer(SceneObject& sceneObject, const std::vector<simd::float3>& points, float thickness, const simd::float4& color)
-: Component {sceneObject}
+LineRenderer::LineRenderer(SceneObject& sceneObject, const std::vector<simd::float3>& points, float thickness, const simd::float4& color, Layer layer)
+: Renderer {sceneObject, layer}
 , _color {color}
 , _points {points}
 , _thickness {thickness} {
     assert(_points.size() > 1);
+    
+    // TODO: change storage mode to private using blit command encoder
+    id<MTLBuffer> pointsBuffer = [[RenderingContext device] newBufferWithLength: 4 * (_points.size() - 1) * sizeof(simd::float3) options: MTLResourceStorageModeShared | MTLResourceCPUCacheModeWriteCombined | MTLHazardTrackingModeUntracked];
+    auto data = static_cast<simd::float3*>(pointsBuffer.contents);
+    
+    for(std::size_t segInd = 0, i = 0; segInd < _points.size() - 1; ++segInd, i += 4) {
+        data[i] = _points[segInd];
+        data[i + 1] = _points[segInd + 1];
+        data[i + 2] = _points[segInd];
+        data[i + 3] = _points[segInd + 1];
+    }
+    _pointsBuffer = (void*) CFBridgingRetain(pointsBuffer);
 }
 
 void LineRenderer::setup() {
@@ -71,17 +83,6 @@ void LineRenderer::render(void* renderingContext) {
 
 void LineRenderer::onStart() {
     _transform = get<hero::Transform>();
-    
-    id<MTLBuffer> pointsBuffer = [[RenderingContext device] newBufferWithLength: 4 * (_points.size() - 1) * sizeof(simd::float3) options: MTLResourceStorageModeShared | MTLResourceCPUCacheModeWriteCombined | MTLHazardTrackingModeUntracked];
-    auto data = static_cast<simd::float3*>(pointsBuffer.contents);
-    
-    for(std::size_t segInd = 0, i = 0; segInd < _points.size() - 1; ++segInd, i += 4) {
-        data[i] = _points[segInd];
-        data[i + 1] = _points[segInd + 1];
-        data[i + 2] = _points[segInd];
-        data[i + 3] = _points[segInd + 1];
-    }
-    _pointsBuffer = (void*) CFBridgingRetain(pointsBuffer);
 }
 
 void LineRenderer::onStop() {
@@ -89,7 +90,7 @@ void LineRenderer::onStop() {
 }
 
 void LineRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typeInfo, Component*) {
-    assert(ComponentTypeInfo::get<Transform>() != typeInfo);
+    assert(!typeInfo.is<Transform>());
 }
 
 }

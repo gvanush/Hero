@@ -11,6 +11,7 @@
 #include "Transform.hpp"
 #include "LineRenderer.hpp"
 #include "ImageRenderer.hpp"
+#include "SelectedObjectMarker.hpp"
 #include "ComponentRegistry.hpp"
 
 #include <array>
@@ -110,6 +111,18 @@ void Scene::removeObject(SceneObject* object) {
     }
     _objects.erase(object);
     delete object;
+}
+
+void Scene::setSelectedObject(SceneObject* object) {
+    if (_selectedObject == object) { return; }
+    if (_selectedObject) {
+        _selectedObject->remove<SelectedObjectMarker>();
+    }
+    _selectedObject = object;
+    if (_selectedObject) {
+        _selectedObject->set<SelectedObjectMarker>();
+    }
+    setNeedsUIUpdate();
 }
 
 SceneObject* Scene::raycast(const Ray& ray) const {

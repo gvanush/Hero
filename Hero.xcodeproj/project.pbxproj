@@ -27,6 +27,7 @@
 		B74ECB3C253C7FA800C0301E /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB3A253C7FA800C0301E /* LineRenderer.mm */; };
 		B75C31F52531872600CD612C /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F32531872600CD612C /* SphericalCoord.cpp */; };
 		B75C31F62531872600CD612C /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F42531872600CD612C /* SphericalCoord.mm */; };
+		B75D3D4B25A4DFF500324252 /* SelectedObjectMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75D3D4925A4DFF500324252 /* SelectedObjectMarker.cpp */; };
 		B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76960862531940F0000F362 /* UIGestureRecognizer+Extensions.swift */; };
 		B7787863252C51980097F941 /* SIMD+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7787862252C51980097F941 /* SIMD+Extensions.swift */; };
 		B7847ADF24D45F8C00026607 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7847ADD24D45F8C00026607 /* Scene.mm */; };
@@ -103,6 +104,9 @@
 		B75C31F22531872600CD612C /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B75C31F32531872600CD612C /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
 		B75C31F42531872600CD612C /* SphericalCoord.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphericalCoord.mm; sourceTree = "<group>"; };
+		B75D3D4925A4DFF500324252 /* SelectedObjectMarker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SelectedObjectMarker.cpp; sourceTree = "<group>"; };
+		B75D3D4A25A4DFF500324252 /* SelectedObjectMarker.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SelectedObjectMarker.hpp; sourceTree = "<group>"; };
+		B75D3D4D25A6449800324252 /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		B76960862531940F0000F362 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		B7787843252BA2580097F941 /* Numeric.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Numeric.hpp; sourceTree = "<group>"; };
 		B7787862252C51980097F941 /* SIMD+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIMD+Extensions.swift"; sourceTree = "<group>"; };
@@ -403,6 +407,7 @@
 				B7FA59872588A828003854CE /* UnownedCppWrapperRegistry.h */,
 				B7FA598B258A444E003854CE /* ComponentTypeInfo.cpp */,
 				B7FA598C258A444E003854CE /* ComponentTypeInfo.hpp */,
+				B75D3D4D25A6449800324252 /* Renderer.hpp */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -414,6 +419,8 @@
 				B778782B252906380097F941 /* Camera */,
 				B74ECB34253C7D0600C0301E /* LineRenderer */,
 				B797C87F25619C9E007CE7E5 /* ImageRenderer */,
+				B75D3D4925A4DFF500324252 /* SelectedObjectMarker.cpp */,
+				B75D3D4A25A4DFF500324252 /* SelectedObjectMarker.hpp */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -535,6 +542,7 @@
 				B70CFB8D2545EE2400E8E30A /* Math.swift in Sources */,
 				B797C8882562E355007CE7E5 /* GraphicsViewProxy.swift in Sources */,
 				B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */,
+				B75D3D4B25A4DFF500324252 /* SelectedObjectMarker.cpp in Sources */,
 				B7BA37A42585351800118E6A /* RemovedComponentRegistry.cpp in Sources */,
 				B7847B1924D6F38A00026607 /* Shaders.metal in Sources */,
 				B7847B1C24D7E48600026607 /* UIColor+Extensions.swift in Sources */,
