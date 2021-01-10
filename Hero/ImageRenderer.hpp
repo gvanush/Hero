@@ -40,6 +40,7 @@ public:
     void onComponentWillRemove(ComponentTypeInfo typeInfo, Component*) override;
     
     static void setup();
+    static void preRender(void* renderingContext);
     
     static constexpr auto category = ComponentCategory::renderer;
     

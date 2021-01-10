@@ -9,7 +9,9 @@
 
 #include "GeometryUtils_Common.h"
 
+#include <cmath>
 #include <simd/simd.h>
+#include <cassert>
 
 namespace hero {
 
@@ -43,5 +45,48 @@ simd::float4x4 makeViewportMatrix(const simd::float2& viewportSize);
 simd::float3x3 makeLookAtMatrix(const simd::float3& pos, const simd::float3& target, const simd::float3& up);
 
 simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrder eulerOrder);
+
+inline constexpr float deg2Rad(float deg) {
+    return deg * M_PI / 180.f;
+}
+
+inline constexpr float rad2Deg(float rad) {
+    return rad * 180.f / M_PI;
+}
+
+inline simd::float2 getDeviatedUnitVector(const simd::float2& source, float deviationAngle) {
+    auto angle = atan2f(source.y, source.x) + deviationAngle;
+    return simd::float2 {cosf(angle), sinf(angle)};
+}
+
+inline std::size_t maxIndex(const simd::float3& vec) {
+    return (vec.x < vec.y ? (vec.y < vec.z ? 2 : 1) : (vec.x < vec.z ? 2 : 0));
+}
+
+inline std::size_t minIndex(const simd::float3& vec) {
+    return (vec.x < vec.y ? (vec.x < vec.z ? 0 : 2) : (vec.y < vec.z ? 1 : 2));
+}
+
+inline simd::float3 getNormalVector(const simd::float3& vec) {
+    switch (minIndex(simd::abs(vec))) {
+        case 0: {
+            return simd::float3 { 0.f, -vec.z, vec.y };
+        }
+        case 1: {
+            return simd::float3 { -vec.z, 0.f, vec.x };
+        }
+        case 2: {
+            return simd::float3 { -vec.y, vec.x, 0.f };
+        }
+        default: {
+            assert(false);
+            return simd::float3 {};
+        }
+    }
+}
+
+inline simd::float3 getDeviatedVector(const simd::float3& vec, float deviationAngle) {
+    return vec + simd::length(vec) * tanf(deviationAngle) * simd::normalize(getNormalVector(vec));
+}
 
 }

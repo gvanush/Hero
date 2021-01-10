@@ -78,14 +78,16 @@ void ImageRenderer::setup() {
     __vertexBuffer = [[RenderingContext device] newBufferWithBytes: kImageVertices.data() length: kImageVertices.size() * sizeof(ImageVertex) options: MTLResourceStorageModeShared | MTLHazardTrackingModeDefault | MTLCPUCacheModeDefaultCache];
 }
 
+void ImageRenderer::preRender(void* renderingContext) {
+    RenderingContext* context = (__bridge RenderingContext*) renderingContext;
+    [context.renderCommandEncoder setRenderPipelineState: __pipelineState];
+    [context.renderCommandEncoder setVertexBuffer:__vertexBuffer offset: 0  atIndex: kVertexInputIndexVertices];
+}
+
 void ImageRenderer::render(void* renderingContext) {
     
     RenderingContext* context = (__bridge RenderingContext*) renderingContext;
     
-    [context.renderCommandEncoder setRenderPipelineState: __pipelineState];
-    
-    [context.renderCommandEncoder setVertexBuffer:__vertexBuffer offset: 0  atIndex: kVertexInputIndexVertices];
-        
     Uniforms uniforms;
     uniforms.projectionViewMatrix = context.projectionViewMatrix;
     uniforms.projectionViewModelMatrix = _transform->worldMatrix() * uniforms.projectionViewMatrix;

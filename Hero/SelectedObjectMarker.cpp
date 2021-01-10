@@ -15,8 +15,9 @@ namespace hero {
 
 namespace {
 
-constexpr float kSelectionThickness = 5.f;
-constexpr simd::float4 kSelectionColor  {1.f, 204.f / 255.f, 0.f, 1.f};
+constexpr float kSelectionLineThickness = 5.f;
+constexpr float kSelectionLineMiterLimit = 5.f;
+constexpr simd::float4 kSelectionLineColor  {1.f, 204.f / 255.f, 0.f, 1.f};
 
 }
 
@@ -46,9 +47,12 @@ void SelectedObjectMarker::setupSelection(const ImageRenderer* imageRenderer) {
         float3 {-halfSize.x, halfSize.y, 0.0},
         float3 {halfSize.x, halfSize.y, 0.0},
         float3 {halfSize.x, -halfSize.y, 0.0},
-        float3 {-halfSize.x, -halfSize.y, 0.0},
     };
-    setChild<LineRenderer>(points, kSelectionThickness, kSelectionColor, kLayerUI);
+    
+    auto lineRenderer = setChild<LineRenderer>(points, true, kLayerUI);
+    lineRenderer->setColor(kSelectionLineColor);
+    lineRenderer->setThickness(kSelectionLineThickness);
+    lineRenderer->setMiterLimit(kSelectionLineMiterLimit);
 }
 
 }

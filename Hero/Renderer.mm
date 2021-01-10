@@ -118,8 +118,11 @@ static __weak Renderer* __allRenderers[kLimit] {};
     
     context.renderCommandEncoder = commandEncoder;
     
-    hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerContent, (__bridge void* _Nonnull) context);
-    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, hero::kLayerContent, (__bridge void* _Nonnull) context);
+    auto contextHandle = (__bridge void*) context;
+    hero::LineRenderer::preRender(contextHandle);
+    hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerContent, contextHandle);
+    hero::ImageRenderer::preRender(contextHandle);
+    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, hero::kLayerContent, contextHandle);
     
     [commandEncoder endEncoding];
     
@@ -131,8 +134,10 @@ static __weak Renderer* __allRenderers[kLimit] {};
     
     context.renderCommandEncoder = commandEncoder;
     
-    hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerUI, (__bridge void* _Nonnull) context);
-    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, hero::kLayerUI, (__bridge void* _Nonnull) context);
+    hero::LineRenderer::preRender(contextHandle);
+    hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerUI, contextHandle);
+    hero::ImageRenderer::preRender(contextHandle);
+    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, hero::kLayerUI, contextHandle);
     
     [commandEncoder endEncoding];
     

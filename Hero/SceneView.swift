@@ -29,8 +29,10 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
     
     func setupScene() {
         
-        scene.viewCamera.camera.orthographicScale = 70.0
+        scene.viewCamera.camera.near = 0.1
+        scene.viewCamera.camera.far = 1000.0
         scene.viewCamera.camera.fovy = Float.pi / 3.0
+        scene.viewCamera.camera.orthographicScale = 70.0
         
         setupAxis()
         addImages()
@@ -39,7 +41,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
     }
     
     private func setupAxis() {
-        let axisHalfLength: Float = 10000.0
+        let axisHalfLength: Float = 1000.0
         let axisThickness: Float = 5.0
         
         // xAxis
@@ -62,7 +64,7 @@ class SceneViewModel: ObservableObject, UIRepresentableObserver {
             if i == 0 {
                 let size = Float(30.0)
                 imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                imageObject.transform.position = simd_float3(0.0, 0.0, 10)
+                imageObject.transform.position = simd_float3(0.0, 0.0, 20.0)
             } else {
                 
                 let sizeRange = Float(10.0)...Float(100.0)
