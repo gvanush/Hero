@@ -25,6 +25,9 @@
 		B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB2252843C30047B996 /* CppWrapper.mm */; };
 		B749ADB925284BD80047B996 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B749ADB825284BD80047B996 /* SceneObject.mm */; };
 		B74ECB3C253C7FA800C0301E /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B74ECB3A253C7FA800C0301E /* LineRenderer.mm */; };
+		B759AFE725AB863700745E95 /* TransformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B759AFE625AB863700745E95 /* TransformView.swift */; };
+		B759AFEF25AF7EEA00745E95 /* UIGraphicsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B759AFEE25AF7EEA00745E95 /* UIGraphicsUtils.swift */; };
+		B759AFF925B09FFE00745E95 /* ObjCObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B759AFF725B09FFE00745E95 /* ObjCObjectRegistry.cpp */; };
 		B75C31F52531872600CD612C /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F32531872600CD612C /* SphericalCoord.cpp */; };
 		B75C31F62531872600CD612C /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F42531872600CD612C /* SphericalCoord.mm */; };
 		B75D3D4B25A4DFF500324252 /* SelectedObjectMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75D3D4925A4DFF500324252 /* SelectedObjectMarker.cpp */; };
@@ -63,7 +66,6 @@
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
 		B7DD54592501489600163947 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54582501489600163947 /* Project.swift */; };
 		B7DD54752502657E00163947 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD54742502657E00163947 /* TestView.swift */; };
-		B7FA59882588A828003854CE /* UnownedCppWrapperRegistry.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */; };
 		B7FA598D258A444E003854CE /* ComponentTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7FA598B258A444E003854CE /* ComponentTypeInfo.cpp */; };
 		B7FE5B9224F645A4009DAE53 /* ProjectItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FE5B9124F645A4009DAE53 /* ProjectItem.swift */; };
 /* End PBXBuildFile section */
@@ -100,6 +102,10 @@
 		B74ECB36253C7D2800C0301E /* LineRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LineRenderer.hpp; sourceTree = "<group>"; };
 		B74ECB3A253C7FA800C0301E /* LineRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LineRenderer.mm; sourceTree = "<group>"; };
 		B74ECB3B253C7FA800C0301E /* LineRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineRenderer.h; sourceTree = "<group>"; };
+		B759AFE625AB863700745E95 /* TransformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformView.swift; sourceTree = "<group>"; };
+		B759AFEE25AF7EEA00745E95 /* UIGraphicsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGraphicsUtils.swift; sourceTree = "<group>"; };
+		B759AFF725B09FFE00745E95 /* ObjCObjectRegistry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCObjectRegistry.cpp; sourceTree = "<group>"; };
+		B759AFF825B09FFE00745E95 /* ObjCObjectRegistry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjCObjectRegistry.hpp; sourceTree = "<group>"; };
 		B75C31F12531872600CD612C /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
 		B75C31F22531872600CD612C /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B75C31F32531872600CD612C /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
@@ -166,8 +172,6 @@
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		B7DD54582501489600163947 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		B7DD54742502657E00163947 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
-		B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = UnownedCppWrapperRegistry.mm; sourceTree = "<group>"; };
-		B7FA59872588A828003854CE /* UnownedCppWrapperRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnownedCppWrapperRegistry.h; sourceTree = "<group>"; };
 		B7FA598B258A444E003854CE /* ComponentTypeInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentTypeInfo.cpp; sourceTree = "<group>"; };
 		B7FA598C258A444E003854CE /* ComponentTypeInfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComponentTypeInfo.hpp; sourceTree = "<group>"; };
 		B7FE5B9124F645A4009DAE53 /* ProjectItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItem.swift; sourceTree = "<group>"; };
@@ -195,6 +199,7 @@
 				B731700624CF378F00157455 /* SceneView.swift */,
 				B797C8872562E355007CE7E5 /* GraphicsViewProxy.swift */,
 				B7B30351256589A50060DFC4 /* SceneNavigationController.swift */,
+				B759AFEE25AF7EEA00745E95 /* UIGraphicsUtils.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -341,6 +346,7 @@
 				B7C36238255000C0007734C1 /* ObjectToolbar.swift */,
 				B7AEE00D2541E741002061F5 /* Inspector.swift */,
 				B7C3623B2550015B007734C1 /* InspectorModel.swift */,
+				B759AFE625AB863700745E95 /* TransformView.swift */,
 			);
 			name = Inspector;
 			sourceTree = "<group>";
@@ -403,8 +409,6 @@
 				B7BA37812581294800118E6A /* ComponentRegistry.hpp */,
 				B7BA37A22585351800118E6A /* RemovedComponentRegistry.cpp */,
 				B7BA37A32585351800118E6A /* RemovedComponentRegistry.hpp */,
-				B7FA59862588A828003854CE /* UnownedCppWrapperRegistry.mm */,
-				B7FA59872588A828003854CE /* UnownedCppWrapperRegistry.h */,
 				B7FA598B258A444E003854CE /* ComponentTypeInfo.cpp */,
 				B7FA598C258A444E003854CE /* ComponentTypeInfo.hpp */,
 				B75D3D4D25A6449800324252 /* Renderer.hpp */,
@@ -441,6 +445,8 @@
 			children = (
 				B715B24324D2A2DB00B4C859 /* CppWrapper.h */,
 				B749ADB2252843C30047B996 /* CppWrapper.mm */,
+				B759AFF725B09FFE00745E95 /* ObjCObjectRegistry.cpp */,
+				B759AFF825B09FFE00745E95 /* ObjCObjectRegistry.hpp */,
 			);
 			name = "Cpp ObjC Interop";
 			sourceTree = "<group>";
@@ -550,8 +556,8 @@
 				B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */,
 				B7DD54592501489600163947 /* Project.swift in Sources */,
 				B7872CFE2504340A00BD403D /* Common.swift in Sources */,
+				B759AFEF25AF7EEA00745E95 /* UIGraphicsUtils.swift in Sources */,
 				B7847AE324D4625200026607 /* ImageRenderer.mm in Sources */,
-				B7FA59882588A828003854CE /* UnownedCppWrapperRegistry.mm in Sources */,
 				B74ECB3C253C7FA800C0301E /* LineRenderer.mm in Sources */,
 				B7787863252C51980097F941 /* SIMD+Extensions.swift in Sources */,
 				B723BB21250E0965007C989E /* Logger+Extensions.swift in Sources */,
@@ -560,11 +566,13 @@
 				B7FA598D258A444E003854CE /* ComponentTypeInfo.cpp in Sources */,
 				B7B30352256589A50060DFC4 /* SceneNavigationController.swift in Sources */,
 				B786A8D324D146DB00F6EE83 /* Scene.cpp in Sources */,
+				B759AFF925B09FFE00745E95 /* ObjCObjectRegistry.cpp in Sources */,
 				B723BB1F250DD229007C989E /* Settings.swift in Sources */,
 				B7440FF0255319F000005EEC /* UIRepresentable.mm in Sources */,
 				B7872CFC25027F4800BD403D /* RootView.swift in Sources */,
 				B7BA378925812B9500118E6A /* Transform.mm in Sources */,
 				B74410172556984400005EEC /* NSPointerArray+Extensions.m in Sources */,
+				B759AFE725AB863700745E95 /* TransformView.swift in Sources */,
 				B78D7DF5252306CE0057F066 /* SceneObject.cpp in Sources */,
 				B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B7B7C4D225763ABA007643D7 /* GeometryUtils_Common.c in Sources */,

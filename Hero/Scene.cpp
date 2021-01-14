@@ -70,6 +70,12 @@ SceneObject* Scene::makeObject() {
     return object;
 }
 
+SceneObject* Scene::makeBasicObject() {
+    auto sceneObject = makeObject();
+    sceneObject->set<hero::Transform>();
+    return sceneObject;
+}
+
 SceneObject* Scene::makeLine(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color) {
     auto sceneObject = makeObject();
     sceneObject->set<hero::Transform>();

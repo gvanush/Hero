@@ -1,57 +1,69 @@
 //
-//  CppWrapper.mm
+//  CppPair.mm
 //  Hero
 //
 //  Created by Vanush Grigoryan on 10/3/20.
 //
 
 #import "CppWrapper.h"
-#import "UnownedCppWrapperRegistry.h"
 
-@interface CppWrapper ()
+#include "ObjCObjectRegistry.hpp"
+
+@interface CppWrapper () {
+    void* _cpp;
+    CppDeleter _deleter;
+}
     
--(instancetype) initWithUnownedCpp: (CppHandle) cpp NS_DESIGNATED_INITIALIZER;
-
-@property (nonatomic, readwrite) CppHandleDeleter deleter;
+-(instancetype) initWithUnownedCpp: (void*) cpp NS_DESIGNATED_INITIALIZER;
 
 @end
 
 @implementation CppWrapper
 
--(instancetype) initWithOwnedCpp: (CppHandle) cpp deleter: (CppHandleDeleter) deleter {
+-(instancetype) initWithOwnedCpp: (void*) cpp deleter: (CppDeleter) deleter {
     if (self = [super init]) {
         if (!cpp) {
             return nil;
         }
-        _cppHandle = cpp;
+        _cpp = cpp;
         _deleter = deleter;
+        ObjCObjectRegistry::shared().addObject((__bridge void*) self, cpp);
     }
     return self;
 }
 
--(instancetype) initWithUnownedCpp: (CppHandle) cpp {
+-(instancetype) initWithUnownedCpp: (void*) cpp {
     if (self = [super init]) {
         if (!cpp) {
             return nil;
         }
-        _cppHandle = cpp;
+        _cpp = cpp;
+        _deleter = nullptr;
+        ObjCObjectRegistry::shared().addObject((__bridge void*) self, cpp);
     }
     return self;
 }
 
-+(instancetype) wrapperWithUnownedCpp: (CppHandle) cpp {
-    CppWrapper* wrapper = hero::UnownedCppWrapperRegistry::shared().getWrapperFor(cpp);
-    if (!wrapper) {
-        wrapper = [[self alloc] initWithUnownedCpp: cpp];
-        hero::UnownedCppWrapperRegistry::shared().addWrapper(wrapper);
++(instancetype) wrapperForCpp: (void*) cpp {
+    
+    if (auto objC = ObjCObjectRegistry::shared().getObjectFor(cpp)) {
+        return (__bridge id) objC;
     }
-    return wrapper;
+    
+    // If there is no matching ObjC object in registry it means C++ object is not owned
+    return [[self alloc] initWithUnownedCpp: cpp];
 }
 
--(void)dealloc {
-    if(self.deleter) {
-        self.deleter(self.cppHandle);
+-(void) dealloc {
+    if(_deleter) {
+        _deleter(_cpp);
+        _cpp = nullptr;
     }
+    ObjCObjectRegistry::shared().removeObjectFor(_cpp);
+}
+
+-(void*) cppHandle {
+    return _cpp;
 }
 
 @end

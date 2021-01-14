@@ -9,22 +9,14 @@ import SwiftUI
 import MetalKit
 import Metal
 
-class SceneViewModel: ObservableObject, UIRepresentableObserver {
+class SceneViewModel: GraphicsSyncViewModel {
     
     let scene: Hero.Scene
-    lazy var graphicsViewModel = GraphicsViewModel(scene: scene)
     
     init() {
         scene = Hero.Scene()
-        graphicsViewModel.renderer.addObserver(self, for: scene)
-    }
-
-    deinit {
-        graphicsViewModel.renderer.removeObserver(self, for: scene)
-    }
-
-    func onUIUpdateRequired() {
-        objectWillChange.send()
+        super.init(graphicsViewModel: GraphicsViewModel(scene: scene, renderer: Renderer.make()!))
+        observe(uiRepresentable: scene)
     }
     
     func setupScene() {

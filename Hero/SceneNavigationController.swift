@@ -37,12 +37,12 @@ class SceneNavigationController {
         let scenePos = scene.viewCamera.camera.convertViewportToWorld(SIMD3<Float>(pos, 1.0), viewportSize: sceneViewSize())
         
         if let selected = scene.rayCast(makeRay(scene.viewCamera.transform.position, scenePos - scene.viewCamera.transform.position)) {
-            print("Selected: \(selected.name)")
+//            print("Selected: \(selected.name)")
             scene.selectedObject = selected
 //            sceneView.clearColor = UIColor.red.mtlClearColor
 //            selected.position.y = 30.0;
         } else {
-            print("None")
+//            print("None")
             scene.selectedObject = nil
         }
     }

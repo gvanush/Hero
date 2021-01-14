@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SphericalCoord: CppWrapper
 
 -(instancetype) init;
--(instancetype) initWithOwnedCpp: (CppHandle)cpp deleter:(CppHandleDeleter)deleter NS_UNAVAILABLE;
 
 -(simd_float3) getPosition;
 

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "UIRepresentable.hpp"
 #include "ComponentTypeInfo.hpp"
 #include "GraphicsCoreUtils.hpp"
 #include "ComponentRegistry.hpp"
@@ -24,10 +25,10 @@ class Component;
 class CompositeComponent;
 
 // MARK: Component declaration
-class Component {
+class Component: public UIRepresentable {
 public:
     
-    virtual ~Component();
+    virtual ~Component() {};
     
     inline bool isRemoved() const;
     inline bool isActive() const;

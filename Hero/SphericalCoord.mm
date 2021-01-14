@@ -12,7 +12,7 @@
 @implementation SphericalCoord
 
 -(instancetype) init {
-    return [self initWithOwnedCpp: new hero::SphericalCoord {} deleter:^(CppHandle handle) {
+    return [self initWithOwnedCpp: new hero::SphericalCoord {} deleter:^(void* handle) {
         delete static_cast<hero::SphericalCoord*>(handle);
     }];
 }

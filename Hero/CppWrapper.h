@@ -9,19 +9,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void* CppHandle;
-typedef void (^CppHandleDeleter) (CppHandle handle);
+typedef void (^CppDeleter) (void* pair);
 
 @interface CppWrapper: NSObject
 
-@property (nonatomic, readonly) CppHandle cppHandle;
+-(instancetype) init NS_UNAVAILABLE;
 
 #ifdef __cplusplus
 
--(instancetype) initWithOwnedCpp: (CppHandle) cpp deleter: (CppHandleDeleter) deleter NS_DESIGNATED_INITIALIZER;
--(instancetype) init NS_UNAVAILABLE;
+-(instancetype) initWithOwnedCpp: (void*) cpp deleter: (CppDeleter) deleter NS_DESIGNATED_INITIALIZER;
 
-+(instancetype) wrapperWithUnownedCpp: (CppHandle) cpp;
++(instancetype) wrapperForCpp: (void*) cpp;
+
+@property (nonatomic, readonly) void* cppHandle;
 
 #endif
 

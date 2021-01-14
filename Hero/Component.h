@@ -5,13 +5,11 @@
 //  Created by Vanush Grigoryan on 12/11/20.
 //
 
-#import "CppWrapper.h"
+#import "UIRepresentable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Component: CppWrapper
-
--(instancetype)initWithOwnedCpp:(CppHandle)cpp deleter:(CppHandleDeleter)deleter NS_UNAVAILABLE;
+@interface Component: UIRepresentable
 
 @end
 

@@ -14,31 +14,35 @@
 @implementation Scene
 
 -(instancetype) init {
-    return [self initWithOwnedCpp: new hero::Scene {} deleter:^(CppHandle handle) {
+    return [self initWithOwnedCpp: new hero::Scene {} deleter:^(void* handle) {
         delete static_cast<hero::Scene*>(handle);
     }];
 }
 
--(instancetype)initWithOwnedCpp:(CppHandle) cpp deleter:(CppHandleDeleter)deleter {
+-(instancetype)initWithOwnedCpp:(void*) cpp deleter:(CppDeleter)deleter {
     if(self = [super initWithOwnedCpp: cpp deleter: deleter]) {
     }
     return self;
 }
 
 -(SceneObject*) makeObject {
-    return [SceneObject wrapperWithUnownedCpp: self.cpp->makeObject()];
+    return [SceneObject wrapperForCpp: self.cpp->makeObject()];
+}
+
+-(SceneObject*) makeBasicObject {
+    return [SceneObject wrapperForCpp: self.cpp->makeBasicObject()];
 }
 
 -(SceneObject*) makeLinePoint1: (simd_float3) point1 point2: (simd_float3) point2 thickness: (float) thickness color: (simd_float4) color {
-    return [SceneObject wrapperWithUnownedCpp: self.cpp->makeLine(point1, point2, thickness, color)];
+    return [SceneObject wrapperForCpp: self.cpp->makeLine(point1, point2, thickness, color)];
 }
 
 -(SceneObject*) makeLineSegmentPoint1: (simd_float3) point1 point2: (simd_float3) point2 point3: (simd_float3) point3 thickness: (float) thickness color: (simd_float4) color {
-    return [SceneObject wrapperWithUnownedCpp: self.cpp->makeLineSegment(point1, point2, point3, thickness, color)];
+    return [SceneObject wrapperForCpp: self.cpp->makeLineSegment(point1, point2, point3, thickness, color)];
 }
 
 -(SceneObject*) makeImage {
-    return [SceneObject wrapperWithUnownedCpp: self.cpp->makeImage()];
+    return [SceneObject wrapperForCpp: self.cpp->makeImage()];
 }
 
 -(void) removeObject: (SceneObject*) object {
@@ -47,7 +51,7 @@
 
 -(SceneObject* _Nullable) rayCast: (Ray) ray {
     if(auto sceneObject = self.cpp->raycast(ray)) {
-        return [SceneObject wrapperWithUnownedCpp: sceneObject];
+        return [SceneObject wrapperForCpp: sceneObject];
     }
     return nil;
 }
@@ -69,7 +73,7 @@
 }
 
 -(SceneObject *)viewCamera {
-    return [SceneObject wrapperWithUnownedCpp: self.cpp->viewCamera()];
+    return [SceneObject wrapperForCpp: self.cpp->viewCamera()];
 }
 
 -(void)setSelectedObject:(SceneObject *)selectedObject {
@@ -78,7 +82,7 @@
 
 -(SceneObject* _Nullable) selectedObject {
     if (auto selected = self.cpp->selectedObject(); selected) {
-        return [SceneObject wrapperWithUnownedCpp: selected];
+        return [SceneObject wrapperForCpp: selected];
     }
     return nil;
 }

@@ -31,6 +31,7 @@ public:
     bool isTurnedOn() const;
     
     SceneObject* makeObject();
+    SceneObject* makeBasicObject();
     SceneObject* makeLine(const simd::float3& point1, const simd::float3& point2, float thickness, const simd::float4& color);
     SceneObject* makeLineSegment(const simd::float3& point1, const simd::float3& point2, const simd::float3& point3, float thickness, const simd::float4& color);
     SceneObject* makeImage();

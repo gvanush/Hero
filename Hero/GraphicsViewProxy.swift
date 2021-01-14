@@ -117,9 +117,9 @@ class GraphicsViewModel: ObservableObject {
     let scene: Hero.Scene
     let renderer: Renderer
     
-    init(scene: Hero.Scene) {
+    init(scene: Hero.Scene, renderer: Renderer) {
         self.scene = scene
-        self.renderer = Renderer.make()!
+        self.renderer = renderer
     }
     
     var preferredFramesPerSecond: Int {

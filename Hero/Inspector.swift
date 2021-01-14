@@ -54,7 +54,8 @@ struct Inspector: View {
                 }
                     .offset(x: 0.0, y: contentOffset(proxy))
             }
-            .background(BlurView(style: .systemMaterial))
+//            .background(BlurView(style: .systemMaterial))
+            .background(Color(.systemBackground))
             .offset(x: 0.0, y: offsetY(proxy))
             .gesture(self.dragGesture(proxy))
             .edgesIgnoringSafeArea([.bottom, .top])
@@ -86,20 +87,19 @@ struct Inspector: View {
     }
     
     func body(_ proxy: GeometryProxy) -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            if isOpen || isAnimating || dragState.isDragging {
-                ZStack {
-                    Color.black
-                    Text("dadas")
-                }
-            }
-        }
-        .opacity(isToolEditingModeEnabled ? 0.0 : 1.0)
-        .offset(x: 0.0, y: isToolEditingModeEnabled ? proxy.safeAreaInsets.top : 0.0)
-        .padding(.horizontal, 20)
-        .onAnimationCompleted(for: normOffsetY) {
-            isAnimating = false
-        }
+        TransformView(model: TransformViewModel(transform: model.sceneObject.transform, graphicsViewModel: graphicsViewModel))
+//            .opacity(isToolEditingModeEnabled ? 0.0 : 1.0)
+//            .offset(x: 0.0, y: isToolEditingModeEnabled ? proxy.safeAreaInsets.top : 0.0)
+            .padding(.horizontal, 20)
+//            .onAnimationCompleted(for: normOffsetY) {
+//                isAnimating = false
+//            }
+//        ScrollView(.vertical, showsIndicators: false) {
+////            if isOpen || isAnimating || dragState.isDragging {
+////
+////            }
+//        }
+
     }
     
     func contentOffset(_ proxy: GeometryProxy) -> CGFloat {
@@ -207,7 +207,11 @@ struct Inspector: View {
 }
 
 struct ObjectToolbar_Previews: PreviewProvider {
+    
+    static let graphicsViewModel = GraphicsViewModel(scene: Hero.Scene(), renderer: Renderer.make()!)
+    
     static var previews: some View {
-        Inspector(model: InspectorModel(sceneObject: SceneObject()), isToolEditingModeEnabled: .constant(true))
+        let sceneObject = graphicsViewModel.scene.makeBasicObject()
+        Inspector(model: InspectorModel(sceneObject: sceneObject), isToolEditingModeEnabled: .constant(true))
     }
 }

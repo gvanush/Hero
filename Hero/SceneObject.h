@@ -17,8 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SceneObject : CppWrapper
 
--(instancetype) initWithOwnedCpp: (CppHandle)cpp deleter:(CppHandleDeleter)deleter NS_UNAVAILABLE;
-
 @property (nonatomic, copy) NSString* name;
 @property (nonatomic, readonly) Transform* transform;
 @property (nonatomic, readonly) Camera* camera;
