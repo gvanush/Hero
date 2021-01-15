@@ -18,3 +18,7 @@ func deg2rad<T>(_ deg: T) -> T where T : FloatingPoint {
 func rad2deg<T>(_ rad: T) -> T where T : FloatingPoint {
     rad * T(180) / T.pi
 }
+
+func clamp<T>(_ value: T, min minVal: T, max maxVal: T) -> T where T : Comparable {
+    max(minVal, min(value, maxVal))
+}

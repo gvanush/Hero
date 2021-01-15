@@ -28,6 +28,7 @@
 		B759AFE725AB863700745E95 /* TransformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B759AFE625AB863700745E95 /* TransformView.swift */; };
 		B759AFEF25AF7EEA00745E95 /* UIGraphicsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B759AFEE25AF7EEA00745E95 /* UIGraphicsUtils.swift */; };
 		B759AFF925B09FFE00745E95 /* ObjCObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B759AFF725B09FFE00745E95 /* ObjCObjectRegistry.cpp */; };
+		B759AFFC25B0C4D200745E95 /* SlidingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B759AFFB25B0C4D200745E95 /* SlidingView.swift */; };
 		B75C31F52531872600CD612C /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F32531872600CD612C /* SphericalCoord.cpp */; };
 		B75C31F62531872600CD612C /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B75C31F42531872600CD612C /* SphericalCoord.mm */; };
 		B75D3D4B25A4DFF500324252 /* SelectedObjectMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75D3D4925A4DFF500324252 /* SelectedObjectMarker.cpp */; };
@@ -106,6 +107,7 @@
 		B759AFEE25AF7EEA00745E95 /* UIGraphicsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGraphicsUtils.swift; sourceTree = "<group>"; };
 		B759AFF725B09FFE00745E95 /* ObjCObjectRegistry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCObjectRegistry.cpp; sourceTree = "<group>"; };
 		B759AFF825B09FFE00745E95 /* ObjCObjectRegistry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjCObjectRegistry.hpp; sourceTree = "<group>"; };
+		B759AFFB25B0C4D200745E95 /* SlidingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingView.swift; sourceTree = "<group>"; };
 		B75C31F12531872600CD612C /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
 		B75C31F22531872600CD612C /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B75C31F32531872600CD612C /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				B79E0455253F526500042719 /* BlurView.swift */,
 				B7DD54742502657E00163947 /* TestView.swift */,
 				B723BB22250F2FC2007C989E /* UITextFieldProxy.swift */,
+				B759AFFB25B0C4D200745E95 /* SlidingView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				B76960872531940F0000F362 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B7B7C4D225763ABA007643D7 /* GeometryUtils_Common.c in Sources */,
 				B79E0456253F526500042719 /* BlurView.swift in Sources */,
+				B759AFFC25B0C4D200745E95 /* SlidingView.swift in Sources */,
 				B78D7E012524AE8F0057F066 /* Camera.mm in Sources */,
 				B749ADB3252843C30047B996 /* CppWrapper.mm in Sources */,
 				B78D7DEF2521B5F30057F066 /* Math.cpp in Sources */,

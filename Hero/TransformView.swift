@@ -178,7 +178,8 @@ struct TransformView: View {
     @State var eulerOrder = "xyz"
     
     var body: some View {
-        Form {
+        print("TransformView body")
+        return Form {
             Section(header: Text("Position")) {
                 PositionFieldView(field: .x)
                 PositionFieldView(field: .y)
@@ -206,7 +207,6 @@ struct TransformView: View {
                 ScaleFieldView(field: .z)
             }
         }
-        .navigationTitle("Transform")
         .environmentObject(model)
     }
 }

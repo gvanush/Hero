@@ -76,7 +76,7 @@ class SceneViewModel: GraphicsSyncViewModel {
 struct SceneView: View {
     
     @State private var isNavigating = false
-    @State private var isTooleditingModeEnabled = true
+    @State private var slidingViewState = SlidingViewState.closed
     @ObservedObject var model: SceneViewModel
     
     var body: some View {
@@ -84,14 +84,23 @@ struct SceneView: View {
             GraphicsViewProxy(model: model.graphicsViewModel, isNavigating: $isNavigating.animation())
                 .ignoresSafeArea()
             if let selectedObject = model.scene.selectedObject {
-                Inspector(model: InspectorModel(sceneObject: selectedObject), isToolEditingModeEnabled: $isTooleditingModeEnabled)
+//                Inspector(model: InspectorModel(sceneObject: selectedObject), isToolEditingModeEnabled: $isToolEditingModeEnabled)
+//                    .opacity(isNavigating ? 0.0 : 1.0)
+                SlidingView(state: $slidingViewState, content: slidingViewContent(selectedObject))
                     .opacity(isNavigating ? 0.0 : 1.0)
             }
         }
         .statusBar(hidden: isNavigating)
-        .preference(key: TopBarVisibilityPreferenceKey.self, value: !isNavigating && isTooleditingModeEnabled)
+        .preference(key: TopBarVisibilityPreferenceKey.self, value: !isNavigating && slidingViewState == .closed)
         .onAppear {
             model.setupScene()
+        }
+    }
+    
+    func slidingViewContent(_ selectedObject: SceneObject) -> some View {
+        VStack {
+            ObjectToolbar()
+            TransformView(model: TransformViewModel(transform: selectedObject.transform, graphicsViewModel: model.graphicsViewModel))
         }
     }
 }
