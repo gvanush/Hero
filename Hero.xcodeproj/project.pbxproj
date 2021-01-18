@@ -62,6 +62,42 @@
 		B7BA37A42585351800118E6A /* RemovedComponentRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BA37A22585351800118E6A /* RemovedComponentRegistry.cpp */; };
 		B7C36239255000C0007734C1 /* ObjectToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C36238255000C0007734C1 /* ObjectToolbar.swift */; };
 		B7C3623C2550015B007734C1 /* InspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C3623B2550015B007734C1 /* InspectorModel.swift */; };
+		B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05625B55CDA003461D1 /* AppDelegate.swift */; };
+		B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */; };
+		B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */; };
+		B7C7E05E25B55CDA003461D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7C7E05C25B55CDA003461D1 /* Main.storyboard */; };
+		B7C7E06025B55CDB003461D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7C7E05F25B55CDB003461D1 /* Assets.xcassets */; };
+		B7C7E06325B55CDB003461D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7C7E06125B55CDB003461D1 /* LaunchScreen.storyboard */; };
+		B7C7E0A825B55E55003461D1 /* SIMD+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E06E25B55E54003461D1 /* SIMD+Extensions.swift */; };
+		B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07025B55E54003461D1 /* RenderingContext.m */; };
+		B7C7E0AA25B55E55003461D1 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07325B55E54003461D1 /* Transform.cpp */; };
+		B7C7E0AB25B55E55003461D1 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07625B55E54003461D1 /* SceneObject.mm */; };
+		B7C7E0AC25B55E55003461D1 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07725B55E54003461D1 /* Renderer.mm */; };
+		B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */; };
+		B7C7E0AE25B55E55003461D1 /* ComponentTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08325B55E54003461D1 /* ComponentTypeInfo.cpp */; };
+		B7C7E0AF25B55E55003461D1 /* ImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08525B55E54003461D1 /* ImageRenderer.mm */; };
+		B7C7E0B025B55E55003461D1 /* UIRepresentable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08825B55E54003461D1 /* UIRepresentable.mm */; };
+		B7C7E0B125B55E55003461D1 /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08B25B55E54003461D1 /* SphericalCoord.mm */; };
+		B7C7E0B225B55E55003461D1 /* SceneObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08C25B55E54003461D1 /* SceneObject.cpp */; };
+		B7C7E0B325B55E55003461D1 /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08E25B55E54003461D1 /* LineRenderer.mm */; };
+		B7C7E0B425B55E55003461D1 /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09125B55E55003461D1 /* Camera.mm */; };
+		B7C7E0B525B55E55003461D1 /* RemovedComponentRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09225B55E55003461D1 /* RemovedComponentRegistry.cpp */; };
+		B7C7E0B625B55E55003461D1 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09525B55E55003461D1 /* Scene.mm */; };
+		B7C7E0B725B55E55003461D1 /* Component.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09725B55E55003461D1 /* Component.mm */; };
+		B7C7E0B825B55E55003461D1 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09925B55E55003461D1 /* Component.cpp */; };
+		B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09A25B55E55003461D1 /* CppWrapper.mm */; };
+		B7C7E0BA25B55E55003461D1 /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09B25B55E55003461D1 /* Math.cpp */; };
+		B7C7E0BB25B55E55003461D1 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09C25B55E55003461D1 /* Scene.cpp */; };
+		B7C7E0BC25B55E55003461D1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09D25B55E55003461D1 /* Camera.cpp */; };
+		B7C7E0BD25B55E55003461D1 /* ObjCObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09E25B55E55003461D1 /* ObjCObjectRegistry.cpp */; };
+		B7C7E0BE25B55E55003461D1 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A225B55E55003461D1 /* Shaders.metal */; };
+		B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */; };
+		B7C7E0C025B55E55003461D1 /* TextureUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A625B55E55003461D1 /* TextureUtils.m */; };
+		B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A725B55E55003461D1 /* Transform.mm */; };
+		B7C7E0D725B56500003461D1 /* GraphicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */; };
+		B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */; };
+		B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */; };
+		B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
@@ -169,6 +205,77 @@
 		B7BA37A32585351800118E6A /* RemovedComponentRegistry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RemovedComponentRegistry.hpp; sourceTree = "<group>"; };
 		B7C36238255000C0007734C1 /* ObjectToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectToolbar.swift; sourceTree = "<group>"; };
 		B7C3623B2550015B007734C1 /* InspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorModel.swift; sourceTree = "<group>"; };
+		B7C7E05425B55CDA003461D1 /* HeroX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeroX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7C7E05625B55CDA003461D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewController.swift; sourceTree = "<group>"; };
+		B7C7E05D25B55CDA003461D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B7C7E05F25B55CDB003461D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B7C7E06225B55CDB003461D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B7C7E06425B55CDB003461D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7C7E06D25B55E53003461D1 /* HeroX-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HeroX-Bridging-Header.h"; sourceTree = "<group>"; };
+		B7C7E06E25B55E54003461D1 /* SIMD+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIMD+Extensions.swift"; sourceTree = "<group>"; };
+		B7C7E06F25B55E54003461D1 /* ImageRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageRenderer.h; sourceTree = "<group>"; };
+		B7C7E07025B55E54003461D1 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
+		B7C7E07125B55E54003461D1 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
+		B7C7E07225B55E54003461D1 /* Math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
+		B7C7E07325B55E54003461D1 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
+		B7C7E07425B55E54003461D1 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
+		B7C7E07525B55E54003461D1 /* RemovedComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RemovedComponentRegistry.hpp; sourceTree = "<group>"; };
+		B7C7E07625B55E54003461D1 /* SceneObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneObject.mm; sourceTree = "<group>"; };
+		B7C7E07725B55E54003461D1 /* Renderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
+		B7C7E07825B55E54003461D1 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		B7C7E07925B55E54003461D1 /* SelectedObjectMarker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SelectedObjectMarker.hpp; sourceTree = "<group>"; };
+		B7C7E07A25B55E54003461D1 /* RendererFlag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererFlag.h; sourceTree = "<group>"; };
+		B7C7E07B25B55E54003461D1 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
+		B7C7E07C25B55E54003461D1 /* UIRepresentable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UIRepresentable.hpp; sourceTree = "<group>"; };
+		B7C7E07D25B55E54003461D1 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		B7C7E07E25B55E54003461D1 /* ComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentRegistry.hpp; sourceTree = "<group>"; };
+		B7C7E07F25B55E54003461D1 /* UIRepresentable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRepresentable.h; sourceTree = "<group>"; };
+		B7C7E08025B55E54003461D1 /* ComponentTypeInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentTypeInfo.hpp; sourceTree = "<group>"; };
+		B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectedObjectMarker.cpp; sourceTree = "<group>"; };
+		B7C7E08225B55E54003461D1 /* SceneObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
+		B7C7E08325B55E54003461D1 /* ComponentTypeInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentTypeInfo.cpp; sourceTree = "<group>"; };
+		B7C7E08425B55E54003461D1 /* TextureUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
+		B7C7E08525B55E54003461D1 /* ImageRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageRenderer.mm; sourceTree = "<group>"; };
+		B7C7E08625B55E54003461D1 /* SceneObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
+		B7C7E08725B55E54003461D1 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
+		B7C7E08825B55E54003461D1 /* UIRepresentable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UIRepresentable.mm; sourceTree = "<group>"; };
+		B7C7E08925B55E54003461D1 /* ObjCObjectRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjCObjectRegistry.hpp; sourceTree = "<group>"; };
+		B7C7E08A25B55E54003461D1 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
+		B7C7E08B25B55E54003461D1 /* SphericalCoord.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphericalCoord.mm; sourceTree = "<group>"; };
+		B7C7E08C25B55E54003461D1 /* SceneObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneObject.cpp; sourceTree = "<group>"; };
+		B7C7E08D25B55E54003461D1 /* ShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
+		B7C7E08E25B55E54003461D1 /* LineRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LineRenderer.mm; sourceTree = "<group>"; };
+		B7C7E08F25B55E54003461D1 /* CppWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CppWrapper.h; sourceTree = "<group>"; };
+		B7C7E09025B55E55003461D1 /* LineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineRenderer.h; sourceTree = "<group>"; };
+		B7C7E09125B55E55003461D1 /* Camera.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
+		B7C7E09225B55E55003461D1 /* RemovedComponentRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemovedComponentRegistry.cpp; sourceTree = "<group>"; };
+		B7C7E09325B55E55003461D1 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
+		B7C7E09425B55E55003461D1 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		B7C7E09525B55E55003461D1 /* Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Scene.mm; sourceTree = "<group>"; };
+		B7C7E09625B55E55003461D1 /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
+		B7C7E09725B55E55003461D1 /* Component.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
+		B7C7E09825B55E55003461D1 /* Component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Component.hpp; sourceTree = "<group>"; };
+		B7C7E09925B55E55003461D1 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
+		B7C7E09A25B55E55003461D1 /* CppWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
+		B7C7E09B25B55E55003461D1 /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
+		B7C7E09C25B55E55003461D1 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
+		B7C7E09D25B55E55003461D1 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		B7C7E09E25B55E55003461D1 /* ObjCObjectRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCObjectRegistry.cpp; sourceTree = "<group>"; };
+		B7C7E09F25B55E55003461D1 /* LineRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LineRenderer.hpp; sourceTree = "<group>"; };
+		B7C7E0A025B55E55003461D1 /* Transform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
+		B7C7E0A125B55E55003461D1 /* UIRepresentableObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRepresentableObserver.h; sourceTree = "<group>"; };
+		B7C7E0A225B55E55003461D1 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
+		B7C7E0A425B55E55003461D1 /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
+		B7C7E0A525B55E55003461D1 /* ImageRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageRenderer.hpp; sourceTree = "<group>"; };
+		B7C7E0A625B55E55003461D1 /* TextureUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureUtils.m; sourceTree = "<group>"; };
+		B7C7E0A725B55E55003461D1 /* Transform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
+		B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
+		B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions.swift"; sourceTree = "<group>"; };
+		B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -185,6 +292,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B715B23F24D28E2200B4C859 /* libAppleCppAPI.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C7E05125B55CDA003461D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +333,7 @@
 		B7316FEB24CF376000157455 = {
 			isa = PBXGroup;
 			children = (
+				B7C7E05525B55CDA003461D1 /* HeroX */,
 				B7316FF624CF376000157455 /* Hero */,
 				B7316FF524CF376000157455 /* Products */,
 				B715B23824D28B0F00B4C859 /* Frameworks */,
@@ -229,6 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				B7316FF424CF376000157455 /* Hero.app */,
+				B7C7E05425B55CDA003461D1 /* HeroX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -454,6 +570,179 @@
 			name = "Cpp ObjC Interop";
 			sourceTree = "<group>";
 		};
+		B7C7E05525B55CDA003461D1 /* HeroX */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E0C225B55E5C003461D1 /* Graphics */,
+				B7C7E05625B55CDA003461D1 /* AppDelegate.swift */,
+				B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */,
+				B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */,
+				B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */,
+				B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */,
+				B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */,
+				B7C7E06D25B55E53003461D1 /* HeroX-Bridging-Header.h */,
+				B7C7E05C25B55CDA003461D1 /* Main.storyboard */,
+				B7C7E05F25B55CDB003461D1 /* Assets.xcassets */,
+				B7C7E06125B55CDB003461D1 /* LaunchScreen.storyboard */,
+				B7C7E06425B55CDB003461D1 /* Info.plist */,
+			);
+			path = HeroX;
+			sourceTree = "<group>";
+		};
+		B7C7E0C225B55E5C003461D1 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E0C725B55EC1003461D1 /* Core */,
+				B7C7E0C925B55FE6003461D1 /* Components */,
+				B7C7E0D325B5615B003461D1 /* Scene */,
+				B7C7E0CF25B5605F003461D1 /* SceneObject */,
+				B7C7E0D225B5611A003461D1 /* SphericalCoord */,
+				B7C7E09B25B55E55003461D1 /* Math.cpp */,
+				B7C7E07225B55E54003461D1 /* Math.hpp */,
+				B7C7E0A225B55E55003461D1 /* Shaders.metal */,
+				B7C7E08D25B55E54003461D1 /* ShaderTypes.h */,
+				B7C7E06E25B55E54003461D1 /* SIMD+Extensions.swift */,
+				B7C7E08425B55E54003461D1 /* TextureUtils.h */,
+				B7C7E0A625B55E55003461D1 /* TextureUtils.m */,
+				B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
+		B7C7E0C725B55EC1003461D1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E0D025B5608A003461D1 /* UIRepresentable */,
+				B7C7E0C825B55ED0003461D1 /* Component */,
+				B7C7E0A125B55E55003461D1 /* UIRepresentableObserver.h */,
+				B7C7E08F25B55E54003461D1 /* CppWrapper.h */,
+				B7C7E09A25B55E55003461D1 /* CppWrapper.mm */,
+				B7C7E09E25B55E55003461D1 /* ObjCObjectRegistry.cpp */,
+				B7C7E08925B55E54003461D1 /* ObjCObjectRegistry.hpp */,
+				B7C7E09225B55E55003461D1 /* RemovedComponentRegistry.cpp */,
+				B7C7E07525B55E54003461D1 /* RemovedComponentRegistry.hpp */,
+				B7C7E07E25B55E54003461D1 /* ComponentRegistry.hpp */,
+				B7C7E08325B55E54003461D1 /* ComponentTypeInfo.cpp */,
+				B7C7E08025B55E54003461D1 /* ComponentTypeInfo.hpp */,
+				B7C7E08A25B55E54003461D1 /* RenderingContext.h */,
+				B7C7E07025B55E54003461D1 /* RenderingContext.m */,
+				B7C7E09325B55E55003461D1 /* Renderer.hpp */,
+				B7C7E07425B55E54003461D1 /* Renderer.h */,
+				B7C7E07725B55E54003461D1 /* Renderer.mm */,
+				B7C7E07A25B55E54003461D1 /* RendererFlag.h */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		B7C7E0C825B55ED0003461D1 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E09925B55E55003461D1 /* Component.cpp */,
+				B7C7E07B25B55E54003461D1 /* Component.h */,
+				B7C7E09825B55E55003461D1 /* Component.hpp */,
+				B7C7E09725B55E55003461D1 /* Component.mm */,
+			);
+			name = Component;
+			sourceTree = "<group>";
+		};
+		B7C7E0C925B55FE6003461D1 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E0D125B560F6003461D1 /* Transform */,
+				B7C7E0CE25B5602D003461D1 /* LineRenderer */,
+				B7C7E0CB25B56003003461D1 /* ImageRenderer */,
+				B7C7E0CA25B55FF8003461D1 /* Camera */,
+				B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */,
+				B7C7E07925B55E54003461D1 /* SelectedObjectMarker.hpp */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		B7C7E0CA25B55FF8003461D1 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E09D25B55E55003461D1 /* Camera.cpp */,
+				B7C7E07825B55E54003461D1 /* Camera.h */,
+				B7C7E07D25B55E54003461D1 /* Camera.hpp */,
+				B7C7E09125B55E55003461D1 /* Camera.mm */,
+			);
+			name = Camera;
+			sourceTree = "<group>";
+		};
+		B7C7E0CB25B56003003461D1 /* ImageRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E06F25B55E54003461D1 /* ImageRenderer.h */,
+				B7C7E0A525B55E55003461D1 /* ImageRenderer.hpp */,
+				B7C7E08525B55E54003461D1 /* ImageRenderer.mm */,
+			);
+			name = ImageRenderer;
+			sourceTree = "<group>";
+		};
+		B7C7E0CE25B5602D003461D1 /* LineRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E09025B55E55003461D1 /* LineRenderer.h */,
+				B7C7E09F25B55E55003461D1 /* LineRenderer.hpp */,
+				B7C7E08E25B55E54003461D1 /* LineRenderer.mm */,
+			);
+			name = LineRenderer;
+			sourceTree = "<group>";
+		};
+		B7C7E0CF25B5605F003461D1 /* SceneObject */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E08C25B55E54003461D1 /* SceneObject.cpp */,
+				B7C7E08625B55E54003461D1 /* SceneObject.h */,
+				B7C7E08225B55E54003461D1 /* SceneObject.hpp */,
+				B7C7E07625B55E54003461D1 /* SceneObject.mm */,
+			);
+			name = SceneObject;
+			sourceTree = "<group>";
+		};
+		B7C7E0D025B5608A003461D1 /* UIRepresentable */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E07F25B55E54003461D1 /* UIRepresentable.h */,
+				B7C7E07C25B55E54003461D1 /* UIRepresentable.hpp */,
+				B7C7E08825B55E54003461D1 /* UIRepresentable.mm */,
+			);
+			name = UIRepresentable;
+			sourceTree = "<group>";
+		};
+		B7C7E0D125B560F6003461D1 /* Transform */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E07325B55E54003461D1 /* Transform.cpp */,
+				B7C7E08725B55E54003461D1 /* Transform.h */,
+				B7C7E0A025B55E55003461D1 /* Transform.hpp */,
+				B7C7E0A725B55E55003461D1 /* Transform.mm */,
+			);
+			name = Transform;
+			sourceTree = "<group>";
+		};
+		B7C7E0D225B5611A003461D1 /* SphericalCoord */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */,
+				B7C7E09625B55E55003461D1 /* SphericalCoord.h */,
+				B7C7E0A425B55E55003461D1 /* SphericalCoord.hpp */,
+				B7C7E08B25B55E54003461D1 /* SphericalCoord.mm */,
+			);
+			name = SphericalCoord;
+			sourceTree = "<group>";
+		};
+		B7C7E0D325B5615B003461D1 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E09C25B55E55003461D1 /* Scene.cpp */,
+				B7C7E09425B55E55003461D1 /* Scene.h */,
+				B7C7E07125B55E54003461D1 /* Scene.hpp */,
+				B7C7E09525B55E55003461D1 /* Scene.mm */,
+			);
+			name = Scene;
+			sourceTree = "<group>";
+		};
 		B7DD544E24FC190E00163947 /* ProjectBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -498,18 +787,39 @@
 			productReference = B7316FF424CF376000157455 /* Hero.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B7C7E05325B55CDA003461D1 /* HeroX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7C7E06725B55CDB003461D1 /* Build configuration list for PBXNativeTarget "HeroX" */;
+			buildPhases = (
+				B7C7E05025B55CDA003461D1 /* Sources */,
+				B7C7E05125B55CDA003461D1 /* Frameworks */,
+				B7C7E05225B55CDA003461D1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeroX;
+			productName = HeroX;
+			productReference = B7C7E05425B55CDA003461D1 /* HeroX.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		B7316FEC24CF376000157455 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1200;
+				LastSwiftUpdateCheck = 1230;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					B7316FF324CF376000157455 = {
 						CreatedOnToolsVersion = 12.0;
 						LastSwiftMigration = 1200;
+					};
+					B7C7E05325B55CDA003461D1 = {
+						CreatedOnToolsVersion = 12.3;
+						LastSwiftMigration = 1230;
 					};
 				};
 			};
@@ -527,6 +837,7 @@
 			projectRoot = "";
 			targets = (
 				B7316FF324CF376000157455 /* Hero */,
+				B7C7E05325B55CDA003461D1 /* HeroX */,
 			);
 		};
 /* End PBXProject section */
@@ -538,6 +849,16 @@
 			files = (
 				B7316FFF24CF376200157455 /* Preview Assets.xcassets in Resources */,
 				B7316FFC24CF376200157455 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C7E05225B55CDA003461D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7C7E06325B55CDB003461D1 /* LaunchScreen.storyboard in Resources */,
+				B7C7E06025B55CDB003461D1 /* Assets.xcassets in Resources */,
+				B7C7E05E25B55CDA003461D1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,7 +931,66 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B7C7E05025B55CDA003461D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7C7E0B025B55E55003461D1 /* UIRepresentable.mm in Sources */,
+				B7C7E0BB25B55E55003461D1 /* Scene.cpp in Sources */,
+				B7C7E0BE25B55E55003461D1 /* Shaders.metal in Sources */,
+				B7C7E0AA25B55E55003461D1 /* Transform.cpp in Sources */,
+				B7C7E0A825B55E55003461D1 /* SIMD+Extensions.swift in Sources */,
+				B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */,
+				B7C7E0BC25B55E55003461D1 /* Camera.cpp in Sources */,
+				B7C7E0B125B55E55003461D1 /* SphericalCoord.mm in Sources */,
+				B7C7E0AC25B55E55003461D1 /* Renderer.mm in Sources */,
+				B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */,
+				B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */,
+				B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */,
+				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
+				B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */,
+				B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */,
+				B7C7E0C025B55E55003461D1 /* TextureUtils.m in Sources */,
+				B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */,
+				B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */,
+				B7C7E0AF25B55E55003461D1 /* ImageRenderer.mm in Sources */,
+				B7C7E0B825B55E55003461D1 /* Component.cpp in Sources */,
+				B7C7E0AB25B55E55003461D1 /* SceneObject.mm in Sources */,
+				B7C7E0B425B55E55003461D1 /* Camera.mm in Sources */,
+				B7C7E0BD25B55E55003461D1 /* ObjCObjectRegistry.cpp in Sources */,
+				B7C7E0B325B55E55003461D1 /* LineRenderer.mm in Sources */,
+				B7C7E0B625B55E55003461D1 /* Scene.mm in Sources */,
+				B7C7E0AE25B55E55003461D1 /* ComponentTypeInfo.cpp in Sources */,
+				B7C7E0B525B55E55003461D1 /* RemovedComponentRegistry.cpp in Sources */,
+				B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */,
+				B7C7E0B725B55E55003461D1 /* Component.mm in Sources */,
+				B7C7E0BA25B55E55003461D1 /* Math.cpp in Sources */,
+				B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */,
+				B7C7E0B225B55E55003461D1 /* SceneObject.cpp in Sources */,
+				B7C7E0D725B56500003461D1 /* GraphicsViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B7C7E05C25B55CDA003461D1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B7C7E05D25B55CDA003461D1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B7C7E06125B55CDB003461D1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B7C7E06225B55CDB003461D1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B731700124CF376200157455 /* Debug */ = {
@@ -784,6 +1164,53 @@
 			};
 			name = Release;
 		};
+		B7C7E06525B55CDB003461D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M369BC24W9;
+				INFOPLIST_FILE = HeroX/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.HeroX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "HeroX/HeroX-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7C7E06625B55CDB003461D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M369BC24W9;
+				INFOPLIST_FILE = HeroX/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.HeroX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "HeroX/HeroX-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -801,6 +1228,15 @@
 			buildConfigurations = (
 				B731700424CF376200157455 /* Debug */,
 				B731700524CF376200157455 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7C7E06725B55CDB003461D1 /* Build configuration list for PBXNativeTarget "HeroX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7C7E06525B55CDB003461D1 /* Debug */,
+				B7C7E06625B55CDB003461D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
