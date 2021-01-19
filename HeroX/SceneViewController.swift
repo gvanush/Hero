@@ -17,6 +17,8 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
      
         setupScene()
+        
+        setupInspector()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -26,7 +28,23 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func setupScene() {
+    private func setupInspector() {
+        let slidingVC = SlidingViewController()
+        
+        installViewController(slidingVC) { slidingView in
+            slidingView.frame = self.view.bounds
+            slidingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            view.addSubview(slidingView)
+        }
+        
+        slidingVC.headerView = UIView()
+        slidingVC.headerView!.backgroundColor = .red
+        
+        slidingVC.bodyViewController = UIViewController()
+        slidingVC.bodyViewController!.view.backgroundColor = .cyan
+    }
+    
+    private func setupScene() {
         
         setupCamera()
         setupAxis()

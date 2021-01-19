@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */; };
 		B70CFB8D2545EE2400E8E30A /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70CFB8C2545EE2400E8E30A /* Math.swift */; };
 		B715B23F24D28E2200B4C859 /* libAppleCppAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */; };
 		B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */; };
@@ -98,6 +99,8 @@
 		B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */; };
 		B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */; };
 		B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */; };
+		B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */; };
+		B7C7E0F525B6BF54003461D1 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F425B6BF54003461D1 /* Math.swift */; };
 		B7DD545124FC197400163947 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545024FC197400163947 /* ViewModifiers.swift */; };
 		B7DD545324FC1DEC00163947 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */; };
 		B7DD545724FE238500163947 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DD545624FE238500163947 /* UIApplication+Extensions.swift */; };
@@ -108,6 +111,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		B70CFB8C2545EE2400E8E30A /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -276,6 +280,8 @@
 		B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions.swift"; sourceTree = "<group>"; };
 		B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
+		B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingViewController.swift; sourceTree = "<group>"; };
+		B7C7E0F425B6BF54003461D1 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		B7DD545024FC197400163947 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		B7DD545224FC1DEC00163947 /* ProjectBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
 		B7DD545624FE238500163947 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -573,6 +579,7 @@
 		B7C7E05525B55CDA003461D1 /* HeroX */ = {
 			isa = PBXGroup;
 			children = (
+				B7C7E0F425B6BF54003461D1 /* Math.swift */,
 				B7C7E0C225B55E5C003461D1 /* Graphics */,
 				B7C7E05625B55CDA003461D1 /* AppDelegate.swift */,
 				B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */,
@@ -585,6 +592,8 @@
 				B7C7E05F25B55CDB003461D1 /* Assets.xcassets */,
 				B7C7E06125B55CDB003461D1 /* LaunchScreen.storyboard */,
 				B7C7E06425B55CDB003461D1 /* Info.plist */,
+				B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */,
+				B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */,
 			);
 			path = HeroX;
 			sourceTree = "<group>";
@@ -939,6 +948,7 @@
 				B7C7E0BB25B55E55003461D1 /* Scene.cpp in Sources */,
 				B7C7E0BE25B55E55003461D1 /* Shaders.metal in Sources */,
 				B7C7E0AA25B55E55003461D1 /* Transform.cpp in Sources */,
+				B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */,
 				B7C7E0A825B55E55003461D1 /* SIMD+Extensions.swift in Sources */,
 				B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */,
 				B7C7E0BC25B55E55003461D1 /* Camera.cpp in Sources */,
@@ -954,10 +964,12 @@
 				B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */,
 				B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */,
 				B7C7E0AF25B55E55003461D1 /* ImageRenderer.mm in Sources */,
+				B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */,
 				B7C7E0B825B55E55003461D1 /* Component.cpp in Sources */,
 				B7C7E0AB25B55E55003461D1 /* SceneObject.mm in Sources */,
 				B7C7E0B425B55E55003461D1 /* Camera.mm in Sources */,
 				B7C7E0BD25B55E55003461D1 /* ObjCObjectRegistry.cpp in Sources */,
+				B7C7E0F525B6BF54003461D1 /* Math.swift in Sources */,
 				B7C7E0B325B55E55003461D1 /* LineRenderer.mm in Sources */,
 				B7C7E0B625B55E55003461D1 /* Scene.mm in Sources */,
 				B7C7E0AE25B55E55003461D1 /* ComponentTypeInfo.cpp in Sources */,
@@ -1172,14 +1184,14 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M369BC24W9;
+				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
 				INFOPLIST_FILE = HeroX/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.HeroX;
+				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "HeroX/HeroX-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1196,14 +1208,14 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = M369BC24W9;
+				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
 				INFOPLIST_FILE = HeroX/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.HeroX;
+				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "HeroX/HeroX-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
