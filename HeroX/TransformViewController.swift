@@ -101,7 +101,8 @@ class TransformViewController: UIViewController {
     }
     
     @IBAction func positionElementTextFieldDidBeginEditing(_ textField: UITextField) {
-        textField.text = rawPositionFor(VectorElement(rawValue: textField.tag)!)
+        textField.placeholder = rawPositionFor(VectorElement(rawValue: textField.tag)!)
+        textField.text = nil
     }
     
     @IBAction func positionElementTextFieldDidEndEditing(_ textField: UITextField) {
@@ -167,7 +168,8 @@ class TransformViewController: UIViewController {
     }
     
     @IBAction func rotationElementTextFieldDidBeginEditing(_ textField: UITextField) {
-        textField.text = rawRotationFor(VectorElement(rawValue: textField.tag)!)
+        textField.placeholder = rawRotationFor(VectorElement(rawValue: textField.tag)!)
+        textField.text = nil
     }
     
     @IBAction func rotationElementTextFieldDidEndEditing(_ textField: UITextField) {
@@ -231,7 +233,8 @@ class TransformViewController: UIViewController {
     }
     
     @IBAction func scaleElementTextFieldDidBeginEditing(_ textField: UITextField) {
-        textField.text = rawScaleFor(VectorElement(rawValue: textField.tag)!)
+        textField.placeholder = rawScaleFor(VectorElement(rawValue: textField.tag)!)
+        textField.text = nil
     }
     
     @IBAction func scaleElementTextFieldDidEndEditing(_ textField: UITextField) {
