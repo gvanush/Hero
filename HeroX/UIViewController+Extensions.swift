@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIViewController {
+@nonobjc extension UIViewController {
     
     func installViewController(_ viewController: UIViewController, viewSetup: (UIView) -> Void) {
         assert(viewController.parent == nil)
@@ -21,6 +21,10 @@ extension UIViewController {
         viewController.willMove(toParent: nil)
         viewController.view.removeFromSuperview()
         viewController.removeFromParent()
+    }
+    
+    var isVisible: Bool {
+        isViewLoaded && view.window != nil
     }
     
 }

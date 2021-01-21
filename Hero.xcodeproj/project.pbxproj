@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */; };
+		B709763225B7866400F5751B /* ObjectToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B709763125B7866400F5751B /* ObjectToolbar.xib */; };
+		B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709765625B8BD1A00F5751B /* TransformViewController.swift */; };
 		B70CFB8D2545EE2400E8E30A /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70CFB8C2545EE2400E8E30A /* Math.swift */; };
 		B715B23F24D28E2200B4C859 /* libAppleCppAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */; };
+		B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */; };
 		B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */; };
 		B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */; };
 		B723BB1F250DD229007C989E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B723BB1E250DD229007C989E /* Settings.swift */; };
@@ -112,11 +115,14 @@
 
 /* Begin PBXFileReference section */
 		B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		B709763125B7866400F5751B /* ObjectToolbar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ObjectToolbar.xib; sourceTree = "<group>"; };
+		B709765625B8BD1A00F5751B /* TransformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformViewController.swift; sourceTree = "<group>"; };
 		B70CFB8C2545EE2400E8E30A /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B24324D2A2DB00B4C859 /* CppWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppWrapper.h; sourceTree = "<group>"; };
+		B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItemModel.swift; sourceTree = "<group>"; };
 		B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowserModel.swift; sourceTree = "<group>"; };
 		B723BB1E250DD229007C989E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -594,6 +600,9 @@
 				B7C7E06425B55CDB003461D1 /* Info.plist */,
 				B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */,
 				B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */,
+				B709763125B7866400F5751B /* ObjectToolbar.xib */,
+				B709765625B8BD1A00F5751B /* TransformViewController.swift */,
+				B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */,
 			);
 			path = HeroX;
 			sourceTree = "<group>";
@@ -865,6 +874,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B709763225B7866400F5751B /* ObjectToolbar.xib in Resources */,
 				B7C7E06325B55CDB003461D1 /* LaunchScreen.storyboard in Resources */,
 				B7C7E06025B55CDB003461D1 /* Assets.xcassets in Resources */,
 				B7C7E05E25B55CDA003461D1 /* Main.storyboard in Resources */,
@@ -953,11 +963,13 @@
 				B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */,
 				B7C7E0BC25B55E55003461D1 /* Camera.cpp in Sources */,
 				B7C7E0B125B55E55003461D1 /* SphericalCoord.mm in Sources */,
+				B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */,
 				B7C7E0AC25B55E55003461D1 /* Renderer.mm in Sources */,
 				B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */,
 				B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */,
 				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
+				B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */,
 				B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */,
 				B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */,
 				B7C7E0C025B55E55003461D1 /* TextureUtils.m in Sources */,

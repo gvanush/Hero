@@ -19,12 +19,12 @@ protocol SlidingViewControllerDelegate {
 
 class SlidingViewController: UIViewController {
     
-    private class ContentHitTestView: UIView {
+    private class HitTestView: UIView {
         
-        var contentView: UIView?
+        var targetView: UIView?
         
         override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-            guard let contentView = self.contentView else { return nil }
+            guard let contentView = self.targetView, !isHidden else { return nil }
             
             let pointInContentView = contentView.convert(point, from: self)
             
@@ -37,13 +37,17 @@ class SlidingViewController: UIViewController {
     }
     
     override func loadView() {
-        self.view = ContentHitTestView()
+        self.view = HitTestView()
     }
     
     override func viewDidLoad() {
         view.backgroundColor = .clear
         
-        setupContentView()
+        setupViews()
+        
+        if let bgrView = backgroundView {
+            setupBackgroundView(bgrView)
+        }
         
         if let headerView = self.headerView {
             setupHeaderView(headerView)
@@ -54,26 +58,66 @@ class SlidingViewController: UIViewController {
         }
     }
     
-    private func setupContentView() {
-        contentView = UIView(frame: view.bounds)
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.backgroundColor = .clear
-        view.addSubview(contentView)
-        
-        // Setup layout
+    override func viewDidAppear(_ animated: Bool) {
         setupPositionContraint(isOpen: state == .open)
-        let constraints = [
-            contentView.heightAnchor.constraint(equalTo: view.heightAnchor),
-            contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            contentView.widthAnchor.constraint(equalTo: view.widthAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+    }
+    
+    private func setupViews() {
         
-        let hitTestView = view as! ContentHitTestView
-        hitTestView.contentView = contentView
+        // Setup sliding view
+        slidingView = UIView(frame: view.bounds)
+        slidingView.translatesAutoresizingMaskIntoConstraints = false
+        slidingView.backgroundColor = .clear
+        view.addSubview(slidingView)
+        
+        let hitTestView = view as! HitTestView
+        hitTestView.targetView = slidingView
         
         panGR = UIPanGestureRecognizer(target: self, action: #selector(onPan(panGR:)))
-        contentView.addGestureRecognizer(panGR)
+        slidingView.addGestureRecognizer(panGR)
+        
+        // Setup content view
+        contentView = UIView(frame: slidingView.bounds)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.backgroundColor = .clear
+        slidingView.addSubview(contentView)
+    }
+    
+    private func setupPositionContraint(isOpen: Bool) {
+        // Layout sliding view
+        if slidingViewPosLayoutConstraint == nil {
+            let slidingViewConstraints = [
+                slidingView.heightAnchor.constraint(equalTo: view.heightAnchor),
+                slidingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                slidingView.widthAnchor.constraint(equalTo: view.widthAnchor)
+            ]
+            NSLayoutConstraint.activate(slidingViewConstraints)
+        } else {
+            slidingViewPosLayoutConstraint.isActive = false
+        }
+        if isOpen {
+            slidingViewPosLayoutConstraint = slidingView.topAnchor.constraint(equalTo: view.topAnchor)
+        } else {
+            slidingViewPosLayoutConstraint = slidingView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -headerHeight)
+        }
+        slidingViewPosLayoutConstraint.isActive = true
+        
+        // Layout content view
+        if contentViewPosLayoutConstraint == nil {
+            let contentViewConstraints = [
+                contentView.heightAnchor.constraint(equalTo: slidingView.heightAnchor, constant: -view.safeAreaLayoutGuide.layoutFrame.minY),
+                contentView.centerXAnchor.constraint(equalTo: slidingView.centerXAnchor),
+                contentView.widthAnchor.constraint(equalTo: slidingView.widthAnchor)
+            ]
+            NSLayoutConstraint.activate(contentViewConstraints)
+        } else {
+            contentViewPosLayoutConstraint.isActive = false
+        }
+        
+        contentViewPosLayoutConstraint = contentView.topAnchor.constraint(equalTo: slidingView.topAnchor, constant: (isOpen ? view.safeAreaLayoutGuide.layoutFrame.minY : 0.0))
+        
+        contentViewPosLayoutConstraint.isActive = true
+        
     }
     
     override func show(_ vc: UIViewController, sender: Any?) {
@@ -85,23 +129,23 @@ class SlidingViewController: UIViewController {
         case .began:
             wasOpen = (state == .open)
             internalState = .sliding
-            startPos = contentPos
+            startPos = slidingViewPos
         case .changed:
             let translation = panGR.translation(in: view)
-            contentPos = startPos + translation.y
+            slidingViewPos = startPos + translation.y
         case .ended, .cancelled:
             let velocity = panGR.velocity(in: view)
             
             let kSpeedThreshold: CGFloat = 500.0
-            let shouldOpen = (abs(velocity.y) <= kSpeedThreshold ? normContentPos < 0.5 : velocity.y <= 0.0)
+            let shouldOpen = (abs(velocity.y) <= kSpeedThreshold ? normSlidingViewPos < 0.5 : velocity.y <= 0.0)
             
             let remainingDistance: CGFloat
             let speed: CGFloat
             if shouldOpen {
-                remainingDistance = contentPos
+                remainingDistance = slidingViewPos
                 speed = -min(velocity.y, 0.0)
             } else {
-                remainingDistance = slidingRange - contentPos
+                remainingDistance = slidingRange - slidingViewPos
                 speed = max(velocity.y, 0.0)
             }
             
@@ -127,41 +171,30 @@ class SlidingViewController: UIViewController {
         get { internalState }
     }
     
-    private func setupPositionContraint(isOpen: Bool) {
-        if contentPosLayoutConstraint != nil {
-            contentPosLayoutConstraint.isActive = false
-        }
-        if isOpen {
-            contentPosLayoutConstraint = contentView.topAnchor.constraint(equalTo: view.topAnchor)
-        } else {
-            contentPosLayoutConstraint = contentView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -headerHeight)
-        }
-        contentPosLayoutConstraint.isActive = true
-    }
-    
     private var slidingRange: CGFloat {
         view.bounds.height - headerHeight
     }
     
     // Is 0 when view is open and 'slidingRange' when closed
-    private var contentPos: CGFloat {
+    private var slidingViewPos: CGFloat {
         set {
             assert(state == .sliding)
             if wasOpen {
-                contentPosLayoutConstraint.constant = clamp(newValue, min: 0.0, max: slidingRange)
+                slidingViewPosLayoutConstraint.constant = clamp(newValue, min: 0.0, max: slidingRange)
             } else {
-                contentPosLayoutConstraint.constant = clamp(newValue - view.bounds.height, min: -view.bounds.height, max: -headerHeight)
+                slidingViewPosLayoutConstraint.constant = clamp(newValue - view.bounds.height, min: -view.bounds.height, max: -headerHeight)
             }
+            contentViewPosLayoutConstraint.constant = (1.0 - normSlidingViewPos) * view.safeAreaLayoutGuide.layoutFrame.minY
         }
         get {
             assert(state == .sliding)
-            return contentPosLayoutConstraint.constant + (wasOpen ? 0.0 : view.bounds.height)
+            return slidingViewPosLayoutConstraint.constant + (wasOpen ? 0.0 : view.bounds.height)
         }
     }
     
-    private var normContentPos: CGFloat {
-        set { contentPos = newValue * slidingRange }
-        get { contentPos / slidingRange }
+    private var normSlidingViewPos: CGFloat {
+        set { slidingViewPos = newValue * slidingRange }
+        get { slidingViewPos / slidingRange }
     }
     
     private var internalState = SlidingViewState.open {
@@ -179,11 +212,11 @@ class SlidingViewController: UIViewController {
     // MARK: Body
     var bodyViewController: UIViewController? {
         willSet {
-            if let contentViewController = self.bodyViewController {
-                uninstallViewController(contentViewController)
+            if let bodyViewController = self.bodyViewController {
+                uninstallViewController(bodyViewController)
             }
-            if let newContentVC = newValue {
-                setupBodyViewController(newContentVC)
+            if let newBodyVC = newValue {
+                setupBodyViewController(newBodyVC)
             }
         }
     }
@@ -240,10 +273,31 @@ class SlidingViewController: UIViewController {
         
     }
     
+    // MARK: Background
+    var backgroundView: UIView? {
+        willSet {
+            if let bgrView = backgroundView {
+                bgrView.removeFromSuperview()
+            }
+            if let newBgr = newValue {
+                setupBackgroundView(newBgr)
+            }
+        }
+    }
+    
+    private func setupBackgroundView(_ bgrView: UIView) {
+        guard isViewLoaded else { return }
+        bgrView.frame = slidingView.bounds
+        bgrView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        slidingView.insertSubview(bgrView, at: 0)
+    }
+    
     private var headerViewHeightLayoutConstraint: NSLayoutConstraint?
     
+    private var slidingView: UIView!
     private var contentView: UIView!
-    private var contentPosLayoutConstraint: NSLayoutConstraint!
+    private var slidingViewPosLayoutConstraint: NSLayoutConstraint!
+    private var contentViewPosLayoutConstraint: NSLayoutConstraint!
     private var panGR: UIGestureRecognizer!
     private var startPos: CGFloat = 0.0
     private var wasOpen = false

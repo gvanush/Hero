@@ -10,20 +10,6 @@ import MetalKit
 
 class GraphicsViewController: UIViewController, MTKViewDelegate {
     
-    init(scene: Scene, nibName: String?, bundle: Bundle?) {
-        self.scene = scene
-        super.init(nibName: nibName, bundle: bundle)
-    }
-    
-    init?(scene: Scene, coder: NSCoder) {
-        self.scene = scene
-        super.init(coder: coder)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,16 +28,16 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        scene.isTurnedOn = true
+        scene?.isTurnedOn = true
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        scene.isTurnedOn = false
+        scene?.isTurnedOn = false
     }
     
     private func updateViewportSize(_ size: CGSize) {
         renderingContext.viewportSize = size.simd2
-        scene.viewCamera.camera.aspectRatio = Float(size.width / size.height)
+        scene?.viewCamera.camera.aspectRatio = Float(size.width / size.height)
     }
     
     // MARK: MTKViewDelegate
@@ -68,7 +54,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         
         renderingContext.renderPassDescriptor = renderPassDescriptor
         
-        renderer.render(scene, context: renderingContext)
+        renderer.render(scene!, context: renderingContext)
         
         if let drawable = graphicsView.currentDrawable {
             drawable.present()
@@ -76,8 +62,28 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         
     }
     
+    var scene: Scene? {
+        willSet {
+            
+            guard isVisible else { return }
+            
+            if let scene = scene {
+                scene.isTurnedOn = false
+            }
+            if let newScene = scene {
+                newScene.isTurnedOn = true
+                graphicsView.isPaused = false
+            } else {
+                graphicsView.isPaused = true
+            }
+        }
+        
+        didSet {
+            updateViewportSize(graphicsView.drawableSize)
+        }
+    }
+    
     let renderer = Renderer.make()!
     private(set) var graphicsView: MTKView! = nil
-    let scene: Scene
     private let renderingContext = RenderingContext()
 }
