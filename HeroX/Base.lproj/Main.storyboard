@@ -36,14 +36,14 @@
                                 <rect key="frame" x="20" y="44" width="374" height="818"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="SMb-JT-ZRR">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="517.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="557.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="U3f-jq-MpA" userLabel="Position">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="152.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Position" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WPa-TP-gAo">
                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -116,11 +116,11 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="zS6-Nl-cFH" userLabel="Rotation">
-                                                <rect key="frame" x="0.0" y="182.5" width="374" height="152.5"/>
+                                                <rect key="frame" x="0.0" y="182.5" width="374" height="192.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rotation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vCW-1w-mlU">
                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -190,14 +190,18 @@
                                                             </textField>
                                                         </subviews>
                                                     </stackView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AjJ-5b-Nwv">
+                                                        <rect key="frame" x="0.0" y="162.5" width="374" height="30"/>
+                                                        <state key="normal" title="Euler XYZ"/>
+                                                    </button>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="WS6-rZ-ZED" userLabel="Scale">
-                                                <rect key="frame" x="0.0" y="365" width="374" height="152.5"/>
+                                                <rect key="frame" x="0.0" y="405" width="374" height="152.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scale" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gI0-KW-aam">
                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -296,6 +300,7 @@
                         <outlet property="positionXTextField" destination="06C-iu-4hG" id="ehc-Cw-6Py"/>
                         <outlet property="positionYTextField" destination="X9F-vs-hHF" id="0Ui-vD-dAK"/>
                         <outlet property="positionZTextField" destination="9Xd-yx-C7f" id="RH7-2e-Ctr"/>
+                        <outlet property="rotationModeButton" destination="AjJ-5b-Nwv" id="onY-0N-BHB"/>
                         <outlet property="rotationXTextField" destination="qMm-Mb-uA7" id="v5a-2C-Tsy"/>
                         <outlet property="rotationYTextField" destination="IQV-7y-DCK" id="HXJ-xg-VVK"/>
                         <outlet property="rotationZTextField" destination="RML-M6-8C1" id="oFC-13-y0y"/>
@@ -312,7 +317,7 @@
     </scenes>
     <resources>
         <namedColor name="MonoThin">
-            <color red="1" green="1" blue="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

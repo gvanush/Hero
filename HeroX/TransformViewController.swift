@@ -26,7 +26,6 @@ class TransformViewController: UIViewController {
         configPositionViews()
         configRotationViews()
         configScaleViews()
-        
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
@@ -142,6 +141,10 @@ class TransformViewController: UIViewController {
         rotationXTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onRotationTextFieldDonePressed)), onCancel: (self, #selector(onRotationElementTextFieldCancelPressed)), tag: rotationXTextField.tag)
         rotationYTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onRotationTextFieldDonePressed)), onCancel: (self, #selector(onRotationElementTextFieldCancelPressed)), tag: rotationYTextField.tag)
         rotationZTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onRotationTextFieldDonePressed)), onCancel: (self, #selector(onRotationElementTextFieldCancelPressed)), tag: rotationZTextField.tag)
+        
+        let items = (0...5).map { UIAction(title: $0.description) { action in print("Menu Action '\(action.title)'") } }
+        rotationModeButton.menu = UIMenu(title: "", children: items)
+        rotationModeButton.showsMenuAsPrimaryAction = true
     }
     
     private func rotationTextFieldForVectorElement(_ element: VectorElement) -> UITextField {
@@ -197,9 +200,33 @@ class TransformViewController: UIViewController {
         rotationFormatter.numberFormatter.string(from: NSNumber(value: rad2deg(transform.rotation[element.rawValue])))!
     }
     
+    func nameFor(_ rotationMode: EulerOrder) -> String? {
+        switch rotationMode {
+        case EulerOrder_xyz:
+            return "Euler XYZ"
+        case EulerOrder_xzy:
+            return "Euler XZY"
+        case EulerOrder_yxz:
+            return "Euler YXZ"
+        case EulerOrder_yzx:
+            return "Euler YZX"
+        case EulerOrder_zxy:
+            return "Euler ZXY"
+        case EulerOrder_zyx:
+            return "Euler ZYX"
+        default:
+            return nil
+        }
+    }
+    
+//    var allRotationModes: [EulerOrder] {
+//        [EulerOrder_xyz, EulerOrder_xzy, EulerOrder_yxz, EulerOrder_yzx, EulerOrder_zxy]
+//    }
+    
     @IBOutlet weak var rotationXTextField: UITextField!
     @IBOutlet weak var rotationYTextField: UITextField!
     @IBOutlet weak var rotationZTextField: UITextField!
+    @IBOutlet weak var rotationModeButton: UIButton!
     private let rotationFormatter = MeasurementFormatter()
     
     // MARK: Scale

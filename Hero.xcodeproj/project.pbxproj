@@ -13,6 +13,8 @@
 		B70CFB8D2545EE2400E8E30A /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70CFB8C2545EE2400E8E30A /* Math.swift */; };
 		B715B23F24D28E2200B4C859 /* libAppleCppAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */; };
 		B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */; };
+		B718AD1A25BAA5C900C05912 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */; };
+		B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */; };
 		B71DE108250BCF590013B8F4 /* ProjectItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */; };
 		B71DE10A250BD2E30013B8F4 /* ProjectBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */; };
 		B723BB1F250DD229007C989E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B723BB1E250DD229007C989E /* Settings.swift */; };
@@ -123,6 +125,10 @@
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B24324D2A2DB00B4C859 /* CppWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CppWrapper.h; sourceTree = "<group>"; };
 		B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
+		B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GeometryUtils_Common.c; sourceTree = "<group>"; };
+		B718AD1725BAA5C900C05912 /* GeometryUtils_Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeometryUtils_Common.h; sourceTree = "<group>"; };
+		B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryUtils.cpp; sourceTree = "<group>"; };
+		B718AD1925BAA5C900C05912 /* GeometryUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeometryUtils.hpp; sourceTree = "<group>"; };
 		B71DE107250BCF590013B8F4 /* ProjectItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItemModel.swift; sourceTree = "<group>"; };
 		B71DE109250BD2E30013B8F4 /* ProjectBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBrowserModel.swift; sourceTree = "<group>"; };
 		B723BB1E250DD229007C989E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -340,6 +346,19 @@
 				B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B718AD2025BAAAB400C05912 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */,
+				B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */,
+				B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */,
+				B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */,
+				B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */,
+				B7C7E06E25B55E54003461D1 /* SIMD+Extensions.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		B7316FEB24CF376000157455 = {
@@ -585,24 +604,20 @@
 		B7C7E05525B55CDA003461D1 /* HeroX */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E0F425B6BF54003461D1 /* Math.swift */,
 				B7C7E0C225B55E5C003461D1 /* Graphics */,
+				B718AD2025BAAAB400C05912 /* Extensions */,
 				B7C7E05625B55CDA003461D1 /* AppDelegate.swift */,
 				B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */,
+				B7C7E0F425B6BF54003461D1 /* Math.swift */,
 				B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */,
-				B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */,
-				B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */,
-				B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */,
 				B7C7E06D25B55E53003461D1 /* HeroX-Bridging-Header.h */,
 				B7C7E05C25B55CDA003461D1 /* Main.storyboard */,
 				B7C7E05F25B55CDB003461D1 /* Assets.xcassets */,
 				B7C7E06125B55CDB003461D1 /* LaunchScreen.storyboard */,
 				B7C7E06425B55CDB003461D1 /* Info.plist */,
 				B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */,
-				B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */,
 				B709763125B7866400F5751B /* ObjectToolbar.xib */,
 				B709765625B8BD1A00F5751B /* TransformViewController.swift */,
-				B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */,
 			);
 			path = HeroX;
 			sourceTree = "<group>";
@@ -615,11 +630,14 @@
 				B7C7E0D325B5615B003461D1 /* Scene */,
 				B7C7E0CF25B5605F003461D1 /* SceneObject */,
 				B7C7E0D225B5611A003461D1 /* SphericalCoord */,
+				B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */,
+				B718AD1725BAA5C900C05912 /* GeometryUtils_Common.h */,
+				B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */,
+				B718AD1925BAA5C900C05912 /* GeometryUtils.hpp */,
 				B7C7E09B25B55E55003461D1 /* Math.cpp */,
 				B7C7E07225B55E54003461D1 /* Math.hpp */,
 				B7C7E0A225B55E55003461D1 /* Shaders.metal */,
 				B7C7E08D25B55E54003461D1 /* ShaderTypes.h */,
-				B7C7E06E25B55E54003461D1 /* SIMD+Extensions.swift */,
 				B7C7E08425B55E54003461D1 /* TextureUtils.h */,
 				B7C7E0A625B55E55003461D1 /* TextureUtils.m */,
 				B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */,
@@ -969,6 +987,7 @@
 				B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */,
 				B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */,
 				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
+				B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */,
 				B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */,
 				B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */,
 				B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */,
@@ -991,6 +1010,7 @@
 				B7C7E0BA25B55E55003461D1 /* Math.cpp in Sources */,
 				B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */,
 				B7C7E0B225B55E55003461D1 /* SceneObject.cpp in Sources */,
+				B718AD1A25BAA5C900C05912 /* GeometryUtils_Common.c in Sources */,
 				B7C7E0D725B56500003461D1 /* GraphicsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

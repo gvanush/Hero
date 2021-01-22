@@ -13,7 +13,8 @@ extension UITextField {
         
         let tag = tag ?? 0;
         
-        let toolbar: UIToolbar = UIToolbar()
+        // Frame is necessary to suppress the log errors with autolayout contraints
+        let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0))
         toolbar.barStyle = .default
         toolbar.items = []
         if let onCancel = onCancel {
