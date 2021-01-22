@@ -22,14 +22,18 @@ const simd_float3 kUp = {0.f, 1.f, 0.f};
 const simd_float3 kBackward = {0.f, 0.f, -1.f};
 const simd_float3 kForward = {0.f, 0.f, 1.f};
 
-typedef enum {
-    EulerOrder_xyz,
-    EulerOrder_xzy,
-    EulerOrder_yxz,
-    EulerOrder_yzx,
-    EulerOrder_zxy,
-    EulerOrder_zyx
-} EulerOrder;
+// MARK: Rotation mode
+static const int kRotationModeCount = 6;
+static const int kRotationModeFirst = 0;
+
+typedef enum: int {
+    RotationMode_xyz = kRotationModeFirst,
+    RotationMode_xzy,
+    RotationMode_yxz,
+    RotationMode_yzx,
+    RotationMode_zxy,
+    RotationMode_zyx,
+} RotationMode;
 
 typedef enum {
     Projection_ortographic,

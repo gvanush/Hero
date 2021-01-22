@@ -31,8 +31,8 @@ public:
     inline void setRotation(const simd::float3& rotation);
     inline const simd::float3& rotation() const;
     
-    inline void setEulerOrder(EulerOrder eulerOrder);
-    inline EulerOrder eulerOrder() const;
+    inline void setRotationMode(RotationMode eulerOrder);
+    inline RotationMode rotationMode() const;
     
     const simd::quatf& orientation() const;
     const simd::float4x4& worldMatrix() const;
@@ -47,7 +47,7 @@ private:
     simd::float3 _position {};
     simd::float3 _scale {1.f, 1.f, 1.f};
     simd::float3 _rotation {};
-    EulerOrder _eulerOrder = EulerOrder_yxz;
+    RotationMode _rotationMode = RotationMode_yxz;
     mutable bool _isWorldMatrixValid = true;
     mutable bool _isOrientationValid = true;
 };
@@ -84,14 +84,14 @@ const simd::float3& Transform::rotation() const {
     return _rotation;
 }
 
-void Transform::setEulerOrder(EulerOrder eulerOrder) {
+void Transform::setRotationMode(RotationMode rotationMode) {
     _isWorldMatrixValid = false;
     _isOrientationValid = false;
-    _eulerOrder = eulerOrder;
+    _rotationMode = rotationMode;
 }
 
-EulerOrder Transform::eulerOrder() const {
-    return _eulerOrder;
+RotationMode Transform::rotationMode() const {
+    return _rotationMode;
 }
 
 }

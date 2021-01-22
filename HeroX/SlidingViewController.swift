@@ -40,6 +40,10 @@ class SlidingViewController: UIViewController {
         self.view = HitTestView()
     }
     
+    override var shouldAutomaticallyForwardAppearanceMethods: Bool {
+        false
+    }
+    
     override func viewDidLoad() {
         view.backgroundColor = .clear
         
@@ -58,8 +62,29 @@ class SlidingViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if let bodyVC = bodyViewController, state != .closed {
+            bodyVC.beginAppearanceTransition(true, animated: animated)
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         setupPositionContraint(isOpen: state == .open)
+        if let bodyVC = bodyViewController, state != .closed {
+            bodyVC.endAppearanceTransition()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if let bodyVC = bodyViewController, state != .closed {
+            bodyVC.beginAppearanceTransition(false, animated: animated)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if let bodyVC = bodyViewController, state != .closed {
+            bodyVC.endAppearanceTransition()
+        }
     }
     
     private func setupViews() {
@@ -128,12 +153,18 @@ class SlidingViewController: UIViewController {
         switch panGR.state {
         case .began:
             wasOpen = (state == .open)
+            if !wasOpen {
+                if let bodyVC = bodyViewController {
+                    bodyVC.beginAppearanceTransition(true, animated: false)
+                    bodyVC.endAppearanceTransition()
+                }
+            }
             internalState = .sliding
             startPos = slidingViewPos
         case .changed:
             let translation = panGR.translation(in: view)
             slidingViewPos = startPos + translation.y
-        case .ended, .cancelled:
+        case .ended:
             let velocity = panGR.velocity(in: view)
             
             let kSpeedThreshold: CGFloat = 500.0
@@ -149,12 +180,22 @@ class SlidingViewController: UIViewController {
                 speed = max(velocity.y, 0.0)
             }
             
+            weak var weakBodyViewController = bodyViewController
             let duration = TimeInterval(min(0.3, remainingDistance / speed))
             UIView.animate(withDuration: duration, delay: 0.0, options: .curveEaseOut) {
                 self.internalState = (shouldOpen ? .open : .closed)
                 self.view.layoutIfNeeded()
+            } completion: { _ in
+                if let bodyVC = weakBodyViewController, bodyVC == self.bodyViewController, self.state == .closed {
+                    bodyVC.beginAppearanceTransition(false, animated: false)
+                    bodyVC.endAppearanceTransition()
+                }
             }
 
+            break
+            
+        case .cancelled:
+            internalState = (wasOpen ? .open : .closed)
             break
         default:
             break
@@ -166,6 +207,14 @@ class SlidingViewController: UIViewController {
     public var state: SlidingViewState {
         set {
             guard newValue != .sliding else { return }
+            
+            panGR?.cancel()
+            
+            if let bodyVC = bodyViewController, newValue != state {
+                bodyVC.beginAppearanceTransition(newValue == .open, animated: false)
+                bodyVC.endAppearanceTransition()
+            }
+            
             internalState = newValue
         }
         get { internalState }
@@ -212,11 +261,19 @@ class SlidingViewController: UIViewController {
     // MARK: Body
     var bodyViewController: UIViewController? {
         willSet {
-            if let bodyViewController = self.bodyViewController {
-                uninstallViewController(bodyViewController)
+            if let bodyVC = self.bodyViewController {
+                if state != .closed {
+                    bodyVC.beginAppearanceTransition(false, animated: false)
+                    bodyVC.endAppearanceTransition()
+                }
+                uninstallViewController(bodyVC)
             }
             if let newBodyVC = newValue {
                 setupBodyViewController(newBodyVC)
+                if state != .closed {
+                    newBodyVC.beginAppearanceTransition(true, animated: false)
+                    newBodyVC.endAppearanceTransition()
+                }
             }
         }
     }

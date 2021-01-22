@@ -35,12 +35,12 @@
     return self.cpp->rotation();
 }
 
--(void) setEulerOrder: (EulerOrder) eulerOrder {
-    self.cpp->setEulerOrder(eulerOrder);
+-(void) setRotationMode: (RotationMode) eulerOrder {
+    self.cpp->setRotationMode(eulerOrder);
 }
 
--(EulerOrder)eulerOrder {
-    return self.cpp->eulerOrder();
+-(RotationMode)rotationMode {
+    return self.cpp->rotationMode();
 }
 
 -(simd_float4x4) worldMatrix {

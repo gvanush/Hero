@@ -29,7 +29,7 @@ typedef enum {
     EulerOrder_yzx,
     EulerOrder_zxy,
     EulerOrder_zyx
-} EulerOrder;
+} RotationMode;
 
 typedef enum {
     Projection_ortographic,

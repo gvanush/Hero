@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite) simd_float3 position;
 @property (nonatomic, readwrite) simd_float3 scale;
 @property (nonatomic, readwrite) simd_float3 rotation;
-@property (nonatomic, readwrite) EulerOrder eulerOrder;
+@property (nonatomic, readwrite) RotationMode rotationMode;
 @property (nonatomic, readonly) simd_float4x4 worldMatrix;
 
 @end

@@ -45,6 +45,7 @@ class TransformViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         positionXTextField.text = positionFor(.x)
         positionYTextField.text = positionFor(.y)
         positionZTextField.text = positionFor(.z)
@@ -52,6 +53,7 @@ class TransformViewController: UIViewController {
         rotationXTextField.text = rotationFor(.x)
         rotationYTextField.text = rotationFor(.y)
         rotationZTextField.text = rotationFor(.z)
+        rotationModeButton.setTitle(nameFor(transform.rotationMode)!, for: .normal)
         
         scaleXTextField.text = scaleFor(.x)
         scaleYTextField.text = scaleFor(.y)
@@ -65,7 +67,6 @@ class TransformViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
     }
-    
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -142,7 +143,14 @@ class TransformViewController: UIViewController {
         rotationYTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onRotationTextFieldDonePressed)), onCancel: (self, #selector(onRotationElementTextFieldCancelPressed)), tag: rotationYTextField.tag)
         rotationZTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onRotationTextFieldDonePressed)), onCancel: (self, #selector(onRotationElementTextFieldCancelPressed)), tag: rotationZTextField.tag)
         
-        let items = (0...5).map { UIAction(title: $0.description) { action in print("Menu Action '\(action.title)'") } }
+        var items = [UIAction]()
+        for rotationModeVal in kRotationModeFirst..<kRotationModeCount {
+            let rotationMode = RotationMode(rotationModeVal)
+            items.append( UIAction(title: nameFor(rotationMode)!) { [unowned self, rotationMode] action in
+                self.transform.rotationMode = rotationMode
+                self.rotationModeButton.setTitle(nameFor(rotationMode)!, for: .normal)
+            })
+        }
         rotationModeButton.menu = UIMenu(title: "", children: items)
         rotationModeButton.showsMenuAsPrimaryAction = true
     }
@@ -200,29 +208,25 @@ class TransformViewController: UIViewController {
         rotationFormatter.numberFormatter.string(from: NSNumber(value: rad2deg(transform.rotation[element.rawValue])))!
     }
     
-    func nameFor(_ rotationMode: EulerOrder) -> String? {
+    func nameFor(_ rotationMode: RotationMode) -> String? {
         switch rotationMode {
-        case EulerOrder_xyz:
+        case RotationMode_xyz:
             return "Euler XYZ"
-        case EulerOrder_xzy:
+        case RotationMode_xzy:
             return "Euler XZY"
-        case EulerOrder_yxz:
+        case RotationMode_yxz:
             return "Euler YXZ"
-        case EulerOrder_yzx:
+        case RotationMode_yzx:
             return "Euler YZX"
-        case EulerOrder_zxy:
+        case RotationMode_zxy:
             return "Euler ZXY"
-        case EulerOrder_zyx:
+        case RotationMode_zyx:
             return "Euler ZYX"
         default:
             return nil
         }
     }
-    
-//    var allRotationModes: [EulerOrder] {
-//        [EulerOrder_xyz, EulerOrder_xzy, EulerOrder_yxz, EulerOrder_yzx, EulerOrder_zxy]
-//    }
-    
+        
     @IBOutlet weak var rotationXTextField: UITextField!
     @IBOutlet weak var rotationYTextField: UITextField!
     @IBOutlet weak var rotationZTextField: UITextField!

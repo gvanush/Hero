@@ -44,7 +44,7 @@ simd::float4x4 makeViewportMatrix(const simd::float2& viewportSize);
 
 simd::float3x3 makeLookAtMatrix(const simd::float3& pos, const simd::float3& target, const simd::float3& up);
 
-simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrder eulerOrder);
+simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, RotationMode eulerOrder);
 
 inline constexpr float deg2Rad(float deg) {
     return deg * M_PI / 180.f;

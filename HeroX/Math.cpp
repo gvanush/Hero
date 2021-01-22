@@ -123,13 +123,13 @@ simd::float3x3 makeLookAtMatrix(const simd::float3& pos, const simd::float3& tar
     };
 }
 
-simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrder eulerOrder) {
+simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, RotationMode eulerOrder) {
     using namespace simd;
     
     constexpr auto kTolerance = 0.0001f;
     simd::float3 angles {};
     switch (eulerOrder) {
-        case EulerOrder_xyz: {
+        case RotationMode_xyz: {
             angles.y = asinf(-rotMat.columns[2][0]);
             if (isNearlyZero(cosf(angles.y), kTolerance)) {
                 angles.z = atan2f(-rotMat.columns[0][1], rotMat.columns[1][1]);
@@ -139,7 +139,7 @@ simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrd
             }
             break;
         }
-        case EulerOrder_xzy: {
+        case RotationMode_xzy: {
             angles.z = asinf(rotMat.columns[1][0]);
             if (isNearlyZero(cosf(angles.z), kTolerance)) {
                 angles.x = atan2f(rotMat.columns[2][1], rotMat.columns[2][2]);
@@ -149,7 +149,7 @@ simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrd
             }
             break;
         }
-        case EulerOrder_yxz: {
+        case RotationMode_yxz: {
             angles.x = asinf(rotMat.columns[2][1]);
             if (isNearlyZero(cosf(angles.x), kTolerance)) {
                 angles.y = atan2f(rotMat.columns[0][2], rotMat.columns[0][0]);
@@ -159,7 +159,7 @@ simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrd
             }
             break;
         }
-        case EulerOrder_yzx: {
+        case RotationMode_yzx: {
             angles.z = asinf(-rotMat.columns[0][1]);
             if (isNearlyZero(cosf(angles.z), kTolerance)) {
                 angles.x = atan2f(-rotMat.columns[1][2], rotMat.columns[2][2]);
@@ -169,7 +169,7 @@ simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrd
             }
             break;
         }
-        case EulerOrder_zxy: {
+        case RotationMode_zxy: {
             angles.x = asinf(-rotMat.columns[1][2]);
             if (isNearlyZero(cosf(angles.x), kTolerance)) {
                 angles.z = atan2f(-rotMat.columns[0][1], rotMat.columns[0][0]);
@@ -179,7 +179,7 @@ simd::float3 getRotationMatrixEulerAngles(const simd::float3x3& rotMat, EulerOrd
             }
             break;
         }
-        case EulerOrder_zyx: {
+        case RotationMode_zyx: {
             angles.y = asinf(rotMat.columns[0][2]);
             if (isNearlyZero(cosf(angles.y), kTolerance)) {
                 angles.z = atan2f(rotMat.columns[1][0], rotMat.columns[1][1]);
