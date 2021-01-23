@@ -17,7 +17,7 @@ protocol SlidingViewControllerDelegate {
     func slidingViewControllerWillChangeState(newState: SlidingViewState)
 }
 
-class SlidingViewController: UIViewController {
+class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private class HitTestView: UIView {
         
@@ -99,6 +99,7 @@ class SlidingViewController: UIViewController {
         hitTestView.targetView = slidingView
         
         panGR = UIPanGestureRecognizer(target: self, action: #selector(onPan(panGR:)))
+        panGR.delegate = self
         slidingView.addGestureRecognizer(panGR)
         
         // Setup content view
@@ -349,13 +350,20 @@ class SlidingViewController: UIViewController {
         slidingView.insertSubview(bgrView, at: 0)
     }
     
-    private var headerViewHeightLayoutConstraint: NSLayoutConstraint?
+    // MARK: UIGestureRecognizerDelegate
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        assert(panGR == gestureRecognizer)
+        // Limit to vertical scrolling
+        let velocity = panGR.velocity(in: panGR.view!.superview)
+        return abs(velocity.y) > abs(velocity.x)
+    }
     
     private var slidingView: UIView!
     private var contentView: UIView!
     private var slidingViewPosLayoutConstraint: NSLayoutConstraint!
     private var contentViewPosLayoutConstraint: NSLayoutConstraint!
-    private var panGR: UIGestureRecognizer!
+    private var headerViewHeightLayoutConstraint: NSLayoutConstraint?
+    private var panGR: UIPanGestureRecognizer!
     private var startPos: CGFloat = 0.0
     private var wasOpen = false
 }
