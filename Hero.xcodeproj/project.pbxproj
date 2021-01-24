@@ -14,6 +14,10 @@
 		B718AD1A25BAA5C900C05912 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */; };
 		B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */; };
 		B718AD2C25BAADD600C05912 /* NSPointerArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B718AD2A25BAADD500C05912 /* NSPointerArray+Extensions.m */; };
+		B733DE7F25BC7141000FE1EC /* NumberField.xib in Resources */ = {isa = PBXBuildFile; fileRef = B733DE7E25BC7141000FE1EC /* NumberField.xib */; };
+		B733DE8325BC772C000FE1EC /* NumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733DE8225BC772C000FE1EC /* NumberField.swift */; };
+		B733DEA125BC7FDB000FE1EC /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733DEA025BC7FDB000FE1EC /* TestViewController.swift */; };
+		B733DEA425BDFBF7000FE1EC /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733DEA325BDFBF7000FE1EC /* Updater.swift */; };
 		B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05625B55CDA003461D1 /* AppDelegate.swift */; };
 		B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */; };
 		B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */; };
@@ -70,6 +74,17 @@
 		B718AD2825BAAD9F00C05912 /* GraphicsCoreUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphicsCoreUtils.hpp; sourceTree = "<group>"; };
 		B718AD2A25BAADD500C05912 /* NSPointerArray+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+Extensions.m"; sourceTree = "<group>"; };
 		B718AD2B25BAADD500C05912 /* NSPointerArray+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+Extensions.h"; sourceTree = "<group>"; };
+		B733DE7E25BC7141000FE1EC /* NumberField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NumberField.xib; sourceTree = "<group>"; };
+		B733DE8225BC772C000FE1EC /* NumberField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberField.swift; sourceTree = "<group>"; };
+		B733DE8B25BC7F42000FE1EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B733DE8D25BC7F42000FE1EC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		B733DE8F25BC7F42000FE1EC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B733DE9225BC7F42000FE1EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B733DE9425BC7F43000FE1EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B733DE9725BC7F43000FE1EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B733DE9925BC7F43000FE1EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B733DEA025BC7FDB000FE1EC /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		B733DEA325BDFBF7000FE1EC /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		B7C7E05425B55CDA003461D1 /* HeroX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeroX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C7E05625B55CDA003461D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -185,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				B7C7E05525B55CDA003461D1 /* HeroX */,
+				B733DE8A25BC7F42000FE1EC /* Test */,
 				B7316FF524CF376000157455 /* Products */,
 				B715B23824D28B0F00B4C859 /* Frameworks */,
 			);
@@ -198,6 +214,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B733DE8A25BC7F42000FE1EC /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				B733DE8B25BC7F42000FE1EC /* AppDelegate.swift */,
+				B733DE8D25BC7F42000FE1EC /* SceneDelegate.swift */,
+				B733DE8F25BC7F42000FE1EC /* ViewController.swift */,
+				B733DE9125BC7F42000FE1EC /* Main.storyboard */,
+				B733DE9425BC7F43000FE1EC /* Assets.xcassets */,
+				B733DE9625BC7F43000FE1EC /* LaunchScreen.storyboard */,
+				B733DE9925BC7F43000FE1EC /* Info.plist */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
 		B7C7E05525B55CDA003461D1 /* HeroX */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +237,7 @@
 				B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */,
 				B7C7E0F425B6BF54003461D1 /* Math.swift */,
 				B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */,
+				B709765625B8BD1A00F5751B /* TransformViewController.swift */,
 				B7C7E06D25B55E53003461D1 /* HeroX-Bridging-Header.h */,
 				B7C7E05C25B55CDA003461D1 /* Main.storyboard */,
 				B7C7E05F25B55CDB003461D1 /* Assets.xcassets */,
@@ -214,7 +245,10 @@
 				B7C7E06425B55CDB003461D1 /* Info.plist */,
 				B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */,
 				B709763125B7866400F5751B /* ObjectToolbar.xib */,
-				B709765625B8BD1A00F5751B /* TransformViewController.swift */,
+				B733DE7E25BC7141000FE1EC /* NumberField.xib */,
+				B733DE8225BC772C000FE1EC /* NumberField.swift */,
+				B733DEA025BC7FDB000FE1EC /* TestViewController.swift */,
+				B733DEA325BDFBF7000FE1EC /* Updater.swift */,
 			);
 			path = HeroX;
 			sourceTree = "<group>";
@@ -440,6 +474,7 @@
 				B7C7E06325B55CDB003461D1 /* LaunchScreen.storyboard in Resources */,
 				B7C7E06025B55CDB003461D1 /* Assets.xcassets in Resources */,
 				B7C7E05E25B55CDA003461D1 /* Main.storyboard in Resources */,
+				B733DE7F25BC7141000FE1EC /* NumberField.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +492,7 @@
 				B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */,
 				B7C7E0A825B55E55003461D1 /* SIMD+Extensions.swift in Sources */,
 				B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */,
+				B733DEA125BC7FDB000FE1EC /* TestViewController.swift in Sources */,
 				B7C7E0BC25B55E55003461D1 /* Camera.cpp in Sources */,
 				B7C7E0B125B55E55003461D1 /* SphericalCoord.mm in Sources */,
 				B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */,
@@ -466,6 +502,7 @@
 				B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */,
 				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
 				B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */,
+				B733DEA425BDFBF7000FE1EC /* Updater.swift in Sources */,
 				B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */,
 				B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */,
 				B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */,
@@ -485,6 +522,7 @@
 				B7C7E0B525B55E55003461D1 /* RemovedComponentRegistry.cpp in Sources */,
 				B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */,
 				B7C7E0B725B55E55003461D1 /* Component.mm in Sources */,
+				B733DE8325BC772C000FE1EC /* NumberField.swift in Sources */,
 				B718AD2C25BAADD600C05912 /* NSPointerArray+Extensions.m in Sources */,
 				B7C7E0BA25B55E55003461D1 /* Math.cpp in Sources */,
 				B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */,
@@ -497,6 +535,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		B733DE9125BC7F42000FE1EC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B733DE9225BC7F42000FE1EC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B733DE9625BC7F43000FE1EC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B733DE9725BC7F43000FE1EC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		B7C7E05C25B55CDA003461D1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

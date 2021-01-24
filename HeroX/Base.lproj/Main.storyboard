@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hxM-Qj-GEK">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -23,6 +23,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="119" y="138"/>
+        </scene>
+        <!--Test View Controller-->
+        <scene sceneID="YPe-7Q-NXO">
+            <objects>
+                <viewController storyboardIdentifier="TestViewController" id="hxM-Qj-GEK" customClass="TestViewController" customModule="HeroX" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="O6O-MH-88K">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="duL-9R-XDM" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
+                                <rect key="frame" x="20" y="436" width="374" height="34"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ilH-Ya-JuM"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="duL-9R-XDM" firstAttribute="centerY" secondItem="ilH-Ya-JuM" secondAttribute="centerY" id="N2F-7V-npd"/>
+                            <constraint firstItem="ilH-Ya-JuM" firstAttribute="trailing" secondItem="duL-9R-XDM" secondAttribute="trailing" constant="20" id="XGC-iw-U3s"/>
+                            <constraint firstItem="duL-9R-XDM" firstAttribute="leading" secondItem="ilH-Ya-JuM" secondAttribute="leading" constant="20" id="Xtz-XZ-ibn"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="numberField" destination="duL-9R-XDM" id="J9D-va-NmJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pFJ-oq-8E2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="128.98550724637681" y="842.41071428571422"/>
         </scene>
         <!--Transform View Controller-->
         <scene sceneID="yP9-l3-rt6">
@@ -316,6 +345,11 @@
             <point key="canvasLocation" x="1296" y="138"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="duL-9R-XDM">
+            <size key="intrinsicContentSize" width="-1" height="34"/>
+        </designable>
+    </designables>
     <resources>
         <namedColor name="MonoThin">
             <color red="1" green="1" blue="1" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>

@@ -8,6 +8,36 @@
 import UIKit
 import MetalKit
 
+protocol GraphicsViewFrameListener: class {
+    func onFrameUpdate(deltaTime: Float)
+}
+
+class GraphicsViewFrameUpdater: Updater, GraphicsViewFrameListener {
+    
+    fileprivate init(graphicsViewController: GraphicsViewController) {
+        self.graphicsViewController = graphicsViewController
+    }
+    
+    // MARK: Updater
+    func start() {
+        graphicsViewController?.addFrameListener(self)
+    }
+    
+    func stop() {
+        graphicsViewController?.removeFrameListener(self)
+    }
+    
+    var callback: ((Float) -> Void)?
+    
+    // MARK: GraphicsViewFrameListener
+    func onFrameUpdate(deltaTime: Float) {
+        callback?(deltaTime)
+    }
+    
+    private weak var graphicsViewController: GraphicsViewController?
+    
+}
+
 class GraphicsViewController: UIViewController, MTKViewDelegate {
     
     override func viewDidLoad() {
@@ -31,6 +61,10 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         scene?.isTurnedOn = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        lastFrameTimestamp = CACurrentMediaTime()
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         scene?.isTurnedOn = false
     }
@@ -52,6 +86,13 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
             return
         }
         
+        let frameTimestamp = CACurrentMediaTime()
+        let deltaTime = Float(lastFrameTimestamp - frameTimestamp)
+        
+        for frameListener in frameListeners {
+            frameListener.onFrameUpdate(deltaTime: deltaTime)
+        }
+        
         renderingContext.renderPassDescriptor = renderPassDescriptor
         
         renderer.render(scene!, context: renderingContext)
@@ -60,6 +101,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
             drawable.present()
         }
         
+        lastFrameTimestamp = frameTimestamp
     }
     
     var scene: Scene? {
@@ -83,7 +125,24 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         }
     }
     
+    func createFrameUpdater() -> GraphicsViewFrameUpdater {
+        GraphicsViewFrameUpdater(graphicsViewController: self)
+    }
+    
+    func addFrameListener(_ frameListener: GraphicsViewFrameListener) {
+        frameListeners.append(frameListener)
+    }
+    
+    func removeFrameListener(_ frameListener: GraphicsViewFrameListener) {
+        if let index = frameListeners.firstIndex(where: {$0 === frameListener}) {
+            frameListeners.remove(at: index)
+        }
+    }
+    
+    private var frameListeners = [GraphicsViewFrameListener]()
+    
     let renderer = Renderer.make()!
     private(set) var graphicsView: MTKView! = nil
     private let renderingContext = RenderingContext()
+    private var lastFrameTimestamp: TimeInterval = 0.0
 }
