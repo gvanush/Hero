@@ -14,7 +14,7 @@ protocol Updater: class {
 }
 
 
-class BasicUpdater: Updater {
+class TimerUpdater: Updater {
     
     var timeInterval: TimeInterval
     var tolerance: TimeInterval
@@ -30,13 +30,13 @@ class BasicUpdater: Updater {
     private var lastTimestamp: TimeInterval = 0.0
     
     func start() {
-        lastTimestamp = CACurrentMediaTime()
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) {[unowned self] _ in
             let timestamp = CACurrentMediaTime()
             self.callback?(Float(timestamp - self.lastTimestamp))
             self.lastTimestamp = timestamp
         }
         timer!.tolerance = tolerance
+        lastTimestamp = CACurrentMediaTime()
     }
     
     func stop() {
@@ -47,5 +47,37 @@ class BasicUpdater: Updater {
     deinit {
         stop()
     }
+    
+}
+
+class DisplayLinkUpdater: Updater {
+    
+    var preferredFramesPerSecond: Int = 0
+    var callback: ((Float) -> Void)?
+    
+    func start() {
+        displayLink = CADisplayLink(target: self, selector: #selector(onStep))
+        displayLink?.preferredFramesPerSecond = preferredFramesPerSecond
+        displayLink!.add(to: .current, forMode: .common)
+        lastTimestamp = CACurrentMediaTime()
+    }
+    
+    func stop() {
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+    
+    deinit {
+        stop()
+    }
+    
+    @objc private func onStep() {
+        let timestamp = CACurrentMediaTime()
+        self.callback?(Float(timestamp - self.lastTimestamp))
+        self.lastTimestamp = timestamp
+    }
+    
+    private var displayLink: CADisplayLink?
+    private var lastTimestamp: TimeInterval = 0.0
     
 }

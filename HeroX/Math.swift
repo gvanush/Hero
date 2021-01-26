@@ -15,7 +15,15 @@ func deg2rad<T>(_ deg: T) -> T where T : FloatingPoint {
     deg * T.pi / T(180)
 }
 
+func deg2rad<T>(_ deg: SIMD3<T>) -> SIMD3<T> where T : FloatingPoint {
+    deg * T.pi / T(180)
+}
+
 func rad2deg<T>(_ rad: T) -> T where T : FloatingPoint {
+    rad * T(180) / T.pi
+}
+
+func rad2deg<T>(_ rad: SIMD3<T>) -> SIMD3<T> where T : FloatingPoint {
     rad * T(180) / T.pi
 }
 

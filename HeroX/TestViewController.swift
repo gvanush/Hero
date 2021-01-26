@@ -12,7 +12,12 @@ class TestViewController: UIViewController {
     @IBOutlet weak var numberField: NumberField!
     
     override func viewDidLoad() {
-        numberField.continuousEditingUpdater = BasicUpdater(timeInterval: 0.1, tolerance: 0.01)
+        numberField.continuousEditingUpdater = DisplayLinkUpdater()
+        numberField.addTarget(self, action: #selector(onValueChange(numberField:)), for: .valueChanged)
+    }
+    
+    @objc func onValueChange(numberField: NumberField) {
+        print("Value changed \(numberField.value)")
     }
     
 }

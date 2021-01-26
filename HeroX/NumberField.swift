@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NumberFieldDelegate: class {
-    func numberField(_ numberField: NumberField, textFor value: CGFloat) -> String
+    func numberFieldTextForValue(_ numberField: NumberField) -> String
     func numberFieldDidBeginEditing(_ numberField: NumberField) -> (valueText: String?, placeHolder: String?)?
     func numberFieldDidEndEditing(_ numberField: NumberField, reason: NumberField.DidEndEditingReason) -> CGFloat?
     func numberFieldDidBeginContinuousEditing(_ numberField: NumberField)
@@ -27,12 +27,14 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
         super.init(coder: aDecoder)
         setupFromNib()
         configSubviews()
+        setupUpdater()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupFromNib()
         configSubviews()
+        setupUpdater()
     }
     
     private func setupFromNib() {
@@ -47,68 +49,86 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
         textField.text = "\(NumberField.initialValue)"
         textField.delegate = self
         textField.setupInputAccessoryToolbar(onDone: (self, #selector(onTextFieldDonePressed)), onCancel: (self, #selector(onTextFieldCancelPressed)))
-        
-        handleImageView.isHidden = !isContinuousEditingEnabled
-        panGestureRecognizer.isEnabled = isContinuousEditingEnabled
     }
     
     override var intrinsicContentSize: CGSize {
-        CGSize(width: UIView.noIntrinsicMetric, height: textField.frame.size.height + (isContinuousEditingEnabled ? handleImageView.frame.size.height : 0.0))
+        CGSize(width: UIView.noIntrinsicMetric, height: textField.frame.union(titleLabel.frame).height)
     }
     
     static let initialValue: CGFloat = 0.0
     
     var value: CGFloat = NumberField.initialValue {
-        willSet {
-            textField.text = delegate?.numberField(self, textFor: newValue) ?? "\(newValue)"
-        }
         didSet {
             sendActions(for: .valueChanged)
+            textField.text = delegate?.numberFieldTextForValue(self) ?? "\(value)"
         }
     }
     
-    // MARK: Continuous editing
-    var continuousEditingUpdater: Updater? {
-        willSet {
-            panGestureRecognizer.cancel()
-            
-            if let updater = continuousEditingUpdater {
-                updater.stop()
-                updater.callback = nil
-            }
-            
-            if let newUpdater = newValue {
-                newUpdater.callback = { [unowned self] deltaTime in
-                    self.value += CGFloat(deltaTime) * self.continuousEditingNormSpeed * self.continuousEditingMaxSpeed
-                }
-            }
-        }
-        didSet {
-            handleImageView.isHidden = !isContinuousEditingEnabled
-            panGestureRecognizer.isEnabled = isContinuousEditingEnabled
-            if (isContinuousEditingEnabled && oldValue == nil) || (!isContinuousEditingEnabled && oldValue != nil) {
-                invalidateIntrinsicContentSize()
-            }
-        }
-    }
-    
-    var isContinuousEditingEnabled: Bool {
-        continuousEditingUpdater != nil
-    }
-    
-    var continuousEditingMaxSpeed: CGFloat = 1.0
-    private var continuousEditingNormSpeed: CGFloat {
-        handleImageViewPositionLayoutConstraint.constant / (0.5 * bounds.size.width)
+    var valueText: String? {
+        textField.text
     }
     
     weak var delegate: NumberFieldDelegate?
     
-    @IBOutlet weak private var handleImageViewPositionLayoutConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var textField: UITextField!
-    @IBOutlet weak private var handleImageView: UIImageView!
-    @IBOutlet weak private var panGestureRecognizer: UIPanGestureRecognizer!
+    // MARK: Continuous editing
+    var continuousEditingUpdater: Updater = DisplayLinkUpdater() {
+        willSet {
+            continuousEditingUpdater.stop()
+            continuousEditingUpdater.callback = nil
+        }
+        didSet {
+            setupUpdater()
+        }
+    }
+    
+    private func setupUpdater() {
+        continuousEditingUpdater.callback = { [unowned self] deltaTime in
+            self.value += CGFloat(deltaTime) * self.continuousEditingNormSpeed * self.continuousEditingMaxSpeed
+        }
+    }
+    
+    var isContinuousEditingEnabled: Bool = true {
+        didSet {
+            guard isContinuousEditingEnabled != oldValue else { return }
+            
+            continuousEditingGestureRecognizer.cancel()
+            
+            continuousEditingGestureRecognizer.isEnabled = isContinuousEditingEnabled
+            minusLabel.isHidden = !isContinuousEditingEnabled
+            plusLabel.isHidden = !isContinuousEditingEnabled
+            panLeftImageView.isHidden = !isContinuousEditingEnabled
+            panRightImageView.isHidden = !isContinuousEditingEnabled
+        }
+    }
+    
+    var continuousEditingMaxSpeed: CGFloat = 1.0
+    
+    private var continuousEditingNormSpeed: CGFloat {
+        (continuousEditingGestureRecognizer.location(in: self).x - bounds.midX) / (0.5 * bounds.size.width)
+    }
+    
+    @IBOutlet weak var continuousEditingGestureRecognizer: UIPanGestureRecognizer!
+    @IBOutlet weak var minusLabel: UILabel!
+    @IBOutlet weak var plusLabel: UILabel!
+    @IBOutlet weak var panLeftImageView: UIImageView!
+    @IBOutlet weak var panRightImageView: UIImageView!
+    
+    // MARK: Title
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBInspectable
+    var title: String? {
+        set {
+            titleLabel.text = newValue
+        }
+        get {
+            titleLabel.text
+        }
+    }
     
     // MARK: TextField handling
+    @IBOutlet weak private var textField: UITextField!
+    
     @objc func onTextFieldDonePressed(_ barButtonItem: UIBarButtonItem) {
         textField.resignFirstResponder()
     }
@@ -133,7 +153,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
         if let newValue = delegate?.numberFieldDidEndEditing(self, reason: didEndEditingReason) {
             value = newValue
         } else {
-            if let text = textField.text, let newValue = Double(text) {
+            if let text = textField.text, let newValue = Double(text), didEndEditingReason == .comitted {
                 value = CGFloat(newValue)
             } else {
                 (value = value)
@@ -147,22 +167,11 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     @IBAction func onPan(_ sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .began:
-            continuousEditingUpdater!.start()
+            continuousEditingUpdater.start()
             delegate?.numberFieldDidBeginContinuousEditing(self)
             break
-        case .changed:
-            let x = sender.translation(in: self).x
-            let halfWidth = 0.5 * bounds.size.width
-            handleImageViewPositionLayoutConstraint.constant = clamp(x, min: -halfWidth, max: halfWidth)
         case .ended, .cancelled:
-            sender.isEnabled = false
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseInOut) {
-                self.handleImageViewPositionLayoutConstraint.constant = 0.0
-                self.layoutIfNeeded()
-            } completion: { _ in
-                sender.isEnabled = true
-            }
-            continuousEditingUpdater!.stop()
+            continuousEditingUpdater.stop()
             delegate?.numberFieldDidEndContinuousEditing(self)
             break
         default:
@@ -172,9 +181,9 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     // MARK: UIGestureRecognizerDelegate
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        assert(panGestureRecognizer == gestureRecognizer)
+        assert(continuousEditingGestureRecognizer == gestureRecognizer)
         // Limit to horizontal scrolling
-        let velocity = panGestureRecognizer.velocity(in: self)
+        let velocity = continuousEditingGestureRecognizer.velocity(in: self)
         return abs(velocity.y) < abs(velocity.x)
     }
     

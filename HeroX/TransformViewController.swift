@@ -7,14 +7,40 @@
 
 import UIKit
 
-class TransformViewController: UIViewController {
+protocol TransformViewControllerDelegate {
+    func transformViewController(_ transformViewController: TransformViewController, didBeginContinuousEditingOnNumberField numberField: NumberField)
+    func transformViewController(_ transformViewController: TransformViewController, didEndContinuousEditingOnNumberField numberField: NumberField)
+}
+
+class TransformViewController: UIViewController, NumberFieldDelegate {
     
     var transform: Transform!
+    var delegate: TransformViewControllerDelegate?
     
     enum VectorElement: Int {
         case x = 0
         case y = 1
         case z = 2
+    }
+    
+    enum NumberFieldSection {
+        
+        init?(tag: Int) {
+            switch tag / 3 {
+            case 0:
+                self = .position
+            case 1:
+                self = .rotation
+            case 2:
+                self = .scale
+            default:
+                return nil
+            }
+        }
+        
+        case position
+        case rotation
+        case scale
     }
     
     override func viewDidLoad() {
@@ -46,18 +72,18 @@ class TransformViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        positionXTextField.text = positionFor(.x)
-        positionYTextField.text = positionFor(.y)
-        positionZTextField.text = positionFor(.z)
+        positionXNumberField.value = CGFloat(transform.position.x)
+        positionYNumberField.value = CGFloat(transform.position.y)
+        positionZNumberField.value = CGFloat(transform.position.z)
         
-        rotationXTextField.text = rotationFor(.x)
-        rotationYTextField.text = rotationFor(.y)
-        rotationZTextField.text = rotationFor(.z)
+        rotationXNumberField.value = CGFloat(rad2deg(transform.rotation.x))
+        rotationYNumberField.value = CGFloat(rad2deg(transform.rotation.y))
+        rotationZNumberField.value = CGFloat(rad2deg(transform.rotation.z))
         rotationModeButton.setTitle(nameFor(transform.rotationMode)!, for: .normal)
         
-        scaleXTextField.text = scaleFor(.x)
-        scaleYTextField.text = scaleFor(.y)
-        scaleZTextField.text = scaleFor(.z)
+        scaleXNumberField.value = CGFloat(transform.scale.x)
+        scaleYNumberField.value = CGFloat(transform.scale.y)
+        scaleZNumberField.value = CGFloat(transform.scale.z)
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -70,78 +96,116 @@ class TransformViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
+    // MARK: NumberFieldDelegate
+    func numberFieldTextForValue(_ numberField: NumberField) -> String {
+        let section = NumberFieldSection(tag: numberField.tag)!
+        let number = NSNumber(value: Double(numberField.value))
+        switch section {
+        case .position:
+            return positionFormatter.string(from: number)!
+        case .rotation:
+            return "  " + rotationFormatter.string(from: Measurement<UnitAngle>(value: Double(numberField.value), unit: .degrees))
+        case .scale:
+            return scaleFormatter.string(from: number)!
+        }
+    }
+    
+    func numberFieldDidBeginEditing(_ numberField: NumberField) -> (valueText: String?, placeHolder: String?)? {
+        let section = NumberFieldSection(tag: numberField.tag)!
+        let vectorElemIndex = numberField.tag % 3
+        switch section {
+        case .position:
+            positionFormatter.usesGroupingSeparator = false
+            let placeholder = positionFormatter.string(from: NSNumber(value: transform.position[vectorElemIndex]))!
+            positionFormatter.usesGroupingSeparator = true
+            return (nil, placeholder)
+        case .rotation:
+            let placeholder = rotationFormatter.numberFormatter.string(from: NSNumber(value: rad2deg(transform.rotation[vectorElemIndex])))!
+            return (nil, placeholder)
+        case .scale:
+            positionFormatter.usesGroupingSeparator = false
+            let placeholder = positionFormatter.string(from: NSNumber(value: transform.scale[vectorElemIndex]))!
+            positionFormatter.usesGroupingSeparator = true
+            return (nil, placeholder)
+        }
+    }
+    
+    func numberFieldDidEndEditing(_ numberField: NumberField, reason: NumberField.DidEndEditingReason) -> CGFloat? {
+        let section = NumberFieldSection(tag: numberField.tag)!
+        let vectorElemIndex = numberField.tag % 3
+        switch reason {
+        case .comitted:
+            if let valueText = numberField.valueText {
+                switch section {
+                case .position:
+                    if let newValue = positionFormatter.number(from: valueText) {
+                        return CGFloat(newValue.doubleValue)
+                    }
+                case .rotation:
+                    if let newAngle = rotationFormatter.numberFormatter.number(from: valueText) {
+                        return CGFloat(newAngle.floatValue)
+                    }
+                case .scale:
+                    if let newValue = scaleFormatter.number(from: valueText) {
+                        return CGFloat(newValue.doubleValue)
+                    }
+                }
+            }
+            fallthrough
+        case .cancelled:
+            return CGFloat(vectorForSection(section)[vectorElemIndex])
+        }
+    }
+    
+    private func vectorForSection(_ section: NumberFieldSection) -> SIMD3<Float> {
+        switch section {
+        case .position:
+            return transform.position
+        case .rotation:
+            return rad2deg(transform.rotation)
+        case .scale:
+            return transform.scale
+        }
+    }
+    
+    func numberFieldDidBeginContinuousEditing(_ numberField: NumberField) {
+        delegate?.transformViewController(self, didBeginContinuousEditingOnNumberField: numberField)
+    }
+    
+    func numberFieldDidEndContinuousEditing(_ numberField: NumberField) {
+        delegate?.transformViewController(self, didEndContinuousEditingOnNumberField: numberField)
+    }
+    
     // MARK: Position
     private func configPositionViews() {
-        positionXTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onPositionTextFieldDonePressed)), onCancel: (self, #selector(onPositionElementTextFieldCancelPressed)), tag: positionXTextField.tag)
-        positionYTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onPositionTextFieldDonePressed)), onCancel: (self, #selector(onPositionElementTextFieldCancelPressed)), tag: positionYTextField.tag)
-        positionZTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onPositionTextFieldDonePressed)), onCancel: (self, #selector(onPositionElementTextFieldCancelPressed)), tag: positionZTextField.tag)
+        positionXNumberField.delegate = self
+        positionYNumberField.delegate = self
+        positionZNumberField.delegate = self
     }
     
-    private func positionTextFieldForVectorElement(_ element: VectorElement) -> UITextField {
-        switch element {
-        case .x:
-            return positionXTextField
-        case .y:
-            return positionYTextField
-        case .z:
-            return positionZTextField
+    @IBAction func onNumberFieldValueChanged(_ sender: NumberField) {
+        let section = NumberFieldSection(tag: sender.tag)!
+        let vectorElementIndex = sender.tag % 3
+        switch section {
+        case .position:
+            transform.position[vectorElementIndex] = Float(sender.value)
+        case .rotation:
+            transform.rotation[vectorElementIndex] = Float(deg2rad(sender.value))
+        case .scale:
+            transform.scale[vectorElementIndex] = Float(sender.value)
         }
     }
     
-    @objc func onPositionTextFieldDonePressed(_ barButtonItem: UIBarButtonItem) {
-        let textField = positionTextFieldForVectorElement(VectorElement(rawValue: barButtonItem.tag)!)
-        textField.resignFirstResponder()
-    }
-    
-    @objc func onPositionElementTextFieldCancelPressed(_ barButtonItem: UIBarButtonItem) {
-        let element = VectorElement(rawValue: barButtonItem.tag)!
-        let textField = positionTextFieldForVectorElement(element)
-        textField.text = rawPositionFor(element)
-        textField.resignFirstResponder()
-    }
-    
-    @IBAction func positionElementTextFieldDidBeginEditing(_ textField: UITextField) {
-        textField.placeholder = rawPositionFor(VectorElement(rawValue: textField.tag)!)
-        textField.text = nil
-    }
-    
-    @IBAction func positionElementTextFieldDidEndEditing(_ textField: UITextField) {
-        let element = VectorElement(rawValue: textField.tag)!
-        if let text = textField.text {
-            setPosition(text, for: element)
-        }
-        textField.text = positionFor(element)
-    }
-    
-    func setPosition(_ text: String, for element: VectorElement) {
-        var value = transform.position[element.rawValue]
-        if let newValue = positionFormatter.number(from: text) {
-            value = newValue.floatValue
-        }
-        transform.position[element.rawValue] = value
-    }
-    
-    func positionFor(_ element: VectorElement) -> String {
-        positionFormatter.string(from: NSNumber(value: transform.position[element.rawValue]))!
-    }
-    
-    func rawPositionFor(_ element: VectorElement) -> String {
-        positionFormatter.usesGroupingSeparator = false
-        let result = positionFormatter.string(from: NSNumber(value: transform.position[element.rawValue]))!
-        positionFormatter.usesGroupingSeparator = true
-        return result
-    }
-    
-    @IBOutlet weak var positionXTextField: UITextField!
-    @IBOutlet weak var positionYTextField: UITextField!
-    @IBOutlet weak var positionZTextField: UITextField!
+    @IBOutlet weak var positionXNumberField: NumberField!
+    @IBOutlet weak var positionYNumberField: NumberField!
+    @IBOutlet weak var positionZNumberField: NumberField!
     private let positionFormatter = NumberFormatter()
     
     // MARK: Rotation
     private func configRotationViews() {
-        rotationXTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onRotationTextFieldDonePressed)), onCancel: (self, #selector(onRotationElementTextFieldCancelPressed)), tag: rotationXTextField.tag)
-        rotationYTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onRotationTextFieldDonePressed)), onCancel: (self, #selector(onRotationElementTextFieldCancelPressed)), tag: rotationYTextField.tag)
-        rotationZTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onRotationTextFieldDonePressed)), onCancel: (self, #selector(onRotationElementTextFieldCancelPressed)), tag: rotationZTextField.tag)
+        rotationXNumberField.delegate = self
+        rotationYNumberField.delegate = self
+        rotationZNumberField.delegate = self
         
         var items = [UIAction]()
         for rotationModeVal in kRotationModeFirst..<kRotationModeCount {
@@ -153,59 +217,6 @@ class TransformViewController: UIViewController {
         }
         rotationModeButton.menu = UIMenu(title: "", children: items)
         rotationModeButton.showsMenuAsPrimaryAction = true
-    }
-    
-    private func rotationTextFieldForVectorElement(_ element: VectorElement) -> UITextField {
-        switch element {
-        case .x:
-            return rotationXTextField
-        case .y:
-            return rotationYTextField
-        case .z:
-            return rotationZTextField
-        }
-    }
-    
-    @objc func onRotationTextFieldDonePressed(_ barButtonItem: UIBarButtonItem) {
-        let textField = rotationTextFieldForVectorElement(VectorElement(rawValue: barButtonItem.tag)!)
-        textField.resignFirstResponder()
-    }
-    
-    @objc func onRotationElementTextFieldCancelPressed(_ barButtonItem: UIBarButtonItem) {
-        let element = VectorElement(rawValue: barButtonItem.tag)!
-        let textField = rotationTextFieldForVectorElement(element)
-        textField.text = rawRotationFor(element)
-        textField.resignFirstResponder()
-    }
-    
-    @IBAction func rotationElementTextFieldDidBeginEditing(_ textField: UITextField) {
-        textField.placeholder = rawRotationFor(VectorElement(rawValue: textField.tag)!)
-        textField.text = nil
-    }
-    
-    @IBAction func rotationElementTextFieldDidEndEditing(_ textField: UITextField) {
-        let element = VectorElement(rawValue: textField.tag)!
-        if let text = textField.text {
-            setRotation(text, for: element)
-        }
-        textField.text = rotationFor(element)
-    }
-    
-    func setRotation(_ text: String, for element: VectorElement) {
-        var angle = transform.rotation[element.rawValue]
-        if let newAngle = rotationFormatter.numberFormatter.number(from: text) {
-            angle = deg2rad(newAngle.floatValue)
-        }
-        transform.rotation[element.rawValue] = angle
-    }
-    
-    func rotationFor(_ element: VectorElement) -> String {
-        let angle = rad2deg(transform.rotation[element.rawValue])
-        return rotationFormatter.string(from: Measurement<UnitAngle>(value: Double(angle), unit: .degrees))
-    }
-    
-    func rawRotationFor(_ element: VectorElement) -> String {
-        rotationFormatter.numberFormatter.string(from: NSNumber(value: rad2deg(transform.rotation[element.rawValue])))!
     }
     
     func nameFor(_ rotationMode: RotationMode) -> String? {
@@ -226,79 +237,71 @@ class TransformViewController: UIViewController {
             return nil
         }
     }
-        
-    @IBOutlet weak var rotationXTextField: UITextField!
-    @IBOutlet weak var rotationYTextField: UITextField!
-    @IBOutlet weak var rotationZTextField: UITextField!
+    
+    @IBOutlet weak var rotationXNumberField: NumberField!
+    @IBOutlet weak var rotationYNumberField: NumberField!
+    @IBOutlet weak var rotationZNumberField: NumberField!
     @IBOutlet weak var rotationModeButton: UIButton!
     private let rotationFormatter = MeasurementFormatter()
     
     // MARK: Scale
     private func configScaleViews() {
-        scaleXTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onScaleTextFieldDonePressed)), onCancel: (self, #selector(onScaleElementTextFieldCancelPressed)), tag: scaleXTextField.tag)
-        scaleYTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onScaleTextFieldDonePressed)), onCancel: (self, #selector(onScaleElementTextFieldCancelPressed)), tag: scaleYTextField.tag)
-        scaleZTextField.setupInputAccessoryToolbar(onDone: (self, #selector(onScaleTextFieldDonePressed)), onCancel: (self, #selector(onScaleElementTextFieldCancelPressed)), tag: scaleZTextField.tag)
+        scaleXNumberField.delegate = self
+        scaleYNumberField.delegate = self
+        scaleZNumberField.delegate = self
     }
     
-    private func scaleTextFieldForVectorElement(_ element: VectorElement) -> UITextField {
-        switch element {
-        case .x:
-            return scaleXTextField
-        case .y:
-            return scaleYTextField
-        case .z:
-            return scaleZTextField
-        }
-    }
-    
-    @objc func onScaleTextFieldDonePressed(_ barButtonItem: UIBarButtonItem) {
-        let textField = scaleTextFieldForVectorElement(VectorElement(rawValue: barButtonItem.tag)!)
-        textField.resignFirstResponder()
-    }
-    
-    @objc func onScaleElementTextFieldCancelPressed(_ barButtonItem: UIBarButtonItem) {
-        let element = VectorElement(rawValue: barButtonItem.tag)!
-        let textField = scaleTextFieldForVectorElement(element)
-        textField.text = rawScaleFor(element)
-        textField.resignFirstResponder()
-    }
-    
-    @IBAction func scaleElementTextFieldDidBeginEditing(_ textField: UITextField) {
-        textField.placeholder = rawScaleFor(VectorElement(rawValue: textField.tag)!)
-        textField.text = nil
-    }
-    
-    @IBAction func scaleElementTextFieldDidEndEditing(_ textField: UITextField) {
-        let element = VectorElement(rawValue: textField.tag)!
-        if let text = textField.text {
-            setScale(text, for: element)
-        }
-        textField.text = scaleFor(element)
-    }
-    
-    func setScale(_ text: String, for element: VectorElement) {
-        var value = transform.scale[element.rawValue]
-        if let newValue = scaleFormatter.number(from: text) {
-            value = newValue.floatValue
-        }
-        transform.scale[element.rawValue] = value
-    }
-    
-    func scaleFor(_ element: VectorElement) -> String {
-        scaleFormatter.string(from: NSNumber(value: transform.scale[element.rawValue]))!
-    }
-    
-    func rawScaleFor(_ element: VectorElement) -> String {
-        scaleFormatter.usesGroupingSeparator = false
-        let result = scaleFormatter.string(from: NSNumber(value: transform.scale[element.rawValue]))!
-        scaleFormatter.usesGroupingSeparator = true
-        return result
-    }
-    
-    @IBOutlet weak var scaleXTextField: UITextField!
-    @IBOutlet weak var scaleYTextField: UITextField!
-    @IBOutlet weak var scaleZTextField: UITextField!
+    @IBOutlet weak var scaleXNumberField: NumberField!
+    @IBOutlet weak var scaleYNumberField: NumberField!
+    @IBOutlet weak var scaleZNumberField: NumberField!
     private let scaleFormatter = NumberFormatter()
     
+    // MARK: Releasing / Retaining number fields
+    struct ReleasedNumberFieldRecord {
+        let superview: UIStackView
+        let index: Int
+    }
+    var releasedControlRecords = [NumberField : ReleasedNumberFieldRecord]()
     
+    func releaseNumberField(_ numberField: NumberField, animated: Bool) {
+        assert(numberField.isDescendant(of: view))
+        
+        let superview = numberField.superview as! UIStackView
+        let index = superview.arrangedSubviews.firstIndex(of: numberField)!
+        releasedControlRecords[numberField] = ReleasedNumberFieldRecord(superview: superview, index: index)
+        
+        superview.removeArrangedSubview(numberField)
+        
+        if animated {
+            UIView.animate(withDuration: 0.3) {
+                superview.layoutIfNeeded()
+            }
+        } else {
+            superview.layoutIfNeeded()
+        }
+    }
+    
+    func retainNumberField(_ numberField: NumberField, animated: Bool) {
+        let record = releasedControlRecords.removeValue(forKey: numberField)!
+        
+        let center = record.superview.convert(numberField.center, from: numberField.superview)
+        numberField.removeFromSuperview()
+        record.superview.insertArrangedSubview(numberField, at: record.index)
+        numberField.center = center
+        
+        if animated {
+            UIView.animate(withDuration: 0.3) {
+                record.superview.layoutIfNeeded()
+            }
+        } else {
+            
+        }
+        
+    }
+    
+    func ensureVisible(view: UIView, animated: Bool) {
+        assert(view.isDescendant(of: scrollView))
+        let rect = scrollView.convert(view.frame, from: view.superview)
+        scrollView.scrollRectToVisible(rect, animated: animated)
+    }
 }
