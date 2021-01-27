@@ -12,9 +12,9 @@ protocol GraphicsViewFrameListener: class {
     func onFrameUpdate(deltaTime: Float)
 }
 
-class GraphicsViewFrameUpdater: Updater, GraphicsViewFrameListener {
+class GraphicsViewFrameUpdater: Updater, GraphicsViewFrameListener, NSCopying {
     
-    fileprivate init(graphicsViewController: GraphicsViewController) {
+    fileprivate init(graphicsViewController: GraphicsViewController?) {
         self.graphicsViewController = graphicsViewController
     }
     
@@ -32,6 +32,11 @@ class GraphicsViewFrameUpdater: Updater, GraphicsViewFrameListener {
     // MARK: GraphicsViewFrameListener
     func onFrameUpdate(deltaTime: Float) {
         callback?(deltaTime)
+    }
+    
+    // MARK: NSCopying
+    func copy(with zone: NSZone? = nil) -> Any {
+        GraphicsViewFrameUpdater(graphicsViewController: graphicsViewController)
     }
     
     private weak var graphicsViewController: GraphicsViewController?
@@ -87,7 +92,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         }
         
         let frameTimestamp = CACurrentMediaTime()
-        let deltaTime = Float(lastFrameTimestamp - frameTimestamp)
+        let deltaTime = Float(frameTimestamp - lastFrameTimestamp)
         
         for frameListener in frameListeners {
             frameListener.onFrameUpdate(deltaTime: deltaTime)

@@ -56,6 +56,7 @@
 		B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */; };
 		B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */; };
 		B7C7E0F525B6BF54003461D1 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F425B6BF54003461D1 /* Math.swift */; };
+		B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC72F725C1C1BB00CCB895 /* Easing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -151,6 +152,7 @@
 		B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingViewController.swift; sourceTree = "<group>"; };
 		B7C7E0F425B6BF54003461D1 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		B7DC72F725C1C1BB00CCB895 /* Easing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +229,7 @@
 				B733DE8225BC772C000FE1EC /* NumberField.swift */,
 				B733DEA025BC7FDB000FE1EC /* TestViewController.swift */,
 				B733DEA325BDFBF7000FE1EC /* Updater.swift */,
+				B7DC72F725C1C1BB00CCB895 /* Easing.swift */,
 			);
 			path = HeroX;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */,
 				B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */,
 				B7C7E0AF25B55E55003461D1 /* ImageRenderer.mm in Sources */,
+				B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */,
 				B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */,
 				B7C7E0B825B55E55003461D1 /* Component.cpp in Sources */,
 				B7C7E0AB25B55E55003461D1 /* SceneObject.mm in Sources */,

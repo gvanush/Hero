@@ -15,6 +15,7 @@ protocol TransformViewControllerDelegate {
 class TransformViewController: UIViewController, NumberFieldDelegate {
     
     var transform: Transform!
+    var graphicsViewFrameUpdater: GraphicsViewFrameUpdater!
     var delegate: TransformViewControllerDelegate?
     
     enum VectorElement: Int {
@@ -46,8 +47,11 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
     override func viewDidLoad() {
         
         positionFormatter.numberStyle = .decimal
+        positionFormatter.maximumFractionDigits = 1
         scaleFormatter.numberStyle = .decimal
+        scaleFormatter.maximumFractionDigits = 1
         rotationFormatter.unitStyle = .short
+        rotationFormatter.numberFormatter.maximumFractionDigits = 1
         
         configPositionViews()
         configRotationViews()
@@ -169,6 +173,7 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
     }
     
     func numberFieldDidBeginContinuousEditing(_ numberField: NumberField) {
+        view.endEditing(true)
         delegate?.transformViewController(self, didBeginContinuousEditingOnNumberField: numberField)
     }
     
@@ -178,9 +183,18 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
     
     // MARK: Position
     private func configPositionViews() {
+        let continuousEditingMaxSpeed: CGFloat = 200.0
         positionXNumberField.delegate = self
+        positionXNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        positionXNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
+        
         positionYNumberField.delegate = self
+        positionYNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        positionYNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
+        
         positionZNumberField.delegate = self
+        positionZNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        positionZNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
     }
     
     @IBAction func onNumberFieldValueChanged(_ sender: NumberField) {
@@ -203,9 +217,18 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
     
     // MARK: Rotation
     private func configRotationViews() {
+        let continuousEditingMaxSpeed: CGFloat = 360.0
         rotationXNumberField.delegate = self
+        rotationXNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        rotationXNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
+        
         rotationYNumberField.delegate = self
+        rotationYNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        rotationYNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
+        
         rotationZNumberField.delegate = self
+        rotationZNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        rotationZNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
         
         var items = [UIAction]()
         for rotationModeVal in kRotationModeFirst..<kRotationModeCount {
@@ -246,9 +269,18 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
     
     // MARK: Scale
     private func configScaleViews() {
+        let continuousEditingMaxSpeed: CGFloat = 4.0
         scaleXNumberField.delegate = self
+        scaleXNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        scaleXNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
+        
         scaleYNumberField.delegate = self
+        scaleYNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        scaleYNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
+        
         scaleZNumberField.delegate = self
+        scaleZNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        scaleZNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
     }
     
     @IBOutlet weak var scaleXNumberField: NumberField!
@@ -258,45 +290,40 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
     
     // MARK: Releasing / Retaining number fields
     struct ReleasedNumberFieldRecord {
-        let superview: UIStackView
-        let index: Int
+        let placeholderView: UIView
     }
     var releasedControlRecords = [NumberField : ReleasedNumberFieldRecord]()
     
-    func releaseNumberField(_ numberField: NumberField, animated: Bool) {
+    func releaseNumberField(_ numberField: NumberField) {
         assert(numberField.isDescendant(of: view))
         
         let superview = numberField.superview as! UIStackView
         let index = superview.arrangedSubviews.firstIndex(of: numberField)!
-        releasedControlRecords[numberField] = ReleasedNumberFieldRecord(superview: superview, index: index)
+        let height = numberField.frame.height
         
         superview.removeArrangedSubview(numberField)
         
-        if animated {
-            UIView.animate(withDuration: 0.3) {
-                superview.layoutIfNeeded()
-            }
-        } else {
-            superview.layoutIfNeeded()
-        }
+        let placeholderView = UIView()
+        placeholderView.backgroundColor = .clear
+        superview.insertArrangedSubview(placeholderView, at: index)
+        placeholderView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        
+        superview.layoutIfNeeded()
+        
+        releasedControlRecords[numberField] = ReleasedNumberFieldRecord(placeholderView: placeholderView)
     }
     
-    func retainNumberField(_ numberField: NumberField, animated: Bool) {
+    func retainNumberField(_ numberField: NumberField) {
+        
         let record = releasedControlRecords.removeValue(forKey: numberField)!
         
-        let center = record.superview.convert(numberField.center, from: numberField.superview)
-        numberField.removeFromSuperview()
-        record.superview.insertArrangedSubview(numberField, at: record.index)
-        numberField.center = center
+        let superview = record.placeholderView.superview as! UIStackView
+        let index = superview.arrangedSubviews.firstIndex(of: record.placeholderView)!
         
-        if animated {
-            UIView.animate(withDuration: 0.3) {
-                record.superview.layoutIfNeeded()
-            }
-        } else {
-            
-        }
+        superview.removeArrangedSubview(record.placeholderView)
+        superview.insertArrangedSubview(numberField, at: index)
         
+        superview.layoutIfNeeded()
     }
     
     func ensureVisible(view: UIView, animated: Bool) {

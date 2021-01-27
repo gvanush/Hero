@@ -94,9 +94,10 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
             if let newSelectedObject = newValue {
                 selectedObjectName.text = newSelectedObject.name
                 let transformVC = storyboard!.instantiateViewController(withIdentifier: "Transform") as! TransformViewController
-                transformVC.view.backgroundColor = .clear
                 transformVC.delegate = self
                 transformVC.transform = newSelectedObject.transform
+                transformVC.graphicsViewFrameUpdater = createFrameUpdater()
+                transformVC.view.backgroundColor = .clear
                 slidingViewController.bodyViewController = transformVC
                 slidingViewController.view.isHidden = false
             } else {
@@ -132,57 +133,75 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     // MARK: TransformViewControllerDelegate
     func transformViewController(_ transformViewController: TransformViewController, didBeginContinuousEditingOnNumberField numberField: NumberField) {
         
-        assert(retainedNumberFieldCenterYLayoutConstraint == nil)
+        assert(retainedNumberFieldRecord == nil)
         
-        let center = view.convert(numberField.center, from: numberField.superview)
-        transformViewController.releaseNumberField(numberField, animated: true)
+        let frame = view.convert(numberField.frame, from: numberField.superview)
+        transformViewController.releaseNumberField(numberField)
         view.addSubview(numberField)
-        numberField.center = center
         
-        let finalCenterY = numberField.continuousEditingGestureRecognizer.location(in: view).y - numberFieldAdditionalOffset
-        
-        retainedNumberFieldCenterYLayoutConstraint = numberField.centerYAnchor.constraint(equalTo: view.topAnchor, constant: finalCenterY)
         let constraints = [
-            numberField.widthAnchor.constraint(equalTo: view.widthAnchor),
-            numberField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            retainedNumberFieldCenterYLayoutConstraint!
+            numberField.centerYAnchor.constraint(equalTo: view.topAnchor, constant: frame.center.y),
+            numberField.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: frame.center.x - view.bounds.center.x),
+            numberField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: frame.size.width - view.bounds.size.width),
         ]
         NSLayoutConstraint.activate(constraints)
+        view.layoutIfNeeded()
         
-        numberField.continuousEditingGestureRecognizer.addTarget(self, action: #selector(onNumberFieldCotinuousGesture(_:)))
+        let finalCenterY = numberField.continuousEditingGestureRecognizer.location(in: view).y - numberFieldAdditionalOffset
+        constraints.first!.constant = finalCenterY
+        constraints[1].constant = 0.0
+        constraints.last!.constant = 0.0
         
-        UIView.animate(withDuration: 0.3) {
-            self.slidingViewController.view.alpha = 0.0
-        }
+        retainedNumberFieldRecord = RetainedNumberFieldRecord(constraints: constraints, initialFrame: frame, backgroundViewInitialAlpha: numberField.backgroundView.alpha)
         
         UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0.0, options: .curveEaseInOut) {
             self.view.layoutIfNeeded()
         }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.slidingViewController.view.alpha = 0.0
+            numberField.backgroundView.alpha = 0.75
+        }
+        
+        numberField.continuousEditingGestureRecognizer.addTarget(self, action: #selector(onNumberFieldCotinuousGesture(_:)))
+        
     }
     
     func transformViewController(_ transformViewController: TransformViewController, didEndContinuousEditingOnNumberField numberField: NumberField) {
-        assert(retainedNumberFieldCenterYLayoutConstraint != nil)
+
+        let initialCenter = retainedNumberFieldRecord!.initialFrame.center
+        let initialWidth = retainedNumberFieldRecord!.initialFrame.size.width
+        retainedNumberFieldRecord!.constraints.first!.constant = initialCenter.y
+        retainedNumberFieldRecord!.constraints[1].constant = initialCenter.x - view.bounds.midX
+        retainedNumberFieldRecord!.constraints.last!.constant = initialWidth - view.bounds.size.width
+
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+            self.slidingViewController.view.alpha = 1.0
+            numberField.backgroundView.alpha = self.retainedNumberFieldRecord!.backgroundViewInitialAlpha
+        } completion: { _ in
+            NSLayoutConstraint.deactivate(self.retainedNumberFieldRecord!.constraints)
+            self.retainedNumberFieldRecord = nil
+            transformViewController.retainNumberField(numberField)
+        }
         
         numberField.continuousEditingGestureRecognizer.removeTarget(self, action: nil)
         
-        transformViewController.retainNumberField(numberField, animated: true)
-
-        UIView.animate(withDuration: 0.3) {
-            self.slidingViewController.view.alpha = 1.0
-        } completion: { _ in
-            transformViewController.ensureVisible(view: numberField, animated: true)
-        }
-        
-        retainedNumberFieldCenterYLayoutConstraint = nil
     }
     
     @objc func onNumberFieldCotinuousGesture(_ panGR: UIPanGestureRecognizer) {
         guard panGR.state == .changed else { return }
         
-        retainedNumberFieldCenterYLayoutConstraint!.constant = panGR.location(in: view).y - numberFieldAdditionalOffset
+        retainedNumberFieldRecord!.constraints.first!.constant = panGR.location(in: view).y - numberFieldAdditionalOffset
     }
     
-    private var retainedNumberFieldCenterYLayoutConstraint: NSLayoutConstraint?
+    struct RetainedNumberFieldRecord {
+        let constraints: [NSLayoutConstraint]
+        let initialFrame: CGRect
+        let backgroundViewInitialAlpha: CGFloat
+    }
+    
+    private var retainedNumberFieldRecord: RetainedNumberFieldRecord?
     private let numberFieldAdditionalOffset: CGFloat = 60.0
     
     // MARK: Scene interaction

@@ -23,6 +23,12 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
         case cancelled
     }
     
+    enum ContinuousEditingState {
+        case adding
+        case subtracting
+        case idle
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupFromNib()
@@ -83,7 +89,13 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     private func setupUpdater() {
         continuousEditingUpdater.callback = { [unowned self] deltaTime in
-            self.value += CGFloat(deltaTime) * self.continuousEditingNormSpeed * self.continuousEditingMaxSpeed
+            let offset = continuousEditingOffset
+            guard abs(offset) >= NumberField.continuousEditingMinOffset else {
+                return
+            }
+            let normSpeed = (abs(offset) - NumberField.continuousEditingMinOffset) / (0.5 * bounds.size.width - NumberField.continuousEditingMinOffset)
+            let speed = (offset <= 0.0 ? -1.0 : 1.0) * easeInOut(normValue: normSpeed) * self.continuousEditingMaxSpeed
+            self.value += CGFloat(deltaTime) * speed
         }
     }
     
@@ -103,8 +115,11 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     var continuousEditingMaxSpeed: CGFloat = 1.0
     
-    private var continuousEditingNormSpeed: CGFloat {
-        (continuousEditingGestureRecognizer.location(in: self).x - bounds.midX) / (0.5 * bounds.size.width)
+    private(set) var continuousEditingState = ContinuousEditingState.idle
+    static private let continuousEditingMinOffset: CGFloat = 10.0
+    
+    private var continuousEditingOffset: CGFloat {
+        continuousEditingGestureRecognizer.location(in: self).x - bounds.midX
     }
     
     @IBOutlet weak var continuousEditingGestureRecognizer: UIPanGestureRecognizer!
@@ -128,6 +143,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     // MARK: TextField handling
     @IBOutlet weak private var textField: UITextField!
+    @IBOutlet weak var backgroundView: UIView!
     
     @objc func onTextFieldDonePressed(_ barButtonItem: UIBarButtonItem) {
         textField.resignFirstResponder()
@@ -169,22 +185,64 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
         case .began:
             continuousEditingUpdater.start()
             delegate?.numberFieldDidBeginContinuousEditing(self)
+            feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+            feedbackGenerator!.prepare()
+            UIView.animate(withDuration: 0.3) {
+                self.plusLabel.alpha = 1.0
+                self.minusLabel.alpha = 1.0
+                self.panLeftImageView.alpha = 0.0
+                self.panRightImageView.alpha = 0.0
+            }
             break
-        case .ended, .cancelled:
+        case .changed:
+            let oldState = continuousEditingState
+            if (abs(continuousEditingOffset) < NumberField.continuousEditingMinOffset) {
+                continuousEditingState = .idle
+            } else {
+                continuousEditingState = (continuousEditingOffset < 0.0 ? .subtracting : .adding)
+            }
+            if continuousEditingState == .idle && continuousEditingState != oldState {
+                feedbackGenerator!.impactOccurred()
+                feedbackGenerator!.prepare()
+            }
+            
+            break
+        case .ended, .cancelled, .failed:
             continuousEditingUpdater.stop()
             delegate?.numberFieldDidEndContinuousEditing(self)
+            continuousEditingState = .idle
+            feedbackGenerator = nil
+            UIView.animate(withDuration: 0.3) {
+                self.plusLabel.alpha = 0.0
+                self.minusLabel.alpha = 0.0
+                self.panLeftImageView.alpha = 1.0
+                self.panRightImageView.alpha = 1.0
+            }
             break
         default:
             break
         }
     }
     
+    private var feedbackGenerator: UIImpactFeedbackGenerator?
+    
+    @IBAction func onTap(_ sender: UITapGestureRecognizer) {
+        guard sender.state == .recognized else { return }
+        textField.becomeFirstResponder()
+    }
+    
     // MARK: UIGestureRecognizerDelegate
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        assert(continuousEditingGestureRecognizer == gestureRecognizer)
-        // Limit to horizontal scrolling
-        let velocity = continuousEditingGestureRecognizer.velocity(in: self)
-        return abs(velocity.y) < abs(velocity.x)
+        if continuousEditingGestureRecognizer === gestureRecognizer {
+            // Limit to horizontal scrolling
+            let velocity = continuousEditingGestureRecognizer.velocity(in: self)
+            return abs(velocity.y) < abs(velocity.x)
+        }
+        return true
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        false
     }
     
 }
