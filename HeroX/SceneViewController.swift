@@ -133,7 +133,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     // MARK: TransformViewControllerDelegate
     func transformViewController(_ transformViewController: TransformViewController, didBeginContinuousEditingOnNumberField numberField: NumberField) {
         
-        assert(retainedNumberFieldRecord == nil)
+        assert(retainedNumberFieldRecords[numberField] == nil)
         
         let frame = view.convert(numberField.frame, from: numberField.superview)
         transformViewController.releaseNumberField(numberField)
@@ -152,7 +152,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         constraints[1].constant = 0.0
         constraints.last!.constant = 0.0
         
-        retainedNumberFieldRecord = RetainedNumberFieldRecord(constraints: constraints, initialFrame: frame, backgroundViewInitialAlpha: numberField.backgroundView.alpha)
+        retainedNumberFieldRecords[numberField] = RetainedNumberFieldRecord(constraints: constraints, initialFrame: frame, backgroundViewInitialAlpha: numberField.backgroundView.alpha)
         
         UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0.0, options: .curveEaseInOut) {
             self.view.layoutIfNeeded()
@@ -169,19 +169,20 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     
     func transformViewController(_ transformViewController: TransformViewController, didEndContinuousEditingOnNumberField numberField: NumberField) {
 
-        let initialCenter = retainedNumberFieldRecord!.initialFrame.center
-        let initialWidth = retainedNumberFieldRecord!.initialFrame.size.width
-        retainedNumberFieldRecord!.constraints.first!.constant = initialCenter.y
-        retainedNumberFieldRecord!.constraints[1].constant = initialCenter.x - view.bounds.midX
-        retainedNumberFieldRecord!.constraints.last!.constant = initialWidth - view.bounds.size.width
+        let record = retainedNumberFieldRecords.removeValue(forKey: numberField)!
+        
+        let initialCenter = record.initialFrame.center
+        let initialWidth = record.initialFrame.size.width
+        record.constraints.first!.constant = initialCenter.y
+        record.constraints[1].constant = initialCenter.x - view.bounds.midX
+        record.constraints.last!.constant = initialWidth - view.bounds.size.width
 
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
             self.slidingViewController.view.alpha = 1.0
-            numberField.backgroundView.alpha = self.retainedNumberFieldRecord!.backgroundViewInitialAlpha
+            numberField.backgroundView.alpha = record.backgroundViewInitialAlpha
         } completion: { _ in
-            NSLayoutConstraint.deactivate(self.retainedNumberFieldRecord!.constraints)
-            self.retainedNumberFieldRecord = nil
+            NSLayoutConstraint.deactivate(record.constraints)
             transformViewController.retainNumberField(numberField)
         }
         
@@ -192,7 +193,8 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     @objc func onNumberFieldCotinuousGesture(_ panGR: UIPanGestureRecognizer) {
         guard panGR.state == .changed else { return }
         
-        retainedNumberFieldRecord!.constraints.first!.constant = panGR.location(in: view).y - numberFieldAdditionalOffset
+        let record = retainedNumberFieldRecords[panGR.view as! NumberField]!
+        record.constraints.first!.constant = panGR.location(in: view).y - numberFieldAdditionalOffset
     }
     
     struct RetainedNumberFieldRecord {
@@ -201,11 +203,13 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         let backgroundViewInitialAlpha: CGFloat
     }
     
-    private var retainedNumberFieldRecord: RetainedNumberFieldRecord?
+    private var retainedNumberFieldRecords = [NumberField : RetainedNumberFieldRecord]()
     private let numberFieldAdditionalOffset: CGFloat = 60.0
     
     // MARK: Scene interaction
     public var isNavigating = false
+    
+    private var twoFingerPanGestureRecognizer: UIPanGestureRecognizer!
     
     private func setupGestures() {
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(onTap))
@@ -216,11 +220,11 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         panGR.maximumNumberOfTouches = 1
         graphicsView.addGestureRecognizer(panGR)
         
-        let twoFingerPanGR = UIPanGestureRecognizer(target: self, action: #selector(onTwoFingerPan))
-        twoFingerPanGR.delegate = self
-        twoFingerPanGR.minimumNumberOfTouches = 2
-        twoFingerPanGR.maximumNumberOfTouches = 2
-        graphicsView.addGestureRecognizer(twoFingerPanGR)
+        twoFingerPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onTwoFingerPan))
+        twoFingerPanGestureRecognizer.delegate = self
+        twoFingerPanGestureRecognizer.minimumNumberOfTouches = 2
+        twoFingerPanGestureRecognizer.maximumNumberOfTouches = 2
+        graphicsView.addGestureRecognizer(twoFingerPanGestureRecognizer)
         
         let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(onPinch))
         pinchGR.delegate = self
@@ -228,10 +232,10 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPanGestureRecognizer {
-            return false
+        if gestureRecognizer == twoFingerPanGestureRecognizer || otherGestureRecognizer == twoFingerPanGestureRecognizer {
+            return true
         }
-        return true
+        return false
     }
     
     @objc func onTap(tapGR: UITapGestureRecognizer) {

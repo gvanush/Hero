@@ -32,14 +32,14 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupFromNib()
-        configSubviews()
+        configViews()
         setupUpdater()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupFromNib()
-        configSubviews()
+        configViews()
         setupUpdater()
     }
     
@@ -51,7 +51,12 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
         addSubview(content)
     }
     
-    private func configSubviews() {
+    private func configViews() {
+        continuousEditingGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+        addGestureRecognizer(continuousEditingGestureRecognizer)
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap(_:)))
+        addGestureRecognizer(tapGestureRecognizer)
+        
         textField.text = "\(NumberField.initialValue)"
         textField.delegate = self
         textField.setupInputAccessoryToolbar(onDone: (self, #selector(onTextFieldDonePressed)), onCancel: (self, #selector(onTextFieldCancelPressed)))
@@ -115,14 +120,28 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     var continuousEditingMaxSpeed: CGFloat = 1.0
     
-    private(set) var continuousEditingState = ContinuousEditingState.idle
+    private(set) var continuousEditingState = ContinuousEditingState.idle {
+        willSet {
+            switch newValue {
+            case .adding:
+                plusLabel.textColor = .label
+                minusLabel.textColor = .tertiaryLabel
+            case .subtracting:
+                minusLabel.textColor = .label
+                plusLabel.textColor = .tertiaryLabel
+            case .idle:
+                plusLabel.textColor = .tertiaryLabel
+                minusLabel.textColor = .tertiaryLabel
+            }
+        }
+    }
     static private let continuousEditingMinOffset: CGFloat = 10.0
     
     private var continuousEditingOffset: CGFloat {
         continuousEditingGestureRecognizer.location(in: self).x - bounds.midX
     }
     
-    @IBOutlet weak var continuousEditingGestureRecognizer: UIPanGestureRecognizer!
+    var continuousEditingGestureRecognizer: UIPanGestureRecognizer!
     @IBOutlet weak var minusLabel: UILabel!
     @IBOutlet weak var plusLabel: UILabel!
     @IBOutlet weak var panLeftImageView: UIImageView!
@@ -180,7 +199,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     private var didEndEditingReason = DidEndEditingReason.comitted
     
     // MARK: UIGestureRecognizerDelegate
-    @IBAction func onPan(_ sender: UIPanGestureRecognizer) {
+    @objc func onPan(_ sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .began:
             continuousEditingUpdater.start()
@@ -226,7 +245,9 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     private var feedbackGenerator: UIImpactFeedbackGenerator?
     
-    @IBAction func onTap(_ sender: UITapGestureRecognizer) {
+    private var tapGestureRecognizer: UITapGestureRecognizer!
+    
+    @objc func onTap(_ sender: UITapGestureRecognizer) {
         guard sender.state == .recognized else { return }
         textField.becomeFirstResponder()
     }

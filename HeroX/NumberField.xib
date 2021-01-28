@@ -10,7 +10,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundView" destination="Pg9-Vy-puN" id="gyQ-Tg-IJi"/>
-                <outlet property="continuousEditingGestureRecognizer" destination="lk7-su-kjy" id="4ab-lB-ovy"/>
                 <outlet property="minusLabel" destination="VUb-kO-acz" id="aXF-xc-0fZ"/>
                 <outlet property="panLeftImageView" destination="mFz-CH-NPe" id="jkN-Rh-TUM"/>
                 <outlet property="panRightImageView" destination="oeL-kx-4HP" id="0Im-qc-EhS"/>
@@ -20,11 +19,11 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="200" id="iN0-l3-epB">
+        <view userInteractionEnabled="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="200" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="414" height="82"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view alpha="0.25" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pg9-Vy-puN" userLabel="Bgr">
+                <view userInteractionEnabled="NO" alpha="0.25" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pg9-Vy-puN" userLabel="Bgr">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="34"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
@@ -91,24 +90,8 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="lk7-su-kjy" appends="YES" id="Gxx-fl-uAH"/>
-                <outletCollection property="gestureRecognizers" destination="Kjg-Dv-UnE" appends="YES" id="2Pv-Dc-l8y"/>
-            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="152.67857142857142"/>
         </view>
-        <panGestureRecognizer minimumNumberOfTouches="1" id="lk7-su-kjy">
-            <connections>
-                <action selector="onPan:" destination="-1" id="V1C-tU-Df9"/>
-                <outlet property="delegate" destination="-1" id="gfB-9n-JSo"/>
-            </connections>
-        </panGestureRecognizer>
-        <tapGestureRecognizer id="Kjg-Dv-UnE">
-            <connections>
-                <action selector="onTap:" destination="-1" id="Hao-Tb-X8L"/>
-                <outlet property="delegate" destination="-1" id="1U0-Ts-EKW"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="chevron.left.2" catalog="system" width="128" height="105"/>
