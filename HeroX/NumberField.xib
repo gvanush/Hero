@@ -9,10 +9,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
             <connections>
-                <outlet property="backgroundView" destination="Pg9-Vy-puN" id="gyQ-Tg-IJi"/>
+                <outlet property="continuousEditingHandleImageView" destination="BWb-Ik-Fo9" id="nqb-Zw-MBC"/>
                 <outlet property="minusLabel" destination="VUb-kO-acz" id="aXF-xc-0fZ"/>
-                <outlet property="panLeftImageView" destination="mFz-CH-NPe" id="jkN-Rh-TUM"/>
-                <outlet property="panRightImageView" destination="oeL-kx-4HP" id="0Im-qc-EhS"/>
                 <outlet property="plusLabel" destination="JJO-Yh-Rbq" id="v07-yN-Lc3"/>
                 <outlet property="textField" destination="Q64-PS-Bo3" id="iLh-Zy-5UM"/>
                 <outlet property="titleLabel" destination="DE1-iN-5wd" id="h1M-Qg-Yxo"/>
@@ -23,11 +21,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="82"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view userInteractionEnabled="NO" alpha="0.25" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pg9-Vy-puN" userLabel="Bgr">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="34"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                </view>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q64-PS-Bo3">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q64-PS-Bo3" userLabel="TextField">
                     <rect key="frame" x="204.5" y="0.0" width="5" height="34"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -48,43 +42,32 @@
                     <color key="textColor" systemColor="tertiaryLabelColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="X" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DE1-iN-5wd">
-                    <rect key="frame" x="201.5" y="34" width="11.5" height="20.5"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="X" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DE1-iN-5wd" userLabel="Title">
+                    <rect key="frame" x="201.5" y="34" width="11" height="19.5"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                     <color key="textColor" systemColor="secondaryLabelColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.left.2" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="mFz-CH-NPe">
-                    <rect key="frame" x="6" y="10" width="17" height="13.5"/>
-                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small" weight="light">
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                    </preferredSymbolConfiguration>
-                </imageView>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right.2" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="oeL-kx-4HP">
-                    <rect key="frame" x="392" y="10" width="16" height="13.5"/>
-                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="small" weight="light">
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                    </preferredSymbolConfiguration>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.compact.down" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="BWb-Ik-Fo9">
+                    <rect key="frame" x="185" y="49.5" width="44" height="7.5"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="jc1-PC-pXr"/>
+                    </constraints>
+                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="Pg9-Vy-puN" firstAttribute="top" secondItem="Q64-PS-Bo3" secondAttribute="top" id="07X-jk-2WG"/>
-                <constraint firstItem="DE1-iN-5wd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="5Ni-Yw-Vmk"/>
                 <constraint firstItem="Q64-PS-Bo3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="HgI-4U-YGb"/>
-                <constraint firstItem="VUb-kO-acz" firstAttribute="centerY" secondItem="Pg9-Vy-puN" secondAttribute="centerY" id="Jja-Wt-bAJ"/>
+                <constraint firstItem="JJO-Yh-Rbq" firstAttribute="centerY" secondItem="Q64-PS-Bo3" secondAttribute="centerY" id="If4-sF-FWY"/>
                 <constraint firstAttribute="trailing" secondItem="JJO-Yh-Rbq" secondAttribute="trailing" constant="10" id="K67-O9-Gek"/>
-                <constraint firstAttribute="trailing" secondItem="oeL-kx-4HP" secondAttribute="trailing" constant="6" id="LEK-wd-FDH"/>
-                <constraint firstItem="Pg9-Vy-puN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PgZ-yj-2bb"/>
-                <constraint firstItem="JJO-Yh-Rbq" firstAttribute="centerY" secondItem="Pg9-Vy-puN" secondAttribute="centerY" id="QPG-rO-suc"/>
-                <constraint firstItem="Pg9-Vy-puN" firstAttribute="height" secondItem="Q64-PS-Bo3" secondAttribute="height" id="Rdu-o6-S8I"/>
+                <constraint firstItem="VUb-kO-acz" firstAttribute="centerY" secondItem="Q64-PS-Bo3" secondAttribute="centerY" id="OAh-Hj-NEB"/>
+                <constraint firstItem="BWb-Ik-Fo9" firstAttribute="top" secondItem="DE1-iN-5wd" secondAttribute="bottom" constant="-10" id="RsE-np-9Xg"/>
+                <constraint firstItem="DE1-iN-5wd" firstAttribute="centerX" secondItem="Q64-PS-Bo3" secondAttribute="centerX" id="S9f-r2-kWE"/>
                 <constraint firstItem="VUb-kO-acz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="X9b-fn-Eha"/>
-                <constraint firstItem="DE1-iN-5wd" firstAttribute="top" secondItem="Q64-PS-Bo3" secondAttribute="bottom" id="ZYE-8O-iKy"/>
-                <constraint firstItem="mFz-CH-NPe" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="6" id="m3Z-2M-zkG"/>
-                <constraint firstItem="mFz-CH-NPe" firstAttribute="centerY" secondItem="Pg9-Vy-puN" secondAttribute="centerY" id="o3z-dO-IiF"/>
-                <constraint firstItem="oeL-kx-4HP" firstAttribute="centerY" secondItem="Pg9-Vy-puN" secondAttribute="centerY" id="tG6-lq-mtz"/>
-                <constraint firstAttribute="trailing" secondItem="Pg9-Vy-puN" secondAttribute="trailing" id="vor-ge-3J9"/>
+                <constraint firstItem="DE1-iN-5wd" firstAttribute="top" secondItem="Q64-PS-Bo3" secondAttribute="bottom" id="bSq-oU-k30"/>
+                <constraint firstItem="BWb-Ik-Fo9" firstAttribute="centerX" secondItem="Q64-PS-Bo3" secondAttribute="centerX" id="d1s-Gs-aWg"/>
                 <constraint firstItem="Q64-PS-Bo3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="yXT-px-mNf"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
@@ -94,13 +77,9 @@
         </view>
     </objects>
     <resources>
-        <image name="chevron.left.2" catalog="system" width="128" height="105"/>
-        <image name="chevron.right.2" catalog="system" width="128" height="105"/>
+        <image name="chevron.compact.down" catalog="system" width="128" height="43"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>

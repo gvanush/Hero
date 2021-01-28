@@ -147,20 +147,21 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         NSLayoutConstraint.activate(constraints)
         view.layoutIfNeeded()
         
-        let finalCenterY = numberField.continuousEditingGestureRecognizer.location(in: view).y - numberFieldAdditionalOffset
+        let finalCenterY = numberField.continuousEditingGestureRecognizer.location(in: view).y - numberFieldYOffsetToFinger
         constraints.first!.constant = finalCenterY
         constraints[1].constant = 0.0
         constraints.last!.constant = 0.0
         
-        retainedNumberFieldRecords[numberField] = RetainedNumberFieldRecord(constraints: constraints, initialFrame: frame, backgroundViewInitialAlpha: numberField.backgroundView.alpha)
+        retainedNumberFieldRecords[numberField] = RetainedNumberFieldRecord(constraints: constraints, frame: frame, backgroundView: numberField.backgroundView)
         
         UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0.0, options: .curveEaseInOut) {
             self.view.layoutIfNeeded()
         }
         
+        numberField.setBackgroundView(UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial)), animated: true)
+        
         UIView.animate(withDuration: 0.3) {
             self.slidingViewController.view.alpha = 0.0
-            numberField.backgroundView.alpha = 0.75
         }
         
         numberField.continuousEditingGestureRecognizer.addTarget(self, action: #selector(onNumberFieldCotinuousGesture(_:)))
@@ -171,16 +172,17 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
 
         let record = retainedNumberFieldRecords.removeValue(forKey: numberField)!
         
-        let initialCenter = record.initialFrame.center
-        let initialWidth = record.initialFrame.size.width
+        let initialCenter = record.frame.center
+        let initialWidth = record.frame.size.width
         record.constraints.first!.constant = initialCenter.y
         record.constraints[1].constant = initialCenter.x - view.bounds.midX
         record.constraints.last!.constant = initialWidth - view.bounds.size.width
 
+        numberField.setBackgroundView(record.backgroundView, animated: true)
+        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
             self.slidingViewController.view.alpha = 1.0
-            numberField.backgroundView.alpha = record.backgroundViewInitialAlpha
         } completion: { _ in
             NSLayoutConstraint.deactivate(record.constraints)
             transformViewController.retainNumberField(numberField)
@@ -194,17 +196,17 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         guard panGR.state == .changed else { return }
         
         let record = retainedNumberFieldRecords[panGR.view as! NumberField]!
-        record.constraints.first!.constant = panGR.location(in: view).y - numberFieldAdditionalOffset
+        record.constraints.first!.constant = panGR.location(in: view).y - numberFieldYOffsetToFinger
     }
     
     struct RetainedNumberFieldRecord {
         let constraints: [NSLayoutConstraint]
-        let initialFrame: CGRect
-        let backgroundViewInitialAlpha: CGFloat
+        let frame: CGRect
+        let backgroundView: UIView?
     }
     
     private var retainedNumberFieldRecords = [NumberField : RetainedNumberFieldRecord]()
-    private let numberFieldAdditionalOffset: CGFloat = 60.0
+    private let numberFieldYOffsetToFinger: CGFloat = 70.0
     
     // MARK: Scene interaction
     public var isNavigating = false

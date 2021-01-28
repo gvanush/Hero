@@ -53,8 +53,10 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     private func configViews() {
         continuousEditingGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+        continuousEditingGestureRecognizer.delegate = self
         addGestureRecognizer(continuousEditingGestureRecognizer)
         tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap(_:)))
+        tapGestureRecognizer.delegate = self
         addGestureRecognizer(tapGestureRecognizer)
         
         textField.text = "\(NumberField.initialValue)"
@@ -63,7 +65,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     }
     
     override var intrinsicContentSize: CGSize {
-        CGSize(width: UIView.noIntrinsicMetric, height: textField.frame.union(titleLabel.frame).height)
+        CGSize(width: UIView.noIntrinsicMetric, height: textField.frame.union(continuousEditingHandleImageView.frame).height)
     }
     
     static let initialValue: CGFloat = 0.0
@@ -78,6 +80,37 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     var valueText: String? {
         textField.text
     }
+    
+    func setBackgroundView(_ newBgrView: UIView?, animated: Bool = false) {
+        
+        if let newBgrView = newBgrView {
+            newBgrView.translatesAutoresizingMaskIntoConstraints = false
+            insertSubview(newBgrView, at: 0)
+            let constraints = [
+                newBgrView.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
+                newBgrView.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+                newBgrView.widthAnchor.constraint(equalTo: self.widthAnchor),
+                newBgrView.heightAnchor.constraint(equalTo: textField.heightAnchor),
+            ]
+            NSLayoutConstraint.activate(constraints)
+        }
+        
+        if animated {
+            let oldBgrView = backgroundView
+            UIView.animate(withDuration: 0.3) {
+                oldBgrView?.alpha = 0.0
+                newBgrView?.alpha = 1.0
+            } completion: { _ in
+                oldBgrView?.removeFromSuperview()
+            }
+        } else {
+            backgroundView?.removeFromSuperview()
+        }
+        
+        backgroundView = newBgrView
+    }
+    
+    private(set) var backgroundView: UIView?
     
     weak var delegate: NumberFieldDelegate?
     
@@ -113,8 +146,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
             continuousEditingGestureRecognizer.isEnabled = isContinuousEditingEnabled
             minusLabel.isHidden = !isContinuousEditingEnabled
             plusLabel.isHidden = !isContinuousEditingEnabled
-            panLeftImageView.isHidden = !isContinuousEditingEnabled
-            panRightImageView.isHidden = !isContinuousEditingEnabled
+            continuousEditingHandleImageView.isHidden = !isContinuousEditingEnabled
         }
     }
     
@@ -135,7 +167,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
             }
         }
     }
-    static private let continuousEditingMinOffset: CGFloat = 10.0
+    static private let continuousEditingMinOffset: CGFloat = 20.0
     
     private var continuousEditingOffset: CGFloat {
         continuousEditingGestureRecognizer.location(in: self).x - bounds.midX
@@ -144,8 +176,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     var continuousEditingGestureRecognizer: UIPanGestureRecognizer!
     @IBOutlet weak var minusLabel: UILabel!
     @IBOutlet weak var plusLabel: UILabel!
-    @IBOutlet weak var panLeftImageView: UIImageView!
-    @IBOutlet weak var panRightImageView: UIImageView!
+    @IBOutlet weak var continuousEditingHandleImageView: UIImageView!
     
     // MARK: Title
     @IBOutlet weak var titleLabel: UILabel!
@@ -162,7 +193,6 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     // MARK: TextField handling
     @IBOutlet weak private var textField: UITextField!
-    @IBOutlet weak var backgroundView: UIView!
     
     @objc func onTextFieldDonePressed(_ barButtonItem: UIBarButtonItem) {
         textField.resignFirstResponder()
@@ -209,9 +239,8 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
             UIView.animate(withDuration: 0.3) {
                 self.plusLabel.alpha = 1.0
                 self.minusLabel.alpha = 1.0
-                self.panLeftImageView.alpha = 0.0
-                self.panRightImageView.alpha = 0.0
             }
+            self.continuousEditingHandleImageView.alpha = 0.0
             break
         case .changed:
             let oldState = continuousEditingState
@@ -234,9 +263,8 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
             UIView.animate(withDuration: 0.3) {
                 self.plusLabel.alpha = 0.0
                 self.minusLabel.alpha = 0.0
-                self.panLeftImageView.alpha = 1.0
-                self.panRightImageView.alpha = 1.0
             }
+            self.continuousEditingHandleImageView.alpha = 1.0
             break
         default:
             break
@@ -255,9 +283,14 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     // MARK: UIGestureRecognizerDelegate
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if continuousEditingGestureRecognizer === gestureRecognizer {
-            // Limit to horizontal scrolling
+            let loc = gestureRecognizer.location(in: continuousEditingHandleImageView)
+            guard loc.x < continuousEditingHandleImageView.bounds.size.width else {
+                return false
+            }
+            // Limit to bottom panning
+            let minVelocityY: CGFloat = 50.0
             let velocity = continuousEditingGestureRecognizer.velocity(in: self)
-            return abs(velocity.y) < abs(velocity.x)
+            return abs(velocity.y) > abs(velocity.x) && velocity.y > minVelocityY
         }
         return true
     }

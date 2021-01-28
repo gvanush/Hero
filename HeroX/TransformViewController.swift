@@ -44,6 +44,7 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         case scale
     }
     
+    static let bottomContentInset: CGFloat = 88.0
     override func viewDidLoad() {
         
         positionFormatter.numberStyle = .decimal
@@ -52,6 +53,8 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         scaleFormatter.maximumFractionDigits = 1
         rotationFormatter.unitStyle = .short
         rotationFormatter.numberFormatter.maximumFractionDigits = 1
+        
+        scrollView.contentInset.bottom += TransformViewController.bottomContentInset
         
         configPositionViews()
         configRotationViews()
@@ -65,7 +68,7 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
 
         if notification.name == UIResponder.keyboardWillHideNotification {
-            scrollView.contentInset = .zero
+            scrollView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: TransformViewController.bottomContentInset, right: 0.0)
         } else {
             scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
         }
@@ -181,19 +184,29 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         delegate?.transformViewController(self, didEndContinuousEditingOnNumberField: numberField)
     }
     
+    func makeNumberFieldBackgroundView() -> UIView {
+        let bgrView = UIView()
+        bgrView.backgroundColor = UIColor.init(named: "MonoThin")
+        bgrView.layer.cornerRadius = 4.0
+        return bgrView
+    }
+    
     // MARK: Position
     private func configPositionViews() {
         let continuousEditingMaxSpeed: CGFloat = 200.0
         positionXNumberField.delegate = self
         positionXNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        positionXNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         positionXNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
         
         positionYNumberField.delegate = self
         positionYNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        positionYNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         positionYNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
         
         positionZNumberField.delegate = self
         positionZNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        positionZNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         positionZNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
     }
     
@@ -220,14 +233,17 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         let continuousEditingMaxSpeed: CGFloat = 360.0
         rotationXNumberField.delegate = self
         rotationXNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        rotationXNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         rotationXNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
         
         rotationYNumberField.delegate = self
         rotationYNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        rotationYNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         rotationYNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
         
         rotationZNumberField.delegate = self
         rotationZNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        rotationZNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         rotationZNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
         
         var items = [UIAction]()
@@ -272,14 +288,17 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         let continuousEditingMaxSpeed: CGFloat = 4.0
         scaleXNumberField.delegate = self
         scaleXNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        scaleXNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         scaleXNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
         
         scaleYNumberField.delegate = self
         scaleYNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        scaleYNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         scaleYNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
         
         scaleZNumberField.delegate = self
         scaleZNumberField.continuousEditingUpdater = graphicsViewFrameUpdater.copy() as! Updater
+        scaleZNumberField.setBackgroundView(makeNumberFieldBackgroundView())
         scaleZNumberField.continuousEditingMaxSpeed = continuousEditingMaxSpeed
     }
     
