@@ -6,6 +6,7 @@
 //
 
 #import "Component.h"
+#import "TextureUtilsCommon.h"
 
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
@@ -18,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite) simd_float2 size;
 @property (nonatomic, readwrite) simd_float4 color;
 @property (nonatomic, readwrite) id<MTLTexture> texture;
+@property (nonatomic, readwrite) TextureOrientation textureOrientation;
+@property (nonatomic, readonly) simd_int2 textureSize;
 
 @end
 

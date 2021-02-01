@@ -94,7 +94,7 @@ typedef struct {
 
 vertex LayerRasterizerData
 layerVertexShader(uint vertexID [[vertex_id]],
-                  device const ImageVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+                  device const TextureVertex* vertices [[buffer(kVertexInputIndexVertices)]],
                   constant float2& layerSize [[buffer(kVertexInputIndexSize)]],
                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     LayerRasterizerData out;

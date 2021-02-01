@@ -56,7 +56,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         graphicsView.clearColor = UIColor.sceneBgrColor.mtlClearColor
         graphicsView.presentsWithTransaction = true
         graphicsView.delegate = self
-        view.addSubview(graphicsView)
+        view.insertSubview(graphicsView, at: 0)
         
         updateViewportSize(graphicsView.drawableSize)
         

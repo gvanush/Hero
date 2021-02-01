@@ -9,6 +9,8 @@
 
 #include "Renderer.hpp"
 #include "GeometryUtils_Common.h"
+#include "TextureUtilsCommon.h"
+#include "TextureProxy.h"
 
 #include <simd/simd.h>
 
@@ -21,7 +23,6 @@ class ImageRenderer: public Renderer {
 public:
     
     ImageRenderer(SceneObject& sceneObject, Layer layer = kLayerContent);
-    ~ImageRenderer();
     
     inline void setSize(const simd::float2& size);
     inline const simd::float2& size() const;
@@ -29,8 +30,13 @@ public:
     inline void setColor(const simd::float4& color);
     inline const simd::float4& color() const;
     
-    void setTexture(void* texture);
-    inline void* texture() const;
+    void setTextureProxy(TextureProxy textureProxy);
+    inline TextureProxy textureProxy() const;
+    
+    inline void setTextureOrientation(TextureOrientation imageOrientation);
+    inline TextureOrientation textureOrientation() const;
+    
+    simd::int2 textureSize() const;
     
     void render(void* renderingContext);
     
@@ -47,9 +53,9 @@ public:
 private:
     simd::float4 _color;
     simd::float2 _size;
-    // TODO:
-    void* _texture;
+    TextureProxy _textureProxy;
     Transform* _transform = nullptr;
+    TextureOrientation _textureOritentation = kTextureOrientationUp;
 };
 
 void ImageRenderer::setSize(const simd::float2& size) {
@@ -68,8 +74,16 @@ const simd::float4& ImageRenderer::color() const {
     return _color;
 }
 
-void* ImageRenderer::texture() const {
-    return _texture;
+TextureProxy ImageRenderer::textureProxy() const {
+    return _textureProxy;
+}
+
+void ImageRenderer::setTextureOrientation(TextureOrientation textureOrientation) {
+    _textureOritentation = textureOrientation;
+}
+
+TextureOrientation ImageRenderer::textureOrientation() const {
+    return _textureOritentation;
 }
 
 }

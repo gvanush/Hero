@@ -284,7 +284,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if continuousEditingGestureRecognizer === gestureRecognizer {
             let loc = gestureRecognizer.location(in: continuousEditingHandleImageView)
-            guard loc.x < continuousEditingHandleImageView.bounds.size.width else {
+            guard loc.x >= 0.0 && loc.x <= continuousEditingHandleImageView.bounds.size.width else {
                 return false
             }
             // Limit to bottom panning

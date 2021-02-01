@@ -10,6 +10,8 @@
 		B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */; };
 		B709763225B7866400F5751B /* ObjectToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B709763125B7866400F5751B /* ObjectToolbar.xib */; };
 		B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709765625B8BD1A00F5751B /* TransformViewController.swift */; };
+		B711BB6425C729EB00FC06C1 /* ObjCProxy.mm in Sources */ = {isa = PBXBuildFile; fileRef = B711BB6325C729EB00FC06C1 /* ObjCProxy.mm */; };
+		B711BB6825C7BC3300FC06C1 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */; };
 		B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */; };
 		B718AD1A25BAA5C900C05912 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */; };
 		B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */; };
@@ -48,7 +50,7 @@
 		B7C7E0BD25B55E55003461D1 /* ObjCObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09E25B55E55003461D1 /* ObjCObjectRegistry.cpp */; };
 		B7C7E0BE25B55E55003461D1 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A225B55E55003461D1 /* Shaders.metal */; };
 		B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */; };
-		B7C7E0C025B55E55003461D1 /* TextureUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A625B55E55003461D1 /* TextureUtils.m */; };
+		B7C7E0C025B55E55003461D1 /* TextureUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A625B55E55003461D1 /* TextureUtils.mm */; };
 		B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A725B55E55003461D1 /* Transform.mm */; };
 		B7C7E0D725B56500003461D1 /* GraphicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */; };
 		B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */; };
@@ -63,6 +65,11 @@
 		B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		B709763125B7866400F5751B /* ObjectToolbar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ObjectToolbar.xib; sourceTree = "<group>"; };
 		B709765625B8BD1A00F5751B /* TransformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformViewController.swift; sourceTree = "<group>"; };
+		B711BB5D25C7107C00FC06C1 /* TextureUtilsCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureUtilsCommon.h; sourceTree = "<group>"; };
+		B711BB6025C71D9500FC06C1 /* TextureProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureProxy.h; sourceTree = "<group>"; };
+		B711BB6225C7290C00FC06C1 /* ObjCProxy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjCProxy.hpp; sourceTree = "<group>"; };
+		B711BB6325C729EB00FC06C1 /* ObjCProxy.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjCProxy.mm; sourceTree = "<group>"; };
+		B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,7 +151,7 @@
 		B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
 		B7C7E0A425B55E55003461D1 /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
 		B7C7E0A525B55E55003461D1 /* ImageRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageRenderer.hpp; sourceTree = "<group>"; };
-		B7C7E0A625B55E55003461D1 /* TextureUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureUtils.m; sourceTree = "<group>"; };
+		B7C7E0A625B55E55003461D1 /* TextureUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureUtils.mm; sourceTree = "<group>"; };
 		B7C7E0A725B55E55003461D1 /* Transform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
 		B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
 		B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -166,6 +173,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B711BB5F25C71D4D00FC06C1 /* Proxies */ = {
+			isa = PBXGroup;
+			children = (
+				B711BB6025C71D9500FC06C1 /* TextureProxy.h */,
+				B711BB6225C7290C00FC06C1 /* ObjCProxy.hpp */,
+				B711BB6325C729EB00FC06C1 /* ObjCProxy.mm */,
+			);
+			name = Proxies;
+			sourceTree = "<group>";
+		};
 		B715B23824D28B0F00B4C859 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +204,7 @@
 				B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */,
 				B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */,
 				B7C7E06E25B55E54003461D1 /* SIMD+Extensions.swift */,
+				B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -253,7 +271,8 @@
 				B7C7E0A225B55E55003461D1 /* Shaders.metal */,
 				B7C7E08D25B55E54003461D1 /* ShaderTypes.h */,
 				B7C7E08425B55E54003461D1 /* TextureUtils.h */,
-				B7C7E0A625B55E55003461D1 /* TextureUtils.m */,
+				B7C7E0A625B55E55003461D1 /* TextureUtils.mm */,
+				B711BB5D25C7107C00FC06C1 /* TextureUtilsCommon.h */,
 				B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */,
 			);
 			name = Graphics;
@@ -262,6 +281,7 @@
 		B7C7E0C725B55EC1003461D1 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B711BB5F25C71D4D00FC06C1 /* Proxies */,
 				B7C7E0D025B5608A003461D1 /* UIRepresentable */,
 				B7C7E0C825B55ED0003461D1 /* Component */,
 				B7C7E0A125B55E55003461D1 /* UIRepresentableObserver.h */,
@@ -480,6 +500,7 @@
 				B7C7E0AC25B55E55003461D1 /* Renderer.mm in Sources */,
 				B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */,
+				B711BB6425C729EB00FC06C1 /* ObjCProxy.mm in Sources */,
 				B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */,
 				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
 				B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */,
@@ -487,7 +508,7 @@
 				B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */,
 				B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */,
 				B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */,
-				B7C7E0C025B55E55003461D1 /* TextureUtils.m in Sources */,
+				B7C7E0C025B55E55003461D1 /* TextureUtils.mm in Sources */,
 				B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */,
 				B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */,
 				B7C7E0AF25B55E55003461D1 /* ImageRenderer.mm in Sources */,
@@ -504,6 +525,7 @@
 				B7C7E0B525B55E55003461D1 /* RemovedComponentRegistry.cpp in Sources */,
 				B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */,
 				B7C7E0B725B55E55003461D1 /* Component.mm in Sources */,
+				B711BB6825C7BC3300FC06C1 /* UIImage+Extensions.swift in Sources */,
 				B733DE8325BC772C000FE1EC /* NumberField.swift in Sources */,
 				B718AD2C25BAADD600C05912 /* NSPointerArray+Extensions.m in Sources */,
 				B7C7E0BA25B55E55003461D1 /* Math.cpp in Sources */,

@@ -6,16 +6,23 @@
 //
 
 import UIKit
+import PhotosUI
+import MobileCoreServices
 
-class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, TransformViewControllerDelegate {
+class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, TransformViewControllerDelegate, SlidingViewControllerDelegate, PHPickerViewControllerDelegate {
     
     @IBOutlet weak var selectedObjectName: UILabel!
+    @IBOutlet weak var toolbar: UIToolbar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
      
         setupScene()
         setupSlidingViewController()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        slidingViewController.inset = toolbar.frame.height + view.safeAreaInsets.bottom
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -88,6 +95,52 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         }
     }
     
+    // MARK: Object creation/deletion
+    @IBAction func onAddObjectPressed(_ sender: UIBarButtonItem) {
+        let config = PHPickerConfiguration()
+//        config.selectionLimit = 2
+        let imagePickerController = PHPickerViewController(configuration: config)
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true)
+    }
+    
+    // MARK: PHPickerViewControllerDelegate
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        guard !results.isEmpty else { return }
+        print(results)
+        
+        let itemProvider = results.first!.itemProvider
+        if itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                if let error = error {
+                    // TODO
+                    assertionFailure(error.localizedDescription)
+                    return
+                }
+
+                let textureLoader = MTKTextureLoader(device: RenderingContext.device())
+                let image = image as! UIImage
+                print("orientation: \(image.imageOrientation.rawValue)")
+                let texture = try! textureLoader.newTexture(cgImage: image.cgImage!, options: nil)
+                
+                DispatchQueue.main.async {
+                    let imageObject = self.scene!.makeImage()
+                    imageObject.imageRenderer.texture = texture
+                    imageObject.imageRenderer.textureOrientation = image.textureOrientation
+                    
+                    let textureSize = imageObject.imageRenderer.textureSize
+                    print("widt: \(textureSize.x), height: \(textureSize.y)")
+                    let texRatio = Float(textureSize.x) / Float(textureSize.y)
+                    let size: Float = 50.0
+                    imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                }
+            }
+        } else {
+            // TODO
+        }
+    }
+    
     // MARK: Selected object
     var selectedObject: SceneObject? {
         willSet {
@@ -112,22 +165,38 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     
     private func setupSlidingViewController() {
         slidingViewController = SlidingViewController()
+        slidingViewController.delegate = self
         slidingViewController.backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
-        slidingViewController.state = .closed 
+        slidingViewController.state = .closed
         
         installViewController(slidingViewController) { slidingView in
-            slidingView.frame = self.view.bounds
+            slidingView.frame = view.bounds
             slidingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            view.addSubview(slidingView)
+            view.insertSubview(slidingView, belowSubview: toolbar)
         }
         
         let nib = UINib(nibName: "ObjectToolbar", bundle: nil)
         let content = nib.instantiate(withOwner: self, options: nil)
         
+        slidingViewController.headerHeight = 80.0
         slidingViewController.headerView = (content.first as! UIView)
         selectedObjectName.text = nil
         
         slidingViewController.view.isHidden = true
+    }
+    
+    // MARK: SlidingViewControllerDelegate
+    func slidingViewController(_ slidingViewController: SlidingViewController, willChangeState newState: SlidingViewState) {
+        switch newState {
+        case .sliding, .open:
+            UIView.animate(withDuration: 0.3) {
+                self.toolbar.alpha = 0.0
+            }
+        case .closed:
+            UIView.animate(withDuration: 0.3) {
+                self.toolbar.alpha = 1.0
+            }
+        }
     }
     
     // MARK: TransformViewControllerDelegate
@@ -212,6 +281,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     public var isNavigating = false
     
     private var twoFingerPanGestureRecognizer: UIPanGestureRecognizer!
+    private var pinchGestureRecognizer: UIPinchGestureRecognizer!
     
     private func setupGestures() {
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(onTap))
@@ -228,13 +298,13 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         twoFingerPanGestureRecognizer.maximumNumberOfTouches = 2
         graphicsView.addGestureRecognizer(twoFingerPanGestureRecognizer)
         
-        let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(onPinch))
-        pinchGR.delegate = self
-        graphicsView.addGestureRecognizer(pinchGR)
+        pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(onPinch))
+        pinchGestureRecognizer.delegate = self
+        graphicsView.addGestureRecognizer(pinchGestureRecognizer)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer == twoFingerPanGestureRecognizer || otherGestureRecognizer == twoFingerPanGestureRecognizer {
+        if (gestureRecognizer === twoFingerPanGestureRecognizer && otherGestureRecognizer === pinchGestureRecognizer) || (otherGestureRecognizer === twoFingerPanGestureRecognizer && gestureRecognizer === pinchGestureRecognizer) {
             return true
         }
         return false

@@ -20,16 +20,21 @@ namespace hero {
 
 namespace {
 
-constexpr auto kHalfSize = 0.5f;
-constexpr std::array<ImageVertex, 4> kImageVertices = {{
-    {{-kHalfSize, -kHalfSize}, {0.f, 1.f}},
-    {{kHalfSize, -kHalfSize}, {1.f, 1.f}},
-    {{-kHalfSize, kHalfSize}, {0.f, 0.f}},
-    {{kHalfSize, kHalfSize}, {1.f, 0.f}},
-}};
-
 id<MTLRenderPipelineState> __pipelineState;
-id<MTLBuffer> __vertexBuffer;
+
+id<MTLBuffer> getVertexBuffer(TextureOrientation orientation) {
+    static __weak id<MTLBuffer> vertexBuffers[kTextureOrientationCount];
+    
+    if (auto buffer = vertexBuffers[orientation]; buffer) {
+        return buffer;
+    }
+    // TODO: change storage mode to private using blit command encoder
+    const auto vertices = getTextureVertices(orientation);
+    id<MTLBuffer> buffer = [[RenderingContext device] newBufferWithBytes: vertices.data() length: vertices.size() * sizeof(TextureVertex) options: MTLResourceStorageModeShared | MTLHazardTrackingModeDefault | MTLCPUCacheModeDefaultCache];
+    vertexBuffers[orientation] = buffer;
+    
+    return  buffer;
+}
 
 }
 
@@ -37,28 +42,7 @@ ImageRenderer::ImageRenderer(SceneObject& sceneObject, Layer layer)
 : Renderer {sceneObject, layer}
 , _size {1.f, 1.f}
 , _color {1.f, 1.f, 1.f, 1.f}
-, _texture {(__bridge_retained void*) [TextureUtils whiteUnitTexture]} {
-}
-
-ImageRenderer::~ImageRenderer() {
-    if(_texture) {
-        CFRelease(_texture);
-    }
-}
-
-void ImageRenderer::setTexture(void* texture) {
-    if(texture) {
-        CFRetain(texture);
-        if(_texture) {
-            CFRelease(_texture);
-        }
-        _texture = texture;
-    } else {
-        if(_texture) {
-            CFRelease(_texture);
-        }
-        _texture = (__bridge_retained void*) [TextureUtils whiteUnitTexture];
-    }
+, _textureProxy {TextureProxy {hero::getWhiteUnitTexture()}} {
 }
 
 void ImageRenderer::setup() {
@@ -74,14 +58,11 @@ void ImageRenderer::setup() {
     __pipelineState = [[RenderingContext device] newRenderPipelineStateWithDescriptor: pipelineDescriptor error: &error];
     assert(!error);
     
-    // TODO: change storage mode to private using blit command encoder
-    __vertexBuffer = [[RenderingContext device] newBufferWithBytes: kImageVertices.data() length: kImageVertices.size() * sizeof(ImageVertex) options: MTLResourceStorageModeShared | MTLHazardTrackingModeDefault | MTLCPUCacheModeDefaultCache];
 }
 
 void ImageRenderer::preRender(void* renderingContext) {
     RenderingContext* context = (__bridge RenderingContext*) renderingContext;
     [context.renderCommandEncoder setRenderPipelineState: __pipelineState];
-    [context.renderCommandEncoder setVertexBuffer:__vertexBuffer offset: 0  atIndex: kVertexInputIndexVertices];
 }
 
 void ImageRenderer::render(void* renderingContext) {
@@ -92,15 +73,17 @@ void ImageRenderer::render(void* renderingContext) {
     uniforms.projectionViewMatrix = context.projectionViewMatrix;
     uniforms.projectionViewModelMatrix = _transform->worldMatrix() * uniforms.projectionViewMatrix;
     
+    [context.renderCommandEncoder setVertexBuffer: getVertexBuffer(_textureOritentation) offset: 0 atIndex: kVertexInputIndexVertices];
+    
     [context.renderCommandEncoder setVertexBytes: &uniforms length: sizeof(Uniforms) atIndex: kVertexInputIndexUniforms];
     
     [context.renderCommandEncoder setVertexBytes: &_size length: sizeof(_size) atIndex: kVertexInputIndexSize];
     
     [context.renderCommandEncoder setFragmentBytes: &_color length: sizeof(_color) atIndex: kFragmentInputIndexColor];
     
-    [context.renderCommandEncoder setFragmentTexture: (__bridge id<MTLTexture>) _texture atIndex: kFragmentInputIndexTexture];
+    [context.renderCommandEncoder setFragmentTexture: _textureProxy.texture() atIndex: kFragmentInputIndexTexture];
     
-    [context.renderCommandEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: kImageVertices.size()];
+    [context.renderCommandEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: kTextureVertexCount];
     
 }
 
@@ -128,6 +111,14 @@ void ImageRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typ
     assert(!typeInfo.is<Transform>());
 }
 
+void ImageRenderer::setTextureProxy(TextureProxy textureProxy) {
+    _textureProxy = (textureProxy ? textureProxy : TextureProxy {hero::getWhiteUnitTexture()});
+}
+
+simd::int2 ImageRenderer::textureSize() const {
+    return getTextureSize(static_cast<int>(_textureProxy.texture().width), static_cast<int>(_textureProxy.texture().height), _textureOritentation);
+}
+
 }
 
 // MARK: ObjC API
@@ -150,11 +141,23 @@ void ImageRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typ
 }
 
 -(void) setTexture: (id<MTLTexture>) texture {
-    self.cpp->setTexture((__bridge void*) texture);
+    self.cpp->setTextureProxy(hero::TextureProxy{texture});
 }
 
 -(id<MTLTexture>) texture {
-    return (__bridge id<MTLTexture>) self.cpp->texture();
+    return self.cpp->textureProxy().texture();
+}
+
+-(void)setTextureOrientation:(TextureOrientation)textureOrientation {
+    self.cpp->setTextureOrientation(textureOrientation);
+}
+
+-(TextureOrientation)textureOrientation {
+    return self.cpp->textureOrientation();
+}
+
+-(simd_int2) textureSize {
+    return self.cpp->textureSize();
 }
 
 @end

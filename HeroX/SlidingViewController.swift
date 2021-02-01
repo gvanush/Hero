@@ -14,7 +14,7 @@ enum SlidingViewState {
 }
 
 protocol SlidingViewControllerDelegate {
-    func slidingViewControllerWillChangeState(newState: SlidingViewState)
+    func slidingViewController(_ slidingViewController: SlidingViewController, willChangeState newState: SlidingViewState)
 }
 
 class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -69,7 +69,7 @@ class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        setupPositionContraint(isOpen: state == .open)
+        setupPositionConstraint(isOpen: state == .open)
         if let bodyVC = bodyViewController, state != .closed {
             bodyVC.endAppearanceTransition()
         }
@@ -109,7 +109,7 @@ class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
         slidingView.addSubview(contentView)
     }
     
-    private func setupPositionContraint(isOpen: Bool) {
+    private func setupPositionConstraint(isOpen: Bool) {
         // Layout sliding view
         if slidingViewPosLayoutConstraint == nil {
             let slidingViewConstraints = [
@@ -124,7 +124,7 @@ class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
         if isOpen {
             slidingViewPosLayoutConstraint = slidingView.topAnchor.constraint(equalTo: view.topAnchor)
         } else {
-            slidingViewPosLayoutConstraint = slidingView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -headerHeight)
+            slidingViewPosLayoutConstraint = slidingView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -headerHeight - inset)
         }
         slidingViewPosLayoutConstraint.isActive = true
         
@@ -221,8 +221,10 @@ class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
         get { internalState }
     }
     
+    public var inset: CGFloat = 0.0
+    
     private var slidingRange: CGFloat {
-        view.bounds.height - headerHeight
+        view.bounds.height - headerHeight - inset
     }
     
     // Is 0 when view is open and 'slidingRange' when closed
@@ -232,7 +234,7 @@ class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
             if wasOpen {
                 slidingViewPosLayoutConstraint.constant = clamp(newValue, min: 0.0, max: slidingRange)
             } else {
-                slidingViewPosLayoutConstraint.constant = clamp(newValue - view.bounds.height, min: -view.bounds.height, max: -headerHeight)
+                slidingViewPosLayoutConstraint.constant = clamp(newValue - view.bounds.height, min: -view.bounds.height, max: -headerHeight - inset)
             }
             contentViewPosLayoutConstraint.constant = (1.0 - normSlidingViewPos) * view.safeAreaLayoutGuide.layoutFrame.minY
         }
@@ -251,11 +253,11 @@ class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
         willSet {
             guard internalState != newValue, isViewLoaded else { return }
             
-            delegate?.slidingViewControllerWillChangeState(newState: newValue)
+            delegate?.slidingViewController(self, willChangeState: newValue)
             
             guard newValue != .sliding else { return }
             
-            setupPositionContraint(isOpen: newValue == .open)
+            setupPositionConstraint(isOpen: newValue == .open)
         }
     }
     
