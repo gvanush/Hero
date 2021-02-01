@@ -1,5 +1,5 @@
 //
-//  ImageRenderer.hpp
+//  TextureRenderer.hpp
 //  Hero
 //
 //  Created by Vanush Grigoryan on 7/30/20.
@@ -19,10 +19,10 @@ namespace hero {
 class SceneObject;
 class Transform;
 
-class ImageRenderer: public Renderer {
+class TextureRenderer: public Renderer {
 public:
     
-    ImageRenderer(SceneObject& sceneObject, Layer layer = kLayerContent);
+    TextureRenderer(SceneObject& sceneObject, Layer layer = kLayerContent);
     
     inline void setSize(const simd::float2& size);
     inline const simd::float2& size() const;
@@ -58,31 +58,31 @@ private:
     TextureOrientation _textureOritentation = kTextureOrientationUp;
 };
 
-void ImageRenderer::setSize(const simd::float2& size) {
+void TextureRenderer::setSize(const simd::float2& size) {
     _size = size;
 }
 
-const simd::float2& ImageRenderer::size() const {
+const simd::float2& TextureRenderer::size() const {
     return _size;
 }
 
-void ImageRenderer::setColor(const simd::float4& color) {
+void TextureRenderer::setColor(const simd::float4& color) {
     _color = color;
 }
 
-const simd::float4& ImageRenderer::color() const {
+const simd::float4& TextureRenderer::color() const {
     return _color;
 }
 
-TextureProxy ImageRenderer::textureProxy() const {
+TextureProxy TextureRenderer::textureProxy() const {
     return _textureProxy;
 }
 
-void ImageRenderer::setTextureOrientation(TextureOrientation textureOrientation) {
+void TextureRenderer::setTextureOrientation(TextureOrientation textureOrientation) {
     _textureOritentation = textureOrientation;
 }
 
-TextureOrientation ImageRenderer::textureOrientation() const {
+TextureOrientation TextureRenderer::textureOrientation() const {
     return _textureOritentation;
 }
 

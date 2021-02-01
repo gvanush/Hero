@@ -10,7 +10,7 @@
 #include "Camera.hpp"
 #include "Transform.hpp"
 #include "LineRenderer.hpp"
-#include "ImageRenderer.hpp"
+#include "TextureRenderer.hpp"
 #include "SelectedObjectMarker.hpp"
 #include "ComponentRegistry.hpp"
 
@@ -36,7 +36,7 @@ Scene::~Scene() {
     
     // Clean renderer registry
     hero::ComponentRegistry<hero::LineRenderer>::shared().cleanComponents(this);
-    hero::ComponentRegistry<hero::ImageRenderer>::shared().cleanComponents(this);
+    hero::ComponentRegistry<hero::TextureRenderer>::shared().cleanComponents(this);
     
     // Destroy all components
     RemovedComponentRegistry::shared().destroyComponents(this);
@@ -103,7 +103,7 @@ SceneObject* Scene::makeImage() {
     
     sceneObject->setName(oss.str());
     sceneObject->set<hero::Transform>();
-    sceneObject->set<hero::ImageRenderer>();
+    sceneObject->set<hero::TextureRenderer>();
     return sceneObject;
 }
 
@@ -137,7 +137,7 @@ void Scene::setSelectedObject(SceneObject* object) {
 
 SceneObject* Scene::raycast(const Ray& ray) const {
     assert(_turnedOn);
-    if (auto component = ComponentRegistry<ImageRenderer>::shared().raycast(this, ray); component) {
+    if (auto component = ComponentRegistry<TextureRenderer>::shared().raycast(this, ray); component) {
         return &component->sceneObject();
     }
     return nullptr;

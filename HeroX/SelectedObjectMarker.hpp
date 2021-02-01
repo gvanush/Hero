@@ -12,7 +12,7 @@
 namespace hero {
 
 class LineRenderer;
-class ImageRenderer;
+class TextureRenderer;
 
 class SelectedObjectMarker: public CompositeComponent {
 protected:
@@ -23,7 +23,7 @@ protected:
     void onComponentWillRemove(ComponentTypeInfo typeInfo, Component* component) override;
   
 private:
-    void setupSelection(const ImageRenderer* imageRenderer);
+    void setupSelection(const TextureRenderer* textureRenderer);
 };
 
 }

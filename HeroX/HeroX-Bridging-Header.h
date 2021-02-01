@@ -8,6 +8,6 @@
 #import "Camera.h"
 #import "SphericalCoord.h"
 #import "LineRenderer.h"
-#import "ImageRenderer.h"
+#import "TextureRenderer.h"
 #import "RenderingContext.h"
 #import "UIRepresentableObserver.h"

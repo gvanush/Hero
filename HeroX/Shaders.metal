@@ -93,7 +93,7 @@ typedef struct {
 } LayerRasterizerData;
 
 vertex LayerRasterizerData
-layerVertexShader(uint vertexID [[vertex_id]],
+textureVS(uint vertexID [[vertex_id]],
                   device const TextureVertex* vertices [[buffer(kVertexInputIndexVertices)]],
                   constant float2& layerSize [[buffer(kVertexInputIndexSize)]],
                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
@@ -103,7 +103,7 @@ layerVertexShader(uint vertexID [[vertex_id]],
     return out;
 }
 
-fragment float4 layerFragmentShader(LayerRasterizerData in [[stage_in]],
+fragment float4 textureFS(LayerRasterizerData in [[stage_in]],
                                     constant float4& color [[buffer(kFragmentInputIndexColor)]],
                                     texture2d<half> texture [[ texture(kFragmentInputIndexTexture) ]]) {
     constexpr sampler texSampler (mag_filter::linear, min_filter::linear);

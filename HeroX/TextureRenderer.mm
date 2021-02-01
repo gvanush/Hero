@@ -5,11 +5,11 @@
 //  Created by Vanush Grigoryan on 7/31/20.
 //
 
-#import "ImageRenderer.h"
+#import "TextureRenderer.h"
 #import "TextureUtils.h"
 #import "RenderingContext.h"
 
-#include "ImageRenderer.hpp"
+#include "TextureRenderer.hpp"
 #include "Transform.hpp"
 #include "ShaderTypes.h"
 #include "GeometryUtils.hpp"
@@ -38,19 +38,19 @@ id<MTLBuffer> getVertexBuffer(TextureOrientation orientation) {
 
 }
 
-ImageRenderer::ImageRenderer(SceneObject& sceneObject, Layer layer)
+TextureRenderer::TextureRenderer(SceneObject& sceneObject, Layer layer)
 : Renderer {sceneObject, layer}
 , _size {1.f, 1.f}
 , _color {1.f, 1.f, 1.f, 1.f}
 , _textureProxy {TextureProxy {hero::getWhiteUnitTexture()}} {
 }
 
-void ImageRenderer::setup() {
+void TextureRenderer::setup() {
     
     MTLRenderPipelineDescriptor* pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
-    pipelineDescriptor.label = @"ImageRenderer pipeline";
-    pipelineDescriptor.vertexFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"layerVertexShader"];
-    pipelineDescriptor.fragmentFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"layerFragmentShader"];
+    pipelineDescriptor.label = @"TextureRenderer pipeline";
+    pipelineDescriptor.vertexFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"textureVS"];
+    pipelineDescriptor.fragmentFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"textureFS"];
     pipelineDescriptor.colorAttachments[0].pixelFormat = [RenderingContext colorPixelFormat];
     pipelineDescriptor.depthAttachmentPixelFormat = [RenderingContext depthPixelFormat];
     
@@ -60,12 +60,12 @@ void ImageRenderer::setup() {
     
 }
 
-void ImageRenderer::preRender(void* renderingContext) {
+void TextureRenderer::preRender(void* renderingContext) {
     RenderingContext* context = (__bridge RenderingContext*) renderingContext;
     [context.renderCommandEncoder setRenderPipelineState: __pipelineState];
 }
 
-void ImageRenderer::render(void* renderingContext) {
+void TextureRenderer::render(void* renderingContext) {
     
     RenderingContext* context = (__bridge RenderingContext*) renderingContext;
     
@@ -87,7 +87,7 @@ void ImageRenderer::render(void* renderingContext) {
     
 }
 
-bool ImageRenderer::raycast(const Ray& ray, float& normDistance) {
+bool TextureRenderer::raycast(const Ray& ray, float& normDistance) {
     constexpr auto kTolerance = 0.0001f;
     
     const auto localRay = hero::transform(ray, simd::inverse(_transform->worldMatrix()));
@@ -103,26 +103,26 @@ bool ImageRenderer::raycast(const Ray& ray, float& normDistance) {
     return contains(intersectionPoint, aabr);
 }
 
-void ImageRenderer::onStart() {
+void TextureRenderer::onStart() {
     _transform = get<Transform>();
 }
 
-void ImageRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typeInfo, Component*) {
+void TextureRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo typeInfo, Component*) {
     assert(!typeInfo.is<Transform>());
 }
 
-void ImageRenderer::setTextureProxy(TextureProxy textureProxy) {
+void TextureRenderer::setTextureProxy(TextureProxy textureProxy) {
     _textureProxy = (textureProxy ? textureProxy : TextureProxy {hero::getWhiteUnitTexture()});
 }
 
-simd::int2 ImageRenderer::textureSize() const {
+simd::int2 TextureRenderer::textureSize() const {
     return getTextureSize(static_cast<int>(_textureProxy.texture().width), static_cast<int>(_textureProxy.texture().height), _textureOritentation);
 }
 
 }
 
 // MARK: ObjC API
-@implementation ImageRenderer
+@implementation TextureRenderer
 
 -(void) setSize: (simd_float2) size {
     self.cpp->setSize(size);
@@ -162,10 +162,10 @@ simd::int2 ImageRenderer::textureSize() const {
 
 @end
 
-@implementation ImageRenderer (Cpp)
+@implementation TextureRenderer (Cpp)
 
--(hero::ImageRenderer*) cpp {
-    return static_cast<hero::ImageRenderer*>(self.cppHandle);
+-(hero::TextureRenderer*) cpp {
+    return static_cast<hero::TextureRenderer*>(self.cppHandle);
 }
 
 @end

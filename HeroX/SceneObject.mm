@@ -8,13 +8,13 @@
 #import "SceneObject.h"
 #import "Transform.h"
 #import "Camera.h"
-#import "ImageRenderer.h"
+#import "TextureRenderer.h"
 
 #include "SceneObject.hpp"
 #include "Transform.hpp"
 #include "Camera.hpp"
 #include "LineRenderer.hpp"
-#include "ImageRenderer.hpp"
+#include "TextureRenderer.hpp"
 
 @implementation SceneObject
 
@@ -26,8 +26,8 @@
     return [Camera wrapperForCpp: self.cpp->get<hero::Camera>()];
 }
 
--(ImageRenderer *)imageRenderer {
-    return [ImageRenderer wrapperForCpp: self.cpp->get<hero::ImageRenderer>()];
+-(TextureRenderer *)textureRenderer {
+    return [TextureRenderer wrapperForCpp: self.cpp->get<hero::TextureRenderer>()];
 }
 
 -(void)setName:(NSString *)name {

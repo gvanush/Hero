@@ -6,7 +6,7 @@
 //
 
 #include "SelectedObjectMarker.hpp"
-#include "ImageRenderer.hpp"
+#include "TextureRenderer.hpp"
 #include "LineRenderer.hpp"
 
 #include <simd/simd.h>
@@ -22,26 +22,26 @@ constexpr simd::float4 kSelectionLineColor  {1.f, 204.f / 255.f, 0.f, 1.f};
 }
 
 void SelectedObjectMarker::onStart() {
-    if(auto imageRenderer = get<ImageRenderer>(); imageRenderer) {
-        setupSelection(imageRenderer);
+    if(auto textureRenderer = get<TextureRenderer>(); textureRenderer) {
+        setupSelection(textureRenderer);
     }
 }
 
 void SelectedObjectMarker::onComponentDidAdd(ComponentTypeInfo typeInfo, Component* component) {
-    if (typeInfo.is<ImageRenderer>()) {
-        setupSelection(static_cast<ImageRenderer*>(component));
+    if (typeInfo.is<TextureRenderer>()) {
+        setupSelection(static_cast<TextureRenderer*>(component));
     }
 }
 
 void SelectedObjectMarker::onComponentWillRemove(ComponentTypeInfo typeInfo, Component* component) {
-    if (typeInfo.is<ImageRenderer>()) {
+    if (typeInfo.is<TextureRenderer>()) {
         removeChild<LineRenderer>();
     }
 }
 
-void SelectedObjectMarker::setupSelection(const ImageRenderer* imageRenderer) {
+void SelectedObjectMarker::setupSelection(const TextureRenderer* textureRenderer) {
     using namespace simd;
-    const auto& halfSize = 0.5 * imageRenderer->size();
+    const auto& halfSize = 0.5 * textureRenderer->size();
     std::vector<float3> points {
         float3 {-halfSize.x, -halfSize.y, 0.0},
         float3 {-halfSize.x, halfSize.y, 0.0},

@@ -75,10 +75,10 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
             let texRatio = Float(texture.width) / Float(texture.height)
             
             let imageObject = scene!.makeImage()
-            imageObject.imageRenderer.texture = texture
+            imageObject.textureRenderer.texture = texture
             if i == 0 {
                 let size = Float(30.0)
-                imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                imageObject.textureRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                 imageObject.transform.position = simd_float3(0.0, 0.0, 20.0)
             } else {
                 
@@ -89,7 +89,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                 let size = min(width, height) / 2.0
                 
                 let positionRange = Float(-70.0)...Float(70.0)
-                imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                imageObject.textureRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                 imageObject.transform.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
             }
         }
@@ -126,14 +126,14 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                 
                 DispatchQueue.main.async {
                     let imageObject = self.scene!.makeImage()
-                    imageObject.imageRenderer.texture = texture
-                    imageObject.imageRenderer.textureOrientation = image.textureOrientation
+                    imageObject.textureRenderer.texture = texture
+                    imageObject.textureRenderer.textureOrientation = image.textureOrientation
                     
-                    let textureSize = imageObject.imageRenderer.textureSize
+                    let textureSize = imageObject.textureRenderer.textureSize
                     print("widt: \(textureSize.x), height: \(textureSize.y)")
                     let texRatio = Float(textureSize.x) / Float(textureSize.y)
                     let size: Float = 50.0
-                    imageObject.imageRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                    imageObject.textureRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                 }
             }
         } else {

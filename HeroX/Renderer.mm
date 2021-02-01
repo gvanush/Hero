@@ -16,7 +16,7 @@
 #include "Scene.hpp"
 #include "Camera.hpp"
 #include "LineRenderer.hpp"
-#include "ImageRenderer.hpp"
+#include "TextureRenderer.hpp"
 
 @interface Renderer () {
     NSMapTable<UIRepresentable*, NSPointerArray*>* _uiRepresentableToObservers;
@@ -101,7 +101,7 @@ static __weak Renderer* __allRenderers[kLimit] {};
     scene.cpp->step(0.f);
     
     hero::ComponentRegistry<hero::LineRenderer>::shared().cleanRemovedComponents(scene.cpp);
-    hero::ComponentRegistry<hero::ImageRenderer>::shared().cleanRemovedComponents(scene.cpp);
+    hero::ComponentRegistry<hero::TextureRenderer>::shared().cleanRemovedComponents(scene.cpp);
     
     context.projectionViewMatrix = scene.cpp->viewCamera()->get<hero::Camera>()->projectionViewMatrix();
     
@@ -121,8 +121,8 @@ static __weak Renderer* __allRenderers[kLimit] {};
     auto contextHandle = (__bridge void*) context;
     hero::LineRenderer::preRender(contextHandle);
     hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerContent, contextHandle);
-    hero::ImageRenderer::preRender(contextHandle);
-    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, hero::kLayerContent, contextHandle);
+    hero::TextureRenderer::preRender(contextHandle);
+    hero::ComponentRegistry<hero::TextureRenderer>::shared().update(scene.cpp, hero::kLayerContent, contextHandle);
     
     [commandEncoder endEncoding];
     
@@ -136,8 +136,8 @@ static __weak Renderer* __allRenderers[kLimit] {};
     
     hero::LineRenderer::preRender(contextHandle);
     hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerUI, contextHandle);
-    hero::ImageRenderer::preRender(contextHandle);
-    hero::ComponentRegistry<hero::ImageRenderer>::shared().update(scene.cpp, hero::kLayerUI, contextHandle);
+    hero::TextureRenderer::preRender(contextHandle);
+    hero::ComponentRegistry<hero::TextureRenderer>::shared().update(scene.cpp, hero::kLayerUI, contextHandle);
     
     [commandEncoder endEncoding];
     

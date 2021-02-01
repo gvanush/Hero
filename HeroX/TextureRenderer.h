@@ -14,7 +14,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ImageRenderer: Component
+@interface TextureRenderer: Component
 
 @property (nonatomic, readwrite) simd_float2 size;
 @property (nonatomic, readwrite) simd_float4 color;
@@ -26,11 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #ifdef __cplusplus
 
-namespace hero { class ImageRenderer; }
+namespace hero { class TextureRenderer; }
 
-@interface ImageRenderer (Cpp)
+@interface TextureRenderer (Cpp)
 
--(hero::ImageRenderer*) cpp;
+-(hero::TextureRenderer*) cpp;
 
 @end
 

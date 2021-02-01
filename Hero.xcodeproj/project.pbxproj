@@ -33,7 +33,7 @@
 		B7C7E0AC25B55E55003461D1 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07725B55E54003461D1 /* Renderer.mm */; };
 		B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */; };
 		B7C7E0AE25B55E55003461D1 /* ComponentTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08325B55E54003461D1 /* ComponentTypeInfo.cpp */; };
-		B7C7E0AF25B55E55003461D1 /* ImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08525B55E54003461D1 /* ImageRenderer.mm */; };
+		B7C7E0AF25B55E55003461D1 /* TextureRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08525B55E54003461D1 /* TextureRenderer.mm */; };
 		B7C7E0B025B55E55003461D1 /* UIRepresentable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08825B55E54003461D1 /* UIRepresentable.mm */; };
 		B7C7E0B125B55E55003461D1 /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08B25B55E54003461D1 /* SphericalCoord.mm */; };
 		B7C7E0B225B55E55003461D1 /* SceneObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08C25B55E54003461D1 /* SceneObject.cpp */; };
@@ -96,7 +96,7 @@
 		B7C7E06425B55CDB003461D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7C7E06D25B55E53003461D1 /* HeroX-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HeroX-Bridging-Header.h"; sourceTree = "<group>"; };
 		B7C7E06E25B55E54003461D1 /* SIMD+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIMD+Extensions.swift"; sourceTree = "<group>"; };
-		B7C7E06F25B55E54003461D1 /* ImageRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageRenderer.h; sourceTree = "<group>"; };
+		B7C7E06F25B55E54003461D1 /* TextureRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureRenderer.h; sourceTree = "<group>"; };
 		B7C7E07025B55E54003461D1 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
 		B7C7E07125B55E54003461D1 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
 		B7C7E07225B55E54003461D1 /* Math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		B7C7E08225B55E54003461D1 /* SceneObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
 		B7C7E08325B55E54003461D1 /* ComponentTypeInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentTypeInfo.cpp; sourceTree = "<group>"; };
 		B7C7E08425B55E54003461D1 /* TextureUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
-		B7C7E08525B55E54003461D1 /* ImageRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageRenderer.mm; sourceTree = "<group>"; };
+		B7C7E08525B55E54003461D1 /* TextureRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureRenderer.mm; sourceTree = "<group>"; };
 		B7C7E08625B55E54003461D1 /* SceneObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
 		B7C7E08725B55E54003461D1 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		B7C7E08825B55E54003461D1 /* UIRepresentable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UIRepresentable.mm; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 		B7C7E0A225B55E55003461D1 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
 		B7C7E0A425B55E55003461D1 /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
-		B7C7E0A525B55E55003461D1 /* ImageRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageRenderer.hpp; sourceTree = "<group>"; };
+		B7C7E0A525B55E55003461D1 /* TextureRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TextureRenderer.hpp; sourceTree = "<group>"; };
 		B7C7E0A625B55E55003461D1 /* TextureUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureUtils.mm; sourceTree = "<group>"; };
 		B7C7E0A725B55E55003461D1 /* Transform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
 		B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
@@ -320,7 +320,7 @@
 			children = (
 				B7C7E0D125B560F6003461D1 /* Transform */,
 				B7C7E0CE25B5602D003461D1 /* LineRenderer */,
-				B7C7E0CB25B56003003461D1 /* ImageRenderer */,
+				B7C7E0CB25B56003003461D1 /* TextureRenderer */,
 				B7C7E0CA25B55FF8003461D1 /* Camera */,
 				B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */,
 				B7C7E07925B55E54003461D1 /* SelectedObjectMarker.hpp */,
@@ -339,14 +339,14 @@
 			name = Camera;
 			sourceTree = "<group>";
 		};
-		B7C7E0CB25B56003003461D1 /* ImageRenderer */ = {
+		B7C7E0CB25B56003003461D1 /* TextureRenderer */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E06F25B55E54003461D1 /* ImageRenderer.h */,
-				B7C7E0A525B55E55003461D1 /* ImageRenderer.hpp */,
-				B7C7E08525B55E54003461D1 /* ImageRenderer.mm */,
+				B7C7E06F25B55E54003461D1 /* TextureRenderer.h */,
+				B7C7E0A525B55E55003461D1 /* TextureRenderer.hpp */,
+				B7C7E08525B55E54003461D1 /* TextureRenderer.mm */,
 			);
-			name = ImageRenderer;
+			name = TextureRenderer;
 			sourceTree = "<group>";
 		};
 		B7C7E0CE25B5602D003461D1 /* LineRenderer */ = {
@@ -511,7 +511,7 @@
 				B7C7E0C025B55E55003461D1 /* TextureUtils.mm in Sources */,
 				B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */,
 				B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */,
-				B7C7E0AF25B55E55003461D1 /* ImageRenderer.mm in Sources */,
+				B7C7E0AF25B55E55003461D1 /* TextureRenderer.mm in Sources */,
 				B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */,
 				B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */,
 				B7C7E0B825B55E55003461D1 /* Component.cpp in Sources */,
