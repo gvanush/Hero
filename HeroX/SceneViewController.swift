@@ -12,7 +12,7 @@ import MobileCoreServices
 class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, TransformViewControllerDelegate, SlidingViewControllerDelegate, PHPickerViewControllerDelegate {
     
     @IBOutlet weak var selectedObjectName: UILabel!
-    @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var progressView: UIProgressView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        slidingViewController.inset = toolbar.frame.height + view.safeAreaInsets.bottom
+        slidingViewController.inset = view.safeAreaInsets.bottom
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -30,6 +30,14 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             graphicsView.clearColor = UIColor.sceneBgrColor.mtlClearColor
         }
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        isNavigating
+    }
+
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        .slide
     }
     
     private func setupScene() {
@@ -172,7 +180,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         installViewController(slidingViewController) { slidingView in
             slidingView.frame = view.bounds
             slidingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            view.insertSubview(slidingView, belowSubview: toolbar)
+            view.addSubview(slidingView)
         }
         
         let nib = UINib(nibName: "ObjectToolbar", bundle: nil)
@@ -189,13 +197,11 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     func slidingViewController(_ slidingViewController: SlidingViewController, willChangeState newState: SlidingViewState) {
         switch newState {
         case .sliding, .open:
-            UIView.animate(withDuration: 0.3) {
-                self.toolbar.alpha = 0.0
-            }
+            navigationController!.setToolbarHidden(true, animated: true)
+            navigationController!.setNavigationBarHidden(true, animated: true)
         case .closed:
-            UIView.animate(withDuration: 0.3) {
-                self.toolbar.alpha = 1.0
-            }
+            navigationController!.setToolbarHidden(false, animated: true)
+            navigationController!.setNavigationBarHidden(false, animated: true)
         }
     }
     
@@ -278,7 +284,17 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     private let numberFieldYOffsetToFinger: CGFloat = 70.0
     
     // MARK: Scene interaction
-    public var isNavigating = false
+    public var isNavigating = false {
+        willSet {
+            navigationController!.setNavigationBarHidden(newValue, animated: true)
+            navigationController!.setToolbarHidden(newValue, animated: true)
+        }
+        didSet {
+            UIView.animate(withDuration: TimeInterval(UINavigationController.hideShowBarDuration)) {
+                self.setNeedsStatusBarAppearanceUpdate()
+            }
+        }
+    }
     
     private var twoFingerPanGestureRecognizer: UIPanGestureRecognizer!
     private var pinchGestureRecognizer: UIPinchGestureRecognizer!

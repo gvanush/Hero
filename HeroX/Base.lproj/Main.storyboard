@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iuY-07-bgf">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -8,6 +8,26 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="Zvj-cs-Jda">
+            <objects>
+                <navigationController toolbarHidden="NO" id="iuY-07-bgf" customClass="NavigationController" customModule="HeroX" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="asm-sr-1dw">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vjv-oi-uYv">
+                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="RsW-vW-60S"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZBi-QC-FhV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1051" y="139"/>
+        </scene>
         <!--Scene View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -16,34 +36,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEP-Yf-7iB">
-                                <rect key="frame" x="0.0" y="813" width="414" height="49"/>
-                                <items>
-                                    <barButtonItem systemItem="flexibleSpace" id="esn-vT-tnr"/>
-                                    <barButtonItem title="Item" image="plus" catalog="system" id="SMd-6E-0WL" userLabel="Add Object">
-                                        <connections>
-                                            <action selector="onAddObjectPressed:" destination="BYZ-38-t0r" id="q9c-CK-xnh"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem systemItem="flexibleSpace" id="ZU5-WP-eNy"/>
-                                </items>
-                            </toolbar>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="dS3-sm-jsz">
+                                <rect key="frame" x="0.0" y="88" width="414" height="2.5"/>
+                                <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GEP-Yf-7iB" secondAttribute="bottom" id="GFx-d7-DXS"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GEP-Yf-7iB" secondAttribute="trailing" id="hke-by-j0g"/>
-                            <constraint firstItem="GEP-Yf-7iB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pC5-t0-3qg"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dS3-sm-jsz" secondAttribute="trailing" id="49h-bQ-Y9N"/>
+                            <constraint firstItem="dS3-sm-jsz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="99j-Oi-z5A"/>
+                            <constraint firstItem="dS3-sm-jsz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NuC-U4-US0"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="u1s-fA-fNr"/>
+                        <barButtonItem style="plain" systemItem="add" id="J0A-vN-aet">
+                            <connections>
+                                <action selector="onAddObjectPressed:" destination="BYZ-38-t0r" id="woM-Di-Jai"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="HZe-xW-MaB"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="8pL-y6-Out"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="toolbar" destination="GEP-Yf-7iB" id="KR1-V1-5UD"/>
+                        <outlet property="progressView" destination="dS3-sm-jsz" id="Zdi-R7-24p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="119" y="138"/>
+            <point key="canvasLocation" x="105.79710144927537" y="131.91964285714286"/>
         </scene>
         <!--Transform View Controller-->
         <scene sceneID="yP9-l3-rt6">
@@ -263,7 +286,6 @@
         </designable>
     </designables>
     <resources>
-        <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
