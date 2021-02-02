@@ -20,7 +20,6 @@
 		B733DE8325BC772C000FE1EC /* NumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733DE8225BC772C000FE1EC /* NumberField.swift */; };
 		B733DEA125BC7FDB000FE1EC /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733DEA025BC7FDB000FE1EC /* TestViewController.swift */; };
 		B733DEA425BDFBF7000FE1EC /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733DEA325BDFBF7000FE1EC /* Updater.swift */; };
-		B74582CC25C9394200A987EE /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74582CB25C9394200A987EE /* NavigationController.swift */; };
 		B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05625B55CDA003461D1 /* AppDelegate.swift */; };
 		B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */; };
 		B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */; };
@@ -60,6 +59,7 @@
 		B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */; };
 		B7C7E0F525B6BF54003461D1 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F425B6BF54003461D1 /* Math.swift */; };
 		B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC72F725C1C1BB00CCB895 /* Easing.swift */; };
+		B7F80DB725C9F7E400957EE4 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB625C9F7E400957EE4 /* GroupView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,7 +87,6 @@
 		B733DE8225BC772C000FE1EC /* NumberField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberField.swift; sourceTree = "<group>"; };
 		B733DEA025BC7FDB000FE1EC /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		B733DEA325BDFBF7000FE1EC /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
-		B74582CB25C9394200A987EE /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		B7C7E05425B55CDA003461D1 /* HeroX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeroX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C7E05625B55CDA003461D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -162,6 +161,7 @@
 		B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingViewController.swift; sourceTree = "<group>"; };
 		B7C7E0F425B6BF54003461D1 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		B7DC72F725C1C1BB00CCB895 /* Easing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
+		B7F80DB625C9F7E400957EE4 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,7 +250,7 @@
 				B733DEA025BC7FDB000FE1EC /* TestViewController.swift */,
 				B733DEA325BDFBF7000FE1EC /* Updater.swift */,
 				B7DC72F725C1C1BB00CCB895 /* Easing.swift */,
-				B74582CB25C9394200A987EE /* NavigationController.swift */,
+				B7F80DB625C9F7E400957EE4 /* GroupView.swift */,
 			);
 			path = HeroX;
 			sourceTree = "<group>";
@@ -491,6 +491,7 @@
 			files = (
 				B7C7E0B025B55E55003461D1 /* UIRepresentable.mm in Sources */,
 				B7C7E0BB25B55E55003461D1 /* Scene.cpp in Sources */,
+				B7F80DB725C9F7E400957EE4 /* GroupView.swift in Sources */,
 				B7C7E0BE25B55E55003461D1 /* Shaders.metal in Sources */,
 				B7C7E0AA25B55E55003461D1 /* Transform.cpp in Sources */,
 				B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */,
@@ -514,7 +515,6 @@
 				B7C7E0C025B55E55003461D1 /* TextureUtils.mm in Sources */,
 				B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */,
 				B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */,
-				B74582CC25C9394200A987EE /* NavigationController.swift in Sources */,
 				B7C7E0AF25B55E55003461D1 /* TextureRenderer.mm in Sources */,
 				B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */,
 				B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */,

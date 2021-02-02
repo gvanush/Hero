@@ -12,6 +12,9 @@ import MobileCoreServices
 class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, TransformViewControllerDelegate, SlidingViewControllerDelegate, PHPickerViewControllerDelegate {
     
     @IBOutlet weak var selectedObjectName: UILabel!
+    @IBOutlet weak var bottomGroupView: UIView!
+    @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var progressView: UIProgressView!
     
     override func viewDidLoad() {
@@ -22,7 +25,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        slidingViewController.inset = view.safeAreaInsets.bottom
+        slidingViewController.inset = view.safeAreaInsets.bottom + toolbar.frame.size.height
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -34,10 +37,6 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     
     override var prefersStatusBarHidden: Bool {
         isNavigating
-    }
-
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        .slide
     }
     
     private func setupScene() {
@@ -178,15 +177,15 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         slidingViewController.state = .closed
         
         installViewController(slidingViewController) { slidingView in
-            slidingView.frame = view.bounds
+            slidingView.frame = bottomGroupView.bounds
             slidingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            view.addSubview(slidingView)
+            bottomGroupView.insertSubview(slidingView, belowSubview: toolbar)
         }
         
         let nib = UINib(nibName: "ObjectToolbar", bundle: nil)
         let content = nib.instantiate(withOwner: self, options: nil)
         
-        slidingViewController.headerHeight = 80.0
+        slidingViewController.headerHeight = 65.0
         slidingViewController.headerView = (content.first as! UIView)
         selectedObjectName.text = nil
         
@@ -197,11 +196,15 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     func slidingViewController(_ slidingViewController: SlidingViewController, willChangeState newState: SlidingViewState) {
         switch newState {
         case .sliding, .open:
-            navigationController!.setToolbarHidden(true, animated: true)
-            navigationController!.setNavigationBarHidden(true, animated: true)
+            UIView.animate(withDuration: 0.3) {
+                self.toolbar.alpha = 0.0
+                self.navigationBar.alpha = 0.0
+            }
         case .closed:
-            navigationController!.setToolbarHidden(false, animated: true)
-            navigationController!.setNavigationBarHidden(false, animated: true)
+            UIView.animate(withDuration: 0.3) {
+                self.toolbar.alpha = 1.0
+                self.navigationBar.alpha = 1.0
+            }
         }
     }
     
@@ -286,8 +289,10 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     // MARK: Scene interaction
     public var isNavigating = false {
         willSet {
-            navigationController!.setNavigationBarHidden(newValue, animated: true)
-            navigationController!.setToolbarHidden(newValue, animated: true)
+            UIView.animate(withDuration: 0.3) {
+                self.bottomGroupView.alpha = (newValue ? 0.0 : 1.0)
+                self.navigationBar.alpha = (newValue ? 0.0 : 1.0)
+            }
         }
         didSet {
             UIView.animate(withDuration: TimeInterval(UINavigationController.hideShowBarDuration)) {
