@@ -60,6 +60,7 @@
 		B7C7E0F525B6BF54003461D1 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F425B6BF54003461D1 /* Math.swift */; };
 		B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC72F725C1C1BB00CCB895 /* Easing.swift */; };
 		B7F80DB725C9F7E400957EE4 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB625C9F7E400957EE4 /* GroupView.swift */; };
+		B7F80DBA25CA764100957EE4 /* UIProgressView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -162,6 +163,7 @@
 		B7C7E0F425B6BF54003461D1 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		B7DC72F725C1C1BB00CCB895 /* Easing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		B7F80DB625C9F7E400957EE4 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
+		B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIProgressView+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +209,7 @@
 				B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */,
 				B7C7E06E25B55E54003461D1 /* SIMD+Extensions.swift */,
 				B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */,
+				B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 				B7C7E0B725B55E55003461D1 /* Component.mm in Sources */,
 				B711BB6825C7BC3300FC06C1 /* UIImage+Extensions.swift in Sources */,
 				B733DE8325BC772C000FE1EC /* NumberField.swift in Sources */,
+				B7F80DBA25CA764100957EE4 /* UIProgressView+Extensions.swift in Sources */,
 				B718AD2C25BAADD600C05912 /* NSPointerArray+Extensions.m in Sources */,
 				B7C7E0BA25B55E55003461D1 /* Math.cpp in Sources */,
 				B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */,

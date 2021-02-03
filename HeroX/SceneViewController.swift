@@ -12,7 +12,8 @@ import MobileCoreServices
 class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, TransformViewControllerDelegate, SlidingViewControllerDelegate, PHPickerViewControllerDelegate {
     
     @IBOutlet weak var selectedObjectName: UILabel!
-    @IBOutlet weak var bottomGroupView: UIView!
+    @IBOutlet weak var topGroupView: GroupView!
+    @IBOutlet weak var bottomGroupView: GroupView!
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var progressView: UIProgressView!
@@ -118,35 +119,51 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         print(results)
         
         let itemProvider = results.first!.itemProvider
-        if itemProvider.canLoadObject(ofClass: UIImage.self) {
-            itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-                if let error = error {
-                    // TODO
-                    assertionFailure(error.localizedDescription)
-                    return
-                }
-
-                let textureLoader = MTKTextureLoader(device: RenderingContext.device())
-                let image = image as! UIImage
-                print("orientation: \(image.imageOrientation.rawValue)")
-                let texture = try! textureLoader.newTexture(cgImage: image.cgImage!, options: nil)
-                
-                DispatchQueue.main.async {
-                    let imageObject = self.scene!.makeImage()
-                    imageObject.textureRenderer.texture = texture
-                    imageObject.textureRenderer.textureOrientation = image.textureOrientation
-                    
-                    let textureSize = imageObject.textureRenderer.textureSize
-                    print("widt: \(textureSize.x), height: \(textureSize.y)")
-                    let texRatio = Float(textureSize.x) / Float(textureSize.y)
-                    let size: Float = 50.0
-                    imageObject.textureRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                }
-            }
-        } else {
-            // TODO
+        guard itemProvider.canLoadObject(ofClass: UIImage.self) else {
+            // TODO: Show internal error when correct asset filtering is done
+            return
         }
+        
+        let progressViewAnimationSpeed: Float = 2.0
+        progressView.startProgress(0.1)
+        itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+            if let error = error {
+                // TODO: Show error
+                assertionFailure(error.localizedDescription)
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.progressView.setProgress(0.6, animationSpeed: progressViewAnimationSpeed)
+            }
+            
+            let textureLoader = MTKTextureLoader(device: RenderingContext.device())
+            let image = image as! UIImage
+            let texture = try! textureLoader.newTexture(cgImage: image.cgImage!, options: nil)
+            
+            DispatchQueue.main.async {
+                let imageObject = self.scene!.makeImage()
+                imageObject.textureRenderer.texture = texture
+                imageObject.textureRenderer.textureOrientation = image.textureOrientation
+                
+                let textureSize = imageObject.textureRenderer.textureSize
+                let texRatio = Float(textureSize.x) / Float(textureSize.y)
+                let size: Float = 30.0
+                imageObject.textureRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                
+                self.progressView.completeProgress(animationSpeed: progressViewAnimationSpeed)
+                
+            }
+        }
+        
     }
+    
+    @IBAction func onRemoveObjectPressed(_ sender: UIBarButtonItem) {
+        scene!.remove(selectedObject!)
+        selectedObject = nil
+    }
+    
+    @IBOutlet weak var removeObjectBarButtonItem: UIBarButtonItem!
     
     // MARK: Selected object
     var selectedObject: SceneObject? {
@@ -160,10 +177,12 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                 transformVC.view.backgroundColor = .clear
                 slidingViewController.bodyViewController = transformVC
                 slidingViewController.view.isHidden = false
+                removeObjectBarButtonItem.isEnabled = true
             } else {
                 selectedObjectName.text = nil
                 slidingViewController.bodyViewController = nil
                 slidingViewController.view.isHidden = true
+                removeObjectBarButtonItem.isEnabled = false
             }
         }
     }
@@ -198,12 +217,12 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         case .sliding, .open:
             UIView.animate(withDuration: 0.3) {
                 self.toolbar.alpha = 0.0
-                self.navigationBar.alpha = 0.0
+                self.topGroupView.alpha = 0.0
             }
         case .closed:
             UIView.animate(withDuration: 0.3) {
                 self.toolbar.alpha = 1.0
-                self.navigationBar.alpha = 1.0
+                self.topGroupView.alpha = 1.0
             }
         }
     }
@@ -291,7 +310,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         willSet {
             UIView.animate(withDuration: 0.3) {
                 self.bottomGroupView.alpha = (newValue ? 0.0 : 1.0)
-                self.navigationBar.alpha = (newValue ? 0.0 : 1.0)
+                self.topGroupView.alpha = (newValue ? 0.0 : 1.0)
             }
         }
         didSet {

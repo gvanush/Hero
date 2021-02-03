@@ -16,29 +16,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="efP-Uc-Ruo">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                <items>
-                                    <navigationItem id="RY4-WU-V76"/>
-                                </items>
-                            </navigationBar>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="dS3-sm-jsz">
-                                <rect key="frame" x="0.0" y="44" width="414" height="2.5"/>
-                                <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </progressView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UfB-TZ-gra" customClass="GroupView" customModule="HeroX" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="efP-Uc-Ruo">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                        <items>
+                                            <navigationItem id="RY4-WU-V76"/>
+                                        </items>
+                                    </navigationBar>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="dS3-sm-jsz">
+                                        <rect key="frame" x="0.0" y="44" width="414" height="2.5"/>
+                                        <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </progressView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="efP-Uc-Ruo" firstAttribute="top" secondItem="UfB-TZ-gra" secondAttribute="top" id="BmJ-CO-ixY"/>
+                                    <constraint firstItem="dS3-sm-jsz" firstAttribute="top" secondItem="efP-Uc-Ruo" secondAttribute="bottom" id="qaJ-RA-Btj"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fIC-2F-rCR" customClass="GroupView" customModule="HeroX" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wkr-5p-8xK">
                                         <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                                         <items>
-                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="FRz-iR-wAm"/>
                                             <barButtonItem systemItem="add" id="IVp-xn-KRw">
                                                 <connections>
                                                     <action selector="onAddObjectPressed:" destination="BYZ-38-t0r" id="HsZ-mR-OFG"/>
                                                 </connections>
                                             </barButtonItem>
-                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="DaO-Sp-CD1"/>
+                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="FRz-iR-wAm"/>
+                                            <barButtonItem enabled="NO" style="plain" systemItem="trash" id="DaO-Sp-CD1">
+                                                <connections>
+                                                    <action selector="onRemoveObjectPressed:" destination="BYZ-38-t0r" id="3lh-Dt-Ca1"/>
+                                                </connections>
+                                            </barButtonItem>
                                         </items>
                                     </toolbar>
                                 </subviews>
@@ -49,17 +63,19 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="fIC-2F-rCR" secondAttribute="trailing" id="133-aG-R1P"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dS3-sm-jsz" secondAttribute="trailing" id="49h-bQ-Y9N"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dS3-sm-jsz" secondAttribute="trailing" id="Ccp-hB-RuI"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="efP-Uc-Ruo" secondAttribute="trailing" id="D4g-yS-L1Y"/>
                             <constraint firstItem="fIC-2F-rCR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="GEh-iA-Ppz"/>
-                            <constraint firstItem="dS3-sm-jsz" firstAttribute="top" secondItem="efP-Uc-Ruo" secondAttribute="bottom" id="Hdo-vP-ni9"/>
-                            <constraint firstItem="dS3-sm-jsz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NuC-U4-US0"/>
+                            <constraint firstItem="efP-Uc-Ruo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="IbS-1h-Lwp"/>
+                            <constraint firstItem="UfB-TZ-gra" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NhY-UV-FOu"/>
                             <constraint firstItem="fIC-2F-rCR" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="RXa-M0-7TE"/>
+                            <constraint firstAttribute="bottom" secondItem="UfB-TZ-gra" secondAttribute="bottom" id="Sts-Eq-7NC"/>
                             <constraint firstItem="wkr-5p-8xK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="U6f-tB-Rq6"/>
-                            <constraint firstItem="efP-Uc-Ruo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="b0z-gI-Xjb"/>
                             <constraint firstAttribute="bottom" secondItem="fIC-2F-rCR" secondAttribute="bottom" id="er8-t8-0K8"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="efP-Uc-Ruo" secondAttribute="trailing" id="lWj-zJ-eq0"/>
-                            <constraint firstItem="efP-Uc-Ruo" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="ooH-ae-Yal"/>
+                            <constraint firstItem="UfB-TZ-gra" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="hm4-Gb-ANL"/>
+                            <constraint firstItem="dS3-sm-jsz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pox-jf-at2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wkr-5p-8xK" secondAttribute="bottom" id="r1m-hv-og0"/>
+                            <constraint firstAttribute="trailing" secondItem="UfB-TZ-gra" secondAttribute="trailing" id="uv3-eE-VyI"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wkr-5p-8xK" secondAttribute="trailing" id="vbd-Jn-jbq"/>
                         </constraints>
                     </view>
@@ -68,7 +84,9 @@
                         <outlet property="bottomGroupView" destination="fIC-2F-rCR" id="7jk-0B-dn1"/>
                         <outlet property="navigationBar" destination="efP-Uc-Ruo" id="KKZ-ax-oGj"/>
                         <outlet property="progressView" destination="dS3-sm-jsz" id="Zdi-R7-24p"/>
+                        <outlet property="removeObjectBarButtonItem" destination="DaO-Sp-CD1" id="dKP-9H-R1X"/>
                         <outlet property="toolbar" destination="wkr-5p-8xK" id="hq7-05-VAU"/>
+                        <outlet property="topGroupView" destination="UfB-TZ-gra" id="Fdt-Oq-VYQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
