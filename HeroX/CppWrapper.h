@@ -14,16 +14,11 @@ typedef void (^CppDeleter) (void* pair);
 @interface CppWrapper: NSObject
 
 -(instancetype) init NS_UNAVAILABLE;
-
-#ifdef __cplusplus
-
 -(instancetype) initWithOwnedCpp: (void*) cpp deleter: (CppDeleter) deleter NS_DESIGNATED_INITIALIZER;
 
 +(instancetype) wrapperForCpp: (void*) cpp;
 
 @property (nonatomic, readonly) void* cppHandle;
-
-#endif
 
 @end
 

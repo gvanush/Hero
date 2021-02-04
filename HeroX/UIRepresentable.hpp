@@ -24,13 +24,9 @@ public:
         return flag & _rendererFlags;
     }
     
-#ifdef __OBJC__
-    
     inline void onUIUpdated(RendererFlag flag) {
         _rendererFlags &= (~flag);
     }
-    
-#endif
     
 protected:
     UIRepresentable() {

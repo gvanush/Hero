@@ -42,7 +42,7 @@ TextureRenderer::TextureRenderer(SceneObject& sceneObject, Layer layer)
 : Renderer {sceneObject, layer}
 , _size {1.f, 1.f}
 , _color {1.f, 1.f, 1.f, 1.f}
-, _textureProxy {TextureProxy {hero::getWhiteUnitTexture()}} {
+, _textureProxy { makeObjCProxy(hero::getWhiteUnitTexture()) } {
 }
 
 void TextureRenderer::setup() {
@@ -81,7 +81,7 @@ void TextureRenderer::render(void* renderingContext) {
     
     [context.renderCommandEncoder setFragmentBytes: &_color length: sizeof(_color) atIndex: kFragmentInputIndexColor];
     
-    [context.renderCommandEncoder setFragmentTexture: _textureProxy.texture() atIndex: kFragmentInputIndexTexture];
+    [context.renderCommandEncoder setFragmentTexture: getObjC(_textureProxy) atIndex: kFragmentInputIndexTexture];
     
     [context.renderCommandEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: kTextureVertexCount];
     
@@ -112,11 +112,12 @@ void TextureRenderer::onComponentWillRemove([[maybe_unused]] ComponentTypeInfo t
 }
 
 void TextureRenderer::setTextureProxy(TextureProxy textureProxy) {
-    _textureProxy = (textureProxy ? textureProxy : TextureProxy {hero::getWhiteUnitTexture()});
+    _textureProxy = (textureProxy ? textureProxy : makeObjCProxy (hero::getWhiteUnitTexture()));
 }
 
 simd::int2 TextureRenderer::textureSize() const {
-    return getTextureSize(static_cast<int>(_textureProxy.texture().width), static_cast<int>(_textureProxy.texture().height), _textureOritentation);
+    id<MTLTexture> texture = getObjC(_textureProxy);
+    return getTextureSize(static_cast<int>(texture.width), static_cast<int>(texture.height), _textureOritentation);
 }
 
 }
@@ -141,11 +142,11 @@ simd::int2 TextureRenderer::textureSize() const {
 }
 
 -(void) setTexture: (id<MTLTexture>) texture {
-    self.cpp->setTextureProxy(hero::TextureProxy{texture});
+    self.cpp->setTextureProxy(hero::makeObjCProxy(texture));
 }
 
 -(id<MTLTexture>) texture {
-    return self.cpp->textureProxy().texture();
+    return getObjC(self.cpp->textureProxy());
 }
 
 -(void)setTextureOrientation:(TextureOrientation)textureOrientation {

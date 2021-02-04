@@ -15,6 +15,7 @@ class ObjCProxy {
 public:
     
     ObjCProxy();
+    explicit ObjCProxy(CFTypeRef objC);
     ObjCProxy(const ObjCProxy& proxy);
     ObjCProxy(ObjCProxy&& proxy);
     ~ObjCProxy();
@@ -27,11 +28,6 @@ public:
     
     operator bool () const;
     
-#ifdef __OBJC__
-    explicit ObjCProxy(id ptr);
-#endif
-    
-protected:
     inline CFTypeRef handle() const;
     
 private:

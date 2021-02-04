@@ -13,6 +13,11 @@ ObjCProxy::ObjCProxy()
 : _handle {nullptr} {
 }
 
+ObjCProxy::ObjCProxy(CFTypeRef objC)
+: _handle {objC} {
+    safeRetain();
+}
+
 ObjCProxy::ObjCProxy(const ObjCProxy& proxy) {
     _handle = proxy._handle;
     safeRetain();
@@ -56,11 +61,6 @@ bool ObjCProxy::operator != (const ObjCProxy& proxy) const {
 
 ObjCProxy::operator bool () const {
     return _handle;
-}
-
-ObjCProxy::ObjCProxy(id ptr)
-: _handle {(__bridge CFTypeRef) ptr} {
-    safeRetain();
 }
 
 void ObjCProxy::safeRetain() {

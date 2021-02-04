@@ -119,42 +119,57 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         print(results)
         
         let itemProvider = results.first!.itemProvider
-        guard itemProvider.canLoadObject(ofClass: UIImage.self) else {
-            // TODO: Show internal error when correct asset filtering is done
+        
+        if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
+            let progressViewAnimationSpeed: Float = 2.0
+            progressView.startProgress(0.1)
+            itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                if let error = error {
+                    // TODO: Show error
+                    assertionFailure(error.localizedDescription)
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.progressView.setProgress(0.6, animationSpeed: progressViewAnimationSpeed)
+                }
+                
+                let textureLoader = MTKTextureLoader(device: RenderingContext.device())
+                let image = image as! UIImage
+                let texture = try! textureLoader.newTexture(cgImage: image.cgImage!, options: nil)
+                
+                DispatchQueue.main.async {
+                    let imageObject = self.scene!.makeImage()
+                    imageObject.textureRenderer.texture = texture
+                    imageObject.textureRenderer.textureOrientation = image.textureOrientation
+                    
+                    let textureSize = imageObject.textureRenderer.textureSize
+                    let texRatio = Float(textureSize.x) / Float(textureSize.y)
+                    let size: Float = 30.0
+                    imageObject.textureRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
+                    
+                    self.progressView.completeProgress(animationSpeed: progressViewAnimationSpeed)
+                    
+                }
+            }
             return
         }
         
-        let progressViewAnimationSpeed: Float = 2.0
-        progressView.startProgress(0.1)
-        itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-            if let error = error {
-                // TODO: Show error
-                assertionFailure(error.localizedDescription)
-                return
-            }
-
-            DispatchQueue.main.async {
-                self.progressView.setProgress(0.6, animationSpeed: progressViewAnimationSpeed)
-            }
-            
-            let textureLoader = MTKTextureLoader(device: RenderingContext.device())
-            let image = image as! UIImage
-            let texture = try! textureLoader.newTexture(cgImage: image.cgImage!, options: nil)
-            
-            DispatchQueue.main.async {
-                let imageObject = self.scene!.makeImage()
-                imageObject.textureRenderer.texture = texture
-                imageObject.textureRenderer.textureOrientation = image.textureOrientation
-                
-                let textureSize = imageObject.textureRenderer.textureSize
-                let texRatio = Float(textureSize.x) / Float(textureSize.y)
-                let size: Float = 30.0
-                imageObject.textureRenderer.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                
-                self.progressView.completeProgress(animationSpeed: progressViewAnimationSpeed)
-                
+        if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeMovie as String) {
+            itemProvider.loadItem(forTypeIdentifier: kUTTypeMovie as String, options: nil) { (url, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                if let url = url {
+                    print(url)
+                } else {
+                    // TODO:
+                }
             }
         }
+        
+        // TODO:
         
     }
     

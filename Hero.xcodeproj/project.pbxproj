@@ -10,7 +10,7 @@
 		B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */; };
 		B709763225B7866400F5751B /* ObjectToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B709763125B7866400F5751B /* ObjectToolbar.xib */; };
 		B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709765625B8BD1A00F5751B /* TransformViewController.swift */; };
-		B711BB6425C729EB00FC06C1 /* ObjCProxy.mm in Sources */ = {isa = PBXBuildFile; fileRef = B711BB6325C729EB00FC06C1 /* ObjCProxy.mm */; };
+		B711BB6425C729EB00FC06C1 /* ObjCProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B711BB6325C729EB00FC06C1 /* ObjCProxy.cpp */; };
 		B711BB6825C7BC3300FC06C1 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */; };
 		B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */; };
 		B718AD1A25BAA5C900C05912 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */; };
@@ -70,7 +70,7 @@
 		B711BB5D25C7107C00FC06C1 /* TextureUtilsCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureUtilsCommon.h; sourceTree = "<group>"; };
 		B711BB6025C71D9500FC06C1 /* TextureProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureProxy.h; sourceTree = "<group>"; };
 		B711BB6225C7290C00FC06C1 /* ObjCProxy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjCProxy.hpp; sourceTree = "<group>"; };
-		B711BB6325C729EB00FC06C1 /* ObjCProxy.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjCProxy.mm; sourceTree = "<group>"; };
+		B711BB6325C729EB00FC06C1 /* ObjCProxy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCProxy.cpp; sourceTree = "<group>"; };
 		B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,7 +182,7 @@
 			children = (
 				B711BB6025C71D9500FC06C1 /* TextureProxy.h */,
 				B711BB6225C7290C00FC06C1 /* ObjCProxy.hpp */,
-				B711BB6325C729EB00FC06C1 /* ObjCProxy.mm */,
+				B711BB6325C729EB00FC06C1 /* ObjCProxy.cpp */,
 			);
 			name = Proxies;
 			sourceTree = "<group>";
@@ -507,7 +507,7 @@
 				B7C7E0AC25B55E55003461D1 /* Renderer.mm in Sources */,
 				B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */,
-				B711BB6425C729EB00FC06C1 /* ObjCProxy.mm in Sources */,
+				B711BB6425C729EB00FC06C1 /* ObjCProxy.cpp in Sources */,
 				B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */,
 				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
 				B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */,
