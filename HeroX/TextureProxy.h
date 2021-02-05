@@ -16,9 +16,13 @@ public:
     using ObjCProxy::ObjCProxy;
 };
 
+}
+
 #ifdef __OBJC__
 
 #import <Metal/Metal.h>
+
+namespace hero {
 
 inline hero::TextureProxy makeObjCProxy(id<MTLTexture> texture) {
     return hero::TextureProxy {(__bridge CFTypeRef) texture};
@@ -28,6 +32,6 @@ inline id<MTLTexture> getObjC(hero::TextureProxy proxy) {
     return (__bridge id<MTLTexture>) proxy.handle();
 }
 
-#endif
-
 }
+
+#endif

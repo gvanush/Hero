@@ -40,29 +40,7 @@ id<MTLBuffer> getVertexBuffer(TextureOrientation orientation) {
 
 TextureRenderer::TextureRenderer(SceneObject& sceneObject, Layer layer)
 : Renderer {sceneObject, layer}
-, _size {1.f, 1.f}
-, _color {1.f, 1.f, 1.f, 1.f}
 , _textureProxy { makeObjCProxy(hero::getWhiteUnitTexture()) } {
-}
-
-void TextureRenderer::setup() {
-    
-    MTLRenderPipelineDescriptor* pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
-    pipelineDescriptor.label = @"TextureRenderer pipeline";
-    pipelineDescriptor.vertexFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"textureVS"];
-    pipelineDescriptor.fragmentFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"textureFS"];
-    pipelineDescriptor.colorAttachments[0].pixelFormat = [RenderingContext colorPixelFormat];
-    pipelineDescriptor.depthAttachmentPixelFormat = [RenderingContext depthPixelFormat];
-    
-    NSError* error = nil;
-    __pipelineState = [[RenderingContext device] newRenderPipelineStateWithDescriptor: pipelineDescriptor error: &error];
-    assert(!error);
-    
-}
-
-void TextureRenderer::preRender(void* renderingContext) {
-    RenderingContext* context = (__bridge RenderingContext*) renderingContext;
-    [context.renderCommandEncoder setRenderPipelineState: __pipelineState];
 }
 
 void TextureRenderer::render(void* renderingContext) {
@@ -118,6 +96,26 @@ void TextureRenderer::setTextureProxy(TextureProxy textureProxy) {
 simd::int2 TextureRenderer::textureSize() const {
     id<MTLTexture> texture = getObjC(_textureProxy);
     return getTextureSize(static_cast<int>(texture.width), static_cast<int>(texture.height), _textureOritentation);
+}
+
+void TextureRenderer::setup() {
+    
+    MTLRenderPipelineDescriptor* pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
+    pipelineDescriptor.label = @"TextureRenderer pipeline";
+    pipelineDescriptor.vertexFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"textureVS"];
+    pipelineDescriptor.fragmentFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"textureFS"];
+    pipelineDescriptor.colorAttachments[0].pixelFormat = [RenderingContext colorPixelFormat];
+    pipelineDescriptor.depthAttachmentPixelFormat = [RenderingContext depthPixelFormat];
+    
+    NSError* error = nil;
+    __pipelineState = [[RenderingContext device] newRenderPipelineStateWithDescriptor: pipelineDescriptor error: &error];
+    assert(!error);
+    
+}
+
+void TextureRenderer::preRender(void* renderingContext) {
+    RenderingContext* context = (__bridge RenderingContext*) renderingContext;
+    [context.renderCommandEncoder setRenderPipelineState: __pipelineState];
 }
 
 }

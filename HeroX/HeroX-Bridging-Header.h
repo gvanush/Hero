@@ -9,5 +9,6 @@
 #import "SphericalCoord.h"
 #import "LineRenderer.h"
 #import "TextureRenderer.h"
+#import "VideoRenderer.h"
 #import "RenderingContext.h"
 #import "UIRepresentableObserver.h"

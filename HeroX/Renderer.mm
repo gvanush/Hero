@@ -17,6 +17,7 @@
 #include "Camera.hpp"
 #include "LineRenderer.hpp"
 #include "TextureRenderer.hpp"
+#include "VideoRenderer.hpp"
 
 @interface Renderer () {
     NSMapTable<UIRepresentable*, NSPointerArray*>* _uiRepresentableToObservers;
@@ -119,10 +120,9 @@ static __weak Renderer* __allRenderers[kLimit] {};
     context.renderCommandEncoder = commandEncoder;
     
     auto contextHandle = (__bridge void*) context;
-    hero::LineRenderer::preRender(contextHandle);
     hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerContent, contextHandle);
-    hero::TextureRenderer::preRender(contextHandle);
     hero::ComponentRegistry<hero::TextureRenderer>::shared().update(scene.cpp, hero::kLayerContent, contextHandle);
+    hero::ComponentRegistry<hero::VideoRenderer>::shared().update(scene.cpp, hero::kLayerContent, contextHandle);
     
     [commandEncoder endEncoding];
     
@@ -134,10 +134,9 @@ static __weak Renderer* __allRenderers[kLimit] {};
     
     context.renderCommandEncoder = commandEncoder;
     
-    hero::LineRenderer::preRender(contextHandle);
     hero::ComponentRegistry<hero::LineRenderer>::shared().update(scene.cpp, hero::kLayerUI, contextHandle);
-    hero::TextureRenderer::preRender(contextHandle);
     hero::ComponentRegistry<hero::TextureRenderer>::shared().update(scene.cpp, hero::kLayerUI, contextHandle);
+    hero::ComponentRegistry<hero::VideoRenderer>::shared().update(scene.cpp, hero::kLayerUI, contextHandle);
     
     [commandEncoder endEncoding];
     

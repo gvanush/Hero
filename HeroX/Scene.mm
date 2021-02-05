@@ -10,6 +10,8 @@
 
 #include "Scene.hpp"
 #include "SceneObject.hpp"
+#include "Transform.hpp"
+#include "VideoRenderer.hpp"
 
 @implementation Scene
 
@@ -41,8 +43,16 @@
     return [SceneObject wrapperForCpp: self.cpp->makeLineSegment(point1, point2, point3, thickness, color)];
 }
 
--(SceneObject*) makeImage {
+-(SceneObject*) makeImageObject {
     return [SceneObject wrapperForCpp: self.cpp->makeImage()];
+}
+
+-(SceneObject*) makeVideoObject {
+    auto sceneObject = self.cpp->makeObject();
+    sceneObject->setName("Video");
+    sceneObject->set<hero::Transform>();
+    sceneObject->set<hero::VideoRenderer>();
+    return [SceneObject wrapperForCpp: sceneObject];
 }
 
 -(void) removeObject: (SceneObject*) object {

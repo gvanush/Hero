@@ -14,6 +14,8 @@ enum VertexInputIndex: unsigned int {
 enum FragmentInputIndex: unsigned int {
     kFragmentInputIndexColor = 0,
     kFragmentInputIndexTexture = 1,
+    kFragmentInputIndexLumaTexture = 2,
+    kFragmentInputIndexChromaTexture = 3,
 };
 
 struct TextureVertex {

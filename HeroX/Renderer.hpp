@@ -14,7 +14,7 @@ namespace hero {
 class Renderer: public Component {
 public:
     
-    Renderer(SceneObject& sceneObject, Layer layer)
+    Renderer(SceneObject& sceneObject, Layer layer = kLayerContent)
     : Component {sceneObject}
     , _layer {layer} {
         

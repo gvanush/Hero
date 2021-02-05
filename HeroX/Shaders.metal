@@ -90,22 +90,45 @@ fragment float4 uniformColorFS(constant float4& color [[buffer(kFragmentInputInd
 typedef struct {
     float4 position [[position]];
     float2 texCoord;
-} LayerRasterizerData;
+} TextureRasterizerData;
 
-vertex LayerRasterizerData
+vertex TextureRasterizerData
 textureVS(uint vertexID [[vertex_id]],
                   device const TextureVertex* vertices [[buffer(kVertexInputIndexVertices)]],
                   constant float2& layerSize [[buffer(kVertexInputIndexSize)]],
                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
-    LayerRasterizerData out;
+    TextureRasterizerData out;
     out.position = float4 (vertices[vertexID].position.xy * layerSize, 0.f, 1.f) * uniforms.projectionViewModelMatrix;
     out.texCoord = vertices[vertexID].texCoord;
     return out;
 }
 
-fragment float4 textureFS(LayerRasterizerData in [[stage_in]],
+fragment float4 textureFS(TextureRasterizerData in [[stage_in]],
                                     constant float4& color [[buffer(kFragmentInputIndexColor)]],
                                     texture2d<half> texture [[ texture(kFragmentInputIndexTexture) ]]) {
     constexpr sampler texSampler (mag_filter::linear, min_filter::linear);
     return color * (float4) texture.sample(texSampler, in.texCoord);
+}
+
+fragment float4 videoFS(TextureRasterizerData in [[stage_in]],
+                        texture2d<float, access::sample> lumaTexture [[ texture(kFragmentInputIndexLumaTexture) ]],
+                        texture2d<float, access::sample> chromaTexture [[ texture(kFragmentInputIndexChromaTexture) ]]) {
+    
+    constexpr sampler colorSampler(mip_filter::linear,
+                                   mag_filter::linear,
+                                   min_filter::linear);
+    
+    const float4x4 ycbcrToRGBTransform = float4x4(
+        float4(+1.0000f, +1.0000f, +1.0000f, +0.0000f),
+        float4(+0.0000f, -0.3441f, +1.7720f, +0.0000f),
+        float4(+1.4020f, -0.7141f, +0.0000f, +0.0000f),
+        float4(-0.7010f, +0.5291f, -0.8860f, +1.0000f)
+    );
+    
+    // Sample Y and CbCr textures to get the YCbCr color at the given texture coordinate
+    float4 ycbcr = float4(lumaTexture.sample(colorSampler, in.texCoord).r,
+                          chromaTexture.sample(colorSampler, in.texCoord).rg, 1.0);
+    
+    // Return converted RGB color
+    return ycbcrToRGBTransform * ycbcr;
 }

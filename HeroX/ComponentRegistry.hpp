@@ -124,6 +124,8 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::cleanComponents(con
 template <typename CT>
 void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene* scene, Layer layer, void* renderingContext) {
     
+    CT::preRender(renderingContext);
+    
     auto it = _components.find(scene);
     if (it == _components.end()) {
         return;

@@ -51,8 +51,8 @@ public:
     static constexpr auto category = ComponentCategory::renderer;
     
 private:
-    simd::float4 _color;
-    simd::float2 _size;
+    simd::float4 _color {1.f, 1.f, 1.f, 1.f};
+    simd::float2 _size {1.f, 1.f};
     TextureProxy _textureProxy;
     Transform* _transform = nullptr;
     TextureOrientation _textureOritentation = kTextureOrientationUp;

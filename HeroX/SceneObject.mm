@@ -9,12 +9,14 @@
 #import "Transform.h"
 #import "Camera.h"
 #import "TextureRenderer.h"
+#import "VideoRenderer.h"
 
 #include "SceneObject.hpp"
 #include "Transform.hpp"
 #include "Camera.hpp"
 #include "LineRenderer.hpp"
 #include "TextureRenderer.hpp"
+#include "VideoRenderer.hpp"
 
 @implementation SceneObject
 
@@ -28,6 +30,10 @@
 
 -(TextureRenderer *)textureRenderer {
     return [TextureRenderer wrapperForCpp: self.cpp->get<hero::TextureRenderer>()];
+}
+
+-(VideoRenderer *) videoRenderer {
+    return [VideoRenderer wrapperForCpp: self.cpp->get<hero::VideoRenderer>()];
 }
 
 -(void)setName:(NSString *)name {

@@ -61,6 +61,8 @@
 		B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC72F725C1C1BB00CCB895 /* Easing.swift */; };
 		B7F80DB725C9F7E400957EE4 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB625C9F7E400957EE4 /* GroupView.swift */; };
 		B7F80DBA25CA764100957EE4 /* UIProgressView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */; };
+		B7F80DC525CC70CC00957EE4 /* VideoRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DC325CC70CC00957EE4 /* VideoRenderer.mm */; };
+		B7F80DD525CC7D4400957EE4 /* WhiteVideoMaterial.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DD425CC7D4400957EE4 /* WhiteVideoMaterial.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -164,6 +166,13 @@
 		B7DC72F725C1C1BB00CCB895 /* Easing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		B7F80DB625C9F7E400957EE4 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 		B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIProgressView+Extensions.swift"; sourceTree = "<group>"; };
+		B7F80DC325CC70CC00957EE4 /* VideoRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoRenderer.mm; sourceTree = "<group>"; };
+		B7F80DC425CC70CC00957EE4 /* VideoRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = VideoRenderer.hpp; sourceTree = "<group>"; };
+		B7F80DC925CC747D00957EE4 /* Material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
+		B7F80DCB25CC793A00957EE4 /* MaterialProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MaterialProxy.h; sourceTree = "<group>"; };
+		B7F80DD325CC7D4400957EE4 /* GreenVideoMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GreenVideoMaterial.h; sourceTree = "<group>"; };
+		B7F80DD425CC7D4400957EE4 /* WhiteVideoMaterial.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WhiteVideoMaterial.mm; sourceTree = "<group>"; };
+		B7F80DDF25CD331C00957EE4 /* VideoRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoRenderer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,12 +270,12 @@
 		B7C7E0C225B55E5C003461D1 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
-				B718AD2825BAAD9F00C05912 /* GraphicsCoreUtils.hpp */,
 				B7C7E0C725B55EC1003461D1 /* Core */,
 				B7C7E0C925B55FE6003461D1 /* Components */,
 				B7C7E0D325B5615B003461D1 /* Scene */,
 				B7C7E0CF25B5605F003461D1 /* SceneObject */,
 				B7C7E0D225B5611A003461D1 /* SphericalCoord */,
+				B7F80DCD25CC7C8500957EE4 /* Materials */,
 				B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */,
 				B718AD1725BAA5C900C05912 /* GeometryUtils_Common.h */,
 				B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */,
@@ -306,6 +315,7 @@
 				B7C7E07425B55E54003461D1 /* Renderer.h */,
 				B7C7E07725B55E54003461D1 /* Renderer.mm */,
 				B7C7E07A25B55E54003461D1 /* RendererFlag.h */,
+				B718AD2825BAAD9F00C05912 /* GraphicsCoreUtils.hpp */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -328,6 +338,7 @@
 				B7C7E0CE25B5602D003461D1 /* LineRenderer */,
 				B7C7E0CB25B56003003461D1 /* TextureRenderer */,
 				B7C7E0CA25B55FF8003461D1 /* Camera */,
+				B7F80DC725CC70DF00957EE4 /* VideoRenderer */,
 				B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */,
 				B7C7E07925B55E54003461D1 /* SelectedObjectMarker.hpp */,
 			);
@@ -419,6 +430,27 @@
 			name = Scene;
 			sourceTree = "<group>";
 		};
+		B7F80DC725CC70DF00957EE4 /* VideoRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				B7F80DC325CC70CC00957EE4 /* VideoRenderer.mm */,
+				B7F80DC425CC70CC00957EE4 /* VideoRenderer.hpp */,
+				B7F80DDF25CD331C00957EE4 /* VideoRenderer.h */,
+			);
+			name = VideoRenderer;
+			sourceTree = "<group>";
+		};
+		B7F80DCD25CC7C8500957EE4 /* Materials */ = {
+			isa = PBXGroup;
+			children = (
+				B7F80DC925CC747D00957EE4 /* Material.h */,
+				B7F80DCB25CC793A00957EE4 /* MaterialProxy.h */,
+				B7F80DD325CC7D4400957EE4 /* GreenVideoMaterial.h */,
+				B7F80DD425CC7D4400957EE4 /* WhiteVideoMaterial.mm */,
+			);
+			name = Materials;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -501,6 +533,7 @@
 				B7C7E0A825B55E55003461D1 /* SIMD+Extensions.swift in Sources */,
 				B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */,
 				B733DEA125BC7FDB000FE1EC /* TestViewController.swift in Sources */,
+				B7F80DD525CC7D4400957EE4 /* WhiteVideoMaterial.mm in Sources */,
 				B7C7E0BC25B55E55003461D1 /* Camera.cpp in Sources */,
 				B7C7E0B125B55E55003461D1 /* SphericalCoord.mm in Sources */,
 				B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */,
@@ -512,6 +545,7 @@
 				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
 				B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */,
 				B733DEA425BDFBF7000FE1EC /* Updater.swift in Sources */,
+				B7F80DC525CC70CC00957EE4 /* VideoRenderer.mm in Sources */,
 				B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */,
 				B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */,
 				B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */,

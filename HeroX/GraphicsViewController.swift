@@ -76,7 +76,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
     
     private func updateViewportSize(_ size: CGSize) {
         renderingContext.viewportSize = size.simd2
-        scene?.viewCamera.camera.aspectRatio = Float(size.width / size.height)
+        scene?.viewCamera.camera!.aspectRatio = Float(size.width / size.height)
     }
     
     // MARK: MTKViewDelegate

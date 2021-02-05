@@ -12,15 +12,17 @@
 @class Transform;
 @class Camera;
 @class TextureRenderer;
+@class VideoRenderer;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SceneObject : CppWrapper
 
 @property (nonatomic, copy) NSString* name;
-@property (nonatomic, readonly) Transform* transform;
-@property (nonatomic, readonly) Camera* camera;
-@property (nonatomic, readonly) TextureRenderer* textureRenderer;
+@property (nonatomic, readonly) Transform* __nullable transform;
+@property (nonatomic, readonly) Camera* __nullable camera;
+@property (nonatomic, readonly) TextureRenderer* __nullable textureRenderer;
+@property (nonatomic, readonly) VideoRenderer* __nullable videoRenderer;
 
 @end
 
