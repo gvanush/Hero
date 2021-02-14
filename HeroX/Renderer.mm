@@ -103,6 +103,7 @@ static __weak Renderer* __allRenderers[kLimit] {};
     
     hero::ComponentRegistry<hero::LineRenderer>::shared().cleanRemovedComponents(scene.cpp);
     hero::ComponentRegistry<hero::TextureRenderer>::shared().cleanRemovedComponents(scene.cpp);
+    hero::ComponentRegistry<hero::VideoRenderer>::shared().cleanRemovedComponents(scene.cpp);
     
     context.projectionViewMatrix = scene.cpp->viewCamera()->get<hero::Camera>()->projectionViewMatrix();
     

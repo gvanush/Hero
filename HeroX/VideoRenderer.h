@@ -7,7 +7,7 @@
 
 #import "Component.h"
 #import "TextureUtilsCommon.h"
-#import "Material.h"
+#import "VideoPlayer.h"
 
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VideoRenderer: Component
 
 @property (nonatomic, readwrite) simd_float2 size;
-@property (nonatomic, readwrite) id<VideoMaterial> material;
+@property (nonatomic, readwrite) VideoPlayer* videoPlayer;
 
 @end
 

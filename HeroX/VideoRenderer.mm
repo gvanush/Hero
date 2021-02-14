@@ -6,14 +6,15 @@
 //
 
 #import "VideoRenderer.h"
-#import "Material.h"
-#import "GreenVideoMaterial.h"
+#import "VideoPlayer.h"
 #import "RenderingContext.h"
 #import "TextureUtils.h"
+#import "CoreGraphicsUtils.h"
 
 #include "VideoRenderer.hpp"
 #include "Transform.hpp"
 #include "ShaderTypes.h"
+#include "GeometryUtils.hpp"
 
 namespace hero {
 
@@ -24,11 +25,9 @@ id<MTLBuffer> __vertexBuffer;
 
 }
 
-void VideoRenderer::setMaterialProxy(VideoMaterialProxy proxy) {
-    _materialProxy = (proxy ? proxy : makeObjCProxy( [[GreenVideoMaterial alloc] init] ));
-}
-
 void VideoRenderer::render(void* renderingContext) {
+    
+    VideoPlayer* videoPlayer = getObjC(_videoPlayerProxy);
     
     RenderingContext* context = (__bridge RenderingContext*) renderingContext;
     
@@ -40,14 +39,36 @@ void VideoRenderer::render(void* renderingContext) {
     
     [context.renderCommandEncoder setVertexBytes: &uniforms length: sizeof(Uniforms) atIndex: kVertexInputIndexUniforms];
     
+    const auto videoSize = toFloat2(videoPlayer.videoSize);
+    [context.renderCommandEncoder setVertexBytes: &videoSize length: sizeof(videoSize) atIndex: kVertexInputIndexTextureSize];
+    
+    const auto videoRotation = simd::inverse(toFloat2x2(videoPlayer.preferredVideoTransform));
+    const auto videoPreferredTransform = simd_matrix(simd_make_float3(videoRotation.columns[0], videoPlayer.preferredVideoTransform.tx), simd_make_float3(videoRotation.columns[1], videoPlayer.preferredVideoTransform.ty));
+    [context.renderCommandEncoder setVertexBytes: &videoPreferredTransform length: sizeof(videoPreferredTransform) atIndex: kVertexInputIndexTexturePreferredTransform];
+    
     [context.renderCommandEncoder setVertexBytes: &_size length: sizeof(_size) atIndex: kVertexInputIndexSize];
     
-    id<VideoMaterial> material = getObjC(_materialProxy);
-    [context.renderCommandEncoder setFragmentTexture: material.lumaTexture atIndex: kFragmentInputIndexLumaTexture];
-    [context.renderCommandEncoder setFragmentTexture: material.chromaTexture atIndex: kFragmentInputIndexChromaTexture];
+    [context.renderCommandEncoder setFragmentTexture: (videoPlayer.lumaTexture ? videoPlayer.lumaTexture : getWhiteUnitTexture()) atIndex: kFragmentInputIndexLumaTexture];
+    [context.renderCommandEncoder setFragmentTexture: (videoPlayer.chromaTexture ? videoPlayer.chromaTexture : getWhiteUnitTexture()) atIndex: kFragmentInputIndexChromaTexture];
     
     [context.renderCommandEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: kTextureVertexCount];
     
+}
+
+bool VideoRenderer::raycast(const Ray& ray, float& normDistance) {
+    constexpr auto kTolerance = 0.0001f;
+    
+    const auto localRay = hero::transform(ray, simd::inverse(_transform->worldMatrix()));
+    const auto plane = makePlane(kZero, kBackward);
+    
+    if(!intersect(localRay, plane, kTolerance, normDistance)) {
+        return false;;
+    }
+    
+    const auto intersectionPoint = simd_make_float2(getRayPoint(localRay, normDistance));
+
+    const AABR aabr {-0.5f * _size, 0.5f * _size};
+    return contains(intersectionPoint, aabr);
 }
 
 void VideoRenderer::onStart() {
@@ -62,7 +83,7 @@ void VideoRenderer::setup() {
     
     MTLRenderPipelineDescriptor* pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
     pipelineDescriptor.label = @"VideoRenderer pipeline";
-    pipelineDescriptor.vertexFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"textureVS"];
+    pipelineDescriptor.vertexFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"videoTextureVS"];
     pipelineDescriptor.fragmentFunction = [[RenderingContext defaultLibrary] newFunctionWithName: @"videoFS"];
     pipelineDescriptor.colorAttachments[0].pixelFormat = [RenderingContext colorPixelFormat];
     pipelineDescriptor.depthAttachmentPixelFormat = [RenderingContext depthPixelFormat];
@@ -94,12 +115,12 @@ void VideoRenderer::preRender(void* renderingContext) {
     return self.cpp->size();
 }
 
--(void) setMaterial: (id<VideoMaterial>) material {
-    self.cpp->setMaterialProxy(hero::makeObjCProxy(material));
+-(void)setVideoPlayer:(VideoPlayer *)videoPlayer {
+    self.cpp->setVideoPlayerProxy(hero::makeObjCProxy(videoPlayer));
 }
 
--(id<VideoMaterial>) material {
-    return getObjC(self.cpp->materialProxy());
+-(VideoPlayer *)videoPlayer {
+    return getObjC(self.cpp->videoPlayerProxy());
 }
 
 @end

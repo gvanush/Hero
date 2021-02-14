@@ -9,7 +9,7 @@ import UIKit
 import PhotosUI
 import MobileCoreServices
 
-class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, TransformViewControllerDelegate, SlidingViewControllerDelegate, PHPickerViewControllerDelegate {
+class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, TransformViewControllerDelegate, SlidingViewControllerDelegate, PHPickerViewControllerDelegate, VideoPlayerDelegate {
     
     @IBOutlet weak var selectedObjectName: UILabel!
     @IBOutlet weak var topGroupView: GroupView!
@@ -113,6 +113,8 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     }
     
     // MARK: PHPickerViewControllerDelegate
+    let progressViewAnimationSpeed: Float = 2.0
+    
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         guard !results.isEmpty else { return }
@@ -121,7 +123,6 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         let itemProvider = results.first!.itemProvider
         
         if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
-            let progressViewAnimationSpeed: Float = 2.0
             progressView.startProgress(0.1)
             itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                 if let error = error {
@@ -131,7 +132,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                 }
 
                 DispatchQueue.main.async {
-                    self.progressView.setProgress(0.6, animationSpeed: progressViewAnimationSpeed)
+                    self.progressView.setProgress(0.6, animationSpeed: self.progressViewAnimationSpeed)
                 }
                 
                 let textureLoader = MTKTextureLoader(device: RenderingContext.device())
@@ -148,7 +149,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                     let size: Float = 30.0
                     imageObject.textureRenderer!.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                     
-                    self.progressView.completeProgress(animationSpeed: progressViewAnimationSpeed)
+                    self.progressView.completeProgress(animationSpeed: self.progressViewAnimationSpeed)
                     
                 }
             }
@@ -156,21 +157,21 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         }
         
         if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeMovie as String) {
-            itemProvider.loadItem(forTypeIdentifier: kUTTypeMovie as String, options: nil) { (url, error) in
+            progressView.startProgress(0.1)
+            itemProvider.loadDataRepresentation(forTypeIdentifier: kUTTypeMovie as String) { data, error in
                 if let error = error {
                     print(error.localizedDescription)
                     return
                 }
-                if let url = url {
-                    print(url)
-                    
-                    DispatchQueue.main.async {
-                        let videoObject = self.scene!.makeVideoObject()
-                        videoObject.videoRenderer!.size = SIMD2<Float>(x: 30.0, y: 30.0)
-                    }
-                    
-                } else {
-                    // TODO:
+                let tempDirURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+                let fileURL = tempDirURL.appendingPathComponent("video1.mp4")
+                try! data!.write(to: fileURL, options: [])
+                
+                DispatchQueue.main.async {
+                    self.progressView.setProgress(0.6, animationSpeed: self.progressViewAnimationSpeed)
+                    let videoPlayer = VideoPlayer(url: fileURL)
+                    videoPlayer.delegate = self
+                    self.addVideoPlayer(videoPlayer)
                 }
             }
         }
@@ -179,7 +180,27 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         
     }
     
+    func videoPlayerDidBecomeReady(_ videoPlayer: VideoPlayer) {
+        let videoObject = self.scene!.makeVideoObject()
+        
+        let videoSize = abs(videoPlayer.videoSize.applying(videoPlayer.preferredVideoTransform).simd2)
+//        let videoSize = videoPlayer.videoSize.simd2
+        let ratio = Float(videoSize.x) / Float(videoSize.y)
+        let size: Float = 30.0
+        videoObject.videoRenderer!.size = (ratio > 1.0 ? simd_float2(x: size, y: size / ratio) : simd_float2(x: size * ratio, y: size))
+        print(NSCoder.string(for: videoPlayer.preferredVideoTransform))
+        print(NSCoder.string(for: videoPlayer.videoSize))
+        print("tranforemd size: \(videoSize)")
+        videoObject.videoRenderer!.videoPlayer = videoPlayer
+        videoPlayer.play()
+        
+        self.progressView.completeProgress(animationSpeed: progressViewAnimationSpeed)
+    }
+    
     @IBAction func onRemoveObjectPressed(_ sender: UIBarButtonItem) {
+        if let videoPlayer = selectedObject!.videoRenderer?.videoPlayer {
+            removeVideoPlayer(videoPlayer)
+        }
         scene!.remove(selectedObject!)
         selectedObject = nil
     }

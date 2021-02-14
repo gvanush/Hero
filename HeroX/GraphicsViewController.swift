@@ -98,6 +98,10 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
             frameListener.onFrameUpdate(deltaTime: deltaTime)
         }
         
+        for videoPlayer in videoPlayers {
+            videoPlayer.update(frameTimestamp)
+        }
+        
         renderingContext.renderPassDescriptor = renderPassDescriptor
         
         renderer.render(scene!, context: renderingContext)
@@ -145,6 +149,18 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
     }
     
     private var frameListeners = [GraphicsViewFrameListener]()
+    
+    func addVideoPlayer(_ videoPlayer: VideoPlayer) {
+        videoPlayers.append(videoPlayer)
+    }
+    
+    func removeVideoPlayer(_ videoPlayer: VideoPlayer) {
+        if let index = frameListeners.firstIndex(where: {$0 === videoPlayer}) {
+            videoPlayers.remove(at: index)
+        }
+    }
+    
+    private var videoPlayers = [VideoPlayer]()
     
     let renderer = Renderer.make()!
     private(set) var graphicsView: MTKView! = nil

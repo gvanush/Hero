@@ -23,7 +23,8 @@ protected:
     void onComponentWillRemove(ComponentTypeInfo typeInfo, Component* component) override;
   
 private:
-    void setupSelection(const TextureRenderer* textureRenderer);
+    template <typename RT>
+    void setupSelection(const RT* renderer);
 };
 
 }

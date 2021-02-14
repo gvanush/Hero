@@ -12,3 +12,4 @@
 #import "VideoRenderer.h"
 #import "RenderingContext.h"
 #import "UIRepresentableObserver.h"
+#import "VideoPlayer.h"

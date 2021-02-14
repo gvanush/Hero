@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Renderer.hpp"
-#include "MaterialProxy.h"
+#include "VideoPlayerProxy.h"
 
 namespace hero {
 
@@ -22,10 +22,12 @@ public:
     inline void setSize(const simd::float2& size);
     inline const simd::float2& size() const;
     
-    void setMaterialProxy(VideoMaterialProxy proxy);
-    inline VideoMaterialProxy materialProxy() const;
+    inline void setVideoPlayerProxy(VideoPlayerProxy proxy);
+    inline VideoPlayerProxy videoPlayerProxy() const;
     
     void render(void* renderingContext);
+    
+    bool raycast(const Ray& ray, float& normDistance);
     
     void onStart() override;
     void onComponentWillRemove(ComponentTypeInfo typeInfo, Component*) override;
@@ -37,7 +39,7 @@ public:
     
 private:
     simd::float2 _size {1.f, 1.f};
-    VideoMaterialProxy _materialProxy;
+    VideoPlayerProxy _videoPlayerProxy;
     Transform* _transform = nullptr;
 };
 
@@ -49,8 +51,12 @@ const simd::float2& VideoRenderer::size() const {
     return _size;
 }
 
-VideoMaterialProxy VideoRenderer::materialProxy() const {
-    return _materialProxy;
+void VideoRenderer::setVideoPlayerProxy(VideoPlayerProxy proxy) {
+    _videoPlayerProxy = proxy;
+}
+
+VideoPlayerProxy VideoRenderer::videoPlayerProxy() const {
+    return _videoPlayerProxy;
 }
 
 }

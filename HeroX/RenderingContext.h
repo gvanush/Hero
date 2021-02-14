@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
+#import <CoreVideo/CoreVideo.h>
 
 #include <simd/simd.h>
 
@@ -25,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(id<MTLCommandQueue>) defaultCommandQueue;
 +(id<MTLLibrary>) defaultLibrary;
 +(id<MTLDepthStencilState>) defaultDepthStencilState;
++(CVMetalTextureCacheRef) defaultCVMetalTextureCache;
 
 +(MTLPixelFormat) colorPixelFormat;
 +(MTLPixelFormat) depthPixelFormat;

@@ -11,6 +11,7 @@
 #include "Transform.hpp"
 #include "LineRenderer.hpp"
 #include "TextureRenderer.hpp"
+#include "VideoRenderer.hpp"
 #include "SelectedObjectMarker.hpp"
 #include "ComponentRegistry.hpp"
 
@@ -137,9 +138,16 @@ void Scene::setSelectedObject(SceneObject* object) {
 
 SceneObject* Scene::raycast(const Ray& ray) const {
     assert(_turnedOn);
-    if (auto component = ComponentRegistry<TextureRenderer>::shared().raycast(this, ray); component) {
-        return &component->sceneObject();
+    float textureNormDistance = 0.f;
+    auto textureRenderer = ComponentRegistry<TextureRenderer>::shared().raycast(this, ray, &textureNormDistance);
+    
+    float videoNormDistance = 0.f;
+    auto videoRenderer = ComponentRegistry<VideoRenderer>::shared().raycast(this, ray, &videoNormDistance);
+    
+    if(textureRenderer || videoRenderer) {
+        return (textureNormDistance < videoNormDistance ? &textureRenderer->sceneObject() : &videoRenderer->sceneObject());
     }
+    
     return nullptr;
 }
 

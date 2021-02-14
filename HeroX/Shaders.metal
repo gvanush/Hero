@@ -95,10 +95,10 @@ typedef struct {
 vertex TextureRasterizerData
 textureVS(uint vertexID [[vertex_id]],
                   device const TextureVertex* vertices [[buffer(kVertexInputIndexVertices)]],
-                  constant float2& layerSize [[buffer(kVertexInputIndexSize)]],
+                  constant float2& size [[buffer(kVertexInputIndexSize)]],
                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     TextureRasterizerData out;
-    out.position = float4 (vertices[vertexID].position.xy * layerSize, 0.f, 1.f) * uniforms.projectionViewModelMatrix;
+    out.position = float4 (vertices[vertexID].position * size, 0.f, 1.f) * uniforms.projectionViewModelMatrix;
     out.texCoord = vertices[vertexID].texCoord;
     return out;
 }
@@ -110,13 +110,28 @@ fragment float4 textureFS(TextureRasterizerData in [[stage_in]],
     return color * (float4) texture.sample(texSampler, in.texCoord);
 }
 
+vertex TextureRasterizerData
+videoTextureVS(uint vertexID [[vertex_id]],
+               device const TextureVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+               constant float2& size [[buffer(kVertexInputIndexSize)]],
+               constant float2& textureSize [[buffer(kVertexInputIndexTextureSize)]],
+               constant float2x3& texturePreferredTransform [[buffer(kVertexInputIndexTexturePreferredTransform)]],
+               constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+    TextureRasterizerData out;
+    out.position = float4 (vertices[vertexID].position * size, 0.f, 1.f) * uniforms.projectionViewModelMatrix;
+    const auto transformedSize = abs(float3(textureSize, 0.f) * texturePreferredTransform).xy;
+    out.texCoord = ( (float3(vertices[vertexID].texCoord * textureSize, 1.f) * texturePreferredTransform)) / transformedSize;
+    return out;
+}
+
 fragment float4 videoFS(TextureRasterizerData in [[stage_in]],
                         texture2d<float, access::sample> lumaTexture [[ texture(kFragmentInputIndexLumaTexture) ]],
                         texture2d<float, access::sample> chromaTexture [[ texture(kFragmentInputIndexChromaTexture) ]]) {
     
     constexpr sampler colorSampler(mip_filter::linear,
                                    mag_filter::linear,
-                                   min_filter::linear);
+                                   min_filter::linear,
+                                   address::repeat);
     
     const float4x4 ycbcrToRGBTransform = float4x4(
         float4(+1.0000f, +1.0000f, +1.0000f, +0.0000f),

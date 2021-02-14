@@ -66,7 +66,7 @@ public:
     
     void update(const Scene* scene, Layer layer, void* renderingContext);
     
-    CT* raycast(const Scene* scene, const Ray& ray);
+    CT* raycast(const Scene* scene, const Ray& ray, float* normDistance);
     
     static ComponentRegistryImpl& shared() {
         static ComponentRegistryImpl obj;
@@ -140,7 +140,7 @@ void ComponentRegistryImpl<CT, ComponentCategory::renderer>::update(const Scene*
 }
 
 template <typename CT>
-CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Scene* scene, const Ray& ray) {
+CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Scene* scene, const Ray& ray, float* normDistance) {
     
     auto it = _components.find(scene);
     if (it == _components.end()) {
@@ -159,6 +159,7 @@ CT* ComponentRegistryImpl<CT, ComponentCategory::renderer>::raycast(const Scene*
             }
         }
     }
+    *normDistance = minNormDistance;
     return result;
 }
 

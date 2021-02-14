@@ -9,6 +9,8 @@ enum VertexInputIndex: unsigned int {
     kVertexInputIndexUniforms = 3,
     kVertexInputIndexThickness = 4,
     kVertexInputIndexMiterLimit = 5,
+    kVertexInputIndexTextureSize = 6,
+    kVertexInputIndexTexturePreferredTransform = 7,
 };
 
 enum FragmentInputIndex: unsigned int {
