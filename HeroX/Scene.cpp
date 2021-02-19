@@ -144,11 +144,11 @@ SceneObject* Scene::raycast(const Ray& ray) const {
     float videoNormDistance = 0.f;
     auto videoRenderer = ComponentRegistry<VideoRenderer>::shared().raycast(this, ray, &videoNormDistance);
     
-    if(textureRenderer || videoRenderer) {
+    if(textureRenderer && videoRenderer) {
         return (textureNormDistance < videoNormDistance ? &textureRenderer->sceneObject() : &videoRenderer->sceneObject());
     }
     
-    return nullptr;
+    return (textureRenderer ? &textureRenderer->sceneObject() : &videoRenderer->sceneObject());
 }
 
 void Scene::step(float /*dt*/) {

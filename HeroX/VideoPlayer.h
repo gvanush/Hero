@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void) play;
 -(void) update: (CFTimeInterval) time;
 
-@property (nonatomic, readonly, getter=isReady) BOOL ready;
+@property (nonatomic, readonly, getter=isPlaying) BOOL playing;
 @property (nonatomic, readwrite, weak) id<VideoPlayerDelegate> delegate;
 
 @property (nonatomic, readonly) CGSize videoSize;

@@ -14,20 +14,11 @@
 
 static const void* PlayerItemContext = NULL;
 
-typedef NS_OPTIONS(NSUInteger, VideoPlayerReadinessBitMask) {
-    VideoPlayerReadinessBitMaskNone = 0,
-    VideoPlayerReadinessBitMaskLoadedTracks = 1 << 0,
-    VideoPlayerReadinessBitMaskReadyToPlay = 1 << 1
-};
-
-NSUInteger kVideoPlayerReadyBitMask = VideoPlayerReadinessBitMaskLoadedTracks | VideoPlayerReadinessBitMaskReadyToPlay;
-
 @interface VideoPlayer () {
     AVAsset* _asset;
     AVPlayerItem* _playerItem;
     AVPlayerItemVideoOutput* _videoOutput;
     AVPlayer* _player;
-    VideoPlayerReadinessBitMask _videoPlayerReadinessBitMask;
 }
 
 @end
@@ -36,19 +27,13 @@ NSUInteger kVideoPlayerReadyBitMask = VideoPlayerReadinessBitMaskLoadedTracks | 
 
 -(instancetype) initWithURL: (NSURL*) url {
     if(self = [super init]) {
-        _videoPlayerReadinessBitMask = VideoPlayerReadinessBitMaskNone;
         _asset = [[AVURLAsset alloc] initWithURL: url options: nil];
-        [_asset loadValuesAsynchronouslyForKeys: @[@"tracks"] completionHandler:^{
-            [self updateReadiness: VideoPlayerReadinessBitMaskLoadedTracks];
-        }];
-        
-        _videoOutput = [[AVPlayerItemVideoOutput alloc] initWithPixelBufferAttributes: @{(__bridge NSString*) kCVPixelBufferMetalCompatibilityKey : @YES}];
         
         _playerItem = [[AVPlayerItem alloc] initWithAsset: _asset];
         [_playerItem addObserver: self forKeyPath: @"status" options: NSKeyValueObservingOptionNew context: &PlayerItemContext];
-        NSLog(@"%@", _playerItem.automaticallyLoadedAssetKeys);
         
         _player = [[AVPlayer alloc] initWithPlayerItem: _playerItem];
+        
     }
     return self;
 }
@@ -71,8 +56,17 @@ NSUInteger kVideoPlayerReadyBitMask = VideoPlayerReadinessBitMaskLoadedTracks | 
         switch (status) {
             case AVPlayerItemStatusReadyToPlay:
                 NSLog(@"VideoPlayer: Ready to play");
+                
+                [_playerItem removeObserver: self forKeyPath: @"status"];
+                
+                _videoOutput = [[AVPlayerItemVideoOutput alloc] initWithOutputSettings: @{
+                    AVVideoAllowWideColorKey : @YES,
+                    (__bridge NSString*) kCVPixelBufferMetalCompatibilityKey : @YES,
+                }];
+
                 [_playerItem addOutput:_videoOutput];
-                [self updateReadiness: VideoPlayerReadinessBitMaskReadyToPlay];
+                [self.delegate videoPlayerDidBecomeReady: self];
+                
                 break;
             case AVPlayerItemStatusFailed:
                 NSLog(@"VideoPlayer: Error (%@)", _playerItem.error.localizedDescription);
@@ -84,15 +78,8 @@ NSUInteger kVideoPlayerReadyBitMask = VideoPlayerReadinessBitMaskLoadedTracks | 
     }
 }
 
--(BOOL) isReady {
-    return _videoPlayerReadinessBitMask == kVideoPlayerReadyBitMask;
-}
-
--(void) updateReadiness: (VideoPlayerReadinessBitMask) bitMask {
-    _videoPlayerReadinessBitMask |= bitMask;
-    if (self.isReady) {
-        [self.delegate videoPlayerDidBecomeReady: self];
-    }
+-(BOOL)isPlaying {
+    return _player.rate > 0.f;
 }
 
 -(CGSize) videoSize {
@@ -108,6 +95,10 @@ NSUInteger kVideoPlayerReadyBitMask = VideoPlayerReadinessBitMaskLoadedTracks | 
 }
 
 -(void) update: (CFTimeInterval) time {
+    
+    if(!_videoOutput) {
+        return;
+    }
     
     CMTime itemTime = [_videoOutput itemTimeForHostTime: time];
     if ([_videoOutput hasNewPixelBufferForItemTime: itemTime]) {

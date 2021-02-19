@@ -99,7 +99,9 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         }
         
         for videoPlayer in videoPlayers {
-            videoPlayer.update(frameTimestamp)
+            if videoPlayer.isPlaying {
+                videoPlayer.update(frameTimestamp)
+            }
         }
         
         renderingContext.renderPassDescriptor = renderPassDescriptor
