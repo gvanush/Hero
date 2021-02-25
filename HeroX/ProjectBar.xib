@@ -24,20 +24,28 @@
                     <rect key="frame" x="0.0" y="44" width="553" height="113"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3J-Hy-b2U" userLabel="Projects">
-                            <rect key="frame" x="10" y="45.5" width="24" height="22"/>
+                            <rect key="frame" x="7" y="34.5" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="Lad-uM-RTq"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="fVz-k0-mYn"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <state key="normal">
                                 <imageReference key="image" image="square.grid.2x2" catalog="system" symbolScale="large"/>
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRU-ga-KG2" userLabel="Actions">
-                            <rect key="frame" x="518" y="44.5" width="25" height="24"/>
+                            <rect key="frame" x="502" y="34.5" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="CQM-R0-2Ms"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="PiF-11-8kv"/>
+                            </constraints>
                             <state key="normal">
                                 <imageReference key="image" image="ellipsis.circle" catalog="system" symbolScale="large"/>
                             </state>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Project X" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxG-fv-ymi" userLabel="Project Name">
-                            <rect key="frame" x="44" y="46" width="464" height="21"/>
+                            <rect key="frame" x="61" y="46" width="431" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -50,10 +58,9 @@
                         <constraint firstItem="dxG-fv-ymi" firstAttribute="trailing" secondItem="uRU-ga-KG2" secondAttribute="leading" constant="-10" id="OnU-QX-EBw"/>
                         <constraint firstItem="dxG-fv-ymi" firstAttribute="centerY" secondItem="qen-oL-KVO" secondAttribute="centerY" id="gsV-t9-VTI"/>
                         <constraint firstItem="uRU-ga-KG2" firstAttribute="centerY" secondItem="qen-oL-KVO" secondAttribute="centerY" id="kxO-bh-D3V"/>
-                        <constraint firstItem="B3J-Hy-b2U" firstAttribute="leading" secondItem="qen-oL-KVO" secondAttribute="leadingMargin" id="vEG-JF-aK2"/>
-                        <constraint firstAttribute="trailingMargin" secondItem="uRU-ga-KG2" secondAttribute="trailing" id="xNO-v6-Meo"/>
+                        <constraint firstAttribute="trailing" secondItem="uRU-ga-KG2" secondAttribute="trailing" constant="7" id="oNB-sN-Rsr"/>
                     </constraints>
-                    <edgeInsets key="layoutMargins" top="10" left="10" bottom="10" right="10"/>
+                    <edgeInsets key="layoutMargins" top="15" left="15" bottom="15" right="15"/>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
@@ -61,6 +68,7 @@
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qen-oL-KVO" secondAttribute="trailing" id="H5o-WX-XOc"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="qen-oL-KVO" secondAttribute="bottom" id="MBF-rV-1XI"/>
+                <constraint firstItem="B3J-Hy-b2U" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="7" id="U4d-x4-MVR"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="qen-oL-KVO" secondAttribute="top" id="qr7-oW-AXU"/>
                 <constraint firstItem="qen-oL-KVO" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="sQA-LG-v31"/>
             </constraints>

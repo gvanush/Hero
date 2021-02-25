@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class RootViewController: UIViewController {
     
@@ -13,6 +14,7 @@ class RootViewController: UIViewController {
     var rootTabBarController: UITabBarController!
     
     override func viewDidLoad() {
+        projectBar.projectsButton.addTarget(self, action: #selector(onProjectButtonPressed(_:)), for: .touchUpInside)
         setupRootTabBarController()
     }
     
@@ -40,21 +42,6 @@ class RootViewController: UIViewController {
         isStatusBarHidden
     }
     
-    @objc func onObjectInpectionStateDidChange(notification: Notification) {
-        let isInspecting = notification.userInfo!["value"] as! Bool
-        UIView.animate(withDuration: 0.3) {
-            self.isFullScreenEnabled = isInspecting
-        }
-    }
-    
-    @objc func onSceneNavigationStateDidChange(notification: Notification) {
-        let isNavigating = notification.userInfo!["value"] as! Bool
-        UIView.animate(withDuration: 0.3) {
-            self.isFullScreenEnabled = isNavigating
-            self.isStatusBarHidden = isNavigating
-        }
-    }
-    
     var isFullScreenEnabled = false {
         didSet {
             if isFullScreenEnabled {
@@ -71,6 +58,32 @@ class RootViewController: UIViewController {
         didSet {
             self.setNeedsStatusBarAppearanceUpdate()
         }
+    }
+    
+    @objc func onObjectInpectionStateDidChange(notification: Notification) {
+        let isInspecting = notification.userInfo!["value"] as! Bool
+        UIView.animate(withDuration: 0.3) {
+            self.isFullScreenEnabled = isInspecting
+        }
+    }
+    
+    @objc func onSceneNavigationStateDidChange(notification: Notification) {
+        let isNavigating = notification.userInfo!["value"] as! Bool
+        UIView.animate(withDuration: 0.3) {
+            self.isFullScreenEnabled = isNavigating
+            self.isStatusBarHidden = isNavigating
+        }
+    }
+    
+    // MARK: Project handling
+    @objc func onProjectButtonPressed(_ button: UIButton) {
+        let projectBrowserVC = UIHostingController(rootView: ProjectBrowser(model: ProjectBrowserModel(), onRemoveAction: { _ in
+            // TODO
+        }, onDoneAction: { project in
+            // TODO
+            self.dismiss(animated: true)
+        }))
+        present(projectBrowserVC, animated: true)
     }
     
     static let rootTabBarControllerName = "RootTabBarController"
