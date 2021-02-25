@@ -59,6 +59,11 @@
 		B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */; };
 		B7C7E0F525B6BF54003461D1 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F425B6BF54003461D1 /* Math.swift */; };
 		B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DC72F725C1C1BB00CCB895 /* Easing.swift */; };
+		B7EA096C25E6C95F00BAF0C6 /* ProjectBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7EA096B25E6C95F00BAF0C6 /* ProjectBar.xib */; };
+		B7EA096F25E6D09500BAF0C6 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA096E25E6D09500BAF0C6 /* UIView+Extensions.swift */; };
+		B7EA097225E6D12500BAF0C6 /* ProjectBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097125E6D12500BAF0C6 /* ProjectBar.swift */; };
+		B7EA097525E6DCF400BAF0C6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097425E6DCF400BAF0C6 /* RootViewController.swift */; };
+		B7EA097825E7FB6600BAF0C6 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097725E7FB6600BAF0C6 /* Notification+Extensions.swift */; };
 		B7F80DB725C9F7E400957EE4 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB625C9F7E400957EE4 /* GroupView.swift */; };
 		B7F80DBA25CA764100957EE4 /* UIProgressView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */; };
 		B7F80DC525CC70CC00957EE4 /* VideoRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DC325CC70CC00957EE4 /* VideoRenderer.mm */; };
@@ -165,6 +170,11 @@
 		B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingViewController.swift; sourceTree = "<group>"; };
 		B7C7E0F425B6BF54003461D1 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		B7DC72F725C1C1BB00CCB895 /* Easing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
+		B7EA096B25E6C95F00BAF0C6 /* ProjectBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectBar.xib; sourceTree = "<group>"; };
+		B7EA096E25E6D09500BAF0C6 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		B7EA097125E6D12500BAF0C6 /* ProjectBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBar.swift; sourceTree = "<group>"; };
+		B7EA097425E6DCF400BAF0C6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		B7EA097725E7FB6600BAF0C6 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		B7F80DB625C9F7E400957EE4 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 		B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIProgressView+Extensions.swift"; sourceTree = "<group>"; };
 		B7F80DC325CC70CC00957EE4 /* VideoRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoRenderer.mm; sourceTree = "<group>"; };
@@ -220,6 +230,8 @@
 				B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */,
 				B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */,
 				B7600EE425D7AEC2004E6E9B /* CoreGraphicsUtils.h */,
+				B7EA096E25E6D09500BAF0C6 /* UIView+Extensions.swift */,
+				B7EA097725E7FB6600BAF0C6 /* Notification+Extensions.swift */,
 			);
 			name = "Extensions-Utils";
 			sourceTree = "<group>";
@@ -264,6 +276,9 @@
 				B733DEA325BDFBF7000FE1EC /* Updater.swift */,
 				B7DC72F725C1C1BB00CCB895 /* Easing.swift */,
 				B7F80DB625C9F7E400957EE4 /* GroupView.swift */,
+				B7EA096B25E6C95F00BAF0C6 /* ProjectBar.xib */,
+				B7EA097125E6D12500BAF0C6 /* ProjectBar.swift */,
+				B7EA097425E6DCF400BAF0C6 /* RootViewController.swift */,
 			);
 			path = HeroX;
 			sourceTree = "<group>";
@@ -504,6 +519,7 @@
 				B709763225B7866400F5751B /* ObjectToolbar.xib in Resources */,
 				B7C7E06325B55CDB003461D1 /* LaunchScreen.storyboard in Resources */,
 				B7C7E06025B55CDB003461D1 /* Assets.xcassets in Resources */,
+				B7EA096C25E6C95F00BAF0C6 /* ProjectBar.xib in Resources */,
 				B7C7E05E25B55CDA003461D1 /* Main.storyboard in Resources */,
 				B733DE7F25BC7141000FE1EC /* NumberField.xib in Resources */,
 			);
@@ -533,8 +549,11 @@
 				B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */,
 				B711BB6425C729EB00FC06C1 /* ObjCProxy.cpp in Sources */,
 				B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */,
+				B7EA097825E7FB6600BAF0C6 /* Notification+Extensions.swift in Sources */,
 				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
+				B7EA096F25E6D09500BAF0C6 /* UIView+Extensions.swift in Sources */,
 				B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */,
+				B7EA097525E6DCF400BAF0C6 /* RootViewController.swift in Sources */,
 				B733DEA425BDFBF7000FE1EC /* Updater.swift in Sources */,
 				B7F80DC525CC70CC00957EE4 /* VideoRenderer.mm in Sources */,
 				B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */,
@@ -545,6 +564,7 @@
 				B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */,
 				B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */,
 				B7C7E0AF25B55E55003461D1 /* TextureRenderer.mm in Sources */,
+				B7EA097225E6D12500BAF0C6 /* ProjectBar.swift in Sources */,
 				B7DC72F825C1C1BB00CCB895 /* Easing.swift in Sources */,
 				B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */,
 				B7C7E0B825B55E55003461D1 /* Component.cpp in Sources */,

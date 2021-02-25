@@ -132,6 +132,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         }
         
         didSet {
+            guard isVisible else { return }
             updateViewportSize(graphicsView.drawableSize)
         }
     }

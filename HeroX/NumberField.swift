@@ -31,24 +31,16 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupFromNib()
+        setupNib("NumberField")
         configViews()
         setupUpdater()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupFromNib()
+        setupNib("NumberField")
         configViews()
         setupUpdater()
-    }
-    
-    private func setupFromNib() {
-        let nib = UINib(nibName: "NumberField", bundle: Bundle(for: Self.self))
-        let content = nib.instantiate(withOwner: self, options: nil).first as! UIView
-        content.frame = bounds
-        content.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        addSubview(content)
     }
     
     private func configViews() {

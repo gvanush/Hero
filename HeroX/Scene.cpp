@@ -146,9 +146,13 @@ SceneObject* Scene::raycast(const Ray& ray) const {
     
     if(textureRenderer && videoRenderer) {
         return (textureNormDistance < videoNormDistance ? &textureRenderer->sceneObject() : &videoRenderer->sceneObject());
+    } else if(textureRenderer) {
+        return &textureRenderer->sceneObject();
+    } else if(videoRenderer) {
+        return &videoRenderer->sceneObject();
     }
     
-    return (textureRenderer ? &textureRenderer->sceneObject() : &videoRenderer->sceneObject());
+    return nullptr;
 }
 
 void Scene::step(float /*dt*/) {

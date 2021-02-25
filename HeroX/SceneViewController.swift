@@ -12,16 +12,18 @@ import MobileCoreServices
 class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, TransformViewControllerDelegate, SlidingViewControllerDelegate, PHPickerViewControllerDelegate, VideoPlayerDelegate {
     
     @IBOutlet weak var selectedObjectName: UILabel!
-    @IBOutlet weak var topGroupView: GroupView!
     @IBOutlet weak var bottomGroupView: GroupView!
     @IBOutlet weak var toolbar: UIToolbar!
-    @IBOutlet weak var navigationBar: UINavigationBar!
-    @IBOutlet weak var progressView: UIProgressView!
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupScene()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
      
-        setupScene()
+        setupGestures()
         setupSlidingViewController()
     }
     
@@ -36,19 +38,12 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         }
     }
     
-    override var prefersStatusBarHidden: Bool {
-        isNavigating
-    }
-    
     private func setupScene() {
         scene = Scene()
         
         setupCamera()
         setupAxis()
         addImages()
-        
-        setupGestures()
-
     }
     
     private func setupCamera() {
@@ -123,7 +118,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         let itemProvider = results.first!.itemProvider
         
         if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
-            progressView.startProgress(0.1)
+//            progressView.startProgress(0.1)
             itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                 if let error = error {
                     // TODO: Show error
@@ -131,9 +126,9 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                     return
                 }
 
-                DispatchQueue.main.async {
-                    self.progressView.setProgress(0.6, animationSpeed: self.progressViewAnimationSpeed)
-                }
+//                DispatchQueue.main.async {
+//                    self.progressView.setProgress(0.6, animationSpeed: self.progressViewAnimationSpeed)
+//                }
                 
                 let textureLoader = MTKTextureLoader(device: RenderingContext.device())
                 let image = image as! UIImage
@@ -149,7 +144,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                     let size: Float = 30.0
                     imageObject.textureRenderer!.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
                     
-                    self.progressView.completeProgress(animationSpeed: self.progressViewAnimationSpeed)
+//                    self.progressView.completeProgress(animationSpeed: self.progressViewAnimationSpeed)
                     
                 }
             }
@@ -157,7 +152,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         }
         
         if itemProvider.hasItemConformingToTypeIdentifier(kUTTypeMovie as String) {
-            progressView.startProgress(0.1)
+//            progressView.startProgress(0.1)
             itemProvider.loadDataRepresentation(forTypeIdentifier: kUTTypeMovie as String) { data, error in
                 if let error = error {
                     print(error.localizedDescription)
@@ -168,7 +163,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                 try! data!.write(to: fileURL, options: [])
                 
                 DispatchQueue.main.async {
-                    self.progressView.setProgress(0.6, animationSpeed: self.progressViewAnimationSpeed)
+//                    self.progressView.setProgress(0.6, animationSpeed: self.progressViewAnimationSpeed)
                     let videoPlayer = VideoPlayer(url: fileURL)
                     videoPlayer.delegate = self
                     self.addVideoPlayer(videoPlayer)
@@ -194,7 +189,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         videoObject.videoRenderer!.videoPlayer = videoPlayer
         videoPlayer.play()
         
-        self.progressView.completeProgress(animationSpeed: progressViewAnimationSpeed)
+//        self.progressView.completeProgress(animationSpeed: progressViewAnimationSpeed)
     }
     
     @IBAction func onRemoveObjectPressed(_ sender: UIBarButtonItem) {
@@ -257,14 +252,14 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     func slidingViewController(_ slidingViewController: SlidingViewController, willChangeState newState: SlidingViewState) {
         switch newState {
         case .sliding, .open:
+            NotificationCenter.default.post(name: .objectInpectionStateDidChange, object: self, userInfo: ["value": true])
             UIView.animate(withDuration: 0.3) {
                 self.toolbar.alpha = 0.0
-                self.topGroupView.alpha = 0.0
             }
         case .closed:
+            NotificationCenter.default.post(name: .objectInpectionStateDidChange, object: self, userInfo: ["value": false])
             UIView.animate(withDuration: 0.3) {
                 self.toolbar.alpha = 1.0
-                self.topGroupView.alpha = 1.0
             }
         }
     }
@@ -352,13 +347,10 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         willSet {
             UIView.animate(withDuration: 0.3) {
                 self.bottomGroupView.alpha = (newValue ? 0.0 : 1.0)
-                self.topGroupView.alpha = (newValue ? 0.0 : 1.0)
             }
         }
         didSet {
-            UIView.animate(withDuration: TimeInterval(UINavigationController.hideShowBarDuration)) {
-                self.setNeedsStatusBarAppearanceUpdate()
-            }
+            NotificationCenter.default.post(name: .sceneNavigationStateDidChange, object: self, userInfo: ["value": isNavigating])
         }
     }
     

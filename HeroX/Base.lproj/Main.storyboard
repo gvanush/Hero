@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GEf-8b-gLO">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -8,7 +8,70 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Scene View Controller-->
+        <!--Root View Controller-->
+        <scene sceneID="GOi-zw-6Ti">
+            <objects>
+                <viewController id="GEf-8b-gLO" customClass="RootViewController" customModule="HeroX" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Fdk-gb-Hex">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L3n-tt-w72" customClass="ProjectBar" customModule="HeroX" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="efi-yA-zkG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="L3n-tt-w72" secondAttribute="trailing" id="6fc-5A-ze8"/>
+                            <constraint firstItem="L3n-tt-w72" firstAttribute="leading" secondItem="Fdk-gb-Hex" secondAttribute="leading" id="aBI-No-vSZ"/>
+                            <constraint firstItem="L3n-tt-w72" firstAttribute="top" secondItem="Fdk-gb-Hex" secondAttribute="top" id="kSY-kc-OgQ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="projectBar" destination="L3n-tt-w72" id="zOa-xE-i2H"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AYp-gC-krU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2578" y="-28"/>
+        </scene>
+        <!--Resources-->
+        <scene sceneID="6zU-CI-z6q">
+            <objects>
+                <viewController id="eYv-hg-ube" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="A2s-hs-Pd0">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="ime-n1-M0B"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Resources" image="square.stack.fill" catalog="system" id="dxY-Xo-BG8"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0BN-Qu-8H7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-601" y="276"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Q0n-cm-AZw">
+            <objects>
+                <tabBarController storyboardIdentifier="RootTabBarController" id="o4p-dv-PYp" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lcp-3B-ExS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="eW9-eg-ES7"/>
+                        <segue destination="eYv-hg-ube" kind="relationship" relationship="viewControllers" id="Z3f-AC-0qU"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KLI-bs-hv0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1491" y="-28"/>
+        </scene>
+        <!--Scene-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="SceneViewController" customModule="HeroX" customModuleProvider="target" sceneMemberID="viewController">
@@ -16,31 +79,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UfB-TZ-gra" customClass="GroupView" customModule="HeroX" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <subviews>
-                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="efP-Uc-Ruo">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                        <items>
-                                            <navigationItem id="RY4-WU-V76"/>
-                                        </items>
-                                    </navigationBar>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="dS3-sm-jsz">
-                                        <rect key="frame" x="0.0" y="44" width="414" height="2.5"/>
-                                        <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </progressView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="efP-Uc-Ruo" firstAttribute="top" secondItem="UfB-TZ-gra" secondAttribute="top" id="BmJ-CO-ixY"/>
-                                    <constraint firstItem="dS3-sm-jsz" firstAttribute="top" secondItem="efP-Uc-Ruo" secondAttribute="bottom" id="qaJ-RA-Btj"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fIC-2F-rCR" customClass="GroupView" customModule="HeroX" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wkr-5p-8xK">
-                                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                                        <rect key="frame" x="0.0" y="764" width="414" height="49"/>
                                         <items>
                                             <barButtonItem systemItem="add" id="IVp-xn-KRw">
                                                 <connections>
@@ -63,35 +106,25 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="fIC-2F-rCR" secondAttribute="trailing" id="133-aG-R1P"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dS3-sm-jsz" secondAttribute="trailing" id="Ccp-hB-RuI"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="efP-Uc-Ruo" secondAttribute="trailing" id="D4g-yS-L1Y"/>
                             <constraint firstItem="fIC-2F-rCR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="GEh-iA-Ppz"/>
-                            <constraint firstItem="efP-Uc-Ruo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="IbS-1h-Lwp"/>
-                            <constraint firstItem="UfB-TZ-gra" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NhY-UV-FOu"/>
                             <constraint firstItem="fIC-2F-rCR" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="RXa-M0-7TE"/>
-                            <constraint firstAttribute="bottom" secondItem="UfB-TZ-gra" secondAttribute="bottom" id="Sts-Eq-7NC"/>
                             <constraint firstItem="wkr-5p-8xK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="U6f-tB-Rq6"/>
                             <constraint firstAttribute="bottom" secondItem="fIC-2F-rCR" secondAttribute="bottom" id="er8-t8-0K8"/>
-                            <constraint firstItem="UfB-TZ-gra" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="hm4-Gb-ANL"/>
-                            <constraint firstItem="dS3-sm-jsz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pox-jf-at2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="wkr-5p-8xK" secondAttribute="bottom" id="r1m-hv-og0"/>
-                            <constraint firstAttribute="trailing" secondItem="UfB-TZ-gra" secondAttribute="trailing" id="uv3-eE-VyI"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wkr-5p-8xK" secondAttribute="trailing" id="vbd-Jn-jbq"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Scene" image="perspective" catalog="system" id="xGR-aa-KG9"/>
                     <toolbarItems/>
                     <connections>
                         <outlet property="bottomGroupView" destination="fIC-2F-rCR" id="7jk-0B-dn1"/>
-                        <outlet property="navigationBar" destination="efP-Uc-Ruo" id="KKZ-ax-oGj"/>
-                        <outlet property="progressView" destination="dS3-sm-jsz" id="Zdi-R7-24p"/>
                         <outlet property="removeObjectBarButtonItem" destination="DaO-Sp-CD1" id="dKP-9H-R1X"/>
                         <outlet property="toolbar" destination="wkr-5p-8xK" id="hq7-05-VAU"/>
-                        <outlet property="topGroupView" destination="UfB-TZ-gra" id="Fdt-Oq-VYQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="105.79710144927537" y="131.91964285714286"/>
+            <point key="canvasLocation" x="-628" y="-480"/>
         </scene>
         <!--Transform View Controller-->
         <scene sceneID="yP9-l3-rt6">
@@ -278,7 +311,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="giK-In-7F9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1238" y="139"/>
+            <point key="canvasLocation" x="2238" y="-152"/>
         </scene>
     </scenes>
     <designables>
@@ -287,6 +320,9 @@
         </designable>
         <designable name="Cr0-WE-0S8">
             <size key="intrinsicContentSize" width="-1" height="57"/>
+        </designable>
+        <designable name="L3n-tt-w72">
+            <size key="intrinsicContentSize" width="-1" height="88"/>
         </designable>
         <designable name="UdO-D2-Op5">
             <size key="intrinsicContentSize" width="-1" height="57"/>
@@ -311,6 +347,8 @@
         </designable>
     </designables>
     <resources>
+        <image name="perspective" catalog="system" width="128" height="114"/>
+        <image name="square.stack.fill" catalog="system" width="113" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
