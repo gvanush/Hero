@@ -1,4 +1,0 @@
-[submodule "AppleCppAPI"]
-	path = AppleCppAPI
-	url = https://github.com/gvanush/AppleCppAPI.git
-	branch = main
