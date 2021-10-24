@@ -16,10 +16,11 @@ namespace hero {
 
 namespace {
 
-constexpr float kSelectionLineThickness = 5.f;
+constexpr float kSelectionLineThickness = 6.f;
 constexpr float kSelectionLineMiterLimit = 5.f;
-constexpr simd::float4 kSelectionLineColor  {1.f, 204.f / 255.f, 0.f, 1.f};
-
+//constexpr simd::float4 kSelectionLineColor  {255.f / 255.f, 187.f / 255.f, 51.f / 255.f, 1.f}; // dark
+//constexpr simd::float4 kSelectionLineColor  {255.f / 255.f, 200.f / 255.f, 89.f / 255.f, 1.f}; // light
+constexpr simd::float4 kSelectionLineColor  {255.f / 255.f, 160.f / 255.f, 40.f / 255.f, 1.f}; // dark
 }
 
 void SelectedObjectMarker::onStart() {

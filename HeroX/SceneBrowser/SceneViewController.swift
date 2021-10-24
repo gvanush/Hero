@@ -22,6 +22,8 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        self.toolbar.frame = CGRect(origin: self.toolbar.frame.origin, size: CGSize(width: self.toolbar.frame.width, height: 300.0))
      
         setupGestures()
         setupSlidingViewController()
@@ -178,8 +180,8 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
     func videoPlayerDidBecomeReady(_ videoPlayer: VideoPlayer) {
         let videoObject = self.scene!.makeVideoObject()
         
-        let videoSize = abs(videoPlayer.videoSize.applying(videoPlayer.preferredVideoTransform).simd2)
-//        let videoSize = videoPlayer.videoSize.simd2
+        let videoSize = abs(videoPlayer.videoSize.applying(videoPlayer.preferredVideoTransform).float2)
+//        let videoSize = videoPlayer.videoSize.float2
         let ratio = Float(videoSize.x) / Float(videoSize.y)
         let size: Float = 30.0
         videoObject.videoRenderer!.size = (ratio > 1.0 ? simd_float2(x: size, y: size / ratio) : simd_float2(x: size * ratio, y: size))
@@ -389,8 +391,8 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
             return
         }
         
-        let pos = SIMD2<Float>(from: tapGR.location(in: graphicsView))
-        let scenePos = scene!.viewCamera.camera!.convertViewportToWorld(SIMD3<Float>(pos, 1.0), viewportSize: graphicsView.bounds.size.simd2)
+        let pos = tapGR.location(in: graphicsView).float2
+        let scenePos = scene!.viewCamera.camera!.convertViewportToWorld(SIMD3<Float>(pos, 1.0), viewportSize: graphicsView.bounds.size.float2)
         
         if let selected = scene!.rayCast(makeRay(scene!.viewCamera.transform!.position, scenePos - scene!.viewCamera.transform!.position)) {
             scene!.selectedObject = selected
@@ -405,12 +407,12 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
         switch panGR.state {
         case .began:
             isNavigating = true
-            gesturePrevPos = SIMD2<Float>(from: panGR.location(in: graphicsView))
+            gesturePrevPos = panGR.location(in: graphicsView).float2
             
         case .changed:
             
-            let pos = SIMD2<Float>(from: panGR.location(in: graphicsView))
-            let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / graphicsView.bounds.size.simd2.min()
+            let pos = panGR.location(in: graphicsView).float2
+            let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / graphicsView.bounds.size.float2.min()
             
             viewCameraSphericalCoord.latitude -= angleDelta.y
             
@@ -459,8 +461,8 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
             
             let ndcZ = scene!.viewCamera.camera!.convertWorldToNDC(viewCameraSphericalCoord.center).z
             
-            let prevScenePos = scene!.viewCamera.camera!.convertViewportToWorld(SIMD3<Float>(gesturePrevPos, ndcZ), viewportSize: graphicsView.bounds.size.simd2)
-            let scenePos = scene!.viewCamera.camera!.convertViewportToWorld(SIMD3<Float>(pos, ndcZ), viewportSize: graphicsView.bounds.size.simd2)
+            let prevScenePos = scene!.viewCamera.camera!.convertViewportToWorld(SIMD3<Float>(gesturePrevPos, ndcZ), viewportSize: graphicsView.bounds.size.float2)
+            let scenePos = scene!.viewCamera.camera!.convertViewportToWorld(SIMD3<Float>(pos, ndcZ), viewportSize: graphicsView.bounds.size.float2)
             
             viewCameraSphericalCoord.center += (prevScenePos - scenePos)
             scene!.viewCamera.transform!.position = viewCameraSphericalCoord.getPosition()
@@ -517,15 +519,15 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate, 
                     return
                 }
                 
-                let centerViewportPos = scene!.viewCamera.camera!.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: graphicsView.bounds.size.simd2)
-                var scenePos = scene!.viewCamera.camera!.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * 0.5 * (dist - pinchPrevFingerDist), viewportSize: graphicsView.bounds.size.simd2)
+                let centerViewportPos = scene!.viewCamera.camera!.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: graphicsView.bounds.size.float2)
+                var scenePos = scene!.viewCamera.camera!.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * 0.5 * (dist - pinchPrevFingerDist), viewportSize: graphicsView.bounds.size.float2)
                 
                 // NOTE: This is needed, because coverting from world to viewport and back gives low precision z value.
                 // It is becasue of uneven distribution of world z into ndc z, especially far objects.
                 // Alternative could be to make near plane larger but that limits zooming since object will be clipped
                 scenePos.z = viewCameraSphericalCoord.center.z
                 
-                let angle = 0.5 * scene!.viewCamera.camera!.fovy * (dist / graphicsView.bounds.size.simd2.y)
+                let angle = 0.5 * scene!.viewCamera.camera!.fovy * (dist / graphicsView.bounds.size.float2.y)
                 let radiusDelta = length(scenePos - viewCameraSphericalCoord.center) / tanf(angle)
                 
                 viewCameraSphericalCoord.radius = max(viewCameraSphericalCoord.radius + (dist > pinchPrevFingerDist ? -radiusDelta : radiusDelta), 0.01)

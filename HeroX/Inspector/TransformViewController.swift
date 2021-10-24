@@ -83,9 +83,9 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         positionYNumberField.value = CGFloat(transform.position.y)
         positionZNumberField.value = CGFloat(transform.position.z)
         
-        rotationXNumberField.value = CGFloat(rad2deg(transform.rotation.x))
-        rotationYNumberField.value = CGFloat(rad2deg(transform.rotation.y))
-        rotationZNumberField.value = CGFloat(rad2deg(transform.rotation.z))
+        rotationXNumberField.value = CGFloat(toDegree(radian: transform.rotation.x))
+        rotationYNumberField.value = CGFloat(toDegree(radian: transform.rotation.y))
+        rotationZNumberField.value = CGFloat(toDegree(radian: transform.rotation.z))
         rotationModeButton.setTitle(nameFor(transform.rotationMode)!, for: .normal)
         
         scaleXNumberField.value = CGFloat(transform.scale.x)
@@ -127,7 +127,7 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
             positionFormatter.usesGroupingSeparator = true
             return (nil, placeholder)
         case .rotation:
-            let placeholder = rotationFormatter.numberFormatter.string(from: NSNumber(value: rad2deg(transform.rotation[vectorElemIndex])))!
+            let placeholder = rotationFormatter.numberFormatter.string(from: NSNumber(value: toDegree(radian: transform.rotation[vectorElemIndex])))!
             return (nil, placeholder)
         case .scale:
             positionFormatter.usesGroupingSeparator = false
@@ -169,7 +169,7 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         case .position:
             return transform.position
         case .rotation:
-            return rad2deg(transform.rotation)
+            return toDegree(radian: transform.rotation)
         case .scale:
             return transform.scale
         }
@@ -217,7 +217,7 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
         case .position:
             transform.position[vectorElementIndex] = Float(sender.value)
         case .rotation:
-            transform.rotation[vectorElementIndex] = Float(deg2rad(sender.value))
+            transform.rotation[vectorElementIndex] = Float(toRadian(degree: sender.value))
         case .scale:
             transform.scale[vectorElementIndex] = Float(sender.value)
         }
@@ -254,7 +254,7 @@ class TransformViewController: UIViewController, NumberFieldDelegate {
                 self.rotationModeButton.setTitle(nameFor(rotationMode)!, for: .normal)
             })
         }
-        rotationModeButton.menu = UIMenu(title: "", children: items)
+        rotationModeButton.menu = UIMenu(title: "test", children: items)
         rotationModeButton.showsMenuAsPrimaryAction = true
     }
     

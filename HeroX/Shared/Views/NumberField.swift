@@ -124,7 +124,7 @@ class NumberField : UIControl, UIGestureRecognizerDelegate, UITextFieldDelegate 
                 return
             }
             let normSpeed = (abs(offset) - NumberField.continuousEditingMinOffset) / (0.5 * bounds.size.width - NumberField.continuousEditingMinOffset)
-            let speed = (offset <= 0.0 ? -1.0 : 1.0) * easeInOut(normValue: normSpeed) * self.continuousEditingMaxSpeed
+            let speed = (offset <= 0.0 ? -1.0 : 1.0) * normSpeed.easedInOut * self.continuousEditingMaxSpeed
             self.value += CGFloat(deltaTime) * speed
         }
     }

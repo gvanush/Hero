@@ -30,6 +30,8 @@ extension UIColor {
     }
     
     static var sceneBgrColor: UIColor {
-        Self.systemGray2
+        Self.systemGray
+//        .init(red: 0.392, green: 0.392, blue: 0.392, alpha: 1.0) // Light
+//        .init(red: 0.224, green: 0.224, blue: 0.224, alpha: 1.0) // Dark
     }
 }

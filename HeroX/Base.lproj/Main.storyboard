@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GEf-8b-gLO">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GEf-8b-gLO">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,11 +13,11 @@
             <objects>
                 <viewController id="GEf-8b-gLO" customClass="RootViewController" customModule="HeroX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fdk-gb-Hex">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L3n-tt-w72" customClass="ProjectBar" customModule="HeroX" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="88"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -42,7 +42,7 @@
             <objects>
                 <viewController id="eYv-hg-ube" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="A2s-hs-Pd0">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="ime-n1-M0B"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -76,14 +76,14 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="SceneViewController" customModule="HeroX" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fIC-2F-rCR" customClass="GroupView" customModule="HeroX" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            <view alpha="0.51000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fIC-2F-rCR" customClass="GroupView" customModule="HeroX" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                                 <subviews>
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wkr-5p-8xK">
-                                        <rect key="frame" x="0.0" y="764" width="414" height="49"/>
+                                        <rect key="frame" x="0.0" y="712" width="390" height="49"/>
                                         <items>
                                             <barButtonItem systemItem="add" id="IVp-xn-KRw">
                                                 <connections>
@@ -124,7 +124,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-628" y="-480"/>
+            <point key="canvasLocation" x="-629.23076923076917" y="-480.5687203791469"/>
         </scene>
         <!--Transform View Controller-->
         <scene sceneID="yP9-l3-rt6">
@@ -138,19 +138,19 @@
                                 <rect key="frame" x="20" y="0.0" width="374" height="896"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="SMb-JT-ZRR">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="867.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="820"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="U3f-jq-MpA" userLabel="Position">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="251.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="237"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Position" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WPa-TP-gAo">
-                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="17"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k6N-UI-02U" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="40.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="37" width="374" height="53.333333333333343"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="X"/>
@@ -160,7 +160,7 @@
                                                         </connections>
                                                     </view>
                                                     <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dmt-Dt-DmV" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="117.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="110.33333333333333" width="374" height="53.333333333333329"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Y"/>
@@ -170,7 +170,7 @@
                                                         </connections>
                                                     </view>
                                                     <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="98e-vB-v19" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="194.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="183.66666666666666" width="374" height="53.333333333333343"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Z"/>
@@ -182,16 +182,16 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="zS6-Nl-cFH" userLabel="Rotation">
-                                                <rect key="frame" x="0.0" y="281.5" width="374" height="304.5"/>
+                                                <rect key="frame" x="0.0" y="267" width="374" height="286"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rotation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vCW-1w-mlU">
-                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="17"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yhT-0b-YtJ" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="40.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="37" width="374" height="53.333333333333343"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="X"/>
@@ -201,7 +201,7 @@
                                                         </connections>
                                                     </view>
                                                     <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b0x-pG-reU" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="117.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="110.3333333333333" width="374" height="53.333333333333329"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Y"/>
@@ -211,7 +211,7 @@
                                                         </connections>
                                                     </view>
                                                     <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cr0-WE-0S8" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="194.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="183.66666666666669" width="374" height="53.333333333333343"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Z"/>
@@ -221,23 +221,23 @@
                                                         </connections>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AjJ-5b-Nwv">
-                                                        <rect key="frame" x="0.0" y="271.5" width="374" height="33"/>
+                                                        <rect key="frame" x="0.0" y="257" width="374" height="29"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <state key="normal" title="Euler XYZ"/>
                                                     </button>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="WS6-rZ-ZED" userLabel="Scale">
-                                                <rect key="frame" x="0.0" y="616" width="374" height="251.5"/>
+                                                <rect key="frame" x="0.0" y="583" width="374" height="237"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scale" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gI0-KW-aam">
-                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="17"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view tag="6" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UdO-D2-Op5" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="40.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="37" width="374" height="53.333333333333343"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="X"/>
@@ -247,7 +247,7 @@
                                                         </connections>
                                                     </view>
                                                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hfA-Z8-jXu" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="117.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="110.33333333333336" width="374" height="53.333333333333329"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Y"/>
@@ -257,7 +257,7 @@
                                                         </connections>
                                                     </view>
                                                     <view tag="8" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gTt-dv-gcU" customClass="NumberField" customModule="HeroX" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="194.5" width="374" height="57"/>
+                                                        <rect key="frame" x="0.0" y="183.66666666666663" width="374" height="53.333333333333343"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="title" value="Z"/>
@@ -316,34 +316,34 @@
     </scenes>
     <designables>
         <designable name="98e-vB-v19">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.33333333333335"/>
         </designable>
         <designable name="Cr0-WE-0S8">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.33333333333335"/>
         </designable>
         <designable name="L3n-tt-w72">
             <size key="intrinsicContentSize" width="-1" height="88"/>
         </designable>
         <designable name="UdO-D2-Op5">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.333333333333336"/>
         </designable>
         <designable name="b0x-pG-reU">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.333333333333336"/>
         </designable>
         <designable name="dmt-Dt-DmV">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.333333333333336"/>
         </designable>
         <designable name="gTt-dv-gcU">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.33333333333335"/>
         </designable>
         <designable name="hfA-Z8-jXu">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.333333333333336"/>
         </designable>
         <designable name="k6N-UI-02U">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.333333333333336"/>
         </designable>
         <designable name="yhT-0b-YtJ">
-            <size key="intrinsicContentSize" width="-1" height="57"/>
+            <size key="intrinsicContentSize" width="-1" height="53.333333333333336"/>
         </designable>
     </designables>
     <resources>

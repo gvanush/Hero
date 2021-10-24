@@ -6,12 +6,13 @@
 //
 
 import simd
-import CoreGraphics
 
-extension SIMD2 where Scalar == Float {
-    init(from point: CGPoint) {
-        self.init(x: Float(point.x), y: Float(point.y))
-    }
+func toRadian<T>(degree: SIMD3<T>) -> SIMD3<T> where T : FloatingPoint {
+    degree * T.pi / T(180)
+}
+
+func toDegree<T>(radian: SIMD3<T>) -> SIMD3<T> where T : FloatingPoint {
+    radian * T(180) / T.pi
 }
 
 extension SIMD3 where Scalar == Float {
@@ -21,10 +22,4 @@ extension SIMD3 where Scalar == Float {
     static let up = Self(0.0, 1.0, 0.0)
     static let backward = Self(0.0, 0.0, -1.0)
     static let forward = Self(0.0, 0.0, 1.0)
-}
-
-extension SIMD4 where Scalar == Float {
-    static let red = Self(1.0, 0.0, 0.0, 1.0)
-    static let green = Self(0.0, 1.0, 0.0, 1.0)
-    static let blue = Self(0.0, 0.0, 1.0, 1.0)
 }

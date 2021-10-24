@@ -232,9 +232,9 @@ class SlidingViewController: UIViewController, UIGestureRecognizerDelegate {
         set {
             assert(state == .sliding)
             if wasOpen {
-                slidingViewPosLayoutConstraint.constant = clamp(newValue, min: 0.0, max: slidingRange)
+                slidingViewPosLayoutConstraint.constant = newValue.clamped(min: 0.0, max: slidingRange)
             } else {
-                slidingViewPosLayoutConstraint.constant = clamp(newValue - view.bounds.height, min: -view.bounds.height, max: -headerHeight - inset)
+                slidingViewPosLayoutConstraint.constant = (newValue - view.bounds.height).clamped(min: -view.bounds.height, max: -headerHeight - inset)
             }
             contentViewPosLayoutConstraint.constant = (1.0 - normSlidingViewPos) * view.safeAreaLayoutGuide.layoutFrame.minY
         }

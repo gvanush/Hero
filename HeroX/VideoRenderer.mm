@@ -9,7 +9,7 @@
 #import "VideoPlayer.h"
 #import "RenderingContext.h"
 #import "TextureUtils.h"
-#import "CoreGraphicsUtils.h"
+#import "CoreGraphics+Extensions.h"
 
 #include "VideoRenderer.hpp"
 #include "Transform.hpp"
