@@ -22,6 +22,10 @@
 		B7490EED25F284860070856A /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7490EEC25F284860070856A /* Comparable+Extensions.swift */; };
 		B7490EF025F28B770070856A /* FloatingPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7490EEF25F28B770070856A /* FloatingPoint+Extensions.swift */; };
 		B7490EF525F290FE0070856A /* SIMD4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7490EF425F290FE0070856A /* SIMD4+Extensions.swift */; };
+		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
+		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
+		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
+		B7791D252725F45F00E0C934 /* TransformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D242725F45F00E0C934 /* TransformView.swift */; };
 		B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05625B55CDA003461D1 /* AppDelegate.swift */; };
 		B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */; };
 		B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */; };
@@ -109,6 +113,12 @@
 		B7490EEF25F28B770070856A /* FloatingPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extensions.swift"; sourceTree = "<group>"; };
 		B7490EF425F290FE0070856A /* SIMD4+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIMD4+Extensions.swift"; sourceTree = "<group>"; };
 		B7600EE425D7AEC2004E6E9B /* CoreGraphics+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreGraphics+Extensions.h"; sourceTree = "<group>"; };
+		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
+		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B7791D222725D99900E0C934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7791D242725F45F00E0C934 /* TransformView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformView.swift; sourceTree = "<group>"; };
 		B7C7E05425B55CDA003461D1 /* HeroX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeroX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7C7E05625B55CDA003461D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -208,6 +218,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B7791D1127258F7500E0C934 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7C7E05125B55CDA003461D1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -242,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				B7C7E05525B55CDA003461D1 /* HeroX */,
+				B7791D1527258F7500E0C934 /* Hero */,
 				B7316FF524CF376000157455 /* Products */,
 				B715B23824D28B0F00B4C859 /* Frameworks */,
 			);
@@ -251,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				B7C7E05425B55CDA003461D1 /* HeroX.app */,
+				B7791D1427258F7500E0C934 /* Hero.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -421,6 +440,34 @@
 				B7EA098C25E82C9600BAF0C6 /* Logger+Extensions.swift */,
 			);
 			path = os;
+			sourceTree = "<group>";
+		};
+		B7791D1527258F7500E0C934 /* Hero */ = {
+			isa = PBXGroup;
+			children = (
+				B7791D232725F27700E0C934 /* Extensions */,
+				B7791D222725D99900E0C934 /* Info.plist */,
+				B7791D1627258F7500E0C934 /* HeroApp.swift */,
+				B7791D242725F45F00E0C934 /* TransformView.swift */,
+				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
+				B7791D1C27258F7700E0C934 /* Preview Content */,
+			);
+			path = Hero;
+			sourceTree = "<group>";
+		};
+		B7791D1C27258F7700E0C934 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B7791D232725F27700E0C934 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		B7C7E05525B55CDA003461D1 /* HeroX */ = {
@@ -614,6 +661,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B7791D1327258F7500E0C934 /* Hero */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7791D1F27258F7700E0C934 /* Build configuration list for PBXNativeTarget "Hero" */;
+			buildPhases = (
+				B7791D1027258F7500E0C934 /* Sources */,
+				B7791D1127258F7500E0C934 /* Frameworks */,
+				B7791D1227258F7500E0C934 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hero;
+			productName = Hero;
+			productReference = B7791D1427258F7500E0C934 /* Hero.app */;
+			productType = "com.apple.product-type.application";
+		};
 		B7C7E05325B55CDA003461D1 /* HeroX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B7C7E06725B55CDB003461D1 /* Build configuration list for PBXNativeTarget "HeroX" */;
@@ -637,9 +701,12 @@
 		B7316FEC24CF376000157455 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1230;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
+					B7791D1327258F7500E0C934 = {
+						CreatedOnToolsVersion = 13.0;
+					};
 					B7C7E05325B55CDA003461D1 = {
 						CreatedOnToolsVersion = 12.3;
 						LastSwiftMigration = 1230;
@@ -660,11 +727,21 @@
 			projectRoot = "";
 			targets = (
 				B7C7E05325B55CDA003461D1 /* HeroX */,
+				B7791D1327258F7500E0C934 /* Hero */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B7791D1227258F7500E0C934 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */,
+				B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7C7E05225B55CDA003461D1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -681,6 +758,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B7791D1027258F7500E0C934 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
+				B7791D252725F45F00E0C934 /* TransformView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B7C7E05025B55CDA003461D1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -892,6 +978,70 @@
 			};
 			name = Release;
 		};
+		B7791D2027258F7700E0C934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
+				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Hero/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero.Hero;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B7791D2127258F7700E0C934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
+				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Hero/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero.Hero;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		B7C7E06525B55CDB003461D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -907,7 +1057,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero;
+				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.HeroOld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "HeroX/Spirit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -931,7 +1081,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero;
+				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.HeroOld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "HeroX/Spirit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -947,6 +1097,15 @@
 			buildConfigurations = (
 				B731700124CF376200157455 /* Debug */,
 				B731700224CF376200157455 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7791D1F27258F7700E0C934 /* Build configuration list for PBXNativeTarget "Hero" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7791D2027258F7700E0C934 /* Debug */,
+				B7791D2127258F7700E0C934 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

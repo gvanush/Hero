@@ -1,222 +1,110 @@
 //
-//  TransformView.swift
+//  ContentView.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 1/10/21.
+//  Created by Vanush Grigoryan on 24.10.21.
 //
 
 import SwiftUI
 
-class TransformViewModel: GraphicsSyncViewModel {
-    
-    let transform: Transform
-    let positionFormatter = NumberFormatter()
-    let scaleFormatter = NumberFormatter()
-    let rotationFormatter = MeasurementFormatter()
-    
-    init(transform: Transform, graphicsViewModel: GraphicsViewModel) {
-        self.transform = transform
-        super.init(graphicsViewModel: graphicsViewModel)
-        observe(uiRepresentable: transform)
-        
-        positionFormatter.numberStyle = .decimal
-        scaleFormatter.numberStyle = .decimal
-        rotationFormatter.unitStyle = .short
-    }
-    
-    func setPosition(_ text: String, at field: Vector3Field) {
-        var value = transform.position[field.rawValue]
-        if let newValue = positionFormatter.number(from: text) {
-            value = newValue.floatValue
-        }
-        transform.position[field.rawValue] = value
-    }
-    
-    func position(at field: Vector3Field) -> String {
-        positionFormatter.string(from: NSNumber(value: transform.position[field.rawValue]))!
-    }
-    
-    func rawPosition(at field: Vector3Field) -> String {
-        positionFormatter.usesGroupingSeparator = false
-        let result = positionFormatter.string(from: NSNumber(value: transform.position[field.rawValue]))!
-        positionFormatter.usesGroupingSeparator = true
-        return result
-    }
-    
-    func setRotation(_ text: String, at field: Vector3Field) {
-        var angle = transform.rotation[field.rawValue]
-        if let newAngle = rotationFormatter.numberFormatter.number(from: text) {
-            angle = deg2rad(newAngle.floatValue)
-        }
-        transform.rotation[field.rawValue] = angle
-    }
-    
-    func rotation(at field: Vector3Field) -> String {
-        let angle = rad2deg(transform.rotation[field.rawValue])
-        return rotationFormatter.string(from: Measurement<UnitAngle>(value: Double(angle), unit: .degrees))
-    }
-    
-    func rawRotation(at field: Vector3Field) -> String {
-        rotationFormatter.numberFormatter.string(from: NSNumber(value: rad2deg(transform.rotation[field.rawValue])))!
-    }
-    
-    func setScale(_ text: String, at field: Vector3Field) {
-        var value = transform.scale[field.rawValue]
-        if let newValue = scaleFormatter.number(from: text) {
-            value = newValue.floatValue
-        }
-        transform.scale[field.rawValue] = value
-    }
-    
-    func scale(at field: Vector3Field) -> String {
-        scaleFormatter.string(from: NSNumber(value: transform.scale[field.rawValue]))!
-    }
-    
-    func rawScale(at field: Vector3Field) -> String {
-        scaleFormatter.usesGroupingSeparator = false
-        let result = scaleFormatter.string(from: NSNumber(value: transform.scale[field.rawValue]))!
-        scaleFormatter.usesGroupingSeparator = true
-        return result
-    }
-    
-}
-
-struct PositionFieldView: View {
-    
-    @State private var text = ""
-    let field: Vector3Field
-    @EnvironmentObject var model: TransformViewModel
-    
-    init(field: Vector3Field) {
-        self.field = field
-    }
-    
-    var body: some View {
-        HStack {
-            Text(field.name)
-            TextField(field.name, text: $text, onEditingChanged:  { isEditing in
-                if isEditing {
-                    text = model.rawPosition(at: field)
-                } else {
-                    model.setPosition(text, at: field)
-                    text = model.position(at: field)
-                }
-            })
-            .multilineTextAlignment(.center)
-            .keyboardType(.decimalPad)
-        }
-        .onAppear {
-            text = model.position(at: field)
-        }
-    }
-}
-
-struct RotationFieldView: View {
-    
-    @State private var text = ""
-    let field: Vector3Field
-    @EnvironmentObject var model: TransformViewModel
-    
-    init(field: Vector3Field) {
-        self.field = field
-    }
-    
-    var body: some View {
-        HStack {
-            Text(field.name)
-            TextField(field.name, text: $text,  onEditingChanged: { isEditing in
-                if isEditing {
-                    text = model.rawRotation(at: field)
-                } else {
-                    model.setRotation(text, at: field)
-                    text = model.rotation(at: field)
-                }
-            })
-            .multilineTextAlignment(.center)
-            .keyboardType(.decimalPad)
-        }
-        .onAppear {
-            text = model.rotation(at: field)
-        }
-    }
-    
-}
-
-struct ScaleFieldView: View {
-    
-    @State private var text = ""
-    let field: Vector3Field
-    @EnvironmentObject var model: TransformViewModel
-    
-    init(field: Vector3Field) {
-        self.field = field
-    }
-    
-    var body: some View {
-        HStack {
-            Text(field.name)
-            TextField(field.name, text: $text, onEditingChanged:  { isEditing in
-                if isEditing {
-                    text = model.rawScale(at: field)
-                } else {
-                    model.setScale(text, at: field)
-                    text = model.scale(at: field)
-                }
-            })
-            .multilineTextAlignment(.center)
-            .keyboardType(.decimalPad)
-        }
-        .onAppear {
-            text = model.scale(at: field)
-        }
-    }
-}
-
 struct TransformView: View {
     
-    @ObservedObject var model: TransformViewModel
-    @State var eulerOrder = "xyz"
+    @State var tool = Tool.move
     
     var body: some View {
-        print("TransformView body")
-        return Form {
-            Section(header: Text("Position")) {
-                PositionFieldView(field: .x)
-                PositionFieldView(field: .y)
-                PositionFieldView(field: .z)
-            }
-            
-            Section(header: Text("Rotation")) {
-                RotationFieldView(field: .x)
-                RotationFieldView(field: .y)
-                RotationFieldView(field: .z)
-            }
-            Section {
-                Picker("Euler order", selection: $eulerOrder) {
-                    Group {
-                        Text("xyz").tag("xyz")
-                        Text("xyz1").tag("xyz1")
-                        Text("xyz2").tag("xyz2")
-                        Text("xyz3").tag("xyz3")
-                    }
+        NavigationView {
+            ZStack {
+                Color.gray
+                    .ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    Toolbar(selection: $tool)
                 }
             }
-            Section(header: Text("Scale")) {
-                ScaleFieldView(field: .x)
-                ScaleFieldView(field: .y)
-                ScaleFieldView(field: .z)
+            .navigationTitle(tool.title)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings)
+        .navigationViewStyle(.stack)
+        .accentColor(.indigo)
+    }
+    
+    enum Tool: CaseIterable, Identifiable {
+        
+        case move
+        case orient
+        case scale
+        
+        var id: Self { self }
+        
+        var title: String {
+            switch self {
+            case .move:
+                return "Move"
+            case .orient:
+                return "Orient"
+            case .scale:
+                return "Scale"
             }
         }
-        .environmentObject(model)
+        
+        var image: String {
+            switch self {
+            case .move:
+                return "move.3d"
+            case .orient:
+                return "rotate.3d"
+            case .scale:
+                return "scale.3d"
+            }
+        }
     }
+    
+    struct Toolbar: View {
+        
+        var selection: Binding<Tool>
+        
+        var body: some View {
+            HStack(spacing: 0.0) {
+                ForEach(Tool.allCases) { tool in
+                    item(title: tool.title, image: tool.image)
+                        .foregroundColor(selection.wrappedValue == tool ? .accentColor : .gray)
+                        .onTapGesture {
+                            selection.wrappedValue = tool
+                        }
+                }
+            }
+            .padding(.top, Self.topPadding)
+            .background(.bar)
+        }
+        
+        static let topPadding = 4.0
+        
+        func item(title: String, image: String) -> some View {
+            Label(title, systemImage: image)
+                .labelStyle(ItemLabelStyle())
+                .frame(maxWidth: .infinity, minHeight: Self.itemHeight)
+        }
+        
+        static let itemHeight = 44.0
+        
+        struct ItemLabelStyle: LabelStyle {
+            func makeBody(configuration: Configuration) -> some View {
+                VStack(alignment: .center, spacing: Self.iconTextSpacing) {
+                    configuration.icon.imageScale(.large)
+                    configuration.title.font(.system(.caption2))
+                }
+            }
+            
+            static let iconTextSpacing = 2.0
+        }
+        
+    }
+    
 }
 
 struct TransformView_Previews: PreviewProvider {
-    
-    static let graphicsViewModel = GraphicsViewModel(scene: Hero.Scene(), renderer: Renderer.make()!)
-    
     static var previews: some View {
-        let sceneObject = graphicsViewModel.scene.makeBasicObject()
-        TransformView(model: TransformViewModel(transform: sceneObject.transform, graphicsViewModel: graphicsViewModel))
+        TransformView()
     }
 }
