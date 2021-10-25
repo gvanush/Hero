@@ -18,6 +18,36 @@ class SceneViewModel: ObservableObject {
         addImages()
     }
     
+    // MARK: Orbit
+    func orbit(dragValue: DragGesture.Value) {
+        
+        guard let prevDragValue = self.prevDragValue else {
+            self.prevDragValue = dragValue
+            return
+        }
+        self.prevDragValue = dragValue
+        
+        let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
+        let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
+        
+        viewCameraSphericalCoord.latitude -= deltaAngle.y
+        
+        let isInFrontOfSphere = sinf(viewCameraSphericalCoord.latitude) >= 0.0
+        viewCameraSphericalCoord.longitude += (isInFrontOfSphere ? deltaAngle.x : -deltaAngle.x)
+        
+        scene.viewCamera.transform!.position = viewCameraSphericalCoord.getPosition()
+        scene.viewCamera.camera!.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
+    }
+    
+    func finishOrbit(dragValue: DragGesture.Value) {
+        orbit(dragValue: dragValue)
+        prevDragValue = nil
+    }
+    
+    private var prevDragValue: DragGesture.Value?
+    static let orbitTranslationPerHalfRevolution: Float = 250.0
+    
+    // MARK: Scene setup
     private func setupCamera() {
         scene.viewCamera.camera!.near = 0.1
         scene.viewCamera.camera!.far = 1000.0
@@ -53,8 +83,8 @@ class SceneViewModel: ObservableObject {
             imageObject.textureRenderer!.texture = texture
             if i == 0 {
                 let size = Float(30.0)
-                imageObject.textureRenderer!.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                imageObject.transform!.position = simd_float3(0.0, 0.0, 20.0)
+                imageObject.textureRenderer!.size = (texRatio > 1.0 ? SIMD2<Float>(x: size, y: size / texRatio) : SIMD2<Float>(x: size * texRatio, y: size))
+                imageObject.transform!.position = SIMD3<Float>(0.0, 0.0, 20.0)
             } else {
                 
                 let sizeRange = Float(10.0)...Float(100.0)
@@ -64,8 +94,8 @@ class SceneViewModel: ObservableObject {
                 let size = min(width, height) / 2.0
                 
                 let positionRange = Float(-70.0)...Float(70.0)
-                imageObject.textureRenderer!.size = (texRatio > 1.0 ? simd_float2(x: size, y: size / texRatio) : simd_float2(x: size * texRatio, y: size))
-                imageObject.transform!.position = simd_float3(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
+                imageObject.textureRenderer!.size = (texRatio > 1.0 ? SIMD2<Float>(x: size, y: size / texRatio) : SIMD2<Float>(x: size * texRatio, y: size))
+                imageObject.transform!.position = SIMD3<Float>(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: 0.0...300.0))
             }
         }
     }
@@ -74,31 +104,52 @@ class SceneViewModel: ObservableObject {
 
 struct SceneView: View {
     
-    @StateObject var viewModel = SceneViewModel()
-    
-    let dragGesture = DragGesture(minimumDistance: 0.0)
-        .onChanged { value in
-            print("changed")
-        }
-        .onEnded { value in
-            print("ended")
-        }
+    @Binding var isNavigating: Bool
+    @StateObject var model = SceneViewModel()
     
     var body: some View {
-        ZStack {
-            SceneViewProxy(scene: viewModel.scene, viewCameraSphericalCoord: viewModel.viewCameraSphericalCoord)
+        print("SceneView body")
+        return ZStack {
+            SceneViewProxy(scene: model.scene)
+                .gesture(orbitDragGesture)
             HStack {
                 Spacer()
                 ZoomView()
                     .padding(.trailing, Self.margin)
                     .contentShape(Rectangle())
-                    .gesture(dragGesture)
+                    .gesture(zoomDragGesture)
+                    .opacity(isNavigating ? 0.0 : 1.0)
             }
         }
     }
     
-    static let margin = 8.0
+    var zoomDragGesture: some Gesture {
+        DragGesture(minimumDistance: 0.0)
+            .onChanged { value in
+                print("changed")
+            }
+            .onEnded { value in
+                print("ended")
+            }
+    }
     
+    var orbitDragGesture: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                withAnimation {
+                    isNavigating = true
+                }
+                model.orbit(dragValue: value)
+            }
+            .onEnded { value in
+                withAnimation {
+                    isNavigating = false
+                }
+                model.finishOrbit(dragValue: value)
+            }
+    }
+    
+    static let margin = 8.0
     
     struct UIElementShadow: ViewModifier {
         func body(content: Content) -> some View {
@@ -151,13 +202,12 @@ extension View {
 
 struct SceneViewProxy: UIViewControllerRepresentable {
     
-    init(scene: Hero.Scene, viewCameraSphericalCoord: SphericalCoord) {
+    init(scene: Hero.Scene) {
         self.scene = scene
-        self.viewCameraSphericalCoord = viewCameraSphericalCoord
     }
     
     func makeUIViewController(context: Context) -> SceneViewController {
-        SceneViewController(scene: scene, viewCameraSphericalCoord: viewCameraSphericalCoord)
+        SceneViewController(scene: scene)
     }
     
     func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {
@@ -167,11 +217,10 @@ struct SceneViewProxy: UIViewControllerRepresentable {
     typealias UIViewControllerType = SceneViewController
     
     let scene: Hero.Scene
-    let viewCameraSphericalCoord: SphericalCoord
 }
 
 struct SceneView_Previews: PreviewProvider {
     static var previews: some View {
-        SceneView()
+        SceneView(isNavigating: .constant(false))
     }
 }

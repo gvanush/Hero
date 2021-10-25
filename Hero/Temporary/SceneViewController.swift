@@ -11,8 +11,7 @@ import MobileCoreServices
 
 class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate {
     
-    init(scene: Scene, viewCameraSphericalCoord: SphericalCoord) {
-        self.viewCameraSphericalCoord = viewCameraSphericalCoord
+    override init(scene: Scene) {
         super.init(scene: scene)
     }
     
@@ -47,11 +46,6 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate {
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(onTap))
         graphicsView.addGestureRecognizer(tapGR)
         
-        let panGR = UIPanGestureRecognizer(target: self, action: #selector(onPan))
-        panGR.delegate = self
-        panGR.maximumNumberOfTouches = 1
-        graphicsView.addGestureRecognizer(panGR)
-        
         twoFingerPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onTwoFingerPan))
         twoFingerPanGestureRecognizer.delegate = self
         twoFingerPanGestureRecognizer.minimumNumberOfTouches = 2
@@ -82,32 +76,6 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate {
             scene.selectedObject = selected
         } else {
             scene.selectedObject = nil
-        }
-    }
-    
-    @objc func onPan(panGR: UIPanGestureRecognizer) {
-        switch panGR.state {
-        case .began:
-            isNavigating = true
-            gesturePrevPos = panGR.location(in: graphicsView).float2
-            
-        case .changed:
-            
-            let pos = panGR.location(in: graphicsView).float2
-            let angleDelta = 2.0 * Float.pi * (pos - gesturePrevPos) / graphicsView.bounds.size.float2.min()
-            
-            viewCameraSphericalCoord.latitude -= angleDelta.y
-            
-            let isInFrontOfSphere = sinf(viewCameraSphericalCoord.latitude) >= 0.0
-            viewCameraSphericalCoord.longitude += (isInFrontOfSphere ? angleDelta.x : -angleDelta.x)
-            
-            scene.viewCamera.transform!.position = viewCameraSphericalCoord.getPosition()
-            scene.viewCamera.camera!.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
-            
-            gesturePrevPos = pos
-            
-        default:
-            isNavigating = false
         }
     }
     
@@ -234,7 +202,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate {
     }
     
     private var gesturePrevPos = SIMD2<Float>.zero
-    private var viewCameraSphericalCoord: SphericalCoord
+    private var viewCameraSphericalCoord = SphericalCoord()
     private var shouldResetTwoFingerPan = false
     private var pinchPrevFingerDist: Float = 0.0
     private var shouldResetPinch = false

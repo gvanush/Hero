@@ -10,19 +10,22 @@ import SwiftUI
 struct TransformView: View {
     
     @State var tool = Tool.move
+    @State var isNavigating = false
     
     var body: some View {
         NavigationView {
             ZStack {
-                SceneView()
+                SceneView(isNavigating: $isNavigating)
                     .ignoresSafeArea()
                 VStack {
                     Spacer()
                     Toolbar(selection: $tool)
                 }
+                .opacity(isNavigating ? 0.0 : 1.0)
             }
-            .navigationTitle(tool.title)
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(tool.title)
+            .navigationBarHidden(isNavigating)
         }
         // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings)
         .navigationViewStyle(.stack)
@@ -61,15 +64,15 @@ struct TransformView: View {
     
     struct Toolbar: View {
         
-        var selection: Binding<Tool>
+        @Binding var selection: Tool
         
         var body: some View {
             HStack(spacing: 0.0) {
                 ForEach(Tool.allCases) { tool in
                     item(title: tool.title, image: tool.image)
-                        .foregroundColor(selection.wrappedValue == tool ? .accentColor : .gray)
+                        .foregroundColor(selection == tool ? .accentColor : .gray)
                         .onTapGesture {
-                            selection.wrappedValue = tool
+                            selection = tool
                         }
                 }
             }
