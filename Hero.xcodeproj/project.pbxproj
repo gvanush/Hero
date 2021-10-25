@@ -7,214 +7,160 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */; };
-		B709763225B7866400F5751B /* ObjectToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B709763125B7866400F5751B /* ObjectToolbar.xib */; };
-		B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B709765625B8BD1A00F5751B /* TransformViewController.swift */; };
-		B711BB6425C729EB00FC06C1 /* ObjCProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B711BB6325C729EB00FC06C1 /* ObjCProxy.cpp */; };
-		B711BB6825C7BC3300FC06C1 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */; };
-		B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */; };
-		B718AD1A25BAA5C900C05912 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */; };
-		B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */; };
-		B718AD2C25BAADD600C05912 /* NSPointerArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B718AD2A25BAADD500C05912 /* NSPointerArray+Extensions.m */; };
-		B733DE7F25BC7141000FE1EC /* NumberField.xib in Resources */ = {isa = PBXBuildFile; fileRef = B733DE7E25BC7141000FE1EC /* NumberField.xib */; };
-		B733DE8325BC772C000FE1EC /* NumberField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733DE8225BC772C000FE1EC /* NumberField.swift */; };
-		B733DEA425BDFBF7000FE1EC /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B733DEA325BDFBF7000FE1EC /* Updater.swift */; };
-		B7490EED25F284860070856A /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7490EEC25F284860070856A /* Comparable+Extensions.swift */; };
-		B7490EF025F28B770070856A /* FloatingPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7490EEF25F28B770070856A /* FloatingPoint+Extensions.swift */; };
-		B7490EF525F290FE0070856A /* SIMD4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7490EF425F290FE0070856A /* SIMD4+Extensions.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
 		B7791D252725F45F00E0C934 /* TransformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D242725F45F00E0C934 /* TransformView.swift */; };
-		B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05625B55CDA003461D1 /* AppDelegate.swift */; };
-		B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */; };
-		B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */; };
-		B7C7E05E25B55CDA003461D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7C7E05C25B55CDA003461D1 /* Main.storyboard */; };
-		B7C7E06025B55CDB003461D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7C7E05F25B55CDB003461D1 /* Assets.xcassets */; };
-		B7C7E06325B55CDB003461D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7C7E06125B55CDB003461D1 /* LaunchScreen.storyboard */; };
-		B7C7E0A825B55E55003461D1 /* SIMD3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E06E25B55E54003461D1 /* SIMD3+Extensions.swift */; };
-		B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07025B55E54003461D1 /* RenderingContext.m */; };
-		B7C7E0AA25B55E55003461D1 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07325B55E54003461D1 /* Transform.cpp */; };
-		B7C7E0AB25B55E55003461D1 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07625B55E54003461D1 /* SceneObject.mm */; };
-		B7C7E0AC25B55E55003461D1 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E07725B55E54003461D1 /* Renderer.mm */; };
-		B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */; };
-		B7C7E0AE25B55E55003461D1 /* ComponentTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08325B55E54003461D1 /* ComponentTypeInfo.cpp */; };
-		B7C7E0AF25B55E55003461D1 /* TextureRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08525B55E54003461D1 /* TextureRenderer.mm */; };
-		B7C7E0B025B55E55003461D1 /* UIRepresentable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08825B55E54003461D1 /* UIRepresentable.mm */; };
-		B7C7E0B125B55E55003461D1 /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08B25B55E54003461D1 /* SphericalCoord.mm */; };
-		B7C7E0B225B55E55003461D1 /* SceneObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08C25B55E54003461D1 /* SceneObject.cpp */; };
-		B7C7E0B325B55E55003461D1 /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E08E25B55E54003461D1 /* LineRenderer.mm */; };
-		B7C7E0B425B55E55003461D1 /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09125B55E55003461D1 /* Camera.mm */; };
-		B7C7E0B525B55E55003461D1 /* RemovedComponentRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09225B55E55003461D1 /* RemovedComponentRegistry.cpp */; };
-		B7C7E0B625B55E55003461D1 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09525B55E55003461D1 /* Scene.mm */; };
-		B7C7E0B725B55E55003461D1 /* Component.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09725B55E55003461D1 /* Component.mm */; };
-		B7C7E0B825B55E55003461D1 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09925B55E55003461D1 /* Component.cpp */; };
-		B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09A25B55E55003461D1 /* CppWrapper.mm */; };
-		B7C7E0BA25B55E55003461D1 /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09B25B55E55003461D1 /* Math.cpp */; };
-		B7C7E0BB25B55E55003461D1 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09C25B55E55003461D1 /* Scene.cpp */; };
-		B7C7E0BC25B55E55003461D1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09D25B55E55003461D1 /* Camera.cpp */; };
-		B7C7E0BD25B55E55003461D1 /* ObjCObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E09E25B55E55003461D1 /* ObjCObjectRegistry.cpp */; };
-		B7C7E0BE25B55E55003461D1 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A225B55E55003461D1 /* Shaders.metal */; };
-		B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */; };
-		B7C7E0C025B55E55003461D1 /* TextureUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A625B55E55003461D1 /* TextureUtils.mm */; };
-		B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0A725B55E55003461D1 /* Transform.mm */; };
-		B7C7E0D725B56500003461D1 /* GraphicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */; };
-		B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */; };
-		B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */; };
-		B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */; };
-		B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */; };
-		B7EA096C25E6C95F00BAF0C6 /* ProjectBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7EA096B25E6C95F00BAF0C6 /* ProjectBar.xib */; };
-		B7EA096F25E6D09500BAF0C6 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA096E25E6D09500BAF0C6 /* UIView+Extensions.swift */; };
-		B7EA097225E6D12500BAF0C6 /* ProjectBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097125E6D12500BAF0C6 /* ProjectBar.swift */; };
-		B7EA097525E6DCF400BAF0C6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097425E6DCF400BAF0C6 /* RootViewController.swift */; };
-		B7EA097825E7FB6600BAF0C6 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097725E7FB6600BAF0C6 /* Notification+Extensions.swift */; };
-		B7EA098225E82BCB00BAF0C6 /* ProjectItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097D25E82BCB00BAF0C6 /* ProjectItem.swift */; };
-		B7EA098325E82BCB00BAF0C6 /* ProjectBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097E25E82BCB00BAF0C6 /* ProjectBrowser.swift */; };
-		B7EA098425E82BCB00BAF0C6 /* ProjectItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA097F25E82BCB00BAF0C6 /* ProjectItemModel.swift */; };
-		B7EA098525E82BCB00BAF0C6 /* ProjectBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA098025E82BCB00BAF0C6 /* ProjectBrowserModel.swift */; };
-		B7EA098625E82BCB00BAF0C6 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA098125E82BCB00BAF0C6 /* Project.swift */; };
-		B7EA098925E82C6900BAF0C6 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA098825E82C6900BAF0C6 /* Common.swift */; };
-		B7EA098D25E82C9600BAF0C6 /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA098C25E82C9600BAF0C6 /* Logger+Extensions.swift */; };
-		B7EA099025E82CF100BAF0C6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA098F25E82CF100BAF0C6 /* Settings.swift */; };
-		B7EA099425E82D2D00BAF0C6 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA099325E82D2D00BAF0C6 /* ViewModifiers.swift */; };
-		B7EA099825E82F4A00BAF0C6 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA099725E82F4A00BAF0C6 /* UIApplication+Extensions.swift */; };
-		B7EA099B25E82F6B00BAF0C6 /* UITextFieldProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EA099A25E82F6B00BAF0C6 /* UITextFieldProxy.swift */; };
-		B7F80DB725C9F7E400957EE4 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB625C9F7E400957EE4 /* GroupView.swift */; };
-		B7F80DBA25CA764100957EE4 /* UIProgressView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */; };
-		B7F80DC525CC70CC00957EE4 /* VideoRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DC325CC70CC00957EE4 /* VideoRenderer.mm */; };
-		B7F80DEB25D04E5C00957EE4 /* VideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B7F80DEA25D04E5C00957EE4 /* VideoPlayer.m */; };
+		B7791D282726705A00E0C934 /* SceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D272726705A00E0C934 /* SceneViewController.swift */; };
+		B7791D742726762100E0C934 /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D2C2726762000E0C934 /* Transform.mm */; };
+		B7791D752726762100E0C934 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D312726762000E0C934 /* Scene.cpp */; };
+		B7791D762726762100E0C934 /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D342726762000E0C934 /* Camera.mm */; };
+		B7791D772726762100E0C934 /* TextureRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D362726762000E0C934 /* TextureRenderer.mm */; };
+		B7791D782726762100E0C934 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D372726762000E0C934 /* Camera.cpp */; };
+		B7791D792726762100E0C934 /* SceneObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D382726762000E0C934 /* SceneObject.mm */; };
+		B7791D7A2726762100E0C934 /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D3B2726762100E0C934 /* Math.cpp */; };
+		B7791D7B2726762100E0C934 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D3C2726762100E0C934 /* Component.cpp */; };
+		B7791D7C2726762100E0C934 /* NSPointerArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = B7791D3F2726762100E0C934 /* NSPointerArray+Extensions.m */; };
+		B7791D7D2726762100E0C934 /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D402726762100E0C934 /* LineRenderer.mm */; };
+		B7791D7E2726762100E0C934 /* UIRepresentable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D432726762100E0C934 /* UIRepresentable.mm */; };
+		B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D442726762100E0C934 /* CppWrapper.mm */; };
+		B7791D802726762100E0C934 /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4B2726762100E0C934 /* SphericalCoord.cpp */; };
+		B7791D812726762100E0C934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4E2726762100E0C934 /* Shaders.metal */; };
+		B7791D822726762100E0C934 /* Component.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4F2726762100E0C934 /* Component.mm */; };
+		B7791D832726762100E0C934 /* GraphicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D522726762100E0C934 /* GraphicsViewController.swift */; };
+		B7791D842726762100E0C934 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7791D542726762100E0C934 /* RenderingContext.m */; };
+		B7791D852726762100E0C934 /* ComponentTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D562726762100E0C934 /* ComponentTypeInfo.cpp */; };
+		B7791D862726762100E0C934 /* TextureUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D592726762100E0C934 /* TextureUtils.mm */; };
+		B7791D872726762100E0C934 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D5A2726762100E0C934 /* Transform.cpp */; };
+		B7791D882726762100E0C934 /* ObjCProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D5C2726762100E0C934 /* ObjCProxy.cpp */; };
+		B7791D892726762100E0C934 /* SceneObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D5D2726762100E0C934 /* SceneObject.cpp */; };
+		B7791D8A2726762100E0C934 /* GeometryUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D602726762100E0C934 /* GeometryUtils.cpp */; };
+		B7791D8B2726762100E0C934 /* ObjCObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D612726762100E0C934 /* ObjCObjectRegistry.cpp */; };
+		B7791D8C2726762100E0C934 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D642726762100E0C934 /* Scene.mm */; };
+		B7791D8D2726762100E0C934 /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D662726762100E0C934 /* SphericalCoord.mm */; };
+		B7791D8E2726762100E0C934 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D6C2726762100E0C934 /* Renderer.mm */; };
+		B7791D8F2726762100E0C934 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B7791D6E2726762100E0C934 /* GeometryUtils_Common.c */; };
+		B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D702726762100E0C934 /* SelectedObjectMarker.cpp */; };
+		B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D712726762100E0C934 /* RemovedComponentRegistry.cpp */; };
+		B7791DA82726768B00E0C934 /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D942726768B00E0C934 /* CoreGraphics+Extensions.swift */; };
+		B7791DA92726768B00E0C934 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D962726768B00E0C934 /* UIViewController+Extensions.swift */; };
+		B7791DAA2726768B00E0C934 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D972726768B00E0C934 /* UIView+Extensions.swift */; };
+		B7791DAB2726768B00E0C934 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D982726768B00E0C934 /* UIColor+Extensions.swift */; };
+		B7791DAC2726768B00E0C934 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D992726768B00E0C934 /* UIImage+Extensions.swift */; };
+		B7791DAD2726768B00E0C934 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D9A2726768B00E0C934 /* UIGestureRecognizer+Extensions.swift */; };
+		B7791DAE2726768B00E0C934 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D9B2726768B00E0C934 /* UIApplication+Extensions.swift */; };
+		B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D9C2726768B00E0C934 /* UIProgressView+Extensions.swift */; };
+		B7791DB02726768B00E0C934 /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D9D2726768B00E0C934 /* UITextField+Extensions.swift */; };
+		B7791DB12726768B00E0C934 /* SIMD3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D9F2726768B00E0C934 /* SIMD3+Extensions.swift */; };
+		B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA02726768B00E0C934 /* SIMD4+Extensions.swift */; };
+		B7791DB32726768C00E0C934 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA22726768B00E0C934 /* Notification+Extensions.swift */; };
+		B7791DB42726768C00E0C934 /* FloatingPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA42726768B00E0C934 /* FloatingPoint+Extensions.swift */; };
+		B7791DB52726768C00E0C934 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA52726768B00E0C934 /* Comparable+Extensions.swift */; };
+		B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA72726768B00E0C934 /* Logger+Extensions.swift */; };
+		B7791DB827267BB900E0C934 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DB727267BB900E0C934 /* Updater.swift */; };
+		B7791DBA2726821200E0C934 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DB92726821200E0C934 /* SceneView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
-		B709763125B7866400F5751B /* ObjectToolbar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ObjectToolbar.xib; sourceTree = "<group>"; };
-		B709765625B8BD1A00F5751B /* TransformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformViewController.swift; sourceTree = "<group>"; };
-		B711BB5D25C7107C00FC06C1 /* TextureUtilsCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureUtilsCommon.h; sourceTree = "<group>"; };
-		B711BB6025C71D9500FC06C1 /* TextureProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureProxy.h; sourceTree = "<group>"; };
-		B711BB6225C7290C00FC06C1 /* ObjCProxy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjCProxy.hpp; sourceTree = "<group>"; };
-		B711BB6325C729EB00FC06C1 /* ObjCProxy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCProxy.cpp; sourceTree = "<group>"; };
-		B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
-		B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GeometryUtils_Common.c; sourceTree = "<group>"; };
-		B718AD1725BAA5C900C05912 /* GeometryUtils_Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeometryUtils_Common.h; sourceTree = "<group>"; };
-		B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryUtils.cpp; sourceTree = "<group>"; };
-		B718AD1925BAA5C900C05912 /* GeometryUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeometryUtils.hpp; sourceTree = "<group>"; };
-		B718AD2625BAAD6D00C05912 /* Numeric.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Numeric.hpp; sourceTree = "<group>"; };
-		B718AD2825BAAD9F00C05912 /* GraphicsCoreUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphicsCoreUtils.hpp; sourceTree = "<group>"; };
-		B718AD2A25BAADD500C05912 /* NSPointerArray+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+Extensions.m"; sourceTree = "<group>"; };
-		B718AD2B25BAADD500C05912 /* NSPointerArray+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+Extensions.h"; sourceTree = "<group>"; };
-		B733DE7E25BC7141000FE1EC /* NumberField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NumberField.xib; sourceTree = "<group>"; };
-		B733DE8225BC772C000FE1EC /* NumberField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberField.swift; sourceTree = "<group>"; };
-		B733DEA325BDFBF7000FE1EC /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
-		B7490EEC25F284860070856A /* Comparable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
-		B7490EEF25F28B770070856A /* FloatingPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extensions.swift"; sourceTree = "<group>"; };
-		B7490EF425F290FE0070856A /* SIMD4+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIMD4+Extensions.swift"; sourceTree = "<group>"; };
-		B7600EE425D7AEC2004E6E9B /* CoreGraphics+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreGraphics+Extensions.h"; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B7791D222725D99900E0C934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7791D242725F45F00E0C934 /* TransformView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformView.swift; sourceTree = "<group>"; };
-		B7C7E05425B55CDA003461D1 /* HeroX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeroX.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B7C7E05625B55CDA003461D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewController.swift; sourceTree = "<group>"; };
-		B7C7E05D25B55CDA003461D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B7C7E05F25B55CDB003461D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B7C7E06225B55CDB003461D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B7C7E06425B55CDB003461D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B7C7E06D25B55E53003461D1 /* Spirit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Spirit-Bridging-Header.h"; sourceTree = "<group>"; };
-		B7C7E06E25B55E54003461D1 /* SIMD3+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIMD3+Extensions.swift"; sourceTree = "<group>"; };
-		B7C7E06F25B55E54003461D1 /* TextureRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureRenderer.h; sourceTree = "<group>"; };
-		B7C7E07025B55E54003461D1 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
-		B7C7E07125B55E54003461D1 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
-		B7C7E07225B55E54003461D1 /* Math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
-		B7C7E07325B55E54003461D1 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
-		B7C7E07425B55E54003461D1 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
-		B7C7E07525B55E54003461D1 /* RemovedComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RemovedComponentRegistry.hpp; sourceTree = "<group>"; };
-		B7C7E07625B55E54003461D1 /* SceneObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneObject.mm; sourceTree = "<group>"; };
-		B7C7E07725B55E54003461D1 /* Renderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
-		B7C7E07825B55E54003461D1 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
-		B7C7E07925B55E54003461D1 /* SelectedObjectMarker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SelectedObjectMarker.hpp; sourceTree = "<group>"; };
-		B7C7E07A25B55E54003461D1 /* RendererFlag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererFlag.h; sourceTree = "<group>"; };
-		B7C7E07B25B55E54003461D1 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
-		B7C7E07C25B55E54003461D1 /* UIRepresentable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UIRepresentable.hpp; sourceTree = "<group>"; };
-		B7C7E07D25B55E54003461D1 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
-		B7C7E07E25B55E54003461D1 /* ComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentRegistry.hpp; sourceTree = "<group>"; };
-		B7C7E07F25B55E54003461D1 /* UIRepresentable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRepresentable.h; sourceTree = "<group>"; };
-		B7C7E08025B55E54003461D1 /* ComponentTypeInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentTypeInfo.hpp; sourceTree = "<group>"; };
-		B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectedObjectMarker.cpp; sourceTree = "<group>"; };
-		B7C7E08225B55E54003461D1 /* SceneObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
-		B7C7E08325B55E54003461D1 /* ComponentTypeInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentTypeInfo.cpp; sourceTree = "<group>"; };
-		B7C7E08425B55E54003461D1 /* TextureUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
-		B7C7E08525B55E54003461D1 /* TextureRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureRenderer.mm; sourceTree = "<group>"; };
-		B7C7E08625B55E54003461D1 /* SceneObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
-		B7C7E08725B55E54003461D1 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
-		B7C7E08825B55E54003461D1 /* UIRepresentable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UIRepresentable.mm; sourceTree = "<group>"; };
-		B7C7E08925B55E54003461D1 /* ObjCObjectRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjCObjectRegistry.hpp; sourceTree = "<group>"; };
-		B7C7E08A25B55E54003461D1 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
-		B7C7E08B25B55E54003461D1 /* SphericalCoord.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphericalCoord.mm; sourceTree = "<group>"; };
-		B7C7E08C25B55E54003461D1 /* SceneObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneObject.cpp; sourceTree = "<group>"; };
-		B7C7E08D25B55E54003461D1 /* ShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
-		B7C7E08E25B55E54003461D1 /* LineRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LineRenderer.mm; sourceTree = "<group>"; };
-		B7C7E08F25B55E54003461D1 /* CppWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CppWrapper.h; sourceTree = "<group>"; };
-		B7C7E09025B55E55003461D1 /* LineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineRenderer.h; sourceTree = "<group>"; };
-		B7C7E09125B55E55003461D1 /* Camera.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
-		B7C7E09225B55E55003461D1 /* RemovedComponentRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemovedComponentRegistry.cpp; sourceTree = "<group>"; };
-		B7C7E09325B55E55003461D1 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
-		B7C7E09425B55E55003461D1 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
-		B7C7E09525B55E55003461D1 /* Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Scene.mm; sourceTree = "<group>"; };
-		B7C7E09625B55E55003461D1 /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
-		B7C7E09725B55E55003461D1 /* Component.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
-		B7C7E09825B55E55003461D1 /* Component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Component.hpp; sourceTree = "<group>"; };
-		B7C7E09925B55E55003461D1 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
-		B7C7E09A25B55E55003461D1 /* CppWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
-		B7C7E09B25B55E55003461D1 /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
-		B7C7E09C25B55E55003461D1 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
-		B7C7E09D25B55E55003461D1 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
-		B7C7E09E25B55E55003461D1 /* ObjCObjectRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCObjectRegistry.cpp; sourceTree = "<group>"; };
-		B7C7E09F25B55E55003461D1 /* LineRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LineRenderer.hpp; sourceTree = "<group>"; };
-		B7C7E0A025B55E55003461D1 /* Transform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
-		B7C7E0A125B55E55003461D1 /* UIRepresentableObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRepresentableObserver.h; sourceTree = "<group>"; };
-		B7C7E0A225B55E55003461D1 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
-		B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
-		B7C7E0A425B55E55003461D1 /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
-		B7C7E0A525B55E55003461D1 /* TextureRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TextureRenderer.hpp; sourceTree = "<group>"; };
-		B7C7E0A625B55E55003461D1 /* TextureUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureUtils.mm; sourceTree = "<group>"; };
-		B7C7E0A725B55E55003461D1 /* Transform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
-		B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
-		B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
-		B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions.swift"; sourceTree = "<group>"; };
-		B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
-		B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingViewController.swift; sourceTree = "<group>"; };
-		B7EA096B25E6C95F00BAF0C6 /* ProjectBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectBar.xib; sourceTree = "<group>"; };
-		B7EA096E25E6D09500BAF0C6 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
-		B7EA097125E6D12500BAF0C6 /* ProjectBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBar.swift; sourceTree = "<group>"; };
-		B7EA097425E6DCF400BAF0C6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		B7EA097725E7FB6600BAF0C6 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
-		B7EA097D25E82BCB00BAF0C6 /* ProjectItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectItem.swift; sourceTree = "<group>"; };
-		B7EA097E25E82BCB00BAF0C6 /* ProjectBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectBrowser.swift; sourceTree = "<group>"; };
-		B7EA097F25E82BCB00BAF0C6 /* ProjectItemModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectItemModel.swift; sourceTree = "<group>"; };
-		B7EA098025E82BCB00BAF0C6 /* ProjectBrowserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectBrowserModel.swift; sourceTree = "<group>"; };
-		B7EA098125E82BCB00BAF0C6 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
-		B7EA098825E82C6900BAF0C6 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
-		B7EA098C25E82C9600BAF0C6 /* Logger+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
-		B7EA098F25E82CF100BAF0C6 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		B7EA099325E82D2D00BAF0C6 /* ViewModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
-		B7EA099725E82F4A00BAF0C6 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
-		B7EA099A25E82F6B00BAF0C6 /* UITextFieldProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextFieldProxy.swift; sourceTree = "<group>"; };
-		B7F80DB625C9F7E400957EE4 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
-		B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIProgressView+Extensions.swift"; sourceTree = "<group>"; };
-		B7F80DC325CC70CC00957EE4 /* VideoRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoRenderer.mm; sourceTree = "<group>"; };
-		B7F80DC425CC70CC00957EE4 /* VideoRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = VideoRenderer.hpp; sourceTree = "<group>"; };
-		B7F80DDF25CD331C00957EE4 /* VideoRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoRenderer.h; sourceTree = "<group>"; };
-		B7F80DE925D04E5C00957EE4 /* VideoPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
-		B7F80DEA25D04E5C00957EE4 /* VideoPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoPlayer.m; sourceTree = "<group>"; };
-		B7F80DED25D0541F00957EE4 /* VideoPlayerProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoPlayerProxy.h; sourceTree = "<group>"; };
+		B7791D272726705A00E0C934 /* SceneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneViewController.swift; sourceTree = "<group>"; };
+		B7791D2C2726762000E0C934 /* Transform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
+		B7791D2D2726762000E0C934 /* ComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentRegistry.hpp; sourceTree = "<group>"; };
+		B7791D2E2726762000E0C934 /* TextureRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TextureRenderer.hpp; sourceTree = "<group>"; };
+		B7791D2F2726762000E0C934 /* CppWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CppWrapper.h; sourceTree = "<group>"; };
+		B7791D302726762000E0C934 /* UIRepresentable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRepresentable.h; sourceTree = "<group>"; };
+		B7791D312726762000E0C934 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
+		B7791D322726762000E0C934 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
+		B7791D332726762000E0C934 /* RemovedComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RemovedComponentRegistry.hpp; sourceTree = "<group>"; };
+		B7791D342726762000E0C934 /* Camera.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Camera.mm; sourceTree = "<group>"; };
+		B7791D352726762000E0C934 /* SelectedObjectMarker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SelectedObjectMarker.hpp; sourceTree = "<group>"; };
+		B7791D362726762000E0C934 /* TextureRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureRenderer.mm; sourceTree = "<group>"; };
+		B7791D372726762000E0C934 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		B7791D382726762000E0C934 /* SceneObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneObject.mm; sourceTree = "<group>"; };
+		B7791D392726762000E0C934 /* UIRepresentableObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRepresentableObserver.h; sourceTree = "<group>"; };
+		B7791D3A2726762000E0C934 /* UIRepresentable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UIRepresentable.hpp; sourceTree = "<group>"; };
+		B7791D3B2726762100E0C934 /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
+		B7791D3C2726762100E0C934 /* Component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Component.cpp; sourceTree = "<group>"; };
+		B7791D3D2726762100E0C934 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		B7791D3E2726762100E0C934 /* ComponentTypeInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentTypeInfo.hpp; sourceTree = "<group>"; };
+		B7791D3F2726762100E0C934 /* NSPointerArray+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPointerArray+Extensions.m"; sourceTree = "<group>"; };
+		B7791D402726762100E0C934 /* LineRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LineRenderer.mm; sourceTree = "<group>"; };
+		B7791D412726762100E0C934 /* LineRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LineRenderer.hpp; sourceTree = "<group>"; };
+		B7791D422726762100E0C934 /* Transform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
+		B7791D432726762100E0C934 /* UIRepresentable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UIRepresentable.mm; sourceTree = "<group>"; };
+		B7791D442726762100E0C934 /* CppWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CppWrapper.mm; sourceTree = "<group>"; };
+		B7791D452726762100E0C934 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
+		B7791D462726762100E0C934 /* LineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineRenderer.h; sourceTree = "<group>"; };
+		B7791D472726762100E0C934 /* TextureUtilsCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtilsCommon.h; sourceTree = "<group>"; };
+		B7791D482726762100E0C934 /* ObjCProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjCProxy.hpp; sourceTree = "<group>"; };
+		B7791D492726762100E0C934 /* TextureProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureProxy.h; sourceTree = "<group>"; };
+		B7791D4A2726762100E0C934 /* SceneObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
+		B7791D4B2726762100E0C934 /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
+		B7791D4C2726762100E0C934 /* GeometryUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeometryUtils.hpp; sourceTree = "<group>"; };
+		B7791D4D2726762100E0C934 /* GeometryUtils_Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeometryUtils_Common.h; sourceTree = "<group>"; };
+		B7791D4E2726762100E0C934 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		B7791D4F2726762100E0C934 /* Component.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
+		B7791D502726762100E0C934 /* ObjCObjectRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjCObjectRegistry.hpp; sourceTree = "<group>"; };
+		B7791D512726762100E0C934 /* SceneObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
+		B7791D522726762100E0C934 /* GraphicsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
+		B7791D532726762100E0C934 /* GraphicsCoreUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphicsCoreUtils.hpp; sourceTree = "<group>"; };
+		B7791D542726762100E0C934 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
+		B7791D552726762100E0C934 /* ShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
+		B7791D562726762100E0C934 /* ComponentTypeInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentTypeInfo.cpp; sourceTree = "<group>"; };
+		B7791D572726762100E0C934 /* Math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
+		B7791D582726762100E0C934 /* Component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Component.hpp; sourceTree = "<group>"; };
+		B7791D592726762100E0C934 /* TextureUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureUtils.mm; sourceTree = "<group>"; };
+		B7791D5A2726762100E0C934 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
+		B7791D5B2726762100E0C934 /* TextureRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureRenderer.h; sourceTree = "<group>"; };
+		B7791D5C2726762100E0C934 /* ObjCProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCProxy.cpp; sourceTree = "<group>"; };
+		B7791D5D2726762100E0C934 /* SceneObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneObject.cpp; sourceTree = "<group>"; };
+		B7791D5E2726762100E0C934 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
+		B7791D5F2726762100E0C934 /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
+		B7791D602726762100E0C934 /* GeometryUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryUtils.cpp; sourceTree = "<group>"; };
+		B7791D612726762100E0C934 /* ObjCObjectRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCObjectRegistry.cpp; sourceTree = "<group>"; };
+		B7791D622726762100E0C934 /* Numeric.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Numeric.hpp; sourceTree = "<group>"; };
+		B7791D632726762100E0C934 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
+		B7791D642726762100E0C934 /* Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Scene.mm; sourceTree = "<group>"; };
+		B7791D652726762100E0C934 /* Spirit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Spirit-Bridging-Header.h"; sourceTree = "<group>"; };
+		B7791D662726762100E0C934 /* SphericalCoord.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphericalCoord.mm; sourceTree = "<group>"; };
+		B7791D672726762100E0C934 /* RendererFlag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererFlag.h; sourceTree = "<group>"; };
+		B7791D682726762100E0C934 /* NSPointerArray+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+Extensions.h"; sourceTree = "<group>"; };
+		B7791D692726762100E0C934 /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
+		B7791D6A2726762100E0C934 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
+		B7791D6B2726762100E0C934 /* CoreGraphics+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreGraphics+Extensions.h"; sourceTree = "<group>"; };
+		B7791D6C2726762100E0C934 /* Renderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
+		B7791D6D2726762100E0C934 /* Scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
+		B7791D6E2726762100E0C934 /* GeometryUtils_Common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GeometryUtils_Common.c; sourceTree = "<group>"; };
+		B7791D6F2726762100E0C934 /* TextureUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureUtils.h; sourceTree = "<group>"; };
+		B7791D702726762100E0C934 /* SelectedObjectMarker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectedObjectMarker.cpp; sourceTree = "<group>"; };
+		B7791D712726762100E0C934 /* RemovedComponentRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemovedComponentRegistry.cpp; sourceTree = "<group>"; };
+		B7791D722726762100E0C934 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		B7791D732726762100E0C934 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		B7791D942726768B00E0C934 /* CoreGraphics+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D962726768B00E0C934 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D972726768B00E0C934 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D982726768B00E0C934 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D992726768B00E0C934 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D9A2726768B00E0C934 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D9B2726768B00E0C934 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D9C2726768B00E0C934 /* UIProgressView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIProgressView+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D9D2726768B00E0C934 /* UITextField+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
+		B7791D9F2726768B00E0C934 /* SIMD3+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIMD3+Extensions.swift"; sourceTree = "<group>"; };
+		B7791DA02726768B00E0C934 /* SIMD4+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIMD4+Extensions.swift"; sourceTree = "<group>"; };
+		B7791DA22726768B00E0C934 /* Notification+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
+		B7791DA42726768B00E0C934 /* FloatingPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extensions.swift"; sourceTree = "<group>"; };
+		B7791DA52726768B00E0C934 /* Comparable+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
+		B7791DA72726768B00E0C934 /* Logger+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
+		B7791DB727267BB900E0C934 /* Updater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
+		B7791DB92726821200E0C934 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,26 +171,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B7C7E05125B55CDA003461D1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B711BB5F25C71D4D00FC06C1 /* Proxies */ = {
-			isa = PBXGroup;
-			children = (
-				B711BB6025C71D9500FC06C1 /* TextureProxy.h */,
-				B711BB6225C7290C00FC06C1 /* ObjCProxy.hpp */,
-				B711BB6325C729EB00FC06C1 /* ObjCProxy.cpp */,
-			);
-			name = Proxies;
-			sourceTree = "<group>";
-		};
 		B715B23824D28B0F00B4C859 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,7 +187,6 @@
 		B7316FEB24CF376000157455 = {
 			isa = PBXGroup;
 			children = (
-				B7C7E05525B55CDA003461D1 /* HeroX */,
 				B7791D1527258F7500E0C934 /* Hero */,
 				B7316FF524CF376000157455 /* Products */,
 				B715B23824D28B0F00B4C859 /* Frameworks */,
@@ -268,183 +196,15 @@
 		B7316FF524CF376000157455 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E05425B55CDA003461D1 /* HeroX.app */,
 				B7791D1427258F7500E0C934 /* Hero.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B7490EE725F280FA0070856A /* CoreGraphics */ = {
-			isa = PBXGroup;
-			children = (
-				B7C7E0E025B56735003461D1 /* CoreGraphics+Extensions.swift */,
-			);
-			path = CoreGraphics;
-			sourceTree = "<group>";
-		};
-		B7490EE825F281400070856A /* simd */ = {
-			isa = PBXGroup;
-			children = (
-				B7C7E06E25B55E54003461D1 /* SIMD3+Extensions.swift */,
-				B7490EF425F290FE0070856A /* SIMD4+Extensions.swift */,
-			);
-			path = simd;
-			sourceTree = "<group>";
-		};
-		B7490EE925F2815B0070856A /* Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				B7EA097725E7FB6600BAF0C6 /* Notification+Extensions.swift */,
-			);
-			path = Foundation;
-			sourceTree = "<group>";
-		};
-		B7490EEB25F283C80070856A /* Swift */ = {
-			isa = PBXGroup;
-			children = (
-				B7490EEC25F284860070856A /* Comparable+Extensions.swift */,
-				B7490EEF25F28B770070856A /* FloatingPoint+Extensions.swift */,
-			);
-			path = Swift;
-			sourceTree = "<group>";
-		};
-		B7490EF825F29D8E0070856A /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				B7C7E0F025B6AE67003461D1 /* SlidingViewController.swift */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		B7490EF925F29E1B0070856A /* ViewModifiers */ = {
-			isa = PBXGroup;
-			children = (
-				B7EA099325E82D2D00BAF0C6 /* ViewModifiers.swift */,
-			);
-			path = ViewModifiers;
-			sourceTree = "<group>";
-		};
-		B7490EFA25F29FE10070856A /* ViewProxies */ = {
-			isa = PBXGroup;
-			children = (
-				B7EA099A25E82F6B00BAF0C6 /* UITextFieldProxy.swift */,
-			);
-			path = ViewProxies;
-			sourceTree = "<group>";
-		};
-		B7490EFB25F29FFB0070856A /* Inspector */ = {
-			isa = PBXGroup;
-			children = (
-				B709765625B8BD1A00F5751B /* TransformViewController.swift */,
-			);
-			path = Inspector;
-			sourceTree = "<group>";
-		};
-		B7490EFC25F2A0FB0070856A /* SceneBrowser */ = {
-			isa = PBXGroup;
-			children = (
-				B7C7E05A25B55CDA003461D1 /* SceneViewController.swift */,
-			);
-			path = SceneBrowser;
-			sourceTree = "<group>";
-		};
-		B776014125F26C5F003E137F /* Hero */ = {
-			isa = PBXGroup;
-			children = (
-				B776014C25F27DB1003E137F /* Extensions */,
-				B776014525F27019003E137F /* Shared */,
-				B776014A25F27264003E137F /* ProjectBrowser */,
-				B7490EFB25F29FFB0070856A /* Inspector */,
-				B7490EFC25F2A0FB0070856A /* SceneBrowser */,
-				B7C7E05625B55CDA003461D1 /* AppDelegate.swift */,
-				B7C7E05825B55CDA003461D1 /* SceneDelegate.swift */,
-				B7C7E06125B55CDB003461D1 /* LaunchScreen.storyboard */,
-				B7EA096B25E6C95F00BAF0C6 /* ProjectBar.xib */,
-				B7EA097125E6D12500BAF0C6 /* ProjectBar.swift */,
-				B7EA098825E82C6900BAF0C6 /* Common.swift */,
-				B7EA097425E6DCF400BAF0C6 /* RootViewController.swift */,
-				B7C7E06425B55CDB003461D1 /* Info.plist */,
-				B7C7E05F25B55CDB003461D1 /* Assets.xcassets */,
-				B7C7E05C25B55CDA003461D1 /* Main.storyboard */,
-			);
-			name = Hero;
-			sourceTree = "<group>";
-		};
-		B776014525F27019003E137F /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				B7490EFA25F29FE10070856A /* ViewProxies */,
-				B7490EF925F29E1B0070856A /* ViewModifiers */,
-				B7490EF825F29D8E0070856A /* ViewControllers */,
-				B776014725F27077003E137F /* Views */,
-				B7EA098F25E82CF100BAF0C6 /* Settings.swift */,
-				B733DEA325BDFBF7000FE1EC /* Updater.swift */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
-		B776014725F27077003E137F /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B7F80DB625C9F7E400957EE4 /* GroupView.swift */,
-				B709763125B7866400F5751B /* ObjectToolbar.xib */,
-				B733DE7E25BC7141000FE1EC /* NumberField.xib */,
-				B733DE8225BC772C000FE1EC /* NumberField.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B776014A25F27264003E137F /* ProjectBrowser */ = {
-			isa = PBXGroup;
-			children = (
-				B7EA098125E82BCB00BAF0C6 /* Project.swift */,
-				B7EA097E25E82BCB00BAF0C6 /* ProjectBrowser.swift */,
-				B7EA098025E82BCB00BAF0C6 /* ProjectBrowserModel.swift */,
-				B7EA097D25E82BCB00BAF0C6 /* ProjectItem.swift */,
-				B7EA097F25E82BCB00BAF0C6 /* ProjectItemModel.swift */,
-			);
-			path = ProjectBrowser;
-			sourceTree = "<group>";
-		};
-		B776014C25F27DB1003E137F /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				B776014D25F27DDF003E137F /* UIKit */,
-				B7490EE925F2815B0070856A /* Foundation */,
-				B7490EE725F280FA0070856A /* CoreGraphics */,
-				B7490EE825F281400070856A /* simd */,
-				B776014F25F27E4A003E137F /* os */,
-				B7490EEB25F283C80070856A /* Swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		B776014D25F27DDF003E137F /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				B7EA099725E82F4A00BAF0C6 /* UIApplication+Extensions.swift */,
-				B7C7E0DA25B5660F003461D1 /* UIColor+Extensions.swift */,
-				B7C7E0E825B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift */,
-				B709762D25B7737A00F5751B /* UIViewController+Extensions.swift */,
-				B718AD1025B94BEF00C05912 /* UITextField+Extensions.swift */,
-				B711BB6725C7BC3300FC06C1 /* UIImage+Extensions.swift */,
-				B7F80DB925CA764100957EE4 /* UIProgressView+Extensions.swift */,
-				B7EA096E25E6D09500BAF0C6 /* UIView+Extensions.swift */,
-			);
-			path = UIKit;
-			sourceTree = "<group>";
-		};
-		B776014F25F27E4A003E137F /* os */ = {
-			isa = PBXGroup;
-			children = (
-				B7EA098C25E82C9600BAF0C6 /* Logger+Extensions.swift */,
-			);
-			path = os;
-			sourceTree = "<group>";
-		};
 		B7791D1527258F7500E0C934 /* Hero */ = {
 			isa = PBXGroup;
 			children = (
+				B7791D2627266FD300E0C934 /* Temporary */,
 				B7791D232725F27700E0C934 /* Extensions */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1627258F7500E0C934 /* HeroApp.swift */,
@@ -470,192 +230,165 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		B7C7E05525B55CDA003461D1 /* HeroX */ = {
+		B7791D2627266FD300E0C934 /* Temporary */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E0C225B55E5C003461D1 /* Spirit */,
-				B776014125F26C5F003E137F /* Hero */,
+				B7791D2B2726762000E0C934 /* Spirit */,
+				B7791DB727267BB900E0C934 /* Updater.swift */,
+				B7791D272726705A00E0C934 /* SceneViewController.swift */,
+				B7791DB92726821200E0C934 /* SceneView.swift */,
 			);
-			path = HeroX;
+			path = Temporary;
 			sourceTree = "<group>";
 		};
-		B7C7E0C225B55E5C003461D1 /* Spirit */ = {
+		B7791D2B2726762000E0C934 /* Spirit */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E06D25B55E53003461D1 /* Spirit-Bridging-Header.h */,
-				B7C7E0C725B55EC1003461D1 /* Core */,
-				B7C7E0C925B55FE6003461D1 /* Components */,
-				B7C7E0D325B5615B003461D1 /* Scene */,
-				B7C7E0CF25B5605F003461D1 /* SceneObject */,
-				B7C7E0D225B5611A003461D1 /* SphericalCoord */,
-				B718AD1625BAA5C900C05912 /* GeometryUtils_Common.c */,
-				B718AD1725BAA5C900C05912 /* GeometryUtils_Common.h */,
-				B718AD1825BAA5C900C05912 /* GeometryUtils.cpp */,
-				B718AD1925BAA5C900C05912 /* GeometryUtils.hpp */,
-				B718AD2B25BAADD500C05912 /* NSPointerArray+Extensions.h */,
-				B718AD2A25BAADD500C05912 /* NSPointerArray+Extensions.m */,
-				B7600EE425D7AEC2004E6E9B /* CoreGraphics+Extensions.h */,
-				B7C7E09B25B55E55003461D1 /* Math.cpp */,
-				B7C7E07225B55E54003461D1 /* Math.hpp */,
-				B718AD2625BAAD6D00C05912 /* Numeric.hpp */,
-				B7C7E0A225B55E55003461D1 /* Shaders.metal */,
-				B7C7E08D25B55E54003461D1 /* ShaderTypes.h */,
-				B7C7E08425B55E54003461D1 /* TextureUtils.h */,
-				B7C7E0A625B55E55003461D1 /* TextureUtils.mm */,
-				B711BB5D25C7107C00FC06C1 /* TextureUtilsCommon.h */,
-				B7C7E0D625B56500003461D1 /* GraphicsViewController.swift */,
-				B7F80DE925D04E5C00957EE4 /* VideoPlayer.h */,
-				B7F80DEA25D04E5C00957EE4 /* VideoPlayer.m */,
-				B7F80DED25D0541F00957EE4 /* VideoPlayerProxy.h */,
+				B7791D922726768B00E0C934 /* Extensions */,
+				B7791D2C2726762000E0C934 /* Transform.mm */,
+				B7791D2D2726762000E0C934 /* ComponentRegistry.hpp */,
+				B7791D2E2726762000E0C934 /* TextureRenderer.hpp */,
+				B7791D2F2726762000E0C934 /* CppWrapper.h */,
+				B7791D302726762000E0C934 /* UIRepresentable.h */,
+				B7791D312726762000E0C934 /* Scene.cpp */,
+				B7791D322726762000E0C934 /* Renderer.hpp */,
+				B7791D332726762000E0C934 /* RemovedComponentRegistry.hpp */,
+				B7791D342726762000E0C934 /* Camera.mm */,
+				B7791D352726762000E0C934 /* SelectedObjectMarker.hpp */,
+				B7791D362726762000E0C934 /* TextureRenderer.mm */,
+				B7791D372726762000E0C934 /* Camera.cpp */,
+				B7791D382726762000E0C934 /* SceneObject.mm */,
+				B7791D392726762000E0C934 /* UIRepresentableObserver.h */,
+				B7791D3A2726762000E0C934 /* UIRepresentable.hpp */,
+				B7791D3B2726762100E0C934 /* Math.cpp */,
+				B7791D3C2726762100E0C934 /* Component.cpp */,
+				B7791D3D2726762100E0C934 /* Camera.h */,
+				B7791D3E2726762100E0C934 /* ComponentTypeInfo.hpp */,
+				B7791D3F2726762100E0C934 /* NSPointerArray+Extensions.m */,
+				B7791D402726762100E0C934 /* LineRenderer.mm */,
+				B7791D412726762100E0C934 /* LineRenderer.hpp */,
+				B7791D422726762100E0C934 /* Transform.hpp */,
+				B7791D432726762100E0C934 /* UIRepresentable.mm */,
+				B7791D442726762100E0C934 /* CppWrapper.mm */,
+				B7791D452726762100E0C934 /* Renderer.h */,
+				B7791D462726762100E0C934 /* LineRenderer.h */,
+				B7791D472726762100E0C934 /* TextureUtilsCommon.h */,
+				B7791D482726762100E0C934 /* ObjCProxy.hpp */,
+				B7791D492726762100E0C934 /* TextureProxy.h */,
+				B7791D4A2726762100E0C934 /* SceneObject.hpp */,
+				B7791D4B2726762100E0C934 /* SphericalCoord.cpp */,
+				B7791D4C2726762100E0C934 /* GeometryUtils.hpp */,
+				B7791D4D2726762100E0C934 /* GeometryUtils_Common.h */,
+				B7791D4E2726762100E0C934 /* Shaders.metal */,
+				B7791D4F2726762100E0C934 /* Component.mm */,
+				B7791D502726762100E0C934 /* ObjCObjectRegistry.hpp */,
+				B7791D512726762100E0C934 /* SceneObject.h */,
+				B7791D522726762100E0C934 /* GraphicsViewController.swift */,
+				B7791D532726762100E0C934 /* GraphicsCoreUtils.hpp */,
+				B7791D542726762100E0C934 /* RenderingContext.m */,
+				B7791D552726762100E0C934 /* ShaderTypes.h */,
+				B7791D562726762100E0C934 /* ComponentTypeInfo.cpp */,
+				B7791D572726762100E0C934 /* Math.hpp */,
+				B7791D582726762100E0C934 /* Component.hpp */,
+				B7791D592726762100E0C934 /* TextureUtils.mm */,
+				B7791D5A2726762100E0C934 /* Transform.cpp */,
+				B7791D5B2726762100E0C934 /* TextureRenderer.h */,
+				B7791D5C2726762100E0C934 /* ObjCProxy.cpp */,
+				B7791D5D2726762100E0C934 /* SceneObject.cpp */,
+				B7791D5E2726762100E0C934 /* Transform.h */,
+				B7791D5F2726762100E0C934 /* SphericalCoord.hpp */,
+				B7791D602726762100E0C934 /* GeometryUtils.cpp */,
+				B7791D612726762100E0C934 /* ObjCObjectRegistry.cpp */,
+				B7791D622726762100E0C934 /* Numeric.hpp */,
+				B7791D632726762100E0C934 /* Component.h */,
+				B7791D642726762100E0C934 /* Scene.mm */,
+				B7791D652726762100E0C934 /* Spirit-Bridging-Header.h */,
+				B7791D662726762100E0C934 /* SphericalCoord.mm */,
+				B7791D672726762100E0C934 /* RendererFlag.h */,
+				B7791D682726762100E0C934 /* NSPointerArray+Extensions.h */,
+				B7791D692726762100E0C934 /* SphericalCoord.h */,
+				B7791D6A2726762100E0C934 /* RenderingContext.h */,
+				B7791D6B2726762100E0C934 /* CoreGraphics+Extensions.h */,
+				B7791D6C2726762100E0C934 /* Renderer.mm */,
+				B7791D6D2726762100E0C934 /* Scene.hpp */,
+				B7791D6E2726762100E0C934 /* GeometryUtils_Common.c */,
+				B7791D6F2726762100E0C934 /* TextureUtils.h */,
+				B7791D702726762100E0C934 /* SelectedObjectMarker.cpp */,
+				B7791D712726762100E0C934 /* RemovedComponentRegistry.cpp */,
+				B7791D722726762100E0C934 /* Scene.h */,
+				B7791D732726762100E0C934 /* Camera.hpp */,
 			);
-			name = Spirit;
+			path = Spirit;
 			sourceTree = "<group>";
 		};
-		B7C7E0C725B55EC1003461D1 /* Core */ = {
+		B7791D922726768B00E0C934 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B711BB5F25C71D4D00FC06C1 /* Proxies */,
-				B7C7E0D025B5608A003461D1 /* UIRepresentable */,
-				B7C7E0C825B55ED0003461D1 /* Component */,
-				B7C7E0A125B55E55003461D1 /* UIRepresentableObserver.h */,
-				B7C7E08F25B55E54003461D1 /* CppWrapper.h */,
-				B7C7E09A25B55E55003461D1 /* CppWrapper.mm */,
-				B7C7E09E25B55E55003461D1 /* ObjCObjectRegistry.cpp */,
-				B7C7E08925B55E54003461D1 /* ObjCObjectRegistry.hpp */,
-				B7C7E09225B55E55003461D1 /* RemovedComponentRegistry.cpp */,
-				B7C7E07525B55E54003461D1 /* RemovedComponentRegistry.hpp */,
-				B7C7E07E25B55E54003461D1 /* ComponentRegistry.hpp */,
-				B7C7E08325B55E54003461D1 /* ComponentTypeInfo.cpp */,
-				B7C7E08025B55E54003461D1 /* ComponentTypeInfo.hpp */,
-				B7C7E08A25B55E54003461D1 /* RenderingContext.h */,
-				B7C7E07025B55E54003461D1 /* RenderingContext.m */,
-				B7C7E09325B55E55003461D1 /* Renderer.hpp */,
-				B7C7E07425B55E54003461D1 /* Renderer.h */,
-				B7C7E07725B55E54003461D1 /* Renderer.mm */,
-				B7C7E07A25B55E54003461D1 /* RendererFlag.h */,
-				B718AD2825BAAD9F00C05912 /* GraphicsCoreUtils.hpp */,
+				B7791D932726768B00E0C934 /* CoreGraphics */,
+				B7791D952726768B00E0C934 /* UIKit */,
+				B7791D9E2726768B00E0C934 /* simd */,
+				B7791DA12726768B00E0C934 /* Foundation */,
+				B7791DA32726768B00E0C934 /* Swift */,
+				B7791DA62726768B00E0C934 /* os */,
 			);
-			name = Core;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
-		B7C7E0C825B55ED0003461D1 /* Component */ = {
+		B7791D932726768B00E0C934 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E09925B55E55003461D1 /* Component.cpp */,
-				B7C7E07B25B55E54003461D1 /* Component.h */,
-				B7C7E09825B55E55003461D1 /* Component.hpp */,
-				B7C7E09725B55E55003461D1 /* Component.mm */,
+				B7791D942726768B00E0C934 /* CoreGraphics+Extensions.swift */,
 			);
-			name = Component;
+			path = CoreGraphics;
 			sourceTree = "<group>";
 		};
-		B7C7E0C925B55FE6003461D1 /* Components */ = {
+		B7791D952726768B00E0C934 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E0D125B560F6003461D1 /* Transform */,
-				B7C7E0CE25B5602D003461D1 /* LineRenderer */,
-				B7C7E0CB25B56003003461D1 /* TextureRenderer */,
-				B7C7E0CA25B55FF8003461D1 /* Camera */,
-				B7F80DC725CC70DF00957EE4 /* VideoRenderer */,
-				B7C7E08125B55E54003461D1 /* SelectedObjectMarker.cpp */,
-				B7C7E07925B55E54003461D1 /* SelectedObjectMarker.hpp */,
+				B7791D962726768B00E0C934 /* UIViewController+Extensions.swift */,
+				B7791D972726768B00E0C934 /* UIView+Extensions.swift */,
+				B7791D982726768B00E0C934 /* UIColor+Extensions.swift */,
+				B7791D992726768B00E0C934 /* UIImage+Extensions.swift */,
+				B7791D9A2726768B00E0C934 /* UIGestureRecognizer+Extensions.swift */,
+				B7791D9B2726768B00E0C934 /* UIApplication+Extensions.swift */,
+				B7791D9C2726768B00E0C934 /* UIProgressView+Extensions.swift */,
+				B7791D9D2726768B00E0C934 /* UITextField+Extensions.swift */,
 			);
-			name = Components;
+			path = UIKit;
 			sourceTree = "<group>";
 		};
-		B7C7E0CA25B55FF8003461D1 /* Camera */ = {
+		B7791D9E2726768B00E0C934 /* simd */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E09D25B55E55003461D1 /* Camera.cpp */,
-				B7C7E07825B55E54003461D1 /* Camera.h */,
-				B7C7E07D25B55E54003461D1 /* Camera.hpp */,
-				B7C7E09125B55E55003461D1 /* Camera.mm */,
+				B7791D9F2726768B00E0C934 /* SIMD3+Extensions.swift */,
+				B7791DA02726768B00E0C934 /* SIMD4+Extensions.swift */,
 			);
-			name = Camera;
+			path = simd;
 			sourceTree = "<group>";
 		};
-		B7C7E0CB25B56003003461D1 /* TextureRenderer */ = {
+		B7791DA12726768B00E0C934 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E06F25B55E54003461D1 /* TextureRenderer.h */,
-				B7C7E0A525B55E55003461D1 /* TextureRenderer.hpp */,
-				B7C7E08525B55E54003461D1 /* TextureRenderer.mm */,
+				B7791DA22726768B00E0C934 /* Notification+Extensions.swift */,
 			);
-			name = TextureRenderer;
+			path = Foundation;
 			sourceTree = "<group>";
 		};
-		B7C7E0CE25B5602D003461D1 /* LineRenderer */ = {
+		B7791DA32726768B00E0C934 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E09025B55E55003461D1 /* LineRenderer.h */,
-				B7C7E09F25B55E55003461D1 /* LineRenderer.hpp */,
-				B7C7E08E25B55E54003461D1 /* LineRenderer.mm */,
+				B7791DA42726768B00E0C934 /* FloatingPoint+Extensions.swift */,
+				B7791DA52726768B00E0C934 /* Comparable+Extensions.swift */,
 			);
-			name = LineRenderer;
+			path = Swift;
 			sourceTree = "<group>";
 		};
-		B7C7E0CF25B5605F003461D1 /* SceneObject */ = {
+		B7791DA62726768B00E0C934 /* os */ = {
 			isa = PBXGroup;
 			children = (
-				B7C7E08C25B55E54003461D1 /* SceneObject.cpp */,
-				B7C7E08625B55E54003461D1 /* SceneObject.h */,
-				B7C7E08225B55E54003461D1 /* SceneObject.hpp */,
-				B7C7E07625B55E54003461D1 /* SceneObject.mm */,
+				B7791DA72726768B00E0C934 /* Logger+Extensions.swift */,
 			);
-			name = SceneObject;
-			sourceTree = "<group>";
-		};
-		B7C7E0D025B5608A003461D1 /* UIRepresentable */ = {
-			isa = PBXGroup;
-			children = (
-				B7C7E07F25B55E54003461D1 /* UIRepresentable.h */,
-				B7C7E07C25B55E54003461D1 /* UIRepresentable.hpp */,
-				B7C7E08825B55E54003461D1 /* UIRepresentable.mm */,
-			);
-			name = UIRepresentable;
-			sourceTree = "<group>";
-		};
-		B7C7E0D125B560F6003461D1 /* Transform */ = {
-			isa = PBXGroup;
-			children = (
-				B7C7E07325B55E54003461D1 /* Transform.cpp */,
-				B7C7E08725B55E54003461D1 /* Transform.h */,
-				B7C7E0A025B55E55003461D1 /* Transform.hpp */,
-				B7C7E0A725B55E55003461D1 /* Transform.mm */,
-			);
-			name = Transform;
-			sourceTree = "<group>";
-		};
-		B7C7E0D225B5611A003461D1 /* SphericalCoord */ = {
-			isa = PBXGroup;
-			children = (
-				B7C7E0A325B55E55003461D1 /* SphericalCoord.cpp */,
-				B7C7E09625B55E55003461D1 /* SphericalCoord.h */,
-				B7C7E0A425B55E55003461D1 /* SphericalCoord.hpp */,
-				B7C7E08B25B55E54003461D1 /* SphericalCoord.mm */,
-			);
-			name = SphericalCoord;
-			sourceTree = "<group>";
-		};
-		B7C7E0D325B5615B003461D1 /* Scene */ = {
-			isa = PBXGroup;
-			children = (
-				B7C7E09C25B55E55003461D1 /* Scene.cpp */,
-				B7C7E09425B55E55003461D1 /* Scene.h */,
-				B7C7E07125B55E54003461D1 /* Scene.hpp */,
-				B7C7E09525B55E55003461D1 /* Scene.mm */,
-			);
-			name = Scene;
-			sourceTree = "<group>";
-		};
-		B7F80DC725CC70DF00957EE4 /* VideoRenderer */ = {
-			isa = PBXGroup;
-			children = (
-				B7F80DC325CC70CC00957EE4 /* VideoRenderer.mm */,
-				B7F80DC425CC70CC00957EE4 /* VideoRenderer.hpp */,
-				B7F80DDF25CD331C00957EE4 /* VideoRenderer.h */,
-			);
-			name = VideoRenderer;
+			path = os;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -678,23 +411,6 @@
 			productReference = B7791D1427258F7500E0C934 /* Hero.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B7C7E05325B55CDA003461D1 /* HeroX */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B7C7E06725B55CDB003461D1 /* Build configuration list for PBXNativeTarget "HeroX" */;
-			buildPhases = (
-				B7C7E05025B55CDA003461D1 /* Sources */,
-				B7C7E05125B55CDA003461D1 /* Frameworks */,
-				B7C7E05225B55CDA003461D1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = HeroX;
-			productName = HeroX;
-			productReference = B7C7E05425B55CDA003461D1 /* HeroX.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -706,10 +422,6 @@
 				TargetAttributes = {
 					B7791D1327258F7500E0C934 = {
 						CreatedOnToolsVersion = 13.0;
-					};
-					B7C7E05325B55CDA003461D1 = {
-						CreatedOnToolsVersion = 12.3;
-						LastSwiftMigration = 1230;
 					};
 				};
 			};
@@ -726,7 +438,6 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B7C7E05325B55CDA003461D1 /* HeroX */,
 				B7791D1327258F7500E0C934 /* Hero */,
 			);
 		};
@@ -742,19 +453,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B7C7E05225B55CDA003461D1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B709763225B7866400F5751B /* ObjectToolbar.xib in Resources */,
-				B7C7E06325B55CDB003461D1 /* LaunchScreen.storyboard in Resources */,
-				B7C7E06025B55CDB003461D1 /* Assets.xcassets in Resources */,
-				B7EA096C25E6C95F00BAF0C6 /* ProjectBar.xib in Resources */,
-				B7C7E05E25B55CDA003461D1 /* Main.storyboard in Resources */,
-				B733DE7F25BC7141000FE1EC /* NumberField.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -762,104 +460,60 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7791D772726762100E0C934 /* TextureRenderer.mm in Sources */,
+				B7791DAB2726768B00E0C934 /* UIColor+Extensions.swift in Sources */,
+				B7791D742726762100E0C934 /* Transform.mm in Sources */,
+				B7791D8C2726762100E0C934 /* Scene.mm in Sources */,
+				B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */,
+				B7791D892726762100E0C934 /* SceneObject.cpp in Sources */,
+				B7791DB42726768C00E0C934 /* FloatingPoint+Extensions.swift in Sources */,
+				B7791D7B2726762100E0C934 /* Component.cpp in Sources */,
+				B7791D8A2726762100E0C934 /* GeometryUtils.cpp in Sources */,
+				B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */,
+				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
+				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
+				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
+				B7791D282726705A00E0C934 /* SceneViewController.swift in Sources */,
+				B7791D802726762100E0C934 /* SphericalCoord.cpp in Sources */,
+				B7791DB52726768C00E0C934 /* Comparable+Extensions.swift in Sources */,
+				B7791D8E2726762100E0C934 /* Renderer.mm in Sources */,
+				B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */,
+				B7791D762726762100E0C934 /* Camera.mm in Sources */,
+				B7791DB32726768C00E0C934 /* Notification+Extensions.swift in Sources */,
+				B7791DAD2726768B00E0C934 /* UIGestureRecognizer+Extensions.swift in Sources */,
+				B7791D782726762100E0C934 /* Camera.cpp in Sources */,
+				B7791D852726762100E0C934 /* ComponentTypeInfo.cpp in Sources */,
+				B7791D7D2726762100E0C934 /* LineRenderer.mm in Sources */,
+				B7791DA92726768B00E0C934 /* UIViewController+Extensions.swift in Sources */,
+				B7791DB12726768B00E0C934 /* SIMD3+Extensions.swift in Sources */,
+				B7791D7C2726762100E0C934 /* NSPointerArray+Extensions.m in Sources */,
+				B7791DB02726768B00E0C934 /* UITextField+Extensions.swift in Sources */,
+				B7791D822726762100E0C934 /* Component.mm in Sources */,
+				B7791D862726762100E0C934 /* TextureUtils.mm in Sources */,
+				B7791D882726762100E0C934 /* ObjCProxy.cpp in Sources */,
+				B7791D792726762100E0C934 /* SceneObject.mm in Sources */,
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
+				B7791D8F2726762100E0C934 /* GeometryUtils_Common.c in Sources */,
+				B7791D752726762100E0C934 /* Scene.cpp in Sources */,
+				B7791DA82726768B00E0C934 /* CoreGraphics+Extensions.swift in Sources */,
+				B7791D872726762100E0C934 /* Transform.cpp in Sources */,
+				B7791DAE2726768B00E0C934 /* UIApplication+Extensions.swift in Sources */,
 				B7791D252725F45F00E0C934 /* TransformView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B7C7E05025B55CDA003461D1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B7C7E0B025B55E55003461D1 /* UIRepresentable.mm in Sources */,
-				B7C7E0BB25B55E55003461D1 /* Scene.cpp in Sources */,
-				B7F80DB725C9F7E400957EE4 /* GroupView.swift in Sources */,
-				B7C7E0BE25B55E55003461D1 /* Shaders.metal in Sources */,
-				B7C7E0AA25B55E55003461D1 /* Transform.cpp in Sources */,
-				B709762E25B7737A00F5751B /* UIViewController+Extensions.swift in Sources */,
-				B7C7E0A825B55E55003461D1 /* SIMD3+Extensions.swift in Sources */,
-				B7C7E0C125B55E55003461D1 /* Transform.mm in Sources */,
-				B7C7E0BC25B55E55003461D1 /* Camera.cpp in Sources */,
-				B7C7E0B125B55E55003461D1 /* SphericalCoord.mm in Sources */,
-				B718AD1125B94BEF00C05912 /* UITextField+Extensions.swift in Sources */,
-				B7C7E0AC25B55E55003461D1 /* Renderer.mm in Sources */,
-				B7C7E0E925B61EEF003461D1 /* UIGestureRecognizer+Extensions.swift in Sources */,
-				B7C7E0B925B55E55003461D1 /* CppWrapper.mm in Sources */,
-				B711BB6425C729EB00FC06C1 /* ObjCProxy.cpp in Sources */,
-				B7C7E0A925B55E55003461D1 /* RenderingContext.m in Sources */,
-				B7EA097825E7FB6600BAF0C6 /* Notification+Extensions.swift in Sources */,
-				B7C7E05B25B55CDA003461D1 /* SceneViewController.swift in Sources */,
-				B7EA096F25E6D09500BAF0C6 /* UIView+Extensions.swift in Sources */,
-				B718AD1B25BAA5C900C05912 /* GeometryUtils.cpp in Sources */,
-				B7EA097525E6DCF400BAF0C6 /* RootViewController.swift in Sources */,
-				B733DEA425BDFBF7000FE1EC /* Updater.swift in Sources */,
-				B7EA098625E82BCB00BAF0C6 /* Project.swift in Sources */,
-				B7F80DC525CC70CC00957EE4 /* VideoRenderer.mm in Sources */,
-				B7EA098D25E82C9600BAF0C6 /* Logger+Extensions.swift in Sources */,
-				B709765725B8BD1A00F5751B /* TransformViewController.swift in Sources */,
-				B7C7E0DB25B5660F003461D1 /* UIColor+Extensions.swift in Sources */,
-				B7F80DEB25D04E5C00957EE4 /* VideoPlayer.m in Sources */,
-				B7C7E0E125B56735003461D1 /* CoreGraphics+Extensions.swift in Sources */,
-				B7EA099825E82F4A00BAF0C6 /* UIApplication+Extensions.swift in Sources */,
-				B7C7E0C025B55E55003461D1 /* TextureUtils.mm in Sources */,
-				B7C7E0AD25B55E55003461D1 /* SelectedObjectMarker.cpp in Sources */,
-				B7C7E0BF25B55E55003461D1 /* SphericalCoord.cpp in Sources */,
-				B7C7E0AF25B55E55003461D1 /* TextureRenderer.mm in Sources */,
-				B7EA097225E6D12500BAF0C6 /* ProjectBar.swift in Sources */,
-				B7EA098225E82BCB00BAF0C6 /* ProjectItem.swift in Sources */,
-				B7C7E0F125B6AE67003461D1 /* SlidingViewController.swift in Sources */,
-				B7EA098425E82BCB00BAF0C6 /* ProjectItemModel.swift in Sources */,
-				B7C7E0B825B55E55003461D1 /* Component.cpp in Sources */,
-				B7490EED25F284860070856A /* Comparable+Extensions.swift in Sources */,
-				B7490EF025F28B770070856A /* FloatingPoint+Extensions.swift in Sources */,
-				B7C7E0AB25B55E55003461D1 /* SceneObject.mm in Sources */,
-				B7EA099B25E82F6B00BAF0C6 /* UITextFieldProxy.swift in Sources */,
-				B7490EF525F290FE0070856A /* SIMD4+Extensions.swift in Sources */,
-				B7C7E0B425B55E55003461D1 /* Camera.mm in Sources */,
-				B7C7E0BD25B55E55003461D1 /* ObjCObjectRegistry.cpp in Sources */,
-				B7EA099425E82D2D00BAF0C6 /* ViewModifiers.swift in Sources */,
-				B7C7E0B325B55E55003461D1 /* LineRenderer.mm in Sources */,
-				B7C7E0B625B55E55003461D1 /* Scene.mm in Sources */,
-				B7C7E0AE25B55E55003461D1 /* ComponentTypeInfo.cpp in Sources */,
-				B7C7E0B525B55E55003461D1 /* RemovedComponentRegistry.cpp in Sources */,
-				B7C7E05725B55CDA003461D1 /* AppDelegate.swift in Sources */,
-				B7C7E0B725B55E55003461D1 /* Component.mm in Sources */,
-				B711BB6825C7BC3300FC06C1 /* UIImage+Extensions.swift in Sources */,
-				B733DE8325BC772C000FE1EC /* NumberField.swift in Sources */,
-				B7EA098325E82BCB00BAF0C6 /* ProjectBrowser.swift in Sources */,
-				B7F80DBA25CA764100957EE4 /* UIProgressView+Extensions.swift in Sources */,
-				B718AD2C25BAADD600C05912 /* NSPointerArray+Extensions.m in Sources */,
-				B7EA098925E82C6900BAF0C6 /* Common.swift in Sources */,
-				B7EA098525E82BCB00BAF0C6 /* ProjectBrowserModel.swift in Sources */,
-				B7C7E0BA25B55E55003461D1 /* Math.cpp in Sources */,
-				B7C7E05925B55CDA003461D1 /* SceneDelegate.swift in Sources */,
-				B7C7E0B225B55E55003461D1 /* SceneObject.cpp in Sources */,
-				B7EA099025E82CF100BAF0C6 /* Settings.swift in Sources */,
-				B718AD1A25BAA5C900C05912 /* GeometryUtils_Common.c in Sources */,
-				B7C7E0D725B56500003461D1 /* GraphicsViewController.swift in Sources */,
+				B7791DB827267BB900E0C934 /* Updater.swift in Sources */,
+				B7791D8B2726762100E0C934 /* ObjCObjectRegistry.cpp in Sources */,
+				B7791DAA2726768B00E0C934 /* UIView+Extensions.swift in Sources */,
+				B7791D842726762100E0C934 /* RenderingContext.m in Sources */,
+				B7791D7E2726762100E0C934 /* UIRepresentable.mm in Sources */,
+				B7791D7A2726762100E0C934 /* Math.cpp in Sources */,
+				B7791DAC2726768B00E0C934 /* UIImage+Extensions.swift in Sources */,
+				B7791D832726762100E0C934 /* GraphicsViewController.swift in Sources */,
+				B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */,
+				B7791D8D2726762100E0C934 /* SphericalCoord.mm in Sources */,
+				B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		B7C7E05C25B55CDA003461D1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B7C7E05D25B55CDA003461D1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		B7C7E06125B55CDB003461D1 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B7C7E06225B55CDB003461D1 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B731700124CF376200157455 /* Debug */ = {
@@ -913,7 +567,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -968,7 +622,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1005,6 +659,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Temporary/Spirit/Spirit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1037,55 +692,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Temporary/Spirit/Spirit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Release;
-		};
-		B7C7E06525B55CDB003461D1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
-				INFOPLIST_FILE = HeroX/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.HeroOld;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "HeroX/Spirit-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		B7C7E06625B55CDB003461D1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q2Y9WYQGMZ;
-				INFOPLIST_FILE = HeroX/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.HeroOld;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "HeroX/Spirit-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1106,15 +715,6 @@
 			buildConfigurations = (
 				B7791D2027258F7700E0C934 /* Debug */,
 				B7791D2127258F7700E0C934 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B7C7E06725B55CDB003461D1 /* Build configuration list for PBXNativeTarget "HeroX" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B7C7E06525B55CDB003461D1 /* Debug */,
-				B7C7E06625B55CDB003461D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

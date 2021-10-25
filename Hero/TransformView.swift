@@ -14,7 +14,7 @@ struct TransformView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color.gray
+                SceneView()
                     .ignoresSafeArea()
                 VStack {
                     Spacer()
@@ -26,7 +26,6 @@ struct TransformView: View {
         }
         // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings)
         .navigationViewStyle(.stack)
-        .accentColor(.indigo)
     }
     
     enum Tool: CaseIterable, Identifiable {

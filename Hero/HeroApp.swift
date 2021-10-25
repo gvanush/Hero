@@ -9,7 +9,12 @@ import SwiftUI
 
 @main
 struct HeroApp: App {
-    var body: some Scene {
+    
+    init() {
+        RenderingContext.setup()
+    }
+    
+    var body: some SwiftUI.Scene {
         WindowGroup {
             TransformView()
         }
