@@ -54,7 +54,7 @@ class SceneViewController: GraphicsViewController, UIGestureRecognizerDelegate {
         
         pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(onPinch))
         pinchGestureRecognizer.delegate = self
-        graphicsView.addGestureRecognizer(pinchGestureRecognizer)
+//        graphicsView.addGestureRecognizer(pinchGestureRecognizer)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {

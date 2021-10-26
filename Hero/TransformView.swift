@@ -16,7 +16,6 @@ struct TransformView: View {
         NavigationView {
             ZStack {
                 SceneView(isNavigating: $isNavigating)
-                    .ignoresSafeArea()
                 VStack {
                     Spacer()
                     Toolbar(selection: $tool)

@@ -1,8 +1,8 @@
 //
-//  SceneView.swift
+//  SceneViewModel.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 25.10.21.
+//  Created by Vanush Grigoryan on 26.10.21.
 //
 
 import SwiftUI
@@ -11,6 +11,7 @@ class SceneViewModel: ObservableObject {
     
     let scene = Scene()
     var viewCameraSphericalCoord = SphericalCoord()
+    private var prevDragValue: DragGesture.Value?
     
     init() {
         setupCamera()
@@ -44,8 +45,41 @@ class SceneViewModel: ObservableObject {
         prevDragValue = nil
     }
     
-    private var prevDragValue: DragGesture.Value?
     static let orbitTranslationPerHalfRevolution: Float = 250.0
+    
+    // MARK: Zoom
+    func zoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
+        
+        guard let prevDragValue = self.prevDragValue else {
+            self.prevDragValue = dragValue
+            return
+        }
+        self.prevDragValue = dragValue
+        
+        let deltaYTranslation = Float(dragValue.translation.height - prevDragValue.translation.height)
+        
+        let centerViewportPos = scene.viewCamera.camera!.convertWorldToViewport(viewCameraSphericalCoord.center, viewportSize: viewportSize.float2)
+        var scenePos = scene.viewCamera.camera!.convertViewportToWorld(centerViewportPos + SIMD3<Float>.up * deltaYTranslation, viewportSize: viewportSize.float2)
+        
+        // NOTE: This is needed, because coverting from world to viewport and back gives low precision z value.
+        // It is becasue of uneven distribution of world z into ndc z, especially far objects.
+        // Alternative could be to make near plane larger but that limits zooming since object will be clipped
+        scenePos.z = viewCameraSphericalCoord.center.z
+        
+        let deltaRadius = length(scenePos - viewCameraSphericalCoord.center)
+        
+        viewCameraSphericalCoord.radius = max(viewCameraSphericalCoord.radius + sign(deltaYTranslation) * Self.zoomFactor * deltaRadius, 0.01)
+        
+        scene.viewCamera.transform!.position = viewCameraSphericalCoord.getPosition()
+        
+    }
+    
+    func finishZoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
+        zoom(dragValue: dragValue, viewportSize: viewportSize)
+        prevDragValue = nil
+    }
+    
+    static let zoomFactor: Float = 3.0
     
     // MARK: Scene setup
     private func setupCamera() {
@@ -100,127 +134,4 @@ class SceneViewModel: ObservableObject {
         }
     }
     
-}
-
-struct SceneView: View {
-    
-    @Binding var isNavigating: Bool
-    @StateObject var model = SceneViewModel()
-    
-    var body: some View {
-        print("SceneView body")
-        return ZStack {
-            SceneViewProxy(scene: model.scene)
-                .gesture(orbitDragGesture)
-            HStack {
-                Spacer()
-                ZoomView()
-                    .padding(.trailing, Self.margin)
-                    .contentShape(Rectangle())
-                    .gesture(zoomDragGesture)
-                    .opacity(isNavigating ? 0.0 : 1.0)
-            }
-        }
-    }
-    
-    var zoomDragGesture: some Gesture {
-        DragGesture(minimumDistance: 0.0)
-            .onChanged { value in
-                print("changed")
-            }
-            .onEnded { value in
-                print("ended")
-            }
-    }
-    
-    var orbitDragGesture: some Gesture {
-        DragGesture()
-            .onChanged { value in
-                withAnimation {
-                    isNavigating = true
-                }
-                model.orbit(dragValue: value)
-            }
-            .onEnded { value in
-                withAnimation {
-                    isNavigating = false
-                }
-                model.finishOrbit(dragValue: value)
-            }
-    }
-    
-    static let margin = 8.0
-    
-    struct UIElementShadow: ViewModifier {
-        func body(content: Content) -> some View {
-            content
-                .shadow(color: .black.opacity(0.3), radius: 0.5, x: 0, y: 0)
-        }
-    }
-    static let uiElementBackgroundMaterial = Material.thinMaterial
-}
-
-fileprivate struct ZoomView: View {
-    
-    var body: some View {
-        VStack(alignment: .center) {
-            Image(systemName: "plus.magnifyingglass")
-            GeometryReader { geometry in
-                Path { path in
-                    let x = 0.5 * (geometry.size.width - Self.dashWidth)
-                    var y = 0.0
-                    repeat {
-                        path.addRect(CGRect(x: x, y: y, width: Self.dashWidth, height: Self.dashHeight))
-                        y += (Self.dashSpacing + Self.dashHeight)
-                    } while y + Self.dashHeight < geometry.size.height
-                }
-                .fill(.black)
-            }
-            Image(systemName: "minus.magnifyingglass")
-        }
-        .padding(Self.padding)
-        .frame(width: Self.width, height: Self.height, alignment: .center)
-        .background(SceneView.uiElementBackgroundMaterial, in: RoundedRectangle(cornerRadius: Self.cornerRadius))
-        .sceneViewUIElementShadow()
-    }
-    
-    static let width = 28.0
-    static let height = 166.0
-    static let padding = 4.0
-    static let cornerRadius = 7.0
-    static let dashWidth = 4.0
-    static let dashHeight = 1.0
-    static let dashSpacing = 4.0
-    
-}
-
-extension View {
-    func sceneViewUIElementShadow() -> some View {
-        modifier(SceneView.UIElementShadow())
-    }
-}
-
-struct SceneViewProxy: UIViewControllerRepresentable {
-    
-    init(scene: Hero.Scene) {
-        self.scene = scene
-    }
-    
-    func makeUIViewController(context: Context) -> SceneViewController {
-        SceneViewController(scene: scene)
-    }
-    
-    func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {
-        
-    }
-    
-    typealias UIViewControllerType = SceneViewController
-    
-    let scene: Hero.Scene
-}
-
-struct SceneView_Previews: PreviewProvider {
-    static var previews: some View {
-        SceneView(isNavigating: .constant(false))
-    }
 }

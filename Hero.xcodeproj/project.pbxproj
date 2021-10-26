@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB727286B3700582DCA /* SceneViewModel.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -62,6 +63,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B7104BB727286B3700582DCA /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +210,8 @@
 				B7791D232725F27700E0C934 /* Extensions */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1627258F7500E0C934 /* HeroApp.swift */,
+				B7791DB92726821200E0C934 /* SceneView.swift */,
+				B7104BB727286B3700582DCA /* SceneViewModel.swift */,
 				B7791D242725F45F00E0C934 /* TransformView.swift */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
@@ -236,7 +240,6 @@
 				B7791D2B2726762000E0C934 /* Spirit */,
 				B7791DB727267BB900E0C934 /* Updater.swift */,
 				B7791D272726705A00E0C934 /* SceneViewController.swift */,
-				B7791DB92726821200E0C934 /* SceneView.swift */,
 			);
 			path = Temporary;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */,
 				B7791D772726762100E0C934 /* TextureRenderer.mm in Sources */,
 				B7791DAB2726768B00E0C934 /* UIColor+Extensions.swift in Sources */,
 				B7791D742726762100E0C934 /* Transform.mm in Sources */,
