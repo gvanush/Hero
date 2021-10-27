@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB727286B3700582DCA /* SceneViewModel.swift */; };
+		B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
 		B7791D252725F45F00E0C934 /* TransformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D242725F45F00E0C934 /* TransformView.swift */; };
-		B7791D282726705A00E0C934 /* SceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D272726705A00E0C934 /* SceneViewController.swift */; };
 		B7791D742726762100E0C934 /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D2C2726762000E0C934 /* Transform.mm */; };
 		B7791D752726762100E0C934 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D312726762000E0C934 /* Scene.cpp */; };
 		B7791D762726762100E0C934 /* Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D342726762000E0C934 /* Camera.mm */; };
@@ -28,7 +28,7 @@
 		B7791D802726762100E0C934 /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4B2726762100E0C934 /* SphericalCoord.cpp */; };
 		B7791D812726762100E0C934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4E2726762100E0C934 /* Shaders.metal */; };
 		B7791D822726762100E0C934 /* Component.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4F2726762100E0C934 /* Component.mm */; };
-		B7791D832726762100E0C934 /* GraphicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D522726762100E0C934 /* GraphicsViewController.swift */; };
+		B7791D832726762100E0C934 /* SpiritViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D522726762100E0C934 /* SpiritViewController.swift */; };
 		B7791D842726762100E0C934 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7791D542726762100E0C934 /* RenderingContext.m */; };
 		B7791D852726762100E0C934 /* ComponentTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D562726762100E0C934 /* ComponentTypeInfo.cpp */; };
 		B7791D862726762100E0C934 /* TextureUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D592726762100E0C934 /* TextureUtils.mm */; };
@@ -64,6 +64,7 @@
 
 /* Begin PBXFileReference section */
 		B7104BB727286B3700582DCA /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
+		B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatedTapGesture.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,7 +74,6 @@
 		B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B7791D222725D99900E0C934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7791D242725F45F00E0C934 /* TransformView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformView.swift; sourceTree = "<group>"; };
-		B7791D272726705A00E0C934 /* SceneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneViewController.swift; sourceTree = "<group>"; };
 		B7791D2C2726762000E0C934 /* Transform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
 		B7791D2D2726762000E0C934 /* ComponentRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ComponentRegistry.hpp; sourceTree = "<group>"; };
 		B7791D2E2726762000E0C934 /* TextureRenderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TextureRenderer.hpp; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 		B7791D4F2726762100E0C934 /* Component.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
 		B7791D502726762100E0C934 /* ObjCObjectRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjCObjectRegistry.hpp; sourceTree = "<group>"; };
 		B7791D512726762100E0C934 /* SceneObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
-		B7791D522726762100E0C934 /* GraphicsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
+		B7791D522726762100E0C934 /* SpiritViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpiritViewController.swift; sourceTree = "<group>"; };
 		B7791D532726762100E0C934 /* GraphicsCoreUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphicsCoreUtils.hpp; sourceTree = "<group>"; };
 		B7791D542726762100E0C934 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
 		B7791D552726762100E0C934 /* ShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
@@ -176,6 +176,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B7104BBB2729261300582DCA /* Spirit */ = {
+			isa = PBXGroup;
+			children = (
+				B7791D522726762100E0C934 /* SpiritViewController.swift */,
+			);
+			path = Spirit;
+			sourceTree = "<group>";
+		};
+		B7104BBC2729266D00582DCA /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		B715B23824D28B0F00B4C859 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,12 +223,14 @@
 			isa = PBXGroup;
 			children = (
 				B7791D2627266FD300E0C934 /* Temporary */,
+				B7104BBB2729261300582DCA /* Spirit */,
+				B7104BBC2729266D00582DCA /* Util */,
 				B7791D232725F27700E0C934 /* Extensions */,
-				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1627258F7500E0C934 /* HeroApp.swift */,
 				B7791DB92726821200E0C934 /* SceneView.swift */,
 				B7104BB727286B3700582DCA /* SceneViewModel.swift */,
 				B7791D242725F45F00E0C934 /* TransformView.swift */,
+				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
 			);
@@ -230,6 +248,7 @@
 		B7791D232725F27700E0C934 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B7791D982726768B00E0C934 /* UIColor+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -239,7 +258,6 @@
 			children = (
 				B7791D2B2726762000E0C934 /* Spirit */,
 				B7791DB727267BB900E0C934 /* Updater.swift */,
-				B7791D272726705A00E0C934 /* SceneViewController.swift */,
 			);
 			path = Temporary;
 			sourceTree = "<group>";
@@ -247,7 +265,6 @@
 		B7791D2B2726762000E0C934 /* Spirit */ = {
 			isa = PBXGroup;
 			children = (
-				B7791D922726768B00E0C934 /* Extensions */,
 				B7791D2C2726762000E0C934 /* Transform.mm */,
 				B7791D2D2726762000E0C934 /* ComponentRegistry.hpp */,
 				B7791D2E2726762000E0C934 /* TextureRenderer.hpp */,
@@ -286,7 +303,6 @@
 				B7791D4F2726762100E0C934 /* Component.mm */,
 				B7791D502726762100E0C934 /* ObjCObjectRegistry.hpp */,
 				B7791D512726762100E0C934 /* SceneObject.h */,
-				B7791D522726762100E0C934 /* GraphicsViewController.swift */,
 				B7791D532726762100E0C934 /* GraphicsCoreUtils.hpp */,
 				B7791D542726762100E0C934 /* RenderingContext.m */,
 				B7791D552726762100E0C934 /* ShaderTypes.h */,
@@ -320,6 +336,7 @@
 				B7791D712726762100E0C934 /* RemovedComponentRegistry.cpp */,
 				B7791D722726762100E0C934 /* Scene.h */,
 				B7791D732726762100E0C934 /* Camera.hpp */,
+				B7791D922726768B00E0C934 /* Extensions */,
 			);
 			path = Spirit;
 			sourceTree = "<group>";
@@ -350,7 +367,6 @@
 			children = (
 				B7791D962726768B00E0C934 /* UIViewController+Extensions.swift */,
 				B7791D972726768B00E0C934 /* UIView+Extensions.swift */,
-				B7791D982726768B00E0C934 /* UIColor+Extensions.swift */,
 				B7791D992726768B00E0C934 /* UIImage+Extensions.swift */,
 				B7791D9A2726768B00E0C934 /* UIGestureRecognizer+Extensions.swift */,
 				B7791D9B2726768B00E0C934 /* UIApplication+Extensions.swift */,
@@ -477,7 +493,6 @@
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
-				B7791D282726705A00E0C934 /* SceneViewController.swift in Sources */,
 				B7791D802726762100E0C934 /* SphericalCoord.cpp in Sources */,
 				B7791DB52726768C00E0C934 /* Comparable+Extensions.swift in Sources */,
 				B7791D8E2726762100E0C934 /* Renderer.mm in Sources */,
@@ -509,8 +524,9 @@
 				B7791D842726762100E0C934 /* RenderingContext.m in Sources */,
 				B7791D7E2726762100E0C934 /* UIRepresentable.mm in Sources */,
 				B7791D7A2726762100E0C934 /* Math.cpp in Sources */,
+				B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */,
 				B7791DAC2726768B00E0C934 /* UIImage+Extensions.swift in Sources */,
-				B7791D832726762100E0C934 /* GraphicsViewController.swift in Sources */,
+				B7791D832726762100E0C934 /* SpiritViewController.swift in Sources */,
 				B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */,
 				B7791D8D2726762100E0C934 /* SphericalCoord.mm in Sources */,
 				B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */,

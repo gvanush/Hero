@@ -1,5 +1,5 @@
 //
-//  GraphicsViewController.swift
+//  SpiritViewController.swift
 //  HeroX
 //
 //  Created by Vanush Grigoryan on 1/18/21.
@@ -7,45 +7,11 @@
 
 import UIKit
 import MetalKit
+import SwiftUI
 
-protocol GraphicsViewFrameListener: AnyObject {
-    func onFrameUpdate(deltaTime: Float)
-}
-
-class GraphicsViewFrameUpdater: Updater, GraphicsViewFrameListener, NSCopying {
+class SpiritViewController: UIViewController, MTKViewDelegate {
     
-    fileprivate init(graphicsViewController: GraphicsViewController?) {
-        self.graphicsViewController = graphicsViewController
-    }
-    
-    // MARK: Updater
-    func start() {
-        graphicsViewController?.addFrameListener(self)
-    }
-    
-    func stop() {
-        graphicsViewController?.removeFrameListener(self)
-    }
-    
-    var callback: ((Float) -> Void)?
-    
-    // MARK: GraphicsViewFrameListener
-    func onFrameUpdate(deltaTime: Float) {
-        callback?(deltaTime)
-    }
-    
-    // MARK: NSCopying
-    func copy(with zone: NSZone? = nil) -> Any {
-        GraphicsViewFrameUpdater(graphicsViewController: graphicsViewController)
-    }
-    
-    private weak var graphicsViewController: GraphicsViewController?
-    
-}
-
-class GraphicsViewController: UIViewController, MTKViewDelegate {
-    
-    init(scene: Scene) {
+    init(scene: Hero.Scene) {
         self.scene = scene
         super.init(nibName: nil, bundle: nil)
     }
@@ -118,7 +84,7 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
         lastFrameTimestamp = frameTimestamp
     }
     
-    let scene: Scene
+    let scene: Hero.Scene
     
     func createFrameUpdater() -> GraphicsViewFrameUpdater {
         GraphicsViewFrameUpdater(graphicsViewController: self)
@@ -140,4 +106,56 @@ class GraphicsViewController: UIViewController, MTKViewDelegate {
     private(set) var graphicsView: MTKView! = nil
     private let renderingContext = RenderingContext()
     private var lastFrameTimestamp: TimeInterval = 0.0
+}
+
+struct SpiritView: UIViewControllerRepresentable {
+
+    let scene: Hero.Scene
+    @Binding var clearColor: MTLClearColor
+    
+    func makeUIViewController(context: Context) -> SpiritViewController {
+        SpiritViewController(scene: scene)
+    }
+    
+    func updateUIViewController(_ uiViewController: SpiritViewController, context: Context) {
+        uiViewController.graphicsView.clearColor = clearColor
+    }
+    
+    typealias UIViewControllerType = SpiritViewController
+    
+}
+
+protocol GraphicsViewFrameListener: AnyObject {
+    func onFrameUpdate(deltaTime: Float)
+}
+
+class GraphicsViewFrameUpdater: Updater, GraphicsViewFrameListener, NSCopying {
+    
+    fileprivate init(graphicsViewController: SpiritViewController?) {
+        self.graphicsViewController = graphicsViewController
+    }
+    
+    // MARK: Updater
+    func start() {
+        graphicsViewController?.addFrameListener(self)
+    }
+    
+    func stop() {
+        graphicsViewController?.removeFrameListener(self)
+    }
+    
+    var callback: ((Float) -> Void)?
+    
+    // MARK: GraphicsViewFrameListener
+    func onFrameUpdate(deltaTime: Float) {
+        callback?(deltaTime)
+    }
+    
+    // MARK: NSCopying
+    func copy(with zone: NSZone? = nil) -> Any {
+        GraphicsViewFrameUpdater(graphicsViewController: graphicsViewController)
+    }
+    
+    private weak var graphicsViewController: SpiritViewController?
+    
 }

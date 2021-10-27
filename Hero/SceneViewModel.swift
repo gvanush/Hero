@@ -19,6 +19,29 @@ class SceneViewModel: ObservableObject {
         addImages()
     }
     
+    // MARK: Object Selection
+    func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SceneObject? {
+        let scenePos = scene.viewCamera.camera!.convertViewportToWorld(SIMD3<Float>(location.float2, 1.0), viewportSize: viewportSize.float2)
+        
+        if let object = scene.rayCast(makeRay(scene.viewCamera.transform!.position, scenePos - scene.viewCamera.transform!.position)) {
+            return object
+        }
+        
+        return nil
+    }
+    
+    func discardSelection() {
+        scene.selectedObject = nil
+    }
+    
+    func select(_ object: SceneObject) {
+        scene.selectedObject = object
+    }
+    
+    var selectedObject: SceneObject? {
+        scene.selectedObject
+    }
+    
     // MARK: Orbit
     func orbit(dragValue: DragGesture.Value) {
         

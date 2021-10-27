@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SceneView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     @Binding var isNavigating: Bool
     @StateObject var model = SceneViewModel()
     
@@ -17,9 +19,19 @@ struct SceneView: View {
         ZStack {
             GeometryReader { geometry in
                  
-                SceneViewProxy(scene: model.scene)
+                SpiritView(scene: model.scene, clearColor: $clearColor)
                     .gesture(orbitDragGesture)
+                    .onLocatedTapGesture { location in
+                        if let object = model.pickObjectAt(location, viewportSize: geometry.size) {
+                            model.select(object)
+                        } else {
+                            model.discardSelection()
+                        }
+                    }
                     .allowsHitTesting(!isNavigating)
+                    .onChange(of: colorScheme) { _ in
+                        clearColor = UIColor.sceneBgrColor.mtlClearColor
+                    }
                 
                 ui(viewportSize: geometry.size)
             }
@@ -91,6 +103,8 @@ fileprivate struct ZoomView: View {
     var body: some View {
         VStack(alignment: .center) {
             Image(systemName: "plus.magnifyingglass")
+                .foregroundColor(.primary)
+            
             GeometryReader { geometry in
                 Path { path in
                     let x = 0.5 * (geometry.size.width - Self.dashWidth)
@@ -100,9 +114,10 @@ fileprivate struct ZoomView: View {
                         y += (Self.dashSpacing + Self.dashHeight)
                     } while y + Self.dashHeight < geometry.size.height
                 }
-                .fill(.black)
+                .fill(.primary)
             }
             Image(systemName: "minus.magnifyingglass")
+                .foregroundColor(.primary)
         }
         .padding(Self.padding)
         .frame(width: Self.width, height: Self.height, alignment: .center)
@@ -124,25 +139,6 @@ extension View {
     func sceneViewUIElementShadow() -> some View {
         modifier(SceneView.UIElementShadow())
     }
-}
-
-struct SceneViewProxy: UIViewControllerRepresentable {
-    
-    init(scene: Hero.Scene) {
-        self.scene = scene
-    }
-    
-    func makeUIViewController(context: Context) -> SceneViewController {
-        SceneViewController(scene: scene)
-    }
-    
-    func updateUIViewController(_ uiViewController: SceneViewController, context: Context) {
-        
-    }
-    
-    typealias UIViewControllerType = SceneViewController
-    
-    let scene: Hero.Scene
 }
 
 struct SceneView_Previews: PreviewProvider {
