@@ -25,10 +25,10 @@
 		B7791D7D2726762100E0C934 /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D402726762100E0C934 /* LineRenderer.mm */; };
 		B7791D7E2726762100E0C934 /* UIRepresentable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D432726762100E0C934 /* UIRepresentable.mm */; };
 		B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D442726762100E0C934 /* CppWrapper.mm */; };
-		B7791D802726762100E0C934 /* SphericalCoord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4B2726762100E0C934 /* SphericalCoord.cpp */; };
+		B7791D802726762100E0C934 /* SphericalCoord.c in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4B2726762100E0C934 /* SphericalCoord.c */; };
 		B7791D812726762100E0C934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4E2726762100E0C934 /* Shaders.metal */; };
 		B7791D822726762100E0C934 /* Component.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4F2726762100E0C934 /* Component.mm */; };
-		B7791D832726762100E0C934 /* SpiritViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D522726762100E0C934 /* SpiritViewController.swift */; };
+		B7791D832726762100E0C934 /* SptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D522726762100E0C934 /* SptViewController.swift */; };
 		B7791D842726762100E0C934 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7791D542726762100E0C934 /* RenderingContext.m */; };
 		B7791D852726762100E0C934 /* ComponentTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D562726762100E0C934 /* ComponentTypeInfo.cpp */; };
 		B7791D862726762100E0C934 /* TextureUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D592726762100E0C934 /* TextureUtils.mm */; };
@@ -38,7 +38,6 @@
 		B7791D8A2726762100E0C934 /* GeometryUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D602726762100E0C934 /* GeometryUtils.cpp */; };
 		B7791D8B2726762100E0C934 /* ObjCObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D612726762100E0C934 /* ObjCObjectRegistry.cpp */; };
 		B7791D8C2726762100E0C934 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D642726762100E0C934 /* Scene.mm */; };
-		B7791D8D2726762100E0C934 /* SphericalCoord.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D662726762100E0C934 /* SphericalCoord.mm */; };
 		B7791D8E2726762100E0C934 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D6C2726762100E0C934 /* Renderer.mm */; };
 		B7791D8F2726762100E0C934 /* GeometryUtils_Common.c in Sources */ = {isa = PBXBuildFile; fileRef = B7791D6E2726762100E0C934 /* GeometryUtils_Common.c */; };
 		B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7791D702726762100E0C934 /* SelectedObjectMarker.cpp */; };
@@ -65,6 +64,7 @@
 /* Begin PBXFileReference section */
 		B7104BB727286B3700582DCA /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatedTapGesture.swift; sourceTree = "<group>"; };
+		B7104BC0272931AB00582DCA /* Vec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,14 +105,14 @@
 		B7791D482726762100E0C934 /* ObjCProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjCProxy.hpp; sourceTree = "<group>"; };
 		B7791D492726762100E0C934 /* TextureProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureProxy.h; sourceTree = "<group>"; };
 		B7791D4A2726762100E0C934 /* SceneObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
-		B7791D4B2726762100E0C934 /* SphericalCoord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SphericalCoord.cpp; sourceTree = "<group>"; };
+		B7791D4B2726762100E0C934 /* SphericalCoord.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SphericalCoord.c; sourceTree = "<group>"; };
 		B7791D4C2726762100E0C934 /* GeometryUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeometryUtils.hpp; sourceTree = "<group>"; };
 		B7791D4D2726762100E0C934 /* GeometryUtils_Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeometryUtils_Common.h; sourceTree = "<group>"; };
 		B7791D4E2726762100E0C934 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		B7791D4F2726762100E0C934 /* Component.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Component.mm; sourceTree = "<group>"; };
 		B7791D502726762100E0C934 /* ObjCObjectRegistry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjCObjectRegistry.hpp; sourceTree = "<group>"; };
 		B7791D512726762100E0C934 /* SceneObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneObject.h; sourceTree = "<group>"; };
-		B7791D522726762100E0C934 /* SpiritViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpiritViewController.swift; sourceTree = "<group>"; };
+		B7791D522726762100E0C934 /* SptViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SptViewController.swift; sourceTree = "<group>"; };
 		B7791D532726762100E0C934 /* GraphicsCoreUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphicsCoreUtils.hpp; sourceTree = "<group>"; };
 		B7791D542726762100E0C934 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
 		B7791D552726762100E0C934 /* ShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
@@ -125,17 +125,15 @@
 		B7791D5C2726762100E0C934 /* ObjCProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCProxy.cpp; sourceTree = "<group>"; };
 		B7791D5D2726762100E0C934 /* SceneObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneObject.cpp; sourceTree = "<group>"; };
 		B7791D5E2726762100E0C934 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
-		B7791D5F2726762100E0C934 /* SphericalCoord.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SphericalCoord.hpp; sourceTree = "<group>"; };
+		B7791D5F2726762100E0C934 /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B7791D602726762100E0C934 /* GeometryUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryUtils.cpp; sourceTree = "<group>"; };
 		B7791D612726762100E0C934 /* ObjCObjectRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCObjectRegistry.cpp; sourceTree = "<group>"; };
 		B7791D622726762100E0C934 /* Numeric.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Numeric.hpp; sourceTree = "<group>"; };
 		B7791D632726762100E0C934 /* Component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Component.h; sourceTree = "<group>"; };
 		B7791D642726762100E0C934 /* Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Scene.mm; sourceTree = "<group>"; };
 		B7791D652726762100E0C934 /* Spirit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Spirit-Bridging-Header.h"; sourceTree = "<group>"; };
-		B7791D662726762100E0C934 /* SphericalCoord.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphericalCoord.mm; sourceTree = "<group>"; };
 		B7791D672726762100E0C934 /* RendererFlag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererFlag.h; sourceTree = "<group>"; };
 		B7791D682726762100E0C934 /* NSPointerArray+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPointerArray+Extensions.h"; sourceTree = "<group>"; };
-		B7791D692726762100E0C934 /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B7791D6A2726762100E0C934 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
 		B7791D6B2726762100E0C934 /* CoreGraphics+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreGraphics+Extensions.h"; sourceTree = "<group>"; };
 		B7791D6C2726762100E0C934 /* Renderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
@@ -179,7 +177,10 @@
 		B7104BBB2729261300582DCA /* Spirit */ = {
 			isa = PBXGroup;
 			children = (
-				B7791D522726762100E0C934 /* SpiritViewController.swift */,
+				B7791D4B2726762100E0C934 /* SphericalCoord.c */,
+				B7791D5F2726762100E0C934 /* SphericalCoord.h */,
+				B7104BC0272931AB00582DCA /* Vec.h */,
+				B7791D522726762100E0C934 /* SptViewController.swift */,
 			);
 			path = Spirit;
 			sourceTree = "<group>";
@@ -296,7 +297,6 @@
 				B7791D482726762100E0C934 /* ObjCProxy.hpp */,
 				B7791D492726762100E0C934 /* TextureProxy.h */,
 				B7791D4A2726762100E0C934 /* SceneObject.hpp */,
-				B7791D4B2726762100E0C934 /* SphericalCoord.cpp */,
 				B7791D4C2726762100E0C934 /* GeometryUtils.hpp */,
 				B7791D4D2726762100E0C934 /* GeometryUtils_Common.h */,
 				B7791D4E2726762100E0C934 /* Shaders.metal */,
@@ -315,17 +315,14 @@
 				B7791D5C2726762100E0C934 /* ObjCProxy.cpp */,
 				B7791D5D2726762100E0C934 /* SceneObject.cpp */,
 				B7791D5E2726762100E0C934 /* Transform.h */,
-				B7791D5F2726762100E0C934 /* SphericalCoord.hpp */,
 				B7791D602726762100E0C934 /* GeometryUtils.cpp */,
 				B7791D612726762100E0C934 /* ObjCObjectRegistry.cpp */,
 				B7791D622726762100E0C934 /* Numeric.hpp */,
 				B7791D632726762100E0C934 /* Component.h */,
 				B7791D642726762100E0C934 /* Scene.mm */,
 				B7791D652726762100E0C934 /* Spirit-Bridging-Header.h */,
-				B7791D662726762100E0C934 /* SphericalCoord.mm */,
 				B7791D672726762100E0C934 /* RendererFlag.h */,
 				B7791D682726762100E0C934 /* NSPointerArray+Extensions.h */,
-				B7791D692726762100E0C934 /* SphericalCoord.h */,
 				B7791D6A2726762100E0C934 /* RenderingContext.h */,
 				B7791D6B2726762100E0C934 /* CoreGraphics+Extensions.h */,
 				B7791D6C2726762100E0C934 /* Renderer.mm */,
@@ -493,7 +490,7 @@
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
-				B7791D802726762100E0C934 /* SphericalCoord.cpp in Sources */,
+				B7791D802726762100E0C934 /* SphericalCoord.c in Sources */,
 				B7791DB52726768C00E0C934 /* Comparable+Extensions.swift in Sources */,
 				B7791D8E2726762100E0C934 /* Renderer.mm in Sources */,
 				B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */,
@@ -526,9 +523,8 @@
 				B7791D7A2726762100E0C934 /* Math.cpp in Sources */,
 				B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */,
 				B7791DAC2726768B00E0C934 /* UIImage+Extensions.swift in Sources */,
-				B7791D832726762100E0C934 /* SpiritViewController.swift in Sources */,
+				B7791D832726762100E0C934 /* SptViewController.swift in Sources */,
 				B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */,
-				B7791D8D2726762100E0C934 /* SphericalCoord.mm in Sources */,
 				B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

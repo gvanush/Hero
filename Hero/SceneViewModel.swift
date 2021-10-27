@@ -10,7 +10,7 @@ import SwiftUI
 class SceneViewModel: ObservableObject {
     
     let scene = Scene()
-    var viewCameraSphericalCoord = SphericalCoord()
+    var viewCameraSphericalCoord = spt_make_spherical_coord()
     private var prevDragValue: DragGesture.Value?
     
     init() {
@@ -59,7 +59,7 @@ class SceneViewModel: ObservableObject {
         let isInFrontOfSphere = sinf(viewCameraSphericalCoord.latitude) >= 0.0
         viewCameraSphericalCoord.longitude += (isInFrontOfSphere ? deltaAngle.x : -deltaAngle.x)
         
-        scene.viewCamera.transform!.position = viewCameraSphericalCoord.getPosition()
+        scene.viewCamera.transform!.position = spt_position(viewCameraSphericalCoord)
         scene.viewCamera.camera!.look(at: viewCameraSphericalCoord.center, up: (isInFrontOfSphere ? SIMD3<Float>.up : SIMD3<Float>.down))
     }
     
@@ -93,7 +93,7 @@ class SceneViewModel: ObservableObject {
         
         viewCameraSphericalCoord.radius = max(viewCameraSphericalCoord.radius + sign(deltaYTranslation) * Self.zoomFactor * deltaRadius, 0.01)
         
-        scene.viewCamera.transform!.position = viewCameraSphericalCoord.getPosition()
+        scene.viewCamera.transform!.position = spt_position(viewCameraSphericalCoord)
         
     }
     
@@ -114,7 +114,7 @@ class SceneViewModel: ObservableObject {
         viewCameraSphericalCoord.radius = 100.0
         viewCameraSphericalCoord.longitude = Float.pi
         viewCameraSphericalCoord.latitude = 0.5 * Float.pi
-        scene.viewCamera.transform!.position = viewCameraSphericalCoord.getPosition()
+        scene.viewCamera.transform!.position = spt_position(viewCameraSphericalCoord)
     }
     
     private func setupAxis() {

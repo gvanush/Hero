@@ -1,5 +1,5 @@
 //
-//  SpiritViewController.swift
+//  SptViewController.swift
 //  HeroX
 //
 //  Created by Vanush Grigoryan on 1/18/21.
@@ -9,7 +9,7 @@ import UIKit
 import MetalKit
 import SwiftUI
 
-class SpiritViewController: UIViewController, MTKViewDelegate {
+class SptViewController: UIViewController, MTKViewDelegate {
     
     init(scene: Hero.Scene) {
         self.scene = scene
@@ -108,20 +108,20 @@ class SpiritViewController: UIViewController, MTKViewDelegate {
     private var lastFrameTimestamp: TimeInterval = 0.0
 }
 
-struct SpiritView: UIViewControllerRepresentable {
+struct SptView: UIViewControllerRepresentable {
 
     let scene: Hero.Scene
     @Binding var clearColor: MTLClearColor
     
-    func makeUIViewController(context: Context) -> SpiritViewController {
-        SpiritViewController(scene: scene)
+    func makeUIViewController(context: Context) -> SptViewController {
+        SptViewController(scene: scene)
     }
     
-    func updateUIViewController(_ uiViewController: SpiritViewController, context: Context) {
+    func updateUIViewController(_ uiViewController: SptViewController, context: Context) {
         uiViewController.graphicsView.clearColor = clearColor
     }
     
-    typealias UIViewControllerType = SpiritViewController
+    typealias UIViewControllerType = SptViewController
     
 }
 
@@ -131,7 +131,7 @@ protocol GraphicsViewFrameListener: AnyObject {
 
 class GraphicsViewFrameUpdater: Updater, GraphicsViewFrameListener, NSCopying {
     
-    fileprivate init(graphicsViewController: SpiritViewController?) {
+    fileprivate init(graphicsViewController: SptViewController?) {
         self.graphicsViewController = graphicsViewController
     }
     
@@ -156,6 +156,6 @@ class GraphicsViewFrameUpdater: Updater, GraphicsViewFrameListener, NSCopying {
         GraphicsViewFrameUpdater(graphicsViewController: graphicsViewController)
     }
     
-    private weak var graphicsViewController: SpiritViewController?
+    private weak var graphicsViewController: SptViewController?
     
 }
