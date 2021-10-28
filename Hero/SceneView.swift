@@ -88,13 +88,7 @@ struct SceneView: View {
     
     static let margin = 8.0
     static let uiBottomPadding = 260.0
-    
-    struct UIElementShadow: ViewModifier {
-        func body(content: Content) -> some View {
-            content
-                .shadow(color: .black.opacity(0.3), radius: 0.5, x: 0, y: 0)
-        }
-    }
+    static let uiElementBorderLineWidth = 0.5
     static let uiElementBackgroundMaterial = Material.thinMaterial
 }
 
@@ -114,7 +108,7 @@ fileprivate struct ZoomView: View {
                         y += (Self.dashSpacing + Self.dashHeight)
                     } while y + Self.dashHeight < geometry.size.height
                 }
-                .fill(.primary)
+                .foregroundColor(.primary)
             }
             Image(systemName: "minus.magnifyingglass")
                 .foregroundColor(.primary)
@@ -122,7 +116,8 @@ fileprivate struct ZoomView: View {
         .padding(Self.padding)
         .frame(width: Self.width, height: Self.height, alignment: .center)
         .background(SceneView.uiElementBackgroundMaterial, in: RoundedRectangle(cornerRadius: Self.cornerRadius))
-        .sceneViewUIElementShadow()
+        .overlay(RoundedRectangle(cornerRadius: Self.cornerRadius).stroke(Color.defaultShadowColor, lineWidth: SceneView.uiElementBorderLineWidth))
+        
     }
     
     static let width = 28.0
@@ -133,12 +128,6 @@ fileprivate struct ZoomView: View {
     static let dashHeight = 1.0
     static let dashSpacing = 4.0
     
-}
-
-extension View {
-    func sceneViewUIElementShadow() -> some View {
-        modifier(SceneView.UIElementShadow())
-    }
 }
 
 struct SceneView_Previews: PreviewProvider {

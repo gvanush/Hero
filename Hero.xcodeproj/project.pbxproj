@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB727286B3700582DCA /* SceneViewModel.swift */; };
 		B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */; };
+		B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC1272B00B700582DCA /* PropertySelector.swift */; };
+		B7104BC4272B069F00582DCA /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC3272B069F00582DCA /* Color+Extensions.swift */; };
+		B7104BC6272B1D3300582DCA /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC5272B1D3300582DCA /* TestView.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -65,6 +68,9 @@
 		B7104BB727286B3700582DCA /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatedTapGesture.swift; sourceTree = "<group>"; };
 		B7104BC0272931AB00582DCA /* Vec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
+		B7104BC1272B00B700582DCA /* PropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySelector.swift; sourceTree = "<group>"; };
+		B7104BC3272B069F00582DCA /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		B7104BC5272B1D3300582DCA /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,9 +237,11 @@
 				B7791DB92726821200E0C934 /* SceneView.swift */,
 				B7104BB727286B3700582DCA /* SceneViewModel.swift */,
 				B7791D242725F45F00E0C934 /* TransformView.swift */,
+				B7104BC1272B00B700582DCA /* PropertySelector.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
+				B7104BC5272B1D3300582DCA /* TestView.swift */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -250,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				B7791D982726768B00E0C934 /* UIColor+Extensions.swift */,
+				B7104BC3272B069F00582DCA /* Color+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -483,6 +492,7 @@
 				B7791D8C2726762100E0C934 /* Scene.mm in Sources */,
 				B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */,
 				B7791D892726762100E0C934 /* SceneObject.cpp in Sources */,
+				B7104BC4272B069F00582DCA /* Color+Extensions.swift in Sources */,
 				B7791DB42726768C00E0C934 /* FloatingPoint+Extensions.swift in Sources */,
 				B7791D7B2726762100E0C934 /* Component.cpp in Sources */,
 				B7791D8A2726762100E0C934 /* GeometryUtils.cpp in Sources */,
@@ -504,6 +514,7 @@
 				B7791DB12726768B00E0C934 /* SIMD3+Extensions.swift in Sources */,
 				B7791D7C2726762100E0C934 /* NSPointerArray+Extensions.m in Sources */,
 				B7791DB02726768B00E0C934 /* UITextField+Extensions.swift in Sources */,
+				B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */,
 				B7791D822726762100E0C934 /* Component.mm in Sources */,
 				B7791D862726762100E0C934 /* TextureUtils.mm in Sources */,
 				B7791D882726762100E0C934 /* ObjCProxy.cpp in Sources */,
@@ -511,6 +522,7 @@
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
 				B7791D8F2726762100E0C934 /* GeometryUtils_Common.c in Sources */,
 				B7791D752726762100E0C934 /* Scene.cpp in Sources */,
+				B7104BC6272B1D3300582DCA /* TestView.swift in Sources */,
 				B7791DA82726768B00E0C934 /* CoreGraphics+Extensions.swift in Sources */,
 				B7791D872726762100E0C934 /* Transform.cpp in Sources */,
 				B7791DAE2726768B00E0C934 /* UIApplication+Extensions.swift in Sources */,

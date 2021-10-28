@@ -7,17 +7,40 @@
 
 import SwiftUI
 
+enum Axis: PropertySelectorItem {
+    
+    case x
+    case y
+    case z
+    
+    var id: Self { self }
+    
+    var displayText: String {
+        switch self {
+        case .x:
+            return "X"
+        case .y:
+            return "Y"
+        case .z:
+            return "Z"
+        }
+    }
+}
+
 struct TransformView: View {
     
     @State var tool = Tool.move
+    @State var axis = Axis.x
     @State var isNavigating = false
     
     var body: some View {
         NavigationView {
             ZStack {
                 SceneView(isNavigating: $isNavigating)
-                VStack {
+                VStack(spacing: Self.controlsMargin) {
                     Spacer()
+                    controls
+                        .padding(.horizontal, Self.controlsMargin)
                     Toolbar(selection: $tool)
                 }
                 .opacity(isNavigating ? 0.0 : 1.0)
@@ -26,9 +49,18 @@ struct TransformView: View {
             .navigationTitle(tool.title)
             .navigationBarHidden(isNavigating)
         }
-        // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings)
+        // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings on startup)
         .navigationViewStyle(.stack)
     }
+    
+    var controls: some View {
+        VStack(spacing: Self.controlsSpacing) {
+            PropertySelector(selected: $axis)
+        }
+    }
+    
+    static let controlsMargin = 8.0
+    static let controlsSpacing = 8.0
     
     enum Tool: CaseIterable, Identifiable {
         
@@ -68,7 +100,7 @@ struct TransformView: View {
         var body: some View {
             HStack(spacing: 0.0) {
                 ForEach(Tool.allCases) { tool in
-                    item(title: tool.title, image: tool.image)
+                    itemFor(tool)
                         .foregroundColor(selection == tool ? .accentColor : .gray)
                         .onTapGesture {
                             selection = tool
@@ -76,13 +108,15 @@ struct TransformView: View {
                 }
             }
             .padding(.top, Self.topPadding)
-            .background(.bar)
+            .background(Material.bar)
+            .compositingGroup()
+            .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: -0.5)
         }
         
         static let topPadding = 4.0
         
-        func item(title: String, image: String) -> some View {
-            Label(title, systemImage: image)
+        func itemFor(_ tool: Tool) -> some View {
+            Label(tool.title, systemImage: tool.image)
                 .labelStyle(ItemLabelStyle())
                 .frame(maxWidth: .infinity, minHeight: Self.itemHeight)
         }
