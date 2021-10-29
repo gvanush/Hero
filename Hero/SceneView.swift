@@ -9,10 +9,11 @@ import SwiftUI
 
 struct SceneView: View {
     
+    @ObservedObject var model: SceneViewModel
+    @Binding var isNavigating: Bool
+    
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
-    @Binding var isNavigating: Bool
-    @StateObject var model = SceneViewModel()
     
     var body: some View {
         
@@ -131,7 +132,17 @@ fileprivate struct ZoomView: View {
 }
 
 struct SceneView_Previews: PreviewProvider {
+    
+    struct SceneViewContainer: View {
+        
+        @StateObject var model = SceneViewModel()
+        
+        var body: some View {
+            SceneView(model: model, isNavigating: .constant(false))
+        }
+    }
+    
     static var previews: some View {
-        SceneView(isNavigating: .constant(false))
+        SceneViewContainer()
     }
 }

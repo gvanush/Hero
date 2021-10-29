@@ -32,10 +32,12 @@ class SceneViewModel: ObservableObject {
     
     func discardSelection() {
         scene.selectedObject = nil
+        objectWillChange.send()
     }
     
     func select(_ object: SceneObject) {
         scene.selectedObject = object
+        objectWillChange.send()
     }
     
     var selectedObject: SceneObject? {

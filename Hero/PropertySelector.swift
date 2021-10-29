@@ -25,20 +25,7 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
                     .position(selectedItemFrameRect.center)
             }
             
-            HStack(spacing: 0.0) {
-                ForEach(PT.allCases) { property in
-                    itemFor(property)
-                }
-            }
-            .onPreferenceChange(SelectedItemFrameRectPreferenceKey.self) { frameRect in
-                if selectedItemFrameRect == nil {
-                    selectedItemFrameRect = frameRect
-                } else {
-                    withAnimation(.easeOut(duration: selectionAnimationDuration)) {
-                        selectedItemFrameRect = frameRect
-                    }
-                }
-            }
+            items
             
         }
         .coordinateSpace(name: rootCoordinateSpaceName)
@@ -46,6 +33,23 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
         .fixedSize(horizontal: false, vertical: true)
         .background(bgrMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
         .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.orange, lineWidth: selectionBorderLineWidth))
+    }
+    
+    private var items: some View {
+        HStack(spacing: 0.0) {
+            ForEach(PT.allCases) { property in
+                itemFor(property)
+            }
+        }
+        .onPreferenceChange(SelectedItemFrameRectPreferenceKey.self) { frameRect in
+            if selectedItemFrameRect == nil {
+                selectedItemFrameRect = frameRect
+            } else {
+                withAnimation(.easeOut(duration: selectionAnimationDuration)) {
+                    selectedItemFrameRect = frameRect
+                }
+            }
+        }
     }
     
     func itemFor(_ property: PT) -> some View {
@@ -77,7 +81,7 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
     let itemPadding = 3.0
     let textHorizontalPadding = 8.0
     let selectionCornerRadius = 16.0
-    let selectionBorderLineWidth = 16.0
+    let selectionBorderLineWidth = 1.0
     let selectionAnimationDuration = 0.2
 }
 

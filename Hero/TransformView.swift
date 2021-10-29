@@ -30,17 +30,20 @@ enum Axis: PropertySelectorItem {
 struct TransformView: View {
     
     @State var tool = Tool.move
-    @State var axis = Axis.x
+    @State var toolActiveAxis = [Axis](repeating: .x, count: Tool.allCases.count)
+    @StateObject var sceneViewModel = SceneViewModel()
     @State var isNavigating = false
     
     var body: some View {
         NavigationView {
             ZStack {
-                SceneView(isNavigating: $isNavigating)
+                SceneView(model: sceneViewModel, isNavigating: $isNavigating)
                 VStack(spacing: Self.controlsMargin) {
                     Spacer()
-                    controls
-                        .padding(.horizontal, Self.controlsMargin)
+                    if sceneViewModel.selectedObject != nil {
+                        controls
+                            .padding(.horizontal, Self.controlsMargin)
+                    }
                     Toolbar(selection: $tool)
                 }
                 .opacity(isNavigating ? 0.0 : 1.0)
@@ -55,14 +58,14 @@ struct TransformView: View {
     
     var controls: some View {
         VStack(spacing: Self.controlsSpacing) {
-            PropertySelector(selected: $axis)
+            PropertySelector(selected: $toolActiveAxis[tool.rawValue])
         }
     }
     
     static let controlsMargin = 8.0
     static let controlsSpacing = 8.0
     
-    enum Tool: CaseIterable, Identifiable {
+    enum Tool: Int, CaseIterable, Identifiable {
         
         case move
         case orient
