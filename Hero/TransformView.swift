@@ -62,7 +62,7 @@ struct TransformView: View {
             case .move:
                 transform.position[axis.rawValue] = Float(newValue)
             case .orient:
-                transform.rotation[axis.rawValue] = Float(newValue)
+                transform.rotation[axis.rawValue] = Float(toRadians(degrees: newValue))
             case .scale:
                 transform.scale[axis.rawValue] = Float(newValue)
             }
@@ -81,8 +81,45 @@ struct TransformView: View {
     
     var controls: some View {
         VStack(spacing: Self.controlsSpacing) {
-            FloatSelector(value: $activeValue)
+            FloatSelector(value: $activeValue, formatter: formatter, formatterSubjectProvider: formatterSubjectProvider)
             PropertySelector(selected: $activeAxes[activeTool.rawValue])
+        }
+    }
+    
+    var formatter: Formatter {
+        switch activeTool {
+        case .move:
+            let positionFormatter = NumberFormatter()
+            positionFormatter.numberStyle = .decimal
+            positionFormatter.maximumFractionDigits = 2
+            return positionFormatter
+        case .orient:
+            let rotationFormatter = MeasurementFormatter()
+            rotationFormatter.unitStyle = .short
+            rotationFormatter.numberFormatter.maximumFractionDigits = 2
+            return rotationFormatter
+        case .scale:
+            let scaleFormatter = NumberFormatter()
+            scaleFormatter.numberStyle = .decimal
+            scaleFormatter.maximumFractionDigits = 2
+            return scaleFormatter
+        }
+    }
+    
+    var formatterSubjectProvider: FloatSelector.FormatterSubjectProvider {
+        switch activeTool {
+        case .move:
+            return { value in
+                NSNumber(value: value)
+            }
+        case .orient:
+            return { value in
+                Measurement<UnitAngle>(value: value, unit: .degrees) as NSObject
+            }
+        case .scale:
+            return { value in
+                NSNumber(value: value)
+            }
         }
     }
     
@@ -92,7 +129,7 @@ struct TransformView: View {
         case .move:
             activeValue = Double(transform.position[axis.rawValue])
         case .orient:
-            activeValue = Double(transform.rotation[axis.rawValue])
+            activeValue = Double(toDegrees(radians: transform.rotation[axis.rawValue]))
         case .scale:
             activeValue = Double(transform.scale[axis.rawValue])
         }

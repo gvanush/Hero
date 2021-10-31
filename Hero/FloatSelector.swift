@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+fileprivate struct Params {
+    static let height = 75.0
+    static let stepperPadding = 4.0
+    static let cornerRadius = 11.0
+    static let rulerUnitSize = 10.0
+    static let rulerAdditionalUnitCount = 10
+    static let pointerWidth = 1.0
+    static let pointerHeight = 32.0
+    static let scrollDecaySpeed = 100.0
+}
+
 @propertyWrapper
 class InterpolableValue<T>: DynamicProperty {
     
@@ -36,10 +47,23 @@ struct FloatSelector: View {
     @State private var baseValue: Double
     @GestureState private var dragDeltaValue = 0.0
     @State private var isScrolling = false
+    private let formatter: Formatter?
+    
+    typealias FormatterSubjectProvider = (Double) -> NSObject
+    private let formatterSubjectProvider: FormatterSubjectProvider?
     
     init(value: Binding<Double>) {
         _value = value
         baseValue = value.wrappedValue
+        self.formatter = nil
+        self.formatterSubjectProvider = nil
+    }
+    
+    init(value: Binding<Double>, formatter: Formatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
+        _value = value
+        baseValue = value.wrappedValue
+        self.formatter = formatter
+        self.formatterSubjectProvider = formatterSubjectProvider
     }
     
     var body: some View {
@@ -47,7 +71,7 @@ struct FloatSelector: View {
             ZStack {
                 HStack {
                     Spacer()
-                    Text(String.init(format: "%.2f", value))
+                    valueText
                         .foregroundColor(.secondary)
                     Spacer()
                 }
@@ -58,19 +82,19 @@ struct FloatSelector: View {
             }
             ZStack {
                 Color.secondary
-                    .frame(idealWidth: Self.pointerWidth, maxHeight: .infinity)
+                    .frame(idealWidth: Params.pointerWidth, maxHeight: .infinity)
                     .fixedSize(horizontal: true, vertical: false)
-                Ruler(unitSize: Self.rulerUnitSize, additionalUnitsCount: Self.rulerAdditionalUnitCount)
-                    .offset(x: -fmod(value, Double(Self.rulerAdditionalUnitCount)) * Self.rulerUnitSize, y: 0.0)
+                Ruler(unitSize: Params.rulerUnitSize, additionalUnitsCount: Params.rulerAdditionalUnitCount)
+                    .offset(x: -fmod(value, Double(Params.rulerAdditionalUnitCount)) * Params.rulerUnitSize, y: 0.0)
             }
             .contentShape(Rectangle())
             .gesture(dragGesture())
         }
-        .frame(maxWidth: .infinity, idealHeight: Self.height)
+        .frame(maxWidth: .infinity, idealHeight: Params.height)
         .fixedSize(horizontal: false, vertical: true)
         .background(Material.thin)
-        .cornerRadius(Self.cornerRadius, corners: [.topLeft, .topRight])
-        .overlay(RoundedCorner(radius: Self.cornerRadius, corners: [.topLeft, .topRight]).stroke(Color.orange, lineWidth: 1.0))
+        .cornerRadius(Params.cornerRadius, corners: [.topLeft, .topRight])
+        .overlay(RoundedCorner(radius: Params.cornerRadius, corners: [.topLeft, .topRight]).stroke(Color.orange, lineWidth: 1.0))
         .onChange(of: dragDeltaValue) { newDragDeltaValue in
             value = baseValue + newDragDeltaValue
         }
@@ -81,11 +105,19 @@ struct FloatSelector: View {
         }
     }
     
+    var valueText: some View {
+        if let formatter = formatter {
+            return Text(formatterSubjectProvider!(value), formatter: formatter)
+        } else {
+            return Text("\(value)")
+        }
+    }
+    
     func stepper() -> some View {
         Stepper(value: $value, label: { EmptyView() })
             .opacity(isScrolling ? 0.0 : 1.0)
             .labelsHidden()
-            .padding(Self.stepperPadding)
+            .padding(Params.stepperPadding)
     }
     
     func dragGesture() -> some Gesture {
@@ -107,17 +139,9 @@ struct FloatSelector: View {
     }
     
     private func deltaValueForDisplacement(_ displacement: CGFloat) -> Double {
-        -displacement / Self.rulerUnitSize
+        -displacement / Params.rulerUnitSize
     }
     
-    static let height = 75.0
-    static let stepperPadding = 4.0
-    static let cornerRadius = 11.0
-    static let rulerUnitSize = 10.0
-    static let rulerAdditionalUnitCount = 10
-    static let pointerWidth = 1.0
-    static let pointerHeight = 32.0
-    static let scrollDecaySpeed = 100.0
 }
 
 fileprivate struct Ruler: View {

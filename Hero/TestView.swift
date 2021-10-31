@@ -7,18 +7,33 @@
 
 import SwiftUI
 
-struct TestView: View {
+struct MyFloatSelector<FT>: View {
     var body: some View {
-        Color.red
-//        Stepper {
-//            Text("Value: \(value) Color: \(colors[value].description)")
-//        } onIncrement: {
-//            incrementStep()
-//        } onDecrement: {
-//            decrementStep()
-//        }
-//        .padding(5)
-//        .background(colors[value])
+        valueText
+    }
+    
+    var valueText: some View {
+        Text("Default")
+    }
+}
+
+extension MyFloatSelector where FT: NumberFormatter {
+    var valueText: some View {
+        Text("NumberFormatter")
+    }
+}
+
+
+struct TestView: View {
+    @State private var myDate = Date()
+    
+    var body: some View {
+        VStack {
+            Text(myDate, format: Date.FormatStyle(date: .numeric, time: .omitted))
+            Text(Measurement<UnitAngle>(value: 50.0134, unit: .degrees), format: Measurement<UnitAngle>.FormatStyle(width: .narrow))
+            MyFloatSelector<Int>()
+            MyFloatSelector<NumberFormatter>()
+        }
     }
 }
 

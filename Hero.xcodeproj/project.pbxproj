@@ -265,6 +265,7 @@
 				B7791D982726768B00E0C934 /* UIColor+Extensions.swift */,
 				B7104BC3272B069F00582DCA /* Color+Extensions.swift */,
 				B7104BC9272C07B300582DCA /* View+Extensions.swift */,
+				B7791DA42726768B00E0C934 /* FloatingPoint+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -408,7 +409,6 @@
 		B7791DA32726768B00E0C934 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
-				B7791DA42726768B00E0C934 /* FloatingPoint+Extensions.swift */,
 				B7791DA52726768B00E0C934 /* Comparable+Extensions.swift */,
 			);
 			path = Swift;
