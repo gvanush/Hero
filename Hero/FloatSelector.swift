@@ -131,7 +131,10 @@ struct FloatSelector: View {
                 }
             }
             .onEnded { dragValue in
-                baseValue += deltaValueForDisplacement(dragValue.translation.width)
+                // NOTE: Not setting the value matching drag last translation because
+                // it becomes very hard to stick to certain desired value since during
+                // relasing finger some undesired drag happens nearly unavoidably
+                baseValue = value
                 withAnimation {
                     isScrolling = false
                 }
