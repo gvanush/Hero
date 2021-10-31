@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Axis: PropertySelectorItem {
+enum Axis: Int, PropertySelectorItem {
     
     case x
     case y
@@ -29,8 +29,9 @@ enum Axis: PropertySelectorItem {
 
 struct TransformView: View {
     
-    @State var tool = Tool.move
-    @State var toolActiveAxis = [Axis](repeating: .x, count: Tool.allCases.count)
+    @State var activeTool = Tool.move
+    @State var activeAxes = [Axis](repeating: .x, count: Tool.allCases.count)
+    @State var activeValue = 0.0
     @StateObject var sceneViewModel = SceneViewModel()
     @State var isNavigating = false
     
@@ -44,21 +45,56 @@ struct TransformView: View {
                         controls
                             .padding(.horizontal, Self.controlsMargin)
                     }
-                    Toolbar(selection: $tool)
+                    Toolbar(selection: $activeTool)
                 }
                 .opacity(isNavigating ? 0.0 : 1.0)
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(tool.title)
+            .navigationTitle(activeTool.title)
             .navigationBarHidden(isNavigating)
         }
         // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings on startup)
         .navigationViewStyle(.stack)
+        .onChange(of: activeValue) { newValue in
+            let axis = activeAxes[activeTool.rawValue]
+            let transform = sceneViewModel.selectedObject!.transform!
+            switch activeTool {
+            case .move:
+                transform.position[axis.rawValue] = Float(newValue)
+            case .orient:
+                transform.rotation[axis.rawValue] = Float(newValue)
+            case .scale:
+                transform.scale[axis.rawValue] = Float(newValue)
+            }
+            
+        }
+        .onReceive(sceneViewModel.objectWillChange) { _ in
+            updateActiveValue(tool: activeTool, axis: activeAxes[activeTool.rawValue])
+        }
+        .onChange(of: activeTool) { newTool in
+            updateActiveValue(tool: newTool, axis: activeAxes[newTool.rawValue])
+        }
+        .onChange(of: activeAxes) { newActiveAxes in
+            updateActiveValue(tool: activeTool, axis: newActiveAxes[activeTool.rawValue])
+        }
     }
     
     var controls: some View {
         VStack(spacing: Self.controlsSpacing) {
-            PropertySelector(selected: $toolActiveAxis[tool.rawValue])
+            FloatSelector(value: $activeValue)
+            PropertySelector(selected: $activeAxes[activeTool.rawValue])
+        }
+    }
+    
+    func updateActiveValue(tool: Tool, axis: Axis) {
+        let transform = sceneViewModel.selectedObject!.transform!
+        switch tool {
+        case .move:
+            activeValue = Double(transform.position[axis.rawValue])
+        case .orient:
+            activeValue = Double(transform.rotation[axis.rawValue])
+        case .scale:
+            activeValue = Double(transform.scale[axis.rawValue])
         }
     }
     

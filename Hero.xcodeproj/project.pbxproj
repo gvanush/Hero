@@ -12,6 +12,8 @@
 		B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC1272B00B700582DCA /* PropertySelector.swift */; };
 		B7104BC4272B069F00582DCA /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC3272B069F00582DCA /* Color+Extensions.swift */; };
 		B7104BC6272B1D3300582DCA /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC5272B1D3300582DCA /* TestView.swift */; };
+		B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatSelector.swift */; };
+		B7104BCA272C07B300582DCA /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* View+Extensions.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -71,6 +73,8 @@
 		B7104BC1272B00B700582DCA /* PropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySelector.swift; sourceTree = "<group>"; };
 		B7104BC3272B069F00582DCA /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		B7104BC5272B1D3300582DCA /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		B7104BC7272BBB1F00582DCA /* FloatSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatSelector.swift; sourceTree = "<group>"; };
+		B7104BC9272C07B300582DCA /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -238,6 +242,7 @@
 				B7104BB727286B3700582DCA /* SceneViewModel.swift */,
 				B7791D242725F45F00E0C934 /* TransformView.swift */,
 				B7104BC1272B00B700582DCA /* PropertySelector.swift */,
+				B7104BC7272BBB1F00582DCA /* FloatSelector.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
@@ -259,6 +264,7 @@
 			children = (
 				B7791D982726768B00E0C934 /* UIColor+Extensions.swift */,
 				B7104BC3272B069F00582DCA /* Color+Extensions.swift */,
+				B7104BC9272C07B300582DCA /* View+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -498,6 +504,7 @@
 				B7791D8A2726762100E0C934 /* GeometryUtils.cpp in Sources */,
 				B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */,
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
+				B7104BCA272C07B300582DCA /* View+Extensions.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B7791D802726762100E0C934 /* SphericalCoord.c in Sources */,
@@ -536,6 +543,7 @@
 				B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */,
 				B7791DAC2726768B00E0C934 /* UIImage+Extensions.swift in Sources */,
 				B7791D832726762100E0C934 /* SptViewController.swift in Sources */,
+				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
 				B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */,
 				B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */,
 			);

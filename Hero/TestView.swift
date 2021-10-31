@@ -9,20 +9,16 @@ import SwiftUI
 
 struct TestView: View {
     var body: some View {
-        GeometryReader { geo in
-            VStack(alignment: .center) {
-                Spacer()
-                HStack {
-                    Text("Hello, World!")
-                    Text("Hello, World!")
-                }
-                .padding(.bottom, geo.safeAreaInsets.bottom)
-                .background(.green)
-            }
-            .ignoresSafeArea()
-            .background(.gray)
-        }
-        .background(.red)
+        Color.red
+//        Stepper {
+//            Text("Value: \(value) Color: \(colors[value].description)")
+//        } onIncrement: {
+//            incrementStep()
+//        } onDecrement: {
+//            decrementStep()
+//        }
+//        .padding(5)
+//        .background(colors[value])
     }
 }
 
