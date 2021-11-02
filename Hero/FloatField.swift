@@ -1,5 +1,5 @@
 //
-//  FloatSelector.swift
+//  FloatField.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 29.10.21.
@@ -15,53 +15,38 @@ fileprivate struct Params {
     static let rulerAdditionalUnitCount = 10
     static let pointerWidth = 1.0
     static let pointerHeight = 32.0
-    static let scrollDecaySpeed = 100.0
+    static let scrollMinInitialSpeed = 100.0
 }
 
-@propertyWrapper
-class InterpolableValue<T>: DynamicProperty {
+struct FloatField: View {
     
-    @Binding private var value: T
-    
-    init(value: Binding<T>) {
-        _value = value
+    enum EditingState {
+        case idle
+        case dragging
+        case scrolling
+        case stepping
     }
-    
-    var projectedValue: Binding<T> {
-        $value
-    }
-    
-    var wrappedValue: T {
-        get {
-            value
-        }
-        set {
-            value = newValue
-        }
-    }
-}
-
-struct FloatSelector: View {
     
     @Binding var value: Double
-    @State private var baseValue: Double
-    @GestureState private var dragDeltaValue = 0.0
-    @State private var isScrolling = false
-    private let formatter: Formatter?
+    @State private var state = EditingState.idle
     
+    @State private var dragBaseValue = 0.0
+    
+    @State private var scrollAnimator: DisplayRefreshSync!
+    @State private var scrollAnimationUtil = ScrollAnimationUtil()
+    
+    private let formatter: Formatter?
     typealias FormatterSubjectProvider = (Double) -> NSObject
     private let formatterSubjectProvider: FormatterSubjectProvider?
-    
+        
     init(value: Binding<Double>) {
         _value = value
-        baseValue = value.wrappedValue
         self.formatter = nil
         self.formatterSubjectProvider = nil
     }
     
     init(value: Binding<Double>, formatter: Formatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
         _value = value
-        baseValue = value.wrappedValue
         self.formatter = formatter
         self.formatterSubjectProvider = formatterSubjectProvider
     }
@@ -94,14 +79,20 @@ struct FloatSelector: View {
         .fixedSize(horizontal: false, vertical: true)
         .background(Material.thin)
         .cornerRadius(Params.cornerRadius, corners: [.topLeft, .topRight])
-        .overlay(RoundedCorner(radius: Params.cornerRadius, corners: [.topLeft, .topRight]).stroke(Color.orange, lineWidth: 1.0))
-        .onChange(of: dragDeltaValue) { newDragDeltaValue in
-            value = baseValue + newDragDeltaValue
+        .overlay(BezierRoundedRectangle(radius: Params.cornerRadius, corners: [.topLeft, .topRight]).stroke(Color.orange, lineWidth: 1.0))
+        .onAppear {
+            scrollAnimator = DisplayRefreshSync(update: { time in
+                self.value = scrollAnimationUtil.value(at: time)
+            }, completion: {
+                if state == .scrolling {
+                    withAnimation {
+                        state = .idle
+                    }
+                }
+            })
         }
-        .onChange(of: value) { newValue in
-            if !isScrolling {
-                baseValue = newValue
-            }
+        .onDisappear {
+            scrollAnimator.stop()
         }
     }
     
@@ -114,30 +105,58 @@ struct FloatSelector: View {
     }
     
     func stepper() -> some View {
-        Stepper(value: $value, label: { EmptyView() })
-            .opacity(isScrolling ? 0.0 : 1.0)
+        Stepper(value: $value, label: { EmptyView() }, onEditingChanged: { started in
+            withAnimation {
+                state = (started ? .stepping : .idle)
+            }
+        })
+            .opacity(state == .dragging || state == .scrolling ? 0.0 : 1.0)
             .labelsHidden()
             .padding(Params.stepperPadding)
     }
     
     func dragGesture() -> some Gesture {
         DragGesture(minimumDistance: 0.0)
-            .updating($dragDeltaValue, body: { dragValue, state, _ in
-                state = deltaValueForDisplacement(dragValue.translation.width)
-            })
-            .onChanged { _ in
-                withAnimation {
-                    isScrolling = true
+            .onChanged { dragValue in
+                
+                if (state == .idle || state == .scrolling) {
+                    scrollAnimator.stop()
+                    withAnimation {
+                        state = .dragging
+                        dragBaseValue = value
+                    }
                 }
+                
+                if state == .dragging {
+                    value = dragBaseValue + deltaValueForDisplacement(dragValue.translation.width)
+                }
+                
             }
             .onEnded { dragValue in
-                // NOTE: Not setting the value matching drag last translation because
-                // it becomes very hard to stick to certain desired value since during
-                // relasing finger some undesired drag happens nearly unavoidably
-                baseValue = value
-                withAnimation {
-                    isScrolling = false
+                
+                guard state == .dragging else { return }
+                    
+                let initialSpeed = dragValue.scrollInitialSpeedX(decelerationRate: scrollAnimationUtil.decelerationRate)
+                if abs(initialSpeed) < Params.scrollMinInitialSpeed {
+                    // NOTE: Not setting the value matching drag last translation because
+                    // it becomes very hard to stick to certain desired value since during
+                    // relasing finger some undesired drag happens nearly unavoidably
+                    withAnimation {
+                        state = .idle
+                    }
+                    return
                 }
+                
+                value = dragBaseValue + deltaValueForDisplacement(dragValue.translation.width)
+                
+                scrollAnimationUtil.initialValue = value
+                scrollAnimationUtil.initialSpeed = initialSpeed
+                
+                withAnimation {
+                    state = .scrolling
+                }
+                scrollAnimator.start(duration: scrollAnimationUtil.duration)
+                
             }
     }
     
@@ -194,7 +213,7 @@ fileprivate struct Ruler: View {
 
 struct FloatSelector_Previews: PreviewProvider {
     static var previews: some View {
-        FloatSelector(value: .constant(0.0))
+        FloatField(value: .constant(0.0))
             .padding(8.0)
     }
 }

@@ -67,9 +67,7 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
             )
             .padding(itemPadding)
             .onTapGesture {
-                withAnimation(.easeIn(duration: selectionAnimationDuration)) {
-                    selected = property
-                }
+                selected = property
             }
     }
     

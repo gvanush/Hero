@@ -7,34 +7,18 @@
 
 import SwiftUI
 
-struct MyFloatSelector<FT>: View {
-    var body: some View {
-        valueText
-    }
-    
-    var valueText: some View {
-        Text("Default")
-    }
-}
-
-extension MyFloatSelector where FT: NumberFormatter {
-    var valueText: some View {
-        Text("NumberFormatter")
-    }
-}
-
-
 struct TestView: View {
-    @State private var myDate = Date()
     
     var body: some View {
         VStack {
-            Text(myDate, format: Date.FormatStyle(date: .numeric, time: .omitted))
-            Text(Measurement<UnitAngle>(value: 50.0134, unit: .degrees), format: Measurement<UnitAngle>.FormatStyle(width: .narrow))
-            MyFloatSelector<Int>()
-            MyFloatSelector<NumberFormatter>()
+            
         }
+            
     }
+    
+    @State private var value: Double = 0
+    @State private var animatedValue: Double = 0
+    
 }
 
 struct TestView_Previews: PreviewProvider {

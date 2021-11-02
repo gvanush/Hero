@@ -30,7 +30,7 @@ enum Axis: Int, PropertySelectorItem {
 struct TransformView: View {
     
     @State var activeTool = Tool.move
-    @State var activeAxes = [Axis](repeating: .x, count: Tool.allCases.count)
+    @State var axes = [Axis](repeating: .x, count: Tool.allCases.count)
     @State var activeValue = 0.0
     @StateObject var sceneViewModel = SceneViewModel()
     @State var isNavigating = false
@@ -55,34 +55,23 @@ struct TransformView: View {
         }
         // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings on startup)
         .navigationViewStyle(.stack)
-        .onChange(of: activeValue) { newValue in
-            let axis = activeAxes[activeTool.rawValue]
-            let transform = sceneViewModel.selectedObject!.transform!
-            switch activeTool {
-            case .move:
-                transform.position[axis.rawValue] = Float(newValue)
-            case .orient:
-                transform.rotation[axis.rawValue] = Float(toRadians(degrees: newValue))
-            case .scale:
-                transform.scale[axis.rawValue] = Float(newValue)
-            }
-            
-        }
         .onReceive(sceneViewModel.objectWillChange) { _ in
-            updateActiveValue(tool: activeTool, axis: activeAxes[activeTool.rawValue])
+            updateActiveValue(tool: activeTool, axis: axes[activeTool.rawValue])
         }
         .onChange(of: activeTool) { newTool in
-            updateActiveValue(tool: newTool, axis: activeAxes[newTool.rawValue])
+            updateActiveValue(tool: newTool, axis: axes[newTool.rawValue])
         }
-        .onChange(of: activeAxes) { newActiveAxes in
+        .onChange(of: axes) { newActiveAxes in
             updateActiveValue(tool: activeTool, axis: newActiveAxes[activeTool.rawValue])
         }
     }
     
     var controls: some View {
         VStack(spacing: Self.controlsSpacing) {
-            FloatSelector(value: $activeValue, formatter: formatter, formatterSubjectProvider: formatterSubjectProvider)
-            PropertySelector(selected: $activeAxes[activeTool.rawValue])
+            FloatField(value: $activeValue.onChange(updateObject), formatter: formatter, formatterSubjectProvider: formatterSubjectProvider)
+                .id(10 * activeTool.rawValue + axes[activeTool.rawValue].rawValue)
+            PropertySelector(selected: $axes[activeTool.rawValue])
+                .id(activeTool.rawValue)
         }
     }
     
@@ -106,7 +95,7 @@ struct TransformView: View {
         }
     }
     
-    var formatterSubjectProvider: FloatSelector.FormatterSubjectProvider {
+    var formatterSubjectProvider: FloatField.FormatterSubjectProvider {
         switch activeTool {
         case .move:
             return { value in
@@ -124,7 +113,7 @@ struct TransformView: View {
     }
     
     func updateActiveValue(tool: Tool, axis: Axis) {
-        let transform = sceneViewModel.selectedObject!.transform!
+        guard let transform = sceneViewModel.selectedObject?.transform else { return }
         switch tool {
         case .move:
             activeValue = Double(transform.position[axis.rawValue])
@@ -132,6 +121,19 @@ struct TransformView: View {
             activeValue = Double(toDegrees(radians: transform.rotation[axis.rawValue]))
         case .scale:
             activeValue = Double(transform.scale[axis.rawValue])
+        }
+    }
+    
+    func updateObject(_ value: Double) {
+        let axis = axes[activeTool.rawValue]
+        let transform = sceneViewModel.selectedObject!.transform!
+        switch activeTool {
+        case .move:
+            transform.position[axis.rawValue] = Float(value)
+        case .orient:
+            transform.rotation[axis.rawValue] = Float(toRadians(degrees: value))
+        case .scale:
+            transform.scale[axis.rawValue] = Float(value)
         }
     }
     
