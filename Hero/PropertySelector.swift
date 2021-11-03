@@ -53,22 +53,28 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
     }
     
     func itemFor(_ property: PT) -> some View {
-        Text(property.displayText)
-            .foregroundColor(.white)
-            .colorMultiply(property == selected ? Color.white : Color.secondary)
-            .fixedSize(horizontal: true, vertical: false)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-            .padding(.horizontal, textHorizontalPadding)
-            .background(
-                GeometryReader { geometryProxy in
-                    Color.clear
-                        .preference(key: SelectedItemFrameRectPreferenceKey.self, value: (property == selected ? geometryProxy.frame(in: CoordinateSpace.named(rootCoordinateSpaceName)) : nil))
-                }
-            )
-            .padding(itemPadding)
-            .onTapGesture {
-                selected = property
-            }
+        GeometryReader { geometry in
+            Text(property.displayText)
+                .foregroundColor(.white)
+                .colorMultiply(property == selected ? Color.white : Color.secondary)
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .padding(.horizontal, textHorizontalPadding)
+                .background(
+                    GeometryReader { geometry in
+                        Color.clear
+                            .preference(key: SelectedItemFrameRectPreferenceKey.self, value: (property == selected ? geometry.frame(in: CoordinateSpace.named(rootCoordinateSpaceName)) : nil))
+                    }
+                )
+                .padding(itemPadding)
+                .contentShape(Rectangle())
+                .gesture(DragGesture(minimumDistance: 0.0)
+                            .onEnded({ value in
+                    if CGRect(origin: .zero, size: geometry.size).contains(value.location) {
+                        selected = property
+                    }
+                }))
+        }
     }
     
     let rootCoordinateSpaceName = "root"
