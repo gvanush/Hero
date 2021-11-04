@@ -33,7 +33,7 @@ struct ScrollAnimationUtil {
     }
     
     var destination: Double {
-        initialValue + initialSpeed / decelerationRateFactor
+        initialValue - initialSpeed / decelerationRateFactor
     }
     
     var duration: TimeInterval {
@@ -41,7 +41,7 @@ struct ScrollAnimationUtil {
     }
     
     func value(at time: TimeInterval) -> Double {
-        initialValue - (pow(decelerationRate, CGFloat(1000 * time)) - 1) / decelerationRateFactor * initialSpeed
+        initialValue + (pow(decelerationRate, CGFloat(1000 * time)) - 1) / decelerationRateFactor * initialSpeed
     }
     
     static func distance(initialSpeed: Double, decelerationRate: Double) -> Double {

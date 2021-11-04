@@ -10,11 +10,11 @@ import SwiftUI
 extension DragGesture.Value {
     
     func scrollInitialSpeedX(decelerationRate: Double) -> CGFloat {
-        ScrollAnimationUtil.initialSpeed(distance: predictedEndLocation.x - location.x, decelerationRate: decelerationRate)
+        ScrollAnimationUtil.initialSpeed(distance: predictedEndTranslation.width - translation.width, decelerationRate: decelerationRate)
     }
     
     func scrollInitialSpeedY(decelerationRate: Double) -> CGFloat {
-        ScrollAnimationUtil.initialSpeed(distance: predictedEndLocation.y - location.y, decelerationRate: decelerationRate)
+        ScrollAnimationUtil.initialSpeed(distance: predictedEndTranslation.height - translation.height, decelerationRate: decelerationRate)
     }
     
 }

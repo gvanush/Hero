@@ -20,7 +20,26 @@ fileprivate struct Params {
 
 struct FloatField: View {
     
-    enum EditingState {
+    enum Scale: Double, CaseIterable, Identifiable {
+        case x0_1 = 0.1
+        case x1 = 1.0
+        case x10 = 10.0
+        
+        var id: Self { self }
+        
+        var displayText: String {
+            switch self {
+            case .x0_1:
+                return "0.1x"
+            case .x1:
+                return "1x"
+            case .x10:
+                return "10x"
+            }
+        }
+    }
+    
+    private enum EditingState {
         case idle
         case dragging
         case scrolling
@@ -28,9 +47,11 @@ struct FloatField: View {
     }
     
     @Binding var value: Double
+    @Binding var scale: Scale
     @State private var state = EditingState.idle
     
     @State private var dragBaseValue = 0.0
+    @State private var dragInitialTranslation = 0.0
     
     @State private var scrollAnimator: DisplayRefreshSync!
     @State private var scrollAnimationUtil = ScrollAnimationUtil()
@@ -39,14 +60,16 @@ struct FloatField: View {
     typealias FormatterSubjectProvider = (Double) -> NSObject
     private let formatterSubjectProvider: FormatterSubjectProvider?
         
-    init(value: Binding<Double>) {
+    init(value: Binding<Double>, scale: Binding<Scale>) {
         _value = value
+        _scale = scale
         self.formatter = nil
         self.formatterSubjectProvider = nil
     }
     
-    init(value: Binding<Double>, formatter: Formatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
+    init(value: Binding<Double>, scale: Binding<Scale>, formatter: Formatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
         _value = value
+        _scale = scale
         self.formatter = formatter
         self.formatterSubjectProvider = formatterSubjectProvider
     }
@@ -54,23 +77,20 @@ struct FloatField: View {
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
-                HStack {
+                valueView
+                HStack(alignment: .top) {
+                    ScalePicker(scale: $scale)
                     Spacer()
-                    valueText
-                        .foregroundColor(.secondary)
-                    Spacer()
+                    stepper
                 }
-                HStack {
-                    Spacer()
-                    stepper()
-                }
+                .padding(Params.stepperPadding)
             }
             ZStack {
                 Color.secondary
                     .frame(idealWidth: Params.pointerWidth, maxHeight: .infinity)
                     .fixedSize(horizontal: true, vertical: false)
                 Ruler(unitSize: Params.rulerUnitSize, additionalUnitsCount: Params.rulerAdditionalUnitCount)
-                    .offset(x: -fmod(value, Double(Params.rulerAdditionalUnitCount)) * Params.rulerUnitSize, y: 0.0)
+                    .offset(x: rulerOffsetX, y: 0.0)
             }
             .contentShape(Rectangle())
             .gesture(dragGesture())
@@ -82,12 +102,12 @@ struct FloatField: View {
         .overlay(BezierRoundedRectangle(radius: Params.cornerRadius, corners: [.topLeft, .topRight]).stroke(Color.orange, lineWidth: 1.0))
         .onAppear {
             scrollAnimator = DisplayRefreshSync(update: { time in
-                self.value = scrollAnimationUtil.value(at: time)
+                assert(state == .scrolling)
+                value = dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: time))
             }, completion: {
-                if state == .scrolling {
-                    withAnimation {
-                        state = .idle
-                    }
+                assert(state == .scrolling)
+                withAnimation {
+                    state = .idle
                 }
             })
         }
@@ -96,15 +116,24 @@ struct FloatField: View {
         }
     }
     
-    var valueText: some View {
-        if let formatter = formatter {
-            return Text(formatterSubjectProvider!(value), formatter: formatter)
-        } else {
-            return Text("\(value)")
+    var valueView: some View {
+        let valueText = { () -> Text in
+            if let formatter = formatter {
+                return Text(formatterSubjectProvider!(value), formatter: formatter)
+            } else {
+                return Text("\(value)")
+            }
+        }
+        
+        return HStack {
+            Spacer()
+            valueText()
+                .foregroundColor(.secondary)
+            Spacer()
         }
     }
     
-    func stepper() -> some View {
+    var stepper: some View {
         Stepper(value: $value, label: { EmptyView() }, onEditingChanged: { started in
             withAnimation {
                 state = (started ? .stepping : .idle)
@@ -112,23 +141,26 @@ struct FloatField: View {
         })
             .opacity(state == .dragging || state == .scrolling ? 0.0 : 1.0)
             .labelsHidden()
-            .padding(Params.stepperPadding)
     }
     
     func dragGesture() -> some Gesture {
         DragGesture(minimumDistance: 0.0)
             .onChanged { dragValue in
                 
-                if (state == .idle || state == .scrolling) {
+                // NOTE: Typically the first non-zero drag translation is big which results to
+                // aggresive jerk on the start, hence first non-zero translation is ignored
+                if ((state == .idle || state == .scrolling) && dragValue.translation.width != 0.0) {
                     scrollAnimator.stop()
                     withAnimation {
                         state = .dragging
                         dragBaseValue = value
                     }
+                    dragInitialTranslation = dragValue.translation.width
+                    return
                 }
                 
                 if state == .dragging {
-                    value = dragBaseValue + deltaValueForDisplacement(dragValue.translation.width)
+                    value = dragBaseValue + deltaValue(translation: dragValue.translation.width - dragInitialTranslation)
                 }
                 
             }
@@ -147,9 +179,10 @@ struct FloatField: View {
                     return
                 }
                 
-                value = dragBaseValue + deltaValueForDisplacement(dragValue.translation.width)
+                let translation = dragValue.translation.width - dragInitialTranslation
+                value = dragBaseValue + deltaValue(translation: translation)
                 
-                scrollAnimationUtil.initialValue = value
+                scrollAnimationUtil.initialValue = translation
                 scrollAnimationUtil.initialSpeed = initialSpeed
                 
                 withAnimation {
@@ -160,8 +193,12 @@ struct FloatField: View {
             }
     }
     
-    private func deltaValueForDisplacement(_ displacement: CGFloat) -> Double {
-        -displacement / Params.rulerUnitSize
+    private func deltaValue(translation: CGFloat) -> Double {
+        -scale.rawValue * (translation / Params.rulerUnitSize)
+    }
+    
+    private var rulerOffsetX: CGFloat {
+        -fmod(value / scale.rawValue, Double(Params.rulerAdditionalUnitCount)) * Params.rulerUnitSize
     }
     
 }
@@ -211,9 +248,30 @@ fileprivate struct Ruler: View {
     static let tensHeight = 16.0
 }
 
-struct FloatSelector_Previews: PreviewProvider {
+fileprivate struct ScalePicker: View {
+    @Binding var scale: FloatField.Scale
+    
+    var body: some View {
+        Picker("", selection: $scale) {
+            ForEach(FloatField.Scale.allCases) { scale in
+                Text(scale.displayText)
+            }
+        }
+        .frame(width: Self.widrh, height: Self.height, alignment: .center)
+        .background(Color.systemFill)
+        .cornerRadius(Self.cornerRadius)
+        .accentColor(.primary)
+        .pickerStyle(.menu)
+    }
+    
+    static let widrh = 50.0
+    static let height = 29.0
+    static let cornerRadius = 7.0
+}
+
+struct FloatField_Previews: PreviewProvider {
     static var previews: some View {
-        FloatField(value: .constant(0.0))
+        FloatField(value: .constant(0.0), scale: .constant(.x1))
             .padding(8.0)
     }
 }

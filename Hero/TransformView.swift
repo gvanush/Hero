@@ -31,6 +31,7 @@ struct TransformView: View {
     
     @State var activeTool = Tool.move
     @State var axes = [Axis](repeating: .x, count: Tool.allCases.count)
+    @State var scales = [FloatField.Scale.x1, FloatField.Scale.x10, FloatField.Scale.x0_1]
     @State var activeValue = 0.0
     @StateObject var sceneViewModel = SceneViewModel()
     @State var isNavigating = false
@@ -68,7 +69,7 @@ struct TransformView: View {
     
     var controls: some View {
         VStack(spacing: Self.controlsSpacing) {
-            FloatField(value: $activeValue.onChange(updateObject), formatter: formatter, formatterSubjectProvider: formatterSubjectProvider)
+            FloatField(value: $activeValue.onChange(updateObject), scale: $scales[activeTool.rawValue], formatter: formatter, formatterSubjectProvider: formatterSubjectProvider)
                 .id(10 * activeTool.rawValue + axes[activeTool.rawValue].rawValue)
             PropertySelector(selected: $axes[activeTool.rawValue])
                 .id(activeTool.rawValue)
