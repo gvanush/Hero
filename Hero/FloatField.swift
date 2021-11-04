@@ -21,20 +21,20 @@ fileprivate struct Params {
 struct FloatField: View {
     
     enum Scale: Double, CaseIterable, Identifiable {
-        case x0_1 = 0.1
-        case x1 = 1.0
-        case x10 = 10.0
+        case _0_1 = 0.1
+        case _1 = 1.0
+        case _10 = 10.0
         
         var id: Self { self }
         
         var displayText: String {
             switch self {
-            case .x0_1:
-                return "0.1x"
-            case .x1:
-                return "1x"
-            case .x10:
-                return "10x"
+            case ._0_1:
+                return "1 : 0.1"
+            case ._1:
+                return "1 : 1"
+            case ._10:
+                return "1 : 10"
             }
         }
     }
@@ -112,7 +112,10 @@ struct FloatField: View {
             })
         }
         .onDisappear {
-            scrollAnimator.stop()
+            stopScrolling()
+        }
+        .onChange(of: scale) { _ in
+            stopScrolling()
         }
     }
     
@@ -147,10 +150,16 @@ struct FloatField: View {
         DragGesture(minimumDistance: 0.0)
             .onChanged { dragValue in
                 
+                if state == .scrolling {
+                    scrollAnimator.stop()
+                    withAnimation {
+                        state = .idle
+                    }
+                }
+                
                 // NOTE: Typically the first non-zero drag translation is big which results to
                 // aggresive jerk on the start, hence first non-zero translation is ignored
-                if ((state == .idle || state == .scrolling) && dragValue.translation.width != 0.0) {
-                    scrollAnimator.stop()
+                if state == .idle && dragValue.translation.width != 0.0 {
                     withAnimation {
                         state = .dragging
                         dragBaseValue = value
@@ -199,6 +208,13 @@ struct FloatField: View {
     
     private var rulerOffsetX: CGFloat {
         -fmod(value / scale.rawValue, Double(Params.rulerAdditionalUnitCount)) * Params.rulerUnitSize
+    }
+    
+    private func stopScrolling() {
+        withAnimation {
+            scrollAnimator.stop()
+            state = .idle
+        }
     }
     
 }
@@ -271,7 +287,7 @@ fileprivate struct ScalePicker: View {
 
 struct FloatField_Previews: PreviewProvider {
     static var previews: some View {
-        FloatField(value: .constant(0.0), scale: .constant(.x1))
+        FloatField(value: .constant(0.0), scale: .constant(._1))
             .padding(8.0)
     }
 }

@@ -31,7 +31,7 @@ struct TransformView: View {
     
     @State var activeTool = Tool.move
     @State var axes = [Axis](repeating: .x, count: Tool.allCases.count)
-    @State var scales = [FloatField.Scale.x1, FloatField.Scale.x10, FloatField.Scale.x0_1]
+    @State var scales = [FloatField.Scale._1, FloatField.Scale._10, FloatField.Scale._0_1]
     @State var activeValue = 0.0
     @StateObject var sceneViewModel = SceneViewModel()
     @State var isNavigating = false
@@ -77,21 +77,33 @@ struct TransformView: View {
     }
     
     var formatter: Formatter {
+        
+        let maximumFractionDigits = { (scale: FloatField.Scale) -> Int in
+            switch scale {
+            case ._0_1:
+                return 2
+            case ._1:
+                return 1
+            case ._10:
+                return 0
+            }
+        }
+        
         switch activeTool {
         case .move:
             let positionFormatter = NumberFormatter()
             positionFormatter.numberStyle = .decimal
-            positionFormatter.maximumFractionDigits = 2
+            positionFormatter.maximumFractionDigits = maximumFractionDigits(scales[Tool.move.rawValue])
             return positionFormatter
         case .orient:
             let rotationFormatter = MeasurementFormatter()
             rotationFormatter.unitStyle = .short
-            rotationFormatter.numberFormatter.maximumFractionDigits = 2
+            rotationFormatter.numberFormatter.maximumFractionDigits = maximumFractionDigits(scales[Tool.orient.rawValue])
             return rotationFormatter
         case .scale:
             let scaleFormatter = NumberFormatter()
             scaleFormatter.numberStyle = .decimal
-            scaleFormatter.maximumFractionDigits = 2
+            scaleFormatter.maximumFractionDigits = maximumFractionDigits(scales[Tool.scale.rawValue])
             return scaleFormatter
         }
     }
