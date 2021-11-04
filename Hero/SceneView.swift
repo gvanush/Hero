@@ -41,17 +41,19 @@ struct SceneView: View {
     }
     
     func ui(viewportSize: CGSize) -> some View {
-        VStack {
-            Spacer()
+        GeometryReader { geometry in
             HStack {
                 Spacer()
-                ZoomView()
-                    .padding(.trailing, Self.margin)
-                    .contentShape(Rectangle())
-                    .gesture(zoomDragGesture(viewportSize: viewportSize))
-                    .opacity(isNavigating ? 0.0 : 1.0)
+                VStack {
+                    Spacer()
+                    ZoomView()
+                        .frame(maxHeight: max(geometry.size.height - 2 * Self.uiBottomPadding, 0))
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+                .gesture(zoomDragGesture(viewportSize: viewportSize))
+                .opacity(isNavigating ? 0.0 : 1.0)
             }
-            .padding(.bottom, Self.uiBottomPadding)
         }
     }
     
@@ -97,38 +99,17 @@ fileprivate struct ZoomView: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            Image(systemName: "plus.magnifyingglass")
-                .foregroundColor(.primary)
-            
-            GeometryReader { geometry in
-                Path { path in
-                    let x = 0.5 * (geometry.size.width - Self.dashWidth)
-                    var y = 0.0
-                    repeat {
-                        path.addRect(CGRect(x: x, y: y, width: Self.dashWidth, height: Self.dashHeight))
-                        y += (Self.dashSpacing + Self.dashHeight)
-                    } while y + Self.dashHeight < geometry.size.height
-                }
-                .foregroundColor(.primary)
-            }
-            Image(systemName: "minus.magnifyingglass")
-                .foregroundColor(.primary)
+            VLine().stroke(style: Self.lineStrokeStyle)
+            Image(systemName: "magnifyingglass")
+                            .foregroundColor(.primary)
+            VLine().stroke(style: Self.lineStrokeStyle)
         }
-        .padding(Self.padding)
-        .frame(width: Self.width, height: Self.height, alignment: .center)
-        .background(SceneView.uiElementBackgroundMaterial, in: RoundedRectangle(cornerRadius: Self.cornerRadius))
-        .overlay(RoundedRectangle(cornerRadius: Self.cornerRadius).stroke(Color.defaultShadowColor, lineWidth: SceneView.uiElementBorderLineWidth))
-        
+        .frame(maxWidth: Self.width, maxHeight: .infinity)
+        .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black.opacity(0.0)], startPoint: .bottom, endPoint: .top))
     }
     
-    static let width = 28.0
-    static let height = 224.0
-    static let padding = 4.0
-    static let cornerRadius = 7.0
-    static let dashWidth = 4.0
-    static let dashHeight = 1.0
-    static let dashSpacing = 4.0
-    
+    static let width = 24.0
+    static let lineStrokeStyle = StrokeStyle(lineWidth: 4, dash: [1, 4])
 }
 
 struct SceneView_Previews: PreviewProvider {

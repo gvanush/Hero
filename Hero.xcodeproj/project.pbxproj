@@ -69,6 +69,7 @@
 		B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */; };
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
 		B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */; };
+		B7D19EBC273306F5005C9F82 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EBB273306F4005C9F82 /* Line.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +182,7 @@
 		B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRefreshSync.swift; sourceTree = "<group>"; };
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
 		B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureUtil.swift; sourceTree = "<group>"; };
+		B7D19EBB273306F4005C9F82 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +220,7 @@
 				B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */,
 				B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */,
 				B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */,
+				B7D19EBB273306F4005C9F82 /* Line.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 				B7791D782726762100E0C934 /* Camera.cpp in Sources */,
 				B7791D852726762100E0C934 /* ComponentTypeInfo.cpp in Sources */,
 				B7791D7D2726762100E0C934 /* LineRenderer.mm in Sources */,
+				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7791DA92726768B00E0C934 /* UIViewController+Extensions.swift in Sources */,
 				B7791DB12726768B00E0C934 /* SIMD3+Extensions.swift in Sources */,
 				B7791D7C2726762100E0C934 /* NSPointerArray+Extensions.m in Sources */,
