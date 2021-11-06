@@ -12,8 +12,8 @@ extension Binding {
         Binding(
             get: { self.wrappedValue },
             set: { newValue in
-                self.wrappedValue = newValue
                 handler(newValue)
+                self.wrappedValue = newValue
             }
         )
     }

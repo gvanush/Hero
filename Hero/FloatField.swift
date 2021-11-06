@@ -7,17 +7,6 @@
 
 import SwiftUI
 
-fileprivate struct Params {
-    static let height = 75.0
-    static let stepperPadding = 4.0
-    static let cornerRadius = 11.0
-    static let rulerUnitSize = 10.0
-    static let rulerAdditionalUnitCount = 10
-    static let pointerWidth = 1.0
-    static let pointerHeight = 32.0
-    static let scrollMinInitialSpeed = 100.0
-}
-
 struct FloatField: View {
     
     enum Scale: Double, CaseIterable, Identifiable {
@@ -35,6 +24,17 @@ struct FloatField: View {
                 return "1 : 1"
             case ._10:
                 return "1 : 10"
+            }
+        }
+        
+        var maximumFractionDigits: Int {
+            switch self {
+            case ._0_1:
+                return 2
+            case ._1:
+                return 1
+            case ._10:
+                return 0
             }
         }
     }
@@ -56,22 +56,31 @@ struct FloatField: View {
     @State private var scrollAnimator: DisplayRefreshSync!
     @State private var scrollAnimationUtil = ScrollAnimationUtil()
     
-    private let formatter: Formatter?
+    @State private var formatter: Formatter
+    
     typealias FormatterSubjectProvider = (Double) -> NSObject
     private let formatterSubjectProvider: FormatterSubjectProvider?
+    
+    @State var feedbackGenerator = UISelectionFeedbackGenerator()
         
     init(value: Binding<Double>, scale: Binding<Scale>) {
         _value = value
         _scale = scale
-        self.formatter = nil
+        self.formatter = NumberFormatter()
         self.formatterSubjectProvider = nil
+        
+        numberFormatter.roundingMode = .floor
+        numberFormatter.maximumFractionDigits = self.scale.maximumFractionDigits
     }
     
-    init(value: Binding<Double>, scale: Binding<Scale>, formatter: Formatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
+    init(value: Binding<Double>, scale: Binding<Scale>, measurementFormatter: MeasurementFormatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
         _value = value
         _scale = scale
-        self.formatter = formatter
+        self.formatter = measurementFormatter
         self.formatterSubjectProvider = formatterSubjectProvider
+        
+        numberFormatter.roundingMode = .floor
+        numberFormatter.maximumFractionDigits = self.scale.maximumFractionDigits
     }
     
     var body: some View {
@@ -80,51 +89,85 @@ struct FloatField: View {
                 valueView
                 HStack(alignment: .top) {
                     ScalePicker(scale: $scale)
+                        .opacity(state == .dragging || state == .scrolling ? 0.0 : 1.0)
                     Spacer()
-                    stepper
                 }
-                .padding(Params.stepperPadding)
+                .padding(Self.controlsPadding)
             }
-            ZStack {
-                Color.secondary
-                    .frame(idealWidth: Params.pointerWidth, maxHeight: .infinity)
-                    .fixedSize(horizontal: true, vertical: false)
-                Ruler(unitSize: Params.rulerUnitSize, additionalUnitsCount: Params.rulerAdditionalUnitCount)
-                    .offset(x: rulerOffsetX, y: 0.0)
-            }
-            .contentShape(Rectangle())
-            .gesture(dragGesture())
+            scroller
         }
-        .frame(maxWidth: .infinity, idealHeight: Params.height)
+        .frame(maxWidth: .infinity, idealHeight: Self.height)
         .fixedSize(horizontal: false, vertical: true)
         .background(Material.thin)
-        .cornerRadius(Params.cornerRadius, corners: [.topLeft, .topRight])
-        .overlay(BezierRoundedRectangle(radius: Params.cornerRadius, corners: [.topLeft, .topRight]).stroke(Color.orange, lineWidth: 1.0))
+        .cornerRadius(Self.cornerRadius)
+        .overlay(RoundedRectangle(cornerRadius: Self.cornerRadius).stroke(Color.orange, lineWidth: 1.0))
         .onAppear {
             scrollAnimator = DisplayRefreshSync(update: { time in
                 assert(state == .scrolling)
-                value = dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: time))
+                updateValue(dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: time)))
             }, completion: {
                 assert(state == .scrolling)
                 withAnimation {
                     state = .idle
                 }
             })
+            feedbackGenerator.prepare()
         }
         .onDisappear {
             stopScrolling()
         }
         .onChange(of: scale) { _ in
             stopScrolling()
+            updateFormatter(maximumFractionDigits: scale.maximumFractionDigits)
+            // NOTE: This is needed because updating formatter does not trigger value text refresh
+            updateValue(value.nextUp)
         }
+        .onChange(of: value) { [value] newValue in
+            guard state == .dragging || state == .scrolling else { return }
+            
+            let playFeedback = {
+                feedbackGenerator.selectionChanged()
+                feedbackGenerator.prepare()
+            }
+            
+            if newValue > value {
+                if floor(value / scale.rawValue) != floor(newValue / scale.rawValue) {
+                    playFeedback()
+                }
+            } else {
+                if ceil(value / scale.rawValue) != ceil(newValue / scale.rawValue) {
+                    playFeedback()
+                }
+            }
+        }
+    }
+    
+    var scroller: some View {
+        ZStack {
+            HStack(alignment: .bottom, spacing: 16.0) {
+                Text("-")
+                    .frame(width: 10.0, alignment: .center)
+                Ruler(unitSize: Self.rulerUnitSize, additionalUnitsCount: Self.rulerAdditionalUnitCount)
+                    .offset(x: rulerOffsetX, y: 0.0)
+                    .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
+                Text("+")
+                    .frame(width: 10.0, alignment: .center)
+            }
+            .padding(.horizontal, 8.0)
+            Color.secondary
+                .frame(idealWidth: Self.pointerWidth, maxHeight: .infinity)
+                .fixedSize(horizontal: true, vertical: false)
+        }
+        .contentShape(Rectangle())
+        .gesture(dragGesture())
     }
     
     var valueView: some View {
         let valueText = { () -> Text in
-            if let formatter = formatter {
+            if formatter is MeasurementFormatter {
                 return Text(formatterSubjectProvider!(value), formatter: formatter)
             } else {
-                return Text("\(value)")
+                return Text(NSNumber(value: value), formatter: formatter)
             }
         }
         
@@ -134,16 +177,6 @@ struct FloatField: View {
                 .foregroundColor(.secondary)
             Spacer()
         }
-    }
-    
-    var stepper: some View {
-        Stepper(value: $value, label: { EmptyView() }, onEditingChanged: { started in
-            withAnimation {
-                state = (started ? .stepping : .idle)
-            }
-        })
-            .opacity(state == .dragging || state == .scrolling ? 0.0 : 1.0)
-            .labelsHidden()
     }
     
     func dragGesture() -> some Gesture {
@@ -169,7 +202,7 @@ struct FloatField: View {
                 }
                 
                 if state == .dragging {
-                    value = dragBaseValue + deltaValue(translation: dragValue.translation.width - dragInitialTranslation)
+                    updateValue(dragBaseValue + deltaValue(translation: dragValue.translation.width - dragInitialTranslation))
                 }
                 
             }
@@ -178,7 +211,7 @@ struct FloatField: View {
                 guard state == .dragging else { return }
                     
                 let initialSpeed = dragValue.scrollInitialSpeedX(decelerationRate: scrollAnimationUtil.decelerationRate)
-                if abs(initialSpeed) < Params.scrollMinInitialSpeed {
+                if abs(initialSpeed) < Self.scrollMinInitialSpeed {
                     // NOTE: Not setting the value matching drag last translation because
                     // it becomes very hard to stick to certain desired value since during
                     // relasing finger some undesired drag happens nearly unavoidably
@@ -189,10 +222,10 @@ struct FloatField: View {
                 }
                 
                 let translation = dragValue.translation.width - dragInitialTranslation
-                value = dragBaseValue + deltaValue(translation: translation)
+                updateValue(dragBaseValue + deltaValue(translation: translation))
                 
                 scrollAnimationUtil.initialValue = translation
-                scrollAnimationUtil.initialSpeed = initialSpeed
+                scrollAnimationUtil.initialSpeed = initialSpeed * 2.0
                 
                 withAnimation {
                     state = .scrolling
@@ -202,12 +235,48 @@ struct FloatField: View {
             }
     }
     
+    private func updateValue(_ newValue: Double) {
+        if newValue > value {
+            updateFormatter(roundingMode: .floor)
+        } else if newValue < value {
+            updateFormatter(roundingMode: .ceiling)
+        }
+        value = newValue
+    }
+    
+    private func updateFormatter(roundingMode: NumberFormatter.RoundingMode? = nil, maximumFractionDigits: Int? = nil) {
+        let numberFormatter = numberFormatter
+        let roundingMode = roundingMode ?? numberFormatter.roundingMode
+        let maximumFractionDigits = maximumFractionDigits ?? numberFormatter.maximumFractionDigits
+        
+        if let measurementFormatter = formatter as? MeasurementFormatter {
+            // NOTE: This is needed because measurement formatter is buggy in a sense that
+            // changing underlying number formatter directly does not have any effect
+            // after first formatting is requested, therefore new one is supllied
+            let newNumberFormatter = NumberFormatter()
+            newNumberFormatter.roundingMode = roundingMode
+            newNumberFormatter.maximumFractionDigits = maximumFractionDigits
+            measurementFormatter.numberFormatter = newNumberFormatter
+        } else {
+            numberFormatter.roundingMode = roundingMode
+            numberFormatter.maximumFractionDigits = maximumFractionDigits
+        }
+    }
+    
+    private var numberFormatter: NumberFormatter {
+        if let measurementFormatter = formatter as? MeasurementFormatter {
+            return measurementFormatter.numberFormatter
+        } else {
+            return formatter as! NumberFormatter
+        }
+    }
+    
     private func deltaValue(translation: CGFloat) -> Double {
-        -scale.rawValue * (translation / Params.rulerUnitSize)
+        -scale.rawValue * (translation / Self.rulerUnitSize)
     }
     
     private var rulerOffsetX: CGFloat {
-        -fmod(value / scale.rawValue, Double(Params.rulerAdditionalUnitCount)) * Params.rulerUnitSize
+        -fmod(value / scale.rawValue, Double(Self.rulerAdditionalUnitCount)) * Self.rulerUnitSize
     }
     
     private func stopScrolling() {
@@ -216,6 +285,15 @@ struct FloatField: View {
             state = .idle
         }
     }
+    
+    static let height = 75.0
+    static let controlsPadding = 4.0
+    static let cornerRadius = 11.0
+    static let rulerUnitSize = 20.0
+    static let rulerAdditionalUnitCount = 10
+    static let pointerWidth = 1.0
+    static let pointerHeight = 32.0
+    static let scrollMinInitialSpeed = 100.0
     
 }
 
@@ -234,11 +312,12 @@ fileprivate struct Ruler: View {
                 path.move(to: CGPoint(x: midX, y: geometry.size.height))
                 path.addLine(to: CGPoint(x: midX, y: geometry.size.height - heightFor(number)))
                 
+                let subUnitSize = 0.1 * unitSize
                 var baseX = 0.0
                 let halfWidth = CGFloat(additionalUnitsCount) * unitSize + 0.5 * geometry.size.width
                 while baseX <= halfWidth {
                     number += 1
-                    baseX = Double(number) * unitSize
+                    baseX = Double(number) * subUnitSize
                     
                     let y = geometry.size.height - heightFor(number)
                     
@@ -259,8 +338,8 @@ fileprivate struct Ruler: View {
         return Self.onesHeight
     }
     
-    static let onesHeight = 8.0
-    static let fivesHeight = 12.0
+    static let onesHeight = 2.0
+    static let fivesHeight = 4.0
     static let tensHeight = 16.0
 }
 

@@ -69,59 +69,23 @@ struct TransformView: View {
     
     var controls: some View {
         VStack(spacing: Self.controlsSpacing) {
-            FloatField(value: $activeValue.onChange(updateObject), scale: $scales[activeTool.rawValue], formatter: formatter, formatterSubjectProvider: formatterSubjectProvider)
+            floatField
                 .id(10 * activeTool.rawValue + axes[activeTool.rawValue].rawValue)
             PropertySelector(selected: $axes[activeTool.rawValue])
                 .id(activeTool.rawValue)
         }
     }
     
-    var formatter: Formatter {
-        
-        let maximumFractionDigits = { (scale: FloatField.Scale) -> Int in
-            switch scale {
-            case ._0_1:
-                return 2
-            case ._1:
-                return 1
-            case ._10:
-                return 0
-            }
-        }
-        
-        switch activeTool {
-        case .move:
-            let positionFormatter = NumberFormatter()
-            positionFormatter.numberStyle = .decimal
-            positionFormatter.maximumFractionDigits = maximumFractionDigits(scales[Tool.move.rawValue])
-            return positionFormatter
-        case .orient:
-            let rotationFormatter = MeasurementFormatter()
-            rotationFormatter.unitStyle = .short
-            rotationFormatter.numberFormatter.maximumFractionDigits = maximumFractionDigits(scales[Tool.orient.rawValue])
-            return rotationFormatter
-        case .scale:
-            let scaleFormatter = NumberFormatter()
-            scaleFormatter.numberStyle = .decimal
-            scaleFormatter.maximumFractionDigits = maximumFractionDigits(scales[Tool.scale.rawValue])
-            return scaleFormatter
-        }
-    }
-    
-    var formatterSubjectProvider: FloatField.FormatterSubjectProvider {
-        switch activeTool {
-        case .move:
-            return { value in
-                NSNumber(value: value)
-            }
-        case .orient:
-            return { value in
+    var floatField: FloatField {
+        if activeTool == .orient {
+            let angleFormatter = MeasurementFormatter()
+            angleFormatter.unitStyle = .short
+            return FloatField(value: $activeValue.onChange(updateObject), scale: $scales[activeTool.rawValue], measurementFormatter: angleFormatter, formatterSubjectProvider: { value in
                 Measurement<UnitAngle>(value: value, unit: .degrees) as NSObject
-            }
-        case .scale:
-            return { value in
-                NSNumber(value: value)
-            }
+            })
+                
+        } else {
+            return FloatField(value: $activeValue.onChange(updateObject), scale: $scales[activeTool.rawValue])
         }
     }
     
