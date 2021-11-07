@@ -223,7 +223,9 @@ struct FloatField: View {
                 updateValue(dragBaseValue + deltaValue(translation: translation))
                 
                 scrollAnimationUtil.initialValue = translation
-                scrollAnimationUtil.initialSpeed = initialSpeed * 2.0
+                // NOTE: This speed factor is tweaked such that a soft scrolling results
+                // to around 25 units of change while a hard one around 100
+                scrollAnimationUtil.initialSpeed = 2.8 * initialSpeed
                 
                 withAnimation {
                     state = .scrolling
