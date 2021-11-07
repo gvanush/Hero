@@ -85,16 +85,25 @@ struct FloatField: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            ZStack {
-                valueView
-                HStack(alignment: .top) {
-                    ScalePicker(scale: $scale)
-                        .opacity(state == .dragging || state == .scrolling ? 0.0 : 1.0)
-                    Spacer()
+            ZStack(alignment: .top) {
+                Ruler(unitSize: Self.rulerUnitSize, additionalUnitsCount: Self.rulerAdditionalUnitCount)
+                    .offset(x: rulerOffsetX, y: 0.0)
+                    .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
+                    .padding(.horizontal, Self.padding)
+                ZStack {
+                    HStack {
+                        ScalePicker(scale: $scale)
+                            .opacity(state == .dragging || state == .scrolling ? 0.0 : 1.0)
+                            
+                        Spacer()
+                    }
+                    valueView
                 }
-                .padding(Self.controlsPadding)
+                .padding(Self.padding)
+                pointer
             }
-            scroller
+            .contentShape(Rectangle())
+            .gesture(dragGesture())
         }
         .frame(maxWidth: .infinity, idealHeight: Self.height)
         .fixedSize(horizontal: false, vertical: true)
@@ -142,26 +151,6 @@ struct FloatField: View {
         }
     }
     
-    var scroller: some View {
-        ZStack {
-            HStack(alignment: .bottom, spacing: 16.0) {
-                Text("-")
-                    .frame(width: 10.0, alignment: .center)
-                Ruler(unitSize: Self.rulerUnitSize, additionalUnitsCount: Self.rulerAdditionalUnitCount)
-                    .offset(x: rulerOffsetX, y: 0.0)
-                    .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
-                Text("+")
-                    .frame(width: 10.0, alignment: .center)
-            }
-            .padding(.horizontal, 8.0)
-            Color.secondary
-                .frame(idealWidth: Self.pointerWidth, maxHeight: .infinity)
-                .fixedSize(horizontal: true, vertical: false)
-        }
-        .contentShape(Rectangle())
-        .gesture(dragGesture())
-    }
-    
     var valueView: some View {
         let valueText = { () -> Text in
             if formatter is MeasurementFormatter {
@@ -176,6 +165,15 @@ struct FloatField: View {
             valueText()
                 .foregroundColor(.secondary)
             Spacer()
+        }
+    }
+    
+    var pointer: some View {
+        VStack {
+            Spacer()
+            Color.secondary
+                .frame(width: Self.pointerWidth, height: Ruler.onesHeight * 2)
+                .shadow(radius: 1.0)
         }
     }
     
@@ -287,7 +285,7 @@ struct FloatField: View {
     }
     
     static let height = 75.0
-    static let controlsPadding = 4.0
+    static let padding = 4.0
     static let cornerRadius = 11.0
     static let rulerUnitSize = 20.0
     static let rulerAdditionalUnitCount = 10
@@ -333,14 +331,14 @@ fileprivate struct Ruler: View {
     }
     
     func heightFor(_ number: Int) -> CGFloat {
-        if number % 10 == 0 { return Self.tensHeight }
-        if number % 5 == 0 { return Self.fivesHeight }
-        return Self.onesHeight
+        if number % 10 == 0 { return Self.onesHeight }
+        if number % 5 == 0 { return Self.oneFifthsHeight }
+        return Self.oneTenthsHeight
     }
     
-    static let onesHeight = 2.0
-    static let fivesHeight = 4.0
-    static let tensHeight = 16.0
+    static let oneTenthsHeight = 2.0
+    static let oneFifthsHeight = 4.0
+    static let onesHeight = 16.0
 }
 
 fileprivate struct ScalePicker: View {
@@ -353,8 +351,7 @@ fileprivate struct ScalePicker: View {
             }
         }
         .frame(width: Self.widrh, height: Self.height, alignment: .center)
-        .background(Color.systemFill)
-        .cornerRadius(Self.cornerRadius)
+        .background(Color.systemFill.cornerRadius(Self.cornerRadius).shadow(radius: Self.shadowRadius))
         .accentColor(.primary)
         .pickerStyle(.menu)
     }
@@ -362,6 +359,7 @@ fileprivate struct ScalePicker: View {
     static let widrh = 50.0
     static let height = 29.0
     static let cornerRadius = 7.0
+    static let shadowRadius = 1.0
 }
 
 struct FloatField_Previews: PreviewProvider {
