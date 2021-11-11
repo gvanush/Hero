@@ -338,8 +338,8 @@ fileprivate struct Ruler: View {
         return Self.oneTenthsHeight
     }
     
-    static let oneTenthsHeight = 2.0
-    static let oneFifthsHeight = 4.0
+    static let oneTenthsHeight = 3.0
+    static let oneFifthsHeight = 6.0
     static let onesHeight = 16.0
 }
 
