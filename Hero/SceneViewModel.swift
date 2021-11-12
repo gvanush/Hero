@@ -8,6 +8,39 @@
 import SwiftUI
 
 class SceneViewModel: ObservableObject {
+    let scene = SPTScene()
+    
+    func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SceneObject? {
+        nil
+    }
+    
+    func discardSelection() {
+    }
+    
+    func select(_ object: SceneObject) {
+    }
+    
+    var selectedObject: SceneObject? {
+        nil
+    }
+    
+    func orbit(dragValue: DragGesture.Value) {
+    }
+    
+    func finishOrbit(dragValue: DragGesture.Value) {
+    }
+    
+    func zoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
+    }
+    
+    func finishZoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
+        
+    }
+    
+}
+
+// TODO
+/*class SceneViewModel: ObservableObject {
     
     let scene = Scene()
     var viewCameraSphericalCoord = spt_make_spherical_coord()
@@ -160,3 +193,4 @@ class SceneViewModel: ObservableObject {
     }
     
 }
+*/
