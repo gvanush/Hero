@@ -723,6 +723,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Spirit/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = ./entt/src;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -756,6 +757,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Hero/Spirit/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = ./entt/src;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

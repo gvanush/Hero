@@ -7,7 +7,10 @@
 
 #import "SPTScene.h"
 
+#include <entt/entt.hpp>
+
 @interface SPTScene () {
+    entt::registry _registry;
 }
 
 @end
