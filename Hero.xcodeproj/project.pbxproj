@@ -16,6 +16,10 @@
 		B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatField.swift */; };
 		B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */; };
 		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
+		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
+		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
+		B73245B6274124C100708909 /* MeshRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B4274124C100708909 /* MeshRenderer.mm */; };
+		B73245B9274128FD00708909 /* Spirit.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B7274128FD00708909 /* Spirit.mm */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -77,7 +81,7 @@
 		B70A3109272F1502003432C4 /* AnimationCompletionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionObserver.swift; sourceTree = "<group>"; };
 		B7104BB727286B3700582DCA /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatedTapGesture.swift; sourceTree = "<group>"; };
-		B7104BC0272931AB00582DCA /* Vec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vec.h; sourceTree = "<group>"; };
+		B7104BC0272931AB00582DCA /* SIMDUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SIMDUtil.h; sourceTree = "<group>"; };
 		B7104BC1272B00B700582DCA /* PropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySelector.swift; sourceTree = "<group>"; };
 		B7104BC3272B069F00582DCA /* ColorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtil.swift; sourceTree = "<group>"; };
 		B7104BC5272B1D3300582DCA /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
@@ -89,6 +93,15 @@
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		B73245AA273EB7D400708909 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		B73245AE27410CA400708909 /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
+		B73245AF27410CA400708909 /* Scene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
+		B73245B12741188500708909 /* SPTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTViewController.h; sourceTree = "<group>"; };
+		B73245B22741188500708909 /* SPTViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTViewController.mm; sourceTree = "<group>"; };
+		B73245B4274124C100708909 /* MeshRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MeshRenderer.mm; sourceTree = "<group>"; };
+		B73245B5274124C100708909 /* MeshRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MeshRenderer.hpp; sourceTree = "<group>"; };
+		B73245B7274128FD00708909 /* Spirit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Spirit.mm; sourceTree = "<group>"; };
+		B73245B8274128FD00708909 /* Spirit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spirit.h; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -203,13 +216,10 @@
 		B7104BBB2729261300582DCA /* Spirit */ = {
 			isa = PBXGroup;
 			children = (
-				B7791D4B2726762100E0C934 /* SphericalCoord.c */,
-				B7791D5F2726762100E0C934 /* SphericalCoord.h */,
-				B7104BC0272931AB00582DCA /* Vec.h */,
-				B7791D522726762100E0C934 /* SPTView.swift */,
-				B73245A4273D92BF00708909 /* SPTScene.h */,
-				B73245A5273D92BF00708909 /* SPTScene.mm */,
-				B73245A7273E677B00708909 /* Bridging-Header.h */,
+				B73245BB274147F300708909 /* View */,
+				B7E481C227414867003DA5B1 /* Scene */,
+				B7E481C42741498F003DA5B1 /* Rendering */,
+				B7E481C627414A8F003DA5B1 /* Base */,
 			);
 			path = Spirit;
 			sourceTree = "<group>";
@@ -257,6 +267,16 @@
 				B7791D1427258F7500E0C934 /* Hero.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B73245BB274147F300708909 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B7791D522726762100E0C934 /* SPTView.swift */,
+				B73245B12741188500708909 /* SPTViewController.h */,
+				B73245B22741188500708909 /* SPTViewController.mm */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		B7791D1527258F7500E0C934 /* Hero */ = {
@@ -332,13 +352,10 @@
 				B7791D4A2726762100E0C934 /* SceneObject.hpp */,
 				B7791D4C2726762100E0C934 /* GeometryUtils.hpp */,
 				B7791D4D2726762100E0C934 /* GeometryUtils_Common.h */,
-				B7791D4E2726762100E0C934 /* Shaders.metal */,
 				B7791D4F2726762100E0C934 /* Component.mm */,
 				B7791D502726762100E0C934 /* ObjCObjectRegistry.hpp */,
 				B7791D512726762100E0C934 /* SceneObject.h */,
 				B7791D532726762100E0C934 /* GraphicsCoreUtils.hpp */,
-				B7791D542726762100E0C934 /* RenderingContext.m */,
-				B7791D552726762100E0C934 /* ShaderTypes.h */,
 				B7791D562726762100E0C934 /* ComponentTypeInfo.cpp */,
 				B7791D572726762100E0C934 /* Math.hpp */,
 				B7791D582726762100E0C934 /* Component.hpp */,
@@ -356,7 +373,6 @@
 				B7791D652726762100E0C934 /* Spirit-Bridging-Header.h */,
 				B7791D672726762100E0C934 /* RendererFlag.h */,
 				B7791D682726762100E0C934 /* NSPointerArray+Extensions.h */,
-				B7791D6A2726762100E0C934 /* RenderingContext.h */,
 				B7791D6B2726762100E0C934 /* CoreGraphics+Extensions.h */,
 				B7791D6C2726762100E0C934 /* Renderer.mm */,
 				B7791D6D2726762100E0C934 /* Scene.hpp */,
@@ -439,6 +455,44 @@
 			path = os;
 			sourceTree = "<group>";
 		};
+		B7E481C227414867003DA5B1 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				B73245A5273D92BF00708909 /* SPTScene.mm */,
+				B73245A4273D92BF00708909 /* SPTScene.h */,
+				B73245AE27410CA400708909 /* Scene.cpp */,
+				B73245AF27410CA400708909 /* Scene.hpp */,
+			);
+			name = Scene;
+			sourceTree = "<group>";
+		};
+		B7E481C42741498F003DA5B1 /* Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				B73245B4274124C100708909 /* MeshRenderer.mm */,
+				B7791D542726762100E0C934 /* RenderingContext.m */,
+				B7791D6A2726762100E0C934 /* RenderingContext.h */,
+				B7791D4E2726762100E0C934 /* Shaders.metal */,
+				B73245B5274124C100708909 /* MeshRenderer.hpp */,
+				B7791D552726762100E0C934 /* ShaderTypes.h */,
+			);
+			name = Rendering;
+			sourceTree = "<group>";
+		};
+		B7E481C627414A8F003DA5B1 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				B7791D4B2726762100E0C934 /* SphericalCoord.c */,
+				B7791D5F2726762100E0C934 /* SphericalCoord.h */,
+				B73245B7274128FD00708909 /* Spirit.mm */,
+				B7104BC0272931AB00582DCA /* SIMDUtil.h */,
+				B73245A7273E677B00708909 /* Bridging-Header.h */,
+				B73245AA273EB7D400708909 /* Common.h */,
+				B73245B8274128FD00708909 /* Spirit.h */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -514,6 +568,7 @@
 				B7791D742726762100E0C934 /* Transform.mm in Sources */,
 				B7791D8C2726762100E0C934 /* Scene.mm in Sources */,
 				B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */,
+				B73245B6274124C100708909 /* MeshRenderer.mm in Sources */,
 				B7791D892726762100E0C934 /* SceneObject.cpp in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
 				B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */,
@@ -523,6 +578,7 @@
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */,
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
+				B73245B027410CA400708909 /* Scene.cpp in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
@@ -543,6 +599,7 @@
 				B7791DA92726768B00E0C934 /* UIViewController+Extensions.swift in Sources */,
 				B7791DB12726768B00E0C934 /* SIMD3+Extensions.swift in Sources */,
 				B7791D7C2726762100E0C934 /* NSPointerArray+Extensions.m in Sources */,
+				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B7791DB02726768B00E0C934 /* UITextField+Extensions.swift in Sources */,
 				B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */,
 				B7791D822726762100E0C934 /* Component.mm in Sources */,
@@ -557,6 +614,7 @@
 				B7791D872726762100E0C934 /* Transform.cpp in Sources */,
 				B7791DAE2726768B00E0C934 /* UIApplication+Extensions.swift in Sources */,
 				B7791D252725F45F00E0C934 /* TransformView.swift in Sources */,
+				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791DB827267BB900E0C934 /* Updater.swift in Sources */,
 				B7791D8B2726762100E0C934 /* ObjCObjectRegistry.cpp in Sources */,
 				B7791DAA2726768B00E0C934 /* UIView+Extensions.swift in Sources */,

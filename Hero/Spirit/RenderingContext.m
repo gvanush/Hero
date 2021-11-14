@@ -14,7 +14,6 @@ static id<MTLDevice> __device;
 static id<MTLCommandQueue> __defaultCommandQueue;
 static id<MTLLibrary> __defaultLibrary;
 static id<MTLDepthStencilState> __defaultDepthStencilState;
-static CVMetalTextureCacheRef __defaultCVMetalTextureCache;
 static const MTLPixelFormat kColorPixelFormat = MTLPixelFormatBGRA8Unorm;
 static const MTLPixelFormat kDepthPixelFormat = MTLPixelFormatDepth32Float;
 
@@ -34,10 +33,6 @@ static const MTLPixelFormat kDepthPixelFormat = MTLPixelFormatDepth32Float;
     return __defaultDepthStencilState;
 }
 
-+(CVMetalTextureCacheRef)defaultCVMetalTextureCache {
-    return __defaultCVMetalTextureCache;
-}
-
 +(MTLPixelFormat) colorPixelFormat {
     return kColorPixelFormat;
 }
@@ -55,11 +50,6 @@ static const MTLPixelFormat kDepthPixelFormat = MTLPixelFormatDepth32Float;
     descr.depthWriteEnabled = YES;
     descr.depthCompareFunction = MTLCompareFunctionLess;
     __defaultDepthStencilState = [__device newDepthStencilStateWithDescriptor: descr];
-    
-    if (CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, __device, nil, &__defaultCVMetalTextureCache) != kCVReturnSuccess) {
-        // TODO
-        NSAssert(false, @"");
-    }
 }
 
 @end

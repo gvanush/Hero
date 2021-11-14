@@ -6,7 +6,7 @@
 //
 
 #include "SphericalCoord.h"
-#include "Vec.h"
+#include "SIMDUtil.h"
 
 spt_spherical_coord spt_make_spherical_coord(void) {
     spt_spherical_coord coord;

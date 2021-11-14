@@ -26,7 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 +(id<MTLCommandQueue>) defaultCommandQueue;
 +(id<MTLLibrary>) defaultLibrary;
 +(id<MTLDepthStencilState>) defaultDepthStencilState;
-+(CVMetalTextureCacheRef) defaultCVMetalTextureCache;
 
 +(MTLPixelFormat) colorPixelFormat;
 +(MTLPixelFormat) depthPixelFormat;

@@ -11,7 +11,7 @@ import SwiftUI
 struct HeroApp: App {
     
     init() {
-        RenderingContext.setup()
+        spt_init()
     }
     
     var body: some SwiftUI.Scene {
