@@ -44,12 +44,14 @@ struct projection_matrix {
 
 simd_float4x4 get_projection_matrix(spt_entity entity) {
     auto& registry = static_cast<spt::Scene*>(entity.sceneHandle)->registry;
-    auto& projectionMatrix = registry.get<spt::projection_matrix>(entity.id);
-    if(projectionMatrix.isDirty) {
-        projectionMatrix.matrix = spt_make_perspective_matrix(registry.get<spt_perspective_camera>(entity.id));
-        projectionMatrix.isDirty = false;
+    if(auto projectionMatrix = registry.try_get<projection_matrix>(entity.id); projectionMatrix) {
+        if(projectionMatrix->isDirty) {
+            projectionMatrix->matrix = spt_make_perspective_matrix(registry.get<spt_perspective_camera>(entity.id));
+            projectionMatrix->isDirty = false;
+        }
+        return projectionMatrix->matrix;
     }
-    return projectionMatrix.matrix;
+    return matrix_identity_float4x4;
 }
 
 }

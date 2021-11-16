@@ -11,6 +11,7 @@
 #include "Scene.hpp"
 #include "Camera.h"
 #include "Camera.hpp"
+#include "Transformation.hpp"
 
 @interface SPTViewController () <MTKViewDelegate>
 
@@ -63,7 +64,7 @@
     self.renderingContext.renderCommandEncoder = renderEncoder;
     
     assert(spt_is_valid(self.viewCameraEntity));
-    self.renderingContext.projectionViewMatrix = spt::get_projection_matrix(self.viewCameraEntity);
+    self.renderingContext.projectionViewMatrix = simd_mul(simd_inverse(spt::get_transformation_matrix(self.viewCameraEntity)), spt::get_projection_matrix(self.viewCameraEntity));
     
     static_cast<spt::Scene*>(self.scene.cpp)->update((__bridge void*) self.renderingContext);
     

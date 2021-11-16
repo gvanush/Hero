@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Common.h"
+#include "Common.hpp"
 #include "MeshRenderer.hpp"
 
 #include <entt/entt.hpp>
@@ -21,7 +22,7 @@ struct Scene {
     
     void update(void* renderingContext);
     
-    entt::basic_registry<spt_entity_id> registry;
+    spt::registry registry;
     MeshRenderer meshRenderer;
 };
 

@@ -75,7 +75,7 @@
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
 		B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */; };
 		B7D19EBC273306F5005C9F82 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EBB273306F4005C9F82 /* Line.swift */; };
-		B7E481CB274183BD003DA5B1 /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481C9274183BD003DA5B1 /* Position.cpp */; };
+		B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481C9274183BD003DA5B1 /* Transformation.cpp */; };
 		B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481CD2742307B003DA5B1 /* Camera.cpp */; };
 		B7E481D22742EE20003DA5B1 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Common.cpp */; };
 /* End PBXBuildFile section */
@@ -203,12 +203,14 @@
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
 		B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureUtil.swift; sourceTree = "<group>"; };
 		B7D19EBB273306F4005C9F82 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
-		B7E481C9274183BD003DA5B1 /* Position.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Position.cpp; sourceTree = "<group>"; };
-		B7E481CA274183BD003DA5B1 /* Position.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
+		B7E481C9274183BD003DA5B1 /* Transformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
+		B7E481CA274183BD003DA5B1 /* Transformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transformation.h; sourceTree = "<group>"; };
 		B7E481CD2742307B003DA5B1 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		B7E481CE2742307B003DA5B1 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		B7E481D02742DAF5003DA5B1 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		B7E481D12742EE20003DA5B1 /* Common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
+		B7E481D327439EC2003DA5B1 /* Transformation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Transformation.hpp; sourceTree = "<group>"; };
+		B7E481D42743A1D7003DA5B1 /* Common.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Common.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -499,8 +501,9 @@
 				B7104BC0272931AB00582DCA /* SIMDUtil.h */,
 				B73245A7273E677B00708909 /* Bridging-Header.h */,
 				B73245AA273EB7D400708909 /* Common.h */,
-				B73245B8274128FD00708909 /* Spirit.h */,
 				B7E481D12742EE20003DA5B1 /* Common.cpp */,
+				B73245B8274128FD00708909 /* Spirit.h */,
+				B7E481D42743A1D7003DA5B1 /* Common.hpp */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -508,8 +511,9 @@
 		B7E481C82741837D003DA5B1 /* Transformation */ = {
 			isa = PBXGroup;
 			children = (
-				B7E481C9274183BD003DA5B1 /* Position.cpp */,
-				B7E481CA274183BD003DA5B1 /* Position.h */,
+				B7E481C9274183BD003DA5B1 /* Transformation.cpp */,
+				B7E481CA274183BD003DA5B1 /* Transformation.h */,
+				B7E481D327439EC2003DA5B1 /* Transformation.hpp */,
 			);
 			name = Transformation;
 			sourceTree = "<group>";
@@ -655,7 +659,7 @@
 				B7791D7E2726762100E0C934 /* UIRepresentable.mm in Sources */,
 				B7791D7A2726762100E0C934 /* Math.cpp in Sources */,
 				B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */,
-				B7E481CB274183BD003DA5B1 /* Position.cpp in Sources */,
+				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7791DAC2726768B00E0C934 /* UIImage+Extensions.swift in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */,

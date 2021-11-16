@@ -16,5 +16,5 @@ typedef struct {
     float latitude; // relative to y
 } spt_spherical_coord;
 
-spt_spherical_coord spt_make_spherical_coord(void);
-simd_float3 spt_position(spt_spherical_coord coord);
+//spt_spherical_coord spt_make_spherical_coord(void);
+//simd_float3 spt_position(spt_spherical_coord coord);

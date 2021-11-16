@@ -51,6 +51,7 @@ class SceneViewModel: ObservableObject {
     private func setupCamera() {
         
         viewCameraEntity = scene.makeEntity()
+        spt_make_position(viewCameraEntity, 50.0, 0.0, 0.0)
         spt_make_perspective_camera(viewCameraEntity, Float.pi / 3.0, 1.0, 0.1, 1000.0)
         
         /*scene.viewCamera.camera!.near = 0.1
