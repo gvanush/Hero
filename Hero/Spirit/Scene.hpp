@@ -15,14 +15,12 @@
 namespace spt {
 
 struct Scene {
-public:
     
     spt_entity makeEntity();
     static void destroyEntity(spt_entity entity);
     
     void update(void* renderingContext);
     
-private:
     entt::basic_registry<spt_entity_id> registry;
     MeshRenderer meshRenderer;
 };

@@ -17,9 +17,9 @@ static id<MTLRenderPipelineState> __pipelineState;
 static const AAPLVertex triangleVertices[] =
 {
     // 2D positions,    RGBA colors
-    { {  250,  -250 }, { 1, 0, 0, 1 } },
-    { { -250,  -250 }, { 0, 1, 0, 1 } },
-    { {    0,   250 }, { 0, 0, 1, 1 } },
+    { {  50,  -50, 500.0 }, { 1, 0, 0, 1 } },
+    { { -50,  -50, 500.0 }, { 0, 1, 0, 1 } },
+    { {    0,  50, 500.0 }, { 0, 0, 1, 1 } },
 };
 
 namespace spt {
@@ -31,22 +31,19 @@ void MeshRenderer::render(void* renderingContext) {
     // Create a render command encoder.
     id<MTLRenderCommandEncoder> renderEncoder = rc.renderCommandEncoder;
     
-    _viewportSize = simd_make_uint2(rc.viewportSize.x, rc.viewportSize.y);
-
-    // Set the region of the drawable to draw into.
-    [renderEncoder setViewport:(MTLViewport){0.0, 0.0, static_cast<double>(_viewportSize.x), static_cast<double>(_viewportSize.y), 0.0, 1.0 }];
+    _uniforms.viewportSize = rc.viewportSize;
+    _uniforms.projectionViewMatrix = rc.projectionViewMatrix;
     
     [renderEncoder setRenderPipelineState: __pipelineState];
 
     // Pass in the parameter data.
+    [renderEncoder setVertexBytes: &_uniforms
+                           length:sizeof(_uniforms)
+                          atIndex:kVertexInputIndexUniforms];
+
     [renderEncoder setVertexBytes:triangleVertices
                            length:sizeof(triangleVertices)
                           atIndex:AAPLVertexInputIndexVertices];
-    
-    [renderEncoder setVertexBytes:&_viewportSize
-                           length:sizeof(_viewportSize)
-                          atIndex:AAPLVertexInputIndexViewportSize];
-
     // Draw the triangle.
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle
                       vertexStart:0

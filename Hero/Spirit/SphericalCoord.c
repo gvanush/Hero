@@ -23,5 +23,4 @@ simd_float3 spt_position(spt_spherical_coord coord) {
     float latSin = sinf(coord.latitude);
     float latCos = cosf(coord.latitude);
     return coord.center + coord.radius * simd_make_float3(lngSin * latSin, latCos, lngCos * latSin);
-
 }

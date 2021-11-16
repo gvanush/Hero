@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "ShaderTypes.h"
+
 #include <simd/simd.h>
 
 namespace spt {
@@ -19,7 +21,7 @@ public:
     static void init();
     
 private:
-    simd_uint2 _viewportSize;
+    Uniforms _uniforms;
 };
 
 }

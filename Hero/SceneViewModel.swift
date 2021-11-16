@@ -10,6 +10,16 @@ import SwiftUI
 class SceneViewModel: ObservableObject {
     let scene = SPTScene()
     
+    init() {
+        setupCamera()
+    }
+    
+    private(set) var viewCameraEntity = spt_k_null_entity {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SceneObject? {
         nil
     }
@@ -35,6 +45,23 @@ class SceneViewModel: ObservableObject {
     
     func finishZoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
         
+    }
+    
+    // MARK: Scene setup
+    private func setupCamera() {
+        
+        viewCameraEntity = scene.makeEntity()
+        spt_make_perspective_camera(viewCameraEntity, Float.pi / 3.0, 1.0, 0.1, 1000.0)
+        
+        /*scene.viewCamera.camera!.near = 0.1
+        scene.viewCamera.camera!.far = 1000.0
+        scene.viewCamera.camera!.fovy = Float.pi / 3.0
+        scene.viewCamera.camera!.orthographicScale = 70.0
+        
+        viewCameraSphericalCoord.radius = 100.0
+        viewCameraSphericalCoord.longitude = Float.pi
+        viewCameraSphericalCoord.latitude = 0.5 * Float.pi
+        scene.viewCamera.transform!.position = spt_position(viewCameraSphericalCoord)*/
     }
     
 }

@@ -19,7 +19,7 @@ struct SceneView: View {
         
         ZStack {
             GeometryReader { geometry in
-                SPTView(scene: model.scene, clearColor: $clearColor)
+                SPTView(scene: model.scene, clearColor: clearColor, viewCameraEntity: model.viewCameraEntity)
                     .gesture(orbitDragGesture)
                     .onLocatedTapGesture { location in
                         if let object = model.pickObjectAt(location, viewportSize: geometry.size) {

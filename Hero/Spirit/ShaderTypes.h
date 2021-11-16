@@ -45,6 +45,6 @@ typedef enum AAPLVertexInputIndex
 //  vertex shader expects.
 typedef struct
 {
-    vector_float2 position;
+    vector_float3 position;
     vector_float4 color;
 } AAPLVertex;

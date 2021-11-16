@@ -5,6 +5,8 @@
 #import "SPTScene.h"
 #import "SPTViewController.h"
 #import "Spirit.h"
+#import "Camera.h"
+#import "Common.h"
 
 // TODO
 #import "Renderer.h"

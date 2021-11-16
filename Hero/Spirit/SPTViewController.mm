@@ -9,6 +9,8 @@
 #import "RenderingContext.h"
 
 #include "Scene.hpp"
+#include "Camera.h"
+#include "Camera.hpp"
 
 @interface SPTViewController () <MTKViewDelegate>
 
@@ -52,12 +54,16 @@
     self.renderingContext.renderPassDescriptor = renderPassDescriptor;
     
     id<MTLCommandBuffer> commandBuffer = [[RenderingContext defaultCommandQueue] commandBuffer];
-    commandBuffer.label = @"MyCommand";
+    commandBuffer.label = @"MainCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
     
     id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
-    renderEncoder.label = @"MyRenderEncoder";
+    renderEncoder.label = @"MainRenderEncoder";
+    [renderEncoder setViewport: MTLViewport{0.0, 0.0, self.renderingContext.viewportSize.x, self.renderingContext.viewportSize.y, 0.0, 1.0 }];
     self.renderingContext.renderCommandEncoder = renderEncoder;
+    
+    assert(spt_is_valid(self.viewCameraEntity));
+    self.renderingContext.projectionViewMatrix = spt::get_projection_matrix(self.viewCameraEntity);
     
     static_cast<spt::Scene*>(self.scene.cpp)->update((__bridge void*) self.renderingContext);
     
@@ -76,7 +82,8 @@
 // MARK: Utils
 -(void) updateViewportSize: (CGSize) size {
     self.renderingContext.viewportSize = simd_make_float2(size.width, size.height);
-//    scene.viewCamera.camera!.aspectRatio = Float(size.width / size.height)
+    assert(spt_is_valid(self.viewCameraEntity));
+    spt_update_perspective_camera_aspect_ratio(self.viewCameraEntity, size.width / size.height);
 }
 
 @end
