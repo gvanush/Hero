@@ -7,7 +7,7 @@
 #import "Spirit.h"
 #import "Transformation.h"
 #import "Camera.h"
-#import "Common.h"
+#import "Base.h"
 
 // TODO
 #import "Renderer.h"
@@ -17,5 +17,4 @@
 #import "SphericalCoord.h"
 #import "LineRenderer.h"
 #import "TextureRenderer.h"
-#import "RenderingContext.h"
 #import "UIRepresentableObserver.h"

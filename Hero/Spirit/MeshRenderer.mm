@@ -7,7 +7,7 @@
 
 #include "MeshRenderer.hpp"
 
-#import "RenderingContext.h"
+#import "SPTRenderingContext.h"
 #import "ShaderTypes.h"
 
 #import <Metal/Metal.h>
@@ -26,7 +26,7 @@ namespace spt {
 
 void MeshRenderer::render(void* renderingContext) {
     
-    RenderingContext* rc = (__bridge RenderingContext*) renderingContext;
+    SPTRenderingContext* rc = (__bridge SPTRenderingContext*) renderingContext;
 
     // Create a render command encoder.
     id<MTLRenderCommandEncoder> renderEncoder = rc.renderCommandEncoder;
@@ -53,18 +53,18 @@ void MeshRenderer::render(void* renderingContext) {
 
 void MeshRenderer::init() {
     
-    id<MTLFunction> vertexFunction = [[RenderingContext defaultLibrary] newFunctionWithName:@"vertexShader"];
-    id<MTLFunction> fragmentFunction = [[RenderingContext defaultLibrary] newFunctionWithName:@"fragmentShader"];
+    id<MTLFunction> vertexFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName:@"vertexShader"];
+    id<MTLFunction> fragmentFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName:@"fragmentShader"];
 
     // Configure a pipeline descriptor that is used to create a pipeline state.
     MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
     pipelineStateDescriptor.label = @"Simple Pipeline";
     pipelineStateDescriptor.vertexFunction = vertexFunction;
     pipelineStateDescriptor.fragmentFunction = fragmentFunction;
-    pipelineStateDescriptor.colorAttachments[0].pixelFormat = [RenderingContext colorPixelFormat];
+    pipelineStateDescriptor.colorAttachments[0].pixelFormat = [SPTRenderingContext colorPixelFormat];
 
     NSError *error;
-    __pipelineState = [[RenderingContext device] newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
+    __pipelineState = [[SPTRenderingContext device] newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
                                                              error:&error];
             
     // Pipeline State creation could fail if the pipeline descriptor isn't set up properly.

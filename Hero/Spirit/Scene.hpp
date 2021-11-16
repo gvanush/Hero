@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Common.h"
-#include "Common.hpp"
+#include "Base.h"
+#include "Base.hpp"
 #include "MeshRenderer.hpp"
 
 #include <entt/entt.hpp>
@@ -17,21 +17,21 @@ namespace spt {
 
 struct Scene {
     
-    spt_entity makeEntity();
-    static void destroyEntity(spt_entity entity);
+    SPTObject makeEntity();
+    static void destroyEntity(SPTObject entity);
     
     void update(void* renderingContext);
     
-    spt::registry registry;
+    spt::Registry registry;
     MeshRenderer meshRenderer;
 };
 
-inline spt_entity Scene::makeEntity() {
-    return spt_entity { registry.create(), this };
+inline SPTObject Scene::makeEntity() {
+    return SPTObject { registry.create(), this };
 }
 
-inline void Scene::destroyEntity(spt_entity entity) {
-    static_cast<Scene*>(entity.sceneHandle)->registry.destroy(entity.id);
+inline void Scene::destroyEntity(SPTObject entity) {
+    static_cast<Scene*>(entity.sceneHandle)->registry.destroy(entity.entity);
 }
 
 }

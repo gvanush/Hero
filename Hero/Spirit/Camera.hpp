@@ -11,6 +11,6 @@
 
 namespace spt {
 
-simd_float4x4 get_projection_matrix(spt_entity entity);
+const simd_float4x4* GetProjectionMatrix(SPTObject entity);
 
 }

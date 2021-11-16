@@ -19,15 +19,15 @@
 
 @implementation SPTScene
 
--(spt_entity) makeEntity {
+-(SPTObject) makeEntity {
     return _scene.makeEntity();
 }
 
--(spt_scene_handle) cpp {
+-(SPTSceneHandle) cpp {
     return &_scene;
 }
 
-+(void) destroyEntity: (spt_entity) entity {
++(void) destroyEntity: (SPTObject) entity {
     spt::Scene::destroyEntity(entity);
 }
 

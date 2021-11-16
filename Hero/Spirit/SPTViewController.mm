@@ -6,7 +6,7 @@
 //
 
 #import "SPTViewController.h"
-#import "RenderingContext.h"
+#import "SPTRenderingContext.h"
 
 #include "Scene.hpp"
 #include "Camera.h"
@@ -22,7 +22,7 @@
 -(instancetype) initWithScene: (SPTScene*) scene {
     if (self = [super initWithNibName: nil bundle: nil]) {
         _scene = scene;
-        _renderingContext = [[RenderingContext alloc] init];
+        _renderingContext = [[SPTRenderingContext alloc] init];
     }
     return self;
 }
@@ -30,10 +30,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _mtkView = [[MTKView alloc] initWithFrame: self.view.bounds device: [RenderingContext device]];
+    _mtkView = [[MTKView alloc] initWithFrame: self.view.bounds device: [SPTRenderingContext device]];
     self.mtkView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.mtkView.autoResizeDrawable = YES;
-    self.mtkView.colorPixelFormat = [RenderingContext colorPixelFormat];
+    self.mtkView.colorPixelFormat = [SPTRenderingContext colorPixelFormat];
 //    mtkView.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
 //    _mtkView.presentsWithTransaction = YES
     self.mtkView.delegate = self;
@@ -54,7 +54,7 @@
     
     self.renderingContext.renderPassDescriptor = renderPassDescriptor;
     
-    id<MTLCommandBuffer> commandBuffer = [[RenderingContext defaultCommandQueue] commandBuffer];
+    id<MTLCommandBuffer> commandBuffer = [[SPTRenderingContext defaultCommandQueue] commandBuffer];
     commandBuffer.label = @"MainCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
     
@@ -63,8 +63,13 @@
     [renderEncoder setViewport: MTLViewport{0.0, 0.0, self.renderingContext.viewportSize.x, self.renderingContext.viewportSize.y, 0.0, 1.0 }];
     self.renderingContext.renderCommandEncoder = renderEncoder;
     
-    assert(spt_is_valid(self.viewCameraEntity));
-    self.renderingContext.projectionViewMatrix = simd_mul(simd_inverse(spt::get_transformation_matrix(self.viewCameraEntity)), spt::get_projection_matrix(self.viewCameraEntity));
+    assert(SPTIsValid(self.viewCameraEntity));
+    
+    auto tranMat = spt::getTransformationMatrix(self.viewCameraEntity);
+    auto projMat = spt::GetProjectionMatrix(self.viewCameraEntity);
+    assert(projMat);
+    
+    self.renderingContext.projectionViewMatrix = simd_mul((tranMat ? simd_inverse(*tranMat) : matrix_identity_float4x4), *projMat);
     
     static_cast<spt::Scene*>(self.scene.cpp)->update((__bridge void*) self.renderingContext);
     
@@ -83,8 +88,8 @@
 // MARK: Utils
 -(void) updateViewportSize: (CGSize) size {
     self.renderingContext.viewportSize = simd_make_float2(size.width, size.height);
-    assert(spt_is_valid(self.viewCameraEntity));
-    spt_update_perspective_camera_aspect_ratio(self.viewCameraEntity, size.width / size.height);
+    assert(SPTIsValid(self.viewCameraEntity));
+    SPTUpdatePerspectiveCameraAspectRatio(self.viewCameraEntity, size.width / size.height);
 }
 
 @end

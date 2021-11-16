@@ -7,18 +7,18 @@
 
 #pragma once
 
-#include "Common.h"
+#include "Base.h"
 
 #include <simd/simd.h>
 
 typedef struct {
     float fovy, aspectRatio, near, far;
-} spt_perspective_camera;
+} SPTPerspectiveCamera;
 
 SPT_EXTERN_C_BEGIN
 
-spt_perspective_camera spt_make_perspective_camera(spt_entity entity, float fovy, float aspectRatio, float near, float far);
+SPTPerspectiveCamera SPTMakePerspectiveCamera(SPTObject entity, float fovy, float aspectRatio, float near, float far);
 
-spt_perspective_camera spt_update_perspective_camera_aspect_ratio(spt_entity entity, float aspectRatio);
+SPTPerspectiveCamera SPTUpdatePerspectiveCameraAspectRatio(SPTObject entity, float aspectRatio);
 
 SPT_EXTERN_C_END

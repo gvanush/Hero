@@ -11,7 +11,7 @@
 
 namespace {
 
-simd::float4x4 spt_make_perspective_matrix(const spt_perspective_camera& camera) {
+simd::float4x4 SPTMakePerspectiveMatrix(const SPTPerspectiveCamera& camera) {
     const auto c = 1.f / tanf(0.5f * camera.fovy);
     const auto q = camera.far / (camera.far - camera.near);
     using namespace simd;
@@ -37,38 +37,38 @@ simd::float4x4 spt_make_perspective_matrix(const spt_perspective_camera& camera)
 
 namespace spt {
 
-struct projection_matrix {
-    simd_float4x4 matrix;
+struct ProjectionMatrix {
+    simd_float4x4 float4x4;
     bool isDirty;
 };
 
-simd_float4x4 get_projection_matrix(spt_entity entity) {
-    auto& registry = static_cast<spt::Scene*>(entity.sceneHandle)->registry;
-    if(auto projectionMatrix = registry.try_get<projection_matrix>(entity.id); projectionMatrix) {
+const simd_float4x4* GetProjectionMatrix(SPTObject object) {
+    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    if(auto projectionMatrix = registry.try_get<ProjectionMatrix>(object.entity); projectionMatrix) {
         if(projectionMatrix->isDirty) {
-            projectionMatrix->matrix = spt_make_perspective_matrix(registry.get<spt_perspective_camera>(entity.id));
+            projectionMatrix->float4x4 = SPTMakePerspectiveMatrix(registry.get<SPTPerspectiveCamera>(object.entity));
             projectionMatrix->isDirty = false;
         }
-        return projectionMatrix->matrix;
+        return &projectionMatrix->float4x4;
     }
-    return matrix_identity_float4x4;
+    return nullptr;
 }
 
 }
 
-spt_perspective_camera spt_make_perspective_camera(spt_entity entity, float fovy, float aspectRatio, float near, float far) {
-    auto& registry = static_cast<spt::Scene*>(entity.sceneHandle)->registry;
-    const auto& camera = registry.emplace<spt_perspective_camera>(entity.id, fovy, aspectRatio, near, far);
-    registry.emplace<spt::projection_matrix>(entity.id, spt_make_perspective_matrix(camera), false);
+SPTPerspectiveCamera SPTMakePerspectiveCamera(SPTObject object, float fovy, float aspectRatio, float near, float far) {
+    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    const auto& camera = registry.emplace<SPTPerspectiveCamera>(object.entity, fovy, aspectRatio, near, far);
+    registry.emplace<spt::ProjectionMatrix>(object.entity, SPTMakePerspectiveMatrix(camera), false);
     return camera;
 }
 
-spt_perspective_camera spt_update_perspective_camera_aspect_ratio(spt_entity entity, float aspectRatio) {
+SPTPerspectiveCamera SPTUpdatePerspectiveCameraAspectRatio(SPTObject entity, float aspectRatio) {
     auto& registry = static_cast<spt::Scene*>(entity.sceneHandle)->registry;
-    registry.patch<spt::projection_matrix>(entity.id, [](auto& projectionMatrix) {
+    registry.patch<spt::ProjectionMatrix>(entity.entity, [](auto& projectionMatrix) {
         projectionMatrix.isDirty = true;
     });
-    return registry.patch<spt_perspective_camera>(entity.id, [aspectRatio] (auto& camera) {
+    return registry.patch<SPTPerspectiveCamera>(entity.entity, [aspectRatio] (auto& camera) {
         camera.aspectRatio = aspectRatio;
     });
 }

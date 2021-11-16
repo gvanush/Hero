@@ -5,7 +5,7 @@
 //  Created by Vanush Grigoryan on 11.11.21.
 //
 
-#import "Common.h"
+#import "Base.h"
 
 #import <Foundation/Foundation.h>
 
@@ -13,11 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SPTScene : NSObject
 
--(spt_entity) makeEntity;
+-(SPTObject) makeEntity;
 
-+(void) destroyEntity: (spt_entity) entity;
++(void) destroyEntity: (SPTObject) entity;
 
--(spt_scene_handle) cpp;
+-(SPTSceneHandle) cpp;
 
 @end
 

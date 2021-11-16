@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <MetalKit/MetalKit.h>
 
-@class RenderingContext;
+@class SPTRenderingContext;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,9 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(instancetype) initWithNibName: (NSString* _Nullable) nibNameOrNil bundle: (NSBundle* _Nullable) nibBundleOrNil NS_UNAVAILABLE;
 
 @property (nonatomic, readonly) SPTScene* scene;
-@property (nonatomic, readwrite) spt_entity viewCameraEntity;
+@property (nonatomic, readwrite) SPTObject viewCameraEntity;
 @property (nonatomic, readonly) MTKView* mtkView;
-@property (nonatomic, readonly) RenderingContext* renderingContext;
+@property (nonatomic, readonly) SPTRenderingContext* renderingContext;
 
 @end
 

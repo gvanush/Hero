@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include "Common.h"
+#include "Base.h"
 
 #include <entt/entt.hpp>
 
 namespace spt {
 
-using registry = entt::basic_registry<spt_entity_id>;
+using Registry = entt::basic_registry<SPTEntity>;
 
 }

@@ -8,10 +8,10 @@
 #include "Spirit.h"
 #include "MeshRenderer.hpp"
 
-#import "RenderingContext.h"
+#import "SPTRenderingContext.h"
 
 
 void spt_init() {
-    [RenderingContext setup];
+    [SPTRenderingContext setup];
     spt::MeshRenderer::init();
 }
