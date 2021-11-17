@@ -45,38 +45,33 @@
 // MARK: MTKViewDelegate
 -(void) drawInMTKView: (nonnull MTKView*) view {
     
-    // IMPROVEMENT: @Vanush preferably this should be done as late as possible (at least after command buffer is created)
-    MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
-    
-    if(renderPassDescriptor == nil) {
-        return;
-    }
-    
-    self.renderingContext.renderPassDescriptor = renderPassDescriptor;
-    
     id<MTLCommandBuffer> commandBuffer = [[SPTRenderingContext defaultCommandQueue] commandBuffer];
     commandBuffer.label = @"MainCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
     
-    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
-    renderEncoder.label = @"MainRenderEncoder";
-    [renderEncoder setViewport: MTLViewport{0.0, 0.0, self.renderingContext.viewportSize.x, self.renderingContext.viewportSize.y, 0.0, 1.0 }];
-    self.renderingContext.renderCommandEncoder = renderEncoder;
-    
     assert(SPTIsValid(self.viewCameraEntity));
-    
     auto tranMat = spt::getTransformationMatrix(self.viewCameraEntity);
-    auto projMat = spt::GetProjectionMatrix(self.viewCameraEntity);
+    auto projMat = spt::getProjectionMatrix(self.viewCameraEntity);
     assert(projMat);
-    
     self.renderingContext.projectionViewMatrix = simd_mul((tranMat ? simd_inverse(*tranMat) : matrix_identity_float4x4), *projMat);
     
-    static_cast<spt::Scene*>(self.scene.cpp)->update((__bridge void*) self.renderingContext);
-    
-    [renderEncoder endEncoding];
+    // NOTE: Preferably this should be done as late as possible (at least after command buffer is created)
+    MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
+    if(renderPassDescriptor != nil) {
+        
+        id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor: renderPassDescriptor];
+        renderEncoder.label = @"MainRenderEncoder";
+        [renderEncoder setViewport: MTLViewport{0.0, 0.0, self.renderingContext.viewportSize.x, self.renderingContext.viewportSize.y, 0.0, 1.0 }];
+        self.renderingContext.renderCommandEncoder = renderEncoder;
+        
+        static_cast<spt::Scene*>(self.scene.cpp)->render((__bridge void*) self.renderingContext);
+        
+        [renderEncoder endEncoding];
 
-    // Schedule a present once the framebuffer is complete using the current drawable.
-    [commandBuffer presentDrawable: view.currentDrawable];
+        // Schedule a present once the framebuffer is complete using the current drawable.
+        [commandBuffer presentDrawable: view.currentDrawable];
+        
+    }
     
     [commandBuffer commit];
 }

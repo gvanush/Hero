@@ -17,9 +17,9 @@ static id<MTLRenderPipelineState> __pipelineState;
 static const AAPLVertex triangleVertices[] =
 {
     // 2D positions,    RGBA colors
-    { {  50,  -50, 500.0 }, { 1, 0, 0, 1 } },
-    { { -50,  -50, 500.0 }, { 0, 1, 0, 1 } },
-    { {    0,  50, 500.0 }, { 0, 0, 1, 1 } },
+    { {  10,  -10, 0.0 }, { 1, 0, 0, 1 } },
+    { { -10,  -10, 0.0 }, { 0, 1, 0, 1 } },
+    { {    0,  10, 0.0 }, { 0, 0, 1, 1 } },
 };
 
 namespace spt {

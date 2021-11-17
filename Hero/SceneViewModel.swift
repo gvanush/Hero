@@ -8,16 +8,23 @@
 import SwiftUI
 
 class SceneViewModel: ObservableObject {
+    
     let scene = SPTScene()
     
-    init() {
-        setupCamera()
-    }
-    
-    private(set) var viewCameraObject = kSPTNullObject {
+    private var prevDragValue: DragGesture.Value?
+
+    private(set) var viewCameraObject: SPTObject {
         willSet {
             objectWillChange.send()
         }
+    }
+
+    init() {
+        // Setup view camera
+        viewCameraObject = scene.makeEntity()
+        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 100.0, Float.pi, 0.5 * Float.pi)
+        SPTMakeLookAtOrientation(viewCameraObject, simd_float3.zero, simd_float3.up)
+        SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 1000.0)
     }
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SceneObject? {
@@ -34,27 +41,87 @@ class SceneViewModel: ObservableObject {
         nil
     }
     
+    // MARK: Orbit
     func orbit(dragValue: DragGesture.Value) {
+        
+        guard let prevDragValue = self.prevDragValue else {
+            self.prevDragValue = dragValue
+            return
+        }
+        self.prevDragValue = dragValue
+        
+        let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
+        let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
+        
+        var sphericalPos = SPTGetSphericalPosition(viewCameraObject)
+        
+        sphericalPos.latitude -= deltaAngle.y
+        
+        let isInFrontOfSphere = sinf(sphericalPos.latitude) >= 0.0
+        sphericalPos.longitude += (isInFrontOfSphere ? deltaAngle.x : -deltaAngle.x)
+        
+        SPTUpdateSphericalPosition(viewCameraObject, sphericalPos)
+        
+        var lookAtOrientation = SPTGetLookAtOrientation(viewCameraObject)
+        lookAtOrientation.up = (isInFrontOfSphere ? simd_float3.up : simd_float3.down)
+        
+        SPTUpdateLookAtOrientation(viewCameraObject, lookAtOrientation)
+        
     }
     
     func finishOrbit(dragValue: DragGesture.Value) {
+        orbit(dragValue: dragValue)
+        prevDragValue = nil
     }
     
+    static let orbitTranslationPerHalfRevolution: Float = 250.0
+    
+    // MARK: Zoom
     func zoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
+        
+        guard let prevDragValue = self.prevDragValue else {
+            self.prevDragValue = dragValue
+            return
+        }
+        self.prevDragValue = dragValue
+        
+        let deltaYTranslation = Float(dragValue.translation.height - prevDragValue.translation.height)
+        
+        var sphericalPos = SPTGetSphericalPosition(viewCameraObject)
+        
+        let centerViewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, sphericalPos.center, viewportSize.float2);
+        
+        var scenePos = SPTCameraConvertViewportToWorld(viewCameraObject, centerViewportPos + simd_float3.up * deltaYTranslation, viewportSize.float2)
+        
+        // NOTE: This is needed, because coverting from world to viewport and back gives low precision z value.
+        // It is becasue of uneven distribution of world z into ndc z, especially far objects.
+        // Alternative could be to make near plane larger but that limits zooming since object will be clipped
+        scenePos.z = sphericalPos.center.z
+        
+        let deltaRadius = length(scenePos - sphericalPos.center)
+        
+        sphericalPos.radius = max(sphericalPos.radius + sign(deltaYTranslation) * Self.zoomFactor * deltaRadius, 0.01)
+        
+        SPTUpdateSphericalPosition(viewCameraObject, sphericalPos)
+        
     }
     
     func finishZoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
-        
+        zoom(dragValue: dragValue, viewportSize: viewportSize)
+        prevDragValue = nil
     }
     
+    static let zoomFactor: Float = 3.0
+    
     // MARK: Scene setup
-    private func setupCamera() {
+    /*private func setupCamera() {
         
         viewCameraObject = scene.makeEntity()
-        SPTMakePosition(viewCameraObject, 50.0, 0.0, 0.0)
+        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 100.0, Float.pi, 0.5 * Float.pi)
+        SPTMakeLookAtOrientation(viewCameraObject, simd_float3(x: 0.0, y: 0.0, z: 500.0), simd_float3.up)
         SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 1000.0)
         
-        /*scene.viewCamera.camera!.near = 0.1
+        scene.viewCamera.camera!.near = 0.1
         scene.viewCamera.camera!.far = 1000.0
         scene.viewCamera.camera!.fovy = Float.pi / 3.0
         scene.viewCamera.camera!.orthographicScale = 70.0
@@ -62,8 +129,8 @@ class SceneViewModel: ObservableObject {
         viewCameraSphericalCoord.radius = 100.0
         viewCameraSphericalCoord.longitude = Float.pi
         viewCameraSphericalCoord.latitude = 0.5 * Float.pi
-        scene.viewCamera.transform!.position = spt_position(viewCameraSphericalCoord)*/
-    }
+        scene.viewCamera.transform!.position = spt_position(viewCameraSphericalCoord)
+    }*/
     
 }
 

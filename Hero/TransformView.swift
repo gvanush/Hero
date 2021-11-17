@@ -52,6 +52,8 @@ struct TransformView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(activeTool.title)
+            // WARNING: This is causing frame drop when isNavigating changes
+            // frequently in a short period of time
             .navigationBarHidden(isNavigating)
         }
         // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings on startup)

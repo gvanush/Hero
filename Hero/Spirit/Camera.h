@@ -21,4 +21,8 @@ SPTPerspectiveCamera SPTMakePerspectiveCamera(SPTObject entity, float fovy, floa
 
 SPTPerspectiveCamera SPTUpdatePerspectiveCameraAspectRatio(SPTObject entity, float aspectRatio);
 
+simd_float3 SPTCameraConvertWorldToViewport(SPTObject cmaeraObject, simd_float3 point, simd_float2 viewportSize);
+
+simd_float3 SPTCameraConvertViewportToWorld(SPTObject cmaeraObject, simd_float3 point, simd_float2 viewportSize);
+
 SPT_EXTERN_C_END

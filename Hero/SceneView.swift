@@ -28,6 +28,8 @@ struct SceneView: View {
                             model.discardSelection()
                         }
                     }
+                    // WARNING: This is causing frame drop when isNavigating changes
+                    // frequently in a short period of time
                     .allowsHitTesting(!isNavigating)
                     .onChange(of: colorScheme) { _ in
                         clearColor = UIColor.sceneBgrColor.mtlClearColor

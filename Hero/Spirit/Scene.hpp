@@ -20,7 +20,7 @@ struct Scene {
     SPTObject makeEntity();
     static void destroyEntity(SPTObject entity);
     
-    void update(void* renderingContext);
+    void render(void* renderingContext);
     
     spt::Registry registry;
     MeshRenderer meshRenderer;

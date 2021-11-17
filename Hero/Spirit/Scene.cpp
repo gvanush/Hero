@@ -9,7 +9,7 @@
 
 namespace spt {
 
-void Scene::update(void* renderingContext) {
+void Scene::render(void* renderingContext) {
     meshRenderer.render(renderingContext);
 }
 

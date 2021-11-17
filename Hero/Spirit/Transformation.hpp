@@ -11,6 +11,6 @@
 
 namespace spt {
 
-const simd_float4x4* getTransformationMatrix(SPTObject entity);
+const simd_float4x4* getTransformationMatrix(SPTObject object);
 
 }
