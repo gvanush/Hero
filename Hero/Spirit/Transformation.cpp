@@ -33,10 +33,9 @@ void applyLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& lookAtOrient
     using namespace simd;
     auto zAxis = normalize(lookAtOrientation.target - pos);
     auto xAxis = normalize(cross(lookAtOrientation.up, zAxis));
-    auto yAxis = normalize(cross(zAxis, xAxis));
-    matrix.columns[0] = float4 {xAxis.x, yAxis.x, zAxis.x, matrix.columns[0][3]};
-    matrix.columns[1] = float4 {xAxis.y, yAxis.y, zAxis.y, matrix.columns[1][3]};
-    matrix.columns[2] = float4 {xAxis.z, yAxis.z, zAxis.z, matrix.columns[2][3]};
+    matrix.columns[1] = simd_make_float4(normalize(cross(zAxis, xAxis)), matrix.columns[1][3]);
+    matrix.columns[0] = simd_make_float4(xAxis, matrix.columns[0][3]);
+    matrix.columns[2] = simd_make_float4(zAxis, matrix.columns[2][3]);
 }
 
 simd_float4x4 computeTransformationMatrix(spt::Registry& registry, SPTEntity entity) {
@@ -44,19 +43,14 @@ simd_float4x4 computeTransformationMatrix(spt::Registry& registry, SPTEntity ent
     
     const auto [position, sphericalPosition] = registry.try_get<SPTPosition, SPTSphericalPosition>(entity);
     if(position) {
-        matrix.columns[0][3] = position->float3.x;
-        matrix.columns[1][3] = position->float3.y;
-        matrix.columns[2][3] = position->float3.z;
+        matrix.columns[3].xyz = position->float3;
     } else if(sphericalPosition) {
-        const auto pos = computeSphericalPosition(*sphericalPosition);
-        matrix.columns[0][3] = pos.x;
-        matrix.columns[1][3] = pos.y;
-        matrix.columns[2][3] = pos.z;
+        matrix.columns[3].xyz = computeSphericalPosition(*sphericalPosition);
     }
     
     const auto lookAtOrientation = registry.try_get<SPTLookAtOrientation>(entity);
     if(lookAtOrientation) {
-        applyLookAtMatrix(simd_float3{matrix.columns[0][3], matrix.columns[1][3], matrix.columns[2][3]}, *lookAtOrientation, matrix);
+        applyLookAtMatrix(matrix.columns[3].xyz, *lookAtOrientation, matrix);
     }
     
     return matrix;

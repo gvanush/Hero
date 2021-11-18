@@ -50,10 +50,7 @@
     self.renderingContext.commandBuffer = commandBuffer;
     
     assert(SPTIsValid(self.viewCameraEntity));
-    auto tranMat = spt::getTransformationMatrix(self.viewCameraEntity);
-    auto projMat = spt::getProjectionMatrix(self.viewCameraEntity);
-    assert(projMat);
-    self.renderingContext.projectionViewMatrix = simd_mul((tranMat ? simd_inverse(*tranMat) : matrix_identity_float4x4), *projMat);
+    self.renderingContext.projectionViewMatrix = spt::computeCameraProjectionViewMatrix(self.viewCameraEntity);
     
     // NOTE: Preferably this should be done as late as possible (at least after command buffer is created)
     MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;

@@ -173,7 +173,7 @@ vertexShader(uint vertexID [[vertex_id]],
 
     // To convert from positions in pixel space to positions in clip-space,
     //  divide the pixel coordinates by half the size of the viewport.
-    out.position = vector_float4(vertices[vertexID].position, 1.0) * uniforms.projectionViewMatrix;
+    out.position = uniforms.projectionViewMatrix * vector_float4(vertices[vertexID].position, 1.0);
 
     // Pass the input color directly to the rasterizer.
     out.color = vertices[vertexID].color;
