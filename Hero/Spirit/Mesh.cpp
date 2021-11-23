@@ -11,35 +11,31 @@
 
 namespace spt {
 
-Mesh::Mesh(const void* buffer, Geometry geometry, unsigned int vertexCount)
-: _buffer{buffer}
-, _geometry{geometry}
-, _vertexCount{vertexCount} {
-    assert(buffer);
-    _buffer = CFRetain(buffer);
+Mesh::Mesh(const void* vertexBuffer, Geometry geometry, const std::vector<const void*>& indexBuffers)
+: _vertexBuffer{vertexBuffer}
+, _indexBuffers{indexBuffers}
+, _geometry{geometry} {
+    assert(vertexBuffer);
+    CFRetain(vertexBuffer);
+    for(auto indexBuffer: _indexBuffers) {
+        CFRetain(indexBuffer);
+    }
 }
 
 Mesh::~Mesh() {
-    if(_buffer) {
-        CFRelease(_buffer);
+    if(_vertexBuffer) {
+        CFRelease(_vertexBuffer);
+    }
+    for(auto indexBuffer: _indexBuffers) {
+        CFRelease(indexBuffer);
     }
 }
 
 Mesh::Mesh(Mesh&& mesh) {
-    _buffer = mesh._buffer;
-    mesh._buffer = nullptr;
+    _vertexBuffer = mesh._vertexBuffer;
+    mesh._vertexBuffer = nullptr;
+    _indexBuffers = std::move(mesh._indexBuffers);
     _geometry = mesh._geometry;
-    _vertexCount = mesh._vertexCount;
-}
-
-Mesh& Mesh::operator=(Mesh&& mesh) {
-    if(this != &mesh) {
-        _buffer = mesh._buffer;
-        mesh._buffer = nullptr;
-        _geometry = mesh._geometry;
-        _vertexCount = mesh._vertexCount;
-    }
-    return *this;
 }
 
 }

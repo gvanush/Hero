@@ -16,6 +16,7 @@
 		B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatField.swift */; };
 		B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */; };
 		B72175FA274BC0A60047016B /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72175F8274BC0A60047016B /* Mesh.cpp */; };
+		B72175FF274CF1DE0047016B /* circle.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72175FE274CF1DE0047016B /* circle.obj */; };
 		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
@@ -101,6 +102,7 @@
 		B72175F9274BC0A60047016B /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
 		B72175FB274BC28B0047016B /* ResourceManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
 		B72175FC274BD5A00047016B /* Mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
+		B72175FE274CF1DE0047016B /* circle.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = circle.obj; sourceTree = "<group>"; };
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -278,6 +280,14 @@
 				B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B72175FD274CF1CF0047016B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B72175FE274CF1DE0047016B /* circle.obj */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		B7316FEB24CF376000157455 = {
@@ -550,6 +560,7 @@
 		B7E481DB274777CF003DA5B1 /* Resource Management */ = {
 			isa = PBXGroup;
 			children = (
+				B72175FD274CF1CF0047016B /* Resources */,
 				B7E481DC2747782B003DA5B1 /* ResourceManager.mm */,
 				B72175FB274BC28B0047016B /* ResourceManager.hpp */,
 				B7E481DD2747782B003DA5B1 /* ResourceManager.h */,
@@ -618,6 +629,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */,
+				B72175FF274CF1DE0047016B /* circle.obj in Resources */,
 				B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

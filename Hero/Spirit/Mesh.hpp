@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <vector>
+
 namespace spt {
 
 class Mesh {
@@ -17,33 +19,28 @@ public:
         triangleStrip
     };
     
-    Mesh(const void* buffer, Geometry geometry, unsigned int vertexCount);
+    Mesh(const void* vertexBuffer, Geometry geometry, const std::vector<const void*>& indexBuffers = std::vector<const void*>{});
     Mesh(Mesh&&);
-    Mesh& operator=(Mesh&&);
+    Mesh& operator=(Mesh&&) = delete;
     Mesh(const Mesh&) = delete;
     Mesh& operator=(const Mesh&) = delete;
     ~Mesh();
     
-    const void* buffer() const;
+    const void* vertexBuffer() const;
     Geometry geometry() const;
-    unsigned int vertexCount() const;
     
 private:
-    const void* _buffer;
+    const void* _vertexBuffer;
+    std::vector<const void*> _indexBuffers;
     Geometry _geometry;
-    unsigned int _vertexCount;
 };
 
-inline const void* Mesh::buffer() const {
-    return _buffer;
+inline const void* Mesh::vertexBuffer() const {
+    return _vertexBuffer;
 }
 
 inline Mesh::Geometry Mesh::geometry() const {
     return _geometry;
-}
-
-inline unsigned int Mesh::vertexCount() const {
-    return _vertexCount;
 }
 
 }

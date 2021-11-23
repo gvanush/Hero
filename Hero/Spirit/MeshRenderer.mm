@@ -64,12 +64,12 @@ void MeshRenderer::render(void* renderingContext) {
                                   atIndex:kVertexInputIndexWorldMatrix];
         }
         
-        id<MTLBuffer> mtlBuffer = (__bridge id<MTLBuffer>) mesh.buffer();
+        id<MTLBuffer> mtlBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer();
         [renderEncoder setVertexBuffer: mtlBuffer offset: 0 atIndex: kVertexInputIndexVertices];
         
         [renderEncoder setFragmentBytes: &meshRenderable.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
         
-        [renderEncoder drawPrimitives: getMTLPrimitiveType(mesh.geometry()) vertexStart: 0 vertexCount: mesh.vertexCount()];
+        [renderEncoder drawPrimitives: getMTLPrimitiveType(mesh.geometry()) vertexStart: 0 vertexCount: mtlBuffer.length / sizeof(simd_float3)];
     });
     
 }
