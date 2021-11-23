@@ -64,9 +64,10 @@ void MeshRenderer::render(void* renderingContext) {
                                   atIndex:kVertexInputIndexWorldMatrix];
         }
         
-        
         id<MTLBuffer> mtlBuffer = (__bridge id<MTLBuffer>) mesh.buffer();
-        [renderEncoder setVertexBuffer: mtlBuffer offset: 0 atIndex: AAPLVertexInputIndexVertices];
+        [renderEncoder setVertexBuffer: mtlBuffer offset: 0 atIndex: kVertexInputIndexVertices];
+        
+        [renderEncoder setFragmentBytes: &meshRenderable.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
         
         [renderEncoder drawPrimitives: getMTLPrimitiveType(mesh.geometry()) vertexStart: 0 vertexCount: mesh.vertexCount()];
     });
@@ -84,7 +85,8 @@ void MeshRenderer::init() {
     pipelineStateDescriptor.vertexFunction = vertexFunction;
     pipelineStateDescriptor.fragmentFunction = fragmentFunction;
     pipelineStateDescriptor.colorAttachments[0].pixelFormat = [SPTRenderingContext colorPixelFormat];
-
+    pipelineStateDescriptor.depthAttachmentPixelFormat = [SPTRenderingContext depthPixelFormat];
+    
     NSError *error;
     __pipelineState = [[SPTRenderingContext device] newRenderPipelineStateWithDescriptor:pipelineStateDescriptor
                                                              error:&error];

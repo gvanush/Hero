@@ -155,17 +155,11 @@ struct RasterizerData
     // is the clip space position of the vertex when this structure is
     // returned from the vertex function.
     float4 position [[position]];
-
-    // Since this member does not have a special attribute, the rasterizer
-    // interpolates its value with the values of the other triangle vertices
-    // and then passes the interpolated value to the fragment shader for each
-    // fragment in the triangle.
-    float4 color;
 };
 
 vertex RasterizerData
 vertexShader(uint vertexID [[vertex_id]],
-             constant float3* vertices [[buffer(AAPLVertexInputIndexVertices)]],
+             constant float3* vertices [[buffer(kVertexInputIndexVertices)]],
              constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
              constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]])
 {
@@ -178,6 +172,7 @@ vertexShader(uint vertexID [[vertex_id]],
     return out;
 }
 
-fragment float4 fragmentShader(RasterizerData in [[stage_in]]) {
-    return float4 {1.f, 0.f, 0.f, 1.f};
+fragment float4 fragmentShader(RasterizerData in [[stage_in]],
+                               constant float4& color [[buffer(kFragmentInputIndexColor)]]) {
+    return color;
 }

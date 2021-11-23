@@ -9,6 +9,7 @@ import UIKit
 import simd
 
 extension UIColor {
+    
     var rgba: simd_float4 {
         var red: CGFloat = 0
         var green: CGFloat = 0
@@ -31,5 +32,9 @@ extension UIColor {
     
     static var sceneBgrColor: UIColor {
         Self.systemGray2
+    }
+    
+    static func random(alpha: CGFloat = 1.0) -> UIColor {
+        UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: alpha)
     }
 }

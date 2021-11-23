@@ -34,7 +34,7 @@
     self.mtkView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.mtkView.autoResizeDrawable = YES;
     self.mtkView.colorPixelFormat = [SPTRenderingContext colorPixelFormat];
-//    mtkView.depthStencilPixelFormat = RenderingContext.depthPixelFormat()
+    self.mtkView.depthStencilPixelFormat = [SPTRenderingContext depthPixelFormat];
 //    _mtkView.presentsWithTransaction = YES
     self.mtkView.delegate = self;
     [self.view insertSubview: self.mtkView atIndex: 0];
@@ -59,6 +59,7 @@
         id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor: renderPassDescriptor];
         renderEncoder.label = @"MainRenderEncoder";
         [renderEncoder setViewport: MTLViewport{0.0, 0.0, self.renderingContext.viewportSize.x, self.renderingContext.viewportSize.y, 0.0, 1.0 }];
+        [renderEncoder setDepthStencilState: SPTRenderingContext.defaultDepthStencilState];
         self.renderingContext.renderCommandEncoder = renderEncoder;
         
         static_cast<spt::Scene*>(self.scene.cpp)->render((__bridge void*) self.renderingContext);

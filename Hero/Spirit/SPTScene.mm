@@ -19,16 +19,16 @@
 
 @implementation SPTScene
 
--(SPTObject) makeEntity {
-    return _scene.makeEntity();
+-(SPTObject) makeObject {
+    return _scene.makeObject();
 }
 
 -(SPTSceneHandle) cpp {
     return &_scene;
 }
 
-+(void) destroyEntity: (SPTObject) entity {
-    spt::Scene::destroyEntity(entity);
++(void) destroyObject: (SPTObject) entity {
+    spt::Scene::destroyObject(entity);
 }
 
 @end

@@ -17,8 +17,8 @@ namespace spt {
 
 struct Scene {
     
-    SPTObject makeEntity();
-    static void destroyEntity(SPTObject entity);
+    SPTObject makeObject();
+    static void destroyObject(SPTObject entity);
     
     void render(void* renderingContext);
     
@@ -26,11 +26,11 @@ struct Scene {
     MeshRenderer meshRenderer {registry};
 };
 
-inline SPTObject Scene::makeEntity() {
+inline SPTObject Scene::makeObject() {
     return SPTObject { registry.create(), this };
 }
 
-inline void Scene::destroyEntity(SPTObject entity) {
+inline void Scene::destroyObject(SPTObject entity) {
     static_cast<Scene*>(entity.sceneHandle)->registry.destroy(entity.entity);
 }
 

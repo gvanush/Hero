@@ -21,17 +21,26 @@ class SceneViewModel: ObservableObject {
 
     init() {
         // Setup view camera
-        viewCameraObject = scene.makeEntity()
-        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 100.0, Float.pi, 0.5 * Float.pi)
+        viewCameraObject = scene.makeObject()
+        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 200.0, Float.pi, 0.5 * Float.pi)
         SPTMakeLookAtOrientation(viewCameraObject, simd_float3.zero, simd_float3.up)
         SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 1000.0)
         
         // Setup objects
-        let squareObject = scene.makeEntity()
+        
+        for _ in 0..<10 {
+            let object = scene.makeObject()
+            SPTMakePosition(object, Float.random(in: -100...100), Float.random(in: -100...100), Float.random(in: -100...100))
+            SPTMakeScale(object, Float.random(in: -50...50), Float.random(in: -50...50), 1.0)
+            SPTMakeEulerOrientation(object, 0.0, 0.0, Float.random(in: -Float.pi...Float.pi), SPTEulerOrderXYZ)
+            SPTMakeMeshRenderable(object, kBasicMeshIdSquare, UIColor.random().rgba)
+        }
+        
+        let squareObject = scene.makeObject()
         SPTMakePosition(squareObject, 0.0, 0.0, 0.0)
         SPTMakeScale(squareObject, 20.0, 20.0, 1.0)
-        SPTMakeEulerOrientation(squareObject, 0.0, 0.0, Float.pi / 10.0, SPTEulerOrderXYZ)
-        SPTMakeMeshRenderable(squareObject, kBasicMeshIdSquare)
+//        SPTMakeEulerOrientation(squareObject, 0.0, 0.0, Float.pi / 10.0, SPTEulerOrderXYZ)
+        SPTMakeMeshRenderable(squareObject, kBasicMeshIdSquare, UIColor.red.rgba)
     }
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SceneObject? {
