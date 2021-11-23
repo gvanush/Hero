@@ -8,6 +8,7 @@
 #pragma once
 
 #include "ShaderTypes.h"
+#include "Base.hpp"
 
 #include <simd/simd.h>
 
@@ -16,11 +17,14 @@ namespace spt {
 class MeshRenderer {
 public:
     
+    MeshRenderer(Registry& registry);
+    
     void render(void* renderingContext);
 
     static void init();
     
 private:
+    Registry& _registry;
     Uniforms _uniforms;
 };
 

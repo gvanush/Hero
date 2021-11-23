@@ -5,8 +5,10 @@
 #import "SPTScene.h"
 #import "SPTViewController.h"
 #import "Spirit.h"
+#import "ResourceManager.h"
 #import "Transformation.h"
 #import "Camera.h"
+#import "MeshRenderable.h"
 #import "Base.h"
 
 // TODO

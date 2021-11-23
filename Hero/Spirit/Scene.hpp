@@ -23,7 +23,7 @@ struct Scene {
     void render(void* renderingContext);
     
     spt::Registry registry;
-    MeshRenderer meshRenderer;
+    MeshRenderer meshRenderer {registry};
 };
 
 inline SPTObject Scene::makeEntity() {

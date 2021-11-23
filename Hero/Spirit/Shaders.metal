@@ -165,24 +165,19 @@ struct RasterizerData
 
 vertex RasterizerData
 vertexShader(uint vertexID [[vertex_id]],
-             constant AAPLVertex *vertices [[buffer(AAPLVertexInputIndexVertices)]],
-             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]],
-             constant vector_uint2 *viewportSizePointer [[buffer(AAPLVertexInputIndexViewportSize)]])
+             constant float3* vertices [[buffer(AAPLVertexInputIndexVertices)]],
+             constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]])
 {
     RasterizerData out;
 
     // To convert from positions in pixel space to positions in clip-space,
     //  divide the pixel coordinates by half the size of the viewport.
-    out.position = uniforms.projectionViewMatrix * vector_float4(vertices[vertexID].position, 1.0);
-
-    // Pass the input color directly to the rasterizer.
-    out.color = vertices[vertexID].color;
+    out.position = uniforms.projectionViewMatrix * worldMatrix * float4(vertices[vertexID], 1.0);
 
     return out;
 }
 
-fragment float4 fragmentShader(RasterizerData in [[stage_in]])
-{
-    // Return the interpolated color.
-    return in.color;
+fragment float4 fragmentShader(RasterizerData in [[stage_in]]) {
+    return float4 {1.f, 0.f, 0.f, 1.f};
 }

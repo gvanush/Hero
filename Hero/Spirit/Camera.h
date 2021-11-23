@@ -17,12 +17,12 @@ typedef struct {
 
 SPT_EXTERN_C_BEGIN
 
-SPTPerspectiveCamera SPTMakePerspectiveCamera(SPTObject entity, float fovy, float aspectRatio, float near, float far);
+SPTPerspectiveCamera SPTMakePerspectiveCamera(SPTObject object, float fovy, float aspectRatio, float near, float far);
 
-SPTPerspectiveCamera SPTUpdatePerspectiveCameraAspectRatio(SPTObject entity, float aspectRatio);
+SPTPerspectiveCamera SPTUpdatePerspectiveCameraAspectRatio(SPTObject object, float aspectRatio);
 
-simd_float3 SPTCameraConvertWorldToViewport(SPTObject cmaeraObject, simd_float3 point, simd_float2 viewportSize);
+simd_float3 SPTCameraConvertWorldToViewport(SPTObject cameraObject, simd_float3 point, simd_float2 viewportSize);
 
-simd_float3 SPTCameraConvertViewportToWorld(SPTObject cmaeraObject, simd_float3 point, simd_float2 viewportSize);
+simd_float3 SPTCameraConvertViewportToWorld(SPTObject cameraObject, simd_float3 point, simd_float2 viewportSize);
 
 SPT_EXTERN_C_END

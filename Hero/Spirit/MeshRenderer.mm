@@ -6,6 +6,9 @@
 //
 
 #include "MeshRenderer.hpp"
+#include "MeshRenderable.h"
+#include "ResourceManager.hpp"
+#include "Transformation.hpp"
 
 #import "SPTRenderingContext.h"
 #import "ShaderTypes.h"
@@ -14,15 +17,21 @@
 
 static id<MTLRenderPipelineState> __pipelineState;
 
-static const AAPLVertex triangleVertices[] =
-{
-    // 2D positions,    RGBA colors
-    { {  10,  -10, 0.0 }, { 1, 0, 0, 1 } },
-    { { -10,  -10, 0.0 }, { 0, 1, 0, 1 } },
-    { {    0,  10, 0.0 }, { 0, 0, 1, 1 } },
-};
-
 namespace spt {
+
+MTLPrimitiveType getMTLPrimitiveType(Mesh::Geometry geometry) {
+    switch (geometry) {
+        case Mesh::Geometry::triangle:
+            return MTLPrimitiveTypeTriangle;
+        case Mesh::Geometry::triangleStrip:
+            return MTLPrimitiveTypeTriangleStrip;
+    }
+}
+
+MeshRenderer::MeshRenderer(Registry& registry)
+: _registry {registry} {
+    
+}
 
 void MeshRenderer::render(void* renderingContext) {
     
@@ -41,13 +50,26 @@ void MeshRenderer::render(void* renderingContext) {
                            length:sizeof(_uniforms)
                           atIndex:kVertexInputIndexUniforms];
 
-    [renderEncoder setVertexBytes:triangleVertices
-                           length:sizeof(triangleVertices)
-                          atIndex:AAPLVertexInputIndexVertices];
-    // Draw the triangle.
-    [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle
-                      vertexStart:0
-                      vertexCount:3];
+    _registry.view<SPTMeshRenderable>().each([this, renderEncoder] (auto entity, auto& meshRenderable) {
+        
+        const auto& mesh = ResourceManager::active().getMesh(meshRenderable.meshId);
+        
+        if(auto worldMatrix = spt::getTransformationMatrix(_registry, entity); worldMatrix) {
+            [renderEncoder setVertexBytes: worldMatrix
+                                   length:sizeof(simd_float4x4)
+                                  atIndex:kVertexInputIndexWorldMatrix];
+        } else {
+            [renderEncoder setVertexBytes: &matrix_identity_float4x4
+                                   length:sizeof(simd_float4x4)
+                                  atIndex:kVertexInputIndexWorldMatrix];
+        }
+        
+        
+        id<MTLBuffer> mtlBuffer = (__bridge id<MTLBuffer>) mesh.buffer();
+        [renderEncoder setVertexBuffer: mtlBuffer offset: 0 atIndex: AAPLVertexInputIndexVertices];
+        
+        [renderEncoder drawPrimitives: getMTLPrimitiveType(mesh.geometry()) vertexStart: 0 vertexCount: mesh.vertexCount()];
+    });
     
 }
 

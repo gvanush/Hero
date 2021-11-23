@@ -6,6 +6,7 @@
 //
 
 #include "Spirit.h"
+#include "ResourceManager.hpp"
 #include "MeshRenderer.hpp"
 
 #import "SPTRenderingContext.h"
@@ -13,5 +14,6 @@
 
 void spt_init() {
     [SPTRenderingContext setup];
+    spt::ResourceManager::active().loadBasicMeshes();
     spt::MeshRenderer::init();
 }
