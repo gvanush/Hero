@@ -7,7 +7,9 @@
 
 #pragma once
 
-#include <vector>
+#include "GHI/Buffer.hpp"
+
+#include <memory>
 
 namespace spt {
 
@@ -19,24 +21,22 @@ public:
         triangleStrip
     };
     
-    Mesh(const void* vertexBuffer, Geometry geometry, const std::vector<const void*>& indexBuffers = std::vector<const void*>{});
-    Mesh(Mesh&&);
-    Mesh& operator=(Mesh&&) = delete;
+    Mesh(std::unique_ptr<ghi::Buffer> vertexBuffer, Geometry geometry);
+    Mesh(Mesh&&) = default;
+    Mesh& operator=(Mesh&&) = default;
     Mesh(const Mesh&) = delete;
     Mesh& operator=(const Mesh&) = delete;
-    ~Mesh();
     
-    const void* vertexBuffer() const;
+    const ghi::Buffer* vertexBuffer() const;
     Geometry geometry() const;
     
 private:
-    const void* _vertexBuffer;
-    std::vector<const void*> _indexBuffers;
+    std::unique_ptr<ghi::Buffer> _vertexBuffer;
     Geometry _geometry;
 };
 
-inline const void* Mesh::vertexBuffer() const {
-    return _vertexBuffer;
+inline const ghi::Buffer* Mesh::vertexBuffer() const {
+    return _vertexBuffer.get();
 }
 
 inline Mesh::Geometry Mesh::geometry() const {

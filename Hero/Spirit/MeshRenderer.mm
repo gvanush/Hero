@@ -64,7 +64,7 @@ void MeshRenderer::render(void* renderingContext) {
                                   atIndex:kVertexInputIndexWorldMatrix];
         }
         
-        id<MTLBuffer> mtlBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer();
+        id<MTLBuffer> mtlBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
         [renderEncoder setVertexBuffer: mtlBuffer offset: 0 atIndex: kVertexInputIndexVertices];
         
         [renderEncoder setFragmentBytes: &meshRenderable.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];

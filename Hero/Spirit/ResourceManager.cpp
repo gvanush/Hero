@@ -7,11 +7,11 @@
 
 #include "ResourceManager.h"
 #include "ResourceManager.hpp"
+#include "GHI/Device.hpp"
 
+#include <simd/simd.h>
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
-
-#import "SPTRenderingContext.h"
 
 #include <iostream>
 
@@ -33,8 +33,8 @@ void ResourceManager::loadBasicMeshes() {
         simd_float3 {kHalfSize, kHalfSize, 0.0}
     };
     
-    id<MTLBuffer> vertexBuffer = [[SPTRenderingContext device] newBufferWithBytes: vertices length: sizeof(vertices) options: MTLResourceCPUCacheModeDefaultCache | MTLResourceStorageModeShared | MTLResourceHazardTrackingModeDefault];
-    _basicMeshes.emplace_back((__bridge const void*) vertexBuffer, Mesh::Geometry::triangleStrip);
+    auto vertexBuffer = ghi::Device::systemDefault().newBuffer(vertices, sizeof(vertices), ghi::StorageMode::shared);
+    _basicMeshes.emplace_back(std::unique_ptr<ghi::Buffer>(vertexBuffer), Mesh::Geometry::triangleStrip);
     
     // Unit circle
     /*NSString* path = [[NSBundle mainBundle] pathForResource: @"circle" ofType: @"obj"];

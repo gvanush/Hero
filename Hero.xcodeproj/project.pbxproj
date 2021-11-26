@@ -17,6 +17,9 @@
 		B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */; };
 		B72175FA274BC0A60047016B /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72175F8274BC0A60047016B /* Mesh.cpp */; };
 		B72175FF274CF1DE0047016B /* circle.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72175FE274CF1DE0047016B /* circle.obj */; };
+		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
+		B7217607274FFA770047016B /* Device_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7217605274FFA770047016B /* Device_metal.mm */; };
+		B721760A2750AD990047016B /* Buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72176082750AD990047016B /* Buffer.cpp */; };
 		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
@@ -82,7 +85,7 @@
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
 		B7E481D72744417D003DA5B1 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D52744417D003DA5B1 /* RenderingContext.m */; };
 		B7E481DA274648DB003DA5B1 /* MeshRenderable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */; };
-		B7E481DE2747782B003DA5B1 /* ResourceManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.mm */; };
+		B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +106,15 @@
 		B72175FB274BC28B0047016B /* ResourceManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
 		B72175FC274BD5A00047016B /* Mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
 		B72175FE274CF1DE0047016B /* circle.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = circle.obj; sourceTree = "<group>"; };
+		B7217601274FF2800047016B /* APIObjectWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = APIObjectWrapper.cpp; sourceTree = "<group>"; };
+		B7217602274FF2800047016B /* APIObjectWrapper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = APIObjectWrapper.hpp; sourceTree = "<group>"; };
+		B7217604274FF7EB0047016B /* Base.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Base.hpp; sourceTree = "<group>"; };
+		B7217605274FFA770047016B /* Device_metal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Device_metal.mm; sourceTree = "<group>"; };
+		B7217606274FFA770047016B /* Device.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Device.hpp; sourceTree = "<group>"; };
+		B72176082750AD990047016B /* Buffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Buffer.cpp; sourceTree = "<group>"; };
+		B72176092750AD990047016B /* Buffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Buffer.hpp; sourceTree = "<group>"; };
+		B721760B2750B8870047016B /* ResourceOptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceOptions.hpp; sourceTree = "<group>"; };
+		B721760C2750BFAC0047016B /* ResourceOptionsUtil_metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceOptionsUtil_metal.h; sourceTree = "<group>"; };
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -225,7 +237,7 @@
 		B7E481D62744417D003DA5B1 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
 		B7E481D8274648DB003DA5B1 /* MeshRenderable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshRenderable.h; sourceTree = "<group>"; };
 		B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MeshRenderable.mm; sourceTree = "<group>"; };
-		B7E481DC2747782B003DA5B1 /* ResourceManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourceManager.mm; sourceTree = "<group>"; };
+		B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
 		B7E481DD2747782B003DA5B1 /* ResourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -243,6 +255,7 @@
 		B7104BBB2729261300582DCA /* Spirit */ = {
 			isa = PBXGroup;
 			children = (
+				B7217600274F6B7D0047016B /* GHI */,
 				B7E481C82741837D003DA5B1 /* Transformation */,
 				B7E481CC2742306A003DA5B1 /* Camera */,
 				B73245BB274147F300708909 /* View */,
@@ -288,6 +301,22 @@
 				B72175FE274CF1DE0047016B /* circle.obj */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		B7217600274F6B7D0047016B /* GHI */ = {
+			isa = PBXGroup;
+			children = (
+				B7217601274FF2800047016B /* APIObjectWrapper.cpp */,
+				B7217602274FF2800047016B /* APIObjectWrapper.hpp */,
+				B7217604274FF7EB0047016B /* Base.hpp */,
+				B7217605274FFA770047016B /* Device_metal.mm */,
+				B7217606274FFA770047016B /* Device.hpp */,
+				B72176082750AD990047016B /* Buffer.cpp */,
+				B72176092750AD990047016B /* Buffer.hpp */,
+				B721760B2750B8870047016B /* ResourceOptions.hpp */,
+				B721760C2750BFAC0047016B /* ResourceOptionsUtil_metal.h */,
+			);
+			path = GHI;
 			sourceTree = "<group>";
 		};
 		B7316FEB24CF376000157455 = {
@@ -561,7 +590,7 @@
 			isa = PBXGroup;
 			children = (
 				B72175FD274CF1CF0047016B /* Resources */,
-				B7E481DC2747782B003DA5B1 /* ResourceManager.mm */,
+				B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */,
 				B72175FB274BC28B0047016B /* ResourceManager.hpp */,
 				B7E481DD2747782B003DA5B1 /* ResourceManager.h */,
 				B72175F8274BC0A60047016B /* Mesh.cpp */,
@@ -642,6 +671,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */,
+				B721760A2750AD990047016B /* Buffer.cpp in Sources */,
 				B7791D772726762100E0C934 /* TextureRenderer.mm in Sources */,
 				B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */,
 				B7791D742726762100E0C934 /* Transform.mm in Sources */,
@@ -657,6 +687,7 @@
 				B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */,
 				B7791D8A2726762100E0C934 /* GeometryUtils.cpp in Sources */,
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
+				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */,
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshRenderable.mm in Sources */,
@@ -695,6 +726,7 @@
 				B7791D752726762100E0C934 /* Scene.cpp in Sources */,
 				B7104BC6272B1D3300582DCA /* TestView.swift in Sources */,
 				B7791DA82726768B00E0C934 /* CoreGraphics+Extensions.swift in Sources */,
+				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,
 				B7791D872726762100E0C934 /* Transform.cpp in Sources */,
 				B7791DAE2726768B00E0C934 /* UIApplication+Extensions.swift in Sources */,
 				B7791D252725F45F00E0C934 /* TransformView.swift in Sources */,
@@ -713,7 +745,7 @@
 				B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */,
 				B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,
-				B7E481DE2747782B003DA5B1 /* ResourceManager.mm in Sources */,
+				B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
