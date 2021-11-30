@@ -31,16 +31,16 @@ class SceneViewModel: ObservableObject {
         for _ in 0..<10 {
             let object = scene.makeObject()
             SPTMakePosition(object, Float.random(in: -100...100), Float.random(in: -100...100), Float.random(in: -100...100))
-            SPTMakeScale(object, Float.random(in: -50...50), Float.random(in: -50...50), 1.0)
+            SPTMakeScale(object, Float.random(in: -40...40), Float.random(in: -40...40), Float.random(in: -40...40))
             SPTMakeEulerOrientation(object, 0.0, 0.0, Float.random(in: -Float.pi...Float.pi), SPTEulerOrderXYZ)
-            SPTMakeMeshRenderable(object, kBasicMeshIdSquare, UIColor.random().rgba)
+            let meshId = SPTMeshId(UInt16.random(in: 0..<kBasicMeshCount))
+            SPTMakeMeshRenderable(object, meshId, UIColor.random().rgba)
         }
         
         let squareObject = scene.makeObject()
         SPTMakePosition(squareObject, 0.0, 0.0, 0.0)
-        SPTMakeScale(squareObject, 20.0, 20.0, 1.0)
-//        SPTMakeEulerOrientation(squareObject, 0.0, 0.0, Float.pi / 10.0, SPTEulerOrderXYZ)
-        SPTMakeMeshRenderable(squareObject, kBasicMeshIdSquare, UIColor.red.rgba)
+        SPTMakeScale(squareObject, 20.0, 20.0, 20.0)
+        SPTMakeMeshRenderable(squareObject, kBasicMeshIdCube, UIColor.red.rgba)
     }
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SceneObject? {

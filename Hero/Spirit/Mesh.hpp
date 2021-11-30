@@ -16,31 +16,28 @@ namespace spt {
 class Mesh {
 public:
     
-    enum class Geometry {
-        triangle,
-        triangleStrip
-    };
+    using IndexType = uint16_t;
     
-    Mesh(std::unique_ptr<ghi::Buffer> vertexBuffer, Geometry geometry);
+    Mesh(std::unique_ptr<ghi::Buffer> vertexBuffer, std::unique_ptr<ghi::Buffer> indexBuffer);
     Mesh(Mesh&&) = default;
     Mesh& operator=(Mesh&&) = default;
     Mesh(const Mesh&) = delete;
     Mesh& operator=(const Mesh&) = delete;
     
     const ghi::Buffer* vertexBuffer() const;
-    Geometry geometry() const;
+    const ghi::Buffer* indexBuffer() const;
     
 private:
     std::unique_ptr<ghi::Buffer> _vertexBuffer;
-    Geometry _geometry;
+    std::unique_ptr<ghi::Buffer> _indexBuffer;
 };
 
 inline const ghi::Buffer* Mesh::vertexBuffer() const {
     return _vertexBuffer.get();
 }
 
-inline Mesh::Geometry Mesh::geometry() const {
-    return _geometry;
+inline const ghi::Buffer* Mesh::indexBuffer() const {
+    return _indexBuffer.get();
 }
 
 }

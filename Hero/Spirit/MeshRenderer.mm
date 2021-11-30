@@ -19,15 +19,6 @@ static id<MTLRenderPipelineState> __pipelineState;
 
 namespace spt {
 
-MTLPrimitiveType getMTLPrimitiveType(Mesh::Geometry geometry) {
-    switch (geometry) {
-        case Mesh::Geometry::triangle:
-            return MTLPrimitiveTypeTriangle;
-        case Mesh::Geometry::triangleStrip:
-            return MTLPrimitiveTypeTriangleStrip;
-    }
-}
-
 MeshRenderer::MeshRenderer(Registry& registry)
 : _registry {registry} {
     
@@ -64,12 +55,14 @@ void MeshRenderer::render(void* renderingContext) {
                                   atIndex:kVertexInputIndexWorldMatrix];
         }
         
-        id<MTLBuffer> mtlBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
-        [renderEncoder setVertexBuffer: mtlBuffer offset: 0 atIndex: kVertexInputIndexVertices];
+        id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
+        [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
         
         [renderEncoder setFragmentBytes: &meshRenderable.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
         
-        [renderEncoder drawPrimitives: getMTLPrimitiveType(mesh.geometry()) vertexStart: 0 vertexCount: mtlBuffer.length / sizeof(simd_float3)];
+        id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) mesh.indexBuffer()->apiObject();
+        
+        [renderEncoder drawIndexedPrimitives: MTLPrimitiveTypeTriangle indexCount: indexBuffer.length / sizeof(uint16_t) indexType: MTLIndexTypeUInt16 indexBuffer: indexBuffer indexBufferOffset: 0];
     });
     
 }

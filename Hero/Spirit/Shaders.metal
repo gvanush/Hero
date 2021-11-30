@@ -159,7 +159,7 @@ struct RasterizerData
 
 vertex RasterizerData
 vertexShader(uint vertexID [[vertex_id]],
-             constant float3* vertices [[buffer(kVertexInputIndexVertices)]],
+             constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
              constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
              constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]])
 {
@@ -167,7 +167,7 @@ vertexShader(uint vertexID [[vertex_id]],
 
     // To convert from positions in pixel space to positions in clip-space,
     //  divide the pixel coordinates by half the size of the viewport.
-    out.position = uniforms.projectionViewMatrix * worldMatrix * float4(vertices[vertexID], 1.0);
+    out.position = uniforms.projectionViewMatrix * worldMatrix * float4(vertices[vertexID].position, 1.0);
 
     return out;
 }

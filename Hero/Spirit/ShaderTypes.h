@@ -31,3 +31,8 @@ typedef struct {
     simd_float4x4 projectionViewModelMatrix;
     simd_float2 viewportSize;
 } Uniforms;
+
+struct MeshVertex {
+    simd_float3 position;
+    simd_float3 normal;
+};

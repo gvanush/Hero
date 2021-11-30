@@ -20,6 +20,11 @@
 		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
 		B7217607274FFA770047016B /* Device_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7217605274FFA770047016B /* Device_metal.mm */; };
 		B721760A2750AD990047016B /* Buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72176082750AD990047016B /* Buffer.cpp */; };
+		B723583E2756147200337547 /* square.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723583D2756147200337547 /* square.obj */; };
+		B723584027568C6300337547 /* cube.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723583F27568C6300337547 /* cube.obj */; };
+		B72358422756902F00337547 /* cylinder.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72358412756902F00337547 /* cylinder.obj */; };
+		B7235844275691C000337547 /* cone.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7235843275691C000337547 /* cone.obj */; };
+		B72358482756928F00337547 /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72358472756928F00337547 /* sphere.obj */; };
 		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
@@ -85,7 +90,7 @@
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
 		B7E481D72744417D003DA5B1 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D52744417D003DA5B1 /* RenderingContext.m */; };
 		B7E481DA274648DB003DA5B1 /* MeshRenderable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */; };
-		B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */; };
+		B7E481DE2747782B003DA5B1 /* ResourceManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,6 +120,11 @@
 		B72176092750AD990047016B /* Buffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Buffer.hpp; sourceTree = "<group>"; };
 		B721760B2750B8870047016B /* ResourceOptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceOptions.hpp; sourceTree = "<group>"; };
 		B721760C2750BFAC0047016B /* ResourceOptionsUtil_metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceOptionsUtil_metal.h; sourceTree = "<group>"; };
+		B723583D2756147200337547 /* square.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = square.obj; sourceTree = "<group>"; };
+		B723583F27568C6300337547 /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
+		B72358412756902F00337547 /* cylinder.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cylinder.obj; sourceTree = "<group>"; };
+		B7235843275691C000337547 /* cone.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cone.obj; sourceTree = "<group>"; };
+		B72358472756928F00337547 /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -237,7 +247,7 @@
 		B7E481D62744417D003DA5B1 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
 		B7E481D8274648DB003DA5B1 /* MeshRenderable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshRenderable.h; sourceTree = "<group>"; };
 		B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MeshRenderable.mm; sourceTree = "<group>"; };
-		B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
+		B7E481DC2747782B003DA5B1 /* ResourceManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourceManager.mm; sourceTree = "<group>"; };
 		B7E481DD2747782B003DA5B1 /* ResourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -298,7 +308,12 @@
 		B72175FD274CF1CF0047016B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B723583D2756147200337547 /* square.obj */,
 				B72175FE274CF1DE0047016B /* circle.obj */,
+				B723583F27568C6300337547 /* cube.obj */,
+				B72358412756902F00337547 /* cylinder.obj */,
+				B7235843275691C000337547 /* cone.obj */,
+				B72358472756928F00337547 /* sphere.obj */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -590,7 +605,7 @@
 			isa = PBXGroup;
 			children = (
 				B72175FD274CF1CF0047016B /* Resources */,
-				B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */,
+				B7E481DC2747782B003DA5B1 /* ResourceManager.mm */,
 				B72175FB274BC28B0047016B /* ResourceManager.hpp */,
 				B7E481DD2747782B003DA5B1 /* ResourceManager.h */,
 				B72175F8274BC0A60047016B /* Mesh.cpp */,
@@ -657,6 +672,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B723583E2756147200337547 /* square.obj in Resources */,
+				B72358422756902F00337547 /* cylinder.obj in Resources */,
+				B72358482756928F00337547 /* sphere.obj in Resources */,
+				B723584027568C6300337547 /* cube.obj in Resources */,
+				B7235844275691C000337547 /* cone.obj in Resources */,
 				B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */,
 				B72175FF274CF1DE0047016B /* circle.obj in Resources */,
 				B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */,
@@ -745,7 +765,7 @@
 				B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */,
 				B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,
-				B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */,
+				B7E481DE2747782B003DA5B1 /* ResourceManager.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -893,7 +913,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "";
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -930,7 +952,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "";
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = free.co.herospirit.Hero.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

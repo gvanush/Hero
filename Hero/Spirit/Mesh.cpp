@@ -11,9 +11,9 @@
 
 namespace spt {
 
-Mesh::Mesh(std::unique_ptr<ghi::Buffer> vertexBuffer, Geometry geometry)
+Mesh::Mesh(std::unique_ptr<ghi::Buffer> vertexBuffer, std::unique_ptr<ghi::Buffer> indexBuffer)
 : _vertexBuffer{std::move(vertexBuffer)}
-, _geometry{geometry} {
+, _indexBuffer{std::move(indexBuffer)} {
 }
 
 }

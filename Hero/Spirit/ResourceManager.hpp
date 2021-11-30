@@ -12,6 +12,7 @@
 #include "Mesh.h"
 
 #include <vector>
+#include <string_view>
 
 namespace spt {
 
@@ -27,6 +28,8 @@ public:
     const Mesh& getMesh(SPTMeshId meshId);
     
 private:
+    void loadMesh(std::string_view name);
+    
     ResourceManager() = default;
     ResourceManager(const ResourceManager&) = delete;
     ResourceManager(ResourceManager&&) = delete;
