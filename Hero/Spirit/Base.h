@@ -32,7 +32,8 @@ typedef struct {
 } SPTObject;
 
 extern const SPTObject kSPTNullObject;
+bool SPTIsNull(SPTObject object);
 
-bool SPTIsValid(SPTObject entity);
+bool SPTIsValid(SPTObject object);
 
 SPT_EXTERN_C_END

@@ -6,14 +6,19 @@
 //
 
 #include "Mesh.hpp"
-
-#include <CoreFoundation/CoreFoundation.h>
+#include "Mesh.h"
+#include "ResourceManager.hpp"
 
 namespace spt {
 
-Mesh::Mesh(std::unique_ptr<ghi::Buffer> vertexBuffer, std::unique_ptr<ghi::Buffer> indexBuffer)
+Mesh::Mesh(std::unique_ptr<ghi::Buffer> vertexBuffer, std::unique_ptr<ghi::Buffer> indexBuffer, const SPTAABB& boundingBox)
 : _vertexBuffer{std::move(vertexBuffer)}
-, _indexBuffer{std::move(indexBuffer)} {
+, _indexBuffer{std::move(indexBuffer)}
+, _boundingBox{boundingBox} {
 }
 
+}
+
+SPTAABB SPTGetMeshBoundingBox(SPTMeshId meshId) {
+    return spt::ResourceManager::active().getMesh(meshId).boundingBox();
 }

@@ -19,12 +19,13 @@
 		B72175FF274CF1DE0047016B /* circle.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72175FE274CF1DE0047016B /* circle.obj */; };
 		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
 		B7217607274FFA770047016B /* Device_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7217605274FFA770047016B /* Device_metal.mm */; };
-		B721760A2750AD990047016B /* Buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72176082750AD990047016B /* Buffer.cpp */; };
+		B721760A2750AD990047016B /* Buffer_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = B72176082750AD990047016B /* Buffer_metal.mm */; };
 		B723583E2756147200337547 /* square.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723583D2756147200337547 /* square.obj */; };
 		B723584027568C6300337547 /* cube.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723583F27568C6300337547 /* cube.obj */; };
 		B72358422756902F00337547 /* cylinder.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72358412756902F00337547 /* cylinder.obj */; };
 		B7235844275691C000337547 /* cone.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7235843275691C000337547 /* cone.obj */; };
 		B72358482756928F00337547 /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72358472756928F00337547 /* sphere.obj */; };
+		B723584D2757749300337547 /* RayCast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723584B2757749300337547 /* RayCast.cpp */; };
 		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
@@ -46,7 +47,6 @@
 		B7791D7D2726762100E0C934 /* LineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D402726762100E0C934 /* LineRenderer.mm */; };
 		B7791D7E2726762100E0C934 /* UIRepresentable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D432726762100E0C934 /* UIRepresentable.mm */; };
 		B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D442726762100E0C934 /* CppWrapper.mm */; };
-		B7791D802726762100E0C934 /* SphericalCoord.c in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4B2726762100E0C934 /* SphericalCoord.c */; };
 		B7791D812726762100E0C934 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4E2726762100E0C934 /* Shaders.metal */; };
 		B7791D822726762100E0C934 /* Component.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7791D4F2726762100E0C934 /* Component.mm */; };
 		B7791D832726762100E0C934 /* SPTView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D522726762100E0C934 /* SPTView.swift */; };
@@ -116,7 +116,7 @@
 		B7217604274FF7EB0047016B /* Base.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Base.hpp; sourceTree = "<group>"; };
 		B7217605274FFA770047016B /* Device_metal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Device_metal.mm; sourceTree = "<group>"; };
 		B7217606274FFA770047016B /* Device.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Device.hpp; sourceTree = "<group>"; };
-		B72176082750AD990047016B /* Buffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Buffer.cpp; sourceTree = "<group>"; };
+		B72176082750AD990047016B /* Buffer_metal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Buffer_metal.mm; sourceTree = "<group>"; };
 		B72176092750AD990047016B /* Buffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Buffer.hpp; sourceTree = "<group>"; };
 		B721760B2750B8870047016B /* ResourceOptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceOptions.hpp; sourceTree = "<group>"; };
 		B721760C2750BFAC0047016B /* ResourceOptionsUtil_metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceOptionsUtil_metal.h; sourceTree = "<group>"; };
@@ -125,6 +125,10 @@
 		B72358412756902F00337547 /* cylinder.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cylinder.obj; sourceTree = "<group>"; };
 		B7235843275691C000337547 /* cone.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cone.obj; sourceTree = "<group>"; };
 		B72358472756928F00337547 /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
+		B72358492757730700337547 /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
+		B723584B2757749300337547 /* RayCast.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RayCast.cpp; sourceTree = "<group>"; };
+		B723584C2757749300337547 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
+		B723584E275774B600337547 /* RayCast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RayCast.h; sourceTree = "<group>"; };
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -174,7 +178,6 @@
 		B7791D482726762100E0C934 /* ObjCProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjCProxy.hpp; sourceTree = "<group>"; };
 		B7791D492726762100E0C934 /* TextureProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureProxy.h; sourceTree = "<group>"; };
 		B7791D4A2726762100E0C934 /* SceneObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
-		B7791D4B2726762100E0C934 /* SphericalCoord.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SphericalCoord.c; sourceTree = "<group>"; };
 		B7791D4C2726762100E0C934 /* GeometryUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeometryUtils.hpp; sourceTree = "<group>"; };
 		B7791D4D2726762100E0C934 /* GeometryUtils_Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeometryUtils_Common.h; sourceTree = "<group>"; };
 		B7791D4E2726762100E0C934 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -194,7 +197,6 @@
 		B7791D5C2726762100E0C934 /* ObjCProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCProxy.cpp; sourceTree = "<group>"; };
 		B7791D5D2726762100E0C934 /* SceneObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneObject.cpp; sourceTree = "<group>"; };
 		B7791D5E2726762100E0C934 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
-		B7791D5F2726762100E0C934 /* SphericalCoord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SphericalCoord.h; sourceTree = "<group>"; };
 		B7791D602726762100E0C934 /* GeometryUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeometryUtils.cpp; sourceTree = "<group>"; };
 		B7791D612726762100E0C934 /* ObjCObjectRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjCObjectRegistry.cpp; sourceTree = "<group>"; };
 		B7791D622726762100E0C934 /* Numeric.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Numeric.hpp; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				B73245BB274147F300708909 /* View */,
 				B7E481C227414867003DA5B1 /* Scene */,
 				B7E481C42741498F003DA5B1 /* Rendering */,
+				B723584A2757745A00337547 /* Ray Casting */,
 				B7E481DB274777CF003DA5B1 /* Resource Management */,
 				B7E481C627414A8F003DA5B1 /* Foundation */,
 			);
@@ -326,12 +329,22 @@
 				B7217604274FF7EB0047016B /* Base.hpp */,
 				B7217605274FFA770047016B /* Device_metal.mm */,
 				B7217606274FFA770047016B /* Device.hpp */,
-				B72176082750AD990047016B /* Buffer.cpp */,
+				B72176082750AD990047016B /* Buffer_metal.mm */,
 				B72176092750AD990047016B /* Buffer.hpp */,
 				B721760B2750B8870047016B /* ResourceOptions.hpp */,
 				B721760C2750BFAC0047016B /* ResourceOptionsUtil_metal.h */,
 			);
 			path = GHI;
+			sourceTree = "<group>";
+		};
+		B723584A2757745A00337547 /* Ray Casting */ = {
+			isa = PBXGroup;
+			children = (
+				B723584B2757749300337547 /* RayCast.cpp */,
+				B723584C2757749300337547 /* RayCast.hpp */,
+				B723584E275774B600337547 /* RayCast.h */,
+			);
+			name = "Ray Casting";
 			sourceTree = "<group>";
 		};
 		B7316FEB24CF376000157455 = {
@@ -568,15 +581,14 @@
 		B7E481C627414A8F003DA5B1 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				B7791D4B2726762100E0C934 /* SphericalCoord.c */,
-				B7791D5F2726762100E0C934 /* SphericalCoord.h */,
 				B73245B7274128FD00708909 /* Spirit.mm */,
 				B7104BC0272931AB00582DCA /* SIMDUtil.h */,
 				B73245AA273EB7D400708909 /* Base.h */,
 				B7E481D12742EE20003DA5B1 /* Base.cpp */,
 				B7E481D42743A1D7003DA5B1 /* Base.hpp */,
-				B73245A7273E677B00708909 /* Bridging-Header.h */,
 				B73245B8274128FD00708909 /* Spirit.h */,
+				B72358492757730700337547 /* Geometry.h */,
+				B73245A7273E677B00708909 /* Bridging-Header.h */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -691,7 +703,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */,
-				B721760A2750AD990047016B /* Buffer.cpp in Sources */,
+				B721760A2750AD990047016B /* Buffer_metal.mm in Sources */,
 				B7791D772726762100E0C934 /* TextureRenderer.mm in Sources */,
 				B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */,
 				B7791D742726762100E0C934 /* Transform.mm in Sources */,
@@ -705,6 +717,7 @@
 				B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */,
 				B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */,
 				B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */,
+				B723584D2757749300337547 /* RayCast.cpp in Sources */,
 				B7791D8A2726762100E0C934 /* GeometryUtils.cpp in Sources */,
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
@@ -715,7 +728,6 @@
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
-				B7791D802726762100E0C934 /* SphericalCoord.c in Sources */,
 				B7791DB52726768C00E0C934 /* Comparable+Extensions.swift in Sources */,
 				B7791D8E2726762100E0C934 /* Renderer.mm in Sources */,
 				B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */,

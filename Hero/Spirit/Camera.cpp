@@ -80,8 +80,8 @@ SPTPerspectiveCamera SPTUpdatePerspectiveCameraAspectRatio(SPTObject entity, flo
     });
 }
 
-simd_float3 SPTCameraConvertWorldToViewport(SPTObject cmaeraObject, simd_float3 point, simd_float2 viewportSize) {
-    auto pos = simd_mul(spt::computeCameraProjectionViewMatrix(cmaeraObject), simd_make_float4(point, 1.f));
+simd_float3 SPTCameraConvertWorldToViewport(SPTObject cameraObject, simd_float3 point, simd_float2 viewportSize) {
+    auto pos = simd_mul(spt::computeCameraProjectionViewMatrix(cameraObject), simd_make_float4(point, 1.f));
     pos = simd_mul(spt::computeViewportMatrix(viewportSize), pos / pos.w);
     return pos.xyz;
 }

@@ -10,6 +10,7 @@
 #include "Base.h"
 
 #include <entt/entt.hpp>
+#include <simd/simd.h>
 
 namespace spt {
 

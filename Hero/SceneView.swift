@@ -22,11 +22,7 @@ struct SceneView: View {
                 SPTView(scene: model.scene, clearColor: clearColor, viewCameraObject: model.viewCameraObject)
                     .gesture(orbitDragGesture)
                     .onLocatedTapGesture { location in
-                        if let object = model.pickObjectAt(location, viewportSize: geometry.size) {
-                            model.select(object)
-                        } else {
-                            model.discardSelection()
-                        }
+                        model.selectedObject = model.pickObjectAt(location, viewportSize: geometry.size)
                     }
                     // WARNING: This is causing frame drop when isNavigating changes
                     // frequently in a short period of time

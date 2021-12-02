@@ -92,27 +92,34 @@ struct TransformView: View {
     }
     
     func updateActiveValue(tool: Tool, axis: Axis) {
-        guard let transform = sceneViewModel.selectedObject?.transform else { return }
+        guard let selectedObject = sceneViewModel.selectedObject else { return }
+        
         switch tool {
         case .move:
-            activeValue = Double(transform.position[axis.rawValue])
+            activeValue = Double(SPTGetPosition(selectedObject)[axis.rawValue])
         case .orient:
-            activeValue = Double(toDegrees(radians: transform.rotation[axis.rawValue]))
+            activeValue = Double(toDegrees(radians: SPTGetEulerOrientation(selectedObject).rotation[axis.rawValue]))
         case .scale:
-            activeValue = Double(transform.scale[axis.rawValue])
+            activeValue = Double(SPTGetScale(selectedObject)[axis.rawValue])
         }
     }
     
     func updateObject(_ value: Double) {
         let axis = axes[activeTool.rawValue]
-        let transform = sceneViewModel.selectedObject!.transform!
+        let selectedObject = sceneViewModel.selectedObject!
         switch activeTool {
         case .move:
-            transform.position[axis.rawValue] = Float(value)
+            var pos = SPTGetPosition(selectedObject)
+            pos[axis.rawValue] = Float(value)
+            SPTUpdatePosition(selectedObject, pos)
         case .orient:
-            transform.rotation[axis.rawValue] = Float(toRadians(degrees: value))
+            var eulerOrientation = SPTGetEulerOrientation(selectedObject)
+            eulerOrientation.rotation[axis.rawValue] = Float(toRadians(degrees: value))
+            SPTUpdateEulerOrientation(selectedObject, eulerOrientation)
         case .scale:
-            transform.scale[axis.rawValue] = Float(value)
+            var scale = SPTGetScale(selectedObject)
+            scale[axis.rawValue] = Float(value)
+            SPTUpdateScale(selectedObject, scale)
         }
     }
     

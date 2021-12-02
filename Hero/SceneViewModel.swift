@@ -13,48 +13,49 @@ class SceneViewModel: ObservableObject {
     
     private var prevDragValue: DragGesture.Value?
 
-    private(set) var viewCameraObject: SPTObject {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+    private(set) var viewCameraObject: SPTObject
+    
+    @Published var selectedObject: SPTObject?
 
     init() {
         // Setup view camera
         viewCameraObject = scene.makeObject()
         SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 200.0, Float.pi, 0.5 * Float.pi)
         SPTMakeLookAtOrientation(viewCameraObject, simd_float3.zero, simd_float3.up)
-        SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 1000.0)
+        SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
         
         // Setup objects
-        
-        for _ in 0..<10 {
-            let object = scene.makeObject()
-            SPTMakePosition(object, Float.random(in: -100...100), Float.random(in: -100...100), Float.random(in: -100...100))
-            SPTMakeScale(object, Float.random(in: -40...40), Float.random(in: -40...40), Float.random(in: -40...40))
-            SPTMakeEulerOrientation(object, 0.0, 0.0, Float.random(in: -Float.pi...Float.pi), SPTEulerOrderXYZ)
-            let meshId = SPTMeshId(UInt16.random(in: 0..<kBasicMeshCount))
-            SPTMakeMeshRenderable(object, meshId, UIColor.random().rgba)
-        }
-        
         let squareObject = scene.makeObject()
         SPTMakePosition(squareObject, 0.0, 0.0, 0.0)
         SPTMakeScale(squareObject, 20.0, 20.0, 20.0)
         SPTMakeMeshRenderable(squareObject, kBasicMeshIdCube, UIColor.red.rgba)
+        SPTMakeRayCastableMesh(squareObject, kBasicMeshIdCube)
+        
+        let positionRange: ClosedRange<Float> = -1000.0...1000.0
+        let scaleRange: ClosedRange<Float> = -40.0...40.0
+        for _ in 0..<1000 {
+            let object = scene.makeObject()
+            SPTMakePosition(object, Float.random(in: positionRange), Float.random(in: positionRange), Float.random(in: positionRange))
+            SPTMakeScale(object, Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))
+            SPTMakeEulerOrientation(object, simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), SPTEulerOrderXYZ)
+            let meshId = SPTMeshId(UInt16.random(in: 0..<kBasicMeshCount))
+            SPTMakeMeshRenderable(object, meshId, UIColor.random().rgba)
+            SPTMakeRayCastableMesh(object, meshId)
+        }
+        
     }
     
-    func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SceneObject? {
-        nil
-    }
-    
-    func discardSelection() {
-    }
-    
-    func select(_ object: SceneObject) {
-    }
-    
-    var selectedObject: SceneObject? {
-        nil
+    func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {
+        let locationInScene = SPTCameraConvertViewportToWorld(viewCameraObject, simd_float3(location.float2, 1.0), viewportSize.float2)
+        let cameraPos = SPTGetPositionFromSphericalPosition(SPTGetSphericalPosition(viewCameraObject))
+        
+        let object = SPTRayCastScene(scene.cpp(), SPTRay(origin: cameraPos, direction: locationInScene - cameraPos), 0.0001).object
+        
+        if SPTIsNull(object) {
+            return nil
+        }
+        
+        return object
     }
     
     // MARK: Orbit
@@ -86,11 +87,11 @@ class SceneViewModel: ObservableObject {
     }
     
     func finishOrbit(dragValue: DragGesture.Value) {
-        orbit(dragValue: dragValue)
+        // Deliberately ignoring last drag value to avoid orbit nudge
         prevDragValue = nil
     }
     
-    static let orbitTranslationPerHalfRevolution: Float = 250.0
+    static let orbitTranslationPerHalfRevolution: Float = 300.0
     
     // MARK: Zoom
     func zoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
@@ -123,7 +124,7 @@ class SceneViewModel: ObservableObject {
     }
     
     func finishZoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
-        zoom(dragValue: dragValue, viewportSize: viewportSize)
+        // Deliberately ignoring last drag value to avoid zoom nudge
         prevDragValue = nil
     }
     

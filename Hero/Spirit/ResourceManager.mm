@@ -7,7 +7,9 @@
 
 #include "ResourceManager.h"
 #include "ResourceManager.hpp"
+#include "Geometry.h"
 #include "ShaderTypes.h"
+#include "SIMDUtil.h"
 
 #include "GHI/Device.hpp"
 
@@ -18,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 
 #import <Foundation/Foundation.h>
 
@@ -94,6 +97,8 @@ void ResourceManager::loadMesh(std::string_view name) {
     std::vector<MeshVertex> vertexData;
     std::vector<Mesh::IndexType> indexData;
     std::unordered_map<tinyobj::index_t, Mesh::IndexType> addedVertices;
+    std::unordered_set<int> processedPositionIndices;
+    SPTAABB boundingBox {float3_infinity, float3_negative_infinity};
     
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++) {
@@ -112,9 +117,32 @@ void ResourceManager::loadMesh(std::string_view name) {
                     continue;
                 }
                 
-                tinyobj::real_t vx = attrib.vertices[3*size_t(idx.vertex_index)+0];
-                tinyobj::real_t vy = attrib.vertices[3*size_t(idx.vertex_index)+1];
-                tinyobj::real_t vz = attrib.vertices[3*size_t(idx.vertex_index)+2];
+                tinyobj::real_t px = attrib.vertices[3*size_t(idx.vertex_index)+0];
+                tinyobj::real_t py = attrib.vertices[3*size_t(idx.vertex_index)+1];
+                tinyobj::real_t pz = attrib.vertices[3*size_t(idx.vertex_index)+2];
+                
+                // Update bounding box
+                if(processedPositionIndices.find(idx.vertex_index) == processedPositionIndices.end()) {
+                    if(px < boundingBox.min.x) {
+                        boundingBox.min.x = px;
+                    }
+                    if(px > boundingBox.max.x) {
+                        boundingBox.max.x = px;
+                    }
+                    if(py < boundingBox.min.y) {
+                        boundingBox.min.y = py;
+                    }
+                    if(py > boundingBox.max.y) {
+                        boundingBox.max.y = py;
+                    }
+                    if(pz < boundingBox.min.z) {
+                        boundingBox.min.z = pz;
+                    }
+                    if(pz > boundingBox.max.z) {
+                        boundingBox.max.z = pz;
+                    }
+                    processedPositionIndices.insert(idx.vertex_index);
+                }
                 
                 // Check if `normal_index` is zero or positive. negative = no normal data
                 assert(idx.normal_index >= 0);
@@ -124,7 +152,7 @@ void ResourceManager::loadMesh(std::string_view name) {
                 
                 auto index = static_cast<Mesh::IndexType>(vertexData.size());
                 indexData.push_back(index);
-                vertexData.emplace_back(MeshVertex{simd_float3 {vx, vy, vz}, simd_float3 {nx, ny, nz}});
+                vertexData.emplace_back(MeshVertex{simd_float3 {px, py, pz}, simd_float3 {nx, ny, nz}});
                 addedVertices[idx] = index;
                 
                 // Check if `texcoord_index` is zero or positive. negative = no texcoord data
@@ -147,7 +175,7 @@ void ResourceManager::loadMesh(std::string_view name) {
     
     auto vertexBuffer = ghi::Device::systemDefault().newBuffer(vertexData.data(), vertexData.size() * sizeof(MeshVertex), ghi::StorageMode::shared);
     auto indexBuffer = ghi::Device::systemDefault().newBuffer(indexData.data(), indexData.size() * sizeof(Mesh::IndexType), ghi::StorageMode::shared);
-    _basicMeshes.emplace_back(std::unique_ptr<ghi::Buffer>{vertexBuffer}, std::unique_ptr<ghi::Buffer>{indexBuffer});
+    _basicMeshes.emplace_back(std::unique_ptr<ghi::Buffer>{vertexBuffer}, std::unique_ptr<ghi::Buffer>{indexBuffer}, boundingBox);
 }
 
 }

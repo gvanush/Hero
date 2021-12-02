@@ -35,6 +35,8 @@ void SPTUpdateSphericalPosition(SPTObject object, SPTSphericalPosition pos);
 
 SPTSphericalPosition SPTGetSphericalPosition(SPTObject object);
 
+simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPosition);
+
 // MARK: EulerOrientation
 typedef enum {
     SPTEulerOrderXYZ,
@@ -46,11 +48,11 @@ typedef enum {
 } SPTEulerOrder;
 
 typedef struct {
-    float x, y, z;
+    simd_float3 rotation;
     SPTEulerOrder order;
 } SPTEulerOrientation;
 
-SPTEulerOrientation SPTMakeEulerOrientation(SPTObject object, float x, float y, float z, SPTEulerOrder order);
+SPTEulerOrientation SPTMakeEulerOrientation(SPTObject object, simd_float3 rotation, SPTEulerOrder order);
 
 void SPTUpdateEulerOrientation(SPTObject object, SPTEulerOrientation orientation);
     

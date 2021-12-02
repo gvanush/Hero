@@ -25,14 +25,6 @@ struct TransformationMatrix {
     bool isDirty;
 };
 
-simd_float3 computeSphericalPosition(const SPTSphericalPosition& sphericalPosition) {
-    float lngSin = sinf(sphericalPosition.longitude);
-    float lngCos = cosf(sphericalPosition.longitude);
-    float latSin = sinf(sphericalPosition.latitude);
-    float latCos = cosf(sphericalPosition.latitude);
-    return sphericalPosition.center + sphericalPosition.radius * simd_make_float3(lngSin * latSin, latCos, lngCos * latSin);
-}
-
 simd_float3x3 computeRotationXMatrix(float rx) {
     const auto c = cosf(rx);
     const auto s = sinf(rx);
@@ -65,9 +57,9 @@ simd_float3x3 computeRotationZMatrix(float rz) {
 
 void applyEulerOrientationMatrix(const SPTEulerOrientation& eulerOrientation, simd_float4x4& matrix) {
     
-    auto xMat = computeRotationXMatrix(eulerOrientation.x);
-    auto yMat = computeRotationYMatrix(eulerOrientation.y);
-    auto zMat = computeRotationZMatrix(eulerOrientation.z);
+    auto xMat = computeRotationXMatrix(eulerOrientation.rotation.x);
+    auto yMat = computeRotationYMatrix(eulerOrientation.rotation.y);
+    auto zMat = computeRotationZMatrix(eulerOrientation.rotation.z);
     
     auto rotMat = matrix_identity_float3x3;
     
@@ -112,7 +104,7 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     if(position) {
         matrix.columns[3].xyz = position->float3;
     } else if(sphericalPosition) {
-        matrix.columns[3].xyz = computeSphericalPosition(*sphericalPosition);
+        matrix.columns[3].xyz = SPTGetPositionFromSphericalPosition(*sphericalPosition);
     }
     
     const auto [eulerOrientation, lookAtOrientation] = registry.try_get<SPTEulerOrientation, SPTLookAtOrientation>(entity);
@@ -190,12 +182,20 @@ SPTSphericalPosition SPTGetSphericalPosition(SPTObject object) {
     return registry.get<SPTSphericalPosition>(object.entity);
 }
 
+simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPosition) {
+    float lngSin = sinf(sphericalPosition.longitude);
+    float lngCos = cosf(sphericalPosition.longitude);
+    float latSin = sinf(sphericalPosition.latitude);
+    float latCos = cosf(sphericalPosition.latitude);
+    return sphericalPosition.center + sphericalPosition.radius * simd_make_float3(lngSin * latSin, latCos, lngCos * latSin);
+}
+
 // MARK: EulerOrientation
-SPTEulerOrientation SPTMakeEulerOrientation(SPTObject object, float x, float y, float z, SPTEulerOrder order) {
+SPTEulerOrientation SPTMakeEulerOrientation(SPTObject object, simd_float3 rotation, SPTEulerOrder order) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     assert(!registry.any_of<SPTLookAtOrientation>(object.entity));
     registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<SPTEulerOrientation>(object.entity, x, y, z, order);
+    return registry.emplace<SPTEulerOrientation>(object.entity, rotation, order);
 }
 
 void SPTUpdateEulerOrientation(SPTObject object, SPTEulerOrientation orientation) {
