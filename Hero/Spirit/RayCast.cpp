@@ -112,26 +112,31 @@ SPTRayIntersectionResult SPTIntersectRayAABB(SPTRay ray, SPTAABB aabb, float tol
 
 SPTRayIntersectionResult SPTIntersectRayTriangle(SPTRay ray, SPTTriangle triangle, float tolerance) {
     
-    auto e1 = triangle.p1 - triangle.p0;
-    auto e2 = triangle.p2 - triangle.p0;
-    auto q = simd_cross(ray.direction, e2);
-    auto det = simd_dot(e1, q);
+    // Backfacing triangles are not culled
+    
+    const auto e1 = triangle.p1 - triangle.p0;
+    const auto e2 = triangle.p2 - triangle.p0;
+    const auto q = simd_cross(ray.direction, e2);
+    const auto det = simd_dot(e1, q);
     if(fabs(det) <= tolerance) {
         return {0.f, false};
     }
     
-    auto f = 1 / det;
-    auto s = ray.origin - triangle.p0;
-    auto u = f * simd_dot(s, q); // Barycentric coordinate of triangle.p1
+    const auto f = 1 / det;
+    const auto s = ray.origin - triangle.p0;
+    const auto u = f * simd_dot(s, q); // Barycentric coordinate of triangle.p1
     if(u < 0.f) {
         return {0.f, false};
     }
     
-    auto r = simd_cross(s, e1);
-    auto v = f * simd_dot(ray.direction, r); // Barycentric coordinate of triangle.p2
+    const auto r = simd_cross(s, e1);
+    const auto v = f * simd_dot(ray.direction, r); // Barycentric coordinate of triangle.p2
     if(v < 0.f || u + v > 1.f) {
         return {0.f, false};
     }
-    
-    return {f * simd_dot(e2, r), true};
+    const auto t = f * simd_dot(e2, r);
+    if(t <= 0.f) {
+        return {0.f, false};
+    }
+    return {t, true};
 }
