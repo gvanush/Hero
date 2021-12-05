@@ -19,16 +19,13 @@ namespace spt {
 class ResourceManager {
 public:
     
-    // NOTE: Currently iusing single intance however
-    // ultimately resource manager will be per project
     static ResourceManager& active();
     
-    void loadBasicMeshes();
+    SPTMeshId loadMesh(std::string_view path);
     
     const Mesh& getMesh(SPTMeshId meshId);
     
 private:
-    void loadMesh(std::string_view name);
     
     ResourceManager() = default;
     ResourceManager(const ResourceManager&) = delete;

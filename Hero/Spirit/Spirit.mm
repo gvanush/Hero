@@ -14,6 +14,5 @@
 
 void spt_init() {
     [SPTRenderingContext setup];
-    spt::ResourceManager::active().loadBasicMeshes();
     spt::MeshRenderer::init();
 }

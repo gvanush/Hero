@@ -22,8 +22,6 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#import <Foundation/Foundation.h>
-
 namespace std {
 
 template<>
@@ -54,31 +52,17 @@ ResourceManager& ResourceManager::active() {
     return manager;
 }
 
-void ResourceManager::loadBasicMeshes() {
-    loadMesh("square");
-    loadMesh("circle");
-    loadMesh("cube");
-    loadMesh("cylinder");
-    loadMesh("cone");
-    loadMesh("sphere");
-}
-
 const Mesh& ResourceManager::getMesh(SPTMeshId meshId) {
     assert(meshId < _basicMeshes.size());
     return _basicMeshes[meshId];
 }
 
-void ResourceManager::loadMesh(std::string_view name) {
-    
-    NSString* path = [[NSBundle mainBundle] pathForResource: [NSString stringWithCString: name.data() encoding: NSUTF8StringEncoding] ofType: @"obj"];
-    assert(path);
-    
-    std::string inputfile {path.UTF8String};
+SPTMeshId ResourceManager::loadMesh(std::string_view path) {
     
     tinyobj::ObjReader reader;
     tinyobj::ObjReaderConfig reader_config;
     
-    if (!reader.ParseFromFile(inputfile, reader_config)) {
+    if (!reader.ParseFromFile(std::string{path}, reader_config)) {
       if (!reader.Error().empty()) {
           std::cerr << "TinyObjReader: " << reader.Error();
       }
@@ -176,6 +160,15 @@ void ResourceManager::loadMesh(std::string_view name) {
     auto vertexBuffer = ghi::Device::systemDefault().newBuffer(vertexData.data(), vertexData.size() * sizeof(MeshVertex), ghi::StorageMode::shared);
     auto indexBuffer = ghi::Device::systemDefault().newBuffer(indexData.data(), indexData.size() * sizeof(Mesh::IndexType), ghi::StorageMode::shared);
     _basicMeshes.emplace_back(std::unique_ptr<ghi::Buffer>{vertexBuffer}, std::unique_ptr<ghi::Buffer>{indexBuffer}, boundingBox);
+    return static_cast<SPTMeshId>(_basicMeshes.size() - 1);
 }
 
+}
+
+SPTMeshId SPTGetMeshId(const char* meshPath) {
+    // Currently immediately loading the mesh, in the future
+    // perhaps this needs to be postponed to when the mesh data
+    // is actually needed by the engine. Also for each path
+    // there must be a unique id
+    return spt::ResourceManager::active().loadMesh(meshPath);
 }

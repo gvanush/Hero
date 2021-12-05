@@ -7,15 +7,11 @@
 
 #pragma once
 
+#include "Base.h"
 #include "Mesh.h"
 
-const SPTMeshId kBasicMeshIdSquare = 0;
-const SPTMeshId kBasicMeshIdCircle = 1;
-const SPTMeshId kBasicMeshIdCube = 2;
-const SPTMeshId kBasicMeshIdCylinder = 3;
-const SPTMeshId kBasicMeshIdCone = 4;
-const SPTMeshId kBasicMeshIdSphere = 5;
+SPT_EXTERN_C_BEGIN
 
-const uint16_t kBasicMeshCount = 6;
+SPTMeshId SPTGetMeshId(const char* meshPath);
 
-
+SPT_EXTERN_C_END

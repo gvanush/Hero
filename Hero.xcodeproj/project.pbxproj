@@ -90,7 +90,7 @@
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
 		B7E481D72744417D003DA5B1 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D52744417D003DA5B1 /* RenderingContext.m */; };
 		B7E481DA274648DB003DA5B1 /* MeshRenderable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */; };
-		B7E481DE2747782B003DA5B1 /* ResourceManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.mm */; };
+		B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -249,7 +249,7 @@
 		B7E481D62744417D003DA5B1 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
 		B7E481D8274648DB003DA5B1 /* MeshRenderable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshRenderable.h; sourceTree = "<group>"; };
 		B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MeshRenderable.mm; sourceTree = "<group>"; };
-		B7E481DC2747782B003DA5B1 /* ResourceManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourceManager.mm; sourceTree = "<group>"; };
+		B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
 		B7E481DD2747782B003DA5B1 /* ResourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -617,7 +617,7 @@
 			isa = PBXGroup;
 			children = (
 				B72175FD274CF1CF0047016B /* Resources */,
-				B7E481DC2747782B003DA5B1 /* ResourceManager.mm */,
+				B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */,
 				B72175FB274BC28B0047016B /* ResourceManager.hpp */,
 				B7E481DD2747782B003DA5B1 /* ResourceManager.h */,
 				B72175F8274BC0A60047016B /* Mesh.cpp */,
@@ -777,7 +777,7 @@
 				B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */,
 				B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,
-				B7E481DE2747782B003DA5B1 /* ResourceManager.mm in Sources */,
+				B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

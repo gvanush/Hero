@@ -14,10 +14,17 @@ class SceneViewModel: ObservableObject {
     private var prevDragValue: DragGesture.Value?
 
     private(set) var viewCameraObject: SPTObject
+    private var commonMeshIds = [SPTMeshId]()
     
     @Published var selectedObject: SPTObject?
 
     init() {
+        
+        for name in ["cube", "square", "circle", "cylinder", "cone", "sphere"] {
+            let meshPath = Bundle.main.path(forResource: name, ofType: "obj")!
+            commonMeshIds.append(SPTGetMeshId(meshPath))
+        }
+        
         // Setup view camera
         viewCameraObject = scene.makeObject()
         SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 200.0, Float.pi, 0.5 * Float.pi)
@@ -28,8 +35,8 @@ class SceneViewModel: ObservableObject {
         let squareObject = scene.makeObject()
         SPTMakePosition(squareObject, 0.0, 0.0, 0.0)
         SPTMakeScale(squareObject, 20.0, 20.0, 20.0)
-        SPTMakeMeshRenderable(squareObject, kBasicMeshIdCube, UIColor.red.rgba)
-        SPTMakeRayCastableMesh(squareObject, kBasicMeshIdCube)
+        SPTMakeMeshRenderable(squareObject, commonMeshIds[0], UIColor.red.rgba)
+        SPTMakeRayCastableMesh(squareObject, commonMeshIds[0])
         
         let positionRange: ClosedRange<Float> = -1000.0...1000.0
         let scaleRange: ClosedRange<Float> = -40.0...40.0
@@ -38,7 +45,7 @@ class SceneViewModel: ObservableObject {
             SPTMakePosition(object, Float.random(in: positionRange), Float.random(in: positionRange), Float.random(in: positionRange))
             SPTMakeScale(object, Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))
             SPTMakeEulerOrientation(object, simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), SPTEulerOrderXYZ)
-            let meshId = SPTMeshId(UInt16.random(in: 0..<kBasicMeshCount))
+            let meshId = commonMeshIds.randomElement()!
             SPTMakeMeshRenderable(object, meshId, UIColor.random().rgba)
             SPTMakeRayCastableMesh(object, meshId)
         }
