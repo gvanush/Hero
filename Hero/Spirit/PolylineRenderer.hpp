@@ -1,8 +1,8 @@
 //
-//  MeshRenderer.hpp
+//  PolylineRenderer.hpp
 //  Hero
 //
-//  Created by Vanush Grigoryan on 14.11.21.
+//  Created by Vanush Grigoryan on 07.12.21.
 //
 
 #pragma once
@@ -12,10 +12,10 @@
 
 namespace spt {
 
-class MeshRenderer {
+class PolylineRenderer {
 public:
     
-    MeshRenderer(Registry& registry);
+    PolylineRenderer(Registry& registry);
     
     void render(void* renderingContext);
 

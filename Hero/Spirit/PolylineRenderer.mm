@@ -1,15 +1,16 @@
 //
-//  MeshRenderer.cpp
+//  PolylineRenderer.cpp
 //  Hero
 //
-//  Created by Vanush Grigoryan on 14.11.21.
+//  Created by Vanush Grigoryan on 07.12.21.
 //
 
-#include "MeshRenderer.hpp"
-#include "MeshView.h"
+#include "PolylineRenderer.hpp"
+#include "PolylineView.h"
+#include "ViewDepthBias.h"
 #include "ResourceManager.hpp"
 #include "Transformation.hpp"
-#include "ViewDepthBias.h"
+
 #import "SPTRenderingContext.h"
 #import "ShaderTypes.h"
 
@@ -19,16 +20,15 @@ static id<MTLRenderPipelineState> __pipelineState;
 
 namespace spt {
 
-MeshRenderer::MeshRenderer(Registry& registry)
+PolylineRenderer::PolylineRenderer(Registry& registry)
 : _registry {registry} {
     
 }
 
-void MeshRenderer::render(void* renderingContext) {
+void PolylineRenderer::render(void* renderingContext) {
     
     SPTRenderingContext* rc = (__bridge SPTRenderingContext*) renderingContext;
 
-    // Create a render command encoder.
     id<MTLRenderCommandEncoder> renderEncoder = rc.renderCommandEncoder;
     
     _uniforms.viewportSize = rc.viewportSize;
@@ -37,14 +37,13 @@ void MeshRenderer::render(void* renderingContext) {
     
     [renderEncoder setRenderPipelineState: __pipelineState];
 
-    // Pass in the parameter data.
     [renderEncoder setVertexBytes: &_uniforms
                            length:sizeof(_uniforms)
                           atIndex:kVertexInputIndexUniforms];
 
-    auto render = [this, renderEncoder] (auto entity, auto& meshView) {
+    auto render = [this, renderEncoder] (auto entity, auto& polylineView) {
         
-        const auto& mesh = ResourceManager::active().getMesh(meshView.meshId);
+        const auto& polyline = ResourceManager::active().getPolyline(polylineView.polylineId);
         
         if(auto worldMatrix = spt::getTransformationMatrix(_registry, entity); worldMatrix) {
             [renderEncoder setVertexBytes: worldMatrix
@@ -55,30 +54,32 @@ void MeshRenderer::render(void* renderingContext) {
                                    length:sizeof(simd_float4x4)
                                   atIndex:kVertexInputIndexWorldMatrix];
         }
+        [renderEncoder setVertexBytes: &polylineView.thickness length: sizeof(float) atIndex: kVertexInputIndexThickness];
         
-        id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
+        id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) polyline.vertexBuffer()->apiObject();
         [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
         
-        [renderEncoder setFragmentBytes: &meshView.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
+        [renderEncoder setFragmentBytes: &polylineView.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
         
-        id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) mesh.indexBuffer()->apiObject();
+        id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) polyline.indexBuffer()->apiObject();
         
-        [renderEncoder drawIndexedPrimitives: MTLPrimitiveTypeTriangle indexCount: mesh.indexCount() indexType: MTLIndexTypeUInt16 indexBuffer: indexBuffer indexBufferOffset: 0];
+        [renderEncoder drawIndexedPrimitives: MTLPrimitiveTypeTriangle indexCount: polyline.indexCount() indexType: MTLIndexTypeUInt16 indexBuffer: indexBuffer indexBufferOffset: 0];
     };
     
-    const auto meshView = _registry.view<SPTMeshView>(entt::exclude<SPTViewDepthBias>);
-    meshView.each(render);
+    const auto polylineView = _registry.view<SPTPolylineView>(entt::exclude<SPTViewDepthBias>);
+    polylineView.each(render);
     
-    const auto depthBiasedMeshView = _registry.view<SPTMeshView, SPTViewDepthBias>();
-    depthBiasedMeshView.each([this, renderEncoder, render] (auto entity, auto& polylineView, auto& depthBias) {
+    const auto depthBiasedPolylineView = _registry.view<SPTPolylineView, SPTViewDepthBias>();
+    depthBiasedPolylineView.each([this, renderEncoder, render] (auto entity, auto& polylineView, auto& depthBias) {
         [renderEncoder setDepthBias: -depthBias.bias slopeScale: -depthBias.slopeScale clamp: depthBias.clamp];
         render(entity, polylineView);
     });
+    
 }
 
-void MeshRenderer::init() {
+void PolylineRenderer::init() {
     
-    id<MTLFunction> vertexFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName:@"vertexShader"];
+    id<MTLFunction> vertexFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName:@"polylineVertexShader"];
     id<MTLFunction> fragmentFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName:@"fragmentShader"];
 
     // Configure a pipeline descriptor that is used to create a pipeline state.

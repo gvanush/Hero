@@ -1,5 +1,5 @@
 //
-//  MeshRenderable.h
+//  MeshView.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 18.11.21.
@@ -15,10 +15,10 @@
 SPT_EXTERN_C_BEGIN
 
 typedef struct {
-    SPTMeshId meshId;
     simd_float4 color;
-} SPTMeshRenderable;
+    SPTMeshId meshId;
+} SPTMeshView;
 
-SPTMeshRenderable SPTMakeMeshRenderable(SPTObject object, SPTMeshId meshId, simd_float4 color);
+SPTMeshView SPTMakeMeshView(SPTObject object, SPTMeshId meshId, simd_float4 color);
 
 SPT_EXTERN_C_END

@@ -9,9 +9,14 @@
 
 #include "Base.h"
 #include "Mesh.h"
+#include "Polyline.h"
+
+#include <stdint.h>
 
 SPT_EXTERN_C_BEGIN
 
-SPTMeshId SPTGetMeshId(const char* meshPath);
+SPTMeshId SPTCreateMeshFromFile(const char* path);
+
+SPTMeshId SPTCreatePolylineFromFile(const char* path);
 
 SPT_EXTERN_C_END

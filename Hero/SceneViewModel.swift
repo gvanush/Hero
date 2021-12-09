@@ -14,28 +14,50 @@ class SceneViewModel: ObservableObject {
     private var prevDragValue: DragGesture.Value?
 
     private(set) var viewCameraObject: SPTObject
-    private var commonMeshIds = [SPTMeshId]()
     
     @Published var selectedObject: SPTObject?
 
     init() {
         
-        for name in ["cube", "square", "circle", "cylinder", "cone", "sphere"] {
-            let meshPath = Bundle.main.path(forResource: name, ofType: "obj")!
-            commonMeshIds.append(SPTGetMeshId(meshPath))
-        }
-        
         // Setup view camera
         viewCameraObject = scene.makeObject()
-        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 200.0, Float.pi, 0.5 * Float.pi)
+        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 300.0, 0.75 * Float.pi, 0.25 * Float.pi)
         SPTMakeLookAtOrientation(viewCameraObject, simd_float3.zero, simd_float3.up)
         SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
         
+        // Setup coordinate grid
+        let gridPath = Bundle.main.path(forResource: "coordinate_grid", ofType: "obj")!
+        let gridPolylineId = SPTCreatePolylineFromFile(gridPath)
+        let gridObject = scene.makeObject()
+        SPTMakePolylineView(gridObject, gridPolylineId, UIColor.systemGray.rgba, 1.0)
+        
+        // Setup coordinate axis
+        let linePath = Bundle.main.path(forResource: "line", ofType: "obj")!
+        let lineId = SPTCreatePolylineFromFile(linePath)
+        
+        let xAxisObject = scene.makeObject()
+        SPTMakePolylineView(xAxisObject, lineId, UIColor.red.rgba, 2.0)
+        SPTMakeScale(xAxisObject, 500.0, 1.0, 1.0)
+        SPTMakeViewDepthBias(xAxisObject, 5.0, 3.0, 0.0)
+        
+        let zAxisObject = scene.makeObject()
+        SPTMakePolylineView(zAxisObject, lineId, UIColor.blue.rgba, 2.0)
+        SPTMakeScale(zAxisObject, 500.0, 1.0, 1.0)
+        SPTMakeEulerOrientation(zAxisObject, simd_float3(0.0, Float.pi * 0.5, 0.0), SPTEulerOrderXYZ)
+        SPTMakeViewDepthBias(zAxisObject, 5.0, 3.0, 0.0)
+        
         // Setup objects
+        var commonMeshIds = [SPTMeshId]()
+        for name in ["cube", "square", "circle", "cylinder", "cone", "sphere"] {
+            let meshPath = Bundle.main.path(forResource: name, ofType: "obj")!
+            commonMeshIds.append(SPTCreateMeshFromFile(meshPath))
+        }
+        
         let squareObject = scene.makeObject()
         SPTMakePosition(squareObject, 0.0, 0.0, 0.0)
         SPTMakeScale(squareObject, 20.0, 20.0, 20.0)
-        SPTMakeMeshRenderable(squareObject, commonMeshIds[0], UIColor.red.rgba)
+        SPTMakeEulerOrientation(squareObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
+        SPTMakeMeshView(squareObject, commonMeshIds[0], UIColor.darkGray.rgba)
         SPTMakeRayCastableMesh(squareObject, commonMeshIds[0])
         
         let positionRange: ClosedRange<Float> = -1000.0...1000.0
@@ -46,7 +68,7 @@ class SceneViewModel: ObservableObject {
             SPTMakeScale(object, Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))
             SPTMakeEulerOrientation(object, simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), SPTEulerOrderXYZ)
             let meshId = commonMeshIds.randomElement()!
-            SPTMakeMeshRenderable(object, meshId, UIColor.random().rgba)
+            SPTMakeMeshView(object, meshId, UIColor.random().rgba)
             SPTMakeRayCastableMesh(object, meshId)
         }
         

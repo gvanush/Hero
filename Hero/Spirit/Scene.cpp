@@ -11,6 +11,7 @@ namespace spt {
 
 void Scene::render(void* renderingContext) {
     meshRenderer.render(renderingContext);
+    polylineRenderer.render(renderingContext);
 }
 
 }

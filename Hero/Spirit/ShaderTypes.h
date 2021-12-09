@@ -30,9 +30,16 @@ typedef struct {
     simd_float4x4 projectionViewMatrix;
     simd_float4x4 projectionViewModelMatrix;
     simd_float2 viewportSize;
+    float screenScale;
 } Uniforms;
 
 struct MeshVertex {
+    using Index = uint16_t;
     simd_float3 position;
     simd_float3 normal;
+};
+
+struct PolylineVertex {
+    using Index = uint16_t;
+    simd_float3 position;
 };

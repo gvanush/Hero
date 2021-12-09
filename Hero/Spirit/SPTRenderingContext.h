@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) simd_float4x4 projectionViewMatrix;
 @property (nonatomic) simd_float2 viewportSize;
+@property (nonatomic) float screenScale;
 @property (nonatomic, strong) id<MTLCommandBuffer> commandBuffer;
 @property (nonatomic, strong) id<MTLRenderCommandEncoder> renderCommandEncoder;
 

@@ -8,9 +8,9 @@
 #pragma once
 
 #include "Geometry.h"
-#include "GHI/Buffer.hpp"
 #include "ShaderTypes.h"
 #include "Geometry.h"
+#include "GHI/Buffer.hpp"
 
 #include <memory>
 
@@ -19,15 +19,14 @@ namespace spt {
 class Mesh {
 public:
     
-    using VertexType = MeshVertex;
-    using ConstVertexIterator = const VertexType*;
-    using IndexType = uint16_t;
+    using Vertex = MeshVertex;
+    using ConstVertexIterator = const Vertex*;
     static constexpr size_t faceVertexCount = 3;
     
     struct Face {
-        const VertexType& v0;
-        const VertexType& v1;
-        const VertexType& v2;
+        const Vertex& v0;
+        const Vertex& v1;
+        const Vertex& v2;
     };
     
     class ConstFaceIterator {
@@ -37,11 +36,11 @@ public:
         ConstFaceIterator& operator++();
         bool operator!=(const ConstFaceIterator& rhs) const;
         
-        const VertexType* _vertices;
-        const IndexType* _indicies;
+        const Vertex* _vertices;
+        const Vertex::Index* _indicies;
         
     private:
-        ConstFaceIterator(const VertexType* vertices, const IndexType* indicies);
+        ConstFaceIterator(const Vertex* vertices, const Vertex::Index* indicies);
         friend class Mesh;
     };
     
@@ -58,13 +57,13 @@ public:
     ConstFaceIterator cFaceEnd() const;
     
     const ghi::Buffer* vertexBuffer() const;
-    size_t vertexCount() const;
+    ghi::UInt vertexCount() const;
     
     const ghi::Buffer* indexBuffer() const;
-    size_t indexCount() const;
-    size_t faceCount() const;
+    ghi::UInt indexCount() const;
     
     const SPTAABB& boundingBox() const;
+    size_t faceCount() const;
     
 private:
     std::unique_ptr<ghi::Buffer> _vertexBuffer;
@@ -72,7 +71,7 @@ private:
     SPTAABB _boundingBox;
 };
 
-inline Mesh::ConstFaceIterator::ConstFaceIterator(const VertexType* vertices, const IndexType* indicies)
+inline Mesh::ConstFaceIterator::ConstFaceIterator(const Vertex* vertices, const Vertex::Index* indicies)
 : _vertices{vertices}, _indicies(indicies) {
 }
 
@@ -90,27 +89,27 @@ inline bool Mesh::ConstFaceIterator::operator!=(const ConstFaceIterator& rhs) co
 }
 
 inline Mesh::ConstFaceIterator Mesh::cFaceBegin() const {
-    return Mesh::ConstFaceIterator {static_cast<VertexType*>(_vertexBuffer->data()), static_cast<IndexType*>(_indexBuffer->data())};
+    return Mesh::ConstFaceIterator {static_cast<Vertex*>(_vertexBuffer->data()), static_cast<Vertex::Index*>(_indexBuffer->data())};
 }
 
 inline Mesh::ConstFaceIterator Mesh::cFaceEnd() const {
-    return Mesh::ConstFaceIterator {static_cast<VertexType*>(_vertexBuffer->data()), static_cast<IndexType*>(_indexBuffer->data()) + indexCount()};
+    return Mesh::ConstFaceIterator {static_cast<Vertex*>(_vertexBuffer->data()), static_cast<Vertex::Index*>(_indexBuffer->data()) + indexCount()};
 }
 
 inline const ghi::Buffer* Mesh::vertexBuffer() const {
     return _vertexBuffer.get();
 }
 
-inline size_t Mesh::vertexCount() const {
-    return _vertexBuffer->size() / sizeof(VertexType);
+inline ghi::UInt Mesh::vertexCount() const {
+    return _vertexBuffer->size() / sizeof(Vertex);
 }
 
 inline const ghi::Buffer* Mesh::indexBuffer() const {
     return _indexBuffer.get();
 }
 
-inline size_t Mesh::indexCount() const {
-    return _indexBuffer->size() / sizeof(Mesh::IndexType);
+inline ghi::UInt Mesh::indexCount() const {
+    return _indexBuffer->size() / sizeof(Vertex::Index);
 }
 
 inline size_t Mesh::faceCount() const {

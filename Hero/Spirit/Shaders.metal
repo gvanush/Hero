@@ -148,9 +148,9 @@ fragment float4 videoFS(TextureRasterizerData in [[stage_in]],
     return ycbcrToRGBTransform * ycbcr;
 }
 
+// **********************************************************************
 // Vertex shader outputs and fragment shader inputs
-struct RasterizerData
-{
+struct RasterizerData {
     // The [[position]] attribute of this member indicates that this value
     // is the clip space position of the vertex when this structure is
     // returned from the vertex function.
@@ -161,8 +161,7 @@ vertex RasterizerData
 vertexShader(uint vertexID [[vertex_id]],
              constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
              constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
-             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]])
-{
+             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     RasterizerData out;
 
     // To convert from positions in pixel space to positions in clip-space,
@@ -170,6 +169,50 @@ vertexShader(uint vertexID [[vertex_id]],
     out.position = uniforms.projectionViewMatrix * worldMatrix * float4(vertices[vertexID].position, 1.0);
 
     return out;
+}
+
+vertex RasterizerData
+polylineVertexShader(uint vertexID [[vertex_id]],
+             constant PolylineVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+             constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+             constant float& thickness [[buffer(kVertexInputIndexThickness)]],
+             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+    // Each line segment is represented by 4 points (2 triangles)
+    
+    const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
+    const auto projectionViewModelMatrix = uniforms.projectionViewMatrix * worldMatrix;
+    
+    auto point = projectionViewModelMatrix * float4(vertices[vertexID].position, 1.0);
+    point.x *= aspect;
+    
+    // For vertex 0 in a segment adjacent point is 2, for vertex 1 it is 3 and viceversa
+    const uint adjacentVertexIndex = 2 - 4 * ((vertexID % 4) / 2) + vertexID;
+    auto adjacentPoint = projectionViewModelMatrix * float4(vertices[adjacentVertexIndex].position, 1.0);
+    adjacentPoint.x *= aspect;
+    
+    // When 'w' is negative the resulting ndc z becomes more than 1.
+    // Therefore points are projected to the near plane
+    if (adjacentPoint.w < 0.f) {
+        adjacentPoint = adjacentPoint + (adjacentPoint.z / (adjacentPoint.z - point.z)) * (point - adjacentPoint);
+    }
+    
+    if (point.w < 0.f) {
+        point = point + (point.z / (point.z - adjacentPoint.z)) * (adjacentPoint - point);
+    }
+    
+    // Bring to NDC space
+    point /= point.w;
+    adjacentPoint /= adjacentPoint.w;
+
+    // Calculate segment normal
+    const auto normDir = 1 - 2 * static_cast<int>(vertexID % 2);
+    const auto norm = normDir * normalize(float2 {point.y - adjacentPoint.y, adjacentPoint.x - point.x});
+    
+    const auto thicknessNDCFactor = uniforms.screenScale / max(uniforms.viewportSize.x, uniforms.viewportSize.y);
+    point.xy += (thickness * thicknessNDCFactor) * norm;
+    
+    point.x /= aspect;
+    return RasterizerData {point};
 }
 
 fragment float4 fragmentShader(RasterizerData in [[stage_in]],

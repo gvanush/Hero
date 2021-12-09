@@ -26,6 +26,12 @@
 		B7235844275691C000337547 /* cone.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7235843275691C000337547 /* cone.obj */; };
 		B72358482756928F00337547 /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72358472756928F00337547 /* sphere.obj */; };
 		B723584D2757749300337547 /* RayCast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723584B2757749300337547 /* RayCast.cpp */; };
+		B7235851275D34D000337547 /* Polyline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723584F275D34D000337547 /* Polyline.cpp */; };
+		B7235855275E984500337547 /* PolylineView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7235853275E984500337547 /* PolylineView.cpp */; };
+		B7235858275F39F200337547 /* PolylineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7235856275F39F200337547 /* PolylineRenderer.mm */; };
+		B723585A275F51F700337547 /* coordinate_grid.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7235859275F4EE500337547 /* coordinate_grid.obj */; };
+		B723585C2761189E00337547 /* line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723585B2761173800337547 /* line.obj */; };
+		B723585F2762844700337547 /* ViewDepthBias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723585D2762844700337547 /* ViewDepthBias.cpp */; };
 		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
@@ -89,7 +95,7 @@
 		B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481CD2742307B003DA5B1 /* Camera.cpp */; };
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
 		B7E481D72744417D003DA5B1 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D52744417D003DA5B1 /* RenderingContext.m */; };
-		B7E481DA274648DB003DA5B1 /* MeshRenderable.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */; };
+		B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* MeshView.cpp */; };
 		B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */; };
 /* End PBXBuildFile section */
 
@@ -129,6 +135,17 @@
 		B723584B2757749300337547 /* RayCast.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RayCast.cpp; sourceTree = "<group>"; };
 		B723584C2757749300337547 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
 		B723584E275774B600337547 /* RayCast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RayCast.h; sourceTree = "<group>"; };
+		B723584F275D34D000337547 /* Polyline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Polyline.cpp; sourceTree = "<group>"; };
+		B7235850275D34D000337547 /* Polyline.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Polyline.hpp; sourceTree = "<group>"; };
+		B7235852275D3CBF00337547 /* Polyline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Polyline.h; sourceTree = "<group>"; };
+		B7235853275E984500337547 /* PolylineView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PolylineView.cpp; sourceTree = "<group>"; };
+		B7235854275E984500337547 /* PolylineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolylineView.h; sourceTree = "<group>"; };
+		B7235856275F39F200337547 /* PolylineRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PolylineRenderer.mm; sourceTree = "<group>"; };
+		B7235857275F39F200337547 /* PolylineRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PolylineRenderer.hpp; sourceTree = "<group>"; };
+		B7235859275F4EE500337547 /* coordinate_grid.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = coordinate_grid.obj; sourceTree = "<group>"; };
+		B723585B2761173800337547 /* line.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = line.obj; sourceTree = "<group>"; };
+		B723585D2762844700337547 /* ViewDepthBias.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ViewDepthBias.cpp; sourceTree = "<group>"; };
+		B723585E2762844700337547 /* ViewDepthBias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewDepthBias.h; sourceTree = "<group>"; };
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -247,8 +264,8 @@
 		B7E481D42743A1D7003DA5B1 /* Base.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Base.hpp; sourceTree = "<group>"; };
 		B7E481D52744417D003DA5B1 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
 		B7E481D62744417D003DA5B1 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
-		B7E481D8274648DB003DA5B1 /* MeshRenderable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshRenderable.h; sourceTree = "<group>"; };
-		B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MeshRenderable.mm; sourceTree = "<group>"; };
+		B7E481D8274648DB003DA5B1 /* MeshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshView.h; sourceTree = "<group>"; };
+		B7E481D9274648DB003DA5B1 /* MeshView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MeshView.cpp; sourceTree = "<group>"; };
 		B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
 		B7E481DD2747782B003DA5B1 /* ResourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -317,6 +334,8 @@
 				B72358412756902F00337547 /* cylinder.obj */,
 				B7235843275691C000337547 /* cone.obj */,
 				B72358472756928F00337547 /* sphere.obj */,
+				B7235859275F4EE500337547 /* coordinate_grid.obj */,
+				B723585B2761173800337547 /* line.obj */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -572,8 +591,14 @@
 				B7791D6A2726762100E0C934 /* SPTRenderingContext.h */,
 				B7791D4E2726762100E0C934 /* Shaders.metal */,
 				B7791D552726762100E0C934 /* ShaderTypes.h */,
-				B7E481D8274648DB003DA5B1 /* MeshRenderable.h */,
-				B7E481D9274648DB003DA5B1 /* MeshRenderable.mm */,
+				B7E481D8274648DB003DA5B1 /* MeshView.h */,
+				B7E481D9274648DB003DA5B1 /* MeshView.cpp */,
+				B7235853275E984500337547 /* PolylineView.cpp */,
+				B7235854275E984500337547 /* PolylineView.h */,
+				B7235856275F39F200337547 /* PolylineRenderer.mm */,
+				B7235857275F39F200337547 /* PolylineRenderer.hpp */,
+				B723585D2762844700337547 /* ViewDepthBias.cpp */,
+				B723585E2762844700337547 /* ViewDepthBias.h */,
 			);
 			name = Rendering;
 			sourceTree = "<group>";
@@ -623,6 +648,9 @@
 				B72175F8274BC0A60047016B /* Mesh.cpp */,
 				B72175F9274BC0A60047016B /* Mesh.hpp */,
 				B72175FC274BD5A00047016B /* Mesh.h */,
+				B723584F275D34D000337547 /* Polyline.cpp */,
+				B7235850275D34D000337547 /* Polyline.hpp */,
+				B7235852275D3CBF00337547 /* Polyline.h */,
 			);
 			name = "Resource Management";
 			sourceTree = "<group>";
@@ -684,6 +712,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B723585C2761189E00337547 /* line.obj in Resources */,
+				B723585A275F51F700337547 /* coordinate_grid.obj in Resources */,
 				B723583E2756147200337547 /* square.obj in Resources */,
 				B72358422756902F00337547 /* cylinder.obj in Resources */,
 				B72358482756928F00337547 /* sphere.obj in Resources */,
@@ -712,6 +742,7 @@
 				B73245B6274124C100708909 /* MeshRenderer.mm in Sources */,
 				B7791D892726762100E0C934 /* SceneObject.cpp in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
+				B7235851275D34D000337547 /* Polyline.cpp in Sources */,
 				B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */,
 				B7791D7B2726762100E0C934 /* Component.cpp in Sources */,
 				B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */,
@@ -723,7 +754,8 @@
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */,
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
-				B7E481DA274648DB003DA5B1 /* MeshRenderable.mm in Sources */,
+				B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */,
+				B7235858275F39F200337547 /* PolylineRenderer.mm in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
@@ -747,7 +779,9 @@
 				B7791D7C2726762100E0C934 /* NSPointerArray+Extensions.m in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B7791DB02726768B00E0C934 /* UITextField+Extensions.swift in Sources */,
+				B7235855275E984500337547 /* PolylineView.cpp in Sources */,
 				B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */,
+				B723585F2762844700337547 /* ViewDepthBias.cpp in Sources */,
 				B7791D822726762100E0C934 /* Component.mm in Sources */,
 				B7791D862726762100E0C934 /* TextureUtils.mm in Sources */,
 				B7791D882726762100E0C934 /* ObjCProxy.cpp in Sources */,

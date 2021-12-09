@@ -23,6 +23,7 @@
     if (self = [super initWithNibName: nil bundle: nil]) {
         _scene = scene;
         _renderingContext = [[SPTRenderingContext alloc] init];
+        _renderingContext.screenScale = [UIScreen mainScreen].nativeScale;
     }
     return self;
 }

@@ -10,6 +10,8 @@
 #include "ResourceManager.h"
 #include "Mesh.hpp"
 #include "Mesh.h"
+#include "Polyline.hpp"
+#include "Polyline.h"
 
 #include <vector>
 #include <string_view>
@@ -22,8 +24,10 @@ public:
     static ResourceManager& active();
     
     SPTMeshId loadMesh(std::string_view path);
+    SPTPolylineId loadPolyline(std::string_view path);
     
     const Mesh& getMesh(SPTMeshId meshId);
+    const Polyline& getPolyline(SPTPolylineId polylineId);
     
 private:
     
@@ -33,8 +37,19 @@ private:
     ResourceManager& operator=(const ResourceManager&) = delete;
     ResourceManager& operator=(ResourceManager&&) = delete;
     
-    std::vector<Mesh> _basicMeshes;
+    std::vector<Mesh> _meshes;
+    std::vector<Polyline> _polylines;
     
 };
+
+inline const Mesh& ResourceManager::getMesh(SPTMeshId meshId) {
+    assert(meshId < _meshes.size());
+    return _meshes[meshId];
+}
+
+inline const Polyline& ResourceManager::getPolyline(SPTPolylineId polylineId) {
+    assert(polylineId < _polylines.size());
+    return _polylines[polylineId];
+}
 
 }

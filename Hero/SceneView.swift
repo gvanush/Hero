@@ -105,7 +105,7 @@ fileprivate struct ZoomView: View {
         .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black.opacity(0.0)], startPoint: .bottom, endPoint: .top))
     }
     
-    static let width = 24.0
+    static let width = 30.0
     static let lineStrokeStyle = StrokeStyle(lineWidth: 4, dash: [1, 4])
 }
 
