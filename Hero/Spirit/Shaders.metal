@@ -225,15 +225,18 @@ outlineVertexShader(uint vertexID [[vertex_id]],
     // Bring to NDC
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
     point.x *= aspect;
+    const auto pw = point.w;
     point /= point.w;
     nPoint.x *= aspect;
     nPoint /= nPoint.w;
     
     const auto thicknessNDCFactor = uniforms.screenScale / max(uniforms.viewportSize.x, uniforms.viewportSize.y);
-    auto fp = point.xy + (thickness * thicknessNDCFactor) * normalize(nPoint.xy - point.xy);
-    fp.x /= aspect;
     
-    return RasterizerData {float4 {fp.x, fp.y, point.z, 1.f}};
+    auto fp = float4(point.xy + (thickness * thicknessNDCFactor) * normalize(nPoint.xy - point.xy), point.z, 1.f);
+    fp.x /= aspect;
+    fp *= pw;
+    
+    return RasterizerData {fp};
 }
 
 fragment float4 fragmentShader(RasterizerData in [[stage_in]],
