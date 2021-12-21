@@ -32,6 +32,8 @@
 		B723585A275F51F700337547 /* coordinate_grid.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7235859275F4EE500337547 /* coordinate_grid.obj */; };
 		B723585C2761189E00337547 /* line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723585B2761173800337547 /* line.obj */; };
 		B723585F2762844700337547 /* ViewDepthBias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723585D2762844700337547 /* ViewDepthBias.cpp */; };
+		B7235862276F2BEC00337547 /* OutlineView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7235860276F2BEC00337547 /* OutlineView.cpp */; };
+		B7235865276F33CF00337547 /* OutlineRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7235863276F33CF00337547 /* OutlineRenderer.mm */; };
 		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
@@ -146,6 +148,10 @@
 		B723585B2761173800337547 /* line.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = line.obj; sourceTree = "<group>"; };
 		B723585D2762844700337547 /* ViewDepthBias.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ViewDepthBias.cpp; sourceTree = "<group>"; };
 		B723585E2762844700337547 /* ViewDepthBias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewDepthBias.h; sourceTree = "<group>"; };
+		B7235860276F2BEC00337547 /* OutlineView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OutlineView.cpp; sourceTree = "<group>"; };
+		B7235861276F2BEC00337547 /* OutlineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OutlineView.h; sourceTree = "<group>"; };
+		B7235863276F33CF00337547 /* OutlineRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OutlineRenderer.mm; sourceTree = "<group>"; };
+		B7235864276F33CF00337547 /* OutlineRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OutlineRenderer.hpp; sourceTree = "<group>"; };
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -599,6 +605,10 @@
 				B7235857275F39F200337547 /* PolylineRenderer.hpp */,
 				B723585D2762844700337547 /* ViewDepthBias.cpp */,
 				B723585E2762844700337547 /* ViewDepthBias.h */,
+				B7235860276F2BEC00337547 /* OutlineView.cpp */,
+				B7235861276F2BEC00337547 /* OutlineView.h */,
+				B7235863276F33CF00337547 /* OutlineRenderer.mm */,
+				B7235864276F33CF00337547 /* OutlineRenderer.hpp */,
 			);
 			name = Rendering;
 			sourceTree = "<group>";
@@ -740,6 +750,7 @@
 				B7791D8C2726762100E0C934 /* Scene.mm in Sources */,
 				B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */,
 				B73245B6274124C100708909 /* MeshRenderer.mm in Sources */,
+				B7235862276F2BEC00337547 /* OutlineView.cpp in Sources */,
 				B7791D892726762100E0C934 /* SceneObject.cpp in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
 				B7235851275D34D000337547 /* Polyline.cpp in Sources */,
@@ -778,6 +789,7 @@
 				B7791DB12726768B00E0C934 /* SIMD3+Extensions.swift in Sources */,
 				B7791D7C2726762100E0C934 /* NSPointerArray+Extensions.m in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
+				B7235865276F33CF00337547 /* OutlineRenderer.mm in Sources */,
 				B7791DB02726768B00E0C934 /* UITextField+Extensions.swift in Sources */,
 				B7235855275E984500337547 /* PolylineView.cpp in Sources */,
 				B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */,

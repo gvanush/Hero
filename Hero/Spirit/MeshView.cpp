@@ -12,3 +12,8 @@ SPTMeshView SPTMakeMeshView(SPTObject object, SPTMeshId meshId, simd_float4 colo
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     return registry.emplace<SPTMeshView>(object.entity, color, meshId);
 }
+
+SPTMeshView SPTGetMeshView(SPTObject object) {
+    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    return registry.get<SPTMeshView>(object.entity);
+}

@@ -84,6 +84,7 @@
     self.renderingContext.viewportSize = simd_make_float2(size.width, size.height);
     assert(SPTIsValid(self.viewCameraEntity));
     SPTUpdatePerspectiveCameraAspectRatio(self.viewCameraEntity, size.width / size.height);
+//    SPTUpdateOrthographicCameraAspectRatio(self.viewCameraEntity, size.width / size.height);
 }
 
 @end

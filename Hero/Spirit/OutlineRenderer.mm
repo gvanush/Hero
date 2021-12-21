@@ -1,17 +1,16 @@
 //
-//  MeshRenderer.cpp
+//  OutlineRenderer.cpp
 //  Hero
 //
-//  Created by Vanush Grigoryan on 14.11.21.
+//  Created by Vanush Grigoryan on 19.12.21.
 //
 
-#include "MeshRenderer.hpp"
-#include "MeshView.h"
+#include "OutlineRenderer.hpp"
+#include "OutlineView.h"
 #include "ResourceManager.hpp"
 #include "Transformation.hpp"
 #include "ViewDepthBias.h"
 #import "SPTRenderingContext.h"
-#import "ShaderTypes.h"
 
 #import <Metal/Metal.h>
 
@@ -19,12 +18,12 @@ static id<MTLRenderPipelineState> __pipelineState;
 
 namespace spt {
 
-MeshRenderer::MeshRenderer(Registry& registry)
+OutlineRenderer::OutlineRenderer(Registry& registry)
 : _registry {registry} {
     
 }
 
-void MeshRenderer::render(void* renderingContext) {
+void OutlineRenderer::render(void* renderingContext) {
     
     SPTRenderingContext* rc = (__bridge SPTRenderingContext*) renderingContext;
 
@@ -36,17 +35,17 @@ void MeshRenderer::render(void* renderingContext) {
     _uniforms.screenScale = rc.screenScale;
     
     [renderEncoder setRenderPipelineState: __pipelineState];
-    [renderEncoder setCullMode: MTLCullModeBack];
-    [renderEncoder setFrontFacingWinding: MTLWindingCounterClockwise];
 
     // Pass in the parameter data.
     [renderEncoder setVertexBytes: &_uniforms
                            length:sizeof(_uniforms)
                           atIndex:kVertexInputIndexUniforms];
+    [renderEncoder setCullMode: MTLCullModeFront];
+    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
 
-    auto render = [this, renderEncoder] (auto entity, auto& meshView) {
+    auto render = [this, renderEncoder] (auto entity, auto& outlineView) {
         
-        const auto& mesh = ResourceManager::active().getMesh(meshView.meshId);
+        const auto& mesh = ResourceManager::active().getMesh(outlineView.meshId);
         
         if(auto worldMatrix = spt::getTransformationMatrix(_registry, entity); worldMatrix) {
             [renderEncoder setVertexBytes: worldMatrix
@@ -58,29 +57,31 @@ void MeshRenderer::render(void* renderingContext) {
                                   atIndex:kVertexInputIndexWorldMatrix];
         }
         
+        [renderEncoder setVertexBytes: &outlineView.thickness length: sizeof(float) atIndex: kVertexInputIndexThickness];
+        
         id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
         [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
         
-        [renderEncoder setFragmentBytes: &meshView.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
+        [renderEncoder setFragmentBytes: &outlineView.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
         
         id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) mesh.indexBuffer()->apiObject();
         
         [renderEncoder drawIndexedPrimitives: MTLPrimitiveTypeTriangle indexCount: mesh.indexCount() indexType: MTLIndexTypeUInt16 indexBuffer: indexBuffer indexBufferOffset: 0];
     };
     
-    const auto meshView = _registry.view<SPTMeshView>(entt::exclude<SPTViewDepthBias>);
-    meshView.each(render);
+    const auto outlineView = _registry.view<SPTOutlineView>(entt::exclude<SPTViewDepthBias>);
+    outlineView.each(render);
     
-    const auto depthBiasedMeshView = _registry.view<SPTMeshView, SPTViewDepthBias>();
-    depthBiasedMeshView.each([this, renderEncoder, render] (auto entity, auto& polylineView, auto& depthBias) {
+    const auto depthBiasedOutlineView = _registry.view<SPTOutlineView, SPTViewDepthBias>();
+    depthBiasedOutlineView.each([this, renderEncoder, render] (auto entity, auto& polylineView, auto& depthBias) {
         [renderEncoder setDepthBias: -depthBias.bias slopeScale: -depthBias.slopeScale clamp: depthBias.clamp];
         render(entity, polylineView);
     });
 }
 
-void MeshRenderer::init() {
+void OutlineRenderer::init() {
     
-    id<MTLFunction> vertexFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName:@"vertexShader"];
+    id<MTLFunction> vertexFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName:@"outlineVertexShader"];
     id<MTLFunction> fragmentFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName:@"fragmentShader"];
 
     // Configure a pipeline descriptor that is used to create a pipeline state.

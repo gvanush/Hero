@@ -9,6 +9,7 @@
 #import "Transformation.h"
 #import "Camera.h"
 #import "MeshView.h"
+#import "OutlineView.h"
 #import "PolylineView.h"
 #import "ViewDepthBias.h"
 #import "RayCast.h"

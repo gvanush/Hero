@@ -15,7 +15,8 @@
 
 SPT_EXTERN_C_BEGIN
 
-SPTMeshId SPTCreateMeshFromFile(const char* path);
+SPTMeshId SPTCreate3DMeshFromFile(const char* path);
+SPTMeshId SPTCreate2DMeshFromFile(const char* path);
 
 SPTMeshId SPTCreatePolylineFromFile(const char* path);
 

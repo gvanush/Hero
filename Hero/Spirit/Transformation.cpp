@@ -90,11 +90,34 @@ void applyEulerOrientationMatrix(const SPTEulerOrientation& eulerOrientation, si
 }
 
 void applyLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& lookAtOrientation, simd_float4x4& matrix) {
-    auto zAxis = simd_normalize(lookAtOrientation.target - pos);
-    auto xAxis = simd_normalize(simd_cross(lookAtOrientation.up, zAxis));
-    matrix.columns[1] = simd_make_float4(simd_normalize(simd_cross(zAxis, xAxis)), matrix.columns[1][3]);
-    matrix.columns[0] = simd_make_float4(xAxis, matrix.columns[0][3]);
-    matrix.columns[2] = simd_make_float4(zAxis, matrix.columns[2][3]);
+    const auto sign = (lookAtOrientation.positive ? 1 : -1);
+    switch(lookAtOrientation.axis) {
+        case SPTAxisX: {
+            const auto xAxis = sign * simd_normalize(lookAtOrientation.target - pos);
+            const auto yAxis = simd_normalize(simd_cross(lookAtOrientation.up, xAxis));
+            matrix.columns[2] = simd_make_float4(simd_normalize(simd_cross(xAxis, yAxis)), matrix.columns[2][3]);
+            matrix.columns[0] = simd_make_float4(xAxis, matrix.columns[0][3]);
+            matrix.columns[1] = simd_make_float4(yAxis, matrix.columns[1][3]);
+            break;
+        }
+        case SPTAxisY: {
+            const auto yAxis = sign * simd_normalize(lookAtOrientation.target - pos);
+            const auto zAxis = simd_normalize(simd_cross(lookAtOrientation.up, yAxis));
+            matrix.columns[0] = simd_make_float4(simd_normalize(simd_cross(yAxis, zAxis)), matrix.columns[0][3]);
+            matrix.columns[2] = simd_make_float4(zAxis, matrix.columns[2][3]);
+            matrix.columns[1] = simd_make_float4(yAxis, matrix.columns[1][3]);
+            break;
+        }
+        case SPTAxisZ: {
+            const auto zAxis = sign * simd_normalize(lookAtOrientation.target - pos);
+            const auto xAxis = simd_normalize(simd_cross(lookAtOrientation.up, zAxis));
+            matrix.columns[1] = simd_make_float4(simd_normalize(simd_cross(zAxis, xAxis)), matrix.columns[1][3]);
+            matrix.columns[0] = simd_make_float4(xAxis, matrix.columns[0][3]);
+            matrix.columns[2] = simd_make_float4(zAxis, matrix.columns[2][3]);
+            break;
+        }
+    }
+    
 }
 
 simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEntity entity) {
@@ -210,11 +233,11 @@ SPTEulerOrientation SPTGetEulerOrientation(SPTObject object) {
 }
 
 // MARK: LookAtOrientation
-SPTLookAtOrientation SPTMakeLookAtOrientation(SPTObject object, simd_float3 target, simd_float3 up) {
+SPTLookAtOrientation SPTMakeLookAtOrientation(SPTObject object, simd_float3 target, SPTAxis axis, bool positive, simd_float3 up) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     assert(!registry.any_of<SPTEulerOrientation>(object.entity));
     registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<SPTLookAtOrientation>(object.entity, target, up);
+    return registry.emplace<SPTLookAtOrientation>(object.entity, target, up, axis, positive);
 }
 
 void SPTUpdateLookAtOrientation(SPTObject object, SPTLookAtOrientation orientation) {

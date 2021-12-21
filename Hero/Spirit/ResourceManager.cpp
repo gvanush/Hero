@@ -19,16 +19,11 @@
 
 #include <iostream>
 #include <vector>
+#include <array>
 #include <unordered_map>
 #include <unordered_set>
 
 namespace {
-
-struct PosHash {
-    std::size_t operator()(const tinyobj::index_t& i) const noexcept {
-        return std::hash<decltype(i.vertex_index)>{}(i.vertex_index);
-    }
-};
 
 struct PosNormHash {
     std::size_t operator()(const tinyobj::index_t& i) const noexcept
@@ -38,6 +33,30 @@ struct PosNormHash {
         return h1 ^ (h2 << 1);
     }
 };
+
+struct FaceVertex {
+    tinyobj::index_t index;
+    simd_float3 point;
+    simd_float3 normal;
+};
+
+simd_float3 getPoint(const tinyobj::attrib_t& attrib, size_t index) {
+    const auto bi = 3 * index;
+    return simd_float3{attrib.vertices[bi], attrib.vertices[bi + 1], attrib.vertices[bi + 2]};
+}
+
+simd_float3 getNormal(const tinyobj::attrib_t& attrib, size_t index) {
+    const auto bi = 3 * index;
+    return simd_normalize(simd_float3{attrib.normals[bi], attrib.normals[bi + 1], attrib.normals[bi + 2]});
+}
+
+bool isFrontFacing2D(const std::array<FaceVertex, 3>& face) {
+    // CCW order assumed to be front facing
+    const auto v1 = face[1].point.xy - face[0].point.xy;
+    const auto v2 = face[2].point.xy - face[1].point.xy;
+    const auto orthoV1 = simd_float2 {-v1.y, v1.x};
+    return simd_dot(orthoV1, v2) > 0.f;
+}
 
 }
 
@@ -56,7 +75,7 @@ ResourceManager& ResourceManager::active() {
     return manager;
 }
 
-SPTMeshId ResourceManager::loadMesh(std::string_view path) {
+SPTMeshId ResourceManager::loadMesh(std::string_view path, bool is3D) {
     
     tinyobj::ObjReader reader;
     tinyobj::ObjReaderConfig reader_config;
@@ -82,42 +101,64 @@ SPTMeshId ResourceManager::loadMesh(std::string_view path) {
     std::unordered_map<tinyobj::index_t, MeshVertex::Index, PosNormHash> addedVertices;
     SPTAABB boundingBox {float3_infinity, float3_negative_infinity};
     
+    struct PointNormalRecord {
+        std::vector<MeshVertex::Index> vertexIndices;
+        simd_float3 normalSum;
+    };
+    std::unordered_map<int, PointNormalRecord> pointNormalRecords;
+    
+    std::array<FaceVertex, 3> faceVertices;
     // Loop over faces(polygon)
     size_t index_offset = 0;
     for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
-        size_t fv = size_t(shape.mesh.num_face_vertices[f]);
-        assert(fv == 3);
+        assert(size_t(shape.mesh.num_face_vertices[f]) == 3);
         
-        // Loop over vertices in the face.
-        for (size_t v = 0; v < fv; v++) {
-            // access to vertex
-            tinyobj::index_t idx = shape.mesh.indices[index_offset + v];
-            if(auto it = addedVertices.find(idx); it != addedVertices.end()) {
+        for(auto& faceVertex: faceVertices) {
+            tinyobj::index_t idx = shape.mesh.indices[index_offset++];
+            assert(idx.normal_index >= 0);
+            faceVertex = {idx, getPoint(attrib, idx.vertex_index), getNormal(attrib, idx.normal_index)};
+        }
+        
+        for (const auto& faceVertex: faceVertices) {
+            
+            if(auto it = addedVertices.find(faceVertex.index); it != addedVertices.end()) {
                 indexData.push_back(it->second);
                 continue;
             }
             
-            tinyobj::real_t px = attrib.vertices[3*size_t(idx.vertex_index)+0];
-            tinyobj::real_t py = attrib.vertices[3*size_t(idx.vertex_index)+1];
-            tinyobj::real_t pz = attrib.vertices[3*size_t(idx.vertex_index)+2];
-            
             // Update bounding box
-            boundingBox = SPTAABBExpandToIncludePoint(boundingBox, simd_float3{px, py, pz});
+            boundingBox = SPTAABBExpandToIncludePoint(boundingBox, faceVertex.point);
             
             // Check if `normal_index` is zero or positive. negative = no normal data
-            assert(idx.normal_index >= 0);
-            tinyobj::real_t nx = attrib.normals[3*size_t(idx.normal_index)+0];
-            tinyobj::real_t ny = attrib.normals[3*size_t(idx.normal_index)+1];
-            tinyobj::real_t nz = attrib.normals[3*size_t(idx.normal_index)+2];
+            const auto index = static_cast<MeshVertex::Index>(vertexData.size());
             
-            auto index = static_cast<MeshVertex::Index>(vertexData.size());
+            MeshVertex vertex {faceVertex.point};
+            auto& pointNormalRecord = pointNormalRecords[faceVertex.index.vertex_index];
+            if(is3D) {
+                vertex.surfaceNormal = faceVertex.normal;
+                pointNormalRecord.vertexIndices.push_back(index);
+                pointNormalRecord.normalSum += vertex.surfaceNormal;
+            } else {
+                // In 2D case 'faceVertex.normal' is the normal of the curve/line at faceVertex.point
+                assert(faceVertex.point.z == 0.f);
+                vertex.surfaceNormal = (isFrontFacing2D(faceVertices) ? 1.f : -1.f) * simd_float3 {0.f, 0.f, 1.f};
+                pointNormalRecord.vertexIndices.push_back(index);
+                pointNormalRecord.normalSum += faceVertex.normal;
+            }
+            
             indexData.push_back(index);
-            vertexData.emplace_back(MeshVertex{simd_float3 {px, py, pz}, simd_float3 {nx, ny, nz}});
-            addedVertices[idx] = index;
+            vertexData.emplace_back(vertex);
+            addedVertices[faceVertex.index] = index;
     
         }
-        index_offset += fv;
         
+    }
+    
+    for(auto it = pointNormalRecords.begin(); it != pointNormalRecords.end(); ++it) {
+        const auto adjacentSurfaceNormalAverage = simd_normalize(it->second.normalSum / it->second.vertexIndices.size());
+        for(const auto vi: it->second.vertexIndices) {
+            vertexData[vi].adjacentSurfaceNormalAverage = adjacentSurfaceNormalAverage;
+        }
     }
     
     auto vertexBuffer = ghi::Device::systemDefault().newBuffer(vertexData.data(), vertexData.size() * sizeof(MeshVertex), ghi::StorageMode::shared);
@@ -165,21 +206,16 @@ SPTPolylineId ResourceManager::loadPolyline(std::string_view path) {
             const auto prevIdx = shape.lines.indices[index_offset + v - 1];
             const auto idx = shape.lines.indices[index_offset + v];
             
-            tinyobj::real_t prevPx = attrib.vertices[3*size_t(prevIdx.vertex_index)+0];
-            tinyobj::real_t prevPy = attrib.vertices[3*size_t(prevIdx.vertex_index)+1];
-            tinyobj::real_t prevPz = attrib.vertices[3*size_t(prevIdx.vertex_index)+2];
+            const auto prevPoint = getPoint(attrib, prevIdx.vertex_index);
+            const auto point = getPoint(attrib, idx.vertex_index);
             
-            tinyobj::real_t px = attrib.vertices[3*size_t(idx.vertex_index)+0];
-            tinyobj::real_t py = attrib.vertices[3*size_t(idx.vertex_index)+1];
-            tinyobj::real_t pz = attrib.vertices[3*size_t(idx.vertex_index)+2];
-            
-            const auto prevVertex = PolylineVertex{simd_float3 {prevPx, prevPy, prevPz}};
+            const auto prevVertex = PolylineVertex{prevPoint};
             auto index0 = static_cast<PolylineVertex::Index>(vertexData.size());
             vertexData.emplace_back(prevVertex);
             auto index1 = static_cast<PolylineVertex::Index>(vertexData.size());
             vertexData.emplace_back(prevVertex);
             
-            const auto vertex = PolylineVertex{simd_float3 {px, py, pz}};
+            const auto vertex = PolylineVertex{point};
             auto index2 = static_cast<PolylineVertex::Index>(vertexData.size());
             vertexData.emplace_back(vertex);
             auto index3 = static_cast<PolylineVertex::Index>(vertexData.size());
@@ -205,12 +241,20 @@ SPTPolylineId ResourceManager::loadPolyline(std::string_view path) {
 
 }
 
-SPTMeshId SPTCreateMeshFromFile(const char* path) {
+SPTMeshId SPTCreate3DMeshFromFile(const char* path) {
     // Currently immediately loading the mesh, in the future
     // perhaps this needs to be postponed to when the mesh data
     // is actually needed by the engine. Also for each path
     // there must be a unique id
-    return spt::ResourceManager::active().loadMesh(path);
+    return spt::ResourceManager::active().loadMesh(path, true);
+}
+
+SPTMeshId SPTCreate2DMeshFromFile(const char* path) {
+    // Currently immediately loading the mesh, in the future
+    // perhaps this needs to be postponed to when the mesh data
+    // is actually needed by the engine. Also for each path
+    // there must be a unique id
+    return spt::ResourceManager::active().loadMesh(path, false);
 }
 
 SPTMeshId SPTCreatePolylineFromFile(const char* path) {

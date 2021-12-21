@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Geometry.h"
 
 #include <simd/simd.h>
 
@@ -59,12 +60,26 @@ void SPTUpdateEulerOrientation(SPTObject object, SPTEulerOrientation orientation
 SPTEulerOrientation SPTGetEulerOrientation(SPTObject object);
 
 // MARK: LookAtOrientation
+typedef enum {
+    SPTLookAtAxisPositiveX,
+    SPTLookAtAxisNegativeX,
+    SPTLookAtAxisPositiveY,
+    SPTLookAtAxisNegativeY,
+    SPTLookAtAxisPositiveZ,
+    SPTLookAtAxisNegativeZ
+} SPTLookAtAxis;
+
+// When 'axis' is x, 'up' is used to compute y axis
+// When 'axis' is y, 'up' is used to compute z axis
+// When 'axis' is z, 'up' is used to compute x axis
 typedef struct {
     simd_float3 target;
     simd_float3 up;
+    SPTAxis axis;
+    bool positive;
 } SPTLookAtOrientation;
 
-SPTLookAtOrientation SPTMakeLookAtOrientation(SPTObject object, simd_float3 target, simd_float3 up);
+SPTLookAtOrientation SPTMakeLookAtOrientation(SPTObject object, simd_float3 target, SPTAxis axis, bool positive, simd_float3 up);
 
 void SPTUpdateLookAtOrientation(SPTObject object, SPTLookAtOrientation orientation);
     

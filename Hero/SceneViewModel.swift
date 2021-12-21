@@ -15,15 +15,26 @@ class SceneViewModel: ObservableObject {
 
     private(set) var viewCameraObject: SPTObject
     
-    @Published var selectedObject: SPTObject?
+    @Published var selectedObject: SPTObject? {
+        willSet {
+            if let selectedObject = selectedObject {
+                SPTDestroyOutlineView(selectedObject)
+            }
+            if let newSelectedObject = newValue {
+                let meshView = SPTGetMeshView(newSelectedObject)
+                SPTMakeOutlineView(newSelectedObject, meshView.meshId, UIColor.orange.rgba, 5.0)
+            }
+        }
+    }
 
     init() {
         
         // Setup view camera
         viewCameraObject = scene.makeObject()
-        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 300.0, 0.75 * Float.pi, 0.25 * Float.pi)
-        SPTMakeLookAtOrientation(viewCameraObject, simd_float3.zero, simd_float3.up)
+        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 300.0, 0.25 * Float.pi, 0.25 * Float.pi)
+        SPTMakeLookAtOrientation(viewCameraObject, simd_float3.zero, SPTAxisZ, false, simd_float3.up)
         SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
+//        SPTMakeOrthographicCamera(viewCameraObject, 100.0, 1.0, 0.1, 2000.0)
         
         // Setup coordinate grid
         let gridPath = Bundle.main.path(forResource: "coordinate_grid", ofType: "obj")!
@@ -48,20 +59,26 @@ class SceneViewModel: ObservableObject {
         
         // Setup objects
         var commonMeshIds = [SPTMeshId]()
-        for name in ["cube", "square", "circle", "cylinder", "cone", "sphere"] {
+        for name in ["cube", "cylinder", "cone", "sphere"] {
             let meshPath = Bundle.main.path(forResource: name, ofType: "obj")!
-            commonMeshIds.append(SPTCreateMeshFromFile(meshPath))
+            commonMeshIds.append(SPTCreate3DMeshFromFile(meshPath))
+        }
+        for name in ["square", "circle"] {
+            let meshPath = Bundle.main.path(forResource: name, ofType: "obj")!
+            commonMeshIds.append(SPTCreate2DMeshFromFile(meshPath))
         }
         
-        let squareObject = scene.makeObject()
-        SPTMakePosition(squareObject, 0.0, 0.0, 0.0)
-        SPTMakeScale(squareObject, 20.0, 20.0, 20.0)
-        SPTMakeEulerOrientation(squareObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
-        SPTMakeMeshView(squareObject, commonMeshIds[0], UIColor.darkGray.rgba)
-        SPTMakeRayCastableMesh(squareObject, commonMeshIds[0])
+        let centerObjectMeshId = commonMeshIds[0]
+        let centerObject = scene.makeObject()
+        SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
+        SPTMakeScale(centerObject, 20.0, 20.0, 20.0)
+        SPTMakeEulerOrientation(centerObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
+        SPTMakeMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba)
+        SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
+//        SPTMakeOutlineView(centerObject, centerObjectMeshId, UIColor.orange.rgba, 5.0)
         
         let positionRange: ClosedRange<Float> = -1000.0...1000.0
-        let scaleRange: ClosedRange<Float> = -40.0...40.0
+        let scaleRange: ClosedRange<Float> = 10.0...40.0
         for _ in 0..<1000 {
             let object = scene.makeObject()
             SPTMakePosition(object, Float.random(in: positionRange), Float.random(in: positionRange), Float.random(in: positionRange))
@@ -104,7 +121,7 @@ class SceneViewModel: ObservableObject {
         sphericalPos.latitude -= deltaAngle.y
         
         let isInFrontOfSphere = sinf(sphericalPos.latitude) >= 0.0
-        sphericalPos.longitude += (isInFrontOfSphere ? deltaAngle.x : -deltaAngle.x)
+        sphericalPos.longitude += (isInFrontOfSphere ? -deltaAngle.x : deltaAngle.x)
         
         SPTUpdateSphericalPosition(viewCameraObject, sphericalPos)
         

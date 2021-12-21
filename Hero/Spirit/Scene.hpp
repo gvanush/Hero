@@ -11,6 +11,7 @@
 #include "Base.hpp"
 #include "MeshRenderer.hpp"
 #include "PolylineRenderer.hpp"
+#include "OutlineRenderer.hpp"
 
 #include <entt/entt.hpp>
 
@@ -23,9 +24,10 @@ struct Scene {
     
     void render(void* renderingContext);
     
-    spt::Registry registry;
+    Registry registry;
     MeshRenderer meshRenderer {registry};
     PolylineRenderer polylineRenderer {registry};
+    OutlineRenderer outlineRenderer {registry};
 };
 
 inline SPTObject Scene::makeObject() {

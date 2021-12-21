@@ -9,6 +9,12 @@
 
 #include <simd/simd.h>
 
+typedef enum {
+    SPTAxisX,
+    SPTAxisY,
+    SPTAxisZ,
+} SPTAxis;
+
 typedef struct {
     simd_float3 min, max;
 } SPTAABB;

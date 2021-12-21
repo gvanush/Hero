@@ -20,5 +20,6 @@ typedef struct {
 } SPTMeshView;
 
 SPTMeshView SPTMakeMeshView(SPTObject object, SPTMeshId meshId, simd_float4 color);
+SPTMeshView SPTGetMeshView(SPTObject object);
 
 SPT_EXTERN_C_END

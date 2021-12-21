@@ -36,7 +36,8 @@ typedef struct {
 struct MeshVertex {
     using Index = uint16_t;
     simd_float3 position;
-    simd_float3 normal;
+    simd_float3 surfaceNormal;
+    simd_float3 adjacentSurfaceNormalAverage;
 };
 
 struct PolylineVertex {

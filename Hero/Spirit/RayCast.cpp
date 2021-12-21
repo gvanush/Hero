@@ -38,7 +38,7 @@ SPTRayCastResult SPTRayCastScene(SPTSceneHandle sceneHandle, SPTRay ray, float t
             for (auto it = mesh.cFaceBegin(); it != mesh.cFaceEnd(); ++it) {
                 const auto& face = *it;
                 const auto triIntersRes = SPTIntersectRayTriangle(localRay, SPTTriangle{face.v0.position, face.v1.position, face.v2.position}, tolerance);
-                if(triIntersRes.intersected) {
+                if(triIntersRes.intersected && result.rayDirectionFactor > triIntersRes.rayDirectionFactor) {
                     result.object = SPTObject{entity, sceneHandle};
                     result.rayDirectionFactor = triIntersRes.rayDirectionFactor;
                 }

@@ -23,7 +23,7 @@ public:
     
     static ResourceManager& active();
     
-    SPTMeshId loadMesh(std::string_view path);
+    SPTMeshId loadMesh(std::string_view path, bool is3D);
     SPTPolylineId loadPolyline(std::string_view path);
     
     const Mesh& getMesh(SPTMeshId meshId);

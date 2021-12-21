@@ -163,11 +163,7 @@ vertexShader(uint vertexID [[vertex_id]],
              constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
              constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     RasterizerData out;
-
-    // To convert from positions in pixel space to positions in clip-space,
-    //  divide the pixel coordinates by half the size of the viewport.
     out.position = uniforms.projectionViewMatrix * worldMatrix * float4(vertices[vertexID].position, 1.0);
-
     return out;
 }
 
@@ -213,6 +209,31 @@ polylineVertexShader(uint vertexID [[vertex_id]],
     
     point.x /= aspect;
     return RasterizerData {point};
+}
+
+vertex RasterizerData
+outlineVertexShader(uint vertexID [[vertex_id]],
+             constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+             constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+             constant float& thickness [[buffer(kVertexInputIndexThickness)]],
+             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+    
+    const auto projectionViewModelMatrix = uniforms.projectionViewMatrix * worldMatrix;
+    auto point = projectionViewModelMatrix * float4(vertices[vertexID].position, 1.0);
+    auto nPoint = projectionViewModelMatrix * float4(vertices[vertexID].position + vertices[vertexID].adjacentSurfaceNormalAverage, 1.0);
+    
+    // Bring to NDC
+    const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
+    point.x *= aspect;
+    point /= point.w;
+    nPoint.x *= aspect;
+    nPoint /= nPoint.w;
+    
+    const auto thicknessNDCFactor = uniforms.screenScale / max(uniforms.viewportSize.x, uniforms.viewportSize.y);
+    auto fp = point.xy + (thickness * thicknessNDCFactor) * normalize(nPoint.xy - point.xy);
+    fp.x /= aspect;
+    
+    return RasterizerData {float4 {fp.x, fp.y, point.z, 1.f}};
 }
 
 fragment float4 fragmentShader(RasterizerData in [[stage_in]],
