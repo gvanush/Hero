@@ -22,6 +22,10 @@ void SPTUpdatePosition(SPTObject object, simd_float3 position);
 
 simd_float3 SPTGetPosition(SPTObject object);
 
+void SPTAddPositionListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemovePositionListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemovePositionListener(SPTObject object, SPTComponentListener listener);
+
 // MARK: SphericalPosition
 typedef struct {
     simd_float3 center;
@@ -56,8 +60,13 @@ typedef struct {
 SPTEulerOrientation SPTMakeEulerOrientation(SPTObject object, simd_float3 rotation, SPTEulerOrder order);
 
 void SPTUpdateEulerOrientation(SPTObject object, SPTEulerOrientation orientation);
+void SPTUpdateEulerOrientationRotation(SPTObject object, simd_float3 rotation);
     
 SPTEulerOrientation SPTGetEulerOrientation(SPTObject object);
+
+void SPTAddEulerOrientationListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveEulerOrientationListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveEulerOrientationListener(SPTObject object, SPTComponentListener listener);
 
 // MARK: LookAtOrientation
 typedef enum {
@@ -91,5 +100,9 @@ simd_float3 SPTMakeScale(SPTObject object, float x, float y, float z);
 void SPTUpdateScale(SPTObject object, simd_float3 scale);
 
 simd_float3 SPTGetScale(SPTObject object);
+
+void SPTAddScaleListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveScaleListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveScaleListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END

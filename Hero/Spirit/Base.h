@@ -36,4 +36,7 @@ bool SPTIsNull(SPTObject object);
 
 bool SPTIsValid(SPTObject object);
 
+typedef void* SPTComponentListener;
+typedef void (*SPTComponentListenerCallback) (SPTComponentListener);
+
 SPT_EXTERN_C_END

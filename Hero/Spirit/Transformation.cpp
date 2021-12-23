@@ -8,15 +8,8 @@
 #include "Transformation.h"
 #include "Transformation.hpp"
 #include "Scene.hpp"
+#include "ComponentListenerUtil.hpp"
 #include "Base.hpp"
-
-typedef struct {
-    simd_float3 float3;
-} SPTPosition;
-
-typedef struct {
-    simd_float3 float3;
-} SPTScale;
 
 namespace spt {
 
@@ -123,7 +116,7 @@ void applyLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& lookAtOrient
 simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEntity entity) {
     auto matrix = matrix_identity_float4x4;
     
-    const auto [position, sphericalPosition] = registry.try_get<SPTPosition, SPTSphericalPosition>(entity);
+    const auto [position, sphericalPosition] = registry.try_get<spt::Position, SPTSphericalPosition>(entity);
     if(position) {
         matrix.columns[3].xyz = position->float3;
     } else if(sphericalPosition) {
@@ -137,7 +130,7 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
         applyLookAtMatrix(matrix.columns[3].xyz, *lookAtOrientation, matrix);
     }
     
-    const auto scale = registry.try_get<SPTScale>(entity);
+    const auto scale = registry.try_get<spt::Scale>(entity);
     if(scale) {
         matrix.columns[0] *= scale->float3.x;
         matrix.columns[1] *= scale->float3.y;
@@ -169,7 +162,7 @@ simd_float3 SPTMakePosition(SPTObject object, float x, float y, float z) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     assert(!registry.any_of<SPTSphericalPosition>(object.entity));
     registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<SPTPosition>(object.entity, simd_float3 {x, y, z}).float3;
+    return registry.emplace<spt::Position>(object.entity, simd_float3 {x, y, z}).float3;
 }
 
 simd_float3 SPTMakePositionZero(SPTObject object) {
@@ -179,17 +172,29 @@ simd_float3 SPTMakePositionZero(SPTObject object) {
 void SPTUpdatePosition(SPTObject object, simd_float3 position) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     registry.patch<spt::TransformationMatrix>(object.entity, [] (auto& matrix) { matrix.isDirty = true; });
-    registry.replace<SPTPosition>(object.entity, position);
+    registry.replace<spt::Position>(object.entity, position);
 }
 
 simd_float3 SPTGetPosition(SPTObject object) {
-    return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<SPTPosition>(object.entity).float3;
+    return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<spt::Position>(object.entity).float3;
+}
+
+void SPTAddPositionListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+    spt::addComponentListener<spt::Position>(object, listener, callback);
+}
+
+void SPTRemovePositionListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+    spt::removeComponentListenerCallback<spt::Position>(object, listener, callback);
+}
+
+void SPTRemovePositionListener(SPTObject object, SPTComponentListener listener) {
+    spt::removeComponentListener<spt::Position>(object, listener);
 }
 
 // MARK: SphericalPosition
 SPTSphericalPosition SPTMakeSphericalPosition(SPTObject object, simd_float3 center, float radius, float longitude, float latitude) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    assert(!registry.any_of<SPTPosition>(object.entity));
+    assert(!registry.any_of<spt::Position>(object.entity));
     registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
     return registry.emplace<SPTSphericalPosition>(object.entity, center, radius, longitude, latitude);
 }
@@ -227,9 +232,27 @@ void SPTUpdateEulerOrientation(SPTObject object, SPTEulerOrientation orientation
     registry.replace<SPTEulerOrientation>(object.entity, orientation);
 }
     
+void SPTUpdateEulerOrientationRotation(SPTObject object, simd_float3 rotation) {
+    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    registry.patch<spt::TransformationMatrix>(object.entity, [] (auto& tranMat) { tranMat.isDirty = true; });
+    registry.patch<SPTEulerOrientation>(object.entity, [rotation] (auto& eulerOrientaiton) { eulerOrientaiton.rotation = rotation; });
+}
+
 SPTEulerOrientation SPTGetEulerOrientation(SPTObject object) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     return registry.get<SPTEulerOrientation>(object.entity);
+}
+
+void SPTAddEulerOrientationListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+    spt::addComponentListener<SPTEulerOrientation>(object, listener, callback);
+}
+
+void SPTRemoveEulerOrientationListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+    spt::removeComponentListenerCallback<SPTEulerOrientation>(object, listener, callback);
+}
+
+void SPTRemoveEulerOrientationListener(SPTObject object, SPTComponentListener listener) {
+    spt::removeComponentListener<SPTEulerOrientation>(object, listener);
 }
 
 // MARK: LookAtOrientation
@@ -255,15 +278,27 @@ SPTLookAtOrientation SPTGetLookAtOrientation(SPTObject object) {
 simd_float3 SPTMakeScale(SPTObject object, float x, float y, float z) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<SPTScale>(object.entity, simd_float3 {x, y, z}).float3;
+    return registry.emplace<spt::Scale>(object.entity, simd_float3 {x, y, z}).float3;
 }
 
 void SPTUpdateScale(SPTObject object, simd_float3 scale) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     registry.patch<spt::TransformationMatrix>(object.entity, [] (auto& matrix) { matrix.isDirty = true; });
-    registry.replace<SPTScale>(object.entity, scale);
+    registry.replace<spt::Scale>(object.entity, scale);
 }
 
 simd_float3 SPTGetScale(SPTObject object) {
-    return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<SPTScale>(object.entity).float3;
+    return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<spt::Scale>(object.entity).float3;
+}
+
+void SPTAddScaleListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+    spt::addComponentListener<spt::Scale>(object, listener, callback);
+}
+
+void SPTRemoveScaleListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+    spt::removeComponentListenerCallback<spt::Scale>(object, listener, callback);
+}
+
+void SPTRemoveScaleListener(SPTObject object, SPTComponentListener listener) {
+    spt::removeComponentListener<spt::Scale>(object, listener);
 }

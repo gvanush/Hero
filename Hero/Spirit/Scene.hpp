@@ -12,12 +12,17 @@
 #include "MeshRenderer.hpp"
 #include "PolylineRenderer.hpp"
 #include "OutlineRenderer.hpp"
+#include "ComponentUpdateNotifier.hpp"
+#include "Transformation.hpp"
+#include "Transformation.h"
 
 #include <entt/entt.hpp>
+#include <tuple>
 
 namespace spt {
 
 struct Scene {
+    Scene();
     
     SPTObject makeObject();
     static void destroyObject(SPTObject entity);
@@ -25,9 +30,15 @@ struct Scene {
     void render(void* renderingContext);
     
     Registry registry;
+    
     MeshRenderer meshRenderer {registry};
     PolylineRenderer polylineRenderer {registry};
     OutlineRenderer outlineRenderer {registry};
+        
+    std::tuple<
+    ComponentUpdateNotifier<spt::Position>,
+    ComponentUpdateNotifier<SPTEulerOrientation>,
+    ComponentUpdateNotifier<spt::Scale>> componentUpdateNotifiers;
 };
 
 inline SPTObject Scene::makeObject() {

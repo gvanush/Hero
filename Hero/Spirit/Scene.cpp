@@ -6,13 +6,22 @@
 //
 
 #include "Scene.hpp"
+#include "Transformation.hpp"
 
 namespace spt {
+
+Scene::Scene()
+: componentUpdateNotifiers {registry, registry, registry} {
+}
 
 void Scene::render(void* renderingContext) {
     meshRenderer.render(renderingContext);
     polylineRenderer.render(renderingContext);
     outlineRenderer.render(renderingContext);
+    
+    std::apply([] (auto& ...notifier) {
+        (..., notifier.notify());
+    }, componentUpdateNotifiers);
 }
 
 }

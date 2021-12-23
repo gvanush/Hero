@@ -7,7 +7,170 @@
 
 import SwiftUI
 
-enum Axis: Int, PropertySelectorItem {
+struct TransformView: View {
+    
+    @StateObject var sceneViewModel = SceneViewModel()
+    @State private var activeTool = Tool.move
+    @State private var axes = [Axis](repeating: .x, count: Tool.allCases.count)
+    @State var scales = [FloatField.Scale._1, FloatField.Scale._10, FloatField.Scale._0_1]
+    @State private var isNavigating = false
+    
+    var body: some View {
+        NavigationView {
+            ZStack {
+                SceneView(model: sceneViewModel, isNavigating: $isNavigating)
+                VStack(spacing: Self.margin) {
+                    Spacer()
+                    if let selectedObject = sceneViewModel.selectedObject {
+                        ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
+                            .padding(.horizontal, Self.margin)
+                            .id(activeTool.rawValue)
+                    }
+                    Toolbar(selection: $activeTool)
+                }
+                .opacity(isNavigating ? 0.0 : 1.0)
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(activeTool.title)
+            // WARNING: This is causing frame drop when isNavigating changes
+            // frequently in a short period of time
+            .navigationBarHidden(isNavigating)
+        }
+        // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings on startup)
+        .navigationViewStyle(.stack)
+    }
+    
+    static let margin = 8.0
+}
+
+struct ObjectControlView: View {
+    
+    fileprivate let tool: Tool
+    @Binding fileprivate var axis: Axis
+    @Binding fileprivate var scale: FloatField.Scale
+    @ObservedObject fileprivate var model: ObjectControlViewModel
+    
+    var body: some View {
+        VStack(spacing: Self.controlsSpacing) {
+            floatField
+                .id(axis.rawValue)
+            PropertySelector(selected: $axis)
+        }
+        .id(model.object.entity.rawValue)
+    }
+    
+    var floatField: FloatField {
+        switch tool {
+        case .move:
+            return FloatField(value: $model.position[axis.rawValue], scale: $scale)
+        case .orient:
+            let angleFormatter = MeasurementFormatter()
+            angleFormatter.unitStyle = .short
+            return FloatField(value: $model.eulerRotation[axis.rawValue], scale: $scale, measurementFormatter: angleFormatter, formatterSubjectProvider: { value in
+                Measurement<UnitAngle>(value: Double(value), unit: .degrees) as NSObject
+            })
+        case .scale:
+            return FloatField(value: $model.scale[axis.rawValue], scale: $scale)
+        }
+    }
+    
+    static let controlsMargin = 8.0
+    static let controlsSpacing = 8.0
+}
+
+
+fileprivate class ObjectControlViewModel: ObservableObject {
+    
+    let object: SPTObject
+    
+    init(object: SPTObject) {
+        self.object = object
+        
+        SPTAddPositionListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+            let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
+            me.objectWillChange.send()
+        })
+        
+        SPTAddEulerOrientationListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+            let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
+            me.objectWillChange.send()
+        })
+        
+        SPTAddScaleListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+            let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
+            me.objectWillChange.send()
+        })
+        
+    }
+    
+    deinit {
+        SPTRemovePositionListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTRemoveEulerOrientationListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTRemoveScaleListener(object, Unmanaged.passUnretained(self).toOpaque())
+    }
+    
+    var position: simd_float3 {
+        set { SPTUpdatePosition(object, newValue) }
+        get { SPTGetPosition(object) }
+    }
+    
+    var eulerRotation: simd_float3 {
+        set { SPTUpdateEulerOrientationRotation(object, SPTToRadFloat3(newValue)) }
+        get { SPTToDegFloat3(SPTGetEulerOrientation(object).rotation) }
+    }
+    
+    var scale: simd_float3 {
+        set { SPTUpdateScale(object, newValue) }
+        get { SPTGetScale(object) }
+    }
+}
+
+
+fileprivate struct Toolbar: View {
+    
+    @Binding var selection: Tool
+    
+    var body: some View {
+        HStack(spacing: 0.0) {
+            ForEach(Tool.allCases) { tool in
+                itemFor(tool)
+                    .foregroundColor(selection == tool ? .accentColor : .gray)
+                    .onTapGesture {
+                        selection = tool
+                    }
+            }
+        }
+        .padding(.top, Self.topPadding)
+        .background(Material.bar)
+        .compositingGroup()
+        .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: -0.5)
+    }
+    
+    static let topPadding = 4.0
+    
+    func itemFor(_ tool: Tool) -> some View {
+        Label(tool.title, systemImage: tool.image)
+            .labelStyle(ItemLabelStyle())
+            .frame(maxWidth: .infinity, minHeight: Self.itemHeight)
+    }
+    
+    static let itemHeight = 44.0
+    
+    struct ItemLabelStyle: LabelStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            VStack(alignment: .center, spacing: Self.iconTextSpacing) {
+                configuration.icon.imageScale(.large)
+                configuration.title.font(.system(.caption2))
+            }
+        }
+        
+        static let iconTextSpacing = 2.0
+    }
+    
+}
+
+
+fileprivate enum Axis: Int, PropertySelectorItem {
     
     case x
     case y
@@ -27,179 +190,36 @@ enum Axis: Int, PropertySelectorItem {
     }
 }
 
-struct TransformView: View {
+
+fileprivate enum Tool: Int, CaseIterable, Identifiable {
     
-    @State var activeTool = Tool.move
-    @State var axes = [Axis](repeating: .x, count: Tool.allCases.count)
-    @State var scales = [FloatField.Scale._1, FloatField.Scale._10, FloatField.Scale._0_1]
-    @State var activeValue = 0.0
-    @StateObject var sceneViewModel = SceneViewModel()
-    @State var isNavigating = false
+    case move
+    case orient
+    case scale
     
-    var body: some View {
-        NavigationView {
-            ZStack {
-                SceneView(model: sceneViewModel, isNavigating: $isNavigating)
-                VStack(spacing: Self.controlsMargin) {
-                    Spacer()
-                    if sceneViewModel.selectedObject != nil {
-                        controls
-                            .padding(.horizontal, Self.controlsMargin)
-                    }
-                    Toolbar(selection: $activeTool)
-                }
-                .opacity(isNavigating ? 0.0 : 1.0)
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(activeTool.title)
-            // WARNING: This is causing frame drop when isNavigating changes
-            // frequently in a short period of time
-            .navigationBarHidden(isNavigating)
-        }
-        // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings on startup)
-        .navigationViewStyle(.stack)
-        .onReceive(sceneViewModel.objectWillChange) { _ in
-            updateActiveValue(tool: activeTool, axis: axes[activeTool.rawValue])
-        }
-        .onChange(of: activeTool) { newTool in
-            updateActiveValue(tool: newTool, axis: axes[newTool.rawValue])
-        }
-        .onChange(of: axes) { newActiveAxes in
-            updateActiveValue(tool: activeTool, axis: newActiveAxes[activeTool.rawValue])
-        }
-    }
+    var id: Self { self }
     
-    var controls: some View {
-        VStack(spacing: Self.controlsSpacing) {
-            floatField
-                .id(10 * activeTool.rawValue + axes[activeTool.rawValue].rawValue)
-            PropertySelector(selected: $axes[activeTool.rawValue])
-                .id(activeTool.rawValue)
-        }
-    }
-    
-    var floatField: FloatField {
-        if activeTool == .orient {
-            let angleFormatter = MeasurementFormatter()
-            angleFormatter.unitStyle = .short
-            return FloatField(value: $activeValue.onChange(updateObject), scale: $scales[activeTool.rawValue], measurementFormatter: angleFormatter, formatterSubjectProvider: { value in
-                Measurement<UnitAngle>(value: value, unit: .degrees) as NSObject
-            })
-                
-        } else {
-            return FloatField(value: $activeValue.onChange(updateObject), scale: $scales[activeTool.rawValue])
-        }
-    }
-    
-    func updateActiveValue(tool: Tool, axis: Axis) {
-        guard let selectedObject = sceneViewModel.selectedObject else { return }
-        
-        switch tool {
+    var title: String {
+        switch self {
         case .move:
-            activeValue = Double(SPTGetPosition(selectedObject)[axis.rawValue])
+            return "Move"
         case .orient:
-            activeValue = Double(toDegrees(radians: SPTGetEulerOrientation(selectedObject).rotation[axis.rawValue]))
+            return "Orient"
         case .scale:
-            activeValue = Double(SPTGetScale(selectedObject)[axis.rawValue])
+            return "Scale"
         }
     }
     
-    func updateObject(_ value: Double) {
-        let axis = axes[activeTool.rawValue]
-        let selectedObject = sceneViewModel.selectedObject!
-        switch activeTool {
+    var image: String {
+        switch self {
         case .move:
-            var pos = SPTGetPosition(selectedObject)
-            pos[axis.rawValue] = Float(value)
-            SPTUpdatePosition(selectedObject, pos)
+            return "move.3d"
         case .orient:
-            var eulerOrientation = SPTGetEulerOrientation(selectedObject)
-            eulerOrientation.rotation[axis.rawValue] = Float(toRadians(degrees: value))
-            SPTUpdateEulerOrientation(selectedObject, eulerOrientation)
+            return "rotate.3d"
         case .scale:
-            var scale = SPTGetScale(selectedObject)
-            scale[axis.rawValue] = Float(value)
-            SPTUpdateScale(selectedObject, scale)
+            return "scale.3d"
         }
     }
-    
-    static let controlsMargin = 8.0
-    static let controlsSpacing = 8.0
-    
-    enum Tool: Int, CaseIterable, Identifiable {
-        
-        case move
-        case orient
-        case scale
-        
-        var id: Self { self }
-        
-        var title: String {
-            switch self {
-            case .move:
-                return "Move"
-            case .orient:
-                return "Orient"
-            case .scale:
-                return "Scale"
-            }
-        }
-        
-        var image: String {
-            switch self {
-            case .move:
-                return "move.3d"
-            case .orient:
-                return "rotate.3d"
-            case .scale:
-                return "scale.3d"
-            }
-        }
-    }
-    
-    struct Toolbar: View {
-        
-        @Binding var selection: Tool
-        
-        var body: some View {
-            HStack(spacing: 0.0) {
-                ForEach(Tool.allCases) { tool in
-                    itemFor(tool)
-                        .foregroundColor(selection == tool ? .accentColor : .gray)
-                        .onTapGesture {
-                            selection = tool
-                        }
-                }
-            }
-            .padding(.top, Self.topPadding)
-            .background(Material.bar)
-            .compositingGroup()
-            .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: -0.5)
-        }
-        
-        static let topPadding = 4.0
-        
-        func itemFor(_ tool: Tool) -> some View {
-            Label(tool.title, systemImage: tool.image)
-                .labelStyle(ItemLabelStyle())
-                .frame(maxWidth: .infinity, minHeight: Self.itemHeight)
-        }
-        
-        static let itemHeight = 44.0
-        
-        struct ItemLabelStyle: LabelStyle {
-            func makeBody(configuration: Configuration) -> some View {
-                VStack(alignment: .center, spacing: Self.iconTextSpacing) {
-                    configuration.icon.imageScale(.large)
-                    configuration.title.font(.system(.caption2))
-                }
-            }
-            
-            static let iconTextSpacing = 2.0
-        }
-        
-    }
-    
 }
 
 struct TransformView_Previews: PreviewProvider {

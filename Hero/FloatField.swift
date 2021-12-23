@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FloatField: View {
     
-    enum Scale: Double, CaseIterable, Identifiable {
+    enum Scale: Float, CaseIterable, Identifiable {
         case _0_1 = 0.1
         case _1 = 1.0
         case _10 = 10.0
@@ -46,24 +46,24 @@ struct FloatField: View {
         case stepping
     }
     
-    @Binding var value: Double
+    @Binding var value: Float
     @Binding var scale: Scale
     @State private var state = EditingState.idle
     
-    @State private var dragBaseValue = 0.0
-    @State private var dragInitialTranslation = 0.0
+    @State private var dragBaseValue: Float = 0.0
+    @State private var dragInitialTranslation: CGFloat = 0.0
     
     @State private var scrollAnimator: DisplayRefreshSync!
     @State private var scrollAnimationUtil = ScrollAnimationUtil()
     
     @State private var formatter: Formatter
     
-    typealias FormatterSubjectProvider = (Double) -> NSObject
+    typealias FormatterSubjectProvider = (Float) -> NSObject
     private let formatterSubjectProvider: FormatterSubjectProvider?
     
     @State var feedbackGenerator = UISelectionFeedbackGenerator()
         
-    init(value: Binding<Double>, scale: Binding<Scale>) {
+    init(value: Binding<Float>, scale: Binding<Scale>) {
         _value = value
         _scale = scale
         self.formatter = NumberFormatter()
@@ -73,7 +73,7 @@ struct FloatField: View {
         numberFormatter.maximumFractionDigits = self.scale.maximumFractionDigits
     }
     
-    init(value: Binding<Double>, scale: Binding<Scale>, measurementFormatter: MeasurementFormatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
+    init(value: Binding<Float>, scale: Binding<Scale>, measurementFormatter: MeasurementFormatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
         _value = value
         _scale = scale
         self.formatter = measurementFormatter
@@ -235,7 +235,7 @@ struct FloatField: View {
             }
     }
     
-    private func updateValue(_ newValue: Double) {
+    private func updateValue(_ newValue: Float) {
         if newValue > value {
             updateFormatter(roundingMode: .floor)
         } else if newValue < value {
@@ -271,12 +271,12 @@ struct FloatField: View {
         }
     }
     
-    private func deltaValue(translation: CGFloat) -> Double {
-        -scale.rawValue * (translation / Self.rulerUnitSize)
+    private func deltaValue(translation: CGFloat) -> Float {
+        -scale.rawValue * Float(translation / Self.rulerUnitSize)
     }
     
     private var rulerOffsetX: CGFloat {
-        -fmod(value / scale.rawValue, Double(Self.rulerAdditionalUnitCount)) * Self.rulerUnitSize
+        -fmod(CGFloat(value / scale.rawValue), CGFloat(Self.rulerAdditionalUnitCount)) * Self.rulerUnitSize
     }
     
     private func stopScrolling() {
@@ -289,7 +289,7 @@ struct FloatField: View {
     static let height = 75.0
     static let padding = 4.0
     static let cornerRadius = 11.0
-    static let rulerUnitSize = 20.0
+    static let rulerUnitSize: CGFloat = 20.0
     static let rulerAdditionalUnitCount = 10
     static let pointerWidth = 1.0
     static let pointerHeight = 32.0
@@ -313,11 +313,11 @@ fileprivate struct Ruler: View {
                 path.addLine(to: CGPoint(x: midX, y: geometry.size.height - heightFor(number)))
                 
                 let subUnitSize = 0.1 * unitSize
-                var baseX = 0.0
+                var baseX: CGFloat = 0.0
                 let halfWidth = CGFloat(additionalUnitsCount) * unitSize + 0.5 * geometry.size.width
                 while baseX <= halfWidth {
                     number += 1
-                    baseX = Double(number) * subUnitSize
+                    baseX = CGFloat(number) * subUnitSize
                     
                     let y = geometry.size.height - heightFor(number)
                     

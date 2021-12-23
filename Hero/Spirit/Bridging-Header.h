@@ -15,6 +15,7 @@
 #import "RayCast.h"
 #import "Base.h"
 #import "Geometry.h"
+#import "SIMDUtil.h"
 
 // TODO
 #import "Renderer.h"
