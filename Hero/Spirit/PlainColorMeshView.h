@@ -1,5 +1,5 @@
 //
-//  MeshView.h
+//  PlainColorMeshView.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 18.11.21.
@@ -17,9 +17,9 @@ SPT_EXTERN_C_BEGIN
 typedef struct {
     simd_float4 color;
     SPTMeshId meshId;
-} SPTMeshView;
+} SPTPlainColorMeshView;
 
-SPTMeshView SPTMakeMeshView(SPTObject object, SPTMeshId meshId, simd_float4 color);
-SPTMeshView SPTGetMeshView(SPTObject object);
+SPTPlainColorMeshView SPTMakePlainColorMeshView(SPTObject object, SPTMeshId meshId, simd_float4 color);
+SPTPlainColorMeshView SPTGetPlainColorMeshView(SPTObject object);
 
 SPT_EXTERN_C_END

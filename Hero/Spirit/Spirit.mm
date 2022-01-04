@@ -7,16 +7,12 @@
 
 #include "Spirit.h"
 #include "ResourceManager.hpp"
-#include "MeshRenderer.hpp"
-#include "PolylineRenderer.hpp"
-#include "OutlineRenderer.hpp"
+#include "Renderer.hpp"
 
 #import "SPTRenderingContext.h"
 
 
 void spt_init() {
     [SPTRenderingContext setup];
-    spt::MeshRenderer::init();
-    spt::PolylineRenderer::init();
-    spt::OutlineRenderer::init();
+    spt::Renderer::init();
 }

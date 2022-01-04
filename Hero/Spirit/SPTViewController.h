@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(instancetype) initWithNibName: (NSString* _Nullable) nibNameOrNil bundle: (NSBundle* _Nullable) nibBundleOrNil NS_UNAVAILABLE;
 
 @property (nonatomic, readonly) SPTScene* scene;
-@property (nonatomic, readwrite) SPTObject viewCameraEntity;
+@property (nonatomic, readwrite) SPTObject viewCameraObject;
 @property (nonatomic, readonly) MTKView* mtkView;
 @property (nonatomic, readonly) SPTRenderingContext* renderingContext;
 

@@ -1,8 +1,8 @@
 //
-//  PolylineRenderer.hpp
+//  Renderer.hpp
 //  Hero
 //
-//  Created by Vanush Grigoryan on 07.12.21.
+//  Created by Vanush Grigoryan on 14.11.21.
 //
 
 #pragma once
@@ -12,16 +12,17 @@
 
 namespace spt {
 
-class PolylineRenderer {
+class Renderer {
 public:
     
-    PolylineRenderer(Registry& registry);
+    Renderer(Registry& registry);
     
     void render(void* renderingContext);
 
     static void init();
     
 private:
+    
     Registry& _registry;
     Uniforms _uniforms;
 };

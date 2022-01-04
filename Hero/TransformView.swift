@@ -78,6 +78,32 @@ struct ObjectControlView: View {
     static let controlsSpacing = 8.0
 }
 
+//import Combine
+//
+//@propertyWrapper
+//class SPTPublishedPosition {
+//
+//    let object: SPTObject
+//    let publisher = PassthroughSubject<Void, Never>()
+//
+//    init(object: SPTObject) {
+//        self.object = object
+//
+//        SPTAddPositionListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+//            let me = Unmanaged<SPTPublishedPosition>.fromOpaque(observer!).takeUnretainedValue()
+//            me.publisher.send()
+//        })
+//    }
+//
+//    deinit {
+//        SPTRemovePositionListener(object, Unmanaged.passUnretained(self).toOpaque())
+//    }
+//
+//    var wrappedValue: simd_float3 {
+//        set { SPTUpdatePosition(object, newValue) }
+//        get { SPTGetPosition(object) }
+//    }
+//}
 
 fileprivate class ObjectControlViewModel: ObservableObject {
     

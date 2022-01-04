@@ -18,13 +18,13 @@ struct SPTView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> SPTViewController {
         let vc = SPTViewController(scene: scene)
         vc.mtkView.clearColor = clearColor
-        vc.viewCameraEntity = viewCameraObject
+        vc.viewCameraObject = viewCameraObject
         return vc
     }
     
     func updateUIViewController(_ uiViewController: SPTViewController, context: Context) {
         uiViewController.mtkView.clearColor = clearColor
-        uiViewController.viewCameraEntity = viewCameraObject
+        uiViewController.viewCameraObject = viewCameraObject
     }
     
     typealias UIViewControllerType = SPTViewController

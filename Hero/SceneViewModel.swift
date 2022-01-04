@@ -21,7 +21,7 @@ class SceneViewModel: ObservableObject {
                 SPTDestroyOutlineView(selectedObject)
             }
             if let newSelectedObject = newValue {
-                let meshView = SPTGetMeshView(newSelectedObject)
+                let meshView = SPTGetPlainColorMeshView(newSelectedObject)
                 SPTMakeOutlineView(newSelectedObject, meshView.meshId, UIColor.orange.rgba, 5.0)
             }
         }
@@ -49,13 +49,13 @@ class SceneViewModel: ObservableObject {
         let xAxisObject = scene.makeObject()
         SPTMakePolylineView(xAxisObject, lineId, UIColor.red.rgba, 2.0)
         SPTMakeScale(xAxisObject, 500.0, 1.0, 1.0)
-        SPTMakeViewDepthBias(xAxisObject, 5.0, 3.0, 0.0)
+        SPTMakePolylineViewDepthBias(xAxisObject, 5.0, 3.0, 0.0)
         
         let zAxisObject = scene.makeObject()
         SPTMakePolylineView(zAxisObject, lineId, UIColor.blue.rgba, 2.0)
         SPTMakeScale(zAxisObject, 500.0, 1.0, 1.0)
         SPTMakeEulerOrientation(zAxisObject, simd_float3(0.0, Float.pi * 0.5, 0.0), SPTEulerOrderXYZ)
-        SPTMakeViewDepthBias(zAxisObject, 5.0, 3.0, 0.0)
+        SPTMakePolylineViewDepthBias(zAxisObject, 5.0, 3.0, 0.0)
         
         // Setup objects
         var commonMeshIds = [SPTMeshId]()
@@ -73,7 +73,7 @@ class SceneViewModel: ObservableObject {
         SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
         SPTMakeScale(centerObject, 20.0, 20.0, 20.0)
         SPTMakeEulerOrientation(centerObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
-        SPTMakeMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba)
+        SPTMakePlainColorMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba)
         SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
 //        SPTMakeOutlineView(centerObject, centerObjectMeshId, UIColor.orange.rgba, 5.0)
         
@@ -85,7 +85,7 @@ class SceneViewModel: ObservableObject {
             SPTMakeScale(object, Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))
             SPTMakeEulerOrientation(object, simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), SPTEulerOrderXYZ)
             let meshId = commonMeshIds.randomElement()!
-            SPTMakeMeshView(object, meshId, UIColor.random().rgba)
+            SPTMakePlainColorMeshView(object, meshId, UIColor.random().rgba)
             SPTMakeRayCastableMesh(object, meshId)
         }
         

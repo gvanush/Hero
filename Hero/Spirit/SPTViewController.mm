@@ -50,26 +50,21 @@
     commandBuffer.label = @"MainCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
     
-    assert(SPTIsValid(self.viewCameraEntity));
-    self.renderingContext.projectionViewMatrix = spt::computeCameraProjectionViewMatrix(self.viewCameraEntity);
+    assert(SPTIsValid(self.viewCameraObject));
+    self.renderingContext.projectionViewMatrix = spt::computeCameraProjectionViewMatrix(self.viewCameraObject);
     
     // NOTE: Preferably this should be done as late as possible (at least after command buffer is created)
     MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
     if(renderPassDescriptor != nil) {
         
-        id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor: renderPassDescriptor];
-        renderEncoder.label = @"MainRenderEncoder";
-        [renderEncoder setViewport: MTLViewport{0.0, 0.0, self.renderingContext.viewportSize.x, self.renderingContext.viewportSize.y, 0.0, 1.0 }];
-        [renderEncoder setDepthStencilState: SPTRenderingContext.defaultDepthStencilState];
-        self.renderingContext.renderCommandEncoder = renderEncoder;
+        self.renderingContext.renderPassDescriptor = renderPassDescriptor;
         
         static_cast<spt::Scene*>(self.scene.cpp)->render((__bridge void*) self.renderingContext);
-        
-        [renderEncoder endEncoding];
 
         // Schedule a present once the framebuffer is complete using the current drawable.
         [commandBuffer presentDrawable: view.currentDrawable];
         
+        self.renderingContext.renderPassDescriptor = nil;
     }
     
     [commandBuffer commit];
@@ -82,8 +77,8 @@
 // MARK: Utils
 -(void) updateViewportSize: (CGSize) size {
     self.renderingContext.viewportSize = simd_make_float2(size.width, size.height);
-    assert(SPTIsValid(self.viewCameraEntity));
-    SPTUpdatePerspectiveCameraAspectRatio(self.viewCameraEntity, size.width / size.height);
+    assert(SPTIsValid(self.viewCameraObject));
+    SPTUpdatePerspectiveCameraAspectRatio(self.viewCameraObject, size.width / size.height);
 //    SPTUpdateOrthographicCameraAspectRatio(self.viewCameraEntity, size.width / size.height);
 }
 

@@ -16,8 +16,6 @@ Scene::Scene()
 
 void Scene::render(void* renderingContext) {
     meshRenderer.render(renderingContext);
-    polylineRenderer.render(renderingContext);
-    outlineRenderer.render(renderingContext);
     
     std::apply([] (auto& ...notifier) {
         (..., notifier.notify());

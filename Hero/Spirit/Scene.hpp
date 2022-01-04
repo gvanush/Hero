@@ -9,9 +9,7 @@
 
 #include "Base.h"
 #include "Base.hpp"
-#include "MeshRenderer.hpp"
-#include "PolylineRenderer.hpp"
-#include "OutlineRenderer.hpp"
+#include "Renderer.hpp"
 #include "ComponentUpdateNotifier.hpp"
 #include "Transformation.hpp"
 #include "Transformation.h"
@@ -31,9 +29,7 @@ struct Scene {
     
     Registry registry;
     
-    MeshRenderer meshRenderer {registry};
-    PolylineRenderer polylineRenderer {registry};
-    OutlineRenderer outlineRenderer {registry};
+    Renderer meshRenderer {registry};
         
     std::tuple<
     ComponentUpdateNotifier<spt::Position>,
