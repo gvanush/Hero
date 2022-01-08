@@ -91,6 +91,10 @@ class SceneViewModel: ObservableObject {
         
     }
     
+    var isObjectSelected: Bool {
+        selectedObject != nil
+    }
+    
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {
         let locationInScene = SPTCameraConvertViewportToWorld(viewCameraObject, simd_float3(location.float2, 1.0), viewportSize.float2)
         let cameraPos = SPTGetPositionFromSphericalPosition(SPTGetSphericalPosition(viewCameraObject))
@@ -102,6 +106,17 @@ class SceneViewModel: ObservableObject {
         }
         
         return object
+    }
+    
+    func focusOn(_ object: SPTObject) {
+        
+        var sphericalPos = SPTGetSphericalPosition(viewCameraObject)
+        sphericalPos.center = SPTGetPosition(object)
+        SPTUpdateSphericalPosition(viewCameraObject, sphericalPos)
+        
+        var lookAtOrientation = SPTGetLookAtOrientation(viewCameraObject)
+        lookAtOrientation.target = sphericalPos.center
+        SPTUpdateLookAtOrientation(viewCameraObject, lookAtOrientation)
     }
     
     // MARK: Orbit

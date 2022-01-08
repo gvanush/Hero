@@ -50,20 +50,40 @@ struct SceneView: View {
     }
     
     func ui(viewportSize: CGSize) -> some View {
-        GeometryReader { geometry in
-            HStack {
+        HStack {
+            VStack {
                 Spacer()
-                VStack {
-                    Spacer()
-                    ZoomView()
-                        .frame(maxHeight: max(geometry.size.height - 2 * Self.uiBottomPadding, 0))
-                    Spacer()
+                uiButton(iconName: "camera.metering.center.weighted") {
+                    model.focusOn(model.selectedObject!)
                 }
-                .contentShape(Rectangle())
-                .gesture(zoomDragGesture(viewportSize: viewportSize))
-                .opacity(isNavigating ? 0.0 : 1.0)
+                .disabled(!model.isObjectSelected)
             }
+            .padding(.leading, 8.0)
+            
+            Spacer()
+            
+            VStack {
+                Spacer()
+                ZoomView()
+                    .frame(maxHeight: Self.zoomViewHeight)
+            }
+            .contentShape(Rectangle())
+            .gesture(zoomDragGesture(viewportSize: viewportSize))
         }
+        .padding(.bottom, Self.uiBottomPadding)
+        .tint(.primary)
+        .opacity(isNavigating ? 0.0 : 1.0)
+    }
+    
+    func uiButton(iconName: String, action: @escaping (() -> Void)) -> some View {
+        Button(action: action) {
+            Image(systemName: iconName)
+                .imageScale(.large)
+        }
+        .frame(maxWidth: 50.0, maxHeight: 50.0, alignment: .center)
+        .background(Material.regular)
+        .cornerRadius(15.0)
+        .shadow(radius: 0.5)
     }
     
     var orbitDragGesture: some Gesture {
@@ -93,9 +113,10 @@ struct SceneView: View {
     }
     
     static let margin = 8.0
-    static let uiBottomPadding = 260.0
+    static let uiBottomPadding = 280.0
     static let uiElementBorderLineWidth = 0.5
     static let uiElementBackgroundMaterial = Material.thinMaterial
+    static let zoomViewHeight = 250.0
 }
 
 fileprivate struct ZoomView: View {

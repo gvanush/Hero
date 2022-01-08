@@ -81,7 +81,7 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
     let height = 38.0
     let cornerRadius = 19.0
     let shadowRadius = 2.0
-    let bgrMaterial = Material.bar
+    let bgrMaterial = Material.regular
     let itemPadding = 3.0
     let textHorizontalPadding = 8.0
     let selectionCornerRadius = 16.0
