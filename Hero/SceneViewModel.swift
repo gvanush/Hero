@@ -68,12 +68,12 @@ class SceneViewModel: ObservableObject {
             commonMeshIds.append(SPTCreate2DMeshFromFile(meshPath))
         }
         
-        let centerObjectMeshId = commonMeshIds[5]
+        let centerObjectMeshId = commonMeshIds[3]
         let centerObject = scene.makeObject()
         SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
         SPTMakeScale(centerObject, 20.0, 20.0, 20.0)
         SPTMakeEulerOrientation(centerObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
-        SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 64.0)
+        SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
         SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
 //        SPTMakeOutlineView(centerObject, centerObjectMeshId, UIColor.orange.rgba, 5.0)
         

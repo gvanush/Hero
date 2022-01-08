@@ -256,14 +256,16 @@ fragment float4 blinnPhongFS(MeshRasterizerData in [[stage_in]],
     constexpr float3 ambientLightColor = {0.3f, 0.3f, 0.3f};
     constexpr float3 lightColor = {0.7f, 0.7f, 0.7f};
     const float3 lightDirection = normalize(-float3 {1.f, 1.f, 1.f});
+    const auto maxSpecularRoughness = 256.f;
     
-    const auto diffuseFactor = max(0.f, dot(-lightDirection, normalize(in.normal)));
+    const auto fragNormal = normalize(in.normal);
+    const auto diffuseFactor = max(0.f, dot(-lightDirection, fragNormal));
     const auto diffuse = diffuseFactor * lightColor;
     
     const auto viewDir = normalize(uniforms.cameraPosition - in.fragWorldPosition);
-    const auto reflectDir = reflect(lightDirection, in.normal);
+    const auto reflectDir = reflect(lightDirection, fragNormal);
     const auto specularFactor = pow(max(dot(viewDir, reflectDir), 0.f), material.specularRoughness);
     const auto specular = specularFactor * lightColor;
     
-    return float4 ((ambientLightColor + diffuse) * material.color.xyz + specular, 1.f);
+    return float4 ((ambientLightColor + diffuse) * material.color.xyz + (material.specularRoughness / maxSpecularRoughness) * specular, 1.f);
 }
