@@ -137,6 +137,10 @@ class SceneViewModel: ObservableObject {
         prevDragValue = nil
     }
     
+    func cancelOrbit() {
+        prevDragValue = nil
+    }
+    
     static let orbitTranslationPerHalfRevolution: Float = 300.0
     
     // MARK: Zoom
@@ -171,6 +175,10 @@ class SceneViewModel: ObservableObject {
     
     func finishZoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
         // Deliberately ignoring last drag value to avoid zoom nudge
+        prevDragValue = nil
+    }
+    
+    func cancelZoom() {
         prevDragValue = nil
     }
     

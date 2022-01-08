@@ -11,12 +11,13 @@ struct SceneView: View {
     
     @ObservedObject var model: SceneViewModel
     @Binding var isNavigating: Bool
+    @GestureState private var isOrbitDragGestureActive = false
+    @GestureState private var isZoomDragGestureActive = false
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
     var body: some View {
-        
         ZStack {
             GeometryReader { geometry in
                 SPTView(scene: model.scene, clearColor: clearColor, viewCameraObject: model.viewCameraObject)
@@ -34,7 +35,18 @@ struct SceneView: View {
                 ui(viewportSize: geometry.size)
             }
         }
-        .ignoresSafeArea()
+        .onChange(of: isOrbitDragGestureActive) { newValue in
+            isNavigating = newValue
+            if !newValue {
+                model.cancelOrbit()
+            }
+        }
+        .onChange(of: isZoomDragGestureActive) { newValue in
+            isNavigating = newValue
+            if !newValue {
+                model.cancelZoom()
+            }
+        }
     }
     
     func ui(viewportSize: CGSize) -> some View {
@@ -56,32 +68,26 @@ struct SceneView: View {
     
     var orbitDragGesture: some Gesture {
         DragGesture()
+            .updating($isOrbitDragGestureActive, body: { _, state, _ in
+                state = true
+            })
             .onChanged { value in
-                withAnimation {
-                    isNavigating = true
-                }
                 model.orbit(dragValue: value)
             }
             .onEnded { value in
-                withAnimation {
-                    isNavigating = false
-                }
                 model.finishOrbit(dragValue: value)
             }
     }
     
     func zoomDragGesture(viewportSize: CGSize) -> some Gesture {
         DragGesture(minimumDistance: 0.0)
+            .updating($isZoomDragGestureActive, body: { _, state, _ in
+                state = true
+            })
             .onChanged { value in
-                withAnimation {
-                    isNavigating = true
-                }
                 model.zoom(dragValue: value, viewportSize: viewportSize)
             }
             .onEnded { value in
-                withAnimation {
-                    isNavigating = false
-                }
                 model.finishZoom(dragValue: value, viewportSize: viewportSize)
             }
     }

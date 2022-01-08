@@ -16,32 +16,50 @@ struct TransformView: View {
     @State private var isNavigating = false
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                SceneView(model: sceneViewModel, isNavigating: $isNavigating)
-                VStack(spacing: Self.margin) {
-                    Spacer()
-                    if let selectedObject = sceneViewModel.selectedObject {
-                        ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
-                            .padding(.horizontal, Self.margin)
-                            .id(activeTool.rawValue)
-                    }
-                    Toolbar(selection: $activeTool)
+        ZStack {
+            SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.easeIn(duration: 0.15)))
+                .ignoresSafeArea()
+            VStack(spacing: Self.margin) {
+                NavigationBar(title: activeTool.title)
+                Spacer()
+                if let selectedObject = sceneViewModel.selectedObject {
+                    ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
+                        .padding(.horizontal, Self.margin)
+                        .id(activeTool.rawValue)
                 }
-                .opacity(isNavigating ? 0.0 : 1.0)
+                Toolbar(selection: $activeTool)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(activeTool.title)
-            // WARNING: This is causing frame drop when isNavigating changes
-            // frequently in a short period of time
-            .navigationBarHidden(isNavigating)
+            .opacity(isNavigating ? 0.0 : 1.0)
+            .statusBar(hidden: isNavigating)
         }
-        // TODO: Remove when the bug is fixed (Needed to avoid iOS auto-layout warnings on startup)
-        .navigationViewStyle(.stack)
+        
     }
     
     static let margin = 8.0
 }
+
+
+fileprivate struct NavigationBar: View {
+    
+    let title: String
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            Text(title)
+                .font(.headline)
+            Spacer()
+            
+        }
+        .frame(maxHeight: Self.height)
+        .background(Material.bar)
+        .compositingGroup()
+        .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: 0.5)
+    }
+    
+    static let height = 44.0
+}
+
 
 struct ObjectControlView: View {
     
@@ -77,6 +95,7 @@ struct ObjectControlView: View {
     static let controlsMargin = 8.0
     static let controlsSpacing = 8.0
 }
+
 
 //import Combine
 //
