@@ -21,7 +21,7 @@ class SceneViewModel: ObservableObject {
                 SPTDestroyOutlineView(selectedObject)
             }
             if let newSelectedObject = newValue {
-                let meshView = SPTGetPlainColorMeshView(newSelectedObject)
+                let meshView = SPTGetMeshView(newSelectedObject)
                 SPTMakeOutlineView(newSelectedObject, meshView.meshId, UIColor.orange.rgba, 5.0)
             }
         }
@@ -68,12 +68,12 @@ class SceneViewModel: ObservableObject {
             commonMeshIds.append(SPTCreate2DMeshFromFile(meshPath))
         }
         
-        let centerObjectMeshId = commonMeshIds[0]
+        let centerObjectMeshId = commonMeshIds[5]
         let centerObject = scene.makeObject()
         SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
         SPTMakeScale(centerObject, 20.0, 20.0, 20.0)
         SPTMakeEulerOrientation(centerObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
-        SPTMakePlainColorMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba)
+        SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 64.0)
         SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
 //        SPTMakeOutlineView(centerObject, centerObjectMeshId, UIColor.orange.rgba, 5.0)
         
@@ -85,7 +85,7 @@ class SceneViewModel: ObservableObject {
             SPTMakeScale(object, Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))
             SPTMakeEulerOrientation(object, simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), SPTEulerOrderXYZ)
             let meshId = commonMeshIds.randomElement()!
-            SPTMakePlainColorMeshView(object, meshId, UIColor.random().rgba)
+            SPTMakeBlinnPhongMeshView(object, meshId, UIColor.random().rgba, Float.random(in: 2.0...256.0))
             SPTMakeRayCastableMesh(object, meshId)
         }
         

@@ -22,6 +22,8 @@ struct Scale {
     simd_float3 float3;
 };
 
+simd_float3 getPosition(SPTObject object);
+simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity);
 const simd_float4x4* getTransformationMatrix(SPTObject object);
 const simd_float4x4* getTransformationMatrix(spt::Registry& registry, SPTEntity entity);
 

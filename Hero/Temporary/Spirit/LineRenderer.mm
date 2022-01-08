@@ -90,8 +90,8 @@ void LineRenderer::render(void* renderingContext) {
     RenderingContext* context = (__bridge RenderingContext*) renderingContext;
     
     Uniforms uniforms;
-    uniforms.projectionViewMatrix = context.projectionViewMatrix;
-    uniforms.projectionViewModelMatrix = _transform->worldMatrix() * uniforms.projectionViewMatrix;
+//    uniforms.projectionViewMatrix = context.projectionViewMatrix;
+//    uniforms.projectionViewModelMatrix = _transform->worldMatrix() * uniforms.projectionViewMatrix;
     uniforms.viewportSize = context.viewportSize;
 
     [context.renderCommandEncoder setVertexBytes: &uniforms length: sizeof(Uniforms) atIndex: kVertexInputIndexUniforms];

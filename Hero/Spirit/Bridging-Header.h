@@ -8,7 +8,7 @@
 #import "ResourceManager.h"
 #import "Transformation.h"
 #import "Camera.h"
-#import "PlainColorMeshView.h"
+#import "MeshView.h"
 #import "OutlineView.h"
 #import "PolylineView.h"
 #import "PolylineViewDepthBias.h"

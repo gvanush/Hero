@@ -48,8 +48,8 @@ void TextureRenderer::render(void* renderingContext) {
     RenderingContext* context = (__bridge RenderingContext*) renderingContext;
     
     Uniforms uniforms;
-    uniforms.projectionViewMatrix = context.projectionViewMatrix;
-    uniforms.projectionViewModelMatrix = _transform->worldMatrix() * uniforms.projectionViewMatrix;
+//    uniforms.projectionViewMatrix = context.projectionViewMatrix;
+//    uniforms.projectionViewModelMatrix = _transform->worldMatrix() * uniforms.projectionViewMatrix;
     
     [context.renderCommandEncoder setVertexBuffer: getVertexBuffer(_textureOritentation) offset: 0 atIndex: kVertexInputIndexVertices];
     

@@ -116,12 +116,7 @@ void applyLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& lookAtOrient
 simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEntity entity) {
     auto matrix = matrix_identity_float4x4;
     
-    const auto [position, sphericalPosition] = registry.try_get<spt::Position, SPTSphericalPosition>(entity);
-    if(position) {
-        matrix.columns[3].xyz = position->float3;
-    } else if(sphericalPosition) {
-        matrix.columns[3].xyz = SPTGetPositionFromSphericalPosition(*sphericalPosition);
-    }
+    matrix.columns[3].xyz = getPosition(registry, entity);
     
     const auto [eulerOrientation, lookAtOrientation] = registry.try_get<SPTEulerOrientation, SPTLookAtOrientation>(entity);
     if(eulerOrientation) {
@@ -138,6 +133,20 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     }
     
     return matrix;
+}
+
+simd_float3 getPosition(SPTObject object) {
+    return getPosition(static_cast<spt::Scene*>(object.sceneHandle)->registry, object.entity);
+}
+
+simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity) {
+    const auto [position, sphericalPosition] = registry.try_get<spt::Position, SPTSphericalPosition>(entity);
+    if(position) {
+        return position->float3;
+    } else if(sphericalPosition) {
+        return SPTGetPositionFromSphericalPosition(*sphericalPosition);
+    }
+    return {0.f, 0.f, 0.f};
 }
 
 const simd_float4x4* getTransformationMatrix(SPTObject object) {

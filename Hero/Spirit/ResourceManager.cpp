@@ -121,9 +121,11 @@ SPTMeshId ResourceManager::loadMesh(std::string_view path, bool is3D) {
         
         for (const auto& faceVertex: faceVertices) {
             
-            if(auto it = addedVertices.find(faceVertex.index); it != addedVertices.end()) {
-                indexData.push_back(it->second);
-                continue;
+            if(is3D) {
+                if(auto it = addedVertices.find(faceVertex.index); it != addedVertices.end()) {
+                    indexData.push_back(it->second);
+                    continue;
+                }
             }
             
             // Update bounding box
@@ -142,6 +144,7 @@ SPTMeshId ResourceManager::loadMesh(std::string_view path, bool is3D) {
                 // In 2D case 'faceVertex.normal' is the normal of the curve/line at faceVertex.point
                 assert(faceVertex.point.z == 0.f);
                 vertex.surfaceNormal = (isFrontFacing2D(faceVertices) ? 1.f : -1.f) * simd_float3 {0.f, 0.f, 1.f};
+
                 pointNormalRecord.vertexIndices.push_back(index);
                 pointNormalRecord.normalSum += faceVertex.normal;
             }
@@ -155,7 +158,7 @@ SPTMeshId ResourceManager::loadMesh(std::string_view path, bool is3D) {
     }
     
     for(auto it = pointNormalRecords.begin(); it != pointNormalRecords.end(); ++it) {
-        const auto adjacentSurfaceNormalAverage = simd_normalize(it->second.normalSum / it->second.vertexIndices.size());
+        const auto adjacentSurfaceNormalAverage = simd_normalize(it->second.normalSum);
         for(const auto vi: it->second.vertexIndices) {
             vertexData[vi].adjacentSurfaceNormalAverage = adjacentSurfaceNormalAverage;
         }

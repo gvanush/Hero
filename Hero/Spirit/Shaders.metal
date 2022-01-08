@@ -6,18 +6,31 @@
 //
 
 #import "ShaderTypes.h"
+#import "Materials.h"
 
 #include <metal_stdlib>
 
 using namespace metal;
 
+// MARK: Common
 typedef struct {
     float4 position [[position]];
 } BasicRasterizerData;
 
-//constant constexpr uint kSegmentVertexCount = 4;
-//constant constexpr int kSegmentVertexSides[kSegmentVertexCount] = {1, -1, -1, 1};
+vertex BasicRasterizerData basicVS(uint vertexID [[vertex_id]],
+                                   constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+                                   constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+                                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+    return BasicRasterizerData {uniforms.projectionViewMatrix * worldMatrix * float4(vertices[vertexID].position, 1.f)};
+}
 
+fragment float4 basicFS(BasicRasterizerData in [[stage_in]],
+                        constant float4& color [[buffer(kFragmentInputIndexColor)]]) {
+    return color;
+}
+
+
+// MARK: Line rendering
 vertex BasicRasterizerData lineVS(uint vertexId [[vertex_id]],
                                   device const float3* vertices [[buffer(kVertexInputIndexVertices)]],
                                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]],
@@ -26,11 +39,11 @@ vertex BasicRasterizerData lineVS(uint vertexId [[vertex_id]],
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
     
     // Extract points and convert to normalized viewport coordinates
-    auto prevPoint = float4 (vertices[vertexId - 2], 1.f) * uniforms.projectionViewModelMatrix;
+    auto prevPoint = float4 (vertices[vertexId - 2], 1.f) /* * uniforms.projectionViewModelMatrix */;
     prevPoint.x *= aspect;
-    auto point = float4 (vertices[vertexId], 1.f) * uniforms.projectionViewModelMatrix;
+    auto point = float4 (vertices[vertexId], 1.f) /* * uniforms.projectionViewModelMatrix; */;
     point.x *= aspect;
-    auto nextPoint = float4 (vertices[vertexId + 2], 1.f) * uniforms.projectionViewModelMatrix;
+    auto nextPoint = float4 (vertices[vertexId + 2], 1.f) /* * uniforms.projectionViewModelMatrix */;
     nextPoint.x *= aspect;
     
     // When 'w' is negative the resulting ndc z becomes more than 1.
@@ -83,10 +96,7 @@ vertex BasicRasterizerData lineVS(uint vertexId [[vertex_id]],
 }
 
 
-fragment float4 uniformColorFS(constant float4& color [[buffer(kFragmentInputIndexColor)]]) {
-    return color;
-}
-
+// MARK: Texture rendering
 typedef struct {
     float4 position [[position]];
     float2 texCoord;
@@ -98,8 +108,8 @@ textureVS(uint vertexID [[vertex_id]],
                   constant float2& size [[buffer(kVertexInputIndexSize)]],
                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     TextureRasterizerData out;
-    out.position = float4 (vertices[vertexID].position * size, 0.f, 1.f) * uniforms.projectionViewModelMatrix;
-    out.texCoord = vertices[vertexID].texCoord;
+//    out.position = float4 (vertices[vertexID].position * size, 0.f, 1.f) * uniforms.projectionViewModelMatrix;
+//    out.texCoord = vertices[vertexID].texCoord;
     return out;
 }
 
@@ -118,7 +128,7 @@ videoTextureVS(uint vertexID [[vertex_id]],
                constant float2x3& texturePreferredTransform [[buffer(kVertexInputIndexTexturePreferredTransform)]],
                constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     TextureRasterizerData out;
-    out.position = float4 (vertices[vertexID].position * size, 0.f, 1.f) * uniforms.projectionViewModelMatrix;
+    out.position = float4 (vertices[vertexID].position * size, 0.f, 1.f) /* * uniforms.projectionViewModelMatrix */;
     const auto transformedSize = abs(float3(textureSize, 0.f) * texturePreferredTransform).xy;
     out.texCoord = ( (float3(vertices[vertexID].texCoord * textureSize, 1.f) * texturePreferredTransform)) / transformedSize;
     return out;
@@ -148,33 +158,15 @@ fragment float4 videoFS(TextureRasterizerData in [[stage_in]],
     return ycbcrToRGBTransform * ycbcr;
 }
 
-// **********************************************************************
-// Vertex shader outputs and fragment shader inputs
-struct RasterizerData {
-    // The [[position]] attribute of this member indicates that this value
-    // is the clip space position of the vertex when this structure is
-    // returned from the vertex function.
-    float4 position [[position]];
-};
 
-vertex RasterizerData
-vertexShader(uint vertexID [[vertex_id]],
-             constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
-             constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
-             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
-    RasterizerData out;
-    out.position = uniforms.projectionViewMatrix * worldMatrix * float4(vertices[vertexID].position, 1.0);
-    return out;
-}
-
-vertex RasterizerData
-polylineVertexShader(uint vertexID [[vertex_id]],
-             constant PolylineVertex* vertices [[buffer(kVertexInputIndexVertices)]],
-             constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
-             constant float& thickness [[buffer(kVertexInputIndexThickness)]],
-             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
-    // Each line segment is represented by 4 points (2 triangles)
+// MARK: Mesh rendering
+vertex BasicRasterizerData polylineVS(uint vertexID [[vertex_id]],
+                                      constant PolylineVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+                                      constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+                                      constant float& thickness [[buffer(kVertexInputIndexThickness)]],
+                                      constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     
+    // Each line segment is represented by 4 points (2 triangles)
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
     const auto projectionViewModelMatrix = uniforms.projectionViewMatrix * worldMatrix;
     
@@ -208,15 +200,14 @@ polylineVertexShader(uint vertexID [[vertex_id]],
     point.xy += (thickness * thicknessNDCFactor) * norm;
     
     point.x /= aspect;
-    return RasterizerData {point};
+    return BasicRasterizerData {point};
 }
 
-vertex RasterizerData
-outlineVertexShader(uint vertexID [[vertex_id]],
-             constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
-             constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
-             constant float& thickness [[buffer(kVertexInputIndexThickness)]],
-             constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+vertex BasicRasterizerData outlineVS(uint vertexID [[vertex_id]],
+                                     constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+                                     constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+                                     constant float& thickness [[buffer(kVertexInputIndexThickness)]],
+                                     constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     
     const auto projectionViewModelMatrix = uniforms.projectionViewMatrix * worldMatrix;
     auto point = projectionViewModelMatrix * float4(vertices[vertexID].position, 1.0);
@@ -236,10 +227,43 @@ outlineVertexShader(uint vertexID [[vertex_id]],
     fp.x /= aspect;
     fp *= pw;
     
-    return RasterizerData {fp};
+    return BasicRasterizerData {fp};
 }
 
-fragment float4 fragmentShader(RasterizerData in [[stage_in]],
-                               constant float4& color [[buffer(kFragmentInputIndexColor)]]) {
-    return color;
+// MARK: Mesh rendering
+struct MeshRasterizerData {
+    float4 position [[position]];
+    float3 fragWorldPosition;
+    float3 normal;
+};
+
+vertex MeshRasterizerData meshVS(uint vertexID [[vertex_id]],
+                                 constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+                                 constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+                                 constant float4x4& transposedInverseWorldMatrix [[buffer(kVertexInputIndexTransposedInverseWorldMatrix)]],
+                                 constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+    MeshRasterizerData out;
+    const auto worldPos = worldMatrix * float4(vertices[vertexID].position, 1.f);
+    out.position = uniforms.projectionViewMatrix * worldPos;
+    out.fragWorldPosition = worldPos.xyz;
+    out.normal = normalize((transposedInverseWorldMatrix * float4(vertices[vertexID].surfaceNormal, 0.f)).xyz);
+    return out;
+}
+
+fragment float4 blinnPhongFS(MeshRasterizerData in [[stage_in]],
+                             constant Uniforms& uniforms [[buffer(kFragmentInputIndexUniforms)]],
+                             constant PhongMaterial& material [[buffer(kFragmentInputIndexMaterial)]]) {
+    constexpr float3 ambientLightColor = {0.3f, 0.3f, 0.3f};
+    constexpr float3 lightColor = {0.7f, 0.7f, 0.7f};
+    const float3 lightDirection = normalize(-float3 {1.f, 1.f, 1.f});
+    
+    const auto diffuseFactor = max(0.f, dot(-lightDirection, normalize(in.normal)));
+    const auto diffuse = diffuseFactor * lightColor;
+    
+    const auto viewDir = normalize(uniforms.cameraPosition - in.fragWorldPosition);
+    const auto reflectDir = reflect(lightDirection, in.normal);
+    const auto specularFactor = pow(max(dot(viewDir, reflectDir), 0.f), material.specularRoughness);
+    const auto specular = specularFactor * lightColor;
+    
+    return float4 ((ambientLightColor + diffuse) * material.color.xyz + specular, 1.f);
 }

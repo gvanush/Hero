@@ -38,13 +38,6 @@ simd_float4x4 computeProjectionMatrix(const SPTOrthographicCamera& camera) {
     };
 }
 
-simd_float4x4 computeViewMatrix(SPTObject object) {
-    if(auto tranMatrix = getTransformationMatrix(object); tranMatrix) {
-        return simd_inverse(*tranMatrix);
-    }
-    return matrix_identity_float4x4;
-}
-
 simd_float4x4 computeViewportMatrix(simd_float2 screenSize) {
     return simd_float4x4 {
         simd_float4 {0.5f * screenSize.x, 0.f, 0.f, 0.f},
@@ -54,12 +47,14 @@ simd_float4x4 computeViewportMatrix(simd_float2 screenSize) {
     };
 }
 
-simd_float4x4 computeCameraProjectionViewMatrix(SPTObject object) {
-    const auto projectionMatrix = getCameraProjectionMatrix(object);
-    return simd_mul(projectionMatrix ? *projectionMatrix : matrix_identity_float4x4, computeViewMatrix(object));
+simd_float4x4 getCameraViewMatrix(SPTObject object) {
+    if(auto tranMatrix = getTransformationMatrix(object); tranMatrix) {
+        return simd_inverse(*tranMatrix);
+    }
+    return matrix_identity_float4x4;
 }
 
-const simd_float4x4* getCameraProjectionMatrix(SPTObject object) {
+simd_float4x4 getCameraProjectionMatrix(SPTObject object) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     if(auto projectionMatrix = registry.try_get<ProjectionMatrix>(object.entity); projectionMatrix) {
         if(projectionMatrix->isDirty) {
@@ -72,9 +67,13 @@ const simd_float4x4* getCameraProjectionMatrix(SPTObject object) {
             }
             projectionMatrix->isDirty = false;
         }
-        return &projectionMatrix->float4x4;
+        return projectionMatrix->float4x4;
     }
-    return nullptr;
+    return matrix_identity_float4x4;
+}
+
+simd_float4x4 getCameraProjectionViewMatrix(SPTObject object) {
+    return simd_mul(getCameraProjectionMatrix(object), getCameraViewMatrix(object));
 }
 
 }
@@ -114,13 +113,13 @@ SPTOrthographicCamera SPTUpdateOrthographicCameraAspectRatio(SPTObject entity, f
 }
 
 simd_float3 SPTCameraConvertWorldToViewport(SPTObject cameraObject, simd_float3 point, simd_float2 viewportSize) {
-    auto pos = simd_mul(spt::computeCameraProjectionViewMatrix(cameraObject), simd_make_float4(point, 1.f));
+    auto pos = simd_mul(spt::getCameraProjectionViewMatrix(cameraObject), simd_make_float4(point, 1.f));
     pos = simd_mul(spt::computeViewportMatrix(viewportSize), pos / pos.w);
     return pos.xyz;
 }
 
 simd_float3 SPTCameraConvertViewportToWorld(SPTObject cameraObject, simd_float3 point, simd_float2 viewportSize) {
-    auto matrix = simd_mul(simd_inverse(spt::computeCameraProjectionViewMatrix(cameraObject)), simd_inverse(spt::computeViewportMatrix(viewportSize)));
+    auto matrix = simd_mul(simd_inverse(spt::getCameraProjectionViewMatrix(cameraObject)), simd_inverse(spt::computeViewportMatrix(viewportSize)));
     auto pos = simd_mul(matrix, simd_make_float4(point, 1.f));
     return pos.xyz / pos.w;
 }

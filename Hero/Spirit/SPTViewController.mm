@@ -51,7 +51,8 @@
     self.renderingContext.commandBuffer = commandBuffer;
     
     assert(SPTIsValid(self.viewCameraObject));
-    self.renderingContext.projectionViewMatrix = spt::computeCameraProjectionViewMatrix(self.viewCameraObject);
+    self.renderingContext.cameraPosition = spt::getPosition(self.viewCameraObject);
+    self.renderingContext.projectionViewMatrix = spt::getCameraProjectionViewMatrix(self.viewCameraObject);
     
     // NOTE: Preferably this should be done as late as possible (at least after command buffer is created)
     MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;

@@ -11,7 +11,8 @@
 
 namespace spt {
 
-const simd_float4x4* getCameraProjectionMatrix(SPTObject object);
-simd_float4x4 computeCameraProjectionViewMatrix(SPTObject object);
+simd_float4x4 getCameraViewMatrix(SPTObject object);
+simd_float4x4 getCameraProjectionMatrix(SPTObject object);
+simd_float4x4 getCameraProjectionViewMatrix(SPTObject object);
 
 }

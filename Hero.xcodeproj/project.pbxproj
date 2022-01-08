@@ -95,7 +95,7 @@
 		B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481CD2742307B003DA5B1 /* Camera.cpp */; };
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
 		B7E481D72744417D003DA5B1 /* RenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D52744417D003DA5B1 /* RenderingContext.m */; };
-		B7E481DA274648DB003DA5B1 /* PlainColorMeshView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* PlainColorMeshView.cpp */; };
+		B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* MeshView.cpp */; };
 		B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */; };
 /* End PBXBuildFile section */
 
@@ -160,6 +160,7 @@
 		B73245B5274124C100708909 /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		B73245B7274128FD00708909 /* Spirit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Spirit.mm; sourceTree = "<group>"; };
 		B73245B8274128FD00708909 /* Spirit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spirit.h; sourceTree = "<group>"; };
+		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -266,8 +267,8 @@
 		B7E481D42743A1D7003DA5B1 /* Base.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Base.hpp; sourceTree = "<group>"; };
 		B7E481D52744417D003DA5B1 /* RenderingContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderingContext.m; sourceTree = "<group>"; };
 		B7E481D62744417D003DA5B1 /* RenderingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderingContext.h; sourceTree = "<group>"; };
-		B7E481D8274648DB003DA5B1 /* PlainColorMeshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlainColorMeshView.h; sourceTree = "<group>"; };
-		B7E481D9274648DB003DA5B1 /* PlainColorMeshView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlainColorMeshView.cpp; sourceTree = "<group>"; };
+		B7E481D8274648DB003DA5B1 /* MeshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshView.h; sourceTree = "<group>"; };
+		B7E481D9274648DB003DA5B1 /* MeshView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MeshView.cpp; sourceTree = "<group>"; };
 		B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
 		B7E481DD2747782B003DA5B1 /* ResourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -593,14 +594,15 @@
 				B7791D6A2726762100E0C934 /* SPTRenderingContext.h */,
 				B7791D4E2726762100E0C934 /* Shaders.metal */,
 				B7791D552726762100E0C934 /* ShaderTypes.h */,
-				B7E481D8274648DB003DA5B1 /* PlainColorMeshView.h */,
-				B7E481D9274648DB003DA5B1 /* PlainColorMeshView.cpp */,
+				B7E481D8274648DB003DA5B1 /* MeshView.h */,
+				B7E481D9274648DB003DA5B1 /* MeshView.cpp */,
 				B7235853275E984500337547 /* PolylineView.cpp */,
 				B7235854275E984500337547 /* PolylineView.h */,
 				B723585D2762844700337547 /* PolylineViewDepthBias.cpp */,
 				B723585E2762844700337547 /* PolylineViewDepthBias.h */,
 				B7235860276F2BEC00337547 /* OutlineView.cpp */,
 				B7235861276F2BEC00337547 /* OutlineView.h */,
+				B75FA5692788C82C001EC7C5 /* Materials.h */,
 			);
 			name = Rendering;
 			sourceTree = "<group>";
@@ -759,7 +761,7 @@
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */,
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
-				B7E481DA274648DB003DA5B1 /* PlainColorMeshView.cpp in Sources */,
+				B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,

@@ -6,7 +6,7 @@
 //
 
 #include "Renderer.hpp"
-#include "PlainColorMeshView.h"
+#include "MeshView.h"
 #include "PolylineView.h"
 #include "OutlineView.h"
 #include "ResourceManager.hpp"
@@ -22,7 +22,8 @@ namespace spt {
 
 namespace {
 
-id<MTLRenderPipelineState> __meshPipelineState;
+id<MTLRenderPipelineState> __plainColorMeshPipelineState;
+id<MTLRenderPipelineState> __blinnPhongMeshPipelineState;
 id<MTLRenderPipelineState> __polylinePipelineState;
 id<MTLRenderPipelineState> __outlinePipelineState;
 
@@ -50,28 +51,44 @@ id<MTLRenderPipelineState> createPipelineState(NSString* name, NSString* vertexS
     return pipelineState;
 }
 
-void setupWorldMatrix(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, const SPTEntity& entity) {
+simd_float4x4 getWorldMatrix(Registry& registry, const SPTEntity& entity) {
     if(auto worldMatrix = spt::getTransformationMatrix(registry, entity); worldMatrix) {
-        [renderEncoder setVertexBytes: worldMatrix
-                               length:sizeof(simd_float4x4)
-                              atIndex:kVertexInputIndexWorldMatrix];
+        return *worldMatrix;
     } else {
-        [renderEncoder setVertexBytes: &matrix_identity_float4x4
-                               length:sizeof(simd_float4x4)
-                              atIndex:kVertexInputIndexWorldMatrix];
+        return matrix_identity_float4x4;
     }
 }
 
-void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, const SPTEntity& entity, const SPTPlainColorMeshView& meshView) {
+void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, const SPTEntity& entity, const SPTMeshView& meshView) {
     
-    setupWorldMatrix(renderEncoder, registry, entity);
+    const auto& worldMatrix = getWorldMatrix(registry, entity);
+    
+    switch (meshView.shading) {
+        case SPTMeshShadingPlainColor: {
+            [renderEncoder setRenderPipelineState: __plainColorMeshPipelineState];
+            [renderEncoder setFragmentBytes: &meshView.plainColor.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
+            break;
+        }
+        case SPTMeshShadingBlinnPhong: {
+            [renderEncoder setRenderPipelineState: __blinnPhongMeshPipelineState];
+            // TODO: Optimize this computation to not happen each frame (perhaps as part of instancing optimization)
+            const auto& transposedInverseWorldMatrix = (simd_transpose(simd_inverse(worldMatrix)));
+            [renderEncoder setVertexBytes: &transposedInverseWorldMatrix
+                                   length: sizeof(simd_float4x4)
+                                  atIndex: kVertexInputIndexTransposedInverseWorldMatrix];
+            [renderEncoder setFragmentBytes: &meshView.blinnPhong length: sizeof(PhongMaterial) atIndex: kFragmentInputIndexMaterial];
+            break;
+        }
+    }
+    
+    [renderEncoder setVertexBytes: &worldMatrix
+                           length: sizeof(simd_float4x4)
+                          atIndex: kVertexInputIndexWorldMatrix];
     
     const auto& mesh = ResourceManager::active().getMesh(meshView.meshId);
     
     id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
     [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
-    
-    [renderEncoder setFragmentBytes: &meshView.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
     
     id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) mesh.indexBuffer()->apiObject();
     
@@ -81,7 +98,10 @@ void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, c
 
 void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, const SPTEntity& entity, const SPTPolylineView& polylineView) {
     
-    setupWorldMatrix(renderEncoder, registry, entity);
+    const auto& worldMatrix = getWorldMatrix(registry, entity);
+    [renderEncoder setVertexBytes: &worldMatrix
+                           length: sizeof(simd_float4x4)
+                          atIndex: kVertexInputIndexWorldMatrix];
     
     const auto& polyline = ResourceManager::active().getPolyline(polylineView.polylineId);
     
@@ -100,7 +120,10 @@ void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registr
 
 void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, const SPTEntity& entity, const SPTOutlineView& outlineView) {
     
-    setupWorldMatrix(renderEncoder, registry, entity);
+    const auto& worldMatrix = getWorldMatrix(registry, entity);
+    [renderEncoder setVertexBytes: &worldMatrix
+                           length: sizeof(simd_float4x4)
+                          atIndex: kVertexInputIndexWorldMatrix];
     
     const auto& mesh = ResourceManager::active().getMesh(outlineView.meshId);
     
@@ -119,7 +142,6 @@ void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry
 
 Renderer::Renderer(Registry& registry)
 : _registry {registry} {
-    
 }
 
 void Renderer::render(void* renderingContext) {
@@ -127,6 +149,7 @@ void Renderer::render(void* renderingContext) {
     SPTRenderingContext* rc = (__bridge SPTRenderingContext*) renderingContext;
 
     _uniforms.viewportSize = rc.viewportSize;
+    _uniforms.cameraPosition = rc.cameraPosition;
     _uniforms.projectionViewMatrix = rc.projectionViewMatrix;
     _uniforms.screenScale = rc.screenScale;
     
@@ -138,10 +161,10 @@ void Renderer::render(void* renderingContext) {
     [renderEncoder setCullMode: MTLCullModeBack];
     [renderEncoder setFrontFacingWinding: MTLWindingCounterClockwise];
     [renderEncoder setVertexBytes: &_uniforms length: sizeof(_uniforms) atIndex: kVertexInputIndexUniforms];
+    [renderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
     
     // Render meshes
-    [renderEncoder setRenderPipelineState: __meshPipelineState];
-    const auto meshView = _registry.view<SPTPlainColorMeshView>();
+    const auto meshView = _registry.view<SPTMeshView>();
     meshView.each([this, renderEncoder] (auto entity, auto& meshView) {
         renderMesh(renderEncoder, _registry, entity, meshView);
     });
@@ -173,9 +196,10 @@ void Renderer::render(void* renderingContext) {
 }
 
 void Renderer::init() {
-    __meshPipelineState = createPipelineState(@"Mesh render pipeline", @"vertexShader", @"fragmentShader");
-    __polylinePipelineState = createPipelineState(@"Polyline render pipeline", @"polylineVertexShader", @"fragmentShader");
-    __outlinePipelineState = createPipelineState(@"Outline render pipeline", @"outlineVertexShader", @"fragmentShader");
+    __plainColorMeshPipelineState = createPipelineState(@"Plain color mesh render pipeline", @"basicVS", @"basicFS");
+    __blinnPhongMeshPipelineState = createPipelineState(@"Blinn-Phong mesh render pipeline", @"meshVS", @"blinnPhongFS");
+    __polylinePipelineState = createPipelineState(@"Polyline render pipeline", @"polylineVS", @"basicFS");
+    __outlinePipelineState = createPipelineState(@"Outline render pipeline", @"outlineVS", @"basicFS");
 }
 
 }

@@ -12,6 +12,7 @@ enum VertexInputIndex: unsigned int {
     kVertexInputIndexTextureSize = 6,
     kVertexInputIndexTexturePreferredTransform = 7,
     kVertexInputIndexWorldMatrix = 8,
+    kVertexInputIndexTransposedInverseWorldMatrix = 9,
 };
 
 enum FragmentInputIndex: unsigned int {
@@ -19,6 +20,8 @@ enum FragmentInputIndex: unsigned int {
     kFragmentInputIndexTexture = 1,
     kFragmentInputIndexLumaTexture = 2,
     kFragmentInputIndexChromaTexture = 3,
+    kFragmentInputIndexUniforms = 4,
+    kFragmentInputIndexMaterial = 5,
 };
 
 struct TextureVertex {
@@ -26,12 +29,12 @@ struct TextureVertex {
     simd_float2 texCoord;
 };
 
-typedef struct {
+struct Uniforms {
     simd_float4x4 projectionViewMatrix;
-    simd_float4x4 projectionViewModelMatrix;
+    simd_float3 cameraPosition;
     simd_float2 viewportSize;
     float screenScale;
-} Uniforms;
+};
 
 struct MeshVertex {
     using Index = uint16_t;
