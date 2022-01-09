@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  TransformView.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 24.10.21.
@@ -9,30 +9,45 @@ import SwiftUI
 
 struct TransformView: View {
     
-    @StateObject var sceneViewModel = SceneViewModel()
+    @ObservedObject var sceneViewModel: SceneViewModel
     @State private var activeTool = Tool.move
     @State private var axes = [Axis](repeating: .x, count: Tool.allCases.count)
-    @State var scales = [FloatField.Scale._1, FloatField.Scale._10, FloatField.Scale._0_1]
+    @State private var scales = [FloatField.Scale._1, FloatField.Scale._10, FloatField.Scale._0_1]
     @State private var isNavigating = false
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        ZStack {
-            SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.easeIn(duration: 0.15)))
-                .ignoresSafeArea()
-            VStack(spacing: Self.margin) {
-                NavigationBar(title: activeTool.title)
-                Spacer()
-                if let selectedObject = sceneViewModel.selectedObject {
-                    ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
-                        .padding(.horizontal, Self.margin)
-                        .id(activeTool.rawValue)
+        GeometryReader { geometryProxy in
+            NavigationView {
+                ZStack {
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.easeIn(duration: 0.15)))
+                    VStack(spacing: Self.margin) {
+                        NavigationBarBgr(topPadding: geometryProxy.safeAreaInsets.top)
+                        Spacer()
+                        if let selectedObject = sceneViewModel.selectedObject {
+                            ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
+                                .padding(.horizontal, Self.margin)
+                                .id(activeTool.rawValue)
+                        }
+                        Toolbar(selection: $activeTool)
+                            .padding(.bottom, geometryProxy.safeAreaInsets.bottom)
+                    }
+                    .opacity(isNavigating ? 0.0 : 1.0)
                 }
-                Toolbar(selection: $activeTool)
+                .navigationTitle("Tools")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarHidden(isNavigating)
+                .ignoresSafeArea()
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Close") {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                        .opacity(isNavigating ? 0.0 : 1.0)
+                    }
+                }
             }
-            .opacity(isNavigating ? 0.0 : 1.0)
-            .statusBar(hidden: isNavigating)
         }
-        
     }
     
     static let margin = 8.0
@@ -268,7 +283,17 @@ fileprivate enum Tool: Int, CaseIterable, Identifiable {
 }
 
 struct TransformView_Previews: PreviewProvider {
+    
+    struct TransformViewContainer: View {
+        
+        @StateObject var sceneViewModel = SceneViewModel()
+        
+        var body: some View {
+            TransformView(sceneViewModel: sceneViewModel)
+        }
+    }
+    
     static var previews: some View {
-        TransformView()
+        TransformViewContainer()
     }
 }

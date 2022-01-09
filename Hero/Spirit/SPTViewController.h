@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(instancetype) initWithCoder: (NSCoder*) coder NS_UNAVAILABLE;
 -(instancetype) initWithNibName: (NSString* _Nullable) nibNameOrNil bundle: (NSBundle* _Nullable) nibBundleOrNil NS_UNAVAILABLE;
 
+-(void) setRenderingPaused: (BOOL) paused;
+    
 @property (nonatomic, readonly) SPTScene* scene;
 @property (nonatomic, readwrite) SPTObject viewCameraObject;
 @property (nonatomic, readonly) MTKView* mtkView;

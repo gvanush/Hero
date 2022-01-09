@@ -39,8 +39,17 @@
 //    _mtkView.presentsWithTransaction = YES
     self.mtkView.delegate = self;
     [self.view insertSubview: self.mtkView atIndex: 0];
-    
     [self updateViewportSize: self.mtkView.drawableSize];
+}
+
+-(void) setRenderingPaused: (BOOL) paused {
+    if(paused == self.mtkView.paused) {
+        return;
+    }
+    self.mtkView.paused = paused;
+    if(!paused) {
+        [self updateViewportSize: self.mtkView.drawableSize];
+    }
 }
 
 // MARK: MTKViewDelegate

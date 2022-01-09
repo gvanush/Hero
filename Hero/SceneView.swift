@@ -11,26 +11,33 @@ struct SceneView: View {
     
     @ObservedObject var model: SceneViewModel
     @Binding var isNavigating: Bool
+    let isRenderingPaused: Bool
     @GestureState private var isOrbitDragGestureActive = false
     @GestureState private var isZoomDragGestureActive = false
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
+    init(model: SceneViewModel, isNavigating: Binding<Bool>, isRenderingPaused: Bool = false) {
+        self.model = model
+        self._isNavigating = isNavigating
+        self.isRenderingPaused = isRenderingPaused
+    }
+    
     var body: some View {
-        ZStack {
-            GeometryReader { geometry in
-                SPTView(scene: model.scene, clearColor: clearColor, viewCameraObject: model.viewCameraObject)
+        GeometryReader { geometry in
+            ZStack {
+                SPTView(scene: model.scene, clearColor: clearColor, viewCameraObject: model.viewCameraObject, isRenderingPaused: isRenderingPaused)
+                // NOTE: Adding 'allowsHitTesting' to 'SPTView' will cause its underlying
+                // view controller's 'viewWillAppear' to be called on each gesture start,
+                // hence creating a separate view on top
+                Spacer()
+                    .contentShape(Rectangle())
                     .gesture(orbitDragGesture)
                     .onLocatedTapGesture { location in
                         model.selectedObject = model.pickObjectAt(location, viewportSize: geometry.size)
                     }
-                    // WARNING: This is causing frame drop when isNavigating changes
-                    // frequently in a short period of time
                     .allowsHitTesting(!isNavigating)
-                    .onChange(of: colorScheme) { _ in
-                        clearColor = UIColor.sceneBgrColor.mtlClearColor
-                    }
                 
                 ui(viewportSize: geometry.size)
             }
@@ -46,6 +53,9 @@ struct SceneView: View {
             if !newValue {
                 model.cancelZoom()
             }
+        }
+        .onChange(of: colorScheme) { _ in
+            clearColor = UIColor.sceneBgrColor.mtlClearColor
         }
     }
     
@@ -127,6 +137,11 @@ fileprivate struct ZoomView: View {
             Image(systemName: "magnifyingglass")
                             .foregroundColor(.primary)
             VLine().stroke(style: Self.lineStrokeStyle)
+        }
+        .background {
+            EmptyView()
+            .background(Material.regular)
+            .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
         }
         .frame(maxWidth: Self.width, maxHeight: .infinity)
         .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black.opacity(0.0)], startPoint: .bottom, endPoint: .top))

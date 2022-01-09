@@ -14,6 +14,7 @@ struct SPTView: UIViewControllerRepresentable {
     let scene: SPTScene
     let clearColor: MTLClearColor
     let viewCameraObject: SPTObject
+    var isRenderingPaused: Bool
     
     func makeUIViewController(context: Context) -> SPTViewController {
         let vc = SPTViewController(scene: scene)
@@ -24,6 +25,7 @@ struct SPTView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: SPTViewController, context: Context) {
         uiViewController.mtkView.clearColor = clearColor
+        uiViewController.setRenderingPaused(isRenderingPaused)
         uiViewController.viewCameraObject = viewCameraObject
     }
     
