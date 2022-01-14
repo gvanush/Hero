@@ -12,7 +12,7 @@
 		B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */; };
 		B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC1272B00B700582DCA /* PropertySelector.swift */; };
 		B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC3272B069F00582DCA /* ColorUtil.swift */; };
-		B7104BC6272B1D3300582DCA /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC5272B1D3300582DCA /* TestView.swift */; };
+		B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */; };
 		B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatField.swift */; };
 		B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */; };
 		B72175FA274BC0A60047016B /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72175F8274BC0A60047016B /* Mesh.cpp */; };
@@ -39,6 +39,9 @@
 		B73245B9274128FD00708909 /* Spirit.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B7274128FD00708909 /* Spirit.mm */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA56D278B3414001EC7C5 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56C278B3414001EC7C5 /* Views.swift */; };
+		B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */; };
+		B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA572278D5001001EC7C5 /* StringUtil.swift */; };
+		B75FA577278D6DBD001EC7C5 /* GeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -108,7 +111,7 @@
 		B7104BC0272931AB00582DCA /* SIMDUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SIMDUtil.h; sourceTree = "<group>"; };
 		B7104BC1272B00B700582DCA /* PropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySelector.swift; sourceTree = "<group>"; };
 		B7104BC3272B069F00582DCA /* ColorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtil.swift; sourceTree = "<group>"; };
-		B7104BC5272B1D3300582DCA /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingSceneView.swift; sourceTree = "<group>"; };
 		B7104BC7272BBB1F00582DCA /* FloatField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatField.swift; sourceTree = "<group>"; };
 		B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierRoundedRectangle.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,6 +168,9 @@
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B75FA56C278B3414001EC7C5 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGeneratorView.swift; sourceTree = "<group>"; };
+		B75FA572278D5001001EC7C5 /* StringUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtil.swift; sourceTree = "<group>"; };
+		B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratorView.swift; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -319,6 +325,7 @@
 				B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */,
 				B7D19EBB273306F4005C9F82 /* Line.swift */,
 				B75FA56C278B3414001EC7C5 /* Views.swift */,
+				B75FA572278D5001001EC7C5 /* StringUtil.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -414,10 +421,12 @@
 				B75FA56A278ACD7D001EC7C5 /* RootView.swift */,
 				B7104BC1272B00B700582DCA /* PropertySelector.swift */,
 				B7104BC7272BBB1F00582DCA /* FloatField.swift */,
+				B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */,
+				B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */,
+				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
-				B7104BC5272B1D3300582DCA /* TestView.swift */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -788,10 +797,12 @@
 				B7791D7D2726762100E0C934 /* LineRenderer.mm in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7791DA92726768B00E0C934 /* UIViewController+Extensions.swift in Sources */,
+				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
 				B75FA56D278B3414001EC7C5 /* Views.swift in Sources */,
 				B7791DB12726768B00E0C934 /* SIMD3+Extensions.swift in Sources */,
 				B7791D7C2726762100E0C934 /* NSPointerArray+Extensions.m in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
+				B75FA577278D6DBD001EC7C5 /* GeneratorView.swift in Sources */,
 				B7791DB02726768B00E0C934 /* UITextField+Extensions.swift in Sources */,
 				B7235855275E984500337547 /* PolylineView.cpp in Sources */,
 				B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */,
@@ -804,7 +815,7 @@
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
 				B7791D8F2726762100E0C934 /* GeometryUtils_Common.c in Sources */,
 				B7791D752726762100E0C934 /* Scene.cpp in Sources */,
-				B7104BC6272B1D3300582DCA /* TestView.swift in Sources */,
+				B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */,
 				B7791DA82726768B00E0C934 /* CoreGraphics+Extensions.swift in Sources */,
 				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,
 				B7791D872726762100E0C934 /* Transform.cpp in Sources */,
@@ -817,6 +828,7 @@
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B7791D7E2726762100E0C934 /* UIRepresentable.mm in Sources */,
 				B7791D7A2726762100E0C934 /* Math.cpp in Sources */,
+				B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */,
 				B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */,
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7791DAC2726768B00E0C934 /* UIImage+Extensions.swift in Sources */,

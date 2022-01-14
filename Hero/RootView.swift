@@ -12,12 +12,13 @@ struct RootView: View {
     @StateObject var sceneViewModel = SceneViewModel()
     @State private var isNavigating = false
     @State private var showsTransformView = false
+    @State private var showsNewGeneratorView = false
     
     var body: some View {
         GeometryReader { geometryProxy in
             NavigationView {
                 ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.easeIn(duration: 0.15)), isRenderingPaused: showsTransformView)
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.easeIn(duration: 0.15)), isRenderingPaused: showsTransformView || showsNewGeneratorView)
                     VStack {
                         NavigationBarBgr(topPadding: geometryProxy.safeAreaInsets.top)
                         Spacer()
@@ -32,7 +33,7 @@ struct RootView: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         toolbarButton(iconName: "circle.hexagongrid.circle") {
-                            print("Pressed")
+                            showsNewGeneratorView = true
                         }
                         Spacer()
                         toolbarButton(iconName: "hammer.circle") {
@@ -46,6 +47,11 @@ struct RootView: View {
         .fullScreenCover(isPresented: $showsTransformView, onDismiss: nil) {
             TransformView(sceneViewModel: sceneViewModel)
         }
+        .fullScreenCover(isPresented: $showsNewGeneratorView, onDismiss: nil) {
+            NewGeneratorView()
+                .environmentObject(sceneViewModel)
+        }
+        
         // TODO: This causes nivagtion title to animate vertically when 'isNavigating' changes
         // .statusBar(hidden: isNavigating)
     }

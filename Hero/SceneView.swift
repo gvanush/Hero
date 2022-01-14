@@ -12,16 +12,18 @@ struct SceneView: View {
     @ObservedObject var model: SceneViewModel
     @Binding var isNavigating: Bool
     let isRenderingPaused: Bool
+    let isUIHidden: Bool
     @GestureState private var isOrbitDragGestureActive = false
     @GestureState private var isZoomDragGestureActive = false
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
-    init(model: SceneViewModel, isNavigating: Binding<Bool>, isRenderingPaused: Bool = false) {
+    init(model: SceneViewModel, isNavigating: Binding<Bool>, isRenderingPaused: Bool = false, isUIHidden: Bool = false) {
         self.model = model
         self._isNavigating = isNavigating
         self.isRenderingPaused = isRenderingPaused
+        self.isUIHidden = isUIHidden
     }
     
     var body: some View {
@@ -31,7 +33,7 @@ struct SceneView: View {
                 // NOTE: Adding 'allowsHitTesting' to 'SPTView' will cause its underlying
                 // view controller's 'viewWillAppear' to be called on each gesture start,
                 // hence creating a separate view on top
-                Spacer()
+                Color.clear
                     .contentShape(Rectangle())
                     .gesture(orbitDragGesture)
                     .onLocatedTapGesture { location in
@@ -39,7 +41,7 @@ struct SceneView: View {
                     }
                     .allowsHitTesting(!isNavigating)
                 
-                ui(viewportSize: geometry.size)
+                ui(geometry: geometry)
             }
         }
         .onChange(of: isOrbitDragGestureActive) { newValue in
@@ -59,8 +61,8 @@ struct SceneView: View {
         }
     }
     
-    func ui(viewportSize: CGSize) -> some View {
-        HStack {
+    func ui(geometry: GeometryProxy) -> some View {
+        HStack(spacing: 0.0) {
             VStack {
                 Spacer()
                 uiButton(iconName: "camera.metering.center.weighted") {
@@ -70,27 +72,27 @@ struct SceneView: View {
             }
             .padding(.leading, 8.0)
             
-            Spacer()
+            Spacer(minLength: 0.0)
             
             VStack {
                 Spacer()
                 ZoomView()
-                    .frame(maxHeight: Self.zoomViewHeight)
+                    .frame(maxHeight: min(Self.zoomMaxViewHeight, geometry.size.height))
             }
             .contentShape(Rectangle())
-            .gesture(zoomDragGesture(viewportSize: viewportSize))
+            .gesture(zoomDragGesture(viewportSize: geometry.size))
         }
-        .padding(.bottom, Self.uiBottomPadding)
+        .padding(.bottom, geometry.size.height > Self.uiBottomPadding ? Self.uiBottomPadding : 0.0)
         .tint(.primary)
-        .opacity(isNavigating ? 0.0 : 1.0)
+        .opacity(isNavigating || isUIHidden ? 0.0 : 1.0)
     }
     
     func uiButton(iconName: String, action: @escaping (() -> Void)) -> some View {
         Button(action: action) {
             Image(systemName: iconName)
                 .imageScale(.large)
+                .frame(maxWidth: 50.0, maxHeight: 50.0, alignment: .center)
         }
-        .frame(maxWidth: 50.0, maxHeight: 50.0, alignment: .center)
         .background(Material.regular)
         .cornerRadius(15.0)
         .shadow(radius: 0.5)
@@ -126,7 +128,7 @@ struct SceneView: View {
     static let uiBottomPadding = 280.0
     static let uiElementBorderLineWidth = 0.5
     static let uiElementBackgroundMaterial = Material.thinMaterial
-    static let zoomViewHeight = 250.0
+    static let zoomMaxViewHeight = 250.0
 }
 
 fileprivate struct ZoomView: View {
