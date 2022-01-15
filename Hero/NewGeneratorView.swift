@@ -12,7 +12,7 @@ struct NewGeneratorView: View {
     
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
-    @State private var showsMeshSelector = true
+    @State private var showsTemplateObjectSelector = true
     @State var generatorViewModel: GeneratorViewModel? = nil
     
     var body: some View {
@@ -51,15 +51,15 @@ struct NewGeneratorView: View {
                 }
                 FloatingSceneView(closedStateSize: floatingSceneClosedStateSize(geometry: geometry))
             }
-            .sheet(isPresented: $showsMeshSelector, onDismiss: {
+            .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {
                 if generatorViewModel == nil {
                     presentationMode.wrappedValue.dismiss()
                 }
             }, content: {
-                MeshSelector { meshRecord in
+                TemplateObjectSelector { meshRecord in
                     let generator = sceneViewModel.scene.makeObject()
                     SPTMakeGenerator(generator, meshRecord.id, 10)
-                    generatorViewModel = GeneratorViewModel(generator: generator, meshRecord: meshRecord)
+                    generatorViewModel = GeneratorViewModel(generator: generator, sourceMeshRecord: meshRecord)
                 }
             })
         }
@@ -74,39 +74,6 @@ struct NewGeneratorView: View {
     
     static let floatingSceneViewClosedStateWidthFactor: CGFloat = 0.25
     
-}
-
-
-struct MeshSelector: View {
-    
-    let onSelected: (MeshRecord) -> Void
-    @EnvironmentObject private var sceneViewModel: SceneViewModel
-    @Environment(\.presentationMode) private var presentationMode
-    
-    var body: some View {
-        NavigationView {
-            List(sceneViewModel.meshRecords) { record in
-                HStack {
-                    Image(systemName: record.iconName)
-                    Text(record.name.capitalizingFirstLetter())
-                    Spacer()
-                    Button("Select") {
-                        onSelected(record)
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }
-            .navigationTitle("Select Source Object")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }
-        }
-    }
 }
 
 

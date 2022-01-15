@@ -10,25 +10,31 @@ import SwiftUI
 class GeneratorViewModel: ObservableObject {
     
     let generator: SPTObject
-    private let meshRecord: MeshRecord
+    @Published private var sourceMeshRecord: MeshRecord
+    
+    init(generator: SPTObject, sourceMeshRecord: MeshRecord) {
+        self.generator = generator
+        self.sourceMeshRecord = sourceMeshRecord
+    }
     
     var sourceObjectTypeName: String {
-        meshRecord.name.capitalizingFirstLetter()
+        sourceMeshRecord.name.capitalizingFirstLetter()
     }
     
     var sourceObjectIconName: String {
-        meshRecord.iconName
+        sourceMeshRecord.iconName
     }
     
-    init(generator: SPTObject, meshRecord: MeshRecord) {
-        self.generator = generator
-        self.meshRecord = meshRecord
+    func updateSourceMeshRecord(_ record: MeshRecord) {
+        sourceMeshRecord = record
+        SPTUpdateGeneratorSourceMesh(generator, record.id)
     }
 }
 
 
 struct GeneratorView: View {
     
+    @State private var showsTemplateObjectSelector = false
     @State private var isNavigating = false
     @ObservedObject var model: GeneratorViewModel
     @EnvironmentObject var sceneViewModel: SceneViewModel
@@ -57,6 +63,11 @@ struct GeneratorView: View {
             // from being selectable when there is a button inside.
             .buttonStyle(BorderlessButtonStyle())
         }
+        .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {}, content: {
+            TemplateObjectSelector { meshRecord in
+                model.updateSourceMeshRecord(meshRecord)
+            }
+        })
     }
     
     var sourceObjectRow: some View {
@@ -64,7 +75,7 @@ struct GeneratorView: View {
             Text("Source")
             Spacer()
             Button {
-                // TODO:
+                showsTemplateObjectSelector = true
             } label: {
                 HStack {
                     Image(systemName: model.sourceObjectIconName)
@@ -123,7 +134,7 @@ struct SceneEditableCompositeParam<Destination>: View where Destination: View {
 
 struct GeneratorView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneratorView(model: GeneratorViewModel(generator: kSPTNullObject, meshRecord: MeshRecord(name: "cone", iconName: "cone", id: 0)))
+        GeneratorView(model: GeneratorViewModel(generator: kSPTNullObject, sourceMeshRecord: MeshRecord(name: "cone", iconName: "cone", id: 0)))
             .environmentObject(SceneViewModel())
     }
 }

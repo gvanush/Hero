@@ -44,6 +44,7 @@
 		B75FA577278D6DBD001EC7C5 /* GeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */; };
 		B75FA57D27918064001EC7C5 /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75FA57B27918064001EC7C5 /* Generator.cpp */; };
 		B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */; };
+		B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -178,6 +179,7 @@
 		B75FA57E27918097001EC7C5 /* Generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
 		B75FA57F2791A1D1001EC7C5 /* MeshView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MeshView.hpp; sourceTree = "<group>"; };
 		B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
+		B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateObjectSelector.swift; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 				B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */,
 				B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */,
 				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
+				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
@@ -800,6 +803,7 @@
 				B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
+				B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B7791DB52726768C00E0C934 /* Comparable+Extensions.swift in Sources */,

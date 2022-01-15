@@ -13,11 +13,6 @@
 
 namespace spt {
 
-struct TransformationMatrix {
-    simd_float4x4 float4x4;
-    bool isDirty;
-};
-
 simd_float3x3 computeRotationXMatrix(float rx) {
     const auto c = cosf(rx);
     const auto s = sinf(rx);

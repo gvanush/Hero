@@ -16,5 +16,7 @@ namespace spt {
 
 void makeBlinnPhongMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId, simd_float4 color, float specularRoughness);
 
+void updateMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId);
+
 }
 

@@ -18,4 +18,6 @@ SPT_EXTERN_C_BEGIN
 
 SPTGeneratorBase SPTMakeGenerator(SPTObject object, SPTMeshId sourceMeshId, uint16_t quantity);
 
+void SPTUpdateGeneratorSourceMesh(SPTObject object, SPTMeshId sourceMeshId);
+
 SPT_EXTERN_C_END
