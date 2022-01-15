@@ -42,6 +42,8 @@
 		B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */; };
 		B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA572278D5001001EC7C5 /* StringUtil.swift */; };
 		B75FA577278D6DBD001EC7C5 /* GeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */; };
+		B75FA57D27918064001EC7C5 /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75FA57B27918064001EC7C5 /* Generator.cpp */; };
+		B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -171,6 +173,11 @@
 		B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGeneratorView.swift; sourceTree = "<group>"; };
 		B75FA572278D5001001EC7C5 /* StringUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtil.swift; sourceTree = "<group>"; };
 		B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratorView.swift; sourceTree = "<group>"; };
+		B75FA57B27918064001EC7C5 /* Generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Generator.cpp; sourceTree = "<group>"; };
+		B75FA57C27918064001EC7C5 /* Generator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Generator.hpp; sourceTree = "<group>"; };
+		B75FA57E27918097001EC7C5 /* Generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
+		B75FA57F2791A1D1001EC7C5 /* MeshView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MeshView.hpp; sourceTree = "<group>"; };
+		B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -301,6 +308,7 @@
 				B7E481C82741837D003DA5B1 /* Transformation */,
 				B7E481CC2742306A003DA5B1 /* Camera */,
 				B73245BB274147F300708909 /* View */,
+				B75FA57A279175BC001EC7C5 /* Generator */,
 				B7E481C227414867003DA5B1 /* Scene */,
 				B7E481C42741498F003DA5B1 /* Rendering */,
 				B723584A2757745A00337547 /* Ray Casting */,
@@ -326,6 +334,7 @@
 				B7D19EBB273306F4005C9F82 /* Line.swift */,
 				B75FA56C278B3414001EC7C5 /* Views.swift */,
 				B75FA572278D5001001EC7C5 /* StringUtil.swift */,
+				B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -406,6 +415,16 @@
 				B73245B22741188500708909 /* SPTViewController.mm */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		B75FA57A279175BC001EC7C5 /* Generator */ = {
+			isa = PBXGroup;
+			children = (
+				B75FA57B27918064001EC7C5 /* Generator.cpp */,
+				B75FA57C27918064001EC7C5 /* Generator.hpp */,
+				B75FA57E27918097001EC7C5 /* Generator.h */,
+			);
+			name = Generator;
 			sourceTree = "<group>";
 		};
 		B7791D1527258F7500E0C934 /* Hero */ = {
@@ -611,6 +630,7 @@
 				B7791D552726762100E0C934 /* ShaderTypes.h */,
 				B7E481D8274648DB003DA5B1 /* MeshView.h */,
 				B7E481D9274648DB003DA5B1 /* MeshView.cpp */,
+				B75FA57F2791A1D1001EC7C5 /* MeshView.hpp */,
 				B7235853275E984500337547 /* PolylineView.cpp */,
 				B7235854275E984500337547 /* PolylineView.h */,
 				B723585D2762844700337547 /* PolylineViewDepthBias.cpp */,
@@ -783,6 +803,7 @@
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B7791DB52726768C00E0C934 /* Comparable+Extensions.swift in Sources */,
+				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
 				B7791D8E2726762100E0C934 /* Renderer.mm in Sources */,
 				B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */,
 				B72175FA274BC0A60047016B /* Mesh.cpp in Sources */,
@@ -810,6 +831,7 @@
 				B7791D822726762100E0C934 /* Component.mm in Sources */,
 				B7791D862726762100E0C934 /* TextureUtils.mm in Sources */,
 				B7791D882726762100E0C934 /* ObjCProxy.cpp in Sources */,
+				B75FA57D27918064001EC7C5 /* Generator.cpp in Sources */,
 				B7791D792726762100E0C934 /* SceneObject.mm in Sources */,
 				B7E481D72744417D003DA5B1 /* RenderingContext.m in Sources */,
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,

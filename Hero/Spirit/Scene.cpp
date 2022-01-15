@@ -7,11 +7,17 @@
 
 #include "Scene.hpp"
 #include "Transformation.hpp"
+#include "Generator.hpp"
 
 namespace spt {
 
 Scene::Scene()
 : componentUpdateNotifiers {registry, registry, registry} {
+    registry.on_destroy<Generator>().connect<&Generator::onDestroy>();
+}
+
+Scene::~Scene() {
+    registry.on_destroy<Generator>().disconnect<&Generator::onDestroy>();
 }
 
 void Scene::render(void* renderingContext) {

@@ -6,6 +6,7 @@
 //
 
 #include "MeshView.h"
+#include "MeshView.hpp"
 #include "Scene.hpp"
 
 SPTMeshView SPTMakePlainColorMeshView(SPTObject object, SPTMeshId meshId, simd_float4 color) {
@@ -23,4 +24,14 @@ SPTMeshView SPTMakeBlinnPhongMeshView(SPTObject object, SPTMeshId meshId, simd_f
 SPTMeshView SPTGetMeshView(SPTObject object) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     return registry.get<SPTMeshView>(object.entity);
+}
+
+namespace spt {
+
+void makeBlinnPhongMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId, simd_float4 color, float specularRoughness) {
+    SPTMeshView meshView {color, SPTMeshShadingBlinnPhong, meshId};
+    meshView.blinnPhong.specularRoughness = specularRoughness;
+    registry.insert(entities.begin(), entities.end(), meshView);
+}
+
 }

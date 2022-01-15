@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FloatingSceneView: View {
     
+    let closedStateSize: CGSize
     @State private var isOpened = false
     @State private var isNavigating = false
     @EnvironmentObject private var sceneViewModel: SceneViewModel
@@ -24,53 +25,60 @@ struct FloatingSceneView: View {
                     VStack {
                         Spacer(minLength: 0.0)
                         ZStack {
-                            Button {
-                                withAnimation {
-                                    isOpened = false
+                            VStack {
+                                Spacer(minLength: 0.0)
+                                Button {
+                                    withAnimation {
+                                        isOpened = false
+                                    }
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .resizable()
+                                        .frame(width: isOpened ? Self.closeButtonWidth : 0.0,
+                                               height: isOpened ? Self.closeButtonHeight : 0.0)
+                                        .cornerRadius(Self.cornerRadius)
+                                        .shadow(radius: Self.shadowRadius)
+                                        .opacity(isOpened && !isNavigating ? 1.0 : 0.0)
                                 }
-                            } label: {
-                                Image(systemName: "xmark")
-                                    .imageScale(.large)
-                                    .frame(width: Self.closeButtonWidth, height: Self.closeButtonHeight)
-                                    .background(Material.bar, ignoresSafeAreaEdges: .init(rawValue: 0))
-                                    .cornerRadius(Self.cornerRadius)
-                                    .shadow(radius: Self.shadowRadius)
-                                    .opacity(isOpened && !isNavigating ? 1.0 : 0.0)
+                                .padding(.bottom)
+                                .allowsHitTesting(isOpened)
                             }
                             
-                            Button {
-                                withAnimation {
-                                    isOpened = true
+                            if !isOpened {
+                                Button {
+                                    withAnimation {
+                                        isOpened = true
+                                    }
+                                } label: {
+                                    Color.clear
+                                        .frame(width: isOpened ? 0.0 : closedStateSize.width,
+                                               height: isOpened ? 0.0 : closedStateSize.height)
                                 }
-                            } label: {
-                                Color.clear
-                                    .frame(width: Self.closedStateWidth, height: Self.closedStateHeight)
                             }
-                            .allowsHitTesting(!isOpened)
                         }
                         .padding(.bottom, isOpened ? geo.safeAreaInsets.bottom : 0.0)
                     }
                 }
-                .frame(maxWidth: isOpened ? .infinity : Self.closedStateWidth,
-                       maxHeight: isOpened ? .infinity : Self.closedStateHeight)
+                .frame(maxWidth: isOpened ? .infinity : closedStateSize.width,
+                       maxHeight: isOpened ? .infinity : closedStateSize.height)
+                .padding(.trailing, isOpened ? 0.0 : Self.trailingPadding)
                 
             }
             .edgesIgnoringSafeArea(isOpened ? .all : .init(rawValue: 0))
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .bottomTrailing)
         }
     }
     
-    static let closedStateWidth: CGFloat = 120.0
-    static let closedStateHeight: CGFloat = 60.0
     static let closeButtonWidth: CGFloat = 60.0
     static let closeButtonHeight: CGFloat = 60.0
+    static let trailingPadding: CGFloat = 8.0
     static let cornerRadius: CGFloat = 10.0
     static let shadowRadius: CGFloat = 5.0
 }
 
 struct FloatingSceneView_Previews: PreviewProvider {
     static var previews: some View {
-        FloatingSceneView()
+        FloatingSceneView(closedStateSize: CGSize(width: 50.0, height: 150.0))
             .environmentObject(SceneViewModel())
     }
 }

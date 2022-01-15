@@ -75,14 +75,14 @@ class SceneViewModel: ObservableObject {
         
         let centerObjectMeshId = meshRecords[3].id
         let centerObject = scene.makeObject()
-        SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
+        SPTMakePosition(centerObject, 100.0, 0.0, 0.0)
         SPTMakeScale(centerObject, 20.0, 20.0, 20.0)
         SPTMakeEulerOrientation(centerObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
         SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
         SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
 //        SPTMakeOutlineView(centerObject, centerObjectMeshId, UIColor.orange.rgba, 5.0)
         
-        let positionRange: ClosedRange<Float> = -1000.0...1000.0
+        /*let positionRange: ClosedRange<Float> = -1000.0...1000.0
         let scaleRange: ClosedRange<Float> = 10.0...40.0
         for _ in 0..<1000 {
             let object = scene.makeObject()
@@ -92,7 +92,7 @@ class SceneViewModel: ObservableObject {
             let meshId = meshRecords.randomElement()!.id
             SPTMakeBlinnPhongMeshView(object, meshId, UIColor.random().rgba, Float.random(in: 2.0...256.0))
             SPTMakeRayCastableMesh(object, meshId)
-        }
+        }*/
         
     }
     

@@ -20,7 +20,9 @@
 namespace spt {
 
 struct Scene {
+    
     Scene();
+    ~Scene();
     
     SPTObject makeObject();
     static void destroyObject(SPTObject entity);

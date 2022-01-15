@@ -13,48 +13,73 @@ struct NewGeneratorView: View {
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
     @State private var showsMeshSelector = true
-    
-    @State var selectedMeshRecord: MeshRecord?
+    @State var generatorViewModel: GeneratorViewModel? = nil
     
     var body: some View {
-        Group {
-            if let selectedMeshRecord = selectedMeshRecord {
-                GeneratorView(model: GeneratorViewModel(meshRecord: selectedMeshRecord))
-            } else {
-                ZStack {
-                    Color(UIColor.systemBackground)
-                    VStack {
-                        HStack {
-                            Text("New Generator")
-                                .font(.largeTitle)
-                                .fontWeight(.bold)
-                            Spacer()
+        GeometryReader { geometry in
+            ZStack {
+                NavigationView {
+                    Group {
+                        if let generatorViewModel = generatorViewModel {
+                            GeneratorView(model: generatorViewModel)
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbar {
+                                    ToolbarItem(placement: .cancellationAction) {
+                                        Button("Cancel") {
+                                            SPTScene.destroy(generatorViewModel.generator)
+                                            presentationMode.wrappedValue.dismiss()
+                                        }
+                                    }
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button {
+                                            presentationMode.wrappedValue.dismiss()
+                                        } label: {
+                                            Text("Done")
+                                                .fontWeight(.semibold)
+                                        }
+                                    }
+                                }
+                        } else {
+                            Color.clear
                         }
-                        Spacer()
                     }
-                    .padding()
+                    .navigationTitle("New Generator")
+                    .safeAreaInset(edge: .bottom) {
+                        Color.clear
+                            .frame(size: floatingSceneClosedStateSize(geometry: geometry))
+                    }
                 }
+                FloatingSceneView(closedStateSize: floatingSceneClosedStateSize(geometry: geometry))
             }
+            .sheet(isPresented: $showsMeshSelector, onDismiss: {
+                if generatorViewModel == nil {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }, content: {
+                MeshSelector { meshRecord in
+                    let generator = sceneViewModel.scene.makeObject()
+                    SPTMakeGenerator(generator, meshRecord.id, 10)
+                    generatorViewModel = GeneratorViewModel(generator: generator, meshRecord: meshRecord)
+                }
+            })
         }
-        .sheet(isPresented: $showsMeshSelector, onDismiss: {
-            if selectedMeshRecord == nil {
-                presentationMode.wrappedValue.dismiss()
-            }
-        }, content: {
-            MeshSelector(selectedMeshRecord: $selectedMeshRecord)
-                .environmentObject(sceneViewModel)
-        })
     }
     
-    var isObjectSelected: Bool {
-        selectedMeshRecord != nil
+    func floatingSceneClosedStateSize(geometry: GeometryProxy) -> CGSize {
+        let width = Self.floatingSceneViewClosedStateWidthFactor * (geometry.size.width + geometry.safeAreaInsets.leading + geometry.safeAreaInsets.trailing)
+        let fullWidth = geometry.size.width + geometry.safeAreaInsets.leading + geometry.safeAreaInsets.trailing
+        let fullHeight = geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
+        return CGSize(width: width, height: (fullHeight / fullWidth) * width)
     }
+    
+    static let floatingSceneViewClosedStateWidthFactor: CGFloat = 0.25
+    
 }
 
 
 struct MeshSelector: View {
     
-    @Binding var selectedMeshRecord: MeshRecord?
+    let onSelected: (MeshRecord) -> Void
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
     
@@ -66,14 +91,9 @@ struct MeshSelector: View {
                     Text(record.name.capitalizingFirstLetter())
                     Spacer()
                     Button("Select") {
-                        selectedMeshRecord = record
+                        onSelected(record)
                         presentationMode.wrappedValue.dismiss()
                     }
-
-                }
-                .onTapGesture {
-                    selectedMeshRecord = record
-                    presentationMode.wrappedValue.dismiss()
                 }
             }
             .navigationTitle("Select Source Object")
