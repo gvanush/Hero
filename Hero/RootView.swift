@@ -18,26 +18,25 @@ struct RootView: View {
         GeometryReader { geometryProxy in
             NavigationView {
                 ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.easeIn(duration: 0.15)), isRenderingPaused: showsTransformView || showsNewGeneratorView)
-                    VStack {
-                        NavigationBarBgr(topPadding: geometryProxy.safeAreaInsets.top)
-                        Spacer()
-                        ToolbarBgr(bottomPadding: geometryProxy.safeAreaInsets.bottom)
-                    }
-                    .opacity(isNavigating ? 0.0 : 1.0)
-                    
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), isRenderingPaused: showsTransformView || showsNewGeneratorView)
                 }
                 .navigationTitle("Generative")
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarHidden(isNavigating)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        toolbarButton(iconName: "circle.hexagongrid.circle") {
-                            showsNewGeneratorView = true
-                        }
-                        Spacer()
-                        toolbarButton(iconName: "hammer.circle") {
-                            showsTransformView = true
+                        if !isNavigating {
+                            Button {
+                                showsNewGeneratorView = true
+                            } label: {
+                                Image(systemName: "circle.hexagongrid.circle")
+                            }
+                            Spacer()
+                            Button {
+                                showsTransformView = true
+                            } label: {
+                                Image(systemName: "hammer.circle")
+                            }
                         }
                     }
                 }
@@ -56,39 +55,10 @@ struct RootView: View {
         // .statusBar(hidden: isNavigating)
     }
     
-    func toolbarButton(iconName: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: iconName)
-        }
-        .opacity(isNavigating ? 0.0 : 1.0)
-    }
-    
 }
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         RootView()
     }
-}
-
-
-fileprivate struct NavigationBar: View {
-    
-    let title: String
-    
-    var body: some View {
-        HStack {
-            Spacer()
-            Text(title)
-                .font(.headline)
-            Spacer()
-            
-        }
-        .frame(maxHeight: Self.height)
-        .background(Material.bar)
-        .compositingGroup()
-        .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: 0.5)
-    }
-    
-    static let height = 44.0
 }

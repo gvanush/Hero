@@ -28,7 +28,7 @@ class SceneViewModel: ObservableObject {
             }
             if let newSelectedObject = newValue {
                 let meshView = SPTGetMeshView(newSelectedObject)
-                SPTMakeOutlineView(newSelectedObject, meshView.meshId, UIColor.orange.rgba, 5.0)
+                SPTMakeOutlineView(newSelectedObject, meshView.meshId, UIColor.objectSelectionColor.rgba, 5.0)
             }
         }
     }
@@ -80,7 +80,6 @@ class SceneViewModel: ObservableObject {
         SPTMakeEulerOrientation(centerObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
         SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
         SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
-//        SPTMakeOutlineView(centerObject, centerObjectMeshId, UIColor.orange.rgba, 5.0)
         
         /*let positionRange: ClosedRange<Float> = -1000.0...1000.0
         let scaleRange: ClosedRange<Float> = 10.0...40.0

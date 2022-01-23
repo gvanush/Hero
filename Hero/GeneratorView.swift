@@ -35,6 +35,7 @@ class GeneratorViewModel: ObservableObject {
 struct GeneratorView: View {
     
     @State private var showsTemplateObjectSelector = false
+    @State private var showsEditObjectView = false
     @State private var isNavigating = false
     @ObservedObject var model: GeneratorViewModel
     @EnvironmentObject var sceneViewModel: SceneViewModel
@@ -48,7 +49,7 @@ struct GeneratorView: View {
                         // TODO
                     }
                     SceneEditableCompositeParam(title: "Transformation", value: nil) {
-                        // TODO
+                        showsEditObjectView = true
                     } destionation: {
                         Color.red
                     }
@@ -67,6 +68,9 @@ struct GeneratorView: View {
             TemplateObjectSelector { meshRecord in
                 model.updateSourceMeshRecord(meshRecord)
             }
+        })
+        .fullScreenCover(isPresented: $showsEditObjectView, onDismiss: {}, content: {
+            EditGeneratorView()
         })
     }
     

@@ -19,7 +19,7 @@ struct FloatingSceneView: View {
             VStack {
                 Spacer(minLength: 0.0)
                 ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.easeInOut(duration: 0.15)), isUIHidden: !isOpened)
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), isUIHidden: !isOpened)
                         .cornerRadius(isOpened ? 0.0 : Self.cornerRadius)
                         .shadow(radius: Self.shadowRadius)
                     VStack {
@@ -38,7 +38,7 @@ struct FloatingSceneView: View {
                                                height: isOpened ? Self.closeButtonHeight : 0.0)
                                         .cornerRadius(Self.cornerRadius)
                                         .shadow(radius: Self.shadowRadius)
-                                        .opacity(isOpened && !isNavigating ? 1.0 : 0.0)
+                                        .visible(isOpened && !isNavigating)
                                 }
                                 .padding(.bottom)
                                 .allowsHitTesting(isOpened)

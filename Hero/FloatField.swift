@@ -93,7 +93,7 @@ struct FloatField: View {
                 ZStack {
                     HStack {
                         ScalePicker(scale: $scale)
-                            .opacity(state == .dragging || state == .scrolling ? 0.0 : 1.0)
+                            .visible(!(state == .dragging || state == .scrolling))
                             
                         Spacer()
                     }
@@ -109,7 +109,7 @@ struct FloatField: View {
         .fixedSize(horizontal: false, vertical: true)
         .background(Material.thin)
         .cornerRadius(Self.cornerRadius)
-        .overlay(RoundedRectangle(cornerRadius: Self.cornerRadius).stroke(Color.orange, lineWidth: 1.0))
+        .overlay(RoundedRectangle(cornerRadius: Self.cornerRadius).stroke(Color.objectSelectionColor, lineWidth: .objectSelectionBorderWidth))
         .onAppear {
             scrollAnimator = DisplayRefreshSync(update: { time in
                 assert(state == .scrolling)

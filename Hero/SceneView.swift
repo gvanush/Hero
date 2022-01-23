@@ -84,7 +84,7 @@ struct SceneView: View {
         }
         .padding(.bottom, geometry.size.height > Self.uiBottomPadding ? Self.uiBottomPadding : 0.0)
         .tint(.primary)
-        .opacity(isNavigating || isUIHidden ? 0.0 : 1.0)
+        .visible(!isNavigating && !isUIHidden)
     }
     
     func uiButton(iconName: String, action: @escaping (() -> Void)) -> some View {

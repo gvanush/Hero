@@ -32,7 +32,7 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
         .frame(maxWidth: .infinity, idealHeight: height)
         .fixedSize(horizontal: false, vertical: true)
         .background(bgrMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
-        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.orange, lineWidth: selectionBorderLineWidth))
+        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.objectSelectionColor, lineWidth: .objectSelectionBorderWidth))
     }
     
     private var items: some View {
@@ -85,9 +85,9 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
     let itemPadding = 3.0
     let textHorizontalPadding = 8.0
     let selectionCornerRadius = 16.0
-    let selectionBorderLineWidth = 1.0
     let selectionAnimationDuration = 0.2
 }
+
 
 fileprivate struct SelectedItemFrameRectPreferenceKey: PreferenceKey {
     static var defaultValue: CGRect?

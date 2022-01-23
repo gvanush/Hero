@@ -94,11 +94,15 @@
 		B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA72726768B00E0C934 /* Logger+Extensions.swift */; };
 		B7791DB827267BB900E0C934 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DB727267BB900E0C934 /* Updater.swift */; };
 		B7791DBA2726821200E0C934 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DB92726821200E0C934 /* SceneView.swift */; };
+		B7928BE32794302D00C4F110 /* CGFloatUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7928BE22794302D00C4F110 /* CGFloatUtil.swift */; };
 		B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB327310DFC005C9F82 /* BindingUtil.swift */; };
 		B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */; };
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
 		B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */; };
 		B7D19EBC273306F5005C9F82 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EBB273306F4005C9F82 /* Line.swift */; };
+		B7D82515279937CA008F28CE /* PropertyTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D82514279937CA008F28CE /* PropertyTreeView.swift */; };
+		B7D8252C279D64D1008F28CE /* EditGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */; };
+		B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */; };
 		B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481C9274183BD003DA5B1 /* Transformation.cpp */; };
 		B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481CD2742307B003DA5B1 /* Camera.cpp */; };
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
@@ -271,11 +275,15 @@
 		B7791DA72726768B00E0C934 /* Logger+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Logger+Extensions.swift"; sourceTree = "<group>"; };
 		B7791DB727267BB900E0C934 /* Updater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		B7791DB92726821200E0C934 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
+		B7928BE22794302D00C4F110 /* CGFloatUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatUtil.swift; sourceTree = "<group>"; };
 		B7D19EB327310DFC005C9F82 /* BindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingUtil.swift; sourceTree = "<group>"; };
 		B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRefreshSync.swift; sourceTree = "<group>"; };
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
 		B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureUtil.swift; sourceTree = "<group>"; };
 		B7D19EBB273306F4005C9F82 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		B7D82514279937CA008F28CE /* PropertyTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyTreeView.swift; sourceTree = "<group>"; };
+		B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGeneratorView.swift; sourceTree = "<group>"; };
+		B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		B7E481C9274183BD003DA5B1 /* Transformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
 		B7E481CA274183BD003DA5B1 /* Transformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transformation.h; sourceTree = "<group>"; };
 		B7E481CD2742307B003DA5B1 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -337,6 +345,8 @@
 				B75FA56C278B3414001EC7C5 /* Views.swift */,
 				B75FA572278D5001001EC7C5 /* StringUtil.swift */,
 				B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */,
+				B7928BE22794302D00C4F110 /* CGFloatUtil.swift */,
+				B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -444,8 +454,10 @@
 				B7104BC7272BBB1F00582DCA /* FloatField.swift */,
 				B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */,
 				B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */,
+				B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */,
 				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
 				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
+				B7D82514279937CA008F28CE /* PropertyTreeView.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
@@ -776,6 +788,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7D82515279937CA008F28CE /* PropertyTreeView.swift in Sources */,
 				B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */,
 				B721760A2750AD990047016B /* Buffer_metal.mm in Sources */,
 				B7791D772726762100E0C934 /* TextureRenderer.mm in Sources */,
@@ -799,6 +812,7 @@
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */,
+				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
@@ -812,6 +826,7 @@
 				B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */,
 				B72175FA274BC0A60047016B /* Mesh.cpp in Sources */,
 				B70A310A272F1502003432C4 /* AnimationCompletionObserver.swift in Sources */,
+				B7928BE32794302D00C4F110 /* CGFloatUtil.swift in Sources */,
 				B7791D762726762100E0C934 /* Camera.mm in Sources */,
 				B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */,
 				B7791DB32726768C00E0C934 /* Notification+Extensions.swift in Sources */,
@@ -834,6 +849,7 @@
 				B723585F2762844700337547 /* PolylineViewDepthBias.cpp in Sources */,
 				B7791D822726762100E0C934 /* Component.mm in Sources */,
 				B7791D862726762100E0C934 /* TextureUtils.mm in Sources */,
+				B7D8252C279D64D1008F28CE /* EditGeneratorView.swift in Sources */,
 				B7791D882726762100E0C934 /* ObjCProxy.cpp in Sources */,
 				B75FA57D27918064001EC7C5 /* Generator.cpp in Sources */,
 				B7791D792726762100E0C934 /* SceneObject.mm in Sources */,

@@ -7,35 +7,15 @@
 
 import SwiftUI
 
-struct NavigationBarBgr: View {
-    
-    let topPadding: CGFloat
-    
-    var body: some View {
-        HStack {
-            Spacer()
-        }
-        .frame(width: nil, height: 44.0, alignment: .center)
-        .background(Material.bar)
-        .compositingGroup()
-        .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: 0.5)
-        .padding(.top, topPadding)
-    }
-}
 
-
-struct ToolbarBgr: View {
-    
-    let bottomPadding: CGFloat
-    
+struct BottomBar: View {
     var body: some View {
-        HStack {
-            Spacer()
-        }
-        .frame(width: nil, height: 44.0, alignment: .center)
-        .background(Material.bar)
-        .compositingGroup()
-        .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: -0.5)
-        .padding(.bottom, bottomPadding)
+        Color.clear
+            .frame(maxWidth: .infinity, maxHeight: Self.height)
+            .background(Material.bar)
+            .compositingGroup()
+            .shadow(radius: 0.5)
     }
+    
+    static let height: CGFloat = 49.0
 }

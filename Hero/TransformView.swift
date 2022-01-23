@@ -20,9 +20,8 @@ struct TransformView: View {
         GeometryReader { geometryProxy in
             NavigationView {
                 ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.easeIn(duration: 0.15)))
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
                     VStack(spacing: Self.margin) {
-                        NavigationBarBgr(topPadding: geometryProxy.safeAreaInsets.top)
                         Spacer()
                         if let selectedObject = sceneViewModel.selectedObject {
                             ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
@@ -32,7 +31,7 @@ struct TransformView: View {
                         Toolbar(selection: $activeTool)
                             .padding(.bottom, geometryProxy.safeAreaInsets.bottom)
                     }
-                    .opacity(isNavigating ? 0.0 : 1.0)
+                    .visible(!isNavigating)
                 }
                 .navigationTitle("Tools")
                 .navigationBarTitleDisplayMode(.inline)
@@ -43,7 +42,7 @@ struct TransformView: View {
                         Button("Close") {
                             presentationMode.wrappedValue.dismiss()
                         }
-                        .opacity(isNavigating ? 0.0 : 1.0)
+                        .visible(!isNavigating)
                     }
                 }
             }
@@ -51,28 +50,6 @@ struct TransformView: View {
     }
     
     static let margin = 8.0
-}
-
-
-fileprivate struct NavigationBar: View {
-    
-    let title: String
-    
-    var body: some View {
-        HStack {
-            Spacer()
-            Text(title)
-                .font(.headline)
-            Spacer()
-            
-        }
-        .frame(maxHeight: Self.height)
-        .background(Material.bar)
-        .compositingGroup()
-        .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: 0.5)
-    }
-    
-    static let height = 44.0
 }
 
 
@@ -191,19 +168,19 @@ fileprivate struct Toolbar: View {
     @Binding var selection: Tool
     
     var body: some View {
-        HStack(spacing: 0.0) {
-            ForEach(Tool.allCases) { tool in
-                itemFor(tool)
-                    .foregroundColor(selection == tool ? .accentColor : .gray)
-                    .onTapGesture {
-                        selection = tool
+        BottomBar()
+            .overlay {
+                HStack(spacing: 0.0) {
+                    ForEach(Tool.allCases) { tool in
+                        itemFor(tool)
+                            .foregroundColor(selection == tool ? .accentColor : .gray)
+                            .onTapGesture {
+                                selection = tool
+                            }
                     }
+                }
+                .padding(.top, Self.topPadding)
             }
-        }
-        .padding(.top, Self.topPadding)
-        .background(Material.bar)
-        .compositingGroup()
-        .shadow(color: .defaultShadowColor, radius: 0.0, x: 0, y: -0.5)
     }
     
     static let topPadding = 4.0

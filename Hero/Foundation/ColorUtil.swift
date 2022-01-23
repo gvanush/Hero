@@ -10,6 +10,10 @@ import SwiftUI
 extension Color {
     
     static let defaultShadowColor = Color("DefaultShadowColor")
+    static let objectSelectionColor = Color(uiColor: .objectSelectionColor)
+    
+    static let tertiary = Color(uiColor: .tertiaryLabel)
+    static let quaternary = Color(uiColor: .quaternaryLabel)
     
     static let systemFill = Color(uiColor: .systemFill)
     static let secondarySystemFill = Color(uiColor: .secondarySystemFill)

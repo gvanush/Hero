@@ -9,6 +9,10 @@ import SwiftUI
 
 extension View {
     func frame(size: CGSize, alignment: Alignment = .center) -> some View {
-        return self.frame(width: size.width, height: size.height, alignment: alignment)
+        self.frame(width: size.width, height: size.height, alignment: alignment)
+    }
+    
+    func visible(_ visible: Bool) -> some View {
+        self.opacity(visible ? 1.0 : 0.0)
     }
 }

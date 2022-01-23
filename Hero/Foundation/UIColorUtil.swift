@@ -37,4 +37,6 @@ extension UIColor {
     static func random(alpha: CGFloat = 1.0) -> UIColor {
         UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: alpha)
     }
+    
+    static let objectSelectionColor = UIColor.orange
 }
