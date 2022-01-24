@@ -9,6 +9,7 @@ import UIKit
 import MetalKit
 import SwiftUI
 
+
 struct SPTView: UIViewControllerRepresentable {
 
     let scene: SPTScene

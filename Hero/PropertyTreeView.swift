@@ -45,6 +45,17 @@ class PropertyTreeNodeViewModel: ObservableObject {
         }
         return false
     }
+    
+    var hasInodeChild: Bool {
+        guard let children = children else { return false }
+        
+        for child in children {
+            if child.isInode {
+                return true
+            }
+        }
+        return false
+    }
 }
 
 
@@ -84,6 +95,7 @@ struct PropertyTreeView: View {
                         editPropertyButton
                     }
                     .padding(.horizontal, 8.0)
+                    .tint(.objectSelectionColor)
                 }
         }
     }
@@ -238,7 +250,7 @@ fileprivate struct PropertyTreeNodeView: View {
                 VStack {
                     Spacer()
                     Image(systemName: "ellipsis")
-                        .foregroundColor(.tertiary)
+                        .foregroundColor(.objectSelectionColor)
                 }
                 .padding(.bottom, 5.0)
             } else {

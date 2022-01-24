@@ -34,10 +34,9 @@ class GeneratorViewModel: ObservableObject {
 
 struct GeneratorView: View {
     
-    @State private var showsTemplateObjectSelector = false
-    @State private var showsEditObjectView = false
-    @State private var isNavigating = false
     @ObservedObject var model: GeneratorViewModel
+    @Binding var isEditing: Bool
+    @State private var showsTemplateObjectSelector = false
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
@@ -49,7 +48,7 @@ struct GeneratorView: View {
                         // TODO
                     }
                     SceneEditableCompositeParam(title: "Transformation", value: nil) {
-                        showsEditObjectView = true
+                        isEditing = true
                     } destionation: {
                         Color.red
                     }
@@ -69,7 +68,7 @@ struct GeneratorView: View {
                 model.updateSourceMeshRecord(meshRecord)
             }
         })
-        .fullScreenCover(isPresented: $showsEditObjectView, onDismiss: {}, content: {
+        .fullScreenCover(isPresented: $isEditing, onDismiss: {}, content: {
             EditGeneratorView()
         })
     }
@@ -107,6 +106,7 @@ struct SceneEditableParam: View {
             }
             Button(action: editAction) {
                 Image(systemName: "slider.horizontal.below.rectangle")
+                    .imageScale(.large)
             }
         }
     }
@@ -130,6 +130,7 @@ struct SceneEditableCompositeParam<Destination>: View where Destination: View {
             }
             Button(action: editAction) {
                 Image(systemName: "slider.horizontal.below.rectangle")
+                    .imageScale(.large)
             }
         }
     }
@@ -138,7 +139,7 @@ struct SceneEditableCompositeParam<Destination>: View where Destination: View {
 
 struct GeneratorView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneratorView(model: GeneratorViewModel(generator: kSPTNullObject, sourceMeshRecord: MeshRecord(name: "cone", iconName: "cone", id: 0)))
+        GeneratorView(model: GeneratorViewModel(generator: kSPTNullObject, sourceMeshRecord: MeshRecord(name: "cone", iconName: "cone", id: 0)), isEditing: .constant(false))
             .environmentObject(SceneViewModel())
     }
 }

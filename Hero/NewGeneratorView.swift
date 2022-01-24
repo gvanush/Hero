@@ -13,7 +13,8 @@ struct NewGeneratorView: View {
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
     @State private var showsTemplateObjectSelector = true
-    @State var generatorViewModel: GeneratorViewModel? = nil
+    @State private var generatorViewModel: GeneratorViewModel? = nil
+    @State private var isEditing = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -21,7 +22,7 @@ struct NewGeneratorView: View {
                 NavigationView {
                     Group {
                         if let generatorViewModel = generatorViewModel {
-                            GeneratorView(model: generatorViewModel)
+                            GeneratorView(model: generatorViewModel, isEditing: $isEditing)
                                 .navigationBarTitleDisplayMode(.inline)
                                 .toolbar {
                                     ToolbarItem(placement: .cancellationAction) {
@@ -49,7 +50,7 @@ struct NewGeneratorView: View {
                             .frame(size: floatingSceneClosedStateSize(geometry: geometry))
                     }
                 }
-                FloatingSceneView(closedStateSize: floatingSceneClosedStateSize(geometry: geometry))
+                FloatingSceneView(closedStateSize: floatingSceneClosedStateSize(geometry: geometry), isRenderingPaused: showsTemplateObjectSelector || isEditing)
             }
             .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {
                 if generatorViewModel == nil {

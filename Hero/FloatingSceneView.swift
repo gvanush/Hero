@@ -9,17 +9,23 @@ import SwiftUI
 
 struct FloatingSceneView: View {
     
-    let closedStateSize: CGSize
+    private let closedStateSize: CGSize
+    private let isRenderingPaused: Bool
     @State private var isOpened = false
     @State private var isNavigating = false
     @EnvironmentObject private var sceneViewModel: SceneViewModel
+    
+    init(closedStateSize: CGSize, isRenderingPaused: Bool = false) {
+        self.closedStateSize = closedStateSize
+        self.isRenderingPaused = isRenderingPaused
+    }
     
     var body: some View {
         GeometryReader { geo in
             VStack {
                 Spacer(minLength: 0.0)
                 ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), isNavigationEnabled: isOpened, isObjectPickingEnabled: false)
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), isRenderingPaused: isRenderingPaused, isNavigationEnabled: isOpened, isObjectPickingEnabled: false)
                         .cornerRadius(isOpened ? 0.0 : Self.cornerRadius)
                         .shadow(radius: Self.shadowRadius)
                     VStack {
