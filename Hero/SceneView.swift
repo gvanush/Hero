@@ -12,18 +12,21 @@ struct SceneView: View {
     @ObservedObject var model: SceneViewModel
     @Binding var isNavigating: Bool
     let isRenderingPaused: Bool
-    let isUIHidden: Bool
+    let isNavigationEnabled: Bool
+    let isObjectPickingEnabled: Bool
     @GestureState private var isOrbitDragGestureActive = false
     @GestureState private var isZoomDragGestureActive = false
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
-    init(model: SceneViewModel, isNavigating: Binding<Bool>, isRenderingPaused: Bool = false, isUIHidden: Bool = false) {
+    init(model: SceneViewModel, isNavigating: Binding<Bool>, isRenderingPaused: Bool = false,
+         isNavigationEnabled: Bool = true, isObjectPickingEnabled: Bool = true) {
         self.model = model
         self._isNavigating = isNavigating
         self.isRenderingPaused = isRenderingPaused
-        self.isUIHidden = isUIHidden
+        self.isNavigationEnabled = isNavigationEnabled
+        self.isObjectPickingEnabled = isObjectPickingEnabled
     }
     
     var body: some View {
@@ -35,13 +38,12 @@ struct SceneView: View {
                 // hence creating a separate view on top
                 Color.clear
                     .contentShape(Rectangle())
-                    .gesture(orbitDragGesture)
-                    .onLocatedTapGesture { location in
-                        model.selectedObject = model.pickObjectAt(location, viewportSize: geometry.size)
-                    }
-                    .allowsHitTesting(!isNavigating)
+                    .gesture(isNavigationEnabled ? orbitDragGesture : nil)
+                    .gesture(isObjectPickingEnabled ? pickGesture(viewportSize: geometry.size) : nil)
+                    .allowsHitTesting(isNavigationEnabled && !isNavigating)
                 
-                ui(geometry: geometry)
+                navigationControls(geometry: geometry)
+                    .visible(isNavigationEnabled && !isNavigating)
             }
         }
         .onChange(of: isOrbitDragGestureActive) { newValue in
@@ -61,7 +63,7 @@ struct SceneView: View {
         }
     }
     
-    func ui(geometry: GeometryProxy) -> some View {
+    func navigationControls(geometry: GeometryProxy) -> some View {
         HStack(spacing: 0.0) {
             VStack {
                 Spacer()
@@ -84,7 +86,6 @@ struct SceneView: View {
         }
         .padding(.bottom, geometry.size.height > Self.uiBottomPadding ? Self.uiBottomPadding : 0.0)
         .tint(.primary)
-        .visible(!isNavigating && !isUIHidden)
     }
     
     func uiButton(iconName: String, action: @escaping (() -> Void)) -> some View {
@@ -96,6 +97,12 @@ struct SceneView: View {
         .background(Material.regular)
         .cornerRadius(15.0)
         .shadow(radius: 0.5)
+    }
+    
+    func pickGesture(viewportSize: CGSize) -> some Gesture {
+        LocatedTapGesture().onEnded(perform: { location in
+            model.selectedObject = model.pickObjectAt(location, viewportSize: viewportSize)
+        })
     }
     
     var orbitDragGesture: some Gesture {
