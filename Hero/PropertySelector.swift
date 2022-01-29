@@ -7,11 +7,8 @@
 
 import SwiftUI
 
-protocol PropertySelectorItem: CaseIterable, Identifiable, Equatable {
-    var displayText: String { get }
-}
 
-struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: RandomAccessCollection {
+struct PropertySelector<PT>: View where PT: Property, PT.AllCases: RandomAccessCollection {
     
     @Binding var selected: PT
     @State private var selectedItemFrameRect: CGRect?
@@ -54,7 +51,7 @@ struct PropertySelector<PT>: View where PT: PropertySelectorItem, PT.AllCases: R
     
     func itemFor(_ property: PT) -> some View {
         GeometryReader { geometry in
-            Text(property.displayText)
+            Text(property.title)
                 .foregroundColor(.white)
                 .colorMultiply(property == selected ? Color.white : Color.secondary)
                 .fixedSize(horizontal: true, vertical: false)

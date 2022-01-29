@@ -207,27 +207,6 @@ fileprivate struct Toolbar: View {
 }
 
 
-fileprivate enum Axis: Int, PropertySelectorItem {
-    
-    case x
-    case y
-    case z
-    
-    var id: Self { self }
-    
-    var displayText: String {
-        switch self {
-        case .x:
-            return "X"
-        case .y:
-            return "Y"
-        case .z:
-            return "Z"
-        }
-    }
-}
-
-
 fileprivate enum Tool: Int, CaseIterable, Identifiable {
     
     case move

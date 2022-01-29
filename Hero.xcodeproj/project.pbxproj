@@ -15,6 +15,8 @@
 		B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */; };
 		B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatField.swift */; };
 		B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */; };
+		B717634B27A2C7D400CE5195 /* PropertyTreeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717634A27A2C7D400CE5195 /* PropertyTreeNavigationView.swift */; };
+		B717634F27A3247C00CE5195 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717634E27A3247C00CE5195 /* Property.swift */; };
 		B72175FA274BC0A60047016B /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72175F8274BC0A60047016B /* Mesh.cpp */; };
 		B72175FF274CF1DE0047016B /* circle.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72175FE274CF1DE0047016B /* circle.obj */; };
 		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
@@ -100,7 +102,6 @@
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
 		B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */; };
 		B7D19EBC273306F5005C9F82 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EBB273306F4005C9F82 /* Line.swift */; };
-		B7D82515279937CA008F28CE /* PropertyTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D82514279937CA008F28CE /* PropertyTreeView.swift */; };
 		B7D8252C279D64D1008F28CE /* EditGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */; };
 		B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */; };
 		B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481C9274183BD003DA5B1 /* Transformation.cpp */; };
@@ -124,6 +125,8 @@
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B717634A27A2C7D400CE5195 /* PropertyTreeNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyTreeNavigationView.swift; sourceTree = "<group>"; };
+		B717634E27A3247C00CE5195 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		B72175F8274BC0A60047016B /* Mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		B72175F9274BC0A60047016B /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
 		B72175FB274BC28B0047016B /* ResourceManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
@@ -281,7 +284,6 @@
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
 		B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureUtil.swift; sourceTree = "<group>"; };
 		B7D19EBB273306F4005C9F82 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
-		B7D82514279937CA008F28CE /* PropertyTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyTreeView.swift; sourceTree = "<group>"; };
 		B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGeneratorView.swift; sourceTree = "<group>"; };
 		B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		B7E481C9274183BD003DA5B1 /* Transformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */,
 				B7928BE22794302D00C4F110 /* CGFloatUtil.swift */,
 				B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */,
+				B717634E27A3247C00CE5195 /* Property.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -359,6 +362,16 @@
 				B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B7176347279F3B9800CE5195 /* Generator */ = {
+			isa = PBXGroup;
+			children = (
+				B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */,
+				B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */,
+				B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */,
+			);
+			path = Generator;
 			sourceTree = "<group>";
 		};
 		B72175FD274CF1CF0047016B /* Resources */ = {
@@ -445,6 +458,7 @@
 				B7791D2627266FD300E0C934 /* Temporary */,
 				B7104BBB2729261300582DCA /* Spirit */,
 				B7104BBC2729266D00582DCA /* Foundation */,
+				B7176347279F3B9800CE5195 /* Generator */,
 				B7791D1627258F7500E0C934 /* HeroApp.swift */,
 				B7791DB92726821200E0C934 /* SceneView.swift */,
 				B7104BB727286B3700582DCA /* SceneViewModel.swift */,
@@ -452,12 +466,9 @@
 				B75FA56A278ACD7D001EC7C5 /* RootView.swift */,
 				B7104BC1272B00B700582DCA /* PropertySelector.swift */,
 				B7104BC7272BBB1F00582DCA /* FloatField.swift */,
-				B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */,
-				B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */,
-				B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */,
 				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
 				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
-				B7D82514279937CA008F28CE /* PropertyTreeView.swift */,
+				B717634A27A2C7D400CE5195 /* PropertyTreeNavigationView.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
@@ -788,7 +799,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7D82515279937CA008F28CE /* PropertyTreeView.swift in Sources */,
 				B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */,
 				B721760A2750AD990047016B /* Buffer_metal.mm in Sources */,
 				B7791D772726762100E0C934 /* TextureRenderer.mm in Sources */,
@@ -796,6 +806,7 @@
 				B7791D742726762100E0C934 /* Transform.mm in Sources */,
 				B7791D8C2726762100E0C934 /* Scene.mm in Sources */,
 				B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */,
+				B717634B27A2C7D400CE5195 /* PropertyTreeNavigationView.swift in Sources */,
 				B73245B6274124C100708909 /* Renderer.mm in Sources */,
 				B7235862276F2BEC00337547 /* OutlineView.cpp in Sources */,
 				B7791D892726762100E0C934 /* SceneObject.cpp in Sources */,
@@ -826,6 +837,7 @@
 				B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */,
 				B72175FA274BC0A60047016B /* Mesh.cpp in Sources */,
 				B70A310A272F1502003432C4 /* AnimationCompletionObserver.swift in Sources */,
+				B717634F27A3247C00CE5195 /* Property.swift in Sources */,
 				B7928BE32794302D00C4F110 /* CGFloatUtil.swift in Sources */,
 				B7791D762726762100E0C934 /* Camera.mm in Sources */,
 				B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */,

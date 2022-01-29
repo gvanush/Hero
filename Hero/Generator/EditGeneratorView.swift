@@ -9,9 +9,9 @@ import SwiftUI
 
 struct EditGeneratorView: View {
     
-    @StateObject private var treeViewRootModel = Self.createModel()
-    @State private var indexPath = IndexPath()
-    @State private var selectionIndex: Int?
+    @State var positionSelection: Axis? = .x
+    @State var scaleSelection: Axis? = .x
+    @State var orientationSelection: Axis? = .x
     @State var isNavigating = false
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
@@ -21,8 +21,13 @@ struct EditGeneratorView: View {
             ZStack {
                 SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
                     .ignoresSafeArea()
-                PropertyTreeView(rootModel: treeViewRootModel, activeInodeIndexPath: $indexPath, activeInodeSelectionIndex: $selectionIndex)
-                    .visible(!isNavigating)
+                PropertyTreeNavigationView {
+                    PropertyNode("Transformation") {
+                        PropertyNode("Position", selected: $positionSelection)
+                        PropertyNode("Scale", selected: $scaleSelection)
+                        PropertyNode("Orientation", selected: $orientationSelection)
+                    }
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -43,21 +48,6 @@ struct EditGeneratorView: View {
             }
             .navigationBarHidden(isNavigating)
             .navigationTitle("Edit Generator")
-        }
-    }
-    
-    static func createModel() -> PropertyTreeNodeViewModel {
-        PropertyTreeNodeViewModel(title: "Transformation") {
-            let position = PropertyTreeNodeViewModel(title: "Postion") {
-                return [PropertyTreeNodeViewModel(title: "X"), PropertyTreeNodeViewModel(title: "Y"), PropertyTreeNodeViewModel(title: "Z")]
-            }
-            let orienation = PropertyTreeNodeViewModel(title: "Orienation") {
-                return [PropertyTreeNodeViewModel(title: "X"), PropertyTreeNodeViewModel(title: "Y"), PropertyTreeNodeViewModel(title: "Z")]
-            }
-            let scale = PropertyTreeNodeViewModel(title: "Scale") {
-                return [PropertyTreeNodeViewModel(title: "X"), PropertyTreeNodeViewModel(title: "Y"), PropertyTreeNodeViewModel(title: "Z")]
-            }
-            return [position, orienation, scale]
         }
     }
     
