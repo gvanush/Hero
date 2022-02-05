@@ -13,67 +13,48 @@ struct NewGeneratorView: View {
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
     @State private var showsTemplateObjectSelector = true
-    @State private var generatorViewModel: GeneratorViewModel? = nil
-    @State private var isEditing = false
+    @State private var generatorComponent: GeneratorComponent? = nil
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                NavigationView {
-                    Group {
-                        if let generatorViewModel = generatorViewModel {
-                            GeneratorView(model: generatorViewModel, isEditing: $isEditing)
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbar {
-                                    ToolbarItem(placement: .cancellationAction) {
-                                        Button("Cancel") {
-                                            SPTScene.destroy(generatorViewModel.generator)
-                                            presentationMode.wrappedValue.dismiss()
-                                        }
-                                    }
-                                    ToolbarItem(placement: .confirmationAction) {
-                                        Button {
-                                            presentationMode.wrappedValue.dismiss()
-                                        } label: {
-                                            Text("Done")
-                                                .fontWeight(.semibold)
-                                        }
-                                    }
+        NavigationView {
+            Group {
+                if let generatorViewModel = generatorComponent {
+                    GeneratorView(generatorComponent: generatorViewModel)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Cancel") {
+                                    SPTScene.destroy(generatorViewModel.generator)
+                                    presentationMode.wrappedValue.dismiss()
                                 }
-                        } else {
-                            Color.clear
+                            }
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button {
+                                    presentationMode.wrappedValue.dismiss()
+                                } label: {
+                                    Text("Done")
+                                        .fontWeight(.semibold)
+                                }
+                            }
                         }
-                    }
-                    .navigationTitle("New Generator")
-                    .safeAreaInset(edge: .bottom) {
-                        Color.clear
-                            .frame(size: floatingSceneClosedStateSize(geometry: geometry))
-                    }
+                } else {
+                    Color.clear
                 }
-                FloatingSceneView(closedStateSize: floatingSceneClosedStateSize(geometry: geometry), isRenderingPaused: showsTemplateObjectSelector || isEditing)
             }
-            .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {
-                if generatorViewModel == nil {
-                    presentationMode.wrappedValue.dismiss()
-                }
-            }, content: {
-                TemplateObjectSelector { meshRecord in
-                    let generator = sceneViewModel.scene.makeObject()
-                    SPTMakeGenerator(generator, meshRecord.id, 10)
-                    generatorViewModel = GeneratorViewModel(generator: generator, sourceMeshRecord: meshRecord)
-                }
-            })
+            .navigationTitle("New Generator")
         }
+        .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {
+            if generatorComponent == nil {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }, content: {
+            TemplateObjectSelector { meshRecord in
+                let generator = sceneViewModel.scene.makeObject()
+                SPTMakeGenerator(generator, meshRecord.id, 10)
+                generatorComponent = GeneratorComponent(generator: generator, sourceMeshRecord: meshRecord)
+            }
+        })
     }
-    
-    func floatingSceneClosedStateSize(geometry: GeometryProxy) -> CGSize {
-        let width = Self.floatingSceneViewClosedStateWidthFactor * (geometry.size.width + geometry.safeAreaInsets.leading + geometry.safeAreaInsets.trailing)
-        let fullWidth = geometry.size.width + geometry.safeAreaInsets.leading + geometry.safeAreaInsets.trailing
-        let fullHeight = geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
-        return CGSize(width: width, height: (fullHeight / fullWidth) * width)
-    }
-    
-    static let floatingSceneViewClosedStateWidthFactor: CGFloat = 0.25
     
 }
 

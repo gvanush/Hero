@@ -9,25 +9,23 @@ import SwiftUI
 
 struct EditGeneratorView: View {
     
-    @State var positionSelection: Axis? = .x
-    @State var scaleSelection: Axis? = .x
-    @State var orientationSelection: Axis? = .x
-    @State var isNavigating = false
+    @State private var activeComponent: Component
+    @State private var isNavigating = false
+    @EnvironmentObject var generatorComponent: GeneratorComponent
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
+    
+    init(activeComponent: Component) {
+        _activeComponent = State<Component>(initialValue: activeComponent)
+    }
     
     var body: some View {
         NavigationView {
             ZStack {
                 SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
                     .ignoresSafeArea()
-                PropertyTreeNavigationView {
-                    PropertyNode("Transformation") {
-                        PropertyNode("Position", selected: $positionSelection)
-                        PropertyNode("Scale", selected: $scaleSelection)
-                        PropertyNode("Orientation", selected: $orientationSelection)
-                    }
-                }
+                ComponentTreeNavigationView(rootComponent: generatorComponent, activeComponent: $activeComponent)
+                    .visible(!isNavigating)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -54,8 +52,29 @@ struct EditGeneratorView: View {
 }
 
 struct EditGeneratorView_Previews: PreviewProvider {
+    
+    struct ContainerView: View {
+        
+        @StateObject var sceneViewModel: SceneViewModel
+        @StateObject var generatorComponent: GeneratorComponent
+        
+        var body: some View {
+            Group {
+                EditGeneratorView(activeComponent: generatorComponent.transformation)
+                    .environmentObject(sceneViewModel)
+                    .environmentObject(generatorComponent)
+            }
+        }
+    }
+    
     static var previews: some View {
-        EditGeneratorView()
-            .environmentObject(SceneViewModel())
+        
+        let sceneViewModel = SceneViewModel()
+        let generator = sceneViewModel.scene.makeObject()
+        let meshRecord = MeshRecord(name: "cone", iconName: "cone", id: 0)
+        SPTMakeGenerator(generator, meshRecord.id, 10)
+        let generatorComponent = GeneratorComponent(generator: generator, sourceMeshRecord: meshRecord)
+        
+        return ContainerView(sceneViewModel: sceneViewModel, generatorComponent: generatorComponent)
     }
 }

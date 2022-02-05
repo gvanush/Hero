@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct PropertySelector<PT>: View where PT: Property, PT.AllCases: RandomAccessCollection {
+struct PropertySelector<PT>: View where PT: ComponentProperty, PT.AllCases: RandomAccessCollection {
     
     @Binding var selected: PT
     @State private var selectedItemFrameRect: CGRect?

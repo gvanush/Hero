@@ -15,8 +15,11 @@
 		B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */; };
 		B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatField.swift */; };
 		B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */; };
-		B717634B27A2C7D400CE5195 /* PropertyTreeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717634A27A2C7D400CE5195 /* PropertyTreeNavigationView.swift */; };
-		B717634F27A3247C00CE5195 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717634E27A3247C00CE5195 /* Property.swift */; };
+		B717634B27A2C7D400CE5195 /* ComponentTreeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */; };
+		B717635727ABF25600CE5195 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635627ABF25500CE5195 /* Component.swift */; };
+		B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635827AE836E00CE5195 /* EnumUtil.swift */; };
+		B717635C27AE83D400CE5195 /* ScaleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635B27AE83D400CE5195 /* ScaleComponent.swift */; };
+		B717635E27AE841C00CE5195 /* TransformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635D27AE841C00CE5195 /* TransformationComponent.swift */; };
 		B72175FA274BC0A60047016B /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72175F8274BC0A60047016B /* Mesh.cpp */; };
 		B72175FF274CF1DE0047016B /* circle.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72175FE274CF1DE0047016B /* circle.obj */; };
 		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
@@ -125,8 +128,11 @@
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B717634A27A2C7D400CE5195 /* PropertyTreeNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyTreeNavigationView.swift; sourceTree = "<group>"; };
-		B717634E27A3247C00CE5195 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
+		B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentTreeNavigationView.swift; sourceTree = "<group>"; };
+		B717635627ABF25500CE5195 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		B717635827AE836E00CE5195 /* EnumUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumUtil.swift; sourceTree = "<group>"; };
+		B717635B27AE83D400CE5195 /* ScaleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleComponent.swift; sourceTree = "<group>"; };
+		B717635D27AE841C00CE5195 /* TransformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationComponent.swift; sourceTree = "<group>"; };
 		B72175F8274BC0A60047016B /* Mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		B72175F9274BC0A60047016B /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
 		B72175FB274BC28B0047016B /* ResourceManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
@@ -349,7 +355,7 @@
 				B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */,
 				B7928BE22794302D00C4F110 /* CGFloatUtil.swift */,
 				B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */,
-				B717634E27A3247C00CE5195 /* Property.swift */,
+				B717635827AE836E00CE5195 /* EnumUtil.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -372,6 +378,15 @@
 				B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */,
 			);
 			path = Generator;
+			sourceTree = "<group>";
+		};
+		B717635A27AE839F00CE5195 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				B717635B27AE83D400CE5195 /* ScaleComponent.swift */,
+				B717635D27AE841C00CE5195 /* TransformationComponent.swift */,
+			);
+			path = Object;
 			sourceTree = "<group>";
 		};
 		B72175FD274CF1CF0047016B /* Resources */ = {
@@ -458,6 +473,7 @@
 				B7791D2627266FD300E0C934 /* Temporary */,
 				B7104BBB2729261300582DCA /* Spirit */,
 				B7104BBC2729266D00582DCA /* Foundation */,
+				B717635A27AE839F00CE5195 /* Object */,
 				B7176347279F3B9800CE5195 /* Generator */,
 				B7791D1627258F7500E0C934 /* HeroApp.swift */,
 				B7791DB92726821200E0C934 /* SceneView.swift */,
@@ -468,7 +484,8 @@
 				B7104BC7272BBB1F00582DCA /* FloatField.swift */,
 				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
 				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
-				B717634A27A2C7D400CE5195 /* PropertyTreeNavigationView.swift */,
+				B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */,
+				B717635627ABF25500CE5195 /* Component.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
@@ -806,7 +823,7 @@
 				B7791D742726762100E0C934 /* Transform.mm in Sources */,
 				B7791D8C2726762100E0C934 /* Scene.mm in Sources */,
 				B7791D7F2726762100E0C934 /* CppWrapper.mm in Sources */,
-				B717634B27A2C7D400CE5195 /* PropertyTreeNavigationView.swift in Sources */,
+				B717634B27A2C7D400CE5195 /* ComponentTreeNavigationView.swift in Sources */,
 				B73245B6274124C100708909 /* Renderer.mm in Sources */,
 				B7235862276F2BEC00337547 /* OutlineView.cpp in Sources */,
 				B7791D892726762100E0C934 /* SceneObject.cpp in Sources */,
@@ -823,11 +840,13 @@
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7791D912726762100E0C934 /* RemovedComponentRegistry.cpp in Sources */,
+				B717635C27AE83D400CE5195 /* ScaleComponent.swift in Sources */,
 				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
 				B7791DB22726768B00E0C934 /* SIMD4+Extensions.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
+				B717635E27AE841C00CE5195 /* TransformationComponent.swift in Sources */,
 				B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
@@ -837,7 +856,7 @@
 				B7791D902726762100E0C934 /* SelectedObjectMarker.cpp in Sources */,
 				B72175FA274BC0A60047016B /* Mesh.cpp in Sources */,
 				B70A310A272F1502003432C4 /* AnimationCompletionObserver.swift in Sources */,
-				B717634F27A3247C00CE5195 /* Property.swift in Sources */,
+				B717635727ABF25600CE5195 /* Component.swift in Sources */,
 				B7928BE32794302D00C4F110 /* CGFloatUtil.swift in Sources */,
 				B7791D762726762100E0C934 /* Camera.mm in Sources */,
 				B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */,
@@ -889,6 +908,7 @@
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */,
 				B7791DB62726768C00E0C934 /* Logger+Extensions.swift in Sources */,
+				B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */,
 				B7791DAF2726768B00E0C934 /* UIProgressView+Extensions.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,
 				B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */,

@@ -7,14 +7,16 @@
 
 import SwiftUI
 
-class GeneratorViewModel: ObservableObject {
+class GeneratorComponent: Component {
     
     let generator: SPTObject
+    lazy private(set) var transformation = TransformationComponent(parent: self)
     @Published private var sourceMeshRecord: MeshRecord
     
     init(generator: SPTObject, sourceMeshRecord: MeshRecord) {
         self.generator = generator
         self.sourceMeshRecord = sourceMeshRecord
+        super.init(title: "Generator", parent: nil)
     }
     
     var sourceObjectTypeName: String {
@@ -29,47 +31,48 @@ class GeneratorViewModel: ObservableObject {
         sourceMeshRecord = record
         SPTUpdateGeneratorSourceMesh(generator, record.id)
     }
+    
+    override var subcomponents: [Component]? { [transformation] }
 }
 
 
 struct GeneratorView: View {
     
-    @ObservedObject var model: GeneratorViewModel
-    @Binding var isEditing: Bool
+    @ObservedObject var generatorComponent: GeneratorComponent
+    @State private var editedComponent: Component?
     @State private var showsTemplateObjectSelector = false
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject private var sceneViewModel: SceneViewModel
     
     var body: some View {
-        ZStack {
-            Form {
-                Section {
-                    sourceObjectRow
-                    SceneEditableParam(title: "Quantity", value: "10") {
-                        // TODO
-                    }
-                    SceneEditableCompositeParam(title: "Transformation", value: nil) {
-                        isEditing = true
-                    } destionation: {
-                        Color.red
-                    }
+        Form {
+            Section {
+                sourceObjectRow
+                SceneEditableParam(title: "Quantity", value: "10") {
+                    // TODO
                 }
-                Section("Arrangement") {
-                    ForEach(1..<30) { _ in
-                        Text("dummy")
-                    }
+                SceneEditableCompositeParam(title: generatorComponent.transformation.title, value: nil) {
+                    editedComponent = generatorComponent.transformation
+                } destionation: {
+                    Color.red
                 }
             }
-            // NOTE: This is necessary for unknown reason to prevent Form row
-            // from being selectable when there is a button inside.
-            .buttonStyle(BorderlessButtonStyle())
+            Section("Arrangement") {
+                ForEach(1..<30) { _ in
+                    Text("dummy")
+                }
+            }
         }
+        // NOTE: This is necessary for unknown reason to prevent Form row
+        // from being selectable when there is a button inside.
+        .buttonStyle(BorderlessButtonStyle())
         .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {}, content: {
             TemplateObjectSelector { meshRecord in
-                model.updateSourceMeshRecord(meshRecord)
+                generatorComponent.updateSourceMeshRecord(meshRecord)
             }
         })
-        .fullScreenCover(isPresented: $isEditing, onDismiss: {}, content: {
-            EditGeneratorView()
+        .fullScreenCover(item: $editedComponent, onDismiss: {}, content: { editedComponent in
+            EditGeneratorView(activeComponent: editedComponent)
+                .environmentObject(generatorComponent)
         })
     }
     
@@ -81,8 +84,8 @@ struct GeneratorView: View {
                 showsTemplateObjectSelector = true
             } label: {
                 HStack {
-                    Image(systemName: model.sourceObjectIconName)
-                    Text(model.sourceObjectTypeName)
+                    Image(systemName: generatorComponent.sourceObjectIconName)
+                    Text(generatorComponent.sourceObjectTypeName)
                 }
             }
         }
@@ -139,7 +142,10 @@ struct SceneEditableCompositeParam<Destination>: View where Destination: View {
 
 struct GeneratorView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneratorView(model: GeneratorViewModel(generator: kSPTNullObject, sourceMeshRecord: MeshRecord(name: "cone", iconName: "cone", id: 0)), isEditing: .constant(false))
-            .environmentObject(SceneViewModel())
+        NavigationView {
+            GeneratorView(generatorComponent: GeneratorComponent(generator: kSPTNullObject, sourceMeshRecord: MeshRecord(name: "cone", iconName: "cone", id: 0)))
+                .environmentObject(SceneViewModel())
+                .navigationBarHidden(true)
+        }
     }
 }
