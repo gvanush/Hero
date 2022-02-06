@@ -20,6 +20,8 @@
 		B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635827AE836E00CE5195 /* EnumUtil.swift */; };
 		B717635C27AE83D400CE5195 /* ScaleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635B27AE83D400CE5195 /* ScaleComponent.swift */; };
 		B717635E27AE841C00CE5195 /* TransformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635D27AE841C00CE5195 /* TransformationComponent.swift */; };
+		B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635F27B00CCF00CE5195 /* MeshRegistry.swift */; };
+		B717636227B0242300CE5195 /* SampleSceneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717636127B0242300CE5195 /* SampleSceneData.swift */; };
 		B72175FA274BC0A60047016B /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72175F8274BC0A60047016B /* Mesh.cpp */; };
 		B72175FF274CF1DE0047016B /* circle.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72175FE274CF1DE0047016B /* circle.obj */; };
 		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
@@ -133,6 +135,8 @@
 		B717635827AE836E00CE5195 /* EnumUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumUtil.swift; sourceTree = "<group>"; };
 		B717635B27AE83D400CE5195 /* ScaleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleComponent.swift; sourceTree = "<group>"; };
 		B717635D27AE841C00CE5195 /* TransformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationComponent.swift; sourceTree = "<group>"; };
+		B717635F27B00CCF00CE5195 /* MeshRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshRegistry.swift; sourceTree = "<group>"; };
+		B717636127B0242300CE5195 /* SampleSceneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleSceneData.swift; sourceTree = "<group>"; };
 		B72175F8274BC0A60047016B /* Mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		B72175F9274BC0A60047016B /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
 		B72175FB274BC28B0047016B /* ResourceManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
@@ -486,6 +490,7 @@
 				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
 				B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */,
 				B717635627ABF25500CE5195 /* Component.swift */,
+				B717635F27B00CCF00CE5195 /* MeshRegistry.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
@@ -497,6 +502,7 @@
 			isa = PBXGroup;
 			children = (
 				B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */,
+				B717636127B0242300CE5195 /* SampleSceneData.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -878,6 +884,7 @@
 				B7235855275E984500337547 /* PolylineView.cpp in Sources */,
 				B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */,
 				B723585F2762844700337547 /* PolylineViewDepthBias.cpp in Sources */,
+				B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */,
 				B7791D822726762100E0C934 /* Component.mm in Sources */,
 				B7791D862726762100E0C934 /* TextureUtils.mm in Sources */,
 				B7D8252C279D64D1008F28CE /* EditGeneratorView.swift in Sources */,
@@ -887,6 +894,7 @@
 				B7E481D72744417D003DA5B1 /* RenderingContext.m in Sources */,
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
 				B7791D8F2726762100E0C934 /* GeometryUtils_Common.c in Sources */,
+				B717636227B0242300CE5195 /* SampleSceneData.swift in Sources */,
 				B7791D752726762100E0C934 /* Scene.cpp in Sources */,
 				B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */,
 				B7791DA82726768B00E0C934 /* CoreGraphics+Extensions.swift in Sources */,

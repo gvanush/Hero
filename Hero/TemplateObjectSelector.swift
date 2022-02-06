@@ -9,19 +9,19 @@ import SwiftUI
 
 struct TemplateObjectSelector: View {
     
-    let onSelected: (MeshRecord) -> Void
+    let onSelected: (SPTMeshId) -> Void
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
         NavigationView {
-            List(sceneViewModel.meshRecords) { record in
+            List(MeshRegistry.standard.meshRecords) { record in
                 HStack {
                     Image(systemName: record.iconName)
                     Text(record.name.capitalizingFirstLetter())
                     Spacer()
                     Button("Select") {
-                        onSelected(record)
+                        onSelected(record.id)
                         presentationMode.wrappedValue.dismiss()
                     }
                 }

@@ -57,7 +57,7 @@ class DisplayLinkUpdater: Updater {
     
     func start() {
         displayLink = CADisplayLink(target: self, selector: #selector(onStep))
-        displayLink?.preferredFramesPerSecond = preferredFramesPerSecond
+        displayLink!.preferredFramesPerSecond = preferredFramesPerSecond
         displayLink!.add(to: .current, forMode: .common)
         lastTimestamp = CACurrentMediaTime()
     }

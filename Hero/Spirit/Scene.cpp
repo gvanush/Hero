@@ -12,7 +12,7 @@
 namespace spt {
 
 Scene::Scene()
-: componentUpdateNotifiers {registry, registry, registry} {
+: componentUpdateNotifiers {registry, registry, registry, registry} {
     registry.on_destroy<Generator>().connect<&Generator::onDestroy>();
 }
 

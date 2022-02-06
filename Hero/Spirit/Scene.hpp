@@ -13,6 +13,7 @@
 #include "ComponentUpdateNotifier.hpp"
 #include "Transformation.hpp"
 #include "Transformation.h"
+#include "Generator.hpp"
 
 #include <entt/entt.hpp>
 #include <tuple>
@@ -36,7 +37,8 @@ struct Scene {
     std::tuple<
     ComponentUpdateNotifier<spt::Position>,
     ComponentUpdateNotifier<SPTEulerOrientation>,
-    ComponentUpdateNotifier<spt::Scale>> componentUpdateNotifiers;
+    ComponentUpdateNotifier<spt::Scale>,
+    ComponentUpdateNotifier<spt::Generator>> componentUpdateNotifiers;
 };
 
 inline SPTObject Scene::makeObject() {

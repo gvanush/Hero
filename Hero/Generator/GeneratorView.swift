@@ -9,27 +9,34 @@ import SwiftUI
 
 class GeneratorComponent: Component {
     
-    let generator: SPTObject
+    let object: SPTObject
     lazy private(set) var transformation = TransformationComponent(parent: self)
-    @Published private var sourceMeshRecord: MeshRecord
     
-    init(generator: SPTObject, sourceMeshRecord: MeshRecord) {
-        self.generator = generator
-        self.sourceMeshRecord = sourceMeshRecord
+    init(object: SPTObject) {
+        self.object = object
         super.init(title: "Generator", parent: nil)
+        
+        SPTAddGeneratorListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+            let me = Unmanaged<GeneratorComponent>.fromOpaque(observer!).takeUnretainedValue()
+            me.objectWillChange.send()
+        })
+        
+    }
+    
+    deinit {
+        SPTRemoveGeneratorListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
     var sourceObjectTypeName: String {
-        sourceMeshRecord.name.capitalizingFirstLetter()
+        MeshRegistry.standard.recordById(SPTGetGenerator(object).sourceMeshId)!.name.capitalizingFirstLetter()
     }
     
     var sourceObjectIconName: String {
-        sourceMeshRecord.iconName
+        MeshRegistry.standard.recordById(SPTGetGenerator(object).sourceMeshId)!.iconName
     }
     
-    func updateSourceMeshRecord(_ record: MeshRecord) {
-        sourceMeshRecord = record
-        SPTUpdateGeneratorSourceMesh(generator, record.id)
+    func updateSourceMesh(_ meshId: SPTMeshId) {
+        SPTUpdateGeneratorSourceMesh(object, meshId)
     }
     
     override var subcomponents: [Component]? { [transformation] }
@@ -41,7 +48,6 @@ struct GeneratorView: View {
     @ObservedObject var generatorComponent: GeneratorComponent
     @State private var editedComponent: Component?
     @State private var showsTemplateObjectSelector = false
-    @EnvironmentObject private var sceneViewModel: SceneViewModel
     
     var body: some View {
         Form {
@@ -66,8 +72,8 @@ struct GeneratorView: View {
         // from being selectable when there is a button inside.
         .buttonStyle(BorderlessButtonStyle())
         .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {}, content: {
-            TemplateObjectSelector { meshRecord in
-                generatorComponent.updateSourceMeshRecord(meshRecord)
+            TemplateObjectSelector { meshId in
+                generatorComponent.updateSourceMesh(meshId)
             }
         })
         .fullScreenCover(item: $editedComponent, onDismiss: {}, content: { editedComponent in
@@ -142,9 +148,11 @@ struct SceneEditableCompositeParam<Destination>: View where Destination: View {
 
 struct GeneratorView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            GeneratorView(generatorComponent: GeneratorComponent(generator: kSPTNullObject, sourceMeshRecord: MeshRecord(name: "cone", iconName: "cone", id: 0)))
-                .environmentObject(SceneViewModel())
+        let data = SampleSceneData()
+        
+        return NavigationView {
+            GeneratorView(generatorComponent: data.makeGenerator(sourceMeshName: "sphere", quantity: 5))
+                .environmentObject(data.sceneViewModel)
                 .navigationBarHidden(true)
         }
     }

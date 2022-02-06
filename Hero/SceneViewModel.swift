@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-struct MeshRecord: Identifiable {
-    let name: String
-    let iconName: String
-    let id: SPTMeshId
-}
 
 class SceneViewModel: ObservableObject {
     
@@ -63,17 +58,9 @@ class SceneViewModel: ObservableObject {
         SPTMakeEulerOrientation(zAxisObject, simd_float3(0.0, Float.pi * 0.5, 0.0), SPTEulerOrderXYZ)
         SPTMakePolylineViewDepthBias(zAxisObject, 5.0, 3.0, 0.0)
         
-        // Setup objects
-        for item in [("cube", "cube"), ("cylinder", "cylinder"), ("cone", "cone"), ("sphere", "rotate.3d")] {
-            let meshPath = Bundle.main.path(forResource: item.0, ofType: "obj")!
-            meshRecords.append(MeshRecord(name: item.0, iconName: item.1, id: SPTCreate3DMeshFromFile(meshPath)))
-        }
-        for item in [("square", "square"), ("circle", "circle")] {
-            let meshPath = Bundle.main.path(forResource: item.0, ofType: "obj")!
-            meshRecords.append(MeshRecord(name: item.0, iconName: item.1, id: SPTCreate2DMeshFromFile(meshPath)))
-        }
         
-        let centerObjectMeshId = meshRecords[3].id
+        // Setup objects
+        let centerObjectMeshId = MeshRegistry.standard.recordNamed("sphere")!.id
         let centerObject = scene.makeObject()
         SPTMakePosition(centerObject, 100.0, 0.0, 0.0)
         SPTMakeScale(centerObject, 20.0, 20.0, 20.0)
@@ -203,6 +190,4 @@ class SceneViewModel: ObservableObject {
     
     static let zoomFactor: Float = 3.0
     
-    // MARK: Mesh management
-    private(set) var meshRecords = [MeshRecord]()
 }

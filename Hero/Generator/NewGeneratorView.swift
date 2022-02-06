@@ -18,13 +18,13 @@ struct NewGeneratorView: View {
     var body: some View {
         NavigationView {
             Group {
-                if let generatorViewModel = generatorComponent {
-                    GeneratorView(generatorComponent: generatorViewModel)
+                if let generatorComponent = generatorComponent {
+                    GeneratorView(generatorComponent: generatorComponent)
                         .navigationBarTitleDisplayMode(.inline)
                         .toolbar {
                             ToolbarItem(placement: .cancellationAction) {
                                 Button("Cancel") {
-                                    SPTScene.destroy(generatorViewModel.generator)
+                                    SPTScene.destroy(generatorComponent.object)
                                     presentationMode.wrappedValue.dismiss()
                                 }
                             }
@@ -48,10 +48,10 @@ struct NewGeneratorView: View {
                 presentationMode.wrappedValue.dismiss()
             }
         }, content: {
-            TemplateObjectSelector { meshRecord in
-                let generator = sceneViewModel.scene.makeObject()
-                SPTMakeGenerator(generator, meshRecord.id, 10)
-                generatorComponent = GeneratorComponent(generator: generator, sourceMeshRecord: meshRecord)
+            TemplateObjectSelector { meshId in
+                let generatorObject = sceneViewModel.scene.makeObject()
+                SPTMakeGenerator(generatorObject, meshId, 10)
+                generatorComponent = GeneratorComponent(object: generatorObject)
             }
         })
     }
@@ -61,17 +61,9 @@ struct NewGeneratorView: View {
 
 struct NewGeneratorView_Previews: PreviewProvider {
     
-    struct NewGeneratorViewContainer: View {
-        
-        @State var meshRecord: MeshRecord?
-        
-        var body: some View {
-            NewGeneratorView()
-                .environmentObject(SceneViewModel())
-        }
-    }
-    
     static var previews: some View {
-        NewGeneratorViewContainer()
+        let data = SampleSceneData()
+        return NewGeneratorView()
+            .environmentObject(data.sceneViewModel)
     }
 }
