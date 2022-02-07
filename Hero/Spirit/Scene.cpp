@@ -11,8 +11,11 @@
 
 namespace spt {
 
-Scene::Scene()
-: componentUpdateNotifiers {registry, registry, registry, registry} {
+Scene::Scene() {
+    registerUpdateNotifier<spt::Position>();
+    registerUpdateNotifier<SPTEulerOrientation>();
+    registerUpdateNotifier<spt::Scale>();
+    registerUpdateNotifier<spt::Generator>();
     registry.on_destroy<Generator>().connect<&Generator::onDestroy>();
 }
 
@@ -21,11 +24,14 @@ Scene::~Scene() {
 }
 
 void Scene::render(void* renderingContext) {
+    
     meshRenderer.render(renderingContext);
     
-    std::apply([] (auto& ...notifier) {
-        (..., notifier.notify());
-    }, componentUpdateNotifiers);
+}
+
+template <typename CT>
+void Scene::registerUpdateNotifier() {
+    registry.on_update<CT>().template connect<&ComponentUpdateNotifier<CT>::onUpdate>();
 }
 
 }

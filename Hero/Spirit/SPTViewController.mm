@@ -36,7 +36,7 @@
     self.mtkView.autoResizeDrawable = YES;
     self.mtkView.colorPixelFormat = [SPTRenderingContext colorPixelFormat];
     self.mtkView.depthStencilPixelFormat = [SPTRenderingContext depthPixelFormat];
-//    _mtkView.presentsWithTransaction = YES
+    self.mtkView.presentsWithTransaction = YES;
     self.mtkView.delegate = self;
     [self.view insertSubview: self.mtkView atIndex: 0];
     [self updateViewportSize: self.mtkView.drawableSize];
@@ -63,21 +63,25 @@
     self.renderingContext.cameraPosition = spt::getPosition(self.viewCameraObject);
     self.renderingContext.projectionViewMatrix = spt::getCameraProjectionViewMatrix(self.viewCameraObject);
     
-    // NOTE: Preferably this should be done as late as possible (at least after command buffer is created)
     MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
     if(renderPassDescriptor != nil) {
         
         self.renderingContext.renderPassDescriptor = renderPassDescriptor;
         
         static_cast<spt::Scene*>(self.scene.cpp)->render((__bridge void*) self.renderingContext);
-
-        // Schedule a present once the framebuffer is complete using the current drawable.
-        [commandBuffer presentDrawable: view.currentDrawable];
+        
+        [commandBuffer commit];
+        [commandBuffer waitUntilScheduled];
+        
+        [view.currentDrawable present];
         
         self.renderingContext.renderPassDescriptor = nil;
+        
+    } else {
+        [commandBuffer commit];
     }
     
-    [commandBuffer commit];
+    
 }
 
 -(void) mtkView: (nonnull MTKView*) view drawableSizeWillChange: (CGSize) size {

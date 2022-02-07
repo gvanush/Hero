@@ -62,7 +62,7 @@ class SceneViewModel: ObservableObject {
         // Setup objects
         let centerObjectMeshId = MeshRegistry.standard.recordNamed("sphere")!.id
         let centerObject = scene.makeObject()
-        SPTMakePosition(centerObject, 100.0, 0.0, 0.0)
+        SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
         SPTMakeScale(centerObject, 20.0, 20.0, 20.0)
         SPTMakeEulerOrientation(centerObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
         SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)

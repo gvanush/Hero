@@ -28,6 +28,14 @@ public:
         });
     }
     
+    static void onUpdate(Registry& registry, SPTEntity entity) {
+        if(auto observable = registry.try_get<Observable<CT>>(entity)) {
+            for(const auto& item: observable->listeners) {
+                item.callback(item.listener);
+            }
+        }
+    }
+    
 private:
     EntityObserver _observer;
     const Registry& _registry;

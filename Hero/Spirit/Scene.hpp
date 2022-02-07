@@ -33,12 +33,12 @@ struct Scene {
     Registry registry;
     
     Renderer meshRenderer {registry};
-        
-    std::tuple<
-    ComponentUpdateNotifier<spt::Position>,
-    ComponentUpdateNotifier<SPTEulerOrientation>,
-    ComponentUpdateNotifier<spt::Scale>,
-    ComponentUpdateNotifier<spt::Generator>> componentUpdateNotifiers;
+    
+private:
+    
+    template <typename CT>
+    void registerUpdateNotifier();
+    
 };
 
 inline SPTObject Scene::makeObject() {
