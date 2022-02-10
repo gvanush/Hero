@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import SwiftUI
 
 enum Axis: Int, ComponentProperty {
     
@@ -62,6 +62,10 @@ class PositionComponent: Component {
         get { activeAxis?.rawValue }
     }
     
+    override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
+        provider.viewFor(self)
+    }
+    
 }
 
 
@@ -80,6 +84,10 @@ class OrientationComponent: Component {
     override var activePropertyIndex: Int? {
         set { activeAxis = .init(rawValue: newValue) }
         get { activeAxis?.rawValue }
+    }
+    
+    override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
+        provider.viewFor(self)
     }
     
 }

@@ -151,13 +151,6 @@ simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity) {
     return {0.f, 0.f, 0.f};
 }
 
-void makeScales(spt::Registry& registry, std::vector<SPTEntity> entities, simd_float3 scale) {
-    registry.insert(entities.begin(), entities.end(), Scale{scale});
-    for (const auto entity: entities) {
-        registry.emplace_or_replace<spt::TransformationMatrix>(entity, matrix_identity_float4x4, true);
-    }
-}
-
 const simd_float4x4* getTransformationMatrix(SPTObject object) {
     return getTransformationMatrix(static_cast<spt::Scene*>(object.sceneHandle)->registry, object.entity);
 }

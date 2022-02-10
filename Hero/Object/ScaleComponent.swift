@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-
+import SwiftUI
 
 class ScaleComponent: Component {
     
@@ -58,6 +58,9 @@ class ScaleComponent: Component {
         get { activeVariant.activePropertyIndex }
     }
     
+    override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
+        provider.viewFor(self)
+    }
 }
 
 

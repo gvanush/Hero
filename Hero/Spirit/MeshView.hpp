@@ -9,12 +9,18 @@
 
 #include "Base.h"
 #include "Base.hpp"
+#include "MeshView.h"
 
 #include <vector>
 
 namespace spt {
 
-void makeBlinnPhongMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId, simd_float4 color, float specularRoughness);
+template <typename It>
+void makeBlinnPhongMeshViews(spt::Registry& registry, It beginEntity, It endEntity, SPTMeshId meshId, simd_float4 color, float specularRoughness) {
+    SPTMeshView meshView {color, SPTMeshShadingBlinnPhong, meshId};
+    meshView.blinnPhong.specularRoughness = specularRoughness;
+    registry.insert(beginEntity, endEntity, meshView);
+}
 
 void updateMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId);
 

@@ -12,16 +12,46 @@
 #include "MeshView.hpp"
 #include "ComponentListenerUtil.hpp"
 
-SPTGeneratorBase SPTMakeGenerator(SPTObject object, SPTMeshId sourceMeshId, uint16_t quantity) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    auto& generator = registry.emplace<spt::Generator>(object.entity, SPTGeneratorBase{sourceMeshId, quantity});
+namespace spt {
+
+namespace {
+
+void makeObjects(spt::Registry& registry, spt::Generator& generator, std::size_t count) {
+
+    const auto initialSize = generator.entities.size();
+    generator.entities.resize(generator.entities.size() + count);
     
-    registry.create(generator.entities.begin(), generator.entities.end());
-    spt::makeBlinnPhongMeshViews(registry, generator.entities, sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
-    spt::makePositions(registry, generator.entities, [] (int i) {
+    auto beginEntity = generator.entities.begin() + initialSize;
+    registry.create(beginEntity, generator.entities.end());
+    
+    spt::makeBlinnPhongMeshViews(registry, beginEntity, generator.entities.end(), generator.base.sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
+    spt::makePositions(registry, beginEntity, generator.entities.end(), initialSize, [] (std::size_t i) {
         return simd_float3 {50.f * i, 0.f, 0.f};
     });
-    spt::makeScales(registry, generator.entities, simd_float3{20.f, 20.f, 20.f});
+    spt::makeScales(registry, beginEntity, generator.entities.end(), simd_float3{20.f, 20.f, 20.f});
+    
+    generator.base.quantity = generator.entities.size();
+    
+}
+
+void destroyObjects(spt::Registry& registry, spt::Generator& generator, size_t count) {
+    
+    const auto countToDestroy = std::min(count, generator.entities.size());
+    registry.destroy(generator.entities.end() - countToDestroy, generator.entities.end());
+    generator.entities.resize(generator.entities.size() - countToDestroy);
+    generator.base.quantity = generator.entities.size();
+    
+}
+
+}
+
+}
+
+SPTGeneratorBase SPTMakeGenerator(SPTObject object, SPTMeshId sourceMeshId, SPTGeneratorQuantityType quantity) {
+    assert(quantity >= kSPTGeneratorMinQuantity && quantity <= kSPTGeneratorMaxQuantity);
+    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& generator = registry.emplace<spt::Generator>(object.entity, SPTGeneratorBase{sourceMeshId, quantity});
+    spt::makeObjects(registry, generator, quantity);
     return generator.base;
 }
 
@@ -39,6 +69,18 @@ void SPTUpdateGeneratorSourceMesh(SPTObject object, SPTMeshId sourceMeshId) {
     spt::updateMeshViews(registry, generator.entities, sourceMeshId);
 }
 
+void SPTUpdateGeneratorQunatity(SPTObject object, SPTGeneratorQuantityType quantity) {
+    assert(quantity >= kSPTGeneratorMinQuantity && quantity <= kSPTGeneratorMaxQuantity);
+    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    registry.patch<spt::Generator>(object.entity, [quantity, &registry] (auto& generator) {
+        if(quantity > generator.base.quantity) {
+            spt::makeObjects(registry, generator, quantity - generator.base.quantity);
+        } else {
+            spt::destroyObjects(registry, generator, generator.base.quantity - quantity);
+        }
+    });
+}
+
 void SPTAddGeneratorListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     spt::addComponentListener<spt::Generator>(object, listener, callback);
 }
@@ -54,8 +96,7 @@ void SPTRemoveGeneratorListener(SPTObject object, SPTComponentListener listener)
 namespace spt {
 
 Generator::Generator(SPTGeneratorBase b)
-: base {b}
-, entities {b.quantity, SPTEntity{entt::null}} {
+: base {b} {
 }
 
 void Generator::onDestroy(spt::Registry& registry, SPTEntity entity) {

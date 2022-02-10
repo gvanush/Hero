@@ -9,7 +9,22 @@ import SwiftUI
 
 class GeneratorComponent: Component {
     
+    enum Property: Int, ComponentProperty {
+        case quantity
+        
+        var id: Self { self }
+        
+        var title: String {
+            switch self {
+            case .quantity:
+                return "Quantity"
+            }
+        }
+        
+    }
+    
     let object: SPTObject
+    @Published var activeProperty: Property? = .quantity
     lazy private(set) var transformation = TransformationComponent(parent: self)
     
     init(object: SPTObject) {
@@ -39,7 +54,25 @@ class GeneratorComponent: Component {
         SPTUpdateGeneratorSourceMesh(object, meshId)
     }
     
+    var quantity: SPTGeneratorQuantityType {
+        set { SPTUpdateGeneratorQunatity(object, newValue) }
+        get { SPTGetGenerator(object).quantity }
+    }
+    
+    override var activePropertyIndex: Int? {
+        set { activeProperty = .init(rawValue: newValue) }
+        get { activeProperty?.rawValue }
+    }
+    
+    override var properties: [String]? {
+        Property.allCaseTitles
+    }
+    
     override var subcomponents: [Component]? { [transformation] }
+    
+    override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
+        provider.viewFor(self)
+    }
 }
 
 
@@ -53,8 +86,9 @@ struct GeneratorView: View {
         Form {
             Section {
                 sourceObjectRow
-                SceneEditableParam(title: "Quantity", value: "10") {
-                    // TODO
+                SceneEditableParam(title: GeneratorComponent.Property.quantity.title, value: "\(generatorComponent.quantity)") {
+                    generatorComponent.activeProperty = .quantity
+                    editedComponent = generatorComponent
                 }
                 SceneEditableCompositeParam(title: generatorComponent.transformation.title, value: nil) {
                     editedComponent = generatorComponent.transformation

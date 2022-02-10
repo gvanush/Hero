@@ -43,7 +43,6 @@ struct FloatField: View {
         case idle
         case dragging
         case scrolling
-        case stepping
     }
     
     @Binding var value: Float
@@ -109,7 +108,7 @@ struct FloatField: View {
         .fixedSize(horizontal: false, vertical: true)
         .background(Material.thin)
         .cornerRadius(Self.cornerRadius)
-        .overlay(RoundedRectangle(cornerRadius: Self.cornerRadius).stroke(Color.objectSelectionColor, lineWidth: .objectSelectionBorderWidth))
+        .shadow(radius: 1.0)
         .onAppear {
             scrollAnimator = DisplayRefreshSync(update: { time in
                 assert(state == .scrolling)
@@ -297,6 +296,7 @@ struct FloatField: View {
     
 }
 
+
 fileprivate struct Ruler: View {
     
     let unitSize: CGFloat
@@ -329,6 +329,7 @@ fileprivate struct Ruler: View {
                 }
             }
             .stroke(lineWidth: 1.0)
+            .foregroundColor(Color.objectSelectionColor)
         }
     }
     
@@ -343,6 +344,7 @@ fileprivate struct Ruler: View {
     static let onesHeight = 16.0
 }
 
+
 fileprivate struct ScalePicker: View {
     @Binding var scale: FloatField.Scale
     
@@ -353,7 +355,14 @@ fileprivate struct ScalePicker: View {
             }
         }
         .frame(width: Self.widrh, height: Self.height, alignment: .center)
-        .background(Color.systemFill.cornerRadius(Self.cornerRadius).shadow(radius: Self.shadowRadius))
+        .background {
+            Color.systemFill
+                .cornerRadius(Self.cornerRadius)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: Self.cornerRadius)
+                .strokeBorder(Color.systemFill, lineWidth: 1)
+        }
         .accentColor(.primary)
         .pickerStyle(.menu)
     }
@@ -363,6 +372,7 @@ fileprivate struct ScalePicker: View {
     static let cornerRadius = 7.0
     static let shadowRadius = 1.0
 }
+
 
 struct FloatField_Previews: PreviewProvider {
     static var previews: some View {

@@ -34,7 +34,7 @@ struct HeroApp: App {
     var body: some SwiftUI.Scene {
         WindowGroup {
             RootView()
-//            PropertyTreeNavigationView_Previews.previews
+//            IntField_Previews.previews
         }
     }
 }

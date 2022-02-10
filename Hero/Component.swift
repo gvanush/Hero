@@ -12,7 +12,7 @@ import SwiftUI
 class Component: Identifiable, ObservableObject {
     
     let title: String
-    weak var parent: Component?
+    private(set) weak var parent: Component?
     
     init(title: String, parent: Component?) {
         self.title = title
@@ -27,6 +27,9 @@ class Component: Identifiable, ObservableObject {
     }
     var subcomponents: [Component]? { nil }
     
+    func accept(_ provider: EditComponentViewProvider) -> AnyView? {
+        nil
+    }
 }
 
 

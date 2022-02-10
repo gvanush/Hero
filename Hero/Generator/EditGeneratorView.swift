@@ -15,6 +15,8 @@ struct EditGeneratorView: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
     
+    static let editComponentViewProvider = GeneratorEditComponentViewProvider()
+    
     init(activeComponent: Component) {
         _activeComponent = State<Component>(initialValue: activeComponent)
     }
@@ -24,8 +26,13 @@ struct EditGeneratorView: View {
             ZStack {
                 SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
                     .ignoresSafeArea()
-                ComponentTreeNavigationView(rootComponent: generatorComponent, activeComponent: $activeComponent)
-                    .visible(!isNavigating)
+                VStack {
+                    Spacer()
+                    activeComponent.accept(Self.editComponentViewProvider)
+                        .padding(.horizontal, 8.0)
+                    ComponentTreeNavigationView(rootComponent: generatorComponent, activeComponent: $activeComponent)
+                }
+                .visible(!isNavigating)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

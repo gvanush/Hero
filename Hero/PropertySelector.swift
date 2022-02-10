@@ -29,7 +29,8 @@ struct PropertySelector<PT>: View where PT: ComponentProperty, PT.AllCases: Rand
         .frame(maxWidth: .infinity, idealHeight: height)
         .fixedSize(horizontal: false, vertical: true)
         .background(bgrMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
-        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.objectSelectionColor, lineWidth: .objectSelectionBorderWidth))
+        .compositingGroup()
+        .shadow(radius: 1.0)
     }
     
     private var items: some View {
@@ -77,7 +78,6 @@ struct PropertySelector<PT>: View where PT: ComponentProperty, PT.AllCases: Rand
     let rootCoordinateSpaceName = "root"
     let height = 38.0
     let cornerRadius = 19.0
-    let shadowRadius = 2.0
     let bgrMaterial = Material.regular
     let itemPadding = 3.0
     let textHorizontalPadding = 8.0

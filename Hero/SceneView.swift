@@ -94,9 +94,9 @@ struct SceneView: View {
                 .imageScale(.large)
                 .frame(maxWidth: 50.0, maxHeight: 50.0, alignment: .center)
         }
-        .background(Material.regular)
+        .background(Material.thin)
         .cornerRadius(15.0)
-        .shadow(radius: 0.5)
+        .shadow(radius: 1.0)
     }
     
     func pickGesture(viewportSize: CGSize) -> some Gesture {
@@ -133,8 +133,6 @@ struct SceneView: View {
     
     static let margin = 8.0
     static let uiBottomPadding = 280.0
-    static let uiElementBorderLineWidth = 0.5
-    static let uiElementBackgroundMaterial = Material.thinMaterial
     static let zoomMaxViewHeight = 250.0
 }
 
@@ -149,7 +147,7 @@ fileprivate struct ZoomView: View {
         }
         .background {
             EmptyView()
-            .background(Material.regular)
+            .background(Material.thin)
             .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
         }
         .frame(maxWidth: Self.width, maxHeight: .infinity)

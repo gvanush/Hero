@@ -22,6 +22,7 @@
 		B717635E27AE841C00CE5195 /* TransformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635D27AE841C00CE5195 /* TransformationComponent.swift */; };
 		B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635F27B00CCF00CE5195 /* MeshRegistry.swift */; };
 		B717636227B0242300CE5195 /* SampleSceneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717636127B0242300CE5195 /* SampleSceneData.swift */; };
+		B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717636327B1A7F500CE5195 /* IntegerField.swift */; };
 		B72175FA274BC0A60047016B /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72175F8274BC0A60047016B /* Mesh.cpp */; };
 		B72175FF274CF1DE0047016B /* circle.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72175FE274CF1DE0047016B /* circle.obj */; };
 		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
@@ -44,6 +45,8 @@
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
 		B73245B6274124C100708909 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B4274124C100708909 /* Renderer.mm */; };
 		B73245B9274128FD00708909 /* Spirit.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B7274128FD00708909 /* Spirit.mm */; };
+		B736450427B3BA1100FAD433 /* EditComponentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B736450327B3BA1100FAD433 /* EditComponentViewProvider.swift */; };
+		B736450627B3DB7100FAD433 /* EditGeneratorComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B736450527B3DB7100FAD433 /* EditGeneratorComponentView.swift */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA56D278B3414001EC7C5 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56C278B3414001EC7C5 /* Views.swift */; };
 		B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */; };
@@ -137,6 +140,7 @@
 		B717635D27AE841C00CE5195 /* TransformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationComponent.swift; sourceTree = "<group>"; };
 		B717635F27B00CCF00CE5195 /* MeshRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshRegistry.swift; sourceTree = "<group>"; };
 		B717636127B0242300CE5195 /* SampleSceneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleSceneData.swift; sourceTree = "<group>"; };
+		B717636327B1A7F500CE5195 /* IntegerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerField.swift; sourceTree = "<group>"; };
 		B72175F8274BC0A60047016B /* Mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		B72175F9274BC0A60047016B /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
 		B72175FB274BC28B0047016B /* ResourceManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
@@ -185,6 +189,8 @@
 		B73245B5274124C100708909 /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		B73245B7274128FD00708909 /* Spirit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Spirit.mm; sourceTree = "<group>"; };
 		B73245B8274128FD00708909 /* Spirit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spirit.h; sourceTree = "<group>"; };
+		B736450327B3BA1100FAD433 /* EditComponentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditComponentViewProvider.swift; sourceTree = "<group>"; };
+		B736450527B3DB7100FAD433 /* EditGeneratorComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGeneratorComponentView.swift; sourceTree = "<group>"; };
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B75FA56C278B3414001EC7C5 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -380,6 +386,7 @@
 				B75FA576278D6DBD001EC7C5 /* GeneratorView.swift */,
 				B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */,
 				B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */,
+				B736450527B3DB7100FAD433 /* EditGeneratorComponentView.swift */,
 			);
 			path = Generator;
 			sourceTree = "<group>";
@@ -486,6 +493,7 @@
 				B75FA56A278ACD7D001EC7C5 /* RootView.swift */,
 				B7104BC1272B00B700582DCA /* PropertySelector.swift */,
 				B7104BC7272BBB1F00582DCA /* FloatField.swift */,
+				B717636327B1A7F500CE5195 /* IntegerField.swift */,
 				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
 				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
 				B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */,
@@ -494,6 +502,7 @@
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
+				B736450327B3BA1100FAD433 /* EditComponentViewProvider.swift */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -871,9 +880,11 @@
 				B7791DAD2726768B00E0C934 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				B7791D782726762100E0C934 /* Camera.cpp in Sources */,
 				B7791D852726762100E0C934 /* ComponentTypeInfo.cpp in Sources */,
+				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
 				B7791D7D2726762100E0C934 /* LineRenderer.mm in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7791DA92726768B00E0C934 /* UIViewController+Extensions.swift in Sources */,
+				B736450627B3DB7100FAD433 /* EditGeneratorComponentView.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
 				B75FA56D278B3414001EC7C5 /* Views.swift in Sources */,
 				B7791DB12726768B00E0C934 /* SIMD3+Extensions.swift in Sources */,
@@ -896,6 +907,7 @@
 				B7791D8F2726762100E0C934 /* GeometryUtils_Common.c in Sources */,
 				B717636227B0242300CE5195 /* SampleSceneData.swift in Sources */,
 				B7791D752726762100E0C934 /* Scene.cpp in Sources */,
+				B736450427B3BA1100FAD433 /* EditComponentViewProvider.swift in Sources */,
 				B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */,
 				B7791DA82726768B00E0C934 /* CoreGraphics+Extensions.swift in Sources */,
 				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,

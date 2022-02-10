@@ -28,12 +28,6 @@ SPTMeshView SPTGetMeshView(SPTObject object) {
 
 namespace spt {
 
-void makeBlinnPhongMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId, simd_float4 color, float specularRoughness) {
-    SPTMeshView meshView {color, SPTMeshShadingBlinnPhong, meshId};
-    meshView.blinnPhong.specularRoughness = specularRoughness;
-    registry.insert(entities.begin(), entities.end(), meshView);
-}
-
 void updateMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId) {
     auto updater = [meshId] (auto& meshView) {
         meshView.meshId = meshId;

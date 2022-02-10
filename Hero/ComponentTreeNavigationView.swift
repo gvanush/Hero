@@ -17,10 +17,9 @@ struct ComponentTreeNavigationView: View {
     
     var body: some View {
         VStack(spacing: 0.0) {
-            Spacer()
             ComponentView(component: rootComponent, activeComponent: $activeComponent)
             .padding(3.0)
-            .frame(maxHeight: 46.0)
+            .frame(maxHeight: Self.componentViewHeight)
             .background(Material.bar)
             .compositingGroup()
             .shadow(radius: 0.5)
@@ -37,10 +36,9 @@ struct ComponentTreeNavigationView: View {
                             .id(activeComponent.title)
                             .layoutPriority(1.0)
                             
-                        editPropertyButton
+                        editComponentButton
                     }
                     .padding(.horizontal, 8.0)
-                    .tint(.objectSelectionColor)
                 }
         }
     }
@@ -69,7 +67,7 @@ struct ComponentTreeNavigationView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
  
-    var editPropertyButton: some View {
+    var editComponentButton: some View {
         Button {
             // TODO:
         } label: {
@@ -77,8 +75,11 @@ struct ComponentTreeNavigationView: View {
                 .imageScale(.large)
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
+        .hidden() // TODO
     }
-    
+ 
+    static let componentViewHeight = 46.0
+    static let height = componentViewHeight + BottomBar.height
 }
 
 
@@ -92,11 +93,12 @@ fileprivate struct ComponentView: View {
     var body: some View {
         ZStack {
             textViewFor(component.title)
+                .foregroundColor(.secondary)
                 .overlay {
                     VStack {
                         Spacer()
                         Image(systemName: "ellipsis")
-                            .foregroundColor(.objectSelectionColor)
+                            .foregroundColor(.accentColor)
                     }
                     .padding(.bottom, 5.0)
                 }
@@ -171,6 +173,7 @@ fileprivate struct ComponentView: View {
     private func propertyViews(_ properties: [String]) -> some View {
         ForEach(Array(properties.enumerated()), id: \.element, content: { index, property in
             textViewFor(property)
+                .foregroundColor(index == component.activePropertyIndex ? .white : .secondary)
                 .background {
                     RoundedRectangle(cornerRadius: .infinity)
                         .foregroundColor(.systemFill)
@@ -191,7 +194,6 @@ fileprivate struct ComponentView: View {
     
     private func textViewFor(_ title: String) -> some View {
         Text(title)
-            .foregroundColor(.secondary)
             .font(.body)
             .fixedSize(horizontal: true, vertical: false)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -207,7 +209,7 @@ fileprivate struct ComponentView: View {
 }
 
 
-struct PropertyTreeNavigationView_Previews: PreviewProvider {
+struct ComponentTreeNavigationView_Previews: PreviewProvider {
     
     struct ContainerView: View {
         
