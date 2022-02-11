@@ -1,12 +1,23 @@
 //
-//  CoreGraphics+Extensions.swift
-//  HeroX
+//  CGFloatUtil.swift
+//  Hero
 //
-//  Created by Vanush Grigoryan on 1/18/21.
+//  Created by Vanush Grigoryan on 16.01.22.
 //
 
+import Foundation
 import CoreGraphics
 import simd
+
+
+extension CGFloat {
+    
+    static var objectSelectionBorderWidth: Self {
+        1.0
+    }
+    
+}
+
 
 extension CGSize {
     
@@ -16,6 +27,7 @@ extension CGSize {
     
 }
 
+
 extension CGRect {
     
     var center : CGPoint {
@@ -24,6 +36,7 @@ extension CGRect {
     
 }
 
+
 extension CGPoint {
     
     var float2: SIMD2<Float> {
@@ -31,3 +44,4 @@ extension CGPoint {
     }
     
 }
+

@@ -17,12 +17,3 @@
 #import "Base.h"
 #import "Geometry.h"
 #import "SIMDUtil.h"
-
-// TODO
-#import "Renderer.h"
-#import "Scene.h"
-#import "Transform.h"
-#import "Camera.h"
-#import "LineRenderer.h"
-#import "TextureRenderer.h"
-#import "UIRepresentableObserver.h"
