@@ -162,7 +162,7 @@ struct FloatField: View {
         return HStack {
             Spacer()
             valueText()
-                .foregroundColor(.secondary)
+                .foregroundColor(.primary)
             Spacer()
         }
     }
@@ -170,7 +170,7 @@ struct FloatField: View {
     var pointer: some View {
         VStack {
             Spacer()
-            Color.secondary
+            Color.primary
                 .frame(width: Self.pointerWidth, height: Ruler.onesHeight * 2)
                 .shadow(radius: 1.0)
         }
@@ -355,22 +355,17 @@ fileprivate struct ScalePicker: View {
             }
         }
         .frame(width: Self.widrh, height: Self.height, alignment: .center)
-        .background {
-            Color.systemFill
-                .cornerRadius(Self.cornerRadius)
-        }
         .overlay {
             RoundedRectangle(cornerRadius: Self.cornerRadius)
-                .strokeBorder(Color.systemFill, lineWidth: 1)
+                .strokeBorder(Color.tertiary, lineWidth: 1)
         }
-        .accentColor(.primary)
+        .accentColor(.secondary)
         .pickerStyle(.menu)
     }
     
     static let widrh = 50.0
     static let height = 29.0
     static let cornerRadius = 7.0
-    static let shadowRadius = 1.0
 }
 
 

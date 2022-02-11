@@ -20,4 +20,6 @@ extension Color {
     static let tertiarySystemFill = Color(uiColor: .tertiarySystemFill)
     static let quaternarySystemFill = Color(uiColor: .quaternarySystemFill)
     
+    static let disabledControl = Color(hue: 240.0 / 360.0, saturation: 10.0 / 100.0, brightness: 26.0 / 100.0, opacity: 30.0 / 100.0)
+    
 }

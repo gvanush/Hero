@@ -12,6 +12,6 @@ struct EditGeneratorComponentView: View {
     @ObservedObject var component: GeneratorComponent
     
     var body: some View {
-        IntegerField(value: $component.quantity, range: kSPTGeneratorMinQuantity...kSPTGeneratorMaxQuantity)
+        IntegerField(value: $component.quantity, range: kSPTGeneratorMinQuantity...kSPTGeneratorMaxQuantity, deltaOptions: [1, 5, 10, 100])
     }
 }

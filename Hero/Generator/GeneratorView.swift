@@ -90,6 +90,8 @@ struct GeneratorView: View {
                     generatorComponent.activeProperty = .quantity
                     editedComponent = generatorComponent
                 }
+            }
+            Section {
                 SceneEditableCompositeParam(title: generatorComponent.transformation.title, value: nil) {
                     editedComponent = generatorComponent.transformation
                 } destionation: {
