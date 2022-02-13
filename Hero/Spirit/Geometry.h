@@ -9,11 +9,17 @@
 
 #include <simd/simd.h>
 
-typedef enum {
+typedef enum: int8_t {
     SPTAxisX,
     SPTAxisY,
-    SPTAxisZ,
-} SPTAxis;
+    SPTAxisZ
+} __attribute__((enum_extensibility(closed))) SPTAxis;
+
+typedef enum: int8_t {
+    SPTPlainXY,
+    SPTPlainYZ,
+    SPTPlainZX
+} __attribute__((enum_extensibility(closed))) SPTPlain;
 
 typedef struct {
     simd_float3 min, max;

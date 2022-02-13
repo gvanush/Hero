@@ -100,7 +100,7 @@ fileprivate struct ComponentView: View {
                         Image(systemName: "ellipsis")
                             .foregroundColor(.accentColor)
                     }
-                    .padding(.bottom, 5.0)
+                    .padding(.bottom, 4.0)
                 }
                 .scaleEffect(textScale)
                 .visible(isChildOfActive)

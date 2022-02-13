@@ -20,6 +20,7 @@ struct Generator {
     Generator(SPTGeneratorBase b);
     
     SPTGeneratorBase base;
+    SPTArrangement arrangement;
     std::vector<SPTEntity> entities;
     
     static void onDestroy(spt::Registry& registry, SPTEntity entity);

@@ -7,25 +7,17 @@
 
 import SwiftUI
 
+
 class GeneratorComponent: Component {
     
-    enum Property: Int, ComponentProperty {
+    enum Property: Int, DistinctValueSet, Displayable {
         case quantity
-        
-        var id: Self { self }
-        
-        var title: String {
-            switch self {
-            case .quantity:
-                return "Quantity"
-            }
-        }
-        
     }
     
     let object: SPTObject
     @Published var activeProperty: Property? = .quantity
     lazy private(set) var transformation = TransformationComponent(parent: self)
+    lazy private(set) var arrangement = ArrangementComponent(object: self.object, parent: self)
     
     init(object: SPTObject) {
         self.object = object
@@ -65,10 +57,10 @@ class GeneratorComponent: Component {
     }
     
     override var properties: [String]? {
-        Property.allCaseTitles
+        Property.allCaseDisplayNames
     }
     
-    override var subcomponents: [Component]? { [transformation] }
+    override var subcomponents: [Component]? { [transformation, arrangement] }
     
     override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
         provider.viewFor(self)
@@ -86,7 +78,7 @@ struct GeneratorView: View {
         Form {
             Section {
                 sourceObjectRow
-                SceneEditableParam(title: GeneratorComponent.Property.quantity.title, value: "\(generatorComponent.quantity)") {
+                SceneEditableParam(title: GeneratorComponent.Property.quantity.displayName, value: "\(generatorComponent.quantity)") {
                     generatorComponent.activeProperty = .quantity
                     editedComponent = generatorComponent
                 }
@@ -98,13 +90,11 @@ struct GeneratorView: View {
                     Color.red
                 }
             }
-            Section("Arrangement") {
-                ForEach(1..<30) { _ in
-                    Text("dummy")
-                }
-            }
+//            Section("Arrangement") {
+//                Picker("", selection: <#T##Binding<_>#>, content: <#T##() -> _#>)
+//            }
         }
-        // NOTE: This is necessary for unknown reason to prevent Form row
+        // NOTE: This is necessary for unknown reason to prevent 'Form' row
         // from being selectable when there is a button inside.
         .buttonStyle(BorderlessButtonStyle())
         .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {}, content: {
@@ -129,53 +119,6 @@ struct GeneratorView: View {
                     Image(systemName: generatorComponent.sourceObjectIconName)
                     Text(generatorComponent.sourceObjectTypeName)
                 }
-            }
-        }
-    }
-}
-
-
-struct SceneEditableParam: View {
-    
-    let title: String
-    let value: String?
-    let editAction: () -> Void
-    
-    var body: some View {
-        HStack {
-            Text(title)
-            Spacer()
-            if let value = value {
-                Text(value)
-                    .foregroundColor(.secondary)
-            }
-            Button(action: editAction) {
-                Image(systemName: "slider.horizontal.below.rectangle")
-                    .imageScale(.large)
-            }
-        }
-    }
-}
-
-
-struct SceneEditableCompositeParam<Destination>: View where Destination: View {
-    
-    let title: String
-    let value: String?
-    let editAction: () -> Void
-    let destionation: () -> Destination
-    
-    var body: some View {
-        NavigationLink(destination: destionation) {
-            Text(title)
-            Spacer()
-            if let value = value {
-                Text(value)
-                    .foregroundColor(.secondary)
-            }
-            Button(action: editAction) {
-                Image(systemName: "slider.horizontal.below.rectangle")
-                    .imageScale(.large)
             }
         }
     }

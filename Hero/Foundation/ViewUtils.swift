@@ -16,3 +16,22 @@ extension View {
         self.opacity(visible ? 1.0 : 0.0)
     }
 }
+
+
+protocol Displayable {
+    var displayName: String { get }
+}
+
+extension Displayable {
+    var displayName: String {
+        String(describing: self).capitalizingFirstLetter()
+    }
+}
+
+extension Displayable where Self: CaseIterable {
+    
+    static var allCaseDisplayNames: [String] {
+        Self.allCases.map { $0.displayName }
+    }
+    
+}

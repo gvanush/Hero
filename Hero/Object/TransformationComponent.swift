@@ -8,27 +8,6 @@
 import Foundation
 import SwiftUI
 
-enum Axis: Int, ComponentProperty {
-    
-    case x
-    case y
-    case z
-    
-    var id: Self { self }
-    
-    var title: String {
-        switch self {
-        case .x:
-            return "X"
-        case .y:
-            return "Y"
-        case .z:
-            return "Z"
-        }
-    }
-    
-}
-
 
 class TransformationComponent: Component {
     
@@ -54,7 +33,7 @@ class PositionComponent: Component {
     }
     
     override var properties: [String]? {
-        Axis.allCaseTitles
+        Axis.allCaseDisplayNames
     }
     
     override var activePropertyIndex: Int? {
@@ -78,7 +57,7 @@ class OrientationComponent: Component {
     }
     
     override var properties: [String]? {
-        Axis.allCaseTitles
+        Axis.allCaseDisplayNames
     }
     
     override var activePropertyIndex: Int? {

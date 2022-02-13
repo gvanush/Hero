@@ -25,17 +25,29 @@ void makeObjects(spt::Registry& registry, spt::Generator& generator, std::size_t
     registry.create(beginEntity, generator.entities.end());
     
     spt::makeBlinnPhongMeshViews(registry, beginEntity, generator.entities.end(), generator.base.sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
-    spt::makePositions(registry, beginEntity, generator.entities.end(), initialSize, [] (std::size_t i) {
-        return simd_float3 {50.f * i, 0.f, 0.f};
-    });
-    spt::makeScales(registry, beginEntity, generator.entities.end(), simd_float3{20.f, 20.f, 20.f});
+    
+    switch (generator.arrangement.variantTag) {
+        case SPTArrangementVariantTagLinear: {
+            simd_float3 seedPosition {};
+            seedPosition[generator.arrangement.linear.axis] = 15.0;
+            spt::makePositions(registry, beginEntity, generator.entities.end(), initialSize, [seedPosition] (std::size_t i) {
+                return i * seedPosition;
+            });
+            break;
+        }
+        default: {
+            assert(false);
+            break;
+        }
+    }
+    
+    spt::makeScales(registry, beginEntity, generator.entities.end(), simd_float3{5.f, 5.f, 5.f});
     
     generator.base.quantity = generator.entities.size();
     
 }
 
 void destroyObjects(spt::Registry& registry, spt::Generator& generator, size_t count) {
-    
     const auto countToDestroy = std::min(count, generator.entities.size());
     registry.destroy(generator.entities.end() - countToDestroy, generator.entities.end());
     generator.entities.resize(generator.entities.size() - countToDestroy);
@@ -93,10 +105,23 @@ void SPTRemoveGeneratorListener(SPTObject object, SPTComponentListener listener)
     spt::removeComponentListener<spt::Generator>(object, listener);
 }
 
+void SPTUpdateLinearArrangementAxis(SPTObject object, SPTAxis axis) {
+    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    registry.patch<spt::Generator>(object.entity, [axis, &registry] (auto& generator) {
+        assert(generator.arrangement.variantTag == SPTArrangementVariantTagLinear);
+        spt::updatePositions(registry, generator.entities.begin(), generator.entities.end(), [axis, &generator] (auto& position) {
+            position.float3[axis] = position.float3[generator.arrangement.linear.axis];
+            position.float3[generator.arrangement.linear.axis] = 0.f;
+        });
+        generator.arrangement.linear.axis = axis;
+    });
+}
+
 namespace spt {
 
 Generator::Generator(SPTGeneratorBase b)
-: base {b} {
+: base {b}
+, arrangement {SPTArrangementVariantTagLinear, {.linear = { SPTAxisX }}} {
 }
 
 void Generator::onDestroy(spt::Registry& registry, SPTEntity entity) {

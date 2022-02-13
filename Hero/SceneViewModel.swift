@@ -32,8 +32,8 @@ class SceneViewModel: ObservableObject {
         
         // Setup view camera
         viewCameraObject = scene.makeObject()
-        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 300.0, 0.25 * Float.pi, 0.25 * Float.pi)
-        SPTMakeLookAtOrientation(viewCameraObject, simd_float3.zero, SPTAxisZ, false, simd_float3.up)
+        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 150.0, 0.25 * Float.pi, 0.25 * Float.pi)
+        SPTMakeLookAtOrientation(viewCameraObject, simd_float3.zero, Axis.z.sptValue, false, simd_float3.up)
         SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
 //        SPTMakeOrthographicCamera(viewCameraObject, 100.0, 1.0, 0.1, 2000.0)
         
@@ -63,7 +63,7 @@ class SceneViewModel: ObservableObject {
         let centerObjectMeshId = MeshRegistry.standard.recordNamed("sphere")!.id
         let centerObject = scene.makeObject()
         SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
-        SPTMakeScale(centerObject, 20.0, 20.0, 20.0)
+        SPTMakeScale(centerObject, 5.0, 5.0, 5.0)
         SPTMakeEulerOrientation(centerObject, simd_float3(0.0, 0.0, 0.0), SPTEulerOrderXYZ)
         SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
         SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)

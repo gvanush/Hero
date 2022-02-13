@@ -9,104 +9,43 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ScaleComponent: Component {
+
+class ScaleComponent: MultiVariantComponent2<NonuniformScaleComponentVariant, UniformScaleComponentVariant> {
     
     enum VariantTag {
         case nonuniform
         case uniform
     }
     
-    @Published var activeVariantTag = VariantTag.nonuniform
-    
-    private let nonuniformScaleVariant = NonuniformScaleComponentVariant()
-    private var nonuniformScaleVariantCancellable: AnyCancellable?
-    private let uniformScaleVariant = UniformScaleComponentVariant()
-    private var uniformScaleVariantCancellable: AnyCancellable?
-    
     init(parent: Component?) {
-        super.init(title: "Scale", parent: parent)
-        
-        nonuniformScaleVariantCancellable = nonuniformScaleVariant.objectWillChange.sink(receiveValue: {
-            self.onVariantWillChange(tag: .nonuniform)
-        })
-        uniformScaleVariantCancellable = uniformScaleVariant.objectWillChange.sink(receiveValue: {
-            self.onVariantWillChange(tag: .uniform)
-        })
+        super.init(title: "Scale", variantTag: .nonuniform, parent: parent)
     }
-    
-    private func onVariantWillChange(tag: VariantTag) -> Void {
-        if activeVariantTag == tag {
-            objectWillChange.send()
-        }
-    }
-    
-    private var activeVariant: ComponentVariant {
-        switch activeVariantTag {
-        case .nonuniform:
-            return nonuniformScaleVariant
-        case .uniform:
-            return uniformScaleVariant
-        }
-    }
-    
-    override var properties: [String]? {
-        activeVariant.properties
-    }
-    
-    override var activePropertyIndex: Int? {
-        set { activeVariant.activePropertyIndex = newValue }
-        get { activeVariant.activePropertyIndex }
-    }
-    
-    override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
-        provider.viewFor(self)
-    }
-}
-
-
-class NonuniformScaleComponentVariant: ComponentVariant, ObservableObject {
-    
-    @Published var activeAxis: Axis? = .x
-    
-    var properties: [String]? {
-        Axis.allCaseTitles
-    }
-    
-    var activePropertyIndex: Int? {
-        set { activeAxis = .init(rawValue: newValue) }
-        get { activeAxis?.rawValue }
-    }
-    
-    var subcomponents: [Component]? { nil }
     
 }
 
-class UniformScaleComponentVariant: ComponentVariant, ObservableObject {
+class NonuniformScaleComponentVariant: ComponentVariant {
     
-    enum Property: Int, ComponentProperty {
+    @Published var selected: Axis? = .x
+    
+    required init() {}
+    
+    static var tag: ScaleComponent.VariantTag {
+        ScaleComponent.VariantTag.nonuniform
+    }
+}
+
+class UniformScaleComponentVariant: ComponentVariant {
+    
+    enum Property: Int, DistinctValueSet, Displayable {
         case scale
-        
-        var id: Self { self }
-        
-        var title: String {
-            switch self {
-            case .scale:
-                return "Scale"
-            }
-        }
     }
     
-    @Published var activeProperty: Property? = .scale
+    @Published var selected: Property? = .scale
     
-    var properties: [String]? {
-        Property.allCaseTitles
+    required init() {}
+    
+    static var tag: ScaleComponent.VariantTag {
+        ScaleComponent.VariantTag.uniform
     }
-    
-    var activePropertyIndex: Int? {
-        set { activeProperty = .init(rawValue: newValue) }
-        get { activeProperty?.rawValue }
-    }
-    
-    var subcomponents: [Component]? { nil }
     
 }

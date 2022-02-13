@@ -31,22 +31,3 @@ class Component: Identifiable, ObservableObject {
         nil
     }
 }
-
-
-protocol ComponentVariant: AnyObject {
-    var properties: [String]? { get }
-    var activePropertyIndex: Int? { set get }
-    var subcomponents: [Component]? { get }
-}
-
-
-protocol ComponentProperty: CaseIterable, Identifiable, Equatable {
-    var title: String { get }
-}
-
-
-extension ComponentProperty {
-    static var allCaseTitles: [String] {
-        Self.allCases.map { $0.title }
-    }
-}

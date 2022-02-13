@@ -57,7 +57,7 @@ struct IntegerField<T: FixedWidthInteger>: View {
         Button(action: action, label: {
             Image(systemName: systemIcon)
 //                .imageScale(.large)
-                .padding(8.0)
+                .padding(12.0)
         })
 
     }

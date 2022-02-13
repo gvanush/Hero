@@ -29,16 +29,22 @@ struct TransformationMatrix {
     bool isDirty;
 };
 
-
-void makePositions(spt::Registry& registry, std::vector<SPTEntity> entities, simd_float3 position);
-
-template <typename It, typename VG>
-void makePositions(spt::Registry& registry, It beginEntity, It endEntity, std::size_t startIndex, VG valueGenerator) {
+template <typename It, typename PG>
+void makePositions(spt::Registry& registry, It beginEntity, It endEntity, std::size_t startIndex, PG positionGenerator) {
     auto index = startIndex;
     for(auto it = beginEntity; it != endEntity; ++it, ++index) {
         const auto entity = *it;
-        registry.emplace<Position>(entity, valueGenerator(index));
+        registry.emplace<Position>(entity, positionGenerator(index));
         registry.emplace_or_replace<spt::TransformationMatrix>(entity, matrix_identity_float4x4, true);
+    }
+}
+
+template <typename It, typename PG>
+void updatePositions(spt::Registry& registry, It beginEntity, It endEntity, PG positionUpdater) {
+    for(auto it = beginEntity; it != endEntity; ++it) {
+        const auto entity = *it;
+        registry.patch<Position>(entity, positionUpdater);
+        registry.patch<spt::TransformationMatrix>(entity, [] (auto& tranMat) { tranMat.isDirty = true; });
     }
 }
 
