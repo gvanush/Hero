@@ -47,7 +47,7 @@ struct SceneEditableCompositeParam<Destination>: View where Destination: View {
                     .foregroundColor(.secondary)
             }
             Button(action: editAction) {
-                Image(systemName: "slider.horizontal.below.rectangle")
+                Image(systemName: "slider.horizontal.3")
                     .imageScale(.large)
             }
         }

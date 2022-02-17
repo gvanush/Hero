@@ -25,16 +25,3 @@ SPTMeshView SPTGetMeshView(SPTObject object) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     return registry.get<SPTMeshView>(object.entity);
 }
-
-namespace spt {
-
-void updateMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId) {
-    auto updater = [meshId] (auto& meshView) {
-        meshView.meshId = meshId;
-    };
-    for(auto entity: entities) {
-        registry.patch<SPTMeshView>(entity, updater);
-    }
-}
-
-}

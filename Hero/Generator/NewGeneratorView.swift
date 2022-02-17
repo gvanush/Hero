@@ -14,6 +14,7 @@ struct NewGeneratorView: View {
     @Environment(\.presentationMode) private var presentationMode
     @State private var showsTemplateObjectSelector = true
     @State private var generatorComponent: GeneratorComponent? = nil
+    @State private var isCancelled = false
     
     var body: some View {
         NavigationView {
@@ -24,7 +25,7 @@ struct NewGeneratorView: View {
                         .toolbar {
                             ToolbarItem(placement: .cancellationAction) {
                                 Button("Cancel") {
-                                    SPTScene.destroy(generatorComponent.object)
+                                    isCancelled = true
                                     presentationMode.wrappedValue.dismiss()
                                 }
                             }
@@ -54,6 +55,13 @@ struct NewGeneratorView: View {
                 generatorComponent = GeneratorComponent(object: generatorObject)
             }
         })
+        .onDisappear {
+            // Destruction needs to be done here otherwise object data
+            // is accessed by SwiftUI views during the dismissal
+            if let generatorComponent = generatorComponent, isCancelled {
+                SPTScene.destroy(generatorComponent.object)
+            }
+        }
     }
     
 }

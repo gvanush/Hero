@@ -162,7 +162,7 @@ struct FloatField: View {
         return HStack {
             Spacer()
             valueText()
-                .foregroundColor(.primary)
+                .foregroundColor(.controlValueColor)
             Spacer()
         }
     }
@@ -170,7 +170,7 @@ struct FloatField: View {
     var pointer: some View {
         VStack {
             Spacer()
-            Color.primary
+            Color.controlValueColor
                 .frame(width: Self.pointerWidth, height: Ruler.onesHeight * 2)
                 .shadow(radius: 1.0)
         }

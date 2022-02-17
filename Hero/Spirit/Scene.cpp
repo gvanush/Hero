@@ -15,7 +15,6 @@ Scene::Scene() {
     registerUpdateNotifier<spt::Position>();
     registerUpdateNotifier<SPTEulerOrientation>();
     registerUpdateNotifier<spt::Scale>();
-    registerUpdateNotifier<spt::Generator>();
     registry.on_destroy<Generator>().connect<&Generator::onDestroy>();
 }
 

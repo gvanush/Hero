@@ -15,17 +15,25 @@ class GeneratorComponent: Component {
     }
     
     let object: SPTObject
-    @Published var activeProperty: Property? = .quantity
+    @ObjectBinding private var generator: SPTGenerator
+    @Published var selected: Property? = .quantity
     lazy private(set) var transformation = TransformationComponent(parent: self)
-    lazy private(set) var arrangement = ArrangementComponent(object: self.object, parent: self)
+    lazy private(set) var arrangement = ArrangementComponent(arrangement: $generator.arrangement, parent: self)
     
     init(object: SPTObject) {
+        
         self.object = object
+        _generator = ObjectBinding(getter: {
+            SPTGetGenerator(object)
+        }, setter: { newValue in
+            SPTUpdateGenerator(object, newValue)
+        })
+        
         super.init(title: "Generator", parent: nil)
         
         SPTAddGeneratorListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<GeneratorComponent>.fromOpaque(observer!).takeUnretainedValue()
-            me.objectWillChange.send()
+            me.onWillChange()
         })
         
     }
@@ -35,25 +43,25 @@ class GeneratorComponent: Component {
     }
     
     var sourceObjectTypeName: String {
-        MeshRegistry.standard.recordById(SPTGetGenerator(object).sourceMeshId)!.name.capitalizingFirstLetter()
+        MeshRegistry.standard.recordById(generator.sourceMeshId)!.name.capitalizingFirstLetter()
     }
     
     var sourceObjectIconName: String {
-        MeshRegistry.standard.recordById(SPTGetGenerator(object).sourceMeshId)!.iconName
+        MeshRegistry.standard.recordById(generator.sourceMeshId)!.iconName
     }
     
     func updateSourceMesh(_ meshId: SPTMeshId) {
-        SPTUpdateGeneratorSourceMesh(object, meshId)
+        generator.sourceMeshId = meshId
     }
     
     var quantity: SPTGeneratorQuantityType {
-        set { SPTUpdateGeneratorQunatity(object, newValue) }
-        get { SPTGetGenerator(object).quantity }
+        set { generator.quantity = newValue }
+        get { generator.quantity }
     }
     
     override var activePropertyIndex: Int? {
-        set { activeProperty = .init(rawValue: newValue) }
-        get { activeProperty?.rawValue }
+        set { selected = .init(rawValue: newValue) }
+        get { selected?.rawValue }
     }
     
     override var properties: [String]? {
@@ -79,22 +87,19 @@ struct GeneratorView: View {
             Section {
                 sourceObjectRow
                 SceneEditableParam(title: GeneratorComponent.Property.quantity.displayName, value: "\(generatorComponent.quantity)") {
-                    generatorComponent.activeProperty = .quantity
+                    generatorComponent.selected = .quantity
                     editedComponent = generatorComponent
                 }
-            }
-            Section {
                 SceneEditableCompositeParam(title: generatorComponent.transformation.title, value: nil) {
                     editedComponent = generatorComponent.transformation
                 } destionation: {
                     Color.red
                 }
             }
-//            Section("Arrangement") {
-//                Picker("", selection: <#T##Binding<_>#>, content: <#T##() -> _#>)
-//            }
+
+            ArrangementView(component: generatorComponent.arrangement, editedComponent: $editedComponent)
         }
-        // NOTE: This is necessary for unknown reason to prevent 'Form' row
+        // NOTE: This is necessary for an unknown reason to prevent 'Form' row
         // from being selectable when there is a button inside.
         .buttonStyle(BorderlessButtonStyle())
         .sheet(isPresented: $showsTemplateObjectSelector, onDismiss: {}, content: {
@@ -126,11 +131,12 @@ struct GeneratorView: View {
 
 
 struct GeneratorView_Previews: PreviewProvider {
+    
+    static let data = SampleSceneData()
+    
     static var previews: some View {
-        let data = SampleSceneData()
-        
-        return NavigationView {
-            GeneratorView(generatorComponent: data.makeGenerator(sourceMeshName: "sphere", quantity: 5))
+        NavigationView {
+            GeneratorView(generatorComponent: GeneratorComponent(object: data.makeGenerator(sourceMeshName: "sphere", quantity: 5)))
                 .environmentObject(data.sceneViewModel)
                 .navigationBarHidden(true)
         }

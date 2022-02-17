@@ -63,8 +63,9 @@ struct ObjectControlView: View {
     var body: some View {
         VStack(spacing: Self.controlsSpacing) {
             floatField
+                .transition(.identity)
                 .id(axis.rawValue)
-            PropertySelector(selected: $axis)
+            Selector(selected: $axis)
         }
         .id(model.object.entity.rawValue)
     }

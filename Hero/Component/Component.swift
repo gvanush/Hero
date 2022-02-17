@@ -30,4 +30,13 @@ class Component: Identifiable, ObservableObject {
     func accept(_ provider: EditComponentViewProvider) -> AnyView? {
         nil
     }
+    
+    func onWillChange() {
+        objectWillChange.send()
+        if let subcomponents = self.subcomponents {
+            for subcomponent in subcomponents {
+                subcomponent.onWillChange()
+            }
+        }
+    }
 }

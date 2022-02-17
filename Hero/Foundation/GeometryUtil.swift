@@ -15,11 +15,11 @@ enum Axis: Int, DistinctValueSet, Displayable {
     
     init(_ sptValue: SPTAxis) {
         switch sptValue {
-        case SPTAxis.X:
+        case .X:
             self = .x
-        case SPTAxis.Y:
+        case .Y:
             self = .y
-        case SPTAxis.Z:
+        case .Z:
             self = .z
         }
     }
@@ -44,11 +44,11 @@ enum Plain: Int, DistinctValueSet, Displayable {
     
     init(_ sptValue: SPTPlain) {
         switch sptValue {
-        case SPTPlain.XY:
+        case .XY:
             self = .xy
-        case SPTPlain.YZ:
+        case .YZ:
             self = .yz
-        case SPTPlain.ZX:
+        case .ZX:
             self = .zx
         }
     }

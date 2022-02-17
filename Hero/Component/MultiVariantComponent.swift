@@ -13,6 +13,39 @@ enum ComponentVoidProperty: Int, DistinctValueSet, RawRepresentable, Displayable
     case __dummy
 }
 
+
+protocol ComponentVariant2: ObservableObject {
+    
+    associatedtype PT: DistinctValueSet & RawRepresentable & Displayable = ComponentVoidProperty where PT.RawValue == Int
+    var selected: PT? { set get }
+    
+    var subcomponents: [Component]? { get }
+    
+}
+
+extension ComponentVariant2 {
+    
+    var selected: PT? {
+        set { }
+        get { nil }
+    }
+    
+    var properties: [String]? { PT.allCaseDisplayNames }
+    
+    var activePropertyIndex: Int? {
+        set {
+            selected = .init(rawValue: newValue)
+        }
+        get {
+            selected?.rawValue
+        }
+    }
+    
+    var subcomponents: [Component]? { nil }
+    
+}
+
+
 protocol ComponentVariant: ObservableObject {
     
     associatedtype VT: Equatable
@@ -26,7 +59,6 @@ protocol ComponentVariant: ObservableObject {
     var subcomponents: [Component]? { get }
     
 }
-
 
 extension ComponentVariant {
     
@@ -57,13 +89,17 @@ where V1: ComponentVariant, V2: ComponentVariant, V1.VT == V2.VT
     
     @Published var variantTag: V1.VT
     
-    let variant1 = V1()
+    let variant1: V1
     private var variant1Cancellable: AnyCancellable?
-    let variant2 = V2()
+    let variant2: V2
     private var variant2Cancellable: AnyCancellable?
     
     init(title: String, variantTag: V1.VT, parent: Component?) {
         self.variantTag = variantTag
+        
+        variant1 = V1()
+        variant2 = V2()
+        
         super.init(title: title, parent: parent)
         
         variant1Cancellable = variant1.objectWillChange.sink(receiveValue: { _ in
@@ -72,6 +108,8 @@ where V1: ComponentVariant, V2: ComponentVariant, V1.VT == V2.VT
         variant2Cancellable = variant2.objectWillChange.sink(receiveValue: { _ in
             self.onVariantWillChange(variant: V2.tag)
         })
+        
+        
     }
     
     private func onVariantWillChange(variant: V1.VT) -> Void {
@@ -134,17 +172,23 @@ where V1: ComponentVariant, V2: ComponentVariant, V3: ComponentVariant, V4: Comp
     
     @Published var variantTag: V1.VT
     
-    let variant1 = V1()
+    let variant1: V1
     private var variant1Cancellable: AnyCancellable?
-    let variant2 = V2()
+    let variant2: V2
     private var variant2Cancellable: AnyCancellable?
-    let variant3 = V3()
+    let variant3: V3
     private var variant3Cancellable: AnyCancellable?
-    let variant4 = V4()
+    let variant4: V4
     private var variant4Cancellable: AnyCancellable?
     
     init(title: String, variantTag: V1.VT, parent: Component?) {
         self.variantTag = variantTag
+        
+        variant1 = V1()
+        variant2 = V2()
+        variant3 = V3()
+        variant4 = V4()
+        
         super.init(title: title, parent: parent)
         
         variant1Cancellable = variant1.objectWillChange.sink(receiveValue: { _ in
@@ -159,6 +203,7 @@ where V1: ComponentVariant, V2: ComponentVariant, V3: ComponentVariant, V4: Comp
         variant4Cancellable = variant4.objectWillChange.sink(receiveValue: { _ in
             self.onVariantWillChange(variant: V4.tag)
         })
+        
     }
     
     private func onVariantWillChange(variant: V1.VT) -> Void {

@@ -9,17 +9,13 @@
 
 #include "Mesh.h"
 
-typedef struct {
-    SPTMeshId sourceMeshId;
-    uint16_t quantity;
-} SPTGeneratorBase;
-
+// MARK: Arrangement
 typedef enum {
     SPTArrangementVariantTagPoint,
     SPTArrangementVariantTagLinear,
     SPTArrangementVariantTagPlanar,
     SPTArrangementVariantTagSpatial,
-} SPTArrangementVariantTag;
+} __attribute__((enum_extensibility(closed))) SPTArrangementVariantTag;
 
 typedef struct {
     bool __dummy;
@@ -43,29 +39,32 @@ typedef struct {
         SPTPointArrangement point;
         SPTLinearArrangement linear;
         SPTPlanarArrangement planar;
-        SPTSpatialArrangement spartial;
+        SPTSpatialArrangement spatial;
     };
 } SPTArrangement;
 
+// MARK: Generator
 typedef uint16_t SPTGeneratorQuantityType;
+
+typedef struct {
+    SPTArrangement arrangement;
+    SPTMeshId sourceMeshId;
+    SPTGeneratorQuantityType quantity;
+} SPTGenerator;
 
 const SPTGeneratorQuantityType kSPTGeneratorMinQuantity = 1;
 const SPTGeneratorQuantityType kSPTGeneratorMaxQuantity = 1000;
 
 SPT_EXTERN_C_BEGIN
 
-SPTGeneratorBase SPTMakeGenerator(SPTObject object, SPTMeshId sourceMeshId, SPTGeneratorQuantityType quantity);
+SPTGenerator SPTMakeGenerator(SPTObject object, SPTMeshId sourceMeshId, SPTGeneratorQuantityType quantity);
 
-SPTGeneratorBase SPTGetGenerator(SPTObject object);
+SPTGenerator SPTGetGenerator(SPTObject object);
 
-void SPTUpdateGeneratorSourceMesh(SPTObject object, SPTMeshId sourceMeshId);
-
-void SPTUpdateGeneratorQunatity(SPTObject object, SPTGeneratorQuantityType quantity);
+void SPTUpdateGenerator(SPTObject object, SPTGenerator updated);
 
 void SPTAddGeneratorListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
 void SPTRemoveGeneratorListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
 void SPTRemoveGeneratorListener(SPTObject object, SPTComponentListener listener);
-
-void SPTUpdateLinearArrangementAxis(SPTObject object, SPTAxis axis);
 
 SPT_EXTERN_C_END

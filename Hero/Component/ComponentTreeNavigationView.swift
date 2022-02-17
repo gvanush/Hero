@@ -30,7 +30,7 @@ struct ComponentTreeNavigationView: View {
                         backButton
                         
                         Text(activeComponent.title)
-                            .font(.headline)
+                            .font(Font.system(size: 15, weight: .semibold))
                             .lineLimit(1)
                             .transition(.identity)
                             .id(activeComponent.title)
@@ -53,8 +53,9 @@ struct ComponentTreeNavigationView: View {
                 } label: {
                     HStack(spacing: 0.0) {
                         Image(systemName: "chevron.left")
+                            .font(Font.system(size: 21, weight: .medium))
                         Text(parent.title)
-                            .font(.callout)
+                            .font(Font.system(size: 15, weight: .regular))
                             .lineLimit(1)
                             .transition(.identity)
                             .id(parent.title)
@@ -78,7 +79,7 @@ struct ComponentTreeNavigationView: View {
         .hidden() // TODO
     }
  
-    static let componentViewHeight = 46.0
+    static let componentViewHeight = 40.0
     static let height = componentViewHeight + BottomBar.height
 }
 
@@ -87,20 +88,19 @@ fileprivate struct ComponentView: View {
     
     @ObservedObject var component: Component
     @Binding var activeComponent: Component
-    @Namespace private var matchedAnimationNamespace
+    @Namespace private var matchedGeometryEffectNamespace
     
     
     var body: some View {
         ZStack {
             textViewFor(component.title)
-                .foregroundColor(.secondary)
                 .overlay {
                     VStack {
                         Spacer()
                         Image(systemName: "ellipsis")
                             .foregroundColor(.accentColor)
                     }
-                    .padding(.bottom, 4.0)
+                    .padding(.bottom, 2.0)
                 }
                 .scaleEffect(textScale)
                 .visible(isChildOfActive)
@@ -173,12 +173,11 @@ fileprivate struct ComponentView: View {
     private func propertyViews(_ properties: [String]) -> some View {
         ForEach(Array(properties.enumerated()), id: \.element, content: { index, property in
             textViewFor(property)
-                .foregroundColor(index == component.activePropertyIndex ? .white : .secondary)
                 .background {
                     RoundedRectangle(cornerRadius: .infinity)
                         .foregroundColor(.systemFill)
                         .visible(index == component.activePropertyIndex)
-                        .matchedGeometryEffect(id: "Selected", in: matchedAnimationNamespace, isSource: index == component.activePropertyIndex)
+                        .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: index == component.activePropertyIndex)
                 }
                 .onTapGesture {
                     withAnimation(navigationAnimation) {
@@ -194,7 +193,8 @@ fileprivate struct ComponentView: View {
     
     private func textViewFor(_ title: String) -> some View {
         Text(title)
-            .font(.body)
+            .font(Font.system(size: 15, weight: .regular))
+            .foregroundColor(.secondary)
             .fixedSize(horizontal: true, vertical: false)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.horizontal, isChildOfActive ? 8.0 : 0.0)

@@ -16,6 +16,7 @@ protocol EditComponentViewProvider {
     func viewFor(_ component: ScaleComponent) -> AnyView?
     func viewFor(_ component: TransformationComponent) -> AnyView?
     func viewFor(_ component: GeneratorComponent) -> AnyView?
+    func viewFor(_ component: ArrangementComponent) -> AnyView?
     
 }
 
@@ -27,6 +28,7 @@ extension EditComponentViewProvider {
     func viewFor(_ component: ScaleComponent) -> AnyView? { nil }
     func viewFor(_ component: TransformationComponent) -> AnyView? { nil }
     func viewFor(_ component: GeneratorComponent) -> AnyView? { nil }
+    func viewFor(_ component: ArrangementComponent) -> AnyView? { nil }
     
 }
 
@@ -37,4 +39,7 @@ struct GeneratorEditComponentViewProvider: EditComponentViewProvider {
         AnyView(EditGeneratorComponentView(component: component))
     }
     
+    func viewFor(_ component: ArrangementComponent) -> AnyView? {
+        AnyView(EditArrangementComponentView(component: component))
+    }
 }

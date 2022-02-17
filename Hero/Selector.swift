@@ -1,21 +1,20 @@
 //
-//  PropertySelector.swift
+//  Selector.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 16.02.22.
+//  Created by Vanush Grigoryan on 28.10.21.
 //
 
 import SwiftUI
 
 
-struct PropertyValueSelector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases: RandomAccessCollection {
+struct Selector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases: RandomAccessCollection {
     
     @Binding var selected: PT
     @Namespace private var matchedGeometryEffectNamespace
     
     var body: some View {
         items
-            .padding(self.itemPadding)
             .frame(maxWidth: .infinity, idealHeight: height)
             .fixedSize(horizontal: false, vertical: true)
             .background(bgrMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
@@ -35,7 +34,7 @@ struct PropertyValueSelector<PT>: View where PT: DistinctValueSet & Displayable,
         GeometryReader { geometry in
             Text(property.displayName)
                 .foregroundColor(.white)
-                .colorMultiply(property == selected ? .controlValueColor : .objectSelectionColor)
+                .colorMultiply(property == selected ? Color.white : Color.secondary)
                 .fixedSize(horizontal: true, vertical: false)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 .padding(.horizontal, textHorizontalPadding)
@@ -45,6 +44,7 @@ struct PropertyValueSelector<PT>: View where PT: DistinctValueSet & Displayable,
                         .visible(property == selected)
                         .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: property == selected)
                 }
+                .padding(itemPadding)
                 .contentShape(Rectangle())
                 .gesture(DragGesture(minimumDistance: 0.0)
                             .onEnded({ value in
@@ -57,24 +57,23 @@ struct PropertyValueSelector<PT>: View where PT: DistinctValueSet & Displayable,
         }
     }
     
-    let height = 50.0
-    let cornerRadius = 11.0
+    let height = 38.0
+    let cornerRadius = 19.0
     let bgrMaterial = Material.regular
     let itemPadding = 3.0
     let textHorizontalPadding = 8.0
-    let selectionCornerRadius = 8.0
+    let selectionCornerRadius = 16.0
 }
 
 
-struct PropertyValueSelector_Previews: PreviewProvider {
+struct Selector_Previews: PreviewProvider {
     
     struct ContainerView: View {
         
         @State var axis = Axis.x
         
         var body: some View {
-            PropertyValueSelector(selected: $axis)
-                .padding()
+            Selector(selected: $axis)
         }
     }
     

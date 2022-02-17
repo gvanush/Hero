@@ -16,11 +16,7 @@
 namespace spt {
 
 struct Generator {
-    
-    Generator(SPTGeneratorBase b);
-    
-    SPTGeneratorBase base;
-    SPTArrangement arrangement;
+    SPTGenerator base;
     std::vector<SPTEntity> entities;
     
     static void onDestroy(spt::Registry& registry, SPTEntity entity);

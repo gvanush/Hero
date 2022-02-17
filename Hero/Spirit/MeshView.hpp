@@ -22,7 +22,15 @@ void makeBlinnPhongMeshViews(spt::Registry& registry, It beginEntity, It endEnti
     registry.insert(beginEntity, endEntity, meshView);
 }
 
-void updateMeshViews(spt::Registry& registry, std::vector<SPTEntity> entities, SPTMeshId meshId);
+template <typename It>
+void updateMeshViews(spt::Registry& registry, It beginEntity, It endEntity, SPTMeshId meshId) {
+    auto updater = [meshId] (auto& meshView) {
+        meshView.meshId = meshId;
+    };
+    for(auto it = beginEntity; it != endEntity; ++it) {
+        registry.patch<SPTMeshView>(*it, updater);
+    }
+}
 
 }
 

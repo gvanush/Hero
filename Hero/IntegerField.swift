@@ -25,7 +25,7 @@ struct IntegerField<T: FixedWidthInteger>: View {
             ZStack {
                 HStack {
                     Text(String(value))
-                        .foregroundColor(.primary)
+                        .foregroundColor(.controlValueColor)
                 }
                 if deltaOptions.count > 1 {
                     HStack {
@@ -36,7 +36,7 @@ struct IntegerField<T: FixedWidthInteger>: View {
             }
             .padding(4.0)
             Spacer(minLength: 0.0)
-            HStack {
+            HStack(spacing: 0.0) {
                 Spacer()
                 editButton(systemIcon: "minus", action: { substractValue(delta: delta) })
                     .disabled(value == range.lowerBound)
@@ -56,10 +56,9 @@ struct IntegerField<T: FixedWidthInteger>: View {
     func editButton(systemIcon: String, action: @escaping () -> Void) -> some View {
         Button(action: action, label: {
             Image(systemName: systemIcon)
-//                .imageScale(.large)
-                .padding(12.0)
+                .padding(.horizontal, 20.0)
+                .frame(maxHeight: .infinity)
         })
-
     }
     
     func addToValue(delta: T) -> Void {
