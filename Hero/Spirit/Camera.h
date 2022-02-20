@@ -25,9 +25,9 @@ SPTPerspectiveCamera SPTMakePerspectiveCamera(SPTObject object, float fovy, floa
 
 SPTOrthographicCamera SPTMakeOrthographicCamera(SPTObject object, float sizeY, float aspectRatio, float near, float far);
 
-SPTPerspectiveCamera SPTUpdatePerspectiveCameraAspectRatio(SPTObject object, float aspectRatio);
+void SPTUpdatePerspectiveCameraAspectRatio(SPTObject object, float aspectRatio);
 
-SPTOrthographicCamera SPTUpdateOrthographicCameraAspectRatio(SPTObject object, float aspectRatio);
+void SPTUpdateOrthographicCameraAspectRatio(SPTObject object, float aspectRatio);
 
 simd_float3 SPTCameraConvertWorldToViewport(SPTObject cameraObject, simd_float3 point, simd_float2 viewportSize);
 

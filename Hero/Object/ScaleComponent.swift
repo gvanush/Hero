@@ -10,15 +10,20 @@ import Combine
 import SwiftUI
 
 
-class ScaleComponent: MultiVariantComponent2<NonuniformScaleComponentVariant, UniformScaleComponentVariant> {
+class ScaleComponent: Component {
     
-    enum VariantTag {
+    enum VariantTag: DistinctValueSet, Displayable {
         case nonuniform
         case uniform
     }
     
-    init(parent: Component?) {
-        super.init(title: "Scale", variantTag: .nonuniform, parent: parent)
+    @Published var variantTag = VariantTag.nonuniform
+    
+    let object: SPTObject
+    
+    init(object: SPTObject, parent: Component?) {
+        self.object = object
+        super.init(title: "Scale", parent: parent)
     }
     
 }
@@ -26,8 +31,6 @@ class ScaleComponent: MultiVariantComponent2<NonuniformScaleComponentVariant, Un
 class NonuniformScaleComponentVariant: ComponentVariant {
     
     @Published var selected: Axis? = .x
-    
-    required init() {}
     
     static var tag: ScaleComponent.VariantTag {
         ScaleComponent.VariantTag.nonuniform
@@ -41,8 +44,6 @@ class UniformScaleComponentVariant: ComponentVariant {
     }
     
     @Published var selected: Property? = .scale
-    
-    required init() {}
     
     static var tag: ScaleComponent.VariantTag {
         ScaleComponent.VariantTag.uniform

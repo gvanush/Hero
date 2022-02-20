@@ -91,7 +91,7 @@ SPTGenerator SPTGetGenerator(SPTObject object) {
 void SPTUpdateGenerator(SPTObject object, SPTGenerator updated) {
     
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    spt::ComponentUpdateNotifier<spt::Generator>::onUpdate(registry, object.entity);
+    spt::ComponentUpdateNotifier<spt::Generator>::onWillChange(registry, object.entity);
     
     auto& generator = registry.get<spt::Generator>(object.entity);
     
@@ -121,16 +121,16 @@ void SPTUpdateGenerator(SPTObject object, SPTGenerator updated) {
     
 }
 
-void SPTAddGeneratorListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::addComponentListener<spt::Generator>(object, listener, callback);
+void SPTAddGeneratorWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+    spt::addComponentWillChangeListener<spt::Generator>(object, listener, callback);
 }
 
-void SPTRemoveGeneratorListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::removeComponentListenerCallback<spt::Generator>(object, listener, callback);
+void SPTRemoveGeneratorWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+    spt::removeComponentWillChangeListenerCallback<spt::Generator>(object, listener, callback);
 }
 
-void SPTRemoveGeneratorListener(SPTObject object, SPTComponentListener listener) {
-    spt::removeComponentListener<spt::Generator>(object, listener);
+void SPTRemoveGeneratorWillChangeListener(SPTObject object, SPTComponentListener listener) {
+    spt::removeComponentWillChangeListener<spt::Generator>(object, listener);
 }
 
 namespace spt {

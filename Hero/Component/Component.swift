@@ -40,3 +40,40 @@ class Component: Identifiable, ObservableObject {
         }
     }
 }
+
+
+enum ComponentVoidProperty: Int, DistinctValueSet, RawRepresentable, Displayable {
+    case __dummy
+}
+
+
+protocol ComponentVariant: ObservableObject {
+    
+    associatedtype PT: DistinctValueSet & RawRepresentable & Displayable = ComponentVoidProperty where PT.RawValue == Int
+    var selected: PT? { set get }
+    
+    var subcomponents: [Component]? { get }
+    
+}
+
+extension ComponentVariant {
+    
+    var selected: PT? {
+        set { }
+        get { nil }
+    }
+    
+    var properties: [String]? { PT.allCaseDisplayNames }
+    
+    var activePropertyIndex: Int? {
+        set {
+            selected = .init(rawValue: newValue)
+        }
+        get {
+            selected?.rawValue
+        }
+    }
+    
+    var subcomponents: [Component]? { nil }
+    
+}

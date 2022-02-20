@@ -28,9 +28,9 @@ public:
         });
     }
     
-    static void onUpdate(Registry& registry, SPTEntity entity) {
+    static void onWillChange(Registry& registry, SPTEntity entity) {
         if(auto observable = registry.try_get<Observable<CT>>(entity)) {
-            for(const auto& item: observable->listeners) {
+            for(const auto& item: observable->willChangeListeners) {
                 item.callback(item.listener);
             }
         }

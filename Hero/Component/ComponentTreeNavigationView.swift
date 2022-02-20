@@ -217,7 +217,7 @@ struct ComponentTreeNavigationView_Previews: PreviewProvider {
         @State var active: Component
         
         init() {
-            let transformation = TransformationComponent(parent: nil)
+            let transformation = TransformationComponent(object: kSPTNullObject, parent: nil)
             _transformation = StateObject(wrappedValue: transformation)
             _active = State(initialValue: transformation)
         }

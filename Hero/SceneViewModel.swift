@@ -60,7 +60,7 @@ class SceneViewModel: ObservableObject {
         
         
         // Setup objects
-        let centerObjectMeshId = MeshRegistry.standard.recordNamed("sphere")!.id
+        let centerObjectMeshId = MeshRegistry.standard.recordNamed("cube")!.id
         let centerObject = scene.makeObject()
         SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
         SPTMakeScale(centerObject, 5.0, 5.0, 5.0)

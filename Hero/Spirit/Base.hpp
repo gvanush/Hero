@@ -24,7 +24,7 @@ struct ComponentListenerItem {
 
 template <typename CT>
 struct Observable {
-    std::vector<ComponentListenerItem> listeners;
+    std::vector<ComponentListenerItem> willChangeListeners;
 };
 
 }

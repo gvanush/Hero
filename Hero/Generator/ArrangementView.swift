@@ -155,7 +155,7 @@ class ArrangementComponent: Component {
 }
 
 
-class PointArrangementComponentVariant: ComponentVariant2 {
+class PointArrangementComponentVariant: ComponentVariant {
         
     @ObjectBinding private var arrangement: SPTPointArrangement
  
@@ -166,7 +166,7 @@ class PointArrangementComponentVariant: ComponentVariant2 {
 }
 
 
-class LinearArrangementComponentVariant: ComponentVariant2 {
+class LinearArrangementComponentVariant: ComponentVariant {
     
     enum Property: Int, DistinctValueSet, Displayable {
         case axis
@@ -191,7 +191,7 @@ class LinearArrangementComponentVariant: ComponentVariant2 {
 }
 
 
-class PlanarArrangementComponentVariant: ComponentVariant2 {
+class PlanarArrangementComponentVariant: ComponentVariant {
     @ObjectBinding private var arrangement: SPTPlanarArrangement
  
     init(arrangement: ObjectBinding<SPTPlanarArrangement>) {
@@ -200,7 +200,7 @@ class PlanarArrangementComponentVariant: ComponentVariant2 {
 }
 
 
-class SpatialArrangementComponentVariant: ComponentVariant2 {
+class SpatialArrangementComponentVariant: ComponentVariant {
     @ObjectBinding private var arrangement: SPTSpatialArrangement
  
     init(arrangement: ObjectBinding<SPTSpatialArrangement>) {

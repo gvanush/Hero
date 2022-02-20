@@ -17,7 +17,7 @@ class GeneratorComponent: Component {
     let object: SPTObject
     @ObjectBinding private var generator: SPTGenerator
     @Published var selected: Property? = .quantity
-    lazy private(set) var transformation = TransformationComponent(parent: self)
+    lazy private(set) var transformation = TransformationComponent(object: self.object, parent: self)
     lazy private(set) var arrangement = ArrangementComponent(arrangement: $generator.arrangement, parent: self)
     
     init(object: SPTObject) {
@@ -31,15 +31,15 @@ class GeneratorComponent: Component {
         
         super.init(title: "Generator", parent: nil)
         
-        SPTAddGeneratorListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTAddGeneratorWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<GeneratorComponent>.fromOpaque(observer!).takeUnretainedValue()
-            me.onWillChange()
+            me.arrangement.onWillChange()
         })
         
     }
     
     deinit {
-        SPTRemoveGeneratorListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTRemoveGeneratorWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
     var sourceObjectTypeName: String {

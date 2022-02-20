@@ -22,9 +22,9 @@ void SPTUpdatePosition(SPTObject object, simd_float3 position);
 
 simd_float3 SPTGetPosition(SPTObject object);
 
-void SPTAddPositionListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemovePositionListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemovePositionListener(SPTObject object, SPTComponentListener listener);
+void SPTAddPositionWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemovePositionWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemovePositionWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 // MARK: SphericalPosition
 typedef struct {
@@ -64,9 +64,9 @@ void SPTUpdateEulerOrientationRotation(SPTObject object, simd_float3 rotation);
     
 SPTEulerOrientation SPTGetEulerOrientation(SPTObject object);
 
-void SPTAddEulerOrientationListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveEulerOrientationListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveEulerOrientationListener(SPTObject object, SPTComponentListener listener);
+void SPTAddEulerOrientationWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveEulerOrientationWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveEulerOrientationWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 // MARK: LookAtOrientation
 typedef enum {
@@ -101,8 +101,8 @@ void SPTUpdateScale(SPTObject object, simd_float3 scale);
 
 simd_float3 SPTGetScale(SPTObject object);
 
-void SPTAddScaleListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveScaleListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveScaleListener(SPTObject object, SPTComponentListener listener);
+void SPTAddScaleWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveScaleWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveScaleWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END

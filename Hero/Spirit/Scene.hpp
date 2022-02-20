@@ -33,12 +33,7 @@ struct Scene {
     Registry registry;
     
     Renderer meshRenderer {registry};
-    
-private:
-    
-    template <typename CT>
-    void registerUpdateNotifier();
-    
+        
 };
 
 inline SPTObject Scene::makeObject() {

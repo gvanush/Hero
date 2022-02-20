@@ -124,17 +124,17 @@ fileprivate class ObjectControlViewModel: ObservableObject {
     init(object: SPTObject) {
         self.object = object
         
-        SPTAddPositionListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTAddPositionWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
             me.objectWillChange.send()
         })
         
-        SPTAddEulerOrientationListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTAddEulerOrientationWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
             me.objectWillChange.send()
         })
         
-        SPTAddScaleListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTAddScaleWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
             me.objectWillChange.send()
         })
@@ -142,9 +142,9 @@ fileprivate class ObjectControlViewModel: ObservableObject {
     }
     
     deinit {
-        SPTRemovePositionListener(object, Unmanaged.passUnretained(self).toOpaque())
-        SPTRemoveEulerOrientationListener(object, Unmanaged.passUnretained(self).toOpaque())
-        SPTRemoveScaleListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTRemovePositionWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTRemoveEulerOrientationWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTRemoveScaleWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
     var position: simd_float3 {

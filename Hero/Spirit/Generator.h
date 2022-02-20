@@ -63,8 +63,8 @@ SPTGenerator SPTGetGenerator(SPTObject object);
 
 void SPTUpdateGenerator(SPTObject object, SPTGenerator updated);
 
-void SPTAddGeneratorListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveGeneratorListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveGeneratorListener(SPTObject object, SPTComponentListener listener);
+void SPTAddGeneratorWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveGeneratorWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTRemoveGeneratorWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END

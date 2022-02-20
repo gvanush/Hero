@@ -43,8 +43,8 @@ template <typename It, typename PG>
 void updatePositions(spt::Registry& registry, It beginEntity, It endEntity, PG positionUpdater) {
     for(auto it = beginEntity; it != endEntity; ++it) {
         const auto entity = *it;
+        registry.get<spt::TransformationMatrix>(entity).isDirty = true;
         registry.patch<Position>(entity, positionUpdater);
-        registry.patch<spt::TransformationMatrix>(entity, [] (auto& tranMat) { tranMat.isDirty = true; });
     }
 }
 

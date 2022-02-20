@@ -14,24 +14,24 @@
 namespace spt {
 
 template <typename CT>
-inline void addComponentListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+inline void addComponentWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     assert(listener && callback);
     auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
     if(auto observable = registry.try_get<Observable<CT>>(object.entity)) {
-        observable->listeners.emplace_back(spt::ComponentListenerItem {listener, callback});
+        observable->willChangeListeners.emplace_back(spt::ComponentListenerItem {listener, callback});
     } else {
         registry.emplace<Observable<CT>>(object.entity, Observable<CT>{ {spt::ComponentListenerItem{listener, callback}} });
     }
 }
 
 template <typename CT>
-inline void removeComponentListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+inline void removeComponentWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
     if(!registry.valid(object.entity)) {
         return;
     }
     if(auto observable = registry.try_get<Observable<CT>>(object.entity)) {
-        auto& listeners = observable->listeners;
+        auto& listeners = observable->willChangeListeners;
         auto fit = std::find_if(listeners.begin(), listeners.end(), [listener, callback] (const auto& item) {
             return item.listener == listener && item.callback == callback;
         });
@@ -45,13 +45,13 @@ inline void removeComponentListenerCallback(SPTObject object, SPTComponentListen
 }
 
 template <typename CT>
-inline void removeComponentListener(SPTObject object, SPTComponentListener listener) {
+inline void removeComponentWillChangeListener(SPTObject object, SPTComponentListener listener) {
     auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
     if(!registry.valid(object.entity)) {
         return;
     }
     if(auto observable = registry.try_get<Observable<CT>>(object.entity)) {
-        auto& listeners = observable->listeners;
+        auto& listeners = observable->willChangeListeners;
         auto rit = std::remove_if(listeners.begin(), listeners.end(), [listener] (const auto& item) {
             return item.listener == listener;
         });

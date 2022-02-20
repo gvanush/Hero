@@ -11,11 +11,13 @@ import SwiftUI
 
 class TransformationComponent: Component {
     
-    lazy private(set) var position = PositionComponent(parent: self)
-    lazy private(set) var orientation = OrientationComponent(parent: self)
-    lazy private(set) var scale = ScaleComponent(parent: self)
+    let object: SPTObject
+    lazy private(set) var position = PositionComponent(object: self.object, parent: self)
+    lazy private(set) var orientation = OrientationComponent(object: self.object, parent: self)
+    lazy private(set) var scale = ScaleComponent(object: self.object, parent: self)
     
-    init(parent: Component?) {
+    init(object: SPTObject, parent: Component?) {
+        self.object = object
         super.init(title: "Transformation", parent: parent)
     }
     
@@ -27,8 +29,10 @@ class TransformationComponent: Component {
 class PositionComponent: Component {
     
     @Published var activeAxis: Axis? = Axis.x
+    let object: SPTObject
     
-    init(parent: Component?) {
+    init(object: SPTObject, parent: Component?) {
+        self.object = object
         super.init(title: "Position", parent: parent)
     }
     
@@ -51,8 +55,10 @@ class PositionComponent: Component {
 class OrientationComponent: Component {
     
     @Published var activeAxis: Axis? = Axis.x
+    let object: SPTObject
     
-    init(parent: Component?) {
+    init(object: SPTObject, parent: Component?) {
+        self.object = object
         super.init(title: "Orientation", parent: parent)
     }
     

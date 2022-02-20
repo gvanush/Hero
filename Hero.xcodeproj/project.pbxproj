@@ -74,7 +74,6 @@
 		B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */; };
 		B7AA99ED27B81FB70033B459 /* DistinctValueSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */; };
 		B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */; };
-		B7AA99F127B84F140033B459 /* MultiVariantComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99F027B84F140033B459 /* MultiVariantComponent.swift */; };
 		B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB327310DFC005C9F82 /* BindingUtil.swift */; };
 		B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */; };
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
@@ -196,7 +195,6 @@
 		B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentViewUtil.swift; sourceTree = "<group>"; };
 		B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistinctValueSet.swift; sourceTree = "<group>"; };
 		B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryUtil.swift; sourceTree = "<group>"; };
-		B7AA99F027B84F140033B459 /* MultiVariantComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiVariantComponent.swift; sourceTree = "<group>"; };
 		B7D19EB327310DFC005C9F82 /* BindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingUtil.swift; sourceTree = "<group>"; };
 		B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRefreshSync.swift; sourceTree = "<group>"; };
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
@@ -427,7 +425,6 @@
 				B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */,
 				B717635627ABF25500CE5195 /* Component.swift */,
 				B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */,
-				B7AA99F027B84F140033B459 /* MultiVariantComponent.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -623,7 +620,6 @@
 				B717635E27AE841C00CE5195 /* TransformationComponent.swift in Sources */,
 				B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */,
 				B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */,
-				B7AA99F127B84F140033B459 /* MultiVariantComponent.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
