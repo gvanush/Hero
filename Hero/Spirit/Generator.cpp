@@ -9,6 +9,8 @@
 #include "Generator.h"
 #include "Scene.hpp"
 #include "Transformation.hpp"
+#include "Position.hpp"
+#include "Scale.hpp"
 #include "MeshView.hpp"
 #include "ComponentListenerUtil.hpp"
 #include "ComponentUpdateNotifier.hpp"

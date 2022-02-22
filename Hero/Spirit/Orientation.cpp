@@ -7,7 +7,9 @@
 
 #include "Orientation.h"
 #include "Scene.hpp"
+#include "Transformation.hpp"
 #include "ComponentListenerUtil.hpp"
+#include "ComponentUpdateNotifier.hpp"
 
 void SPTMakeOrientation(SPTObject object, SPTOrientation orientation) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;

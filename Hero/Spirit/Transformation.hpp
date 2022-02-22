@@ -15,46 +15,10 @@
 
 namespace spt {
 
-struct Scale {
-    simd_float3 float3;
-};
-
-
 struct TransformationMatrix {
     simd_float4x4 float4x4;
     bool isDirty;
 };
-
-template <typename It, typename PG>
-void makePositions(spt::Registry& registry, It beginEntity, It endEntity, std::size_t startIndex, PG positionGenerator) {
-    auto index = startIndex;
-    for(auto it = beginEntity; it != endEntity; ++it, ++index) {
-        const auto entity = *it;
-        registry.emplace<SPTPosition>(entity, positionGenerator(index));
-        registry.emplace_or_replace<spt::TransformationMatrix>(entity, matrix_identity_float4x4, true);
-    }
-}
-
-template <typename It, typename PG>
-void updatePositions(spt::Registry& registry, It beginEntity, It endEntity, PG positionUpdater) {
-    for(auto it = beginEntity; it != endEntity; ++it) {
-        const auto entity = *it;
-        registry.get<spt::TransformationMatrix>(entity).isDirty = true;
-        registry.patch<SPTPosition>(entity, positionUpdater);
-    }
-}
-
-simd_float3 getPosition(SPTObject object);
-
-simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity);
-
-template <typename It>
-void makeScales(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale) {
-    registry.insert(beginEntity, endEntity, Scale{scale});
-    for(auto it = beginEntity; it != endEntity; ++it) {
-        registry.emplace_or_replace<spt::TransformationMatrix>(*it, matrix_identity_float4x4, true);
-    }
-}
 
 
 const simd_float4x4* getTransformationMatrix(SPTObject object);

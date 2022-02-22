@@ -14,8 +14,7 @@
 
 SPT_EXTERN_C_BEGIN
 
-// MARK: Scale
-simd_float3 SPTMakeScale(SPTObject object, float x, float y, float z);
+void SPTMakeScale(SPTObject object, simd_float3 scale);
 
 void SPTUpdateScale(SPTObject object, simd_float3 scale);
 

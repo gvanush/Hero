@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "Camera.hpp"
 #include "Transformation.hpp"
+#include "Position.hpp"
 
 @interface SPTViewController () <MTKViewDelegate>
 

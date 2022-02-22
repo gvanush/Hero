@@ -5,10 +5,11 @@
 //  Created by Vanush Grigoryan on 14.11.21.
 //
 
-#include "Transformation.h"
 #include "Transformation.hpp"
 #include "Position.h"
+#include "Position.hpp"
 #include "Orientation.h"
+#include "Scale.hpp"
 #include "Scene.hpp"
 #include "ComponentListenerUtil.hpp"
 #include "Base.hpp"
@@ -137,25 +138,6 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     return matrix;
 }
 
-simd_float3 getPosition(SPTObject object) {
-    return getPosition(static_cast<spt::Scene*>(object.sceneHandle)->registry, object.entity);
-}
-
-simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity) {
-    
-    if(const auto position = registry.try_get<SPTPosition>(entity)) {
-        switch (position->variantTag) {
-            case SPTPositionVariantTagXYZ: {
-                return position->xyz;
-            }
-            case SPTPositionVariantTagSpherical: {
-                return SPTGetPositionFromSphericalPosition(position->spherical);
-            }
-        }
-    }
-    return {0.f, 0.f, 0.f};
-}
-
 const simd_float4x4* getTransformationMatrix(SPTObject object) {
     return getTransformationMatrix(static_cast<spt::Scene*>(object.sceneHandle)->registry, object.entity);
 }
@@ -173,33 +155,3 @@ const simd_float4x4* getTransformationMatrix(spt::Registry& registry, SPTEntity 
 
 }
 
-// MARK: Scale
-simd_float3 SPTMakeScale(SPTObject object, float x, float y, float z) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<spt::Scale>(object.entity, simd_float3 {x, y, z}).float3;
-}
-
-void SPTUpdateScale(SPTObject object, simd_float3 scale) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    spt::ComponentUpdateNotifier<spt::Scale>::onWillChange(registry, object.entity);
-    
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
-    registry.get<spt::Scale>(object.entity).float3 = scale;
-}
-
-simd_float3 SPTGetScale(SPTObject object) {
-    return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<spt::Scale>(object.entity).float3;
-}
-
-void SPTAddScaleWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::addComponentWillChangeListener<spt::Scale>(object, listener, callback);
-}
-
-void SPTRemoveScaleWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::removeComponentWillChangeListenerCallback<spt::Scale>(object, listener, callback);
-}
-
-void SPTRemoveScaleWillChangeListener(SPTObject object, SPTComponentListener listener) {
-    spt::removeComponentWillChangeListener<spt::Scale>(object, listener);
-}

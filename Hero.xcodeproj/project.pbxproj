@@ -51,6 +51,7 @@
 		B736450627B3DB7100FAD433 /* EditGeneratorComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B736450527B3DB7100FAD433 /* EditGeneratorComponentView.swift */; };
 		B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47C727C5590800CB0AFC /* Orientation.cpp */; };
 		B73E47CC27C5762500CB0AFC /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47CA27C5762500CB0AFC /* Position.cpp */; };
+		B73E47CF27C5827700CB0AFC /* Scale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47CD27C5827700CB0AFC /* Scale.cpp */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA56D278B3414001EC7C5 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56C278B3414001EC7C5 /* Views.swift */; };
 		B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */; };
@@ -168,6 +169,9 @@
 		B73E47C827C5590800CB0AFC /* Orientation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Orientation.h; sourceTree = "<group>"; };
 		B73E47CA27C5762500CB0AFC /* Position.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Position.cpp; sourceTree = "<group>"; };
 		B73E47CB27C5762500CB0AFC /* Position.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
+		B73E47CD27C5827700CB0AFC /* Scale.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scale.cpp; sourceTree = "<group>"; };
+		B73E47D027C5841C00CB0AFC /* Scale.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Scale.hpp; sourceTree = "<group>"; };
+		B73E47D127C584CB00CB0AFC /* Position.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Position.hpp; sourceTree = "<group>"; };
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B75FA56C278B3414001EC7C5 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -209,7 +213,7 @@
 		B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGeneratorView.swift; sourceTree = "<group>"; };
 		B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		B7E481C9274183BD003DA5B1 /* Transformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
-		B7E481CA274183BD003DA5B1 /* Transformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transformation.h; sourceTree = "<group>"; };
+		B7E481CA274183BD003DA5B1 /* Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scale.h; sourceTree = "<group>"; };
 		B7E481CD2742307B003DA5B1 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		B7E481CE2742307B003DA5B1 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		B7E481D02742DAF5003DA5B1 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
@@ -491,12 +495,15 @@
 			isa = PBXGroup;
 			children = (
 				B7E481C9274183BD003DA5B1 /* Transformation.cpp */,
-				B7E481CA274183BD003DA5B1 /* Transformation.h */,
 				B7E481D327439EC2003DA5B1 /* Transformation.hpp */,
 				B73E47C727C5590800CB0AFC /* Orientation.cpp */,
 				B73E47C827C5590800CB0AFC /* Orientation.h */,
 				B73E47CA27C5762500CB0AFC /* Position.cpp */,
 				B73E47CB27C5762500CB0AFC /* Position.h */,
+				B73E47D127C584CB00CB0AFC /* Position.hpp */,
+				B73E47CD27C5827700CB0AFC /* Scale.cpp */,
+				B7E481CA274183BD003DA5B1 /* Scale.h */,
+				B73E47D027C5841C00CB0AFC /* Scale.hpp */,
 			);
 			name = Transformation;
 			sourceTree = "<group>";
@@ -647,6 +654,7 @@
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B73E47CC27C5762500CB0AFC /* Position.cpp in Sources */,
 				B710DB8A27BD8E4000C57BDF /* PropertySelector.swift in Sources */,
+				B73E47CF27C5827700CB0AFC /* Scale.cpp in Sources */,
 				B75FA577278D6DBD001EC7C5 /* GeneratorView.swift in Sources */,
 				B7235855275E984500337547 /* PolylineView.cpp in Sources */,
 				B7104BC2272B00B800582DCA /* Selector.swift in Sources */,

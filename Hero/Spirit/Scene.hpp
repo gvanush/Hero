@@ -10,10 +10,6 @@
 #include "Base.h"
 #include "Base.hpp"
 #include "Renderer.hpp"
-#include "ComponentUpdateNotifier.hpp"
-#include "Transformation.hpp"
-#include "Transformation.h"
-#include "Generator.hpp"
 
 #include <entt/entt.hpp>
 #include <tuple>

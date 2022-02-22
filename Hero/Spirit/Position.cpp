@@ -6,9 +6,10 @@
 //
 
 #include "Position.h"
+#include "Position.hpp"
 #include "Scene.hpp"
 #include "ComponentListenerUtil.hpp"
-
+#include "ComponentUpdateNotifier.hpp"
 
 void SPTMakePosition(SPTObject object, SPTPosition position) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
@@ -48,4 +49,25 @@ simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPo
     return sphericalPosition.center + sphericalPosition.radius * simd_make_float3(lngSin * latSin, latCos, lngCos * latSin);
 }
 
+namespace spt {
 
+simd_float3 getPosition(SPTObject object) {
+    return getPosition(static_cast<spt::Scene*>(object.sceneHandle)->registry, object.entity);
+}
+
+simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity) {
+    
+    if(const auto position = registry.try_get<SPTPosition>(entity)) {
+        switch (position->variantTag) {
+            case SPTPositionVariantTagXYZ: {
+                return position->xyz;
+            }
+            case SPTPositionVariantTagSpherical: {
+                return SPTGetPositionFromSphericalPosition(position->spherical);
+            }
+        }
+    }
+    return {0.f, 0.f, 0.f};
+}
+
+}

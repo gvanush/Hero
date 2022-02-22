@@ -49,12 +49,12 @@ class SceneViewModel: ObservableObject {
         
         let xAxisObject = scene.makeObject()
         SPTMakePolylineView(xAxisObject, lineId, UIColor.red.rgba, 2.0)
-        SPTMakeScale(xAxisObject, 500.0, 1.0, 1.0)
+        SPTMakeScale(xAxisObject, simd_float3(500.0, 1.0, 1.0))
         SPTMakePolylineViewDepthBias(xAxisObject, 5.0, 3.0, 0.0)
         
         let zAxisObject = scene.makeObject()
         SPTMakePolylineView(zAxisObject, lineId, UIColor.blue.rgba, 2.0)
-        SPTMakeScale(zAxisObject, 500.0, 1.0, 1.0)
+        SPTMakeScale(zAxisObject, simd_float3(500.0, 1.0, 1.0))
         SPTMakeOrientation(zAxisObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, Float.pi * 0.5, 0.0), order: SPTEulerOrderXYZ))))
         SPTMakePolylineViewDepthBias(zAxisObject, 5.0, 3.0, 0.0)
         
@@ -63,7 +63,7 @@ class SceneViewModel: ObservableObject {
         let centerObjectMeshId = MeshRegistry.standard.recordNamed("cube")!.id
         let centerObject = scene.makeObject()
         SPTMakePosition(centerObject, .init(variantTag: .XYZ, .init(xyz: .zero)))
-        SPTMakeScale(centerObject, 5.0, 5.0, 5.0)
+        SPTMakeScale(centerObject, simd_float3(5.0, 5.0, 5.0))
         SPTMakeOrientation(centerObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, 0.0, 0.0), order: SPTEulerOrderXYZ))))
         SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
         SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
