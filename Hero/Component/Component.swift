@@ -19,9 +19,9 @@ class Component: Identifiable, ObservableObject {
         self.parent = parent
     }
     
-    var id: Component { self }
+    var id: ObjectIdentifier { ObjectIdentifier(self) }
     var properties: [String]? { nil }
-    var activePropertyIndex: Int? {
+    var selectedPropertyIndex: Int? {
         set { }
         get { nil }
     }
@@ -41,39 +41,54 @@ class Component: Identifiable, ObservableObject {
     }
 }
 
-
-enum ComponentVoidProperty: Int, DistinctValueSet, RawRepresentable, Displayable {
-    case __dummy
-}
-
-
-protocol ComponentVariant: ObservableObject {
+class BasicComponent<PT>: Component where PT: RawRepresentable & CaseIterable & Displayable, PT.RawValue == Int {
     
-    associatedtype PT: DistinctValueSet & RawRepresentable & Displayable = ComponentVoidProperty where PT.RawValue == Int
-    var selected: PT? { set get }
+    @Published var selectedProperty: PT?
     
-    var subcomponents: [Component]? { get }
-    
-}
-
-extension ComponentVariant {
-    
-    var selected: PT? {
-        set { }
-        get { nil }
+    init(title: String, selectedProperty: PT?, parent: Component?) {
+        self.selectedProperty = selectedProperty
+        super.init(title: title, parent: parent)
     }
     
-    var properties: [String]? { PT.allCaseDisplayNames }
+    override var properties: [String]? {
+        PT.allCaseDisplayNames
+    }
     
-    var activePropertyIndex: Int? {
+    override var selectedPropertyIndex: Int? {
         set {
-            selected = .init(rawValue: newValue)
+            selectedProperty = .init(rawValue: newValue)
         }
         get {
-            selected?.rawValue
+            selectedProperty?.rawValue
         }
     }
     
-    var subcomponents: [Component]? { nil }
+}
+
+
+class MultiVariantComponent: Component {
     
+    var variants: [Component]! { nil }
+    var activeVariantIndex: Int! { set { } get { nil } }
+    
+    var activeVariant: Component {
+        variants[activeVariantIndex]
+    }
+    
+    override var properties: [String]? {
+        activeVariant.properties
+    }
+    
+    override var selectedPropertyIndex: Int? {
+        set {
+            activeVariant.selectedPropertyIndex = newValue
+        }
+        get {
+            activeVariant.selectedPropertyIndex
+        }
+    }
+    
+    override var subcomponents: [Component]? {
+        activeVariant.subcomponents
+    }
 }

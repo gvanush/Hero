@@ -10,14 +10,16 @@ import Combine
 import SwiftUI
 
 
-class ScaleComponent: Component {
+final class ScaleComponent: MultiVariantComponent {
     
-    enum VariantTag: DistinctValueSet, Displayable {
+    enum VariantTag: Int, DistinctValueSet, Displayable {
         case nonuniform
         case uniform
     }
     
     @Published var variantTag = VariantTag.nonuniform
+    private lazy var nonuniformVariant = NonuniformScaleComponent(parent: self)
+    private lazy var uniformVariant = UniformScaleComponent(parent: self)
     
     let object: SPTObject
     
@@ -26,27 +28,30 @@ class ScaleComponent: Component {
         super.init(title: "Scale", parent: parent)
     }
     
-}
-
-class NonuniformScaleComponentVariant: ComponentVariant {
+    override var variants: [Component]! {
+        [nonuniformVariant, uniformVariant]
+    }
     
-    @Published var selected: Axis? = .x
-    
-    static var tag: ScaleComponent.VariantTag {
-        ScaleComponent.VariantTag.nonuniform
+    override var activeVariantIndex: Int! {
+        set { variantTag = .init(rawValue: newValue)! }
+        get { variantTag.rawValue }
     }
 }
 
-class UniformScaleComponentVariant: ComponentVariant {
-    
-    enum Property: Int, DistinctValueSet, Displayable {
-        case scale
+final class NonuniformScaleComponent: BasicComponent<Axis> {
+    init(parent: Component?) {
+        super.init(title: "Nonuniform Scale", selectedProperty: .x, parent: parent)
     }
+}
+
+enum UniformScaleComponentProperty: Int, DistinctValueSet, Displayable {
+    case scale
+}
+
+final class UniformScaleComponent: BasicComponent<UniformScaleComponentProperty> {
     
-    @Published var selected: Property? = .scale
-    
-    static var tag: ScaleComponent.VariantTag {
-        ScaleComponent.VariantTag.uniform
+    init(parent: Component?) {
+        super.init(title: "Uniform Scale", selectedProperty: .scale, parent: parent)
     }
     
 }

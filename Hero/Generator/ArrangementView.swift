@@ -8,9 +8,9 @@
 import SwiftUI
 
 
-class ArrangementComponent: Component {
+class ArrangementComponent: MultiVariantComponent {
  
-    enum VariantTag: DistinctValueSet, Displayable {
+    enum VariantTag: Int, DistinctValueSet, Displayable {
         case point
         case linear
         case planar
@@ -45,10 +45,10 @@ class ArrangementComponent: Component {
     
     @ObjectBinding private var arrangement: SPTArrangement
     
-    lazy var point = PointArrangementComponentVariant(arrangement: $arrangement.point)
-    lazy var linear = LinearArrangementComponentVariant(arrangement: $arrangement.linear)
-    lazy var planar = PlanarArrangementComponentVariant(arrangement: $arrangement.planar)
-    lazy var spatial = SpatialArrangementComponentVariant(arrangement: $arrangement.spatial)
+    lazy var point = PointArrangementComponent(arrangement: $arrangement.point, parent: self)
+    lazy var linear = LinearArrangementComponent(arrangement: $arrangement.linear, parent: self)
+    lazy var planar = PlanarArrangementComponent(arrangement: $arrangement.planar, parent: self)
+    lazy var spatial = SpatialArrangementComponent(arrangement: $arrangement.spatial, parent: self)
     
     private var storedPoint = SPTArrangement(variantTag: .point, .init(point: .init()))
     private var storedLinear = SPTArrangement(variantTag: .linear, .init(linear: .init(axis: .X)))
@@ -94,90 +94,44 @@ class ArrangementComponent: Component {
             storedSpatial = arrangement
         }
     }
- 
-    override var properties: [String]? {
-        switch variantTag {
-        case .point:
-            return point.properties
-        case .linear:
-            return linear.properties
-        case .planar:
-            return planar.properties
-        case .spatial:
-            return spatial.properties
-        }
-    }
-    
-    override var activePropertyIndex: Int? {
-        set {
-            switch variantTag {
-            case .point:
-                point.activePropertyIndex = newValue
-            case .linear:
-                linear.activePropertyIndex = newValue
-            case .planar:
-                planar.activePropertyIndex = newValue
-            case .spatial:
-                spatial.activePropertyIndex = newValue
-            }
-        }
-        get {
-            switch variantTag {
-            case .point:
-                return point.activePropertyIndex
-            case .linear:
-                return linear.activePropertyIndex
-            case .planar:
-                return planar.activePropertyIndex
-            case .spatial:
-                return spatial.activePropertyIndex
-            }
-        }
-    }
-    
-    override var subcomponents: [Component]? {
-        switch variantTag {
-        case .point:
-            return point.subcomponents
-        case .linear:
-            return linear.subcomponents
-        case .planar:
-            return planar.subcomponents
-        case .spatial:
-            return spatial.subcomponents
-        }
-    }
     
     override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
         provider.viewFor(self)
     }
     
+    override var variants: [Component]! {
+        [point, linear, planar, spatial]
+    }
+    
+    override var activeVariantIndex: Int? {
+        set { variantTag = .init(rawValue: newValue)! }
+        get { variantTag.rawValue }
+    }
 }
 
 
-class PointArrangementComponentVariant: ComponentVariant {
+class PointArrangementComponent: Component {
         
     @ObjectBinding private var arrangement: SPTPointArrangement
  
-    init(arrangement: ObjectBinding<SPTPointArrangement>) {
+    init(arrangement: ObjectBinding<SPTPointArrangement>, parent: Component?) {
         _arrangement = arrangement
+        super.init(title: "Point Arrangement", parent: parent)
     }
     
 }
 
+enum LinearArrangementComponentProperty: Int, DistinctValueSet, Displayable {
+    case axis
+}
 
-class LinearArrangementComponentVariant: ComponentVariant {
+class LinearArrangementComponent: BasicComponent<LinearArrangementComponentProperty> {
     
-    enum Property: Int, DistinctValueSet, Displayable {
-        case axis
-    }
-    
-    @Published var selected: Property? = .axis
-
     @ObjectBinding private var arrangement: SPTLinearArrangement
     
-    init(arrangement: ObjectBinding<SPTLinearArrangement>) {
+    init(arrangement: ObjectBinding<SPTLinearArrangement>, parent: Component?) {
         _arrangement = arrangement
+        super.init(title: "Linear Arrangement", selectedProperty: .axis, parent: parent)
     }
     
     var axis: Axis {
@@ -188,23 +142,28 @@ class LinearArrangementComponentVariant: ComponentVariant {
             Axis(arrangement.axis)
         }
     }
+    
+    
+    
 }
 
 
-class PlanarArrangementComponentVariant: ComponentVariant {
+class PlanarArrangementComponent: Component {
     @ObjectBinding private var arrangement: SPTPlanarArrangement
  
-    init(arrangement: ObjectBinding<SPTPlanarArrangement>) {
+    init(arrangement: ObjectBinding<SPTPlanarArrangement>, parent: Component?) {
         _arrangement = arrangement
+        super.init(title: "Planar Arrangement", parent: parent)
     }
 }
 
 
-class SpatialArrangementComponentVariant: ComponentVariant {
+class SpatialArrangementComponent: Component {
     @ObjectBinding private var arrangement: SPTSpatialArrangement
  
-    init(arrangement: ObjectBinding<SPTSpatialArrangement>) {
+    init(arrangement: ObjectBinding<SPTSpatialArrangement>, parent: Component?) {
         _arrangement = arrangement
+        super.init(title: "Spatial Arrangement", parent: parent)
     }
 }
 
@@ -227,8 +186,8 @@ struct ArrangementView: View {
             case .point:
                 Text("Not implemented")
             case .linear:
-                SceneEditableParam(title: LinearArrangementComponentVariant.Property.axis.displayName, value: component.linear.selected?.displayName) {
-                    component.linear.selected = .axis
+                SceneEditableParam(title: LinearArrangementComponentProperty.axis.displayName, value: component.linear.selectedProperty?.displayName) {
+                    component.linear.selectedProperty = .axis
                     editedComponent = component
                 }
 

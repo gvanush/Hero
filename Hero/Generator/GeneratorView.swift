@@ -8,15 +8,14 @@
 import SwiftUI
 
 
-class GeneratorComponent: Component {
-    
-    enum Property: Int, DistinctValueSet, Displayable {
-        case quantity
-    }
+enum GeneratorComponentProperty: Int, DistinctValueSet, Displayable {
+    case quantity
+}
+
+class GeneratorComponent: BasicComponent<GeneratorComponentProperty> {
     
     let object: SPTObject
     @ObjectBinding private var generator: SPTGenerator
-    @Published var selected: Property? = .quantity
     lazy private(set) var transformation = TransformationComponent(object: self.object, parent: self)
     lazy private(set) var arrangement = ArrangementComponent(arrangement: $generator.arrangement, parent: self)
     
@@ -29,7 +28,7 @@ class GeneratorComponent: Component {
             SPTUpdateGenerator(object, newValue)
         })
         
-        super.init(title: "Generator", parent: nil)
+        super.init(title: "Generator", selectedProperty: .quantity, parent: nil)
         
         SPTAddGeneratorWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<GeneratorComponent>.fromOpaque(observer!).takeUnretainedValue()
@@ -59,15 +58,6 @@ class GeneratorComponent: Component {
         get { generator.quantity }
     }
     
-    override var activePropertyIndex: Int? {
-        set { selected = .init(rawValue: newValue) }
-        get { selected?.rawValue }
-    }
-    
-    override var properties: [String]? {
-        Property.allCaseDisplayNames
-    }
-    
     override var subcomponents: [Component]? { [transformation, arrangement] }
     
     override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
@@ -86,8 +76,8 @@ struct GeneratorView: View {
         Form {
             Section {
                 sourceObjectRow
-                SceneEditableParam(title: GeneratorComponent.Property.quantity.displayName, value: "\(generatorComponent.quantity)") {
-                    generatorComponent.selected = .quantity
+                SceneEditableParam(title: GeneratorComponentProperty.quantity.displayName, value: "\(generatorComponent.quantity)") {
+                    generatorComponent.selectedProperty = .quantity
                     editedComponent = generatorComponent
                 }
                 SceneEditableCompositeParam(title: generatorComponent.transformation.title, value: nil) {

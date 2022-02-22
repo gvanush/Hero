@@ -176,12 +176,12 @@ fileprivate struct ComponentView: View {
                 .background {
                     RoundedRectangle(cornerRadius: .infinity)
                         .foregroundColor(.systemFill)
-                        .visible(index == component.activePropertyIndex)
-                        .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: index == component.activePropertyIndex)
+                        .visible(index == component.selectedPropertyIndex)
+                        .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: index == component.selectedPropertyIndex)
                 }
                 .onTapGesture {
                     withAnimation(navigationAnimation) {
-                        component.activePropertyIndex = index
+                        component.selectedPropertyIndex = index
                     }
                 }
             

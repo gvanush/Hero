@@ -26,23 +26,13 @@ class TransformationComponent: Component {
 }
 
 
-class PositionComponent: Component {
+class PositionComponent: BasicComponent<Axis> {
     
-    @Published var activeAxis: Axis? = Axis.x
     let object: SPTObject
     
     init(object: SPTObject, parent: Component?) {
         self.object = object
-        super.init(title: "Position", parent: parent)
-    }
-    
-    override var properties: [String]? {
-        Axis.allCaseDisplayNames
-    }
-    
-    override var activePropertyIndex: Int? {
-        set { activeAxis = .init(rawValue: newValue) }
-        get { activeAxis?.rawValue }
+        super.init(title: "Position", selectedProperty: .x, parent: parent)
     }
     
     override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
@@ -52,23 +42,13 @@ class PositionComponent: Component {
 }
 
 
-class OrientationComponent: Component {
+class OrientationComponent: BasicComponent<Axis> {
     
-    @Published var activeAxis: Axis? = Axis.x
     let object: SPTObject
     
     init(object: SPTObject, parent: Component?) {
         self.object = object
-        super.init(title: "Orientation", parent: parent)
-    }
-    
-    override var properties: [String]? {
-        Axis.allCaseDisplayNames
-    }
-    
-    override var activePropertyIndex: Int? {
-        set { activeAxis = .init(rawValue: newValue) }
-        get { activeAxis?.rawValue }
+        super.init(title: "Orientation", selectedProperty: .x, parent: parent)
     }
     
     override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
