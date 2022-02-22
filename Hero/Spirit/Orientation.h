@@ -15,7 +15,6 @@
 
 SPT_EXTERN_C_BEGIN
 
-
 typedef enum {
     SPTOrientationVariantTagEuler,
     SPTOrientationVariantTagLookAt,
@@ -62,6 +61,5 @@ SPTOrientation SPTGetOrientation(SPTObject object);
 void SPTAddOrientationWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
 void SPTRemoveOrientationWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
 void SPTRemoveOrientationWillChangeListener(SPTObject object, SPTComponentListener listener);
-
 
 SPT_EXTERN_C_END

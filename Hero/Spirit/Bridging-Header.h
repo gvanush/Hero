@@ -7,6 +7,7 @@
 #import "Spirit.h"
 #import "ResourceManager.h"
 #import "Transformation.h"
+#import "Position.h"
 #import "Orientation.h"
 #import "Camera.h"
 #import "MeshView.h"

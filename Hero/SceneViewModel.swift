@@ -29,10 +29,10 @@ class SceneViewModel: ObservableObject {
     }
 
     init() {
-        
+
         // Setup view camera
         viewCameraObject = scene.makeObject()
-        SPTMakeSphericalPosition(viewCameraObject, simd_float3.zero, 150.0, 0.25 * Float.pi, 0.25 * Float.pi)
+        SPTMakePosition(viewCameraObject, .init(variantTag: .spherical, .init(spherical: .init(center: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi))))
         SPTMakeOrientation(viewCameraObject, SPTOrientation(variantTag: .lookAt, .init(lookAt: .init(target: .zero, up: simd_float3.up, axis: .Z, positive: false))))
         SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
 //        SPTMakeOrthographicCamera(viewCameraObject, 100.0, 1.0, 0.1, 2000.0)
@@ -62,7 +62,7 @@ class SceneViewModel: ObservableObject {
         // Setup objects
         let centerObjectMeshId = MeshRegistry.standard.recordNamed("cube")!.id
         let centerObject = scene.makeObject()
-        SPTMakePosition(centerObject, 0.0, 0.0, 0.0)
+        SPTMakePosition(centerObject, .init(variantTag: .XYZ, .init(xyz: .zero)))
         SPTMakeScale(centerObject, 5.0, 5.0, 5.0)
         SPTMakeOrientation(centerObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, 0.0, 0.0), order: SPTEulerOrderXYZ))))
         SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
@@ -88,7 +88,7 @@ class SceneViewModel: ObservableObject {
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {
         let locationInScene = SPTCameraConvertViewportToWorld(viewCameraObject, simd_float3(location.float2, 1.0), viewportSize.float2)
-        let cameraPos = SPTGetPositionFromSphericalPosition(SPTGetSphericalPosition(viewCameraObject))
+        let cameraPos = SPTGetPositionFromSphericalPosition(SPTGetPosition(viewCameraObject).spherical)
         
         let object = SPTRayCastScene(scene.cpp(), SPTRay(origin: cameraPos, direction: locationInScene - cameraPos), 0.0001).object
         
@@ -101,13 +101,13 @@ class SceneViewModel: ObservableObject {
     
     func focusOn(_ object: SPTObject) {
         
-        var sphericalPos = SPTGetSphericalPosition(viewCameraObject)
-        sphericalPos.center = SPTGetPosition(object)
-        SPTUpdateSphericalPosition(viewCameraObject, sphericalPos)
+        var cameraPos = SPTGetPosition(viewCameraObject)
+        cameraPos.spherical.center = SPTGetPosition(object).xyz
+        SPTUpdatePosition(viewCameraObject, cameraPos)
         
-        var orientation = SPTGetOrientation(viewCameraObject)
-        orientation.lookAt.target = sphericalPos.center
-        SPTUpdateOrientation(viewCameraObject, orientation)
+        var cameraOrientation = SPTGetOrientation(viewCameraObject)
+        cameraOrientation.lookAt.target = cameraPos.spherical.center
+        SPTUpdateOrientation(viewCameraObject, cameraOrientation)
     }
     
     // MARK: Orbit
@@ -122,14 +122,14 @@ class SceneViewModel: ObservableObject {
         let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
         let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
         
-        var sphericalPos = SPTGetSphericalPosition(viewCameraObject)
+        var cameraPos = SPTGetPosition(viewCameraObject)
         
-        sphericalPos.latitude -= deltaAngle.y
+        cameraPos.spherical.latitude -= deltaAngle.y
         
-        let isInFrontOfSphere = sinf(sphericalPos.latitude) >= 0.0
-        sphericalPos.longitude += (isInFrontOfSphere ? -deltaAngle.x : deltaAngle.x)
+        let isInFrontOfSphere = sinf(cameraPos.spherical.latitude) >= 0.0
+        cameraPos.spherical.longitude += (isInFrontOfSphere ? -deltaAngle.x : deltaAngle.x)
         
-        SPTUpdateSphericalPosition(viewCameraObject, sphericalPos)
+        SPTUpdatePosition(viewCameraObject, cameraPos)
         
         var orientation = SPTGetOrientation(viewCameraObject)
         orientation.lookAt.up = (isInFrontOfSphere ? simd_float3.up : simd_float3.down)
@@ -160,22 +160,22 @@ class SceneViewModel: ObservableObject {
         
         let deltaYTranslation = Float(dragValue.translation.height - prevDragValue.translation.height)
         
-        var sphericalPos = SPTGetSphericalPosition(viewCameraObject)
+        var cameraPos = SPTGetPosition(viewCameraObject)
         
-        let centerViewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, sphericalPos.center, viewportSize.float2);
+        let centerViewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, cameraPos.spherical.center, viewportSize.float2);
         
         var scenePos = SPTCameraConvertViewportToWorld(viewCameraObject, centerViewportPos + simd_float3.up * deltaYTranslation, viewportSize.float2)
         
         // NOTE: This is needed, because coverting from world to viewport and back gives low precision z value.
         // It is becasue of uneven distribution of world z into ndc z, especially far objects.
         // Alternative could be to make near plane larger but that limits zooming since object will be clipped
-        scenePos.z = sphericalPos.center.z
+        scenePos.z = cameraPos.spherical.center.z
         
-        let deltaRadius = length(scenePos - sphericalPos.center)
+        let deltaRadius = length(scenePos - cameraPos.spherical.center)
         
-        sphericalPos.radius = max(sphericalPos.radius + sign(deltaYTranslation) * Self.zoomFactor * deltaRadius, 0.01)
+        cameraPos.spherical.radius = max(cameraPos.spherical.radius + sign(deltaYTranslation) * Self.zoomFactor * deltaRadius, 0.01)
         
-        SPTUpdateSphericalPosition(viewCameraObject, sphericalPos)
+        SPTUpdatePosition(viewCameraObject, cameraPos)
         
     }
     

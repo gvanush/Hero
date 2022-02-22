@@ -36,7 +36,7 @@ void makeObjects(spt::Registry& registry, spt::Generator& generator, std::size_t
             simd_float3 seedPosition {};
             seedPosition[generator.base.arrangement.linear.axis] = 15.0;
             spt::makePositions(registry, beginEntity, generator.entities.end(), initialSize, [seedPosition] (std::size_t i) {
-                return i * seedPosition;
+                return SPTPosition {SPTPositionVariantTagXYZ, {.xyz = i * seedPosition}};
             });
             break;
         }
@@ -58,8 +58,8 @@ void destroyObjects(spt::Registry& registry, spt::Generator& generator, size_t c
 void updateLinearAxis(spt::Registry& registry, const spt::Generator& generator, SPTAxis axis) {
     assert(generator.base.arrangement.variantTag == SPTArrangementVariantTagLinear);
     spt::updatePositions(registry, generator.entities.begin(), generator.entities.end(), [axis, &generator] (auto& position) {
-        position.float3[axis] = position.float3[generator.base.arrangement.linear.axis];
-        position.float3[generator.base.arrangement.linear.axis] = 0.f;
+        position.xyz[axis] = position.xyz[generator.base.arrangement.linear.axis];
+        position.xyz[generator.base.arrangement.linear.axis] = 0.f;
     });
 }
 
@@ -111,8 +111,13 @@ void SPTUpdateGenerator(SPTObject object, SPTGenerator updated) {
     
     if(generator.base.arrangement != updated.arrangement) {
         
-        if(generator.base.arrangement.linear.axis != updated.arrangement.linear.axis) {
-            spt::updateLinearAxis(registry, generator, updated.arrangement.linear.axis);
+        // TODO
+        if(generator.base.arrangement.variantTag != updated.arrangement.variantTag) {
+            
+        } else {
+            if(generator.base.arrangement.linear.axis != updated.arrangement.linear.axis) {
+                spt::updateLinearAxis(registry, generator, updated.arrangement.linear.axis);
+            }
         }
         
     }

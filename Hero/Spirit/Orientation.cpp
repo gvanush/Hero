@@ -11,14 +11,13 @@
 
 void SPTMakeOrientation(SPTObject object, SPTOrientation orientation) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    assert(!registry.any_of<SPTLookAtOrientation>(object.entity));
     registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
     registry.emplace<SPTOrientation>(object.entity, orientation);
 }
 
 void SPTUpdateOrientation(SPTObject object, SPTOrientation orientation) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    spt::ComponentUpdateNotifier<spt::Position>::onWillChange(registry, object.entity);
+    spt::ComponentUpdateNotifier<SPTOrientation>::onWillChange(registry, object.entity);
     
     registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
     registry.get<SPTOrientation>(object.entity) = orientation;

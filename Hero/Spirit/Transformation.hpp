@@ -9,15 +9,11 @@
 
 #include "Base.hpp"
 #include "Base.h"
+#include "Position.h"
 
 #include <simd/simd.h>
 
 namespace spt {
-
-struct Position {
-    simd_float3 float3;
-};
-
 
 struct Scale {
     simd_float3 float3;
@@ -34,7 +30,7 @@ void makePositions(spt::Registry& registry, It beginEntity, It endEntity, std::s
     auto index = startIndex;
     for(auto it = beginEntity; it != endEntity; ++it, ++index) {
         const auto entity = *it;
-        registry.emplace<Position>(entity, positionGenerator(index));
+        registry.emplace<SPTPosition>(entity, positionGenerator(index));
         registry.emplace_or_replace<spt::TransformationMatrix>(entity, matrix_identity_float4x4, true);
     }
 }
@@ -44,7 +40,7 @@ void updatePositions(spt::Registry& registry, It beginEntity, It endEntity, PG p
     for(auto it = beginEntity; it != endEntity; ++it) {
         const auto entity = *it;
         registry.get<spt::TransformationMatrix>(entity).isDirty = true;
-        registry.patch<Position>(entity, positionUpdater);
+        registry.patch<SPTPosition>(entity, positionUpdater);
     }
 }
 

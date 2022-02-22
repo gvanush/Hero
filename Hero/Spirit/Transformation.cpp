@@ -7,6 +7,7 @@
 
 #include "Transformation.h"
 #include "Transformation.hpp"
+#include "Position.h"
 #include "Orientation.h"
 #include "Scene.hpp"
 #include "ComponentListenerUtil.hpp"
@@ -141,11 +142,16 @@ simd_float3 getPosition(SPTObject object) {
 }
 
 simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity) {
-    const auto [position, sphericalPosition] = registry.try_get<spt::Position, SPTSphericalPosition>(entity);
-    if(position) {
-        return position->float3;
-    } else if(sphericalPosition) {
-        return SPTGetPositionFromSphericalPosition(*sphericalPosition);
+    
+    if(const auto position = registry.try_get<SPTPosition>(entity)) {
+        switch (position->variantTag) {
+            case SPTPositionVariantTagXYZ: {
+                return position->xyz;
+            }
+            case SPTPositionVariantTagSpherical: {
+                return SPTGetPositionFromSphericalPosition(position->spherical);
+            }
+        }
     }
     return {0.f, 0.f, 0.f};
 }
@@ -166,70 +172,6 @@ const simd_float4x4* getTransformationMatrix(spt::Registry& registry, SPTEntity 
 }
 
 }
-
-// MARK: Position
-simd_float3 SPTMakePosition(SPTObject object, float x, float y, float z) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    assert(!registry.any_of<SPTSphericalPosition>(object.entity));
-    registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<spt::Position>(object.entity, simd_float3 {x, y, z}).float3;
-}
-
-simd_float3 SPTMakePositionZero(SPTObject object) {
-    return SPTMakePosition(object, 0.f, 0.f, 0.f);
-}
-
-void SPTUpdatePosition(SPTObject object, simd_float3 position) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    spt::ComponentUpdateNotifier<spt::Position>::onWillChange(registry, object.entity);
-    
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
-    registry.get<spt::Position>(object.entity).float3 = position;
-}
-
-simd_float3 SPTGetPosition(SPTObject object) {
-    return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<spt::Position>(object.entity).float3;
-}
-
-void SPTAddPositionWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::addComponentWillChangeListener<spt::Position>(object, listener, callback);
-}
-
-void SPTRemovePositionWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::removeComponentWillChangeListenerCallback<spt::Position>(object, listener, callback);
-}
-
-void SPTRemovePositionWillChangeListener(SPTObject object, SPTComponentListener listener) {
-    spt::removeComponentWillChangeListener<spt::Position>(object, listener);
-}
-
-// MARK: SphericalPosition
-SPTSphericalPosition SPTMakeSphericalPosition(SPTObject object, simd_float3 center, float radius, float longitude, float latitude) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    assert(!registry.any_of<spt::Position>(object.entity));
-    registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<SPTSphericalPosition>(object.entity, center, radius, longitude, latitude);
-}
-
-void SPTUpdateSphericalPosition(SPTObject object, SPTSphericalPosition pos) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
-    registry.get<SPTSphericalPosition>(object.entity) = pos;
-}
-
-SPTSphericalPosition SPTGetSphericalPosition(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.get<SPTSphericalPosition>(object.entity);
-}
-
-simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPosition) {
-    float lngSin = sinf(sphericalPosition.longitude);
-    float lngCos = cosf(sphericalPosition.longitude);
-    float latSin = sinf(sphericalPosition.latitude);
-    float latCos = cosf(sphericalPosition.latitude);
-    return sphericalPosition.center + sphericalPosition.radius * simd_make_float3(lngSin * latSin, latCos, lngCos * latSin);
-}
-
 
 // MARK: Scale
 simd_float3 SPTMakeScale(SPTObject object, float x, float y, float z) {

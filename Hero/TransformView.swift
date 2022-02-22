@@ -148,8 +148,8 @@ fileprivate class ObjectControlViewModel: ObservableObject {
     }
     
     var position: simd_float3 {
-        set { SPTUpdatePosition(object, newValue) }
-        get { SPTGetPosition(object) }
+        set { SPTUpdatePosition(object, SPTPosition(variantTag: .XYZ, .init(xyz: newValue))) }
+        get { SPTGetPosition(object).xyz }
     }
     
     var eulerRotation: simd_float3 {
