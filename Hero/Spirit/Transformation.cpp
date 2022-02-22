@@ -7,6 +7,7 @@
 
 #include "Transformation.h"
 #include "Transformation.hpp"
+#include "Orientation.h"
 #include "Scene.hpp"
 #include "ComponentListenerUtil.hpp"
 #include "Base.hpp"
@@ -113,15 +114,20 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     
     matrix.columns[3].xyz = getPosition(registry, entity);
     
-    const auto [eulerOrientation, lookAtOrientation] = registry.try_get<SPTEulerOrientation, SPTLookAtOrientation>(entity);
-    if(eulerOrientation) {
-        applyEulerOrientationMatrix(*eulerOrientation, matrix);
-    } else if(lookAtOrientation) {
-        applyLookAtMatrix(matrix.columns[3].xyz, *lookAtOrientation, matrix);
+    if(const auto orientation = registry.try_get<SPTOrientation>(entity)) {
+        switch (orientation->variantTag) {
+            case SPTOrientationVariantTagEuler: {
+                applyEulerOrientationMatrix(orientation->euler, matrix);
+                break;
+            }
+            case SPTOrientationVariantTagLookAt: {
+                applyLookAtMatrix(matrix.columns[3].xyz, orientation->lookAt, matrix);
+                break;
+            }
+        }
     }
     
-    const auto scale = registry.try_get<spt::Scale>(entity);
-    if(scale) {
+    if(const auto scale = registry.try_get<spt::Scale>(entity)) {
         matrix.columns[0] *= scale->float3.x;
         matrix.columns[1] *= scale->float3.y;
         matrix.columns[2] *= scale->float3.z;
@@ -224,65 +230,6 @@ simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPo
     return sphericalPosition.center + sphericalPosition.radius * simd_make_float3(lngSin * latSin, latCos, lngCos * latSin);
 }
 
-// MARK: EulerOrientation
-SPTEulerOrientation SPTMakeEulerOrientation(SPTObject object, simd_float3 rotation, SPTEulerOrder order) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    assert(!registry.any_of<SPTLookAtOrientation>(object.entity));
-    registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<SPTEulerOrientation>(object.entity, rotation, order);
-}
-
-void SPTUpdateEulerOrientation(SPTObject object, SPTEulerOrientation orientation) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    spt::ComponentUpdateNotifier<spt::Position>::onWillChange(registry, object.entity);
-    
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
-    registry.get<SPTEulerOrientation>(object.entity) = orientation;
-}
-
-void SPTUpdateEulerOrientationRotation(SPTObject object, simd_float3 rotation) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    spt::ComponentUpdateNotifier<spt::Position>::onWillChange(registry, object.entity);
-    
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
-    registry.get<SPTEulerOrientation>(object.entity).rotation = rotation;
-}
-
-SPTEulerOrientation SPTGetEulerOrientation(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.get<SPTEulerOrientation>(object.entity);
-}
-
-void SPTAddEulerOrientationWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::addComponentWillChangeListener<SPTEulerOrientation>(object, listener, callback);
-}
-
-void SPTRemoveEulerOrientationWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::removeComponentWillChangeListenerCallback<SPTEulerOrientation>(object, listener, callback);
-}
-
-void SPTRemoveEulerOrientationWillChangeListener(SPTObject object, SPTComponentListener listener) {
-    spt::removeComponentWillChangeListener<SPTEulerOrientation>(object, listener);
-}
-
-// MARK: LookAtOrientation
-SPTLookAtOrientation SPTMakeLookAtOrientation(SPTObject object, simd_float3 target, SPTAxis axis, bool positive, simd_float3 up) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    assert(!registry.any_of<SPTEulerOrientation>(object.entity));
-    registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
-    return registry.emplace<SPTLookAtOrientation>(object.entity, target, up, axis, positive);
-}
-
-void SPTUpdateLookAtOrientation(SPTObject object, SPTLookAtOrientation orientation) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
-    registry.get<SPTLookAtOrientation>(object.entity) = orientation;
-}
-
-SPTLookAtOrientation SPTGetLookAtOrientation(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.get<SPTLookAtOrientation>(object.entity);
-}
 
 // MARK: Scale
 simd_float3 SPTMakeScale(SPTObject object, float x, float y, float z) {

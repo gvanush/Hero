@@ -42,57 +42,6 @@ SPTSphericalPosition SPTGetSphericalPosition(SPTObject object);
 
 simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPosition);
 
-// MARK: EulerOrientation
-typedef enum {
-    SPTEulerOrderXYZ,
-    SPTEulerOrderXZY,
-    SPTEulerOrderYXZ,
-    SPTEulerOrderYZX,
-    SPTEulerOrderZXY,
-    SPTEulerOrderZYX
-} SPTEulerOrder;
-
-typedef struct {
-    simd_float3 rotation;
-    SPTEulerOrder order;
-} SPTEulerOrientation;
-
-SPTEulerOrientation SPTMakeEulerOrientation(SPTObject object, simd_float3 rotation, SPTEulerOrder order);
-
-void SPTUpdateEulerOrientation(SPTObject object, SPTEulerOrientation orientation);
-void SPTUpdateEulerOrientationRotation(SPTObject object, simd_float3 rotation);
-    
-SPTEulerOrientation SPTGetEulerOrientation(SPTObject object);
-
-void SPTAddEulerOrientationWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveEulerOrientationWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveEulerOrientationWillChangeListener(SPTObject object, SPTComponentListener listener);
-
-// MARK: LookAtOrientation
-typedef enum {
-    SPTLookAtAxisPositiveX,
-    SPTLookAtAxisNegativeX,
-    SPTLookAtAxisPositiveY,
-    SPTLookAtAxisNegativeY,
-    SPTLookAtAxisPositiveZ,
-    SPTLookAtAxisNegativeZ
-} SPTLookAtAxis;
-
-// When 'axis' is x, 'up' is used to compute y axis
-// When 'axis' is y, 'up' is used to compute z axis
-// When 'axis' is z, 'up' is used to compute x axis
-typedef struct {
-    simd_float3 target;
-    simd_float3 up;
-    SPTAxis axis;
-    bool positive;
-} SPTLookAtOrientation;
-
-SPTLookAtOrientation SPTMakeLookAtOrientation(SPTObject object, simd_float3 target, SPTAxis axis, bool positive, simd_float3 up);
-
-void SPTUpdateLookAtOrientation(SPTObject object, SPTLookAtOrientation orientation);
-    
-SPTLookAtOrientation SPTGetLookAtOrientation(SPTObject object);
 
 // MARK: Scale
 simd_float3 SPTMakeScale(SPTObject object, float x, float y, float z);

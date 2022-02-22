@@ -49,6 +49,7 @@
 		B73245B9274128FD00708909 /* Spirit.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B7274128FD00708909 /* Spirit.mm */; };
 		B736450427B3BA1100FAD433 /* EditComponentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B736450327B3BA1100FAD433 /* EditComponentViewProvider.swift */; };
 		B736450627B3DB7100FAD433 /* EditGeneratorComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B736450527B3DB7100FAD433 /* EditGeneratorComponentView.swift */; };
+		B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47C727C5590800CB0AFC /* Orientation.cpp */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA56D278B3414001EC7C5 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56C278B3414001EC7C5 /* Views.swift */; };
 		B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */; };
@@ -162,6 +163,8 @@
 		B73245B8274128FD00708909 /* Spirit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spirit.h; sourceTree = "<group>"; };
 		B736450327B3BA1100FAD433 /* EditComponentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditComponentViewProvider.swift; sourceTree = "<group>"; };
 		B736450527B3DB7100FAD433 /* EditGeneratorComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGeneratorComponentView.swift; sourceTree = "<group>"; };
+		B73E47C727C5590800CB0AFC /* Orientation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Orientation.cpp; sourceTree = "<group>"; };
+		B73E47C827C5590800CB0AFC /* Orientation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Orientation.h; sourceTree = "<group>"; };
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B75FA56C278B3414001EC7C5 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -487,6 +490,8 @@
 				B7E481C9274183BD003DA5B1 /* Transformation.cpp */,
 				B7E481CA274183BD003DA5B1 /* Transformation.h */,
 				B7E481D327439EC2003DA5B1 /* Transformation.hpp */,
+				B73E47C727C5590800CB0AFC /* Orientation.cpp */,
+				B73E47C827C5590800CB0AFC /* Orientation.h */,
 			);
 			name = Transformation;
 			sourceTree = "<group>";
@@ -649,6 +654,7 @@
 				B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */,
 				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,
 				B7791D252725F45F00E0C934 /* TransformView.swift in Sources */,
+				B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */,

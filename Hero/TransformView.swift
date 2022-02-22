@@ -129,7 +129,7 @@ fileprivate class ObjectControlViewModel: ObservableObject {
             me.objectWillChange.send()
         })
         
-        SPTAddEulerOrientationWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTAddOrientationWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
             me.objectWillChange.send()
         })
@@ -143,7 +143,7 @@ fileprivate class ObjectControlViewModel: ObservableObject {
     
     deinit {
         SPTRemovePositionWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
-        SPTRemoveEulerOrientationWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTRemoveOrientationWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
         SPTRemoveScaleWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
@@ -153,8 +153,12 @@ fileprivate class ObjectControlViewModel: ObservableObject {
     }
     
     var eulerRotation: simd_float3 {
-        set { SPTUpdateEulerOrientationRotation(object, SPTToRadFloat3(newValue)) }
-        get { SPTToDegFloat3(SPTGetEulerOrientation(object).rotation) }
+        set {
+            var orientation = SPTGetOrientation(object)
+            orientation.euler.rotation = SPTToRadFloat3(newValue)
+            SPTUpdateOrientation(object, orientation)
+        }
+        get { SPTToDegFloat3(SPTGetOrientation(object).euler.rotation) }
     }
     
     var scale: simd_float3 {
