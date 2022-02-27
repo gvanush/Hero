@@ -18,7 +18,7 @@ typedef struct {
     SPTMeshId meshId;
 } SPTRayCastableMesh;
 
-SPTRayCastableMesh SPTMakeRayCastableMesh(SPTObject object, SPTMeshId meshId);
+void SPTMakeRayCastableMesh(SPTObject object, SPTMeshId meshId);
 
 // MARK: SPTRay
 typedef struct {

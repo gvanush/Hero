@@ -11,9 +11,10 @@
 #include "ComponentListenerUtil.hpp"
 #include "ComponentUpdateNotifier.hpp"
 
+
 void SPTMakeOrientation(SPTObject object, SPTOrientation orientation) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
+    spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTOrientation>(object.entity, orientation);
 }
 
@@ -21,7 +22,7 @@ void SPTUpdateOrientation(SPTObject object, SPTOrientation orientation) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::ComponentUpdateNotifier<SPTOrientation>::onWillChange(registry, object.entity);
     
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
+    spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.get<SPTOrientation>(object.entity) = orientation;
 }
 
@@ -31,13 +32,13 @@ SPTOrientation SPTGetOrientation(SPTObject object) {
 }
 
 void SPTAddOrientationWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::addComponentWillChangeListener<SPTEulerOrientation>(object, listener, callback);
+    spt::addComponentWillChangeListener<SPTOrientation>(object, listener, callback);
 }
 
 void SPTRemoveOrientationWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::removeComponentWillChangeListenerCallback<SPTEulerOrientation>(object, listener, callback);
+    spt::removeComponentWillChangeListenerCallback<SPTOrientation>(object, listener, callback);
 }
 
 void SPTRemoveOrientationWillChangeListener(SPTObject object, SPTComponentListener listener) {
-    spt::removeComponentWillChangeListener<SPTEulerOrientation>(object, listener);
+    spt::removeComponentWillChangeListener<SPTOrientation>(object, listener);
 }

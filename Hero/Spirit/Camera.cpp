@@ -48,10 +48,8 @@ simd_float4x4 computeViewportMatrix(simd_float2 screenSize) {
 }
 
 simd_float4x4 getCameraViewMatrix(SPTObject object) {
-    if(auto tranMatrix = getTransformationMatrix(object); tranMatrix) {
-        return simd_inverse(*tranMatrix);
-    }
-    return matrix_identity_float4x4;
+    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    return simd_inverse(spt::Transformation::getGlobal(registry, object.entity));
 }
 
 simd_float4x4 getCameraProjectionMatrix(SPTObject object) {

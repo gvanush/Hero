@@ -20,7 +20,7 @@ template <typename It>
 void makeScales(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale) {
     registry.insert(beginEntity, endEntity, Scale{scale});
     for(auto it = beginEntity; it != endEntity; ++it) {
-        registry.emplace_or_replace<spt::TransformationMatrix>(*it, matrix_identity_float4x4, true);
+        spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, *it);
     }
 }
 

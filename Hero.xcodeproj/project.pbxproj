@@ -20,7 +20,6 @@
 		B717634B27A2C7D400CE5195 /* ComponentTreeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */; };
 		B717635727ABF25600CE5195 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635627ABF25500CE5195 /* Component.swift */; };
 		B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635827AE836E00CE5195 /* EnumUtil.swift */; };
-		B717635C27AE83D400CE5195 /* ScaleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635B27AE83D400CE5195 /* ScaleComponent.swift */; };
 		B717635E27AE841C00CE5195 /* TransformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635D27AE841C00CE5195 /* TransformationComponent.swift */; };
 		B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635F27B00CCF00CE5195 /* MeshRegistry.swift */; };
 		B717636227B0242300CE5195 /* SampleSceneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717636127B0242300CE5195 /* SampleSceneData.swift */; };
@@ -52,6 +51,11 @@
 		B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47C727C5590800CB0AFC /* Orientation.cpp */; };
 		B73E47CC27C5762500CB0AFC /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47CA27C5762500CB0AFC /* Position.cpp */; };
 		B73E47CF27C5827700CB0AFC /* Scale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47CD27C5827700CB0AFC /* Scale.cpp */; };
+		B73E47D427CBD97500CB0AFC /* EditPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47D327CBD97500CB0AFC /* EditPositionComponentView.swift */; };
+		B73E47D727CBDFDC00CB0AFC /* ObjectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47D627CBDFDC00CB0AFC /* ObjectFactory.swift */; };
+		B73E47D927CC00D900CB0AFC /* EditOrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47D827CC00D900CB0AFC /* EditOrientationComponentView.swift */; };
+		B73E47DB27CC01C600CB0AFC /* FormatterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47DA27CC01C600CB0AFC /* FormatterUtil.swift */; };
+		B73E47DD27CC07C100CB0AFC /* EditScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47DC27CC07C100CB0AFC /* EditScaleComponentView.swift */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA56D278B3414001EC7C5 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56C278B3414001EC7C5 /* Views.swift */; };
 		B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */; };
@@ -110,7 +114,6 @@
 		B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentTreeNavigationView.swift; sourceTree = "<group>"; };
 		B717635627ABF25500CE5195 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		B717635827AE836E00CE5195 /* EnumUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumUtil.swift; sourceTree = "<group>"; };
-		B717635B27AE83D400CE5195 /* ScaleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleComponent.swift; sourceTree = "<group>"; };
 		B717635D27AE841C00CE5195 /* TransformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationComponent.swift; sourceTree = "<group>"; };
 		B717635F27B00CCF00CE5195 /* MeshRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshRegistry.swift; sourceTree = "<group>"; };
 		B717636127B0242300CE5195 /* SampleSceneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleSceneData.swift; sourceTree = "<group>"; };
@@ -136,7 +139,6 @@
 		B72358472756928F00337547 /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
 		B72358492757730700337547 /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
 		B723584B2757749300337547 /* RayCast.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RayCast.cpp; sourceTree = "<group>"; };
-		B723584C2757749300337547 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
 		B723584E275774B600337547 /* RayCast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RayCast.h; sourceTree = "<group>"; };
 		B723584F275D34D000337547 /* Polyline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Polyline.cpp; sourceTree = "<group>"; };
 		B7235850275D34D000337547 /* Polyline.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Polyline.hpp; sourceTree = "<group>"; };
@@ -172,6 +174,12 @@
 		B73E47CD27C5827700CB0AFC /* Scale.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scale.cpp; sourceTree = "<group>"; };
 		B73E47D027C5841C00CB0AFC /* Scale.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Scale.hpp; sourceTree = "<group>"; };
 		B73E47D127C584CB00CB0AFC /* Position.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Position.hpp; sourceTree = "<group>"; };
+		B73E47D227C649EC00CB0AFC /* Transformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transformation.h; sourceTree = "<group>"; };
+		B73E47D327CBD97500CB0AFC /* EditPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPositionComponentView.swift; sourceTree = "<group>"; };
+		B73E47D627CBDFDC00CB0AFC /* ObjectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectFactory.swift; sourceTree = "<group>"; };
+		B73E47D827CC00D900CB0AFC /* EditOrientationComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOrientationComponentView.swift; sourceTree = "<group>"; };
+		B73E47DA27CC01C600CB0AFC /* FormatterUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterUtil.swift; sourceTree = "<group>"; };
+		B73E47DC27CC07C100CB0AFC /* EditScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScaleComponentView.swift; sourceTree = "<group>"; };
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B75FA56C278B3414001EC7C5 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -279,6 +287,7 @@
 				B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */,
 				B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */,
 				B710DB8327BC106D00C57BDF /* ObjectBinding.swift */,
+				B73E47DA27CC01C600CB0AFC /* FormatterUtil.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -308,8 +317,10 @@
 		B717635A27AE839F00CE5195 /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				B717635B27AE83D400CE5195 /* ScaleComponent.swift */,
 				B717635D27AE841C00CE5195 /* TransformationComponent.swift */,
+				B73E47D327CBD97500CB0AFC /* EditPositionComponentView.swift */,
+				B73E47D827CC00D900CB0AFC /* EditOrientationComponentView.swift */,
+				B73E47DC27CC07C100CB0AFC /* EditScaleComponentView.swift */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -349,7 +360,6 @@
 			isa = PBXGroup;
 			children = (
 				B723584B2757749300337547 /* RayCast.cpp */,
-				B723584C2757749300337547 /* RayCast.hpp */,
 				B723584E275774B600337547 /* RayCast.h */,
 			);
 			name = "Ray Casting";
@@ -416,6 +426,7 @@
 				B7791D1C27258F7700E0C934 /* Preview Content */,
 				B736450327B3BA1100FAD433 /* EditComponentViewProvider.swift */,
 				B710DB8927BD8E4000C57BDF /* PropertySelector.swift */,
+				B73E47D627CBDFDC00CB0AFC /* ObjectFactory.swift */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -496,6 +507,7 @@
 			children = (
 				B7E481C9274183BD003DA5B1 /* Transformation.cpp */,
 				B7E481D327439EC2003DA5B1 /* Transformation.hpp */,
+				B73E47D227C649EC00CB0AFC /* Transformation.h */,
 				B73E47C727C5590800CB0AFC /* Orientation.cpp */,
 				B73E47C827C5590800CB0AFC /* Orientation.h */,
 				B73E47CA27C5762500CB0AFC /* Position.cpp */,
@@ -616,6 +628,7 @@
 				B721760A2750AD990047016B /* Buffer_metal.mm in Sources */,
 				B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */,
 				B717634B27A2C7D400CE5195 /* ComponentTreeNavigationView.swift in Sources */,
+				B73E47D427CBD97500CB0AFC /* EditPositionComponentView.swift in Sources */,
 				B73245B6274124C100708909 /* Renderer.mm in Sources */,
 				B7235862276F2BEC00337547 /* OutlineView.cpp in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
@@ -629,10 +642,10 @@
 				B723584D2757749300337547 /* RayCast.cpp in Sources */,
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
-				B717635C27AE83D400CE5195 /* ScaleComponent.swift in Sources */,
 				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
+				B73E47D927CC00D900CB0AFC /* EditOrientationComponentView.swift in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
 				B717635E27AE841C00CE5195 /* TransformationComponent.swift in Sources */,
 				B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */,
@@ -642,6 +655,7 @@
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
 				B72175FA274BC0A60047016B /* Mesh.cpp in Sources */,
 				B70A310A272F1502003432C4 /* AnimationCompletionObserver.swift in Sources */,
+				B73E47DB27CC01C600CB0AFC /* FormatterUtil.swift in Sources */,
 				B717635727ABF25600CE5195 /* Component.swift in Sources */,
 				B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */,
 				B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */,
@@ -650,6 +664,7 @@
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B736450627B3DB7100FAD433 /* EditGeneratorComponentView.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
+				B73E47DD27CC07C100CB0AFC /* EditScaleComponentView.swift in Sources */,
 				B75FA56D278B3414001EC7C5 /* Views.swift in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B73E47CC27C5762500CB0AFC /* Position.cpp in Sources */,
@@ -658,6 +673,7 @@
 				B75FA577278D6DBD001EC7C5 /* GeneratorView.swift in Sources */,
 				B7235855275E984500337547 /* PolylineView.cpp in Sources */,
 				B7104BC2272B00B800582DCA /* Selector.swift in Sources */,
+				B73E47D727CBDFDC00CB0AFC /* ObjectFactory.swift in Sources */,
 				B723585F2762844700337547 /* PolylineViewDepthBias.cpp in Sources */,
 				B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */,
 				B7D8252C279D64D1008F28CE /* EditGeneratorView.swift in Sources */,

@@ -13,7 +13,7 @@
 
 void SPTMakeScale(SPTObject object, simd_float3 scale) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
+    spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<spt::Scale>(object.entity, scale);
 }
 
@@ -21,7 +21,7 @@ void SPTUpdateScale(SPTObject object, simd_float3 scale) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::ComponentUpdateNotifier<spt::Scale>::onWillChange(registry, object.entity);
     
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
+    spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.get<spt::Scale>(object.entity).float3 = scale;
 }
 

@@ -35,6 +35,18 @@ extension EditComponentViewProvider {
 
 struct GeneratorEditComponentViewProvider: EditComponentViewProvider {
     
+    func viewFor(_ component: PositionComponent) -> AnyView? {
+        AnyView(EditPositionComponentView(component: component))
+    }
+    
+    func viewFor(_ component: OrientationComponent) -> AnyView? {
+        AnyView(EditOrientationComponentView(component: component))
+    }
+    
+    func viewFor(_ component: ScaleComponent) -> AnyView? {
+        AnyView(EditScaleComponentView(component: component))
+    }
+    
     func viewFor(_ component: GeneratorComponent) -> AnyView? {
         AnyView(EditGeneratorComponentView(component: component))
     }

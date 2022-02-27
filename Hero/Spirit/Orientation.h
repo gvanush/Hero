@@ -27,7 +27,7 @@ typedef enum {
     SPTEulerOrderYZX,
     SPTEulerOrderZXY,
     SPTEulerOrderZYX
-} SPTEulerOrder;
+} __attribute__((enum_extensibility(closed))) SPTEulerOrder;
 
 typedef struct {
     simd_float3 rotation;

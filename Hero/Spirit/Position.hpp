@@ -7,8 +7,10 @@
 
 #pragma once
 
+#include "Position.h"
 #include "Base.hpp"
 #include "Transformation.hpp"
+
 
 namespace spt {
 
@@ -17,8 +19,8 @@ void makePositions(spt::Registry& registry, It beginEntity, It endEntity, std::s
     auto index = startIndex;
     for(auto it = beginEntity; it != endEntity; ++it, ++index) {
         const auto entity = *it;
+        spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, entity);
         registry.emplace<SPTPosition>(entity, positionGenerator(index));
-        registry.emplace_or_replace<spt::TransformationMatrix>(entity, matrix_identity_float4x4, true);
     }
 }
 
@@ -26,7 +28,7 @@ template <typename It, typename PG>
 void updatePositions(spt::Registry& registry, It beginEntity, It endEntity, PG positionUpdater) {
     for(auto it = beginEntity; it != endEntity; ++it) {
         const auto entity = *it;
-        registry.get<spt::TransformationMatrix>(entity).isDirty = true;
+        spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, entity);
         registry.patch<SPTPosition>(entity, positionUpdater);
     }
 }

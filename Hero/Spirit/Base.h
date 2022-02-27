@@ -31,10 +31,14 @@ typedef struct {
     SPTSceneHandle sceneHandle;
 } SPTObject;
 
+extern const SPTEntity kSPTNullEntity;
 extern const SPTObject kSPTNullObject;
+
 bool SPTIsNull(SPTObject object);
 
 bool SPTIsValid(SPTObject object);
+
+bool SPTObjectSameAsObject(SPTObject object1, SPTObject object2);
 
 typedef void* SPTComponentListener;
 typedef void (*SPTComponentListenerCallback) (SPTComponentListener);

@@ -11,7 +11,8 @@
 
 #include <entt/entt.hpp>
 
-const SPTObject kSPTNullObject {entt::null, nullptr};
+const SPTEntity kSPTNullEntity {entt::null};
+const SPTObject kSPTNullObject {kSPTNullEntity, nullptr};
 
 bool SPTIsNull(SPTObject object) {
     return object.sceneHandle == kSPTNullObject.sceneHandle && object.entity == kSPTNullObject.entity;
@@ -19,4 +20,8 @@ bool SPTIsNull(SPTObject object) {
 
 bool SPTIsValid(SPTObject entity) {
     return entity.sceneHandle != nullptr && static_cast<spt::Scene*>(entity.sceneHandle)->registry.valid(entity.entity);
+}
+
+bool SPTObjectSameAsObject(SPTObject object1, SPTObject object2) {
+    return object1.sceneHandle == object2.sceneHandle && object1.entity == object2.entity;
 }

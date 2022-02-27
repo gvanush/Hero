@@ -50,9 +50,8 @@ struct NewGeneratorView: View {
             }
         }, content: {
             TemplateObjectSelector { meshId in
-                let generatorObject = sceneViewModel.scene.makeObject()
-                SPTMakeGenerator(generatorObject, meshId, 5)
-                generatorComponent = GeneratorComponent(object: generatorObject)
+                let factory = ObjectFactory(scene: sceneViewModel.scene)
+                generatorComponent = GeneratorComponent(object: factory.makeGenerator(meshId: meshId))
             }
         })
         .onDisappear {

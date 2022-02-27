@@ -13,7 +13,7 @@
 
 void SPTMakePosition(SPTObject object, SPTPosition position) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    registry.emplace_or_replace<spt::TransformationMatrix>(object.entity, matrix_identity_float4x4, true);
+    spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTPosition>(object.entity, position);
 }
 
@@ -21,7 +21,7 @@ void SPTUpdatePosition(SPTObject object, SPTPosition position) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::ComponentUpdateNotifier<SPTPosition>::onWillChange(registry, object.entity);
     
-    registry.get<spt::TransformationMatrix>(object.entity).isDirty = true;
+    spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.get<SPTPosition>(object.entity) = position;
 }
 

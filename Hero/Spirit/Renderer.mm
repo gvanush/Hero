@@ -51,17 +51,9 @@ id<MTLRenderPipelineState> createPipelineState(NSString* name, NSString* vertexS
     return pipelineState;
 }
 
-simd_float4x4 getWorldMatrix(Registry& registry, const SPTEntity& entity) {
-    if(auto worldMatrix = spt::getTransformationMatrix(registry, entity); worldMatrix) {
-        return *worldMatrix;
-    } else {
-        return matrix_identity_float4x4;
-    }
-}
-
-void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, const SPTEntity& entity, const SPTMeshView& meshView) {
+void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTMeshView& meshView) {
     
-    const auto& worldMatrix = getWorldMatrix(registry, entity);
+    const auto& worldMatrix = registry.get<Transformation>(entity).global;
     
     switch (meshView.shading) {
         case SPTMeshShadingPlainColor: {
@@ -96,9 +88,9 @@ void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, c
     
 }
 
-void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, const SPTEntity& entity, const SPTPolylineView& polylineView) {
+void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPolylineView& polylineView) {
     
-    const auto& worldMatrix = getWorldMatrix(registry, entity);
+    const auto& worldMatrix = registry.get<Transformation>(entity).global;
     [renderEncoder setVertexBytes: &worldMatrix
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexWorldMatrix];
@@ -118,9 +110,10 @@ void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registr
     
 }
 
-void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, const SPTEntity& entity, const SPTOutlineView& outlineView) {
+void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTOutlineView& outlineView) {
     
-    const auto& worldMatrix = getWorldMatrix(registry, entity);
+    const auto& worldMatrix = registry.get<Transformation>(entity).global;
+    
     [renderEncoder setVertexBytes: &worldMatrix
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexWorldMatrix];

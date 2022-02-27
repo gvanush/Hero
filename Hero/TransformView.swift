@@ -75,11 +75,7 @@ struct ObjectControlView: View {
         case .move:
             return FloatField(value: $model.position[axis.rawValue], scale: $scale)
         case .orient:
-            let angleFormatter = MeasurementFormatter()
-            angleFormatter.unitStyle = .short
-            return FloatField(value: $model.eulerRotation[axis.rawValue], scale: $scale, measurementFormatter: angleFormatter, formatterSubjectProvider: { value in
-                Measurement<UnitAngle>(value: Double(value), unit: .degrees) as NSObject
-            })
+            return FloatField(value: $model.eulerRotation[axis.rawValue], scale: $scale, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
         case .scale:
             return FloatField(value: $model.scale[axis.rawValue], scale: $scale)
         }

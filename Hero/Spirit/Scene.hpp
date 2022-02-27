@@ -10,7 +10,7 @@
 #include "Base.h"
 #include "Base.hpp"
 #include "Renderer.hpp"
-
+#include "Transformation.hpp"
 #include <entt/entt.hpp>
 #include <tuple>
 
@@ -24,20 +24,14 @@ struct Scene {
     SPTObject makeObject();
     static void destroyObject(SPTObject entity);
     
+    void onPrerender();
     void render(void* renderingContext);
     
     Registry registry;
     
     Renderer meshRenderer {registry};
         
+    Transformation::GroupType transformationGroup;
 };
-
-inline SPTObject Scene::makeObject() {
-    return SPTObject { registry.create(), this };
-}
-
-inline void Scene::destroyObject(SPTObject entity) {
-    static_cast<Scene*>(entity.sceneHandle)->registry.destroy(entity.entity);
-}
 
 }

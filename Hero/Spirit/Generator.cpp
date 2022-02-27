@@ -23,13 +23,15 @@ namespace spt {
 
 namespace {
 
-void makeObjects(spt::Registry& registry, spt::Generator& generator, std::size_t count) {
+void makeObjects(spt::Registry& registry, SPTObject object, spt::Generator& generator, std::size_t count) {
 
     const auto initialSize = generator.entities.size();
     generator.entities.resize(generator.entities.size() + count);
     
     auto beginEntity = generator.entities.begin() + initialSize;
     registry.create(beginEntity, generator.entities.end());
+    
+    Transformation::makeChildren(registry, object, beginEntity, generator.entities.end());
     
     spt::makeBlinnPhongMeshViews(registry, beginEntity, generator.entities.end(), generator.base.sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
     
@@ -80,8 +82,8 @@ SPTGenerator SPTMakeGenerator(SPTObject object, SPTMeshId sourceMeshId, SPTGener
     generator.base.sourceMeshId = sourceMeshId;
     generator.base.arrangement.variantTag = SPTArrangementVariantTagLinear;
     generator.base.arrangement.linear.axis = SPTAxisX;
-
-    spt::makeObjects(registry, generator, quantity);
+    
+    spt::makeObjects(registry, object, generator, quantity);
     return generator.base;
 }
 
@@ -100,7 +102,7 @@ void SPTUpdateGenerator(SPTObject object, SPTGenerator updated) {
     assert(updated.quantity >= kSPTGeneratorMinQuantity && updated.quantity <= kSPTGeneratorMaxQuantity);
     if(generator.base.quantity != updated.quantity) {
         if(updated.quantity > generator.base.quantity) {
-            spt::makeObjects(registry, generator, updated.quantity - generator.base.quantity);
+            spt::makeObjects(registry, object, generator, updated.quantity - generator.base.quantity);
         } else {
             spt::destroyObjects(registry, generator, generator.base.quantity - updated.quantity);
         }
@@ -144,7 +146,11 @@ namespace spt {
 
 void Generator::onDestroy(spt::Registry& registry, SPTEntity entity) {
     const auto& generator = registry.get<Generator>(entity);
-    registry.destroy(generator.entities.begin(), generator.entities.end());
+    for(auto genEntity: generator.entities) {
+        if(registry.valid(genEntity)) {
+            registry.destroy(genEntity);
+        }
+    }
 }
 
 }

@@ -55,7 +55,7 @@ class SceneViewModel: ObservableObject {
         let zAxisObject = scene.makeObject()
         SPTMakePolylineView(zAxisObject, lineId, UIColor.blue.rgba, 2.0)
         SPTMakeScale(zAxisObject, simd_float3(500.0, 1.0, 1.0))
-        SPTMakeOrientation(zAxisObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, Float.pi * 0.5, 0.0), order: SPTEulerOrderXYZ))))
+        SPTMakeOrientation(zAxisObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, Float.pi * 0.5, 0.0), order: .XYZ))))
         SPTMakePolylineViewDepthBias(zAxisObject, 5.0, 3.0, 0.0)
         
         
@@ -64,7 +64,7 @@ class SceneViewModel: ObservableObject {
         let centerObject = scene.makeObject()
         SPTMakePosition(centerObject, .init(variantTag: .XYZ, .init(xyz: .zero)))
         SPTMakeScale(centerObject, simd_float3(5.0, 5.0, 5.0))
-        SPTMakeOrientation(centerObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, 0.0, 0.0), order: SPTEulerOrderXYZ))))
+        SPTMakeOrientation(centerObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, 0.0, 0.0), order: .XYZ))))
         SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
         SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
         

@@ -32,7 +32,7 @@ class GeneratorComponent: BasicComponent<GeneratorComponentProperty> {
         
         SPTAddGeneratorWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<GeneratorComponent>.fromOpaque(observer!).takeUnretainedValue()
-            me.arrangement.onWillChange()
+            me.onWillChange()
         })
         
     }

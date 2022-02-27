@@ -13,9 +13,9 @@
 
 #include <entt/entt.hpp>
 
-SPTRayCastableMesh SPTMakeRayCastableMesh(SPTObject object, SPTMeshId meshId) {
+void SPTMakeRayCastableMesh(SPTObject object, SPTMeshId meshId) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.emplace<SPTRayCastableMesh>(object.entity, meshId);
+    registry.emplace<SPTRayCastableMesh>(object.entity, meshId);
 }
 
 SPTRay SPTTransformRay(SPTRay ray, simd_float4x4 matrix) {
@@ -24,13 +24,17 @@ SPTRay SPTTransformRay(SPTRay ray, simd_float4x4 matrix) {
 
 SPTRayCastResult SPTRayCastScene(SPTSceneHandle sceneHandle, SPTRay ray, float tolerance) {
     
+    auto scene = static_cast<spt::Scene*>(sceneHandle);
+    auto& registry = scene->registry;
+    
+    spt::Transformation::update(registry, scene->transformationGroup);
+    
     SPTRayCastResult result {kSPTNullObject, INFINITY};
-    auto& registry = static_cast<spt::Scene*>(sceneHandle)->registry;
     registry.view<SPTRayCastableMesh>().each([&registry, &result, ray, tolerance, sceneHandle] (auto entity, auto& rayCastableMesh) {
-        SPTRay localRay = ray;
-        if(const auto tranMat = spt::getTransformationMatrix(registry, entity)) {
-            localRay = SPTTransformRay(ray, simd_inverse(*tranMat));
-        }
+        
+        const auto globalMat = registry.get<spt::Transformation>(entity).global;
+        SPTRay localRay = SPTTransformRay(ray, simd_inverse(globalMat));
+        
         const auto& mesh = spt::ResourceManager::active().getMesh(rayCastableMesh.meshId);
         const auto aabbIntersRes = SPTIntersectRayAABB(localRay, mesh.boundingBox(), tolerance);
         if(aabbIntersRes.intersected) {

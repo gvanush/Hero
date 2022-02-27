@@ -60,6 +60,9 @@
     commandBuffer.label = @"MainCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
     
+    auto scene = static_cast<spt::Scene*>(self.scene.cpp);
+    scene->onPrerender();
+    
     assert(SPTIsValid(self.viewCameraObject));
     self.renderingContext.cameraPosition = spt::getPosition(self.viewCameraObject);
     self.renderingContext.projectionViewMatrix = spt::getCameraProjectionViewMatrix(self.viewCameraObject);
@@ -69,7 +72,7 @@
         
         self.renderingContext.renderPassDescriptor = renderPassDescriptor;
         
-        static_cast<spt::Scene*>(self.scene.cpp)->render((__bridge void*) self.renderingContext);
+        scene->render((__bridge void*) self.renderingContext);
         
         [commandBuffer commit];
         [commandBuffer waitUntilScheduled];

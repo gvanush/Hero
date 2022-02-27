@@ -17,6 +17,13 @@ namespace spt {
 using Registry = entt::basic_registry<SPTEntity>;
 using EntityObserver = entt::basic_observer<SPTEntity>;
 
+template <typename CT, typename... Args>
+void emplaceIfMissing(Registry& registry, SPTEntity entity, Args &&...args) {
+    if(!registry.all_of<CT>(entity)) {
+        registry.emplace<CT>(entity, std::forward<Args>(args)...);
+    }
+}
+
 struct ComponentListenerItem {
     SPTComponentListener listener;
     SPTComponentListenerCallback callback;
