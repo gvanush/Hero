@@ -21,13 +21,13 @@ typedef struct {
 
 SPT_EXTERN_C_BEGIN
 
-SPTPerspectiveCamera SPTMakePerspectiveCamera(SPTObject object, float fovy, float aspectRatio, float near, float far);
+SPTPerspectiveCamera SPTCameraMakePerspective(SPTObject object, float fovy, float aspectRatio, float near, float far);
 
-SPTOrthographicCamera SPTMakeOrthographicCamera(SPTObject object, float sizeY, float aspectRatio, float near, float far);
+SPTOrthographicCamera SPTCameraMakeOrthographic(SPTObject object, float sizeY, float aspectRatio, float near, float far);
 
-void SPTUpdatePerspectiveCameraAspectRatio(SPTObject object, float aspectRatio);
+void SPTCameraUpdatePerspectiveAspectRatio(SPTObject object, float aspectRatio);
 
-void SPTUpdateOrthographicCameraAspectRatio(SPTObject object, float aspectRatio);
+void SPTCameraUpdateOrthographicAspectRatio(SPTObject object, float aspectRatio);
 
 simd_float3 SPTCameraConvertWorldToViewport(SPTObject cameraObject, simd_float3 point, simd_float2 viewportSize);
 

@@ -20,6 +20,6 @@ typedef struct {
     float thickness;
 } SPTPolylineView;
 
-SPTPolylineView SPTMakePolylineView(SPTObject object, SPTPolylineId polylineId, simd_float4 color, float thickness);
+SPTPolylineView SPTPolylineViewMake(SPTObject object, SPTPolylineId polylineId, simd_float4 color, float thickness);
 
 SPT_EXTERN_C_END

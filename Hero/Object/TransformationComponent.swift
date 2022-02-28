@@ -34,19 +34,19 @@ class PositionComponent: BasicComponent<Axis> {
         self.object = object
         super.init(title: "Position", selectedProperty: .x, parent: parent)
         
-        SPTAddPositionWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTPositionAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<PositionComponent>.fromOpaque(observer!).takeUnretainedValue()
             me.objectWillChange.send()
         })
     }
     
     deinit {
-        SPTRemovePositionWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTPositionRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
     var value: simd_float3 {
-        set { SPTUpdatePosition(object, SPTPosition(variantTag: .XYZ, .init(xyz: newValue))) }
-        get { SPTGetPosition(object).xyz }
+        set { SPTPositionUpdate(object, SPTPosition(variantTag: .XYZ, .init(xyz: newValue))) }
+        get { SPTPositionGet(object).xyz }
     }
     
     override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
@@ -64,23 +64,23 @@ class OrientationComponent: BasicComponent<Axis> {
         self.object = object
         super.init(title: "Orientation", selectedProperty: .x, parent: parent)
         
-        SPTAddOrientationWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTOrientationAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<OrientationComponent>.fromOpaque(observer!).takeUnretainedValue()
             me.objectWillChange.send()
         })
     }
     
     deinit {
-        SPTRemoveOrientationWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTOrientationRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
     var value: simd_float3 {
         set {
-            var orientation = SPTGetOrientation(object)
+            var orientation = SPTOrientationGet(object)
             orientation.euler.rotation = SPTToRadFloat3(newValue)
-            SPTUpdateOrientation(object, orientation)
+            SPTOrientationUpdate(object, orientation)
         }
-        get { SPTToDegFloat3(SPTGetOrientation(object).euler.rotation) }
+        get { SPTToDegFloat3(SPTOrientationGet(object).euler.rotation) }
     }
     
     override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
@@ -97,19 +97,19 @@ class ScaleComponent: BasicComponent<Axis> {
         self.object = object
         super.init(title: "Scale", selectedProperty: .x, parent: parent)
         
-        SPTAddScaleWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTScaleAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<ScaleComponent>.fromOpaque(observer!).takeUnretainedValue()
             me.objectWillChange.send()
         })
     }
     
     deinit {
-        SPTRemoveScaleWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTScaleRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
     var value: simd_float3 {
-        set { SPTUpdateScale(object, newValue) }
-        get { SPTGetScale(object) }
+        set { SPTScaleUpdate(object, newValue) }
+        get { SPTScaleGet(object) }
     }
     
     override func accept(_ provider: EditComponentViewProvider) -> AnyView? {

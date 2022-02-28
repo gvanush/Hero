@@ -15,10 +15,10 @@ struct ObjectFactory {
     
     func makeGenerator(meshId: SPTMeshId) -> SPTObject {
         let object = scene.makeObject()
-        SPTMakePosition(object, .init(variantTag: .XYZ, .init(xyz: .zero)))
-        SPTMakeOrientation(object, .init(variantTag: .euler, .init(euler: .init(rotation: .zero, order: .XYZ))))
-        SPTMakeScale(object, .one)
-        SPTMakeGenerator(object, meshId, 5)
+        SPTPositionMakeXYZ(object, .zero)
+        SPTOrientationMakeEuler(object, .init(rotation: .zero, order: .XYZ))
+        SPTScaleMake(object, .one)
+        SPTGeneratorMake(object, meshId, 5)
         
         return object
     }

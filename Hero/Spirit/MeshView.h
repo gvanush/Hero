@@ -33,8 +33,9 @@ typedef struct {
     SPTMeshId meshId;
 } SPTMeshView;
 
-SPTMeshView SPTMakePlainColorMeshView(SPTObject object, SPTMeshId meshId, simd_float4 color);
-SPTMeshView SPTMakeBlinnPhongMeshView(SPTObject object, SPTMeshId meshId, simd_float4 color, float specularRoughness);
-SPTMeshView SPTGetMeshView(SPTObject object);
+SPTMeshView SPTMeshViewMakePlainColor(SPTObject object, SPTMeshId meshId, simd_float4 color);
+SPTMeshView SPTMeshViewMakeBlinnPhong(SPTObject object, SPTMeshId meshId, simd_float4 color, float specularRoughness);
+
+SPTMeshView SPTMeshViewGet(SPTObject object);
 
 SPT_EXTERN_C_END

@@ -11,13 +11,13 @@
 #include "ComponentUpdateNotifier.hpp"
 #include "Base.hpp"
 
-void SPTMakeScale(SPTObject object, simd_float3 scale) {
+void SPTScaleMake(SPTObject object, simd_float3 scale) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<spt::Scale>(object.entity, scale);
 }
 
-void SPTUpdateScale(SPTObject object, simd_float3 scale) {
+void SPTScaleUpdate(SPTObject object, simd_float3 scale) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::ComponentUpdateNotifier<spt::Scale>::onWillChange(registry, object.entity);
     
@@ -25,18 +25,18 @@ void SPTUpdateScale(SPTObject object, simd_float3 scale) {
     registry.get<spt::Scale>(object.entity).float3 = scale;
 }
 
-simd_float3 SPTGetScale(SPTObject object) {
+simd_float3 SPTScaleGet(SPTObject object) {
     return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<spt::Scale>(object.entity).float3;
 }
 
-void SPTAddScaleWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+void SPTScaleAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     spt::addComponentWillChangeListener<spt::Scale>(object, listener, callback);
 }
 
-void SPTRemoveScaleWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     spt::removeComponentWillChangeListenerCallback<spt::Scale>(object, listener, callback);
 }
 
-void SPTRemoveScaleWillChangeListener(SPTObject object, SPTComponentListener listener) {
+void SPTScaleRemoveWillChangeListener(SPTObject object, SPTComponentListener listener) {
     spt::removeComponentWillChangeListener<spt::Scale>(object, listener);
 }

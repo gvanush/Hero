@@ -14,14 +14,14 @@
 
 SPT_EXTERN_C_BEGIN
 
-void SPTMakeScale(SPTObject object, simd_float3 scale);
+void SPTScaleMake(SPTObject object, simd_float3 scale);
 
-void SPTUpdateScale(SPTObject object, simd_float3 scale);
+void SPTScaleUpdate(SPTObject object, simd_float3 scale);
 
-simd_float3 SPTGetScale(SPTObject object);
+simd_float3 SPTScaleGet(SPTObject object);
 
-void SPTAddScaleWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveScaleWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveScaleWillChangeListener(SPTObject object, SPTComponentListener listener);
+void SPTScaleAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTScaleRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END

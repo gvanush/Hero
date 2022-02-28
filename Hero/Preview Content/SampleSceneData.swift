@@ -14,7 +14,7 @@ struct SampleSceneData {
     
     func makeGenerator(sourceMeshName: String, quantity: UInt16) -> SPTObject {
         let object = sceneViewModel.scene.makeObject()
-        SPTMakeGenerator(object, MeshRegistry.standard.recordNamed(sourceMeshName)!.id, quantity)
+        SPTGeneratorMake(object, MeshRegistry.standard.recordNamed(sourceMeshName)!.id, quantity)
         return object
     }
     

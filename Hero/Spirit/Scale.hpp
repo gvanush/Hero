@@ -14,10 +14,14 @@ namespace spt {
 
 struct Scale {
     simd_float3 float3;
+    
+    template <typename It>
+    static void make(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale);
+    
 };
 
 template <typename It>
-void makeScales(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale) {
+void Scale::make(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale) {
     registry.insert(beginEntity, endEntity, Scale{scale});
     for(auto it = beginEntity; it != endEntity; ++it) {
         spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, *it);

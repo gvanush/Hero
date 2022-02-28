@@ -57,14 +57,14 @@ const SPTGeneratorQuantityType kSPTGeneratorMaxQuantity = 1000;
 
 SPT_EXTERN_C_BEGIN
 
-SPTGenerator SPTMakeGenerator(SPTObject object, SPTMeshId sourceMeshId, SPTGeneratorQuantityType quantity);
+SPTGenerator SPTGeneratorMake(SPTObject object, SPTMeshId sourceMeshId, SPTGeneratorQuantityType quantity);
 
-SPTGenerator SPTGetGenerator(SPTObject object);
+void SPTGeneratorUpdate(SPTObject object, SPTGenerator updated);
 
-void SPTUpdateGenerator(SPTObject object, SPTGenerator updated);
+SPTGenerator SPTGeneratorGet(SPTObject object);
 
-void SPTAddGeneratorWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveGeneratorWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveGeneratorWillChangeListener(SPTObject object, SPTComponentListener listener);
+void SPTGeneratorAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTGeneratorRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTGeneratorRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END

@@ -18,7 +18,7 @@ typedef struct {
     SPTMeshId meshId;
 } SPTRayCastableMesh;
 
-void SPTMakeRayCastableMesh(SPTObject object, SPTMeshId meshId);
+void SPTRayCastableMeshMake(SPTObject object, SPTMeshId meshId);
 
 // MARK: SPTRay
 typedef struct {
@@ -26,7 +26,7 @@ typedef struct {
     simd_float3 direction;
 } SPTRay;
 
-SPTRay SPTTransformRay(SPTRay ray, simd_float4x4 matrix);
+SPTRay SPTRayTransform(SPTRay ray, simd_float4x4 matrix);
 
 typedef struct {
     SPTObject object;
@@ -40,8 +40,8 @@ typedef struct {
     bool intersected;
 } SPTRayIntersectionResult;
 
-SPTRayIntersectionResult SPTIntersectRayAABB(SPTRay ray, SPTAABB aabb, float tolerance);
+SPTRayIntersectionResult SPTRayIntersectAABB(SPTRay ray, SPTAABB aabb, float tolerance);
 
-SPTRayIntersectionResult SPTIntersectRayTriangle(SPTRay ray, SPTTriangle triangle, float tolerance);
+SPTRayIntersectionResult SPTRayIntersectTriangle(SPTRay ray, SPTTriangle triangle, float tolerance);
 
 SPT_EXTERN_C_END

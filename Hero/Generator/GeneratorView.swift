@@ -23,14 +23,14 @@ class GeneratorComponent: BasicComponent<GeneratorComponentProperty> {
         
         self.object = object
         _generator = ObjectBinding(getter: {
-            SPTGetGenerator(object)
+            SPTGeneratorGet(object)
         }, setter: { newValue in
-            SPTUpdateGenerator(object, newValue)
+            SPTGeneratorUpdate(object, newValue)
         })
         
         super.init(title: "Generator", selectedProperty: .quantity, parent: nil)
         
-        SPTAddGeneratorWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
+        SPTGeneratorAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
             let me = Unmanaged<GeneratorComponent>.fromOpaque(observer!).takeUnretainedValue()
             me.onWillChange()
         })
@@ -38,7 +38,7 @@ class GeneratorComponent: BasicComponent<GeneratorComponentProperty> {
     }
     
     deinit {
-        SPTRemoveGeneratorWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
+        SPTGeneratorRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
     var sourceObjectTypeName: String {

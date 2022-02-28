@@ -11,13 +11,21 @@
 #include "ComponentListenerUtil.hpp"
 #include "ComponentUpdateNotifier.hpp"
 
-void SPTMakePosition(SPTObject object, SPTPosition position) {
+void SPTPositionMake(SPTObject object, SPTPosition position) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTPosition>(object.entity, position);
 }
 
-void SPTUpdatePosition(SPTObject object, SPTPosition position) {
+void SPTPositionMakeXYZ(SPTObject object, simd_float3 xyz) {
+    SPTPositionMake(object, {SPTPositionVariantTagXYZ, {.xyz = xyz}});
+}
+
+void SPTPositionMakeSpherical(SPTObject object, SPTSphericalPosition spherical) {
+    SPTPositionMake(object, {SPTPositionVariantTagSpherical, {.spherical = spherical}});
+}
+
+void SPTPositionUpdate(SPTObject object, SPTPosition position) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::ComponentUpdateNotifier<SPTPosition>::onWillChange(registry, object.entity);
     
@@ -25,23 +33,27 @@ void SPTUpdatePosition(SPTObject object, SPTPosition position) {
     registry.get<SPTPosition>(object.entity) = position;
 }
 
-SPTPosition SPTGetPosition(SPTObject object) {
+SPTPosition SPTPositionGet(SPTObject object) {
     return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<SPTPosition>(object.entity);
 }
 
-void SPTAddPositionWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+simd_float3 SPTPositionGetXYZ(SPTObject object) {
+    return spt::Position::getXYZ(static_cast<spt::Scene*>(object.sceneHandle)->registry, object.entity);
+}
+
+void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     spt::addComponentWillChangeListener<SPTPosition>(object, listener, callback);
 }
 
-void SPTRemovePositionWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     spt::removeComponentWillChangeListenerCallback<SPTPosition>(object, listener, callback);
 }
 
-void SPTRemovePositionWillChangeListener(SPTObject object, SPTComponentListener listener) {
+void SPTPositionRemoveWillChangeListener(SPTObject object, SPTComponentListener listener) {
     spt::removeComponentWillChangeListener<SPTPosition>(object, listener);
 }
 
-simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPosition) {
+simd_float3 SPTPositionConvertSphericalToXYZ(SPTSphericalPosition sphericalPosition) {
     float lngSin = sinf(sphericalPosition.longitude);
     float lngCos = cosf(sphericalPosition.longitude);
     float latSin = sinf(sphericalPosition.latitude);
@@ -51,23 +63,22 @@ simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPo
 
 namespace spt {
 
-simd_float3 getPosition(SPTObject object) {
-    return getPosition(static_cast<spt::Scene*>(object.sceneHandle)->registry, object.entity);
-}
+namespace Position {
 
-simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity) {
-    
+simd_float3 getXYZ(const spt::Registry& registry, SPTEntity entity) {
     if(const auto position = registry.try_get<SPTPosition>(entity)) {
         switch (position->variantTag) {
             case SPTPositionVariantTagXYZ: {
                 return position->xyz;
             }
             case SPTPositionVariantTagSpherical: {
-                return SPTGetPositionFromSphericalPosition(position->spherical);
+                return SPTPositionConvertSphericalToXYZ(position->spherical);
             }
         }
     }
     return {0.f, 0.f, 0.f};
+}
+
 }
 
 }

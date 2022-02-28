@@ -13,12 +13,12 @@
 
 #include <entt/entt.hpp>
 
-void SPTMakeRayCastableMesh(SPTObject object, SPTMeshId meshId) {
+void SPTRayCastableMeshMake(SPTObject object, SPTMeshId meshId) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     registry.emplace<SPTRayCastableMesh>(object.entity, meshId);
 }
 
-SPTRay SPTTransformRay(SPTRay ray, simd_float4x4 matrix) {
+SPTRay SPTRayTransform(SPTRay ray, simd_float4x4 matrix) {
     return SPTRay {simd_mul(matrix, simd_make_float4(ray.origin, 1.f)).xyz, simd_mul(matrix, simd_make_float4(ray.direction)).xyz};
 }
 
@@ -33,15 +33,15 @@ SPTRayCastResult SPTRayCastScene(SPTSceneHandle sceneHandle, SPTRay ray, float t
     registry.view<SPTRayCastableMesh>().each([&registry, &result, ray, tolerance, sceneHandle] (auto entity, auto& rayCastableMesh) {
         
         const auto globalMat = registry.get<spt::Transformation>(entity).global;
-        SPTRay localRay = SPTTransformRay(ray, simd_inverse(globalMat));
+        SPTRay localRay = SPTRayTransform(ray, simd_inverse(globalMat));
         
         const auto& mesh = spt::ResourceManager::active().getMesh(rayCastableMesh.meshId);
-        const auto aabbIntersRes = SPTIntersectRayAABB(localRay, mesh.boundingBox(), tolerance);
+        const auto aabbIntersRes = SPTRayIntersectAABB(localRay, mesh.boundingBox(), tolerance);
         if(aabbIntersRes.intersected) {
             
             for (auto it = mesh.cFaceBegin(); it != mesh.cFaceEnd(); ++it) {
                 const auto& face = *it;
-                const auto triIntersRes = SPTIntersectRayTriangle(localRay, SPTTriangle{face.v0.position, face.v1.position, face.v2.position}, tolerance);
+                const auto triIntersRes = SPTRayIntersectTriangle(localRay, SPTTriangle{face.v0.position, face.v1.position, face.v2.position}, tolerance);
                 if(triIntersRes.intersected && result.rayDirectionFactor > triIntersRes.rayDirectionFactor) {
                     result.object = SPTObject{entity, sceneHandle};
                     result.rayDirectionFactor = triIntersRes.rayDirectionFactor;
@@ -54,7 +54,7 @@ SPTRayCastResult SPTRayCastScene(SPTSceneHandle sceneHandle, SPTRay ray, float t
     return result;
 }
 
-SPTRayIntersectionResult SPTIntersectRayAABB(SPTRay ray, SPTAABB aabb, float tolerance) {
+SPTRayIntersectionResult SPTRayIntersectAABB(SPTRay ray, SPTAABB aabb, float tolerance) {
     
     float t1, t2, tMin = -INFINITY, tMax = INFINITY;
     if(fabs(ray.direction.y) > tolerance) {
@@ -114,7 +114,7 @@ SPTRayIntersectionResult SPTIntersectRayAABB(SPTRay ray, SPTAABB aabb, float tol
     return {tMax, true};
 }
 
-SPTRayIntersectionResult SPTIntersectRayTriangle(SPTRay ray, SPTTriangle triangle, float tolerance) {
+SPTRayIntersectionResult SPTRayIntersectTriangle(SPTRay ray, SPTTriangle triangle, float tolerance) {
     
     // Backfacing triangles are not culled
     

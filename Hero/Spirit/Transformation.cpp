@@ -118,7 +118,7 @@ void applyLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& lookAtOrient
 simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEntity entity) {
     auto matrix = matrix_identity_float4x4;
     
-    matrix.columns[3].xyz = getPosition(registry, entity);
+    matrix.columns[3].xyz = Position::getXYZ(registry, entity);
     
     if(const auto orientation = registry.try_get<SPTOrientation>(entity)) {
         switch (orientation->variantTag) {

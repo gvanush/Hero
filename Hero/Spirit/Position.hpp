@@ -14,8 +14,10 @@
 
 namespace spt {
 
+namespace Position {
+
 template <typename It, typename PG>
-void makePositions(spt::Registry& registry, It beginEntity, It endEntity, std::size_t startIndex, PG positionGenerator) {
+void make(spt::Registry& registry, It beginEntity, It endEntity, std::size_t startIndex, PG positionGenerator) {
     auto index = startIndex;
     for(auto it = beginEntity; it != endEntity; ++it, ++index) {
         const auto entity = *it;
@@ -25,7 +27,7 @@ void makePositions(spt::Registry& registry, It beginEntity, It endEntity, std::s
 }
 
 template <typename It, typename PG>
-void updatePositions(spt::Registry& registry, It beginEntity, It endEntity, PG positionUpdater) {
+void update(spt::Registry& registry, It beginEntity, It endEntity, PG positionUpdater) {
     for(auto it = beginEntity; it != endEntity; ++it) {
         const auto entity = *it;
         spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, entity);
@@ -33,8 +35,8 @@ void updatePositions(spt::Registry& registry, It beginEntity, It endEntity, PG p
     }
 }
 
-simd_float3 getPosition(SPTObject object);
+simd_float3 getXYZ(const spt::Registry& registry, SPTEntity entity);
 
-simd_float3 getPosition(const spt::Registry& registry, SPTEntity entity);
+}
 
 }

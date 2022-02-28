@@ -12,13 +12,21 @@
 #include "ComponentUpdateNotifier.hpp"
 
 
-void SPTMakeOrientation(SPTObject object, SPTOrientation orientation) {
+void SPTOrientationMake(SPTObject object, SPTOrientation orientation) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTOrientation>(object.entity, orientation);
 }
 
-void SPTUpdateOrientation(SPTObject object, SPTOrientation orientation) {
+void SPTOrientationMakeEuler(SPTObject object, SPTEulerOrientation euler) {
+    SPTOrientationMake(object, {SPTOrientationVariantTagEuler, {.euler = euler}});
+}
+
+void SPTOrientationMakeLookAt(SPTObject object, SPTLookAtOrientation lookAt) {
+    SPTOrientationMake(object, {SPTOrientationVariantTagLookAt, {.lookAt = lookAt}});
+}
+
+void SPTOrientationUpdate(SPTObject object, SPTOrientation orientation) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::ComponentUpdateNotifier<SPTOrientation>::onWillChange(registry, object.entity);
     
@@ -26,19 +34,19 @@ void SPTUpdateOrientation(SPTObject object, SPTOrientation orientation) {
     registry.get<SPTOrientation>(object.entity) = orientation;
 }
 
-SPTOrientation SPTGetOrientation(SPTObject object) {
+SPTOrientation SPTOrientationGet(SPTObject object) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     return registry.get<SPTOrientation>(object.entity);
 }
 
-void SPTAddOrientationWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+void SPTOrientationAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     spt::addComponentWillChangeListener<SPTOrientation>(object, listener, callback);
 }
 
-void SPTRemoveOrientationWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+void SPTOrientationRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
     spt::removeComponentWillChangeListenerCallback<SPTOrientation>(object, listener, callback);
 }
 
-void SPTRemoveOrientationWillChangeListener(SPTObject object, SPTComponentListener listener) {
+void SPTOrientationRemoveWillChangeListener(SPTObject object, SPTComponentListener listener) {
     spt::removeComponentWillChangeListener<SPTOrientation>(object, listener);
 }

@@ -20,7 +20,8 @@ typedef struct {
     float thickness;
 } SPTOutlineView;
 
-SPTOutlineView SPTMakeOutlineView(SPTObject object, SPTMeshId meshId, simd_float4 color, float thickness);
-void SPTDestroyOutlineView(SPTObject object);
+SPTOutlineView SPTOutlineViewMake(SPTObject object, SPTMeshId meshId, simd_float4 color, float thickness);
+
+void SPTOutlineViewDestroy(SPTObject object);
 
 SPT_EXTERN_C_END

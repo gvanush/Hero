@@ -19,11 +19,11 @@ class SceneViewModel: ObservableObject {
     @Published var selectedObject: SPTObject? {
         willSet {
             if let selectedObject = selectedObject {
-                SPTDestroyOutlineView(selectedObject)
+                SPTOutlineViewDestroy(selectedObject)
             }
             if let newSelectedObject = newValue {
-                let meshView = SPTGetMeshView(newSelectedObject)
-                SPTMakeOutlineView(newSelectedObject, meshView.meshId, UIColor.objectSelectionColor.rgba, 5.0)
+                let meshView = SPTMeshViewGet(newSelectedObject)
+                SPTOutlineViewMake(newSelectedObject, meshView.meshId, UIColor.objectSelectionColor.rgba, 5.0)
             }
         }
     }
@@ -32,52 +32,52 @@ class SceneViewModel: ObservableObject {
 
         // Setup view camera
         viewCameraObject = scene.makeObject()
-        SPTMakePosition(viewCameraObject, .init(variantTag: .spherical, .init(spherical: .init(center: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi))))
-        SPTMakeOrientation(viewCameraObject, SPTOrientation(variantTag: .lookAt, .init(lookAt: .init(target: .zero, up: simd_float3.up, axis: .Z, positive: false))))
-        SPTMakePerspectiveCamera(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
-//        SPTMakeOrthographicCamera(viewCameraObject, 100.0, 1.0, 0.1, 2000.0)
+        SPTPositionMakeSpherical(viewCameraObject, .init(center: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi))
+        SPTOrientationMakeLookAt(viewCameraObject, .init(target: .zero, up: .up, axis: .Z, positive: false))
+        SPTCameraMakePerspective(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
+//        SPTCameraMakeOrthographic(viewCameraObject, 100.0, 1.0, 0.1, 2000.0)
         
         // Setup coordinate grid
         let gridPath = Bundle.main.path(forResource: "coordinate_grid", ofType: "obj")!
         let gridPolylineId = SPTCreatePolylineFromFile(gridPath)
         let gridObject = scene.makeObject()
-        SPTMakePolylineView(gridObject, gridPolylineId, UIColor.systemGray.rgba, 1.0)
+        SPTPolylineViewMake(gridObject, gridPolylineId, UIColor.systemGray.rgba, 1.0)
         
         // Setup coordinate axis
         let linePath = Bundle.main.path(forResource: "line", ofType: "obj")!
         let lineId = SPTCreatePolylineFromFile(linePath)
         
         let xAxisObject = scene.makeObject()
-        SPTMakePolylineView(xAxisObject, lineId, UIColor.red.rgba, 2.0)
-        SPTMakeScale(xAxisObject, simd_float3(500.0, 1.0, 1.0))
-        SPTMakePolylineViewDepthBias(xAxisObject, 5.0, 3.0, 0.0)
+        SPTPolylineViewMake(xAxisObject, lineId, UIColor.red.rgba, 2.0)
+        SPTScaleMake(xAxisObject, simd_float3(500.0, 1.0, 1.0))
+        SPTPolylineViewDepthBiasMake(xAxisObject, 5.0, 3.0, 0.0)
         
         let zAxisObject = scene.makeObject()
-        SPTMakePolylineView(zAxisObject, lineId, UIColor.blue.rgba, 2.0)
-        SPTMakeScale(zAxisObject, simd_float3(500.0, 1.0, 1.0))
-        SPTMakeOrientation(zAxisObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, Float.pi * 0.5, 0.0), order: .XYZ))))
-        SPTMakePolylineViewDepthBias(zAxisObject, 5.0, 3.0, 0.0)
+        SPTPolylineViewMake(zAxisObject, lineId, UIColor.blue.rgba, 2.0)
+        SPTScaleMake(zAxisObject, simd_float3(500.0, 1.0, 1.0))
+        SPTOrientationMakeEuler(zAxisObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
+        SPTPolylineViewDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
         
         
         // Setup objects
         let centerObjectMeshId = MeshRegistry.standard.recordNamed("cube")!.id
         let centerObject = scene.makeObject()
-        SPTMakePosition(centerObject, .init(variantTag: .XYZ, .init(xyz: .zero)))
-        SPTMakeScale(centerObject, simd_float3(5.0, 5.0, 5.0))
-        SPTMakeOrientation(centerObject, .init(variantTag: .euler, .init(euler: .init(rotation: simd_float3(0.0, 0.0, 0.0), order: .XYZ))))
-        SPTMakeBlinnPhongMeshView(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
-        SPTMakeRayCastableMesh(centerObject, centerObjectMeshId)
+        SPTPositionMakeXYZ(centerObject, .zero)
+        SPTScaleMake(centerObject, simd_float3(5.0, 5.0, 5.0))
+        SPTOrientationMakeEuler(centerObject, .init(rotation: .zero, order: .XYZ))
+        SPTMeshViewMakeBlinnPhong(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
+        SPTRayCastableMeshMake(centerObject, centerObjectMeshId)
         
         /*let positionRange: ClosedRange<Float> = -1000.0...1000.0
         let scaleRange: ClosedRange<Float> = 10.0...40.0
         for _ in 0..<1000 {
             let object = scene.makeObject()
-            SPTMakePosition(object, Float.random(in: positionRange), Float.random(in: positionRange), Float.random(in: positionRange))
-            SPTMakeScale(object, Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))
+            SPTPositionMake(object, Float.random(in: positionRange), Float.random(in: positionRange), Float.random(in: positionRange))
+            SPTScaleMake(object, Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))
             SPTMakeEulerOrientation(object, simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), SPTEulerOrderXYZ)
             let meshId = meshRecords.randomElement()!.id
-            SPTMakeBlinnPhongMeshView(object, meshId, UIColor.random().rgba, Float.random(in: 2.0...256.0))
-            SPTMakeRayCastableMesh(object, meshId)
+            SPTMeshViewMakeBlinnPhong(object, meshId, UIColor.random().rgba, Float.random(in: 2.0...256.0))
+            SPTRayCastableMeshMake(object, meshId)
         }*/
         
     }
@@ -88,7 +88,7 @@ class SceneViewModel: ObservableObject {
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {
         let locationInScene = SPTCameraConvertViewportToWorld(viewCameraObject, simd_float3(location.float2, 1.0), viewportSize.float2)
-        let cameraPos = SPTGetPositionFromSphericalPosition(SPTGetPosition(viewCameraObject).spherical)
+        let cameraPos = SPTPositionGetXYZ(viewCameraObject)
         
         let object = SPTRayCastScene(scene.cpp(), SPTRay(origin: cameraPos, direction: locationInScene - cameraPos), 0.0001).object
         
@@ -101,13 +101,13 @@ class SceneViewModel: ObservableObject {
     
     func focusOn(_ object: SPTObject) {
         
-        var cameraPos = SPTGetPosition(viewCameraObject)
-        cameraPos.spherical.center = SPTGetPosition(object).xyz
-        SPTUpdatePosition(viewCameraObject, cameraPos)
+        var cameraPos = SPTPositionGet(viewCameraObject)
+        cameraPos.spherical.center = SPTPositionGet(object).xyz
+        SPTPositionUpdate(viewCameraObject, cameraPos)
         
-        var cameraOrientation = SPTGetOrientation(viewCameraObject)
+        var cameraOrientation = SPTOrientationGet(viewCameraObject)
         cameraOrientation.lookAt.target = cameraPos.spherical.center
-        SPTUpdateOrientation(viewCameraObject, cameraOrientation)
+        SPTOrientationUpdate(viewCameraObject, cameraOrientation)
     }
     
     // MARK: Orbit
@@ -122,19 +122,19 @@ class SceneViewModel: ObservableObject {
         let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
         let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
         
-        var cameraPos = SPTGetPosition(viewCameraObject)
+        var cameraPos = SPTPositionGet(viewCameraObject)
         
         cameraPos.spherical.latitude -= deltaAngle.y
         
         let isInFrontOfSphere = sinf(cameraPos.spherical.latitude) >= 0.0
         cameraPos.spherical.longitude += (isInFrontOfSphere ? -deltaAngle.x : deltaAngle.x)
         
-        SPTUpdatePosition(viewCameraObject, cameraPos)
+        SPTPositionUpdate(viewCameraObject, cameraPos)
         
-        var orientation = SPTGetOrientation(viewCameraObject)
+        var orientation = SPTOrientationGet(viewCameraObject)
         orientation.lookAt.up = (isInFrontOfSphere ? simd_float3.up : simd_float3.down)
         
-        SPTUpdateOrientation(viewCameraObject, orientation)
+        SPTOrientationUpdate(viewCameraObject, orientation)
         
     }
     
@@ -160,7 +160,7 @@ class SceneViewModel: ObservableObject {
         
         let deltaYTranslation = Float(dragValue.translation.height - prevDragValue.translation.height)
         
-        var cameraPos = SPTGetPosition(viewCameraObject)
+        var cameraPos = SPTPositionGet(viewCameraObject)
         
         let centerViewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, cameraPos.spherical.center, viewportSize.float2);
         
@@ -175,7 +175,7 @@ class SceneViewModel: ObservableObject {
         
         cameraPos.spherical.radius = max(cameraPos.spherical.radius + sign(deltaYTranslation) * Self.zoomFactor * deltaRadius, 0.01)
         
-        SPTUpdatePosition(viewCameraObject, cameraPos)
+        SPTPositionUpdate(viewCameraObject, cameraPos)
         
     }
     

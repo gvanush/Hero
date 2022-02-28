@@ -34,16 +34,19 @@ typedef struct {
     };
 } SPTPosition;
 
-void SPTMakePosition(SPTObject object, SPTPosition position);
+void SPTPositionMake(SPTObject object, SPTPosition position);
+void SPTPositionMakeXYZ(SPTObject object, simd_float3 xyz);
+void SPTPositionMakeSpherical(SPTObject object, SPTSphericalPosition spherical);
 
-void SPTUpdatePosition(SPTObject object, SPTPosition position);
+void SPTPositionUpdate(SPTObject object, SPTPosition position);
 
-SPTPosition SPTGetPosition(SPTObject object);
+SPTPosition SPTPositionGet(SPTObject object);
+simd_float3 SPTPositionGetXYZ(SPTObject object);
 
-void SPTAddPositionWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemovePositionWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemovePositionWillChangeListener(SPTObject object, SPTComponentListener listener);
+simd_float3 SPTPositionConvertSphericalToXYZ(SPTSphericalPosition sphericalPosition);
 
-simd_float3 SPTGetPositionFromSphericalPosition(SPTSphericalPosition sphericalPosition);
+void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTPositionRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END

@@ -64,8 +64,8 @@
     scene->onPrerender();
     
     assert(SPTIsValid(self.viewCameraObject));
-    self.renderingContext.cameraPosition = spt::getPosition(self.viewCameraObject);
-    self.renderingContext.projectionViewMatrix = spt::getCameraProjectionViewMatrix(self.viewCameraObject);
+    self.renderingContext.cameraPosition = SPTPositionGetXYZ(self.viewCameraObject);
+    self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(self.viewCameraObject);
     
     MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
     if(renderPassDescriptor != nil) {
@@ -96,8 +96,8 @@
 -(void) updateViewportSize: (CGSize) size {
     self.renderingContext.viewportSize = simd_make_float2(size.width, size.height);
     assert(SPTIsValid(self.viewCameraObject));
-    SPTUpdatePerspectiveCameraAspectRatio(self.viewCameraObject, size.width / size.height);
-//    SPTUpdateOrthographicCameraAspectRatio(self.viewCameraEntity, size.width / size.height);
+    SPTCameraUpdatePerspectiveAspectRatio(self.viewCameraObject, size.width / size.height);
+//    SPTCameraUpdateOrthographicAspectRatio(self.viewCameraEntity, size.width / size.height);
 }
 
 @end

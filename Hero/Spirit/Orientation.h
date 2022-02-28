@@ -52,14 +52,16 @@ typedef struct {
     };
 } SPTOrientation;
 
-void SPTMakeOrientation(SPTObject object, SPTOrientation orientation);
+void SPTOrientationMake(SPTObject object, SPTOrientation orientation);
+void SPTOrientationMakeEuler(SPTObject object, SPTEulerOrientation euler);
+void SPTOrientationMakeLookAt(SPTObject object, SPTLookAtOrientation lookAt);
 
-void SPTUpdateOrientation(SPTObject object, SPTOrientation orientation);
+void SPTOrientationUpdate(SPTObject object, SPTOrientation orientation);
     
-SPTOrientation SPTGetOrientation(SPTObject object);
+SPTOrientation SPTOrientationGet(SPTObject object);
 
-void SPTAddOrientationWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveOrientationWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTRemoveOrientationWillChangeListener(SPTObject object, SPTComponentListener listener);
+void SPTOrientationAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTOrientationRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTOrientationRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END
