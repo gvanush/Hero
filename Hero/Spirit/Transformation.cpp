@@ -133,10 +133,10 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
         }
     }
     
-    if(const auto scale = registry.try_get<spt::Scale>(entity)) {
-        matrix.columns[0] *= scale->float3.x;
-        matrix.columns[1] *= scale->float3.y;
-        matrix.columns[2] *= scale->float3.z;
+    if(const auto scale = registry.try_get<SPTScale>(entity)) {
+        matrix.columns[0] *= scale->xyz.x;
+        matrix.columns[1] *= scale->xyz.y;
+        matrix.columns[2] *= scale->xyz.z;
     }
     
     return matrix;

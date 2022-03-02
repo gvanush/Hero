@@ -14,18 +14,32 @@
 namespace spt {
 
 template <typename CT>
-inline void addComponentWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+using ComponentWillChangeCallback = void (*)(SPTComponentListener, CT);
+
+template <typename CT>
+struct ComponentWillChangeListenerItem {
+    SPTComponentListener listener;
+    ComponentWillChangeCallback<CT> callback;
+};
+
+template <typename CT>
+struct Observable {
+    std::vector<ComponentWillChangeListenerItem<CT>> willChangeListeners;
+};
+
+template <typename CT>
+inline void addComponentWillChangeListener(SPTObject object, SPTComponentListener listener, ComponentWillChangeCallback<CT> callback) {
     assert(listener && callback);
     auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
     if(auto observable = registry.try_get<Observable<CT>>(object.entity)) {
-        observable->willChangeListeners.emplace_back(spt::ComponentListenerItem {listener, callback});
+        observable->willChangeListeners.emplace_back(ComponentWillChangeListenerItem<CT> {listener, callback});
     } else {
-        registry.emplace<Observable<CT>>(object.entity, Observable<CT>{ {spt::ComponentListenerItem{listener, callback}} });
+        registry.emplace<Observable<CT>>(object.entity, Observable<CT>{ { {listener, callback} } });
     }
 }
 
 template <typename CT>
-inline void removeComponentWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+inline void removeComponentWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, ComponentWillChangeCallback<CT> callback) {
     auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
     if(!registry.valid(object.entity)) {
         return;

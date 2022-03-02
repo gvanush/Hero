@@ -49,12 +49,12 @@ class SceneViewModel: ObservableObject {
         
         let xAxisObject = scene.makeObject()
         SPTPolylineViewMake(xAxisObject, lineId, UIColor.red.rgba, 2.0)
-        SPTScaleMake(xAxisObject, simd_float3(500.0, 1.0, 1.0))
+        SPTScaleMake(xAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
         SPTPolylineViewDepthBiasMake(xAxisObject, 5.0, 3.0, 0.0)
         
         let zAxisObject = scene.makeObject()
         SPTPolylineViewMake(zAxisObject, lineId, UIColor.blue.rgba, 2.0)
-        SPTScaleMake(zAxisObject, simd_float3(500.0, 1.0, 1.0))
+        SPTScaleMake(zAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
         SPTOrientationMakeEuler(zAxisObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
         SPTPolylineViewDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
         
@@ -63,7 +63,7 @@ class SceneViewModel: ObservableObject {
         let centerObjectMeshId = MeshRegistry.standard.recordNamed("cube")!.id
         let centerObject = scene.makeObject()
         SPTPositionMakeXYZ(centerObject, .zero)
-        SPTScaleMake(centerObject, simd_float3(5.0, 5.0, 5.0))
+        SPTScaleMake(centerObject, .init(xyz: simd_float3(5.0, 5.0, 5.0)))
         SPTOrientationMakeEuler(centerObject, .init(rotation: .zero, order: .XYZ))
         SPTMeshViewMakeBlinnPhong(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
         SPTRayCastableMeshMake(centerObject, centerObjectMeshId)

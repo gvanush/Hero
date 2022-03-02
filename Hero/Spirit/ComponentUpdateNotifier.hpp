@@ -28,10 +28,10 @@ public:
         });
     }
     
-    static void onWillChange(Registry& registry, SPTEntity entity) {
+    static void onWillChange(Registry& registry, SPTEntity entity, const CT& newValue) {
         if(auto observable = registry.try_get<Observable<CT>>(entity)) {
             for(const auto& item: observable->willChangeListeners) {
-                item.callback(item.listener);
+                item.callback(item.listener, newValue);
             }
         }
     }

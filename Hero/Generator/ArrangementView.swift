@@ -43,7 +43,7 @@ class ArrangementComponent: MultiVariantComponent {
         }
     }
     
-    @ObjectBinding private var arrangement: SPTArrangement
+    @SPTComponentBinding private var arrangement: SPTArrangement
     
     lazy var point = PointArrangementComponent(arrangement: $arrangement.point, parent: self)
     lazy var linear = LinearArrangementComponent(arrangement: $arrangement.linear, parent: self)
@@ -55,10 +55,12 @@ class ArrangementComponent: MultiVariantComponent {
     private var storedPlanar = SPTArrangement(variantTag: .planar, .init(planar: .init(plain: .XY)))
     private var storedSpatial = SPTArrangement(variantTag: .spatial, .init(spatial: .init()))
     
-    init(arrangement: ObjectBinding<SPTArrangement>, parent: Component?) {
+    init(arrangement: SPTComponentBinding<SPTArrangement>, parent: Component?) {
         _arrangement = arrangement
         
         super.init(title: "Arrangement", parent: parent)
+        
+        _arrangement.publisher = self.objectWillChange
         
         updateStoredArrangement()
     }
@@ -112,11 +114,12 @@ class ArrangementComponent: MultiVariantComponent {
 
 class PointArrangementComponent: Component {
         
-    @ObjectBinding private var arrangement: SPTPointArrangement
+    @SPTComponentBinding private var arrangement: SPTPointArrangement
  
-    init(arrangement: ObjectBinding<SPTPointArrangement>, parent: Component?) {
+    init(arrangement: SPTComponentBinding<SPTPointArrangement>, parent: Component?) {
         _arrangement = arrangement
         super.init(title: "Point Arrangement", parent: parent)
+        _arrangement.publisher = self.objectWillChange
     }
     
 }
@@ -127,11 +130,12 @@ enum LinearArrangementComponentProperty: Int, DistinctValueSet, Displayable {
 
 class LinearArrangementComponent: BasicComponent<LinearArrangementComponentProperty> {
     
-    @ObjectBinding private var arrangement: SPTLinearArrangement
+    @SPTComponentBinding private var arrangement: SPTLinearArrangement
     
-    init(arrangement: ObjectBinding<SPTLinearArrangement>, parent: Component?) {
+    init(arrangement: SPTComponentBinding<SPTLinearArrangement>, parent: Component?) {
         _arrangement = arrangement
         super.init(title: "Linear Arrangement", selectedProperty: .axis, parent: parent)
+        _arrangement.publisher = self.objectWillChange
     }
     
     var axis: Axis {
@@ -149,21 +153,23 @@ class LinearArrangementComponent: BasicComponent<LinearArrangementComponentPrope
 
 
 class PlanarArrangementComponent: Component {
-    @ObjectBinding private var arrangement: SPTPlanarArrangement
+    @SPTComponentBinding private var arrangement: SPTPlanarArrangement
  
-    init(arrangement: ObjectBinding<SPTPlanarArrangement>, parent: Component?) {
+    init(arrangement: SPTComponentBinding<SPTPlanarArrangement>, parent: Component?) {
         _arrangement = arrangement
         super.init(title: "Planar Arrangement", parent: parent)
+        _arrangement.publisher = self.objectWillChange
     }
 }
 
 
 class SpatialArrangementComponent: Component {
-    @ObjectBinding private var arrangement: SPTSpatialArrangement
+    @SPTComponentBinding private var arrangement: SPTSpatialArrangement
  
-    init(arrangement: ObjectBinding<SPTSpatialArrangement>, parent: Component?) {
+    init(arrangement: SPTComponentBinding<SPTSpatialArrangement>, parent: Component?) {
         _arrangement = arrangement
         super.init(title: "Spatial Arrangement", parent: parent)
+        _arrangement.publisher = self.objectWillChange
     }
 }
 
@@ -211,10 +217,8 @@ struct ArrangementView_Previews: PreviewProvider {
     
     static var arrangement = SPTArrangement(variantTag: .linear, .init(linear: SPTLinearArrangement(axis: .X)))
     
-    static var binding: ObjectBinding<SPTArrangement> {
-        ObjectBinding {
-            arrangement
-        } setter: { newValue in
+    static var binding: SPTComponentBinding<SPTArrangement> {
+        SPTComponentBinding(value: arrangement) { newValue in
             arrangement = newValue
         }
     }

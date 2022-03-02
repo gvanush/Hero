@@ -14,10 +14,7 @@
 #include "MeshView.hpp"
 #include "ComponentListenerUtil.hpp"
 #include "ComponentUpdateNotifier.hpp"
-#include "BitByBitEquatable.hpp"
 
-template <>
-constexpr bool kBitByBitEquatable<SPTArrangement> = true;
 
 namespace spt {
 
@@ -69,6 +66,21 @@ void updateLinearAxis(spt::Registry& registry, const spt::Generator& generator, 
 
 }
 
+void Generator::onDestroy(spt::Registry& registry, SPTEntity entity) {
+    const auto& generator = registry.get<Generator>(entity);
+    for(auto genEntity: generator.entities) {
+        if(registry.valid(genEntity)) {
+            registry.destroy(genEntity);
+        }
+    }
+}
+
+}
+
+bool SPTGeneratorEqual(SPTGenerator lhs, SPTGenerator rhs) {
+    return lhs.quantity == rhs.quantity &&
+    lhs.sourceMeshId == rhs.sourceMeshId &&
+    SPTArrangementEqual(lhs.arrangement, rhs.arrangement);
 }
 
 SPTGenerator SPTGeneratorMake(SPTObject object, SPTMeshId sourceMeshId, SPTGeneratorQuantityType quantity) {
@@ -92,65 +104,52 @@ SPTGenerator SPTGeneratorGet(SPTObject object) {
     return registry.get<spt::Generator>(object.entity).base;
 }
 
-void SPTGeneratorUpdate(SPTObject object, SPTGenerator updated) {
+void SPTGeneratorUpdate(SPTObject object, SPTGenerator newGenerator) {
     
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    spt::ComponentUpdateNotifier<spt::Generator>::onWillChange(registry, object.entity);
+    spt::ComponentUpdateNotifier<SPTGenerator>::onWillChange(registry, object.entity, newGenerator);
     
     auto& generator = registry.get<spt::Generator>(object.entity);
     
-    assert(updated.quantity >= kSPTGeneratorMinQuantity && updated.quantity <= kSPTGeneratorMaxQuantity);
-    if(generator.base.quantity != updated.quantity) {
-        if(updated.quantity > generator.base.quantity) {
-            spt::makeObjects(registry, object, generator, updated.quantity - generator.base.quantity);
+    assert(newGenerator.quantity >= kSPTGeneratorMinQuantity && newGenerator.quantity <= kSPTGeneratorMaxQuantity);
+    if(generator.base.quantity != newGenerator.quantity) {
+        if(newGenerator.quantity > generator.base.quantity) {
+            spt::makeObjects(registry, object, generator, newGenerator.quantity - generator.base.quantity);
         } else {
-            spt::destroyObjects(registry, generator, generator.base.quantity - updated.quantity);
+            spt::destroyObjects(registry, generator, generator.base.quantity - newGenerator.quantity);
         }
     }
     
-    if(generator.base.sourceMeshId != updated.sourceMeshId) {
-        spt::MeshView::update(registry, generator.entities.begin(), generator.entities.end(), updated.sourceMeshId);
-        generator.base.sourceMeshId = updated.sourceMeshId;
+    if(generator.base.sourceMeshId != newGenerator.sourceMeshId) {
+        spt::MeshView::update(registry, generator.entities.begin(), generator.entities.end(), newGenerator.sourceMeshId);
+        generator.base.sourceMeshId = newGenerator.sourceMeshId;
     }
     
-    if(generator.base.arrangement != updated.arrangement) {
+    if(!SPTArrangementEqual(generator.base.arrangement, newGenerator.arrangement)) {
         
         // TODO
-        if(generator.base.arrangement.variantTag != updated.arrangement.variantTag) {
+        if(generator.base.arrangement.variantTag != newGenerator.arrangement.variantTag) {
             
         } else {
-            if(generator.base.arrangement.linear.axis != updated.arrangement.linear.axis) {
-                spt::updateLinearAxis(registry, generator, updated.arrangement.linear.axis);
+            if(generator.base.arrangement.linear.axis != newGenerator.arrangement.linear.axis) {
+                spt::updateLinearAxis(registry, generator, newGenerator.arrangement.linear.axis);
             }
         }
         
     }
     
-    generator.base = updated;
+    generator.base = newGenerator;
     
 }
 
-void SPTGeneratorAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::addComponentWillChangeListener<spt::Generator>(object, listener, callback);
+void SPTGeneratorAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTGeneratorWillChangeCallback callback) {
+    spt::addComponentWillChangeListener<SPTGenerator>(object, listener, callback);
 }
 
-void SPTGeneratorRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
-    spt::removeComponentWillChangeListenerCallback<spt::Generator>(object, listener, callback);
+void SPTGeneratorRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTGeneratorWillChangeCallback callback) {
+    spt::removeComponentWillChangeListenerCallback<SPTGenerator>(object, listener, callback);
 }
 
 void SPTGeneratorRemoveWillChangeListener(SPTObject object, SPTComponentListener listener) {
     spt::removeComponentWillChangeListener<spt::Generator>(object, listener);
-}
-
-namespace spt {
-
-void Generator::onDestroy(spt::Registry& registry, SPTEntity entity) {
-    const auto& generator = registry.get<Generator>(entity);
-    for(auto genEntity: generator.entities) {
-        if(registry.valid(genEntity)) {
-            registry.destroy(genEntity);
-        }
-    }
-}
-
 }

@@ -9,20 +9,20 @@
 
 #include "Base.hpp"
 #include "Transformation.hpp"
+#include "Scale.h"
 
 namespace spt {
 
-struct Scale {
-    simd_float3 float3;
+namespace Scale {
     
     template <typename It>
     static void make(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale);
     
-};
+}
 
 template <typename It>
 void Scale::make(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale) {
-    registry.insert(beginEntity, endEntity, Scale{scale});
+    registry.insert(beginEntity, endEntity, SPTScale{scale});
     for(auto it = beginEntity; it != endEntity; ++it) {
         spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, *it);
     }

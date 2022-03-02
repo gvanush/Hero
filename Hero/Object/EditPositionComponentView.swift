@@ -15,6 +15,7 @@ struct EditPositionComponentView: View {
     var body: some View {
         if let axis = component.selectedProperty {
             FloatField(value: $component.value[axis.rawValue], scale: $scale)
+                .transition(.identity)
                 .id(axis.rawValue)
         }
     }

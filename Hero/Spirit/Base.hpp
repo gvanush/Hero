@@ -24,14 +24,4 @@ void emplaceIfMissing(Registry& registry, SPTEntity entity, Args &&...args) {
     }
 }
 
-struct ComponentListenerItem {
-    SPTComponentListener listener;
-    SPTComponentListenerCallback callback;
-};
-
-template <typename CT>
-struct Observable {
-    std::vector<ComponentListenerItem> willChangeListeners;
-};
-
 }

@@ -86,80 +86,38 @@ struct ObjectControlView: View {
 }
 
 
-//import Combine
-//
-//@propertyWrapper
-//class SPTPublishedPosition {
-//
-//    let object: SPTObject
-//    let publisher = PassthroughSubject<Void, Never>()
-//
-//    init(object: SPTObject) {
-//        self.object = object
-//
-//        SPTAddPositionListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
-//            let me = Unmanaged<SPTPublishedPosition>.fromOpaque(observer!).takeUnretainedValue()
-//            me.publisher.send()
-//        })
-//    }
-//
-//    deinit {
-//        SPTRemovePositionListener(object, Unmanaged.passUnretained(self).toOpaque())
-//    }
-//
-//    var wrappedValue: simd_float3 {
-//        set { SPTPositionUpdate(object, newValue) }
-//        get { SPTPositionGet(object) }
-//    }
-//}
-
 fileprivate class ObjectControlViewModel: ObservableObject {
     
     let object: SPTObject
+    @SPTObservedPosition var sptPosition: SPTPosition
+    @SPTObservedScale var sptScale: SPTScale
+    @SPTObservedOrientation var sptOrientation: SPTOrientation
     
     init(object: SPTObject) {
         self.object = object
         
-        SPTPositionAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
-            let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
-            me.objectWillChange.send()
-        })
+        _sptPosition = SPTObservedPosition(object: object)
+        _sptOrientation = SPTObservedOrientation(object: object)
+        _sptScale = SPTObservedScale(object: object)
         
-        SPTOrientationAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
-            let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
-            me.objectWillChange.send()
-        })
-        
-        SPTScaleAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
-            let me = Unmanaged<ObjectControlViewModel>.fromOpaque(observer!).takeUnretainedValue()
-            me.objectWillChange.send()
-        })
-        
-    }
-    
-    deinit {
-        SPTPositionRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
-        SPTOrientationRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
-        SPTScaleRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
+        _sptPosition.publisher = self.objectWillChange
+        _sptOrientation.publisher = self.objectWillChange
+        _sptScale.publisher = self.objectWillChange
     }
     
     var position: simd_float3 {
-        set { SPTPositionUpdate(object, SPTPosition(variantTag: .XYZ, .init(xyz: newValue))) }
-        get { SPTPositionGet(object).xyz }
+        set { sptPosition.xyz = newValue }
+        get { sptPosition.xyz }
     }
     
     var eulerRotation: simd_float3 {
-        set {
-            var orientation = SPTOrientationGet(object)
-            orientation.euler.rotation = SPTToRadFloat3(newValue)
-            SPTOrientationUpdate(object, orientation)
-        }
-        get { SPTToDegFloat3(SPTOrientationGet(object).euler.rotation) }
+        set { sptOrientation.euler.rotation = SPTToRadFloat3(newValue) }
+        get { SPTToDegFloat3(sptOrientation.euler.rotation) }
     }
     
     var scale: simd_float3 {
-        set { SPTScaleUpdate(object, newValue) }
-        get { SPTScaleGet(object) }
+        set { sptScale.xyz = newValue }
+        get { sptScale.xyz }
     }
 }
 

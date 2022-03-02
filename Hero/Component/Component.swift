@@ -31,14 +31,6 @@ class Component: Identifiable, ObservableObject {
         nil
     }
     
-    func onWillChange() {
-        objectWillChange.send()
-        if let subcomponents = self.subcomponents {
-            for subcomponent in subcomponents {
-                subcomponent.onWillChange()
-            }
-        }
-    }
 }
 
 class BasicComponent<PT>: Component where PT: RawRepresentable & CaseIterable & Displayable, PT.RawValue == Int {

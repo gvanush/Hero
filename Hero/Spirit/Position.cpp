@@ -11,6 +11,26 @@
 #include "ComponentListenerUtil.hpp"
 #include "ComponentUpdateNotifier.hpp"
 
+bool SPTSphericalPositionEqual(SPTSphericalPosition lhs, SPTSphericalPosition rhs) {
+    return simd_equal(lhs.center, rhs.center) &&
+    lhs.radius == rhs.radius &&
+    lhs.longitude == rhs.longitude &&
+    lhs.latitude == rhs.latitude;
+}
+
+bool SPTPositionEqual(SPTPosition lhs, SPTPosition rhs) {
+    if(lhs.variantTag != rhs.variantTag) {
+        return false;
+    }
+    
+    switch (lhs.variantTag) {
+        case SPTPositionVariantTagXYZ:
+            return simd_equal(lhs.xyz, rhs.xyz);
+        case SPTPositionVariantTagSpherical:
+            return SPTSphericalPositionEqual(lhs.spherical, rhs.spherical);
+    }
+}
+
 void SPTPositionMake(SPTObject object, SPTPosition position) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
@@ -25,12 +45,12 @@ void SPTPositionMakeSpherical(SPTObject object, SPTSphericalPosition spherical) 
     SPTPositionMake(object, {SPTPositionVariantTagSpherical, {.spherical = spherical}});
 }
 
-void SPTPositionUpdate(SPTObject object, SPTPosition position) {
+void SPTPositionUpdate(SPTObject object, SPTPosition newPosition) {
     auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    spt::ComponentUpdateNotifier<SPTPosition>::onWillChange(registry, object.entity);
+    spt::ComponentUpdateNotifier<SPTPosition>::onWillChange(registry, object.entity, newPosition);
     
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
-    registry.get<SPTPosition>(object.entity) = position;
+    registry.get<SPTPosition>(object.entity) = newPosition;
 }
 
 SPTPosition SPTPositionGet(SPTObject object) {
@@ -41,11 +61,11 @@ simd_float3 SPTPositionGetXYZ(SPTObject object) {
     return spt::Position::getXYZ(static_cast<spt::Scene*>(object.sceneHandle)->registry, object.entity);
 }
 
-void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback) {
     spt::addComponentWillChangeListener<SPTPosition>(object, listener, callback);
 }
 
-void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback) {
+void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback) {
     spt::removeComponentWillChangeListenerCallback<SPTPosition>(object, listener, callback);
 }
 

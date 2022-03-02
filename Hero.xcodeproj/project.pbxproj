@@ -15,7 +15,7 @@
 		B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */; };
 		B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatField.swift */; };
 		B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */; };
-		B710DB8427BC106D00C57BDF /* ObjectBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DB8327BC106D00C57BDF /* ObjectBinding.swift */; };
+		B710DB8427BC106D00C57BDF /* SPTComponentBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DB8327BC106D00C57BDF /* SPTComponentBinding.swift */; };
 		B710DB8A27BD8E4000C57BDF /* PropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DB8927BD8E4000C57BDF /* PropertySelector.swift */; };
 		B717634B27A2C7D400CE5195 /* ComponentTreeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */; };
 		B717635727ABF25600CE5195 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635627ABF25500CE5195 /* Component.swift */; };
@@ -56,6 +56,11 @@
 		B73E47D927CC00D900CB0AFC /* EditOrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47D827CC00D900CB0AFC /* EditOrientationComponentView.swift */; };
 		B73E47DB27CC01C600CB0AFC /* FormatterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47DA27CC01C600CB0AFC /* FormatterUtil.swift */; };
 		B73E47DD27CC07C100CB0AFC /* EditScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47DC27CC07C100CB0AFC /* EditScaleComponentView.swift */; };
+		B73E47E027CEA1F100CB0AFC /* SPTGeneratortUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47DF27CEA1F100CB0AFC /* SPTGeneratortUtil.swift */; };
+		B73E47E327CFC55D00CB0AFC /* Arrangement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E127CFC55D00CB0AFC /* Arrangement.cpp */; };
+		B73E47E627D00D4700CB0AFC /* SPTPositionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E527D00D4700CB0AFC /* SPTPositionUtil.swift */; };
+		B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E727D011E900CB0AFC /* SPTScaleUtil.swift */; };
+		B73E47EA27D0168400CB0AFC /* SPTOrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA56D278B3414001EC7C5 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56C278B3414001EC7C5 /* Views.swift */; };
 		B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */; };
@@ -105,8 +110,7 @@
 		B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingSceneView.swift; sourceTree = "<group>"; };
 		B7104BC7272BBB1F00582DCA /* FloatField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatField.swift; sourceTree = "<group>"; };
 		B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierRoundedRectangle.swift; sourceTree = "<group>"; };
-		B710DB8327BC106D00C57BDF /* ObjectBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectBinding.swift; sourceTree = "<group>"; };
-		B710DB8827BC29D200C57BDF /* BitByBitEquatable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BitByBitEquatable.hpp; sourceTree = "<group>"; };
+		B710DB8327BC106D00C57BDF /* SPTComponentBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTComponentBinding.swift; sourceTree = "<group>"; };
 		B710DB8927BD8E4000C57BDF /* PropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySelector.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +184,12 @@
 		B73E47D827CC00D900CB0AFC /* EditOrientationComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOrientationComponentView.swift; sourceTree = "<group>"; };
 		B73E47DA27CC01C600CB0AFC /* FormatterUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterUtil.swift; sourceTree = "<group>"; };
 		B73E47DC27CC07C100CB0AFC /* EditScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScaleComponentView.swift; sourceTree = "<group>"; };
+		B73E47DF27CEA1F100CB0AFC /* SPTGeneratortUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTGeneratortUtil.swift; sourceTree = "<group>"; };
+		B73E47E127CFC55D00CB0AFC /* Arrangement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Arrangement.cpp; sourceTree = "<group>"; };
+		B73E47E227CFC55D00CB0AFC /* Arrangement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Arrangement.h; sourceTree = "<group>"; };
+		B73E47E527D00D4700CB0AFC /* SPTPositionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPositionUtil.swift; sourceTree = "<group>"; };
+		B73E47E727D011E900CB0AFC /* SPTScaleUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTScaleUtil.swift; sourceTree = "<group>"; };
+		B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTOrientationUtil.swift; sourceTree = "<group>"; };
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B75FA56C278B3414001EC7C5 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -258,6 +268,7 @@
 				B723584A2757745A00337547 /* Ray Casting */,
 				B7E481DB274777CF003DA5B1 /* Resource Management */,
 				B7E481C627414A8F003DA5B1 /* Foundation */,
+				B73E47E427CFCD2400CB0AFC /* Apple */,
 			);
 			path = Spirit;
 			sourceTree = "<group>";
@@ -286,7 +297,6 @@
 				B7AA99E327B6CABB0033B459 /* SIMDUtil.swift */,
 				B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */,
 				B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */,
-				B710DB8327BC106D00C57BDF /* ObjectBinding.swift */,
 				B73E47DA27CC01C600CB0AFC /* FormatterUtil.swift */,
 			);
 			path = Foundation;
@@ -392,12 +402,26 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		B73E47E427CFCD2400CB0AFC /* Apple */ = {
+			isa = PBXGroup;
+			children = (
+				B710DB8327BC106D00C57BDF /* SPTComponentBinding.swift */,
+				B73E47DF27CEA1F100CB0AFC /* SPTGeneratortUtil.swift */,
+				B73E47E527D00D4700CB0AFC /* SPTPositionUtil.swift */,
+				B73E47E727D011E900CB0AFC /* SPTScaleUtil.swift */,
+				B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */,
+			);
+			path = Apple;
+			sourceTree = "<group>";
+		};
 		B75FA57A279175BC001EC7C5 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
 				B75FA57B27918064001EC7C5 /* Generator.cpp */,
 				B75FA57C27918064001EC7C5 /* Generator.hpp */,
 				B75FA57E27918097001EC7C5 /* Generator.h */,
+				B73E47E127CFC55D00CB0AFC /* Arrangement.cpp */,
+				B73E47E227CFC55D00CB0AFC /* Arrangement.h */,
 			);
 			name = Generator;
 			sourceTree = "<group>";
@@ -497,7 +521,6 @@
 				B73245A7273E677B00708909 /* Bridging-Header.h */,
 				B72358662774982300337547 /* ComponentListenerUtil.hpp */,
 				B72358672774A81300337547 /* ComponentUpdateNotifier.hpp */,
-				B710DB8827BC29D200C57BDF /* BitByBitEquatable.hpp */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -640,6 +663,7 @@
 				B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */,
 				B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */,
 				B723584D2757749300337547 /* RayCast.cpp in Sources */,
+				B73E47E327CFC55D00CB0AFC /* Arrangement.cpp in Sources */,
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
@@ -658,6 +682,7 @@
 				B73E47DB27CC01C600CB0AFC /* FormatterUtil.swift in Sources */,
 				B717635727ABF25600CE5195 /* Component.swift in Sources */,
 				B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */,
+				B73E47E027CEA1F100CB0AFC /* SPTGeneratortUtil.swift in Sources */,
 				B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */,
 				B73245A6273D92BF00708909 /* SPTScene.mm in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
@@ -680,6 +705,7 @@
 				B75FA57D27918064001EC7C5 /* Generator.cpp in Sources */,
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
 				B717636227B0242300CE5195 /* SampleSceneData.swift in Sources */,
+				B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */,
 				B736450427B3BA1100FAD433 /* EditComponentViewProvider.swift in Sources */,
 				B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */,
 				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,
@@ -690,7 +716,8 @@
 				B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
 				B7AA99E427B6CABB0033B459 /* SIMDUtil.swift in Sources */,
-				B710DB8427BC106D00C57BDF /* ObjectBinding.swift in Sources */,
+				B710DB8427BC106D00C57BDF /* SPTComponentBinding.swift in Sources */,
+				B73E47EA27D0168400CB0AFC /* SPTOrientationUtil.swift in Sources */,
 				B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */,
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
@@ -698,6 +725,7 @@
 				B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */,
 				B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,
+				B73E47E627D00D4700CB0AFC /* SPTPositionUtil.swift in Sources */,
 				B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */,
 				B7AA99E827B7EC150033B459 /* ArrangementView.swift in Sources */,
 			);

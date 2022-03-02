@@ -44,6 +44,7 @@ void Transformation::makeChildren(spt::Registry& registry, SPTObject parent, It 
     assert(!SPTIsNull(parent));
     
     auto& parentTran = registry.get<Transformation>(parent.entity);
+    parentTran.node.childrenCount += std::distance(beginEntity, endEntity);
     
     for(auto it = beginEntity; it != endEntity; ++it) {
         
@@ -52,6 +53,7 @@ void Transformation::makeChildren(spt::Registry& registry, SPTObject parent, It 
         auto& tran = registry.emplace<Transformation>(object.entity);
         tran.node.parent = parent;
         tran.node.nextSibling = parentTran.node.firstChild;
+        tran.node.level = parentTran.node.level + 1;
 
         if(!SPTIsNull(parentTran.node.firstChild)) {
             auto& firstChildTran = registry.get<Transformation>(parentTran.node.firstChild.entity);

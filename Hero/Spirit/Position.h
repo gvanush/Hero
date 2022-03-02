@@ -26,6 +26,8 @@ typedef struct {
     float latitude; // relative to y
 } SPTSphericalPosition;
 
+bool SPTSphericalPositionEqual(SPTSphericalPosition lhs, SPTSphericalPosition rhs);
+
 typedef struct {
     SPTPositionVariantTag variantTag;
     union {
@@ -33,6 +35,8 @@ typedef struct {
         SPTSphericalPosition spherical;
     };
 } SPTPosition;
+
+bool SPTPositionEqual(SPTPosition lhs, SPTPosition rhs);
 
 void SPTPositionMake(SPTObject object, SPTPosition position);
 void SPTPositionMakeXYZ(SPTObject object, simd_float3 xyz);
@@ -45,8 +49,9 @@ simd_float3 SPTPositionGetXYZ(SPTObject object);
 
 simd_float3 SPTPositionConvertSphericalToXYZ(SPTSphericalPosition sphericalPosition);
 
-void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+typedef void (*SPTPositionWillChangeCallback) (SPTComponentListener, SPTPosition);
+void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback);
+void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback);
 void SPTPositionRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END

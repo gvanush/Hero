@@ -15,6 +15,7 @@ struct EditOrientationComponentView: View {
     var body: some View {
         if let axis = component.selectedProperty {
             FloatField(value: $component.value[axis.rawValue], scale: $scale, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
+                .transition(.identity)
                 .id(axis.rawValue)
         }
     }

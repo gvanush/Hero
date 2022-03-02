@@ -15,30 +15,19 @@ enum GeneratorComponentProperty: Int, DistinctValueSet, Displayable {
 class GeneratorComponent: BasicComponent<GeneratorComponentProperty> {
     
     let object: SPTObject
-    @ObjectBinding private var generator: SPTGenerator
+    @SPTObservedGenerator private var generator: SPTGenerator
     lazy private(set) var transformation = TransformationComponent(object: self.object, parent: self)
     lazy private(set) var arrangement = ArrangementComponent(arrangement: $generator.arrangement, parent: self)
     
     init(object: SPTObject) {
         
         self.object = object
-        _generator = ObjectBinding(getter: {
-            SPTGeneratorGet(object)
-        }, setter: { newValue in
-            SPTGeneratorUpdate(object, newValue)
-        })
+        _generator = SPTObservedGenerator(object: object)
         
         super.init(title: "Generator", selectedProperty: .quantity, parent: nil)
         
-        SPTGeneratorAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer in
-            let me = Unmanaged<GeneratorComponent>.fromOpaque(observer!).takeUnretainedValue()
-            me.onWillChange()
-        })
+        _generator.publisher = self.objectWillChange
         
-    }
-    
-    deinit {
-        SPTGeneratorRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
     }
     
     var sourceObjectTypeName: String {

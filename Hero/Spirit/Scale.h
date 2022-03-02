@@ -14,14 +14,21 @@
 
 SPT_EXTERN_C_BEGIN
 
-void SPTScaleMake(SPTObject object, simd_float3 scale);
+typedef struct {
+    simd_float3 xyz;
+} SPTScale;
 
-void SPTScaleUpdate(SPTObject object, simd_float3 scale);
+bool SPTScaleEqual(SPTScale lhs, SPTScale rhs);
 
-simd_float3 SPTScaleGet(SPTObject object);
+void SPTScaleMake(SPTObject object, SPTScale scale);
 
-void SPTScaleAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
-void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTComponentListenerCallback callback);
+void SPTScaleUpdate(SPTObject object, SPTScale scale);
+
+SPTScale SPTScaleGet(SPTObject object);
+
+typedef void (*SPTScaleWillChangeCallback) (SPTComponentListener, SPTScale);
+void SPTScaleAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback);
+void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback);
 void SPTScaleRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
 
 SPT_EXTERN_C_END
