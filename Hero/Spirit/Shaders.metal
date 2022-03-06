@@ -159,7 +159,7 @@ fragment float4 videoFS(TextureRasterizerData in [[stage_in]],
 }
 
 
-// MARK: Mesh rendering
+// MARK: Polyline rendering
 vertex BasicRasterizerData polylineVS(uint vertexID [[vertex_id]],
                                       constant PolylineVertex* vertices [[buffer(kVertexInputIndexVertices)]],
                                       constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
@@ -197,12 +197,49 @@ vertex BasicRasterizerData polylineVS(uint vertexID [[vertex_id]],
     const auto norm = normDir * normalize(float2 {point.y - adjacentPoint.y, adjacentPoint.x - point.x});
     
     const auto thicknessNDCFactor = uniforms.screenScale / max(uniforms.viewportSize.x, uniforms.viewportSize.y);
-    point.xy += (thickness * thicknessNDCFactor) * norm;
+    point.xy += (0.5 * thickness * thicknessNDCFactor) * norm;
     
     point.x /= aspect;
     return BasicRasterizerData {point};
 }
 
+// MARK: Point rendering
+typedef struct {
+    float4 position [[position]];
+    float2 fragCoord;
+} PointRasterizerData;
+
+vertex PointRasterizerData pointVS(uint vertexID [[vertex_id]],
+                                   constant PointVertex* vertices [[buffer(kVertexInputIndexVertices)]],
+                                   constant float& size [[buffer(kVertexInputIndexSize)]],
+                                   constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+    
+    auto point = uniforms.projectionViewMatrix * float4(vertices[vertexID].position, 1.0);
+    
+    // Bring to NDC space
+    const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
+    point.x *= aspect;
+    point /= point.w;
+    
+    // Adjust
+    const auto ndcSize = size * uniforms.screenScale / max(uniforms.viewportSize.x, uniforms.viewportSize.y);
+    point.x += (2 * static_cast<int>(vertexID % 2) - 1) * ndcSize;
+    point.y += (2 * static_cast<int>(vertexID / 2) - 1) * ndcSize;
+    
+    point.x /= aspect;
+    return PointRasterizerData {point, vertices[vertexID].fragCoord};
+}
+
+fragment float4 pointFS(PointRasterizerData in [[stage_in]],
+                        constant float4& color [[buffer(kFragmentInputIndexColor)]]) {
+    if(dot(in.fragCoord, in.fragCoord) > 1.f) {
+        discard_fragment();
+    }
+    return color;
+}
+
+
+// MARK: Outline rendering
 vertex BasicRasterizerData outlineVS(uint vertexID [[vertex_id]],
                                      constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
                                      constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],

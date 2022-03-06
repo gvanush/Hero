@@ -8,6 +8,7 @@
 #include "Renderer.hpp"
 #include "MeshView.h"
 #include "PolylineView.h"
+#include "PointView.h"
 #include "OutlineView.h"
 #include "ResourceManager.hpp"
 #include "Transformation.hpp"
@@ -24,9 +25,31 @@ namespace {
 
 id<MTLRenderPipelineState> __plainColorMeshPipelineState;
 id<MTLRenderPipelineState> __blinnPhongMeshPipelineState;
+id<MTLRenderPipelineState> __depthOnlyMeshPipelineState;
 id<MTLRenderPipelineState> __polylinePipelineState;
+id<MTLRenderPipelineState> __pointPipelineState;
 id<MTLRenderPipelineState> __outlinePipelineState;
 
+}
+
+id<MTLRenderPipelineState> createDepthOnlyPipelineState(NSString* name, NSString* vertexShaderName) {
+    
+    id<MTLFunction> vertexFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName: vertexShaderName];
+    MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
+    pipelineStateDescriptor.label = name;
+    pipelineStateDescriptor.vertexFunction = vertexFunction;
+    pipelineStateDescriptor.fragmentFunction = nil;
+    pipelineStateDescriptor.colorAttachments[0].pixelFormat = [SPTRenderingContext colorPixelFormat];
+    pipelineStateDescriptor.depthAttachmentPixelFormat = [SPTRenderingContext depthPixelFormat];
+    
+    NSError *error;
+    id<MTLRenderPipelineState> pipelineState = [[SPTRenderingContext device] newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error: &error];
+    if(!pipelineState) {
+        std::cerr << [error localizedDescription] << std::endl;
+        std::exit(1);
+    }
+    
+    return pipelineState;
 }
 
 id<MTLRenderPipelineState> createPipelineState(NSString* name, NSString* vertexShaderName, NSString* fragmentShaderName) {
@@ -88,6 +111,25 @@ void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, S
     
 }
 
+void renderMeshDepthOnly(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, SPTMeshId meshId) {
+    
+    const auto& worldMatrix = registry.get<Transformation>(entity).global;
+    
+    [renderEncoder setVertexBytes: &worldMatrix
+                           length: sizeof(simd_float4x4)
+                          atIndex: kVertexInputIndexWorldMatrix];
+    
+    const auto& mesh = ResourceManager::active().getMesh(meshId);
+    
+    id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
+    [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
+    
+    id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) mesh.indexBuffer()->apiObject();
+    
+    [renderEncoder drawIndexedPrimitives: MTLPrimitiveTypeTriangle indexCount: mesh.indexCount() indexType: MTLIndexTypeUInt16 indexBuffer: indexBuffer indexBufferOffset: 0];
+    
+}
+
 void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPolylineView& polylineView) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
@@ -107,6 +149,27 @@ void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registr
     id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) polyline.indexBuffer()->apiObject();
     
     [renderEncoder drawIndexedPrimitives: MTLPrimitiveTypeTriangle indexCount: polyline.indexCount() indexType: MTLIndexTypeUInt16 indexBuffer: indexBuffer indexBufferOffset: 0];
+    
+}
+
+void renderPoint(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPointView& pointView) {
+    
+    const auto& worldMatrix = registry.get<Transformation>(entity).global;
+    
+    const auto& worldPos = worldMatrix.columns[3].xyz;
+    std::array<PointVertex, 4> vertices {
+        PointVertex {worldPos, simd_float2 {-1.f, -1.f}},
+        PointVertex {worldPos, simd_float2 {1.f, -1.f}},
+        PointVertex {worldPos, simd_float2 {-1.f, 1.f}},
+        PointVertex {worldPos, simd_float2 {1.f, 1.f}}
+    };
+    
+    [renderEncoder setVertexBytes: vertices.data() length: sizeof(PointVertex) * vertices.size() atIndex: kVertexInputIndexVertices];
+    [renderEncoder setVertexBytes: &pointView.size length: sizeof(pointView.size) atIndex: kVertexInputIndexSize];
+    
+    [renderEncoder setFragmentBytes: &pointView.color length: sizeof(pointView.color) atIndex: kFragmentInputIndexColor];
+    
+    [renderEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: vertices.size()];
     
 }
 
@@ -162,7 +225,28 @@ void Renderer::render(void* renderingContext) {
         renderMesh(renderEncoder, _registry, entity, meshView);
     });
     
+    // Render outlines
+    const auto outlineView = _registry.view<SPTOutlineView>();
+    if(!outlineView.empty()) {
+
+        // Render meshes in depth buffer
+        [renderEncoder setRenderPipelineState: __depthOnlyMeshPipelineState];
+        outlineView.each([this, renderEncoder] (auto entity, auto& outlineView) {
+            renderMeshDepthOnly(renderEncoder, _registry, entity, outlineView.meshId);
+        });
+
+        // Render outlines
+        [renderEncoder setRenderPipelineState: __outlinePipelineState];
+        [renderEncoder setCullMode: MTLCullModeFront];
+    //    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
+
+        outlineView.each([this, renderEncoder] (auto entity, auto& outlineView) {
+            renderOutline(renderEncoder, _registry, entity, outlineView);
+        });
+    }
+    
     // Render polylines
+    [renderEncoder setCullMode: MTLCullModeBack];
     [renderEncoder setRenderPipelineState: __polylinePipelineState];
     const auto polylineView = _registry.view<SPTPolylineView>(entt::exclude<SPTPolylineViewDepthBias>);
     polylineView.each([this, renderEncoder] (auto entity, auto& polylineView) {
@@ -175,23 +259,57 @@ void Renderer::render(void* renderingContext) {
         renderPolyline(renderEncoder, _registry, entity, polylineView);
     });
     
-    // Render outlines
-    [renderEncoder setRenderPipelineState: __outlinePipelineState];
-    [renderEncoder setCullMode: MTLCullModeFront];
-    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
+    [renderEncoder endEncoding];
     
-    const auto outlineView = _registry.view<SPTOutlineView>();
-    outlineView.each([this, renderEncoder] (auto entity, auto& outlineView) {
-        renderOutline(renderEncoder, _registry, entity, outlineView);
+    // Render layer 1
+    MTLRenderPassDescriptor* layer1Descriptor = [rc.renderPassDescriptor copy];
+    layer1Descriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
+    layer1Descriptor.depthAttachment.loadAction = MTLLoadActionClear;
+    
+    id<MTLRenderCommandEncoder> layer1RenderEncoder = [rc.commandBuffer renderCommandEncoderWithDescriptor: layer1Descriptor];
+    layer1RenderEncoder.label = @"Layer1 renderer encoder";
+    [layer1RenderEncoder setViewport: MTLViewport {0.0, 0.0, rc.viewportSize.x, rc.viewportSize.y, 0.0, 1.0 }];
+    [layer1RenderEncoder setDepthStencilState: SPTRenderingContext.defaultDepthStencilState];
+    [layer1RenderEncoder setCullMode: MTLCullModeBack];
+    [layer1RenderEncoder setFrontFacingWinding: MTLWindingCounterClockwise];
+    [layer1RenderEncoder setVertexBytes: &_uniforms length: sizeof(_uniforms) atIndex: kVertexInputIndexUniforms];
+    [layer1RenderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
+    
+    [layer1RenderEncoder setRenderPipelineState: __pointPipelineState];
+    const auto pointView = _registry.view<SPTPointView>();
+    pointView.each([this, layer1RenderEncoder] (auto entity, auto& pointView) {
+        renderPoint(layer1RenderEncoder, _registry, entity, pointView);
     });
     
-    [renderEncoder endEncoding];
+//    const auto outlineView = _registry.view<SPTOutlineView>();
+//    if(!outlineView.empty()) {
+//
+//        // Render meshes in depth buffer
+//        [layer1RenderEncoder setRenderPipelineState: __depthOnlyMeshPipelineState];
+//        outlineView.each([this, layer1RenderEncoder] (auto entity, auto& outlineView) {
+//            renderMeshDepthOnly(layer1RenderEncoder, _registry, entity, outlineView.meshId);
+//        });
+//
+//        // Render outlines
+//        [layer1RenderEncoder setRenderPipelineState: __outlinePipelineState];
+//        [layer1RenderEncoder setCullMode: MTLCullModeFront];
+//    //    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
+//
+//        outlineView.each([this, layer1RenderEncoder] (auto entity, auto& outlineView) {
+//            renderOutline(layer1RenderEncoder, _registry, entity, outlineView);
+//        });
+//    }
+    
+    [layer1RenderEncoder endEncoding];
+    
 }
 
 void Renderer::init() {
     __plainColorMeshPipelineState = createPipelineState(@"Plain color mesh render pipeline", @"basicVS", @"basicFS");
     __blinnPhongMeshPipelineState = createPipelineState(@"Blinn-Phong mesh render pipeline", @"meshVS", @"blinnPhongFS");
+    __depthOnlyMeshPipelineState = createDepthOnlyPipelineState(@"Depth only mesh render pipe;ime", @"basicVS");
     __polylinePipelineState = createPipelineState(@"Polyline render pipeline", @"polylineVS", @"basicFS");
+    __pointPipelineState = createPipelineState(@"Polyline render pipeline", @"pointVS", @"pointFS");
     __outlinePipelineState = createPipelineState(@"Outline render pipeline", @"outlineVS", @"basicFS");
 }
 

@@ -14,6 +14,7 @@
 #import "OutlineView.h"
 #import "PolylineView.h"
 #import "PolylineViewDepthBias.h"
+#import "PointView.h"
 #import "Generator.h"
 #import "RayCast.h"
 #import "Base.h"

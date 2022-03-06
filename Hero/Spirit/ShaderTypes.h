@@ -47,3 +47,8 @@ struct PolylineVertex {
     using Index = uint16_t;
     simd_float3 position;
 };
+
+struct PointVertex {
+    simd_float3 position;
+    simd_float2 fragCoord;
+};

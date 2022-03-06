@@ -17,13 +17,13 @@ bool SPTScaleEqual(SPTScale lhs, SPTScale rhs) {
 }
 
 void SPTScaleMake(SPTObject object, SPTScale scale) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTScale>(object.entity, scale);
 }
 
 void SPTScaleUpdate(SPTObject object, SPTScale newScale) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     spt::ComponentUpdateNotifier<SPTScale>::onWillChange(registry, object.entity, newScale);
     
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
@@ -31,7 +31,7 @@ void SPTScaleUpdate(SPTObject object, SPTScale newScale) {
 }
 
 SPTScale SPTScaleGet(SPTObject object) {
-    return static_cast<spt::Scene*>(object.sceneHandle)->registry.get<SPTScale>(object.entity);
+    return spt::Scene::getRegistry(object).get<SPTScale>(object.entity);
 }
 
 void SPTScaleAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback) {

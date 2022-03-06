@@ -10,6 +10,7 @@
 #include "Scene.hpp"
 #include "Transformation.hpp"
 #include "Position.hpp"
+#include "RayCast.hpp"
 #include "Scale.hpp"
 #include "MeshView.hpp"
 #include "ComponentListenerUtil.hpp"
@@ -30,7 +31,7 @@ void makeObjects(spt::Registry& registry, SPTObject object, spt::Generator& gene
     
     Transformation::makeChildren(registry, object, beginEntity, generator.entities.end());
     
-    spt::MeshView::makeBlinnPhong(registry, beginEntity, generator.entities.end(), generator.base.sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
+    MeshView::makeBlinnPhong(registry, beginEntity, generator.entities.end(), generator.base.sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
     
     switch (generator.base.arrangement.variantTag) {
         case SPTArrangementVariantTagLinear: {
@@ -47,7 +48,7 @@ void makeObjects(spt::Registry& registry, SPTObject object, spt::Generator& gene
         }
     }
     
-    spt::Scale::make(registry, beginEntity, generator.entities.end(), simd_float3{5.f, 5.f, 5.f});
+    Scale::make(registry, beginEntity, generator.entities.end(), simd_float3{5.f, 5.f, 5.f});
 }
 
 void destroyObjects(spt::Registry& registry, spt::Generator& generator, size_t count) {
@@ -85,10 +86,8 @@ bool SPTGeneratorEqual(SPTGenerator lhs, SPTGenerator rhs) {
 
 SPTGenerator SPTGeneratorMake(SPTObject object, SPTMeshId sourceMeshId, SPTGeneratorQuantityType quantity) {
     assert(quantity >= kSPTGeneratorMinQuantity && quantity <= kSPTGeneratorMaxQuantity);
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     
-    // It is assumed that all the memory (including padding) of 'SPTGenerator' is zero initialized
-    // for correct bit by bit equality comparison of underlying structs
     auto& generator = registry.emplace<spt::Generator>(object.entity);
     generator.base.quantity = quantity;
     generator.base.sourceMeshId = sourceMeshId;
@@ -100,13 +99,12 @@ SPTGenerator SPTGeneratorMake(SPTObject object, SPTMeshId sourceMeshId, SPTGener
 }
 
 SPTGenerator SPTGeneratorGet(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.get<spt::Generator>(object.entity).base;
+    return spt::Scene::getRegistry(object).get<spt::Generator>(object.entity).base;
 }
 
 void SPTGeneratorUpdate(SPTObject object, SPTGenerator newGenerator) {
     
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     spt::ComponentUpdateNotifier<SPTGenerator>::onWillChange(registry, object.entity, newGenerator);
     
     auto& generator = registry.get<spt::Generator>(object.entity);

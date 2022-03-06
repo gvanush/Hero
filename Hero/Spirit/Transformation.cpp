@@ -232,8 +232,7 @@ void Transformation::onDestroy(spt::Registry& registry, SPTEntity entity) {
 
 // MARK: Public
 SPTTranformationNode SPTTransformationGetNode(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    if(const auto transformation = registry.try_get<spt::Transformation>(object.entity)) {
+    if(const auto transformation = spt::Scene::getRegistry(object).try_get<spt::Transformation>(object.entity)) {
         return transformation->node;
     }
     return SPTTranformationNode {kSPTNullObject, kSPTNullObject, kSPTNullObject, kSPTNullObject};
@@ -245,7 +244,7 @@ void SPTTransformationSetParent(SPTObject object, SPTObject parent) {
     assert(!SPTIsNull(object));
     assert(!SPTTransformationIsDescendant(parent, object));
     
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     auto& tran = registry.get<spt::Transformation>(object.entity);
     
     if(SPTObjectSameAsObject(tran.node.parent, parent)) {
@@ -281,7 +280,7 @@ bool SPTTransformationIsDescendant(SPTObject object, SPTObject ancestor) {
     assert(object.sceneHandle == ancestor.sceneHandle);
     assert(!SPTIsNull(ancestor));
     
-    const auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    const auto& registry = spt::Scene::getRegistry(object);
     auto nextAncestorEntity = object.entity;
     while (nextAncestorEntity != kSPTNullEntity) {
         nextAncestorEntity = registry.get<spt::Transformation>(nextAncestorEntity).node.parent.entity;

@@ -41,19 +41,19 @@ class SceneViewModel: ObservableObject {
         let gridPath = Bundle.main.path(forResource: "coordinate_grid", ofType: "obj")!
         let gridPolylineId = SPTCreatePolylineFromFile(gridPath)
         let gridObject = scene.makeObject()
-        SPTPolylineViewMake(gridObject, gridPolylineId, UIColor.systemGray.rgba, 1.0)
+        SPTPolylineViewMake(gridObject, gridPolylineId, UIColor.systemGray.rgba, 2.0)
         
         // Setup coordinate axis
         let linePath = Bundle.main.path(forResource: "line", ofType: "obj")!
         let lineId = SPTCreatePolylineFromFile(linePath)
         
         let xAxisObject = scene.makeObject()
-        SPTPolylineViewMake(xAxisObject, lineId, UIColor.red.rgba, 2.0)
+        SPTPolylineViewMake(xAxisObject, lineId, UIColor.red.rgba, 3.0)
         SPTScaleMake(xAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
         SPTPolylineViewDepthBiasMake(xAxisObject, 5.0, 3.0, 0.0)
         
         let zAxisObject = scene.makeObject()
-        SPTPolylineViewMake(zAxisObject, lineId, UIColor.blue.rgba, 2.0)
+        SPTPolylineViewMake(zAxisObject, lineId, UIColor.blue.rgba, 3.0)
         SPTScaleMake(zAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
         SPTOrientationMakeEuler(zAxisObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
         SPTPolylineViewDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
@@ -67,6 +67,9 @@ class SceneViewModel: ObservableObject {
         SPTOrientationMakeEuler(centerObject, .init(rotation: .zero, order: .XYZ))
         SPTMeshViewMakeBlinnPhong(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
         SPTRayCastableMeshMake(centerObject, centerObjectMeshId)
+        
+        SPTPointViewMake(centerObject, SPTPointView(color: UIColor.objectSelectionColor.rgba, size: 5.0))
+        
         
         /*let positionRange: ClosedRange<Float> = -1000.0...1000.0
         let scaleRange: ClosedRange<Float> = 10.0...40.0

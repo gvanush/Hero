@@ -18,8 +18,8 @@ bool SPTIsNull(SPTObject object) {
     return object.sceneHandle == kSPTNullObject.sceneHandle && object.entity == kSPTNullObject.entity;
 }
 
-bool SPTIsValid(SPTObject entity) {
-    return entity.sceneHandle != nullptr && static_cast<spt::Scene*>(entity.sceneHandle)->registry.valid(entity.entity);
+bool SPTIsValid(SPTObject object) {
+    return object.sceneHandle != nullptr && spt::Scene::getRegistry(object).valid(object.entity);
 }
 
 bool SPTObjectSameAsObject(SPTObject object1, SPTObject object2) {

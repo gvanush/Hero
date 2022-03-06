@@ -61,6 +61,7 @@
 		B73E47E627D00D4700CB0AFC /* SPTPositionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E527D00D4700CB0AFC /* SPTPositionUtil.swift */; };
 		B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E727D011E900CB0AFC /* SPTScaleUtil.swift */; };
 		B73E47EA27D0168400CB0AFC /* SPTOrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */; };
+		B73E47F127D2270D00CB0AFC /* PointView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47EF27D2270D00CB0AFC /* PointView.cpp */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA56D278B3414001EC7C5 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56C278B3414001EC7C5 /* Views.swift */; };
 		B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA570278D4CA6001EC7C5 /* NewGeneratorView.swift */; };
@@ -190,6 +191,9 @@
 		B73E47E527D00D4700CB0AFC /* SPTPositionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPositionUtil.swift; sourceTree = "<group>"; };
 		B73E47E727D011E900CB0AFC /* SPTScaleUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTScaleUtil.swift; sourceTree = "<group>"; };
 		B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTOrientationUtil.swift; sourceTree = "<group>"; };
+		B73E47EF27D2270D00CB0AFC /* PointView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PointView.cpp; sourceTree = "<group>"; };
+		B73E47F027D2270D00CB0AFC /* PointView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PointView.h; sourceTree = "<group>"; };
+		B753027227D3712800886134 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B75FA56C278B3414001EC7C5 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -371,6 +375,7 @@
 			children = (
 				B723584B2757749300337547 /* RayCast.cpp */,
 				B723584E275774B600337547 /* RayCast.h */,
+				B753027227D3712800886134 /* RayCast.hpp */,
 			);
 			name = "Ray Casting";
 			sourceTree = "<group>";
@@ -412,6 +417,45 @@
 				B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */,
 			);
 			path = Apple;
+			sourceTree = "<group>";
+		};
+		B73E47EB27D2267C00CB0AFC /* Polyline */ = {
+			isa = PBXGroup;
+			children = (
+				B7235853275E984500337547 /* PolylineView.cpp */,
+				B7235854275E984500337547 /* PolylineView.h */,
+				B723585D2762844700337547 /* PolylineViewDepthBias.cpp */,
+				B723585E2762844700337547 /* PolylineViewDepthBias.h */,
+			);
+			name = Polyline;
+			sourceTree = "<group>";
+		};
+		B73E47EC27D226A600CB0AFC /* Mesh */ = {
+			isa = PBXGroup;
+			children = (
+				B7E481D8274648DB003DA5B1 /* MeshView.h */,
+				B7E481D9274648DB003DA5B1 /* MeshView.cpp */,
+				B75FA57F2791A1D1001EC7C5 /* MeshView.hpp */,
+			);
+			name = Mesh;
+			sourceTree = "<group>";
+		};
+		B73E47ED27D226C200CB0AFC /* Outline */ = {
+			isa = PBXGroup;
+			children = (
+				B7235860276F2BEC00337547 /* OutlineView.cpp */,
+				B7235861276F2BEC00337547 /* OutlineView.h */,
+			);
+			name = Outline;
+			sourceTree = "<group>";
+		};
+		B73E47EE27D226D700CB0AFC /* Point */ = {
+			isa = PBXGroup;
+			children = (
+				B73E47EF27D2270D00CB0AFC /* PointView.cpp */,
+				B73E47F027D2270D00CB0AFC /* PointView.h */,
+			);
+			name = Point;
 			sourceTree = "<group>";
 		};
 		B75FA57A279175BC001EC7C5 /* Generator */ = {
@@ -488,21 +532,16 @@
 		B7E481C42741498F003DA5B1 /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				B73E47EE27D226D700CB0AFC /* Point */,
+				B73E47ED27D226C200CB0AFC /* Outline */,
+				B73E47EC27D226A600CB0AFC /* Mesh */,
+				B73E47EB27D2267C00CB0AFC /* Polyline */,
 				B73245B4274124C100708909 /* Renderer.mm */,
 				B73245B5274124C100708909 /* Renderer.hpp */,
 				B7791D542726762100E0C934 /* SPTRenderingContext.m */,
 				B7791D6A2726762100E0C934 /* SPTRenderingContext.h */,
 				B7791D4E2726762100E0C934 /* Shaders.metal */,
 				B7791D552726762100E0C934 /* ShaderTypes.h */,
-				B7E481D8274648DB003DA5B1 /* MeshView.h */,
-				B7E481D9274648DB003DA5B1 /* MeshView.cpp */,
-				B75FA57F2791A1D1001EC7C5 /* MeshView.hpp */,
-				B7235853275E984500337547 /* PolylineView.cpp */,
-				B7235854275E984500337547 /* PolylineView.h */,
-				B723585D2762844700337547 /* PolylineViewDepthBias.cpp */,
-				B723585E2762844700337547 /* PolylineViewDepthBias.h */,
-				B7235860276F2BEC00337547 /* OutlineView.cpp */,
-				B7235861276F2BEC00337547 /* OutlineView.h */,
 				B75FA5692788C82C001EC7C5 /* Materials.h */,
 			);
 			name = Rendering;
@@ -710,6 +749,7 @@
 				B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */,
 				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,
 				B7791D252725F45F00E0C934 /* TransformView.swift in Sources */,
+				B73E47F127D2270D00CB0AFC /* PointView.cpp in Sources */,
 				B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,

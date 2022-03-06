@@ -14,8 +14,7 @@
 #include <entt/entt.hpp>
 
 void SPTRayCastableMeshMake(SPTObject object, SPTMeshId meshId) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    registry.emplace<SPTRayCastableMesh>(object.entity, meshId);
+    spt::Scene::getRegistry(object).emplace<SPTRayCastableMesh>(object.entity, meshId);
 }
 
 SPTRay SPTRayTransform(SPTRay ray, simd_float4x4 matrix) {

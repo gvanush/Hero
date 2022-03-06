@@ -36,7 +36,7 @@ bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
 }
 
 void SPTOrientationMake(SPTObject object, SPTOrientation orientation) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTOrientation>(object.entity, orientation);
 }
@@ -50,7 +50,7 @@ void SPTOrientationMakeLookAt(SPTObject object, SPTLookAtOrientation lookAt) {
 }
 
 void SPTOrientationUpdate(SPTObject object, SPTOrientation newOrientation) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     spt::ComponentUpdateNotifier<SPTOrientation>::onWillChange(registry, object.entity, newOrientation);
     
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
@@ -58,8 +58,7 @@ void SPTOrientationUpdate(SPTObject object, SPTOrientation newOrientation) {
 }
 
 SPTOrientation SPTOrientationGet(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.get<SPTOrientation>(object.entity);
+    return spt::Scene::getRegistry(object).get<SPTOrientation>(object.entity);
 }
 
 void SPTOrientationAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTOrientationWillChangeCallback callback) {

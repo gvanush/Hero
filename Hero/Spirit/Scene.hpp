@@ -27,10 +27,12 @@ struct Scene {
     void onPrerender();
     void render(void* renderingContext);
     
-    Registry registry;
+    static Registry& getRegistry(SPTObject object) {
+        return static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    }
     
+    Registry registry;
     Renderer meshRenderer {registry};
-        
     Transformation::GroupType transformationGroup;
 };
 

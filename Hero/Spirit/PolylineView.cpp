@@ -9,6 +9,5 @@
 #include "Scene.hpp"
 
 SPTPolylineView SPTPolylineViewMake(SPTObject object, SPTPolylineId polylineId, simd_float4 color, float thickness) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.emplace<SPTPolylineView>(object.entity, color, polylineId, thickness);
+    return spt::Scene::getRegistry(object).emplace<SPTPolylineView>(object.entity, color, polylineId, thickness);
 }

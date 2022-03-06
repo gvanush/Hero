@@ -50,12 +50,11 @@ simd_float4x4 computeViewportMatrix(simd_float2 screenSize) {
 namespace Camera {
 
 simd_float4x4 getViewMatrix(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return simd_inverse(spt::Transformation::getGlobal(registry, object.entity));
+    return simd_inverse(spt::Transformation::getGlobal(spt::Scene::getRegistry(object), object.entity));
 }
 
 simd_float4x4 getProjectionMatrix(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     if(auto projectionMatrix = registry.try_get<ProjectionMatrix>(object.entity); projectionMatrix) {
         if(projectionMatrix->isDirty) {
             if(const auto perspectiveCamera = registry.try_get<SPTPerspectiveCamera>(object.entity)) {
@@ -81,29 +80,29 @@ simd_float4x4 getProjectionViewMatrix(SPTObject object) {
 }
 
 SPTPerspectiveCamera SPTCameraMakePerspective(SPTObject object, float fovy, float aspectRatio, float near, float far) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     const auto& camera = registry.emplace<SPTPerspectiveCamera>(object.entity, fovy, aspectRatio, near, far);
     registry.emplace<spt::ProjectionMatrix>(object.entity, spt::computeProjectionMatrix(camera), false);
     return camera;
 }
 
 SPTOrthographicCamera SPTCameraMakeOrthographic(SPTObject object, float sizeY, float aspectRatio, float near, float far) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     const auto& camera = registry.emplace<SPTOrthographicCamera>(object.entity, sizeY, aspectRatio, near, far);
     registry.emplace<spt::ProjectionMatrix>(object.entity, spt::computeProjectionMatrix(camera), false);
     return camera;
 }
 
-void SPTCameraUpdatePerspectiveAspectRatio(SPTObject entity, float aspectRatio) {
-    auto& registry = static_cast<spt::Scene*>(entity.sceneHandle)->registry;
-    registry.get<spt::ProjectionMatrix>(entity.entity).isDirty = true;
-    registry.get<SPTPerspectiveCamera>(entity.entity).aspectRatio = aspectRatio;
+void SPTCameraUpdatePerspectiveAspectRatio(SPTObject object, float aspectRatio) {
+    auto& registry = spt::Scene::getRegistry(object);
+    registry.get<spt::ProjectionMatrix>(object.entity).isDirty = true;
+    registry.get<SPTPerspectiveCamera>(object.entity).aspectRatio = aspectRatio;
 }
 
-void SPTCameraUpdateOrthographicAspectRatio(SPTObject entity, float aspectRatio) {
-    auto& registry = static_cast<spt::Scene*>(entity.sceneHandle)->registry;
-    registry.get<spt::ProjectionMatrix>(entity.entity).isDirty = true;
-    registry.get<SPTOrthographicCamera>(entity.entity).aspectRatio = aspectRatio;
+void SPTCameraUpdateOrthographicAspectRatio(SPTObject object, float aspectRatio) {
+    auto& registry = spt::Scene::getRegistry(object);
+    registry.get<spt::ProjectionMatrix>(object.entity).isDirty = true;
+    registry.get<SPTOrthographicCamera>(object.entity).aspectRatio = aspectRatio;
 }
 
 simd_float3 SPTCameraConvertWorldToViewport(SPTObject cameraObject, simd_float3 point, simd_float2 viewportSize) {

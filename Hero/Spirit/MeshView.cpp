@@ -10,18 +10,16 @@
 #include "Scene.hpp"
 
 SPTMeshView SPTMeshViewMakePlainColor(SPTObject object, SPTMeshId meshId, simd_float4 color) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.emplace<SPTMeshView>(object.entity, color, SPTMeshShadingPlainColor, meshId);
+    return spt::Scene::getRegistry(object).emplace<SPTMeshView>(object.entity, color, SPTMeshShadingPlainColor, meshId);
 }
 
 SPTMeshView SPTMeshViewMakeBlinnPhong(SPTObject object, SPTMeshId meshId, simd_float4 color, float specularRoughness) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    auto& registry = spt::Scene::getRegistry(object);
     auto& meshView = registry.emplace<SPTMeshView>(object.entity, color, SPTMeshShadingBlinnPhong, meshId);
     meshView.blinnPhong.specularRoughness = specularRoughness;
     return meshView;
 }
 
 SPTMeshView SPTMeshViewGet(SPTObject object) {
-    auto& registry = static_cast<spt::Scene*>(object.sceneHandle)->registry;
-    return registry.get<SPTMeshView>(object.entity);
+    return spt::Scene::getRegistry(object).get<SPTMeshView>(object.entity);
 }
