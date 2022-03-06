@@ -13,12 +13,12 @@
 
 SPT_EXTERN_C_BEGIN
 
-// MARK: SPTRayCastableMesh
+// MARK: SPTRayCastable
 typedef struct {
-    SPTMeshId meshId;
-} SPTRayCastableMesh;
+    bool __dummy;
+} SPTRayCastable;
 
-void SPTRayCastableMeshMake(SPTObject object, SPTMeshId meshId);
+void SPTRayCastableMake(SPTObject object);
 
 // MARK: SPTRay
 typedef struct {
@@ -27,7 +27,9 @@ typedef struct {
 } SPTRay;
 
 SPTRay SPTRayTransform(SPTRay ray, simd_float4x4 matrix);
+simd_float3 SPTRayGetPoint(SPTRay ray, float factor);
 
+// MARK: Ray casting
 typedef struct {
     SPTObject object;
     float rayDirectionFactor;

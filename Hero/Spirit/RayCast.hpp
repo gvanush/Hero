@@ -16,14 +16,14 @@ namespace RayCastableMesh {
 template <typename It>
 void make(spt::Registry& registry, It beginEntity, It endEntity, SPTMeshId meshId) {
     for(auto it = beginEntity; it != endEntity; ++it) {
-        registry.emplace<SPTRayCastableMesh>(*it, meshId);
+        registry.emplace<SPTRayCastable>(*it, meshId);
     }
 }
 
 template <typename It>
 void update(spt::Registry& registry, It beginEntity, It endEntity, SPTMeshId meshId) {
     for(auto it = beginEntity; it != endEntity; ++it) {
-        registry.get<SPTRayCastableMesh>(*it).meshId = meshId;
+        registry.get<SPTRayCastable>(*it).meshId = meshId;
     }
 }
 

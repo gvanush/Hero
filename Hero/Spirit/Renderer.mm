@@ -7,6 +7,7 @@
 
 #include "Renderer.hpp"
 #include "MeshView.h"
+#include "Generator.hpp"
 #include "PolylineView.h"
 #include "PointView.h"
 #include "OutlineView.h"
@@ -173,15 +174,11 @@ void renderPoint(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, 
     
 }
 
-void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTOutlineView& outlineView) {
+void renderMeshOutline(id<MTLRenderCommandEncoder> renderEncoder, const Mesh& mesh, const SPTOutlineView& outlineView, const simd_float4x4& globalMatrix) {
     
-    const auto& worldMatrix = registry.get<Transformation>(entity).global;
-    
-    [renderEncoder setVertexBytes: &worldMatrix
+    [renderEncoder setVertexBytes: &globalMatrix
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexWorldMatrix];
-    
-    const auto& mesh = ResourceManager::active().getMesh(outlineView.meshId);
     
     [renderEncoder setVertexBytes: &outlineView.thickness length: sizeof(float) atIndex: kVertexInputIndexThickness];
     
@@ -194,6 +191,24 @@ void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry
     
     [renderEncoder drawIndexedPrimitives: MTLPrimitiveTypeTriangle indexCount: mesh.indexCount() indexType: MTLIndexTypeUInt16 indexBuffer: indexBuffer indexBufferOffset: 0];
     
+}
+
+void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTOutlineView& outlineView) {
+    
+    if(const auto meshView = registry.try_get<SPTMeshView>(entity)) {
+        const auto& mesh = ResourceManager::active().getMesh(meshView->meshId);
+        renderMeshOutline(renderEncoder, mesh, outlineView, registry.get<Transformation>(entity).global);
+    }
+    
+    if(const auto generator = registry.try_get<spt::Generator>(entity)) {
+        
+        const auto& mesh = ResourceManager::active().getMesh(generator->base.sourceMeshId);
+        
+        // TODO: Refactor to access only generator items
+        Transformation::forEachChild(registry, entity, [&registry, &renderEncoder, &mesh, &outlineView] (auto childEntity, const auto& childTran) {
+            renderMeshOutline(renderEncoder, mesh, outlineView, childTran.global);
+        });
+    }
 }
 
 Renderer::Renderer(Registry& registry)
@@ -226,24 +241,14 @@ void Renderer::render(void* renderingContext) {
     });
     
     // Render outlines
+    [renderEncoder setRenderPipelineState: __outlinePipelineState];
+    [renderEncoder setCullMode: MTLCullModeFront];
+//    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
+
     const auto outlineView = _registry.view<SPTOutlineView>();
-    if(!outlineView.empty()) {
-
-        // Render meshes in depth buffer
-        [renderEncoder setRenderPipelineState: __depthOnlyMeshPipelineState];
-        outlineView.each([this, renderEncoder] (auto entity, auto& outlineView) {
-            renderMeshDepthOnly(renderEncoder, _registry, entity, outlineView.meshId);
-        });
-
-        // Render outlines
-        [renderEncoder setRenderPipelineState: __outlinePipelineState];
-        [renderEncoder setCullMode: MTLCullModeFront];
-    //    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
-
-        outlineView.each([this, renderEncoder] (auto entity, auto& outlineView) {
-            renderOutline(renderEncoder, _registry, entity, outlineView);
-        });
-    }
+    outlineView.each([this, renderEncoder] (auto entity, auto& outlineView) {
+        renderOutline(renderEncoder, _registry, entity, outlineView);
+    });
     
     // Render polylines
     [renderEncoder setCullMode: MTLCullModeBack];

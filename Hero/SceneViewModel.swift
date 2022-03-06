@@ -12,19 +12,17 @@ class SceneViewModel: ObservableObject {
     
     let scene = SPTScene()
     
+    let objectFactory: ObjectFactory
+    
     private var prevDragValue: DragGesture.Value?
 
     private(set) var viewCameraObject: SPTObject
     
+    private var objectSelector: ObjectSelector?
+    
     @Published var selectedObject: SPTObject? {
         willSet {
-            if let selectedObject = selectedObject {
-                SPTOutlineViewDestroy(selectedObject)
-            }
-            if let newSelectedObject = newValue {
-                let meshView = SPTMeshViewGet(newSelectedObject)
-                SPTOutlineViewMake(newSelectedObject, meshView.meshId, UIColor.objectSelectionColor.rgba, 5.0)
-            }
+            objectSelector = ObjectSelector(object: newValue)
         }
     }
 
@@ -58,30 +56,13 @@ class SceneViewModel: ObservableObject {
         SPTOrientationMakeEuler(zAxisObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
         SPTPolylineViewDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
         
+        objectFactory = ObjectFactory(scene: scene)
         
         // Setup objects
         let centerObjectMeshId = MeshRegistry.standard.recordNamed("cube")!.id
-        let centerObject = scene.makeObject()
-        SPTPositionMakeXYZ(centerObject, .zero)
-        SPTScaleMake(centerObject, .init(xyz: simd_float3(5.0, 5.0, 5.0)))
-        SPTOrientationMakeEuler(centerObject, .init(rotation: .zero, order: .XYZ))
-        SPTMeshViewMakeBlinnPhong(centerObject, centerObjectMeshId, UIColor.darkGray.rgba, 128.0)
-        SPTRayCastableMeshMake(centerObject, centerObjectMeshId)
+        _ = objectFactory.makeMesh(meshId: centerObjectMeshId)
         
-        SPTPointViewMake(centerObject, SPTPointView(color: UIColor.objectSelectionColor.rgba, size: 5.0))
-        
-        
-        /*let positionRange: ClosedRange<Float> = -1000.0...1000.0
-        let scaleRange: ClosedRange<Float> = 10.0...40.0
-        for _ in 0..<1000 {
-            let object = scene.makeObject()
-            SPTPositionMake(object, Float.random(in: positionRange), Float.random(in: positionRange), Float.random(in: positionRange))
-            SPTScaleMake(object, Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))
-            SPTMakeEulerOrientation(object, simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), SPTEulerOrderXYZ)
-            let meshId = meshRecords.randomElement()!.id
-            SPTMeshViewMakeBlinnPhong(object, meshId, UIColor.random().rgba, Float.random(in: 2.0...256.0))
-            SPTRayCastableMeshMake(object, meshId)
-        }*/
+//        objectFactory.makeRandomMeshes()
         
     }
     

@@ -8,8 +8,8 @@
 #include "OutlineView.h"
 #include "Scene.hpp"
 
-SPTOutlineView SPTOutlineViewMake(SPTObject object, SPTMeshId meshId, simd_float4 color, float thickness) {
-    return spt::Scene::getRegistry(object).emplace<SPTOutlineView>(object.entity, color, meshId, thickness);
+SPTOutlineView SPTOutlineViewMake(SPTObject object, simd_float4 color, float thickness) {
+    return spt::Scene::getRegistry(object).emplace<SPTOutlineView>(object.entity, color, thickness);
 }
 
 void SPTOutlineViewDestroy(SPTObject object) {

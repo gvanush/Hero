@@ -17,6 +17,7 @@
 #import "PointView.h"
 #import "Generator.h"
 #import "RayCast.h"
+#import "Metadata.h"
 #import "Base.h"
 #import "Geometry.h"
 #import "SIMDUtil.h"

@@ -13,7 +13,7 @@ struct SceneView: View {
     @Binding var isNavigating: Bool
     let isRenderingPaused: Bool
     let isNavigationEnabled: Bool
-    let isObjectPickingEnabled: Bool
+    let isSelectionEnabled: Bool
     @GestureState private var isOrbitDragGestureActive = false
     @GestureState private var isZoomDragGestureActive = false
     
@@ -21,12 +21,12 @@ struct SceneView: View {
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
     init(model: SceneViewModel, isNavigating: Binding<Bool>, isRenderingPaused: Bool = false,
-         isNavigationEnabled: Bool = true, isObjectPickingEnabled: Bool = true) {
+         isNavigationEnabled: Bool = true, isSelectionEnabled: Bool = true) {
         self.model = model
         self._isNavigating = isNavigating
         self.isRenderingPaused = isRenderingPaused
         self.isNavigationEnabled = isNavigationEnabled
-        self.isObjectPickingEnabled = isObjectPickingEnabled
+        self.isSelectionEnabled = isSelectionEnabled
     }
     
     var body: some View {
@@ -39,7 +39,7 @@ struct SceneView: View {
                 Color.clear
                     .contentShape(Rectangle())
                     .gesture(isNavigationEnabled ? orbitDragGesture : nil)
-                    .gesture(isObjectPickingEnabled ? pickGesture(viewportSize: geometry.size) : nil)
+                    .gesture(isSelectionEnabled ? pickGesture(viewportSize: geometry.size) : nil)
                     .allowsHitTesting(isNavigationEnabled && !isNavigating)
                 
                 navigationControls(geometry: geometry)

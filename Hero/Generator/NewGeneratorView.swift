@@ -50,14 +50,16 @@ struct NewGeneratorView: View {
             }
         }, content: {
             TemplateObjectSelector { meshId in
-                let factory = ObjectFactory(scene: sceneViewModel.scene)
-                generatorComponent = GeneratorComponent(object: factory.makeGenerator(meshId: meshId))
+                let generator = sceneViewModel.objectFactory.makeGenerator(sourceMeshId: meshId)
+                generatorComponent = GeneratorComponent(object: generator)
+                sceneViewModel.selectedObject = generator
             }
         })
         .onDisappear {
             // Destruction needs to be done here otherwise object data
             // is accessed by SwiftUI views during the dismissal
             if let generatorComponent = generatorComponent, isCancelled {
+                sceneViewModel.selectedObject = nil
                 SPTScene.destroy(generatorComponent.object)
             }
         }

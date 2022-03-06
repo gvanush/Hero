@@ -21,4 +21,6 @@ typedef struct {
 
 void SPTPointViewMake(SPTObject object, SPTPointView point);
 
+void SPTPointViewDestroy(SPTObject object);
+
 SPT_EXTERN_C_END

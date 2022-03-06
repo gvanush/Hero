@@ -39,4 +39,5 @@ extension UIColor {
     }
     
     static let objectSelectionColor = UIColor.orange
+    static let secondaryObjectSelectionColor = UIColor(named: "secondaryObjectSelectionColor")!
 }

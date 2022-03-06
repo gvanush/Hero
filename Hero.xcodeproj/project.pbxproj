@@ -87,6 +87,8 @@
 		B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */; };
 		B7AA99ED27B81FB70033B459 /* DistinctValueSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */; };
 		B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */; };
+		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
+		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB327310DFC005C9F82 /* BindingUtil.swift */; };
 		B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */; };
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
@@ -227,6 +229,9 @@
 		B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentViewUtil.swift; sourceTree = "<group>"; };
 		B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistinctValueSet.swift; sourceTree = "<group>"; };
 		B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryUtil.swift; sourceTree = "<group>"; };
+		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
+		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
+		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
 		B7D19EB327310DFC005C9F82 /* BindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingUtil.swift; sourceTree = "<group>"; };
 		B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRefreshSync.swift; sourceTree = "<group>"; };
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
@@ -272,6 +277,7 @@
 				B723584A2757745A00337547 /* Ray Casting */,
 				B7E481DB274777CF003DA5B1 /* Resource Management */,
 				B7E481C627414A8F003DA5B1 /* Foundation */,
+				B7BCB11527D4D3B300F5AFB1 /* Metadata */,
 				B73E47E427CFCD2400CB0AFC /* Apple */,
 			);
 			path = Spirit;
@@ -489,12 +495,13 @@
 				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
 				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
 				B717635F27B00CCF00CE5195 /* MeshRegistry.swift */,
-				B7791D222725D99900E0C934 /* Info.plist */,
-				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
-				B7791D1C27258F7700E0C934 /* Preview Content */,
 				B736450327B3BA1100FAD433 /* EditComponentViewProvider.swift */,
 				B710DB8927BD8E4000C57BDF /* PropertySelector.swift */,
 				B73E47D627CBDFDC00CB0AFC /* ObjectFactory.swift */,
+				B7791D222725D99900E0C934 /* Info.plist */,
+				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
+				B7791D1C27258F7700E0C934 /* Preview Content */,
+				B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -516,6 +523,15 @@
 				B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */,
 			);
 			path = Component;
+			sourceTree = "<group>";
+		};
+		B7BCB11527D4D3B300F5AFB1 /* Metadata */ = {
+			isa = PBXGroup;
+			children = (
+				B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */,
+				B7BCB11727D4D3C500F5AFB1 /* Metadata.h */,
+			);
+			name = Metadata;
 			sourceTree = "<group>";
 		};
 		B7E481C227414867003DA5B1 /* Scene */ = {
@@ -720,6 +736,7 @@
 				B70A310A272F1502003432C4 /* AnimationCompletionObserver.swift in Sources */,
 				B73E47DB27CC01C600CB0AFC /* FormatterUtil.swift in Sources */,
 				B717635727ABF25600CE5195 /* Component.swift in Sources */,
+				B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */,
 				B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */,
 				B73E47E027CEA1F100CB0AFC /* SPTGeneratortUtil.swift in Sources */,
 				B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */,
@@ -736,6 +753,7 @@
 				B73E47CF27C5827700CB0AFC /* Scale.cpp in Sources */,
 				B75FA577278D6DBD001EC7C5 /* GeneratorView.swift in Sources */,
 				B7235855275E984500337547 /* PolylineView.cpp in Sources */,
+				B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */,
 				B7104BC2272B00B800582DCA /* Selector.swift in Sources */,
 				B73E47D727CBDFDC00CB0AFC /* ObjectFactory.swift in Sources */,
 				B723585F2762844700337547 /* PolylineViewDepthBias.cpp in Sources */,

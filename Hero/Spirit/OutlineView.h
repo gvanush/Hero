@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Base.h"
-#include "Mesh.h"
 
 #include <simd/simd.h>
 
@@ -16,11 +15,10 @@ SPT_EXTERN_C_BEGIN
 
 typedef struct {
     simd_float4 color;
-    SPTMeshId meshId;
     float thickness;
 } SPTOutlineView;
 
-SPTOutlineView SPTOutlineViewMake(SPTObject object, SPTMeshId meshId, simd_float4 color, float thickness);
+SPTOutlineView SPTOutlineViewMake(SPTObject object, simd_float4 color, float thickness);
 
 void SPTOutlineViewDestroy(SPTObject object);
 
