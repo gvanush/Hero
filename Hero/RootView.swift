@@ -17,30 +17,29 @@ struct RootView: View {
     var body: some View {
         GeometryReader { geometryProxy in
             NavigationView {
-                ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), isRenderingPaused: showsTransformView || showsNewGeneratorView)
-                }
-                .navigationTitle("Generative")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarHidden(isNavigating)
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        if !isNavigating {
-                            Button {
-                                showsNewGeneratorView = true
-                            } label: {
-                                Image(systemName: "circle.hexagongrid.circle")
-                            }
-                            Spacer()
-                            Button {
-                                showsTransformView = true
-                            } label: {
-                                Image(systemName: "hammer.circle")
+                SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
+                    .renderingPaused(showsTransformView || showsNewGeneratorView)
+                    .navigationTitle("Generative")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarHidden(isNavigating)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .bottomBar) {
+                            if !isNavigating {
+                                Button {
+                                    showsNewGeneratorView = true
+                                } label: {
+                                    Image(systemName: "circle.hexagongrid.circle")
+                                }
+                                Spacer()
+                                Button {
+                                    showsTransformView = true
+                                } label: {
+                                    Image(systemName: "hammer.circle")
+                                }
                             }
                         }
                     }
-                }
-                .ignoresSafeArea()
+                    .ignoresSafeArea()
             }
         }
         .fullScreenCover(isPresented: $showsTransformView, onDismiss: nil) {

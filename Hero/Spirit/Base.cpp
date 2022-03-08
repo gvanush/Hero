@@ -22,6 +22,6 @@ bool SPTIsValid(SPTObject object) {
     return object.sceneHandle != nullptr && spt::Scene::getRegistry(object).valid(object.entity);
 }
 
-bool SPTObjectSameAsObject(SPTObject object1, SPTObject object2) {
+bool SPTObjectEqual(SPTObject object1, SPTObject object2) {
     return object1.sceneHandle == object2.sceneHandle && object1.entity == object2.entity;
 }

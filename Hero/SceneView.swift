@@ -11,22 +11,36 @@ struct SceneView: View {
     
     @ObservedObject var model: SceneViewModel
     @Binding var isNavigating: Bool
-    let isRenderingPaused: Bool
-    let isNavigationEnabled: Bool
-    let isSelectionEnabled: Bool
+    private(set) var isRenderingPaused = false
+    private(set) var isNavigationEnabled = true
+    private(set) var isSelectionEnabled = true
     @GestureState private var isOrbitDragGestureActive = false
     @GestureState private var isZoomDragGestureActive = false
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
-    init(model: SceneViewModel, isNavigating: Binding<Bool>, isRenderingPaused: Bool = false,
-         isNavigationEnabled: Bool = true, isSelectionEnabled: Bool = true) {
+    init(model: SceneViewModel, isNavigating: Binding<Bool>) {
         self.model = model
         self._isNavigating = isNavigating
-        self.isRenderingPaused = isRenderingPaused
-        self.isNavigationEnabled = isNavigationEnabled
-        self.isSelectionEnabled = isSelectionEnabled
+    }
+    
+    func navigationEnabled(_ enabled: Bool) -> SceneView {
+        var view = self
+        view.isNavigationEnabled = enabled
+        return view
+    }
+    
+    func renderingPaused(_ paused: Bool) -> SceneView {
+        var view = self
+        view.isRenderingPaused = paused
+        return view
+    }
+    
+    func selectionEnabled(_ enabled: Bool) -> SceneView {
+        var view = self
+        view.isSelectionEnabled = enabled
+        return view
     }
     
     var body: some View {
@@ -67,10 +81,7 @@ struct SceneView: View {
         HStack(spacing: 0.0) {
             VStack {
                 Spacer()
-                uiButton(iconName: "camera.metering.center.weighted") {
-                    model.focusOn(model.selectedObject!)
-                }
-                .disabled(!model.isObjectSelected)
+                focusButton()
             }
             .padding(.leading, 8.0)
             
@@ -97,6 +108,46 @@ struct SceneView: View {
         .background(Material.thin)
         .cornerRadius(15.0)
         .shadow(radius: 1.0)
+    }
+    
+    func focusButton() -> some View {
+        Button {
+            if let state = model.focusState {
+                switch state {
+                case .unfocused:
+                    model.focusState = .focused
+                case .focused:
+                    model.focusState = .following
+                case .following:
+                    model.focusState = .focused
+                }
+            }
+        } label: {
+            Group {
+                if let state = model.focusState {
+                    switch state {
+                    case .unfocused:
+                        Image(systemName: "camera.metering.center.weighted.average")
+                    case .focused:
+                        Image(systemName: "camera.metering.partial")
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.primary, .secondary)
+                    case .following:
+                        Image(systemName: "camera.metering.spot")
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(.secondary, .primary)
+                    }
+                } else {
+                    Image(systemName: "camera.metering.center.weighted.average")
+                }
+            }
+            .imageScale(.large)
+            .frame(maxWidth: 50.0, maxHeight: 50.0, alignment: .center)
+        }
+        .background(Material.thin)
+        .cornerRadius(15.0)
+        .shadow(radius: 1.0)
+        .disabled(model.focusState == nil)
     }
     
     func pickGesture(viewportSize: CGSize) -> some Gesture {

@@ -24,7 +24,8 @@ struct EditGeneratorView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), isSelectionEnabled: false)
+                SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
+                    .selectionEnabled(false)
                     .ignoresSafeArea()
                 VStack {
                     Spacer()

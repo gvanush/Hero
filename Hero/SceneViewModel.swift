@@ -10,6 +10,12 @@ import SwiftUI
 
 class SceneViewModel: ObservableObject {
     
+    enum ObjectFocusState {
+        case unfocused
+        case focused
+        case following
+    }
+    
     let scene = SPTScene()
     
     let objectFactory: ObjectFactory
@@ -19,10 +25,46 @@ class SceneViewModel: ObservableObject {
     private(set) var viewCameraObject: SPTObject
     
     private var objectSelector: ObjectSelector?
+    private var selectedObjectCancellable: SPTAnyCancellable?
+    
+    var focusState: ObjectFocusState? {
+        willSet {
+            guard focusState != newValue else {
+                return
+            }
+            
+            objectWillChange.send()
+            
+            if let selectedObject = selectedObject, focusState == .unfocused && newValue == .focused {
+                focusOn(selectedObject)
+            }
+        }
+    }
     
     @Published var selectedObject: SPTObject? {
         willSet {
+            guard selectedObject != newValue else { return }
+            
+            if let newObject = newValue {
+                
+                selectedObjectCancellable = SPTPosition.willChangeSink(object: newObject, { newPos in
+                    if self.focusState == .following {
+                        self.focusOn(newPos.xyz)
+                    } else {
+                        self.checkFocusState(targetPos: newPos.xyz)
+                    }
+                })
+                
+            } else {
+                focusState = nil
+                selectedObjectCancellable = nil
+            }
             objectSelector = ObjectSelector(object: newValue)
+        }
+        didSet {
+            if let selectedObject = selectedObject {
+                checkFocusState(targetPos: SPTPositionGet(selectedObject).xyz)
+            }
         }
     }
 
@@ -66,10 +108,6 @@ class SceneViewModel: ObservableObject {
         
     }
     
-    var isObjectSelected: Bool {
-        selectedObject != nil
-    }
-    
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {
         let locationInScene = SPTCameraConvertViewportToWorld(viewCameraObject, simd_float3(location.float2, 1.0), viewportSize.float2)
         let cameraPos = SPTPositionGetXYZ(viewCameraObject)
@@ -83,10 +121,22 @@ class SceneViewModel: ObservableObject {
         return object
     }
     
-    func focusOn(_ object: SPTObject) {
+    private func checkFocusState(targetPos: simd_float3) {
+        if targetPos == SPTPositionGet(viewCameraObject).spherical.center {
+            focusState = .focused
+        } else {
+            focusState = .unfocused
+        }
+    }
+    
+    private func focusOn(_ object: SPTObject) {
+        focusOn(SPTPositionGet(object).xyz)
+    }
+    
+    private func focusOn(_ point: simd_float3) {
         
         var cameraPos = SPTPositionGet(viewCameraObject)
-        cameraPos.spherical.center = SPTPositionGet(object).xyz
+        cameraPos.spherical.center = point
         SPTPositionUpdate(viewCameraObject, cameraPos)
         
         var cameraOrientation = SPTOrientationGet(viewCameraObject)

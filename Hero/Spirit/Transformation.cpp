@@ -247,7 +247,7 @@ void SPTTransformationSetParent(SPTObject object, SPTObject parent) {
     auto& registry = spt::Scene::getRegistry(object);
     auto& tran = registry.get<spt::Transformation>(object.entity);
     
-    if(SPTObjectSameAsObject(tran.node.parent, parent)) {
+    if(SPTObjectEqual(tran.node.parent, parent)) {
         return;
     }
     

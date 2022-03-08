@@ -51,4 +51,17 @@ extension SPTPosition: Equatable {
         SPTPositionEqual(lhs, rhs)
     }
     
+    public static func willChangeSink(object: SPTObject, _ callback: @escaping (SPTPosition) -> Void) -> SPTAnyCancellable {
+        
+        let cancellable = SPTListener(callback: callback) { listener in
+            SPTPositionRemoveWillChangeListener(object, Unmanaged.passUnretained(listener).toOpaque())
+        }
+        
+        SPTPositionAddWillChangeListener(object, Unmanaged.passUnretained(cancellable).toOpaque(), { listener, newValue  in
+            let me = Unmanaged<SPTListener<SPTPosition>>.fromOpaque(listener!).takeUnretainedValue()
+            me.callback(newValue)
+        })
+        
+        return cancellable
+    }
 }

@@ -25,7 +25,10 @@ struct FloatingSceneView: View {
             VStack {
                 Spacer(minLength: 0.0)
                 ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), isRenderingPaused: isRenderingPaused, isNavigationEnabled: isOpened, isSelectionEnabled: false)
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
+                        .renderingPaused(isRenderingPaused)
+                        .navigationEnabled(isOpened)
+                        .selectionEnabled(false)
                         .cornerRadius(isOpened ? 0.0 : Self.cornerRadius)
                         .shadow(radius: Self.shadowRadius)
                     VStack {

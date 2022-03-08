@@ -89,6 +89,8 @@
 		B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
+		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
+		B7BCB11E27D75A6A00F5AFB1 /* SPTCancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11D27D75A6A00F5AFB1 /* SPTCancellable.swift */; };
 		B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB327310DFC005C9F82 /* BindingUtil.swift */; };
 		B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */; };
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
@@ -232,6 +234,8 @@
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
+		B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObjectUtil.swift; sourceTree = "<group>"; };
+		B7BCB11D27D75A6A00F5AFB1 /* SPTCancellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTCancellable.swift; sourceTree = "<group>"; };
 		B7D19EB327310DFC005C9F82 /* BindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingUtil.swift; sourceTree = "<group>"; };
 		B7D19EB527316198005C9F82 /* DisplayRefreshSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRefreshSync.swift; sourceTree = "<group>"; };
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
@@ -421,6 +425,8 @@
 				B73E47E527D00D4700CB0AFC /* SPTPositionUtil.swift */,
 				B73E47E727D011E900CB0AFC /* SPTScaleUtil.swift */,
 				B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */,
+				B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */,
+				B7BCB11D27D75A6A00F5AFB1 /* SPTCancellable.swift */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -730,6 +736,7 @@
 				B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */,
 				B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
+				B7BCB11E27D75A6A00F5AFB1 /* SPTCancellable.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
 				B72175FA274BC0A60047016B /* Mesh.cpp in Sources */,
@@ -741,6 +748,7 @@
 				B73E47E027CEA1F100CB0AFC /* SPTGeneratortUtil.swift in Sources */,
 				B7D19EB627316198005C9F82 /* DisplayRefreshSync.swift in Sources */,
 				B73245A6273D92BF00708909 /* SPTScene.mm in Sources */,
+				B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B736450627B3DB7100FAD433 /* EditGeneratorComponentView.swift in Sources */,
