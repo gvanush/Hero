@@ -29,9 +29,9 @@ struct ObjectFactory {
     }
     
     func makeRandomMeshes() {
-        let positionRange: ClosedRange<Float> = -1000.0...1000.0
+        let positionRange: ClosedRange<Float> = -500.0...500.0
         let scaleRange: ClosedRange<Float> = 10.0...40.0
-        for _ in 0..<1000 {
+        for _ in 0..<100 {
             let object = scene.makeObject()
             SPTMetadataMake(object, .init(tag: ObjectType.mesh.rawValue))
             SPTPositionMakeXYZ(object, .init(Float.random(in: positionRange), Float.random(in: positionRange), Float.random(in: positionRange)))

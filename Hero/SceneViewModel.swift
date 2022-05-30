@@ -101,10 +101,10 @@ class SceneViewModel: ObservableObject {
         objectFactory = ObjectFactory(scene: scene)
         
         // Setup objects
-        let centerObjectMeshId = MeshRegistry.standard.recordNamed("cube")!.id
+        let centerObjectMeshId = MeshRegistry.standard.recordNamed("cone")!.id
         _ = objectFactory.makeMesh(meshId: centerObjectMeshId)
         
-//        objectFactory.makeRandomMeshes()
+        objectFactory.makeRandomMeshes()
         
     }
     
