@@ -1,8 +1,6 @@
 ## Hero - 3d editor on iOS
 
-[Demo](https://www.dropbox.com/s/v0m98nvpjm8w7iy/Demo.MP4?dl=0)\
-[Repository](https://github.com/gvanush/Hero)
-
+[Demo](https://www.dropbox.com/s/v0m98nvpjm8w7iy/Demo.MP4?dl=0)
 
 ### Features
 - 3d space navigation (orbit and zoom)
