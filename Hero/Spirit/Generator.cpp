@@ -140,14 +140,14 @@ void SPTGeneratorUpdate(SPTObject object, SPTGenerator newGenerator) {
     
 }
 
-void SPTGeneratorAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTGeneratorWillChangeCallback callback) {
+void SPTGeneratorAddWillChangeListener(SPTObject object, SPTListener listener, SPTGeneratorWillChangeCallback callback) {
     spt::addComponentWillChangeListener<SPTGenerator>(object, listener, callback);
 }
 
-void SPTGeneratorRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTGeneratorWillChangeCallback callback) {
+void SPTGeneratorRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTGeneratorWillChangeCallback callback) {
     spt::removeComponentWillChangeListenerCallback<SPTGenerator>(object, listener, callback);
 }
 
-void SPTGeneratorRemoveWillChangeListener(SPTObject object, SPTComponentListener listener) {
+void SPTGeneratorRemoveWillChangeListener(SPTObject object, SPTListener listener) {
     spt::removeComponentWillChangeListener<spt::Generator>(object, listener);
 }

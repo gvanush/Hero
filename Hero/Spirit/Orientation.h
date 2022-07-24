@@ -66,9 +66,9 @@ void SPTOrientationUpdate(SPTObject object, SPTOrientation orientation);
     
 SPTOrientation SPTOrientationGet(SPTObject object);
 
-typedef void (*SPTOrientationWillChangeCallback) (SPTComponentListener, SPTOrientation);
-void SPTOrientationAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTOrientationWillChangeCallback callback);
-void SPTOrientationRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTOrientationWillChangeCallback callback);
-void SPTOrientationRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
+typedef void (* _Nonnull SPTOrientationWillChangeCallback) (SPTListener, SPTOrientation);
+void SPTOrientationAddWillChangeListener(SPTObject object, SPTListener listener, SPTOrientationWillChangeCallback callback);
+void SPTOrientationRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTOrientationWillChangeCallback callback);
+void SPTOrientationRemoveWillChangeListener(SPTObject object, SPTListener listener);
 
 SPT_EXTERN_C_END

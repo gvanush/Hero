@@ -10,20 +10,20 @@ import Foundation
 
 @propertyWrapper
 @dynamicMemberLookup
-class SPTObservedGenerator: SPTObservedComponent {
+class SPTObservedGenerator: SPTObservedObject {
     
     private let object: SPTObject
-    internal let binding: SPTComponentBinding<SPTGenerator>
+    internal let binding: SPTObjectBinding<SPTGenerator>
     
     init(object: SPTObject) {
         self.object = object
         
-        binding = SPTComponentBinding(value: SPTGeneratorGet(object), setter: { newValue in
+        binding = SPTObjectBinding(value: SPTGeneratorGet(object), setter: { newValue in
             SPTGeneratorUpdate(object, newValue)
         })
         
-        SPTGeneratorAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer, newValue  in
-            let me = Unmanaged<SPTObservedGenerator>.fromOpaque(observer!).takeUnretainedValue()
+        SPTGeneratorAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
+            let me = Unmanaged<SPTObservedGenerator>.fromOpaque(listener).takeUnretainedValue()
             me.binding.onWillChange(newValue: newValue)
         })
         
@@ -38,7 +38,7 @@ class SPTObservedGenerator: SPTObservedComponent {
         get { binding.wrappedValue }
     }
     
-    var projectedValue: SPTComponentBinding<SPTGenerator> {
+    var projectedValue: SPTObjectBinding<SPTGenerator> {
         binding
     }
     

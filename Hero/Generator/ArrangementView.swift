@@ -43,7 +43,7 @@ class ArrangementComponent: MultiVariantComponent {
         }
     }
     
-    @SPTComponentBinding private var arrangement: SPTArrangement
+    @SPTObjectBinding private var arrangement: SPTArrangement
     
     lazy var point = PointArrangementComponent(arrangement: $arrangement.point, parent: self)
     lazy var linear = LinearArrangementComponent(arrangement: $arrangement.linear, parent: self)
@@ -55,7 +55,7 @@ class ArrangementComponent: MultiVariantComponent {
     private var storedPlanar = SPTArrangement(variantTag: .planar, .init(planar: .init(plain: .XY)))
     private var storedSpatial = SPTArrangement(variantTag: .spatial, .init(spatial: .init()))
     
-    init(arrangement: SPTComponentBinding<SPTArrangement>, parent: Component?) {
+    init(arrangement: SPTObjectBinding<SPTArrangement>, parent: Component?) {
         _arrangement = arrangement
         
         super.init(title: "Arrangement", parent: parent)
@@ -114,9 +114,9 @@ class ArrangementComponent: MultiVariantComponent {
 
 class PointArrangementComponent: Component {
         
-    @SPTComponentBinding private var arrangement: SPTPointArrangement
+    @SPTObjectBinding private var arrangement: SPTPointArrangement
  
-    init(arrangement: SPTComponentBinding<SPTPointArrangement>, parent: Component?) {
+    init(arrangement: SPTObjectBinding<SPTPointArrangement>, parent: Component?) {
         _arrangement = arrangement
         super.init(title: "Point Arrangement", parent: parent)
         _arrangement.publisher = self.objectWillChange
@@ -130,9 +130,9 @@ enum LinearArrangementComponentProperty: Int, DistinctValueSet, Displayable {
 
 class LinearArrangementComponent: BasicComponent<LinearArrangementComponentProperty> {
     
-    @SPTComponentBinding private var arrangement: SPTLinearArrangement
+    @SPTObjectBinding private var arrangement: SPTLinearArrangement
     
-    init(arrangement: SPTComponentBinding<SPTLinearArrangement>, parent: Component?) {
+    init(arrangement: SPTObjectBinding<SPTLinearArrangement>, parent: Component?) {
         _arrangement = arrangement
         super.init(title: "Linear Arrangement", selectedProperty: .axis, parent: parent)
         _arrangement.publisher = self.objectWillChange
@@ -153,9 +153,9 @@ class LinearArrangementComponent: BasicComponent<LinearArrangementComponentPrope
 
 
 class PlanarArrangementComponent: Component {
-    @SPTComponentBinding private var arrangement: SPTPlanarArrangement
+    @SPTObjectBinding private var arrangement: SPTPlanarArrangement
  
-    init(arrangement: SPTComponentBinding<SPTPlanarArrangement>, parent: Component?) {
+    init(arrangement: SPTObjectBinding<SPTPlanarArrangement>, parent: Component?) {
         _arrangement = arrangement
         super.init(title: "Planar Arrangement", parent: parent)
         _arrangement.publisher = self.objectWillChange
@@ -164,9 +164,9 @@ class PlanarArrangementComponent: Component {
 
 
 class SpatialArrangementComponent: Component {
-    @SPTComponentBinding private var arrangement: SPTSpatialArrangement
+    @SPTObjectBinding private var arrangement: SPTSpatialArrangement
  
-    init(arrangement: SPTComponentBinding<SPTSpatialArrangement>, parent: Component?) {
+    init(arrangement: SPTObjectBinding<SPTSpatialArrangement>, parent: Component?) {
         _arrangement = arrangement
         super.init(title: "Spatial Arrangement", parent: parent)
         _arrangement.publisher = self.objectWillChange
@@ -217,8 +217,8 @@ struct ArrangementView_Previews: PreviewProvider {
     
     static var arrangement = SPTArrangement(variantTag: .linear, .init(linear: SPTLinearArrangement(axis: .X)))
     
-    static var binding: SPTComponentBinding<SPTArrangement> {
-        SPTComponentBinding(value: arrangement) { newValue in
+    static var binding: SPTObjectBinding<SPTArrangement> {
+        SPTObjectBinding(value: arrangement) { newValue in
             arrangement = newValue
         }
     }

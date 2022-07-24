@@ -61,15 +61,15 @@ simd_float3 SPTPositionGetXYZ(SPTObject object) {
     return spt::Position::getXYZ(spt::Scene::getRegistry(object), object.entity);
 }
 
-void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback) {
+void SPTPositionAddWillChangeListener(SPTObject object, SPTListener listener, SPTPositionWillChangeCallback callback) {
     spt::addComponentWillChangeListener<SPTPosition>(object, listener, callback);
 }
 
-void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback) {
+void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTPositionWillChangeCallback callback) {
     spt::removeComponentWillChangeListenerCallback<SPTPosition>(object, listener, callback);
 }
 
-void SPTPositionRemoveWillChangeListener(SPTObject object, SPTComponentListener listener) {
+void SPTPositionRemoveWillChangeListener(SPTObject object, SPTListener listener) {
     spt::removeComponentWillChangeListener<SPTPosition>(object, listener);
 }
 

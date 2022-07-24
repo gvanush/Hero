@@ -1,5 +1,5 @@
 //
-//  SPTComponentBinding.swift
+//  SPTObjectBinding.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 15.02.22.
@@ -9,22 +9,22 @@ import Foundation
 import Combine
 
 
-protocol SPTObservedComponent {
+protocol SPTObservedObject {
     
-    associatedtype Component: Equatable
+    associatedtype Object: Equatable
     
-    var binding: SPTComponentBinding<Component> { get }
+    var binding: SPTObjectBinding<Object> { get }
 
 }
 
-extension SPTObservedComponent {
+extension SPTObservedObject {
     
     var publisher: ObservableObjectPublisher? {
         set { binding.publisher = newValue }
         get { binding.publisher }
     }
     
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Component, Subject>) -> SPTComponentBinding<Subject> {
+    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Object, Subject>) -> SPTObjectBinding<Subject> {
         binding[dynamicMember: keyPath]
     }
     
@@ -32,40 +32,40 @@ extension SPTObservedComponent {
 
 @propertyWrapper
 @dynamicMemberLookup
-class SPTComponentBinding<Component> where Component: Equatable {
+class SPTObjectBinding<Object> where Object: Equatable {
     
-    private var value: Component
-    private let setter: (Component) -> Void
+    private var value: Object
+    private let setter: (Object) -> Void
     
-    typealias Listener = (binding: WeakWrapper, callback: (Component) -> Void)
+    typealias Listener = (binding: WeakWrapper, callback: (Object) -> Void)
     private var listeners = [Listener]()
     
     var publisher: ObservableObjectPublisher?
     
-    init(value: Component, setter: @escaping (Component) -> Void) {
+    init(value: Object, setter: @escaping (Object) -> Void) {
         self.value = value
         self.setter = setter
     }
     
-    var wrappedValue: Component {
+    var wrappedValue: Object {
         set { setter(newValue) }
         get { value }
     }
     
-    var projectedValue: SPTComponentBinding<Component> {
+    var projectedValue: SPTObjectBinding<Object> {
         self
     }
     
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Component, Subject>) -> SPTComponentBinding<Subject> {
-        let binding = SPTComponentBinding<Subject>(value: value[keyPath: keyPath]) { newValue in
+    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Object, Subject>) -> SPTObjectBinding<Subject> {
+        let binding = SPTObjectBinding<Subject>(value: value[keyPath: keyPath]) { newValue in
             var updatedValue = self.value
             updatedValue[keyPath: keyPath] = newValue
             self.setter(updatedValue)
         }
         
-        let callback = { [weak weakBinding = binding] (newValue: Component) in
+        let callback = { [weak weakBinding = binding] (newValue: Object) in
             if let binding = weakBinding {
-                binding.onWillChange(newValue: newValue [keyPath: keyPath])
+                binding.onWillChange(newValue: newValue[keyPath: keyPath])
             }
         }
 
@@ -74,7 +74,7 @@ class SPTComponentBinding<Component> where Component: Equatable {
         return binding
     }
  
-    func onWillChange(newValue: Component) {
+    func onWillChange(newValue: Object) {
         
         guard newValue != value else { return }
         

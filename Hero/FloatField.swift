@@ -357,7 +357,7 @@ fileprivate struct ScalePicker: View {
         .frame(width: Self.widrh, height: Self.height, alignment: .center)
         .overlay {
             RoundedRectangle(cornerRadius: Self.cornerRadius)
-                .strokeBorder(Color.tertiary, lineWidth: 1)
+                .strokeBorder(Color.tertiaryLabel, lineWidth: 1)
         }
         .accentColor(.secondary)
         .pickerStyle(.menu)

@@ -17,6 +17,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 SPT_EXTERN_C_BEGIN
 
@@ -24,7 +25,7 @@ typedef enum : uint32_t {
     _dummy
 } SPTEntity;
 
-typedef void* SPTSceneHandle;
+typedef void* _Nonnull SPTSceneHandle;
 
 typedef struct {
     SPTEntity entity;
@@ -40,7 +41,8 @@ bool SPTIsValid(SPTObject object);
 
 bool SPTObjectEqual(SPTObject object1, SPTObject object2);
 
-typedef void* SPTComponentListener;
-typedef void (*SPTComponentListenerCallback) (SPTComponentListener);
+typedef void* _Nonnull SPTListener;
+
+typedef void (* _Nonnull SPTCountWillChangeCallback) (SPTListener, size_t);
 
 SPT_EXTERN_C_END

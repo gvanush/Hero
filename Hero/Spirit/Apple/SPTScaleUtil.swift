@@ -10,20 +10,20 @@ import Foundation
 
 @propertyWrapper
 @dynamicMemberLookup
-class SPTObservedScale: SPTObservedComponent {
+class SPTObservedScale: SPTObservedObject {
     
     private let object: SPTObject
-    internal let binding: SPTComponentBinding<SPTScale>
+    internal let binding: SPTObjectBinding<SPTScale>
     
     init(object: SPTObject) {
         self.object = object
         
-        binding = SPTComponentBinding(value: SPTScaleGet(object), setter: { newValue in
+        binding = SPTObjectBinding(value: SPTScaleGet(object), setter: { newValue in
             SPTScaleUpdate(object, newValue)
         })
         
-        SPTScaleAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer, newValue  in
-            let me = Unmanaged<SPTObservedScale>.fromOpaque(observer!).takeUnretainedValue()
+        SPTScaleAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
+            let me = Unmanaged<SPTObservedScale>.fromOpaque(listener).takeUnretainedValue()
             me.binding.onWillChange(newValue: newValue)
         })
         
@@ -38,7 +38,7 @@ class SPTObservedScale: SPTObservedComponent {
         get { binding.wrappedValue }
     }
     
-    var projectedValue: SPTComponentBinding<SPTScale> {
+    var projectedValue: SPTObjectBinding<SPTScale> {
         binding
     }
     

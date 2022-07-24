@@ -12,6 +12,7 @@ struct RootView: View {
     @StateObject var sceneViewModel = SceneViewModel()
     @State private var isNavigating = false
     @State private var showsTransformView = false
+    @State private var showsAnimatorsView = false
     @State private var showsNewGeneratorView = false
     
     var body: some View {
@@ -28,13 +29,19 @@ struct RootView: View {
                                 Button {
                                     showsNewGeneratorView = true
                                 } label: {
-                                    Image(systemName: "circle.hexagongrid.circle")
+                                    Image(systemName: "plus")
+                                }
+                                Spacer()
+                                Button {
+                                    showsAnimatorsView = true
+                                } label: {
+                                    Image(systemName: "circlebadge.2")
                                 }
                                 Spacer()
                                 Button {
                                     showsTransformView = true
                                 } label: {
-                                    Image(systemName: "hammer.circle")
+                                    Image(systemName: "hammer")
                                 }
                             }
                         }
@@ -48,6 +55,9 @@ struct RootView: View {
         .fullScreenCover(isPresented: $showsNewGeneratorView, onDismiss: nil) {
             NewGeneratorView()
                 .environmentObject(sceneViewModel)
+        }
+        .sheet(isPresented: $showsAnimatorsView) {
+            AnimatorsView()
         }
         
         // TODO: This causes nivagtion title to animate vertically when 'isNavigating' changes

@@ -26,9 +26,9 @@ void SPTScaleUpdate(SPTObject object, SPTScale scale);
 
 SPTScale SPTScaleGet(SPTObject object);
 
-typedef void (*SPTScaleWillChangeCallback) (SPTComponentListener, SPTScale);
-void SPTScaleAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback);
-void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback);
-void SPTScaleRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
+typedef void (* _Nonnull SPTScaleWillChangeCallback) (SPTListener, SPTScale);
+void SPTScaleAddWillChangeListener(SPTObject object, SPTListener listener, SPTScaleWillChangeCallback callback);
+void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTScaleWillChangeCallback callback);
+void SPTScaleRemoveWillChangeListener(SPTObject object, SPTListener listener);
 
 SPT_EXTERN_C_END

@@ -15,6 +15,7 @@
 #import "PolylineView.h"
 #import "PolylineViewDepthBias.h"
 #import "PointView.h"
+#import "Animator.h"
 #import "Generator.h"
 #import "RayCast.h"
 #import "Metadata.h"

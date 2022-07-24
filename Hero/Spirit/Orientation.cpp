@@ -61,14 +61,14 @@ SPTOrientation SPTOrientationGet(SPTObject object) {
     return spt::Scene::getRegistry(object).get<SPTOrientation>(object.entity);
 }
 
-void SPTOrientationAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTOrientationWillChangeCallback callback) {
+void SPTOrientationAddWillChangeListener(SPTObject object, SPTListener listener, SPTOrientationWillChangeCallback callback) {
     spt::addComponentWillChangeListener<SPTOrientation>(object, listener, callback);
 }
 
-void SPTOrientationRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTOrientationWillChangeCallback callback) {
+void SPTOrientationRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTOrientationWillChangeCallback callback) {
     spt::removeComponentWillChangeListenerCallback<SPTOrientation>(object, listener, callback);
 }
 
-void SPTOrientationRemoveWillChangeListener(SPTObject object, SPTComponentListener listener) {
+void SPTOrientationRemoveWillChangeListener(SPTObject object, SPTListener listener) {
     spt::removeComponentWillChangeListener<SPTOrientation>(object, listener);
 }

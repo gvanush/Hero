@@ -10,20 +10,20 @@ import Foundation
 
 @propertyWrapper
 @dynamicMemberLookup
-class SPTObservedOrientation: SPTObservedComponent {
+class SPTObservedOrientation: SPTObservedObject {
     
     private let object: SPTObject
-    internal let binding: SPTComponentBinding<SPTOrientation>
+    internal let binding: SPTObjectBinding<SPTOrientation>
     
     init(object: SPTObject) {
         self.object = object
         
-        binding = SPTComponentBinding(value: SPTOrientationGet(object), setter: { newValue in
+        binding = SPTObjectBinding(value: SPTOrientationGet(object), setter: { newValue in
             SPTOrientationUpdate(object, newValue)
         })
         
-        SPTOrientationAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { observer, newValue  in
-            let me = Unmanaged<SPTObservedOrientation>.fromOpaque(observer!).takeUnretainedValue()
+        SPTOrientationAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
+            let me = Unmanaged<SPTObservedOrientation>.fromOpaque(listener).takeUnretainedValue()
             me.binding.onWillChange(newValue: newValue)
         })
         
@@ -38,7 +38,7 @@ class SPTObservedOrientation: SPTObservedComponent {
         get { binding.wrappedValue }
     }
     
-    var projectedValue: SPTComponentBinding<SPTOrientation> {
+    var projectedValue: SPTObjectBinding<SPTOrientation> {
         binding
     }
     

@@ -31,9 +31,9 @@ void SPTGeneratorUpdate(SPTObject object, SPTGenerator updated);
 
 SPTGenerator SPTGeneratorGet(SPTObject object);
 
-typedef void (*SPTGeneratorWillChangeCallback) (SPTComponentListener, SPTGenerator);
-void SPTGeneratorAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTGeneratorWillChangeCallback callback);
-void SPTGeneratorRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTGeneratorWillChangeCallback callback);
-void SPTGeneratorRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
+typedef void (* _Nonnull SPTGeneratorWillChangeCallback) (SPTListener, SPTGenerator);
+void SPTGeneratorAddWillChangeListener(SPTObject object, SPTListener listener, SPTGeneratorWillChangeCallback callback);
+void SPTGeneratorRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTGeneratorWillChangeCallback callback);
+void SPTGeneratorRemoveWillChangeListener(SPTObject object, SPTListener listener);
 
 SPT_EXTERN_C_END

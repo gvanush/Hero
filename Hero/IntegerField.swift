@@ -96,7 +96,7 @@ fileprivate struct DeltaPicker<T: FixedWidthInteger>: View {
         .frame(width: 50.0, height: 29.0, alignment: .center)
         .overlay {
             RoundedRectangle(cornerRadius: 7.0)
-                .strokeBorder(Color.tertiary, lineWidth: 1)
+                .strokeBorder(Color.tertiaryLabel, lineWidth: 1)
         }
         .pickerStyle(.menu)
     }

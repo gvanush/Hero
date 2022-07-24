@@ -7,16 +7,16 @@
 
 import Foundation
 
-public class SPTAnyCancellable {
+public protocol SPTAnyCancellable {
     
 }
 
-public class SPTListener<CT>: SPTAnyCancellable {
+public class SPTCancellableListener<CT>: SPTAnyCancellable {
     
     let callback: (CT) -> Void
-    private let cancel: (SPTListener<CT>) -> Void
+    private let cancel: (SPTCancellableListener<CT>) -> Void
     
-    init(callback: @escaping (CT) -> Void, _ cancel: @escaping (SPTListener<CT>) -> Void) {
+    init(callback: @escaping (CT) -> Void, _ cancel: @escaping (SPTCancellableListener<CT>) -> Void) {
         self.callback = callback
         self.cancel = cancel
     }

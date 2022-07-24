@@ -24,4 +24,13 @@ void emplaceIfMissing(Registry& registry, SPTEntity entity, Args &&...args) {
     }
 }
 
+template <typename OT>
+using WillChangeCallback = void (*)(SPTListener, OT);
+
+template <typename OT>
+struct WillChangeListenerItem {
+    SPTListener listener;
+    WillChangeCallback<OT> callback;
+};
+
 }

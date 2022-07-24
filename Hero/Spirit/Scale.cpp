@@ -34,14 +34,14 @@ SPTScale SPTScaleGet(SPTObject object) {
     return spt::Scene::getRegistry(object).get<SPTScale>(object.entity);
 }
 
-void SPTScaleAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback) {
+void SPTScaleAddWillChangeListener(SPTObject object, SPTListener listener, SPTScaleWillChangeCallback callback) {
     spt::addComponentWillChangeListener<SPTScale>(object, listener, callback);
 }
 
-void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback) {
+void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTScaleWillChangeCallback callback) {
     spt::removeComponentWillChangeListenerCallback<SPTScale>(object, listener, callback);
 }
 
-void SPTScaleRemoveWillChangeListener(SPTObject object, SPTComponentListener listener) {
+void SPTScaleRemoveWillChangeListener(SPTObject object, SPTListener listener) {
     spt::removeComponentWillChangeListener<SPTScale>(object, listener);
 }

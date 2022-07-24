@@ -11,7 +11,6 @@
 
 #include <simd/simd.h>
 
-
 SPT_EXTERN_C_BEGIN
 
 typedef enum {
@@ -49,9 +48,9 @@ simd_float3 SPTPositionGetXYZ(SPTObject object);
 
 simd_float3 SPTPositionConvertSphericalToXYZ(SPTSphericalPosition sphericalPosition);
 
-typedef void (*SPTPositionWillChangeCallback) (SPTComponentListener, SPTPosition);
-void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback);
-void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback);
-void SPTPositionRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
+typedef void (* _Nonnull SPTPositionWillChangeCallback) (SPTListener, SPTPosition);
+void SPTPositionAddWillChangeListener(SPTObject object, SPTListener listener, SPTPositionWillChangeCallback callback);
+void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTPositionWillChangeCallback callback);
+void SPTPositionRemoveWillChangeListener(SPTObject object, SPTListener listener);
 
 SPT_EXTERN_C_END
