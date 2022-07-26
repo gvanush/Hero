@@ -10,7 +10,7 @@ import SwiftUI
 
 class PanAnimatorSetBoundsViewModel: ObservableObject {
     
-    @Published var animator: SPTAnimator
+    @Published private(set) var animator: SPTAnimator
     
     init(animatorId: SPTAnimatorId) {
         animator = SPTAnimatorGet(animatorId)
@@ -106,21 +106,9 @@ class PanAnimatorSetBoundsViewModel: ObservableObject {
         }
     }
     
-    func boundsOffset(screenSize: CGSize) -> CGSize {
-        let midX = (animator.bottomLeft.x + animator.topRight.x) * 0.5
-        let midY = (animator.bottomLeft.y + animator.topRight.y) * 0.5
-        return .init(width: CGFloat(midX - 0.5) * screenSize.width, height: CGFloat(0.5 - midY) * screenSize.height)
-    }
-    
-    func boundsSize(screenSize: CGSize) -> CGSize {
-        let normWidth = animator.topRight.x - animator.bottomLeft.x
-        let normHeight = animator.topRight.y - animator.bottomLeft.y
-        return .init(width: CGFloat(normWidth) * screenSize.width, height: CGFloat(normHeight) * screenSize.height)
-    }
-    
     func boundsRect(screenSize: CGSize) -> CGRect {
         let topLeft = simd_float2(animator.bottomLeft.x, animator.topRight.y)
-        return CGRect(origin: CGPoint(x: CGFloat(topLeft.x) * screenSize.width, y: CGFloat(1.0 - topLeft.y) * screenSize.height), size: boundsSize(screenSize: screenSize))
+        return CGRect(origin: CGPoint(x: CGFloat(topLeft.x) * screenSize.width, y: CGFloat(1.0 - topLeft.y) * screenSize.height), size: animator.boundsSizeOnScreenSize(screenSize))
     }
 }
 
@@ -138,6 +126,7 @@ struct PanAnimatorSetBoundsView: View {
     @GestureState var isDragging = false
     @State var prevTranslation: CGSize?
     @State var activeHandle: Handle?
+    @State var showsViewBoundsView = false
     
     @Environment(\.presentationMode) private var presentationMode
 
@@ -167,11 +156,14 @@ struct PanAnimatorSetBoundsView: View {
                 }
                 ToolbarItem(placement: .bottomBar) {
                     Button("View") {
-                        
+                        showsViewBoundsView = true
                     }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .fullScreenCover(isPresented: $showsViewBoundsView) {
+            PanAnimatorViewBoundsView(model: PanAnimatorViewBoundsViewModel(animator: model.animator))   
         }
         .onChange(of: isDragging) { newValue in
             if !newValue {
@@ -217,8 +209,8 @@ struct PanAnimatorSetBoundsView: View {
                     handle(iconName: Self.centerHandleIconName)
                 }
             }
-            .frame(size: model.boundsSize(screenSize: screenSize))
-            .offset(model.boundsOffset(screenSize: screenSize))
+            .frame(size: model.animator.boundsSizeOnScreenSize(screenSize))
+            .offset(model.animator.boundsOffsetOnScreenSize(screenSize))
     }
     
     var mainDiagEdgeHandle: some View {

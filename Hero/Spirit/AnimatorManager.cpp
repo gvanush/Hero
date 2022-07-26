@@ -24,6 +24,8 @@ SPTAnimatorId AnimatorManager::makeAnimator(const SPTAnimator& animator) {
 }
 
 void AnimatorManager::updateAnimator(const SPTAnimator& updated) {
+    assert(updated.bottomLeft.x >= 0.f && updated.bottomLeft.x <= updated.topRight.x && updated.topRight.x <= 1.f);
+    assert(updated.bottomLeft.y >= 0.f && updated.bottomLeft.y <= updated.topRight.y && updated.topRight.y <= 1.f);
     
     auto it = std::find_if(_animators.begin(), _animators.end(), [&updated] (const auto& animator) {
         return animator.id == updated.id;

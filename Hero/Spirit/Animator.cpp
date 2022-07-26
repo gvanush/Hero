@@ -27,6 +27,16 @@ SPTAnimator SPTAnimatorGet(SPTAnimatorId id) {
     return spt::AnimatorManager::active().getAnimator(id);
 }
 
+float SPTAnimatorGetSignalX(SPTAnimator animator, float xLoc) {
+    const auto v = simd_clamp(xLoc, animator.bottomLeft.x, animator.topRight.x);
+    return (v - animator.bottomLeft.x) / (animator.topRight.x - animator.bottomLeft.x);
+}
+
+float SPTAnimatorGetSignalY(SPTAnimator animator, float yLoc) {
+    const auto v = simd_clamp(yLoc, animator.bottomLeft.y, animator.topRight.y);
+    return (v - animator.bottomLeft.y) / (animator.topRight.y - animator.bottomLeft.y);
+}
+
 SPTAnimatorsSlice SPTAnimatorGetAll() {
     const auto& all = spt::AnimatorManager::active().animators();
     return SPTAnimatorsSlice{ all.data(), 0, all.size() };

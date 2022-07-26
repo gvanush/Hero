@@ -105,6 +105,8 @@
 		B7D19EBC273306F5005C9F82 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EBB273306F4005C9F82 /* Line.swift */; };
 		B7D8252C279D64D1008F28CE /* EditGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */; };
 		B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */; };
+		B7E30F4D288E76BA00224E09 /* PanAnimatorViewBoundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */; };
+		B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */; };
 		B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481C9274183BD003DA5B1 /* Transformation.cpp */; };
 		B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481CD2742307B003DA5B1 /* Camera.cpp */; };
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
@@ -259,6 +261,8 @@
 		B7D19EBB273306F4005C9F82 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		B7D8252B279D64D1008F28CE /* EditGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGeneratorView.swift; sourceTree = "<group>"; };
 		B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
+		B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanAnimatorViewBoundsView.swift; sourceTree = "<group>"; };
+		B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorUtil.swift; sourceTree = "<group>"; };
 		B7E481C9274183BD003DA5B1 /* Transformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
 		B7E481CA274183BD003DA5B1 /* Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scale.h; sourceTree = "<group>"; };
 		B7E481CD2742307B003DA5B1 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -307,6 +311,7 @@
 		B7104BBC2729266D00582DCA /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				B7E30F50288E7F5000224E09 /* Spirit */,
 				B7791D982726768B00E0C934 /* UIColorUtil.swift */,
 				B7104BC3272B069F00582DCA /* ColorUtil.swift */,
 				B7791DA42726768B00E0C934 /* FloatingPointUtil.swift */,
@@ -440,6 +445,7 @@
 				B73A700228840DB70043F9FF /* AnimatorsView.swift */,
 				B73A700428841C2E0043F9FF /* PanAnimatorView.swift */,
 				B73A7018288BCC280043F9FF /* PanAnimatorSetBoundsView.swift */,
+				B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */,
 			);
 			path = Animator;
 			sourceTree = "<group>";
@@ -579,6 +585,14 @@
 				B7BCB11727D4D3C500F5AFB1 /* Metadata.h */,
 			);
 			name = Metadata;
+			sourceTree = "<group>";
+		};
+		B7E30F50288E7F5000224E09 /* Spirit */ = {
+			isa = PBXGroup;
+			children = (
+				B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */,
+			);
+			path = Spirit;
 			sourceTree = "<group>";
 		};
 		B7E481C227414867003DA5B1 /* Scene */ = {
@@ -768,6 +782,7 @@
 				B73E47E327CFC55D00CB0AFC /* Arrangement.cpp in Sources */,
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
+				B7E30F4D288E76BA00224E09 /* PanAnimatorViewBoundsView.swift in Sources */,
 				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshView.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
@@ -824,6 +839,7 @@
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
+				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
 				B73A70172887D36E0043F9FF /* AnimatorManager.cpp in Sources */,
 				B73A7012288734850043F9FF /* SPTArraySlice.swift in Sources */,
 				B73A7009288526990043F9FF /* Animator.cpp in Sources */,
@@ -985,7 +1001,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1025,7 +1041,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

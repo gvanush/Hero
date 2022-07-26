@@ -42,6 +42,9 @@ void SPTAnimatorDestroy(SPTAnimatorId id);
 
 SPTAnimator SPTAnimatorGet(SPTAnimatorId id);
 
+float SPTAnimatorGetSignalX(SPTAnimator animator, float xLoc);
+float SPTAnimatorGetSignalY(SPTAnimator animator, float yLoc);
+
 SPTAnimatorsSlice SPTAnimatorGetAll();
 
 typedef void (* _Nonnull SPTAnimatorWillChangeCallback) (SPTListener, SPTAnimator);
