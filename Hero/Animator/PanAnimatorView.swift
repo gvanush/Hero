@@ -28,13 +28,14 @@ class PanAnimatorViewModel: ObservableObject {
 struct SignalView: View {
     
     let title: String
+    let onView: () -> Void
     
     var body: some View {
         HStack {
             Text(title)
             Spacer()
             Button {
-                
+                onView()
             } label: {
                 Image(systemName: "waveform.path.ecg.rectangle")
                     .imageScale(.large)
@@ -47,7 +48,8 @@ struct SignalView: View {
 struct PanAnimatorView: View {
     
     @ObservedObject var model: PanAnimatorViewModel
-    @State var showsSetBoundsView = false
+    @State private var showsSetBoundsView = false
+    @State private var shownSignal: PanAnimatorSignal?
     
     var body: some View {
         Form {
@@ -62,8 +64,12 @@ struct PanAnimatorView: View {
                 }
             }
             Section("Signals") {
-                SignalView(title: "X")
-                SignalView(title: "Y")
+                SignalView(title: PanAnimatorSignal.horizontal.displayName) {
+                    shownSignal = .horizontal
+                }
+                SignalView(title: PanAnimatorSignal.vertical.displayName) {
+                    shownSignal = .vertical
+                }
             }
         }
         .navigationTitle(model.name)
@@ -90,6 +96,9 @@ struct PanAnimatorView: View {
         }
         .sheet(isPresented: $showsSetBoundsView) {
             PanAnimatorSetBoundsView(model: .init(animatorId: model.animator.id))
+        }
+        .fullScreenCover(item: $shownSignal) { signal in
+            PanAnimatorViewSignalView(animatorId: model.animator.id, signal: signal)
         }
     }
 }

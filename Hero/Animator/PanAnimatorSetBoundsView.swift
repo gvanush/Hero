@@ -190,7 +190,7 @@ struct PanAnimatorSetBoundsView: View {
     
     func boundsView(screenSize: CGSize) -> some View {
         Rectangle()
-            .foregroundColor(.accentColor.opacity(0.2))
+            .foregroundColor(.gestureSignalArea)
             .overlay {
                 ZStack {
                     VStack {

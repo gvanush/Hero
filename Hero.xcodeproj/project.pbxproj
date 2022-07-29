@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -87,6 +87,7 @@
 		B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D982726768B00E0C934 /* UIColorUtil.swift */; };
 		B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA42726768B00E0C934 /* FloatingPointUtil.swift */; };
 		B7791DBA2726821200E0C934 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DB92726821200E0C934 /* SceneView.swift */; };
+		B787F2032892E50700AE784B /* DisplayLink in Frameworks */ = {isa = PBXBuildFile; productRef = B787F2022892E50700AE784B /* DisplayLink */; };
 		B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */; };
 		B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99E127B5C1430033B459 /* ComparableUtil.swift */; };
 		B7AA99E427B6CABB0033B459 /* SIMDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99E327B6CABB0033B459 /* SIMDUtil.swift */; };
@@ -107,6 +108,9 @@
 		B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */; };
 		B7E30F4D288E76BA00224E09 /* PanAnimatorViewBoundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */; };
 		B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */; };
+		B7E30F5228905A1400224E09 /* PanAnimatorViewSignalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F5128905A1400224E09 /* PanAnimatorViewSignalView.swift */; };
+		B7E30F5628906D4800224E09 /* SignalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F5528906D4800224E09 /* SignalGraphView.swift */; };
+		B7E30F592891492100224E09 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = B7E30F582891492100224E09 /* DequeModule */; };
 		B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481C9274183BD003DA5B1 /* Transformation.cpp */; };
 		B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481CD2742307B003DA5B1 /* Camera.cpp */; };
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
@@ -263,6 +267,8 @@
 		B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanAnimatorViewBoundsView.swift; sourceTree = "<group>"; };
 		B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorUtil.swift; sourceTree = "<group>"; };
+		B7E30F5128905A1400224E09 /* PanAnimatorViewSignalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanAnimatorViewSignalView.swift; sourceTree = "<group>"; };
+		B7E30F5528906D4800224E09 /* SignalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalGraphView.swift; sourceTree = "<group>"; };
 		B7E481C9274183BD003DA5B1 /* Transformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
 		B7E481CA274183BD003DA5B1 /* Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scale.h; sourceTree = "<group>"; };
 		B7E481CD2742307B003DA5B1 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -282,6 +288,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7E30F592891492100224E09 /* DequeModule in Frameworks */,
+				B787F2032892E50700AE784B /* DisplayLink in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +454,8 @@
 				B73A700428841C2E0043F9FF /* PanAnimatorView.swift */,
 				B73A7018288BCC280043F9FF /* PanAnimatorSetBoundsView.swift */,
 				B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */,
+				B7E30F5128905A1400224E09 /* PanAnimatorViewSignalView.swift */,
+				B7E30F5528906D4800224E09 /* SignalGraphView.swift */,
 			);
 			path = Animator;
 			sourceTree = "<group>";
@@ -702,6 +712,10 @@
 			dependencies = (
 			);
 			name = Hero;
+			packageProductDependencies = (
+				B7E30F582891492100224E09 /* DequeModule */,
+				B787F2022892E50700AE784B /* DisplayLink */,
+			);
 			productName = Hero;
 			productReference = B7791D1427258F7500E0C934 /* Hero.app */;
 			productType = "com.apple.product-type.application";
@@ -729,6 +743,10 @@
 				Base,
 			);
 			mainGroup = B7316FEB24CF376000157455;
+			packageReferences = (
+				B7E30F572891492100224E09 /* XCRemoteSwiftPackageReference "swift-collections" */,
+				B787F2012892E50700AE784B /* XCRemoteSwiftPackageReference "DisplayLink" */,
+			);
 			productRefGroup = B7316FF524CF376000157455 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -823,6 +841,7 @@
 				B723585F2762844700337547 /* PolylineViewDepthBias.cpp in Sources */,
 				B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */,
 				B7D8252C279D64D1008F28CE /* EditGeneratorView.swift in Sources */,
+				B7E30F5628906D4800224E09 /* SignalGraphView.swift in Sources */,
 				B75FA57D27918064001EC7C5 /* Generator.cpp in Sources */,
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
 				B717636227B0242300CE5195 /* SampleSceneData.swift in Sources */,
@@ -835,6 +854,7 @@
 				B73E47F127D2270D00CB0AFC /* PointView.cpp in Sources */,
 				B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */,
 				B73A700528841C2E0043F9FF /* PanAnimatorView.swift in Sources */,
+				B7E30F5228905A1400224E09 /* PanAnimatorViewSignalView.swift in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */,
@@ -1084,6 +1104,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B787F2012892E50700AE784B /* XCRemoteSwiftPackageReference "DisplayLink" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/timdonnelly/DisplayLink.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+		B7E30F572891492100224E09 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B787F2022892E50700AE784B /* DisplayLink */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B787F2012892E50700AE784B /* XCRemoteSwiftPackageReference "DisplayLink" */;
+			productName = DisplayLink;
+		};
+		B7E30F582891492100224E09 /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B7E30F572891492100224E09 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B7316FEC24CF376000157455 /* Project object */;
 }

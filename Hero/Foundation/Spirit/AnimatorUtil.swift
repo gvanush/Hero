@@ -7,6 +7,16 @@
 
 import Foundation
 
+enum PanAnimatorSignal: Identifiable, Displayable {
+    
+    case horizontal
+    case vertical
+    
+    var id: Self {
+        self
+    }
+}
+
 extension SPTAnimator {
     
     func boundsOffsetOnScreenSize(_ screenSize: CGSize) -> CGSize {

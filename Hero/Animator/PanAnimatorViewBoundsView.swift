@@ -37,14 +37,14 @@ struct PanAnimatorViewBoundsView: View {
             ZStack {
                 Color.systemBackground
                 Rectangle()
-                    .foregroundColor(.accentColor.opacity(0.2))
+                    .foregroundColor(.gestureSignalArea)
                     .frame(size: model.animator.boundsSizeOnScreenSize(geometry.size))
                     .offset(model.animator.boundsOffsetOnScreenSize(geometry.size))
                 if let dragValue = dragValue {
                     HStack {
                         Image(systemName: "waveform.path.ecg")
                             .foregroundColor(.secondaryLabel)
-                        Text(String(format: "x%.2f  y%.2f", model.signalAtX(dragValue.location.x, screenWidth: geometry.size.width), model.signalAtY(dragValue.location.y, screenHeight: geometry.size.height)))
+                        Text(String(format: "H%.2f  V%.2f", model.signalAtX(dragValue.location.x, screenWidth: geometry.size.width), model.signalAtY(dragValue.location.y, screenHeight: geometry.size.height)))
                             .foregroundColor(.secondaryLabel)
                     }
                     .offset(.init(width: dragValue.location.x - 0.5 * geometry.size.width, height: dragValue.location.y - 0.5 * geometry.size.height + Self.signalTextVerticalOffset))
