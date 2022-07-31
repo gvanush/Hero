@@ -16,12 +16,12 @@ struct SignalSample {
     let timestamp: TimeInterval
 }
 
-fileprivate func graphTimespan(width: CGFloat, signalMaxFrequency: Int) -> TimeInterval {
-    TimeInterval(width / CGFloat(signalMaxFrequency))
+fileprivate func graphTimespan(width: CGFloat, signalMaxFrequency: Int, lineWidth: CGFloat) -> TimeInterval {
+    TimeInterval(width / (CGFloat(signalMaxFrequency) * lineWidth))
 }
 
-fileprivate func graphWidth(timespan: TimeInterval, signalMaxFrequency: Int) -> CGFloat {
-    CGFloat(timespan * TimeInterval(signalMaxFrequency))
+fileprivate func graphWidth(timespan: TimeInterval, signalMaxFrequency: Int, lineWidth: CGFloat) -> CGFloat {
+    CGFloat(timespan * TimeInterval(signalMaxFrequency)) * lineWidth
 }
 
 /*
@@ -43,14 +43,19 @@ struct SignalGraph<V>: Shape where V: RandomAccessCollection, V.Element == Signa
     
     let samples: V
     let signalMaxFrequency: Int
+    let lineWidth: CGFloat
     
     func path(in rect: CGRect) -> Path {
         
         guard !samples.isEmpty else { return Path() }
         
         let latestSampleTimestamp = samples.last!.timestamp
-        let getX = { timestamp in rect.maxX - graphWidth(timespan: latestSampleTimestamp - timestamp, signalMaxFrequency: signalMaxFrequency) }
-        let getY = { (value: Float) in CGFloat(1.0 - value) * rect.height }
+        let getX = { timestamp in
+            rect.maxX - graphWidth(timespan: latestSampleTimestamp - timestamp, signalMaxFrequency: signalMaxFrequency, lineWidth: lineWidth)
+        }
+        let getY = { (value: Float) in
+            CGFloat(1.0 - value) * rect.height
+        }
         
         var path = Path()
         
@@ -107,11 +112,12 @@ struct SignalGraphView: View {
     @State private var timer = Timer.publish(every: TimeInterval.infinity, on: .main, in: .common).autoconnect()
     
     static let signalMaxFrequency = UIScreen.main.maximumFramesPerSecond
+    static let lineWidth: CGFloat = 1.5
     
     var body: some View {
         GeometryReader { geometry in
-            SignalGraph(samples: samples, signalMaxFrequency: Self.signalMaxFrequency)
-                .stroke(.primary, style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
+            SignalGraph(samples: samples, signalMaxFrequency: Self.signalMaxFrequency, lineWidth: Self.lineWidth)
+                .stroke(.primary, style: StrokeStyle(lineWidth: Self.lineWidth, lineCap: .round, lineJoin: .round))
                 .background { background }
                 .modifier(SizeModifier())
                 .aspectRatio(contentMode: .fit)
@@ -122,7 +128,7 @@ struct SignalGraphView: View {
             samples.append(.init(value: signal(), timestamp: frame.timestamp))
         }
         .onPreferenceChange(SizePreferenceKey.self) { size in
-            timer = Timer.publish(every: graphTimespan(width: size.width, signalMaxFrequency: Self.signalMaxFrequency), on: .main, in: .common).autoconnect()
+            timer = Timer.publish(every: graphTimespan(width: size.width, signalMaxFrequency: Self.signalMaxFrequency, lineWidth: Self.lineWidth), on: .main, in: .common).autoconnect()
         }
         .onReceive(timer) { _ in
             

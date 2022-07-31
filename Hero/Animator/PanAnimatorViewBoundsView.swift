@@ -44,7 +44,7 @@ struct PanAnimatorViewBoundsView: View {
                     HStack {
                         Image(systemName: "waveform.path.ecg")
                             .foregroundColor(.secondaryLabel)
-                        Text(String(format: "H%.2f  V%.2f", model.signalAtX(dragValue.location.x, screenWidth: geometry.size.width), model.signalAtY(dragValue.location.y, screenHeight: geometry.size.height)))
+                        Text(String(format: "H:%.2f  V:%.2f", model.signalAtX(dragValue.location.x, screenWidth: geometry.size.width), model.signalAtY(dragValue.location.y, screenHeight: geometry.size.height)))
                             .foregroundColor(.secondaryLabel)
                     }
                     .offset(.init(width: dragValue.location.x - 0.5 * geometry.size.width, height: dragValue.location.y - 0.5 * geometry.size.height + Self.signalTextVerticalOffset))
