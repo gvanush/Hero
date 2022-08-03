@@ -7,10 +7,9 @@
 
 #include "AnimatorManager.hpp"
 
+
 bool SPTAnimatorEqual(SPTAnimator lhs, SPTAnimator rhs) {
-    // TODO: @Vanush
-//    return lhs.source.type == rhs.source.type && strcmp(lhs._name, rhs._name) == 0;
-    return false;
+    return lhs.source.type == rhs.source.type && SPTAnimatorSourceEqual(lhs.source, rhs.source) && strcmp(lhs._name, rhs._name) == 0;
 }
 
 SPTAnimatorId SPTAnimatorMake(SPTAnimator object) {

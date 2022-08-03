@@ -38,4 +38,6 @@ typedef struct {
 
 SPTAnimatorSource SPTAnimatorSourceMakePan(SPTPanAnimatorSourceAxis axis, simd_float2 bottomLeft, simd_float2 topRight);
 
+bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs);
+
 SPT_EXTERN_C_END
