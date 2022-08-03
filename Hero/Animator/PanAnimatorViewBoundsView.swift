@@ -15,13 +15,15 @@ class PanAnimatorViewBoundsViewModel: ObservableObject {
         self.animator = animator
     }
     
-    func signalAtX(_ x: CGFloat, screenWidth: CGFloat) -> Float {
-        SPTAnimatorGetSignalX(animator, Float(x / screenWidth))
+    func valueAt(_ p: CGPoint, screenSize: CGSize) -> Float {
+        switch animator.source.pan.axis {
+        case .horizontal:
+            return SPTAnimatorGetValue(animator, Float(p.x / screenSize.width))
+        case .vertical:
+            return SPTAnimatorGetValue(animator, Float(1.0 - p.y / screenSize.height))
+        }
     }
     
-    func signalAtY(_ y: CGFloat, screenHeight: CGFloat) -> Float {
-        SPTAnimatorGetSignalY(animator, Float(1.0 - y / screenHeight))
-    }
 }
 
 struct PanAnimatorViewBoundsView: View {
@@ -38,13 +40,13 @@ struct PanAnimatorViewBoundsView: View {
                 Color.systemBackground
                 Rectangle()
                     .foregroundColor(.gestureSignalArea)
-                    .frame(size: model.animator.boundsSizeOnScreenSize(geometry.size))
-                    .offset(model.animator.boundsOffsetOnScreenSize(geometry.size))
+                    .frame(size: model.animator.source.pan.boundsSizeOnScreenSize(geometry.size))
+                    .offset(model.animator.source.pan.boundsOffsetOnScreenSize(geometry.size))
                 if let dragValue = dragValue {
                     HStack {
                         Image(systemName: "waveform.path.ecg")
                             .foregroundColor(.secondaryLabel)
-                        Text(String(format: "H:%.2f  V:%.2f", model.signalAtX(dragValue.location.x, screenWidth: geometry.size.width), model.signalAtY(dragValue.location.y, screenHeight: geometry.size.height)))
+                        Text(String(format: "%.2f", model.valueAt(dragValue.location, screenSize: geometry.size)))
                             .foregroundColor(.secondaryLabel)
                     }
                     .offset(.init(width: dragValue.location.x - 0.5 * geometry.size.width, height: dragValue.location.y - 0.5 * geometry.size.height + Self.signalTextVerticalOffset))
@@ -93,6 +95,6 @@ struct PanAnimatorViewBoundsView: View {
 
 struct PanAnimatorViewBoundsView_Previews: PreviewProvider {
     static var previews: some View {
-        PanAnimatorViewBoundsView(model: PanAnimatorViewBoundsViewModel(animator: SPTAnimator(name: "Pan 1")))
+        PanAnimatorViewBoundsView(model: PanAnimatorViewBoundsViewModel(animator: SPTAnimator(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one))))
     }
 }

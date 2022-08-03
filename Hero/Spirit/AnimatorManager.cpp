@@ -24,8 +24,7 @@ SPTAnimatorId AnimatorManager::makeAnimator(const SPTAnimator& animator) {
 }
 
 void AnimatorManager::updateAnimator(const SPTAnimator& updated) {
-    assert(updated.bottomLeft.x >= 0.f && updated.bottomLeft.x <= updated.topRight.x && updated.topRight.x <= 1.f);
-    assert(updated.bottomLeft.y >= 0.f && updated.bottomLeft.y <= updated.topRight.y && updated.topRight.y <= 1.f);
+    assert(validateAnimator(updated));
     
     auto it = std::find_if(_animators.begin(), _animators.end(), [&updated] (const auto& animator) {
         return animator.id == updated.id;
@@ -138,6 +137,17 @@ void AnimatorManager::notifyListeners(const SPTAnimator& newValue) {
 void AnimatorManager::notifyCountListeners(size_t newValue) {
     for(const auto& item: _countListeners) {
         item.callback(item.listener, newValue);
+    }
+}
+
+bool AnimatorManager::validateAnimator(const SPTAnimator& animator) {
+    switch (animator.source.type) {
+        case SPTAnimatorSourceTypePan: {
+            return animator.source.pan.bottomLeft.x >= 0.f && animator.source.pan.bottomLeft.x <= animator.source.pan.topRight.x && animator.source.pan.topRight.x <= 1.f && animator.source.pan.bottomLeft.y >= 0.f && animator.source.pan.bottomLeft.y <= animator.source.pan.topRight.y && animator.source.pan.topRight.y <= 1.f;
+        }
+        case SPTAnimatorSourceTypeFace: {
+            return false;
+        }
     }
 }
 

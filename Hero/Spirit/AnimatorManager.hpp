@@ -43,6 +43,8 @@ private:
     void notifyListeners(const SPTAnimator& newValue);
     void notifyCountListeners(size_t newValue);
     
+    bool validateAnimator(const SPTAnimator& updated);
+    
     AnimatorManager() = default;
     AnimatorManager(const AnimatorManager&) = delete;
     AnimatorManager(AnimatorManager&&) = delete;

@@ -11,7 +11,6 @@ import SwiftUI
 struct PanAnimatorViewSignalView: View {
     
     let animator: SPTAnimator
-    let signal: PanAnimatorSignal
     @GestureState private var isDragging = false
     @State private var dragValue: DragGesture.Value?
     @State private var shouldCheckForExit = true
@@ -20,9 +19,9 @@ struct PanAnimatorViewSignalView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     
-    init(animatorId: SPTAnimatorId, signal: PanAnimatorSignal) {
+    init(animatorId: SPTAnimatorId) {
         self.animator = SPTAnimatorGet(animatorId)
-        self.signal = signal
+        assert(animator.source.type == .pan)
     }
     
     var body: some View {
@@ -31,9 +30,9 @@ struct PanAnimatorViewSignalView: View {
                 Color.systemBackground
                 Rectangle()
                     .foregroundColor(.gestureSignalArea)
-                    .frame(size: animator.boundsSizeOnScreenSize(geometry.size))
-                    .offset(animator.boundsOffsetOnScreenSize(geometry.size))
-                SignalGraphView(name: signal.displayName) {
+                    .frame(size: animator.source.pan.boundsSizeOnScreenSize(geometry.size))
+                    .offset(animator.source.pan.boundsOffsetOnScreenSize(geometry.size))
+                SignalGraphView(name: animator.source.pan.axis.displayName) {
                     signalLastValue
                 }
             }
@@ -80,11 +79,11 @@ struct PanAnimatorViewSignalView: View {
     }
     
     func signalValue(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Float {
-        switch signal {
+        switch animator.source.pan.axis {
         case .horizontal:
-            return SPTAnimatorGetSignalX(animator, Float(dragValue.location.x / geometry.size.width))
+            return SPTAnimatorGetValue(animator, Float(dragValue.location.x / geometry.size.width))
         case .vertical:
-            return SPTAnimatorGetSignalY(animator, 1.0 - Float(dragValue.location.y / geometry.size.height))
+            return SPTAnimatorGetValue(animator, 1.0 - Float(dragValue.location.y / geometry.size.height))
         }
     }
     
@@ -95,6 +94,6 @@ struct PanAnimatorViewSignalView: View {
 
 struct PanAnimatorViewSignalView_Previews: PreviewProvider {
     static var previews: some View {
-        PanAnimatorViewSignalView(animatorId: SPTAnimatorMake(.init(name: "Pan 1")), signal: .horizontal)
+        PanAnimatorViewSignalView(animatorId: SPTAnimatorMake(.init(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one))))
     }
 }

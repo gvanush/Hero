@@ -59,11 +59,16 @@ struct AnimatorsView: View {
                     }
                 }
                 ToolbarItem(placement: .bottomBar) {
-                    Button(action: {
-                        selection = model.makeAnimator(SPTAnimator(name: "Pan \(SPTAnimatorGetAll().count)"))
-                    }, label: {
-                        Image(systemName: "plus")
-                    })
+                    Menu {
+                        Button("Face") {
+                            
+                        }
+                        Button("Pan") {
+                            selection = model.makeAnimator(SPTAnimator(name: "Pan \(SPTAnimatorGetAll().count)", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+                        }
+                    } label: {
+                        Text("New From Source")
+                    }
                 }
             }
         }

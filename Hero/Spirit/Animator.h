@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Base.h"
+#include "AnimatorSource.h"
 
 #include <simd/simd.h>
 #include <limits.h>
@@ -21,8 +22,7 @@ const size_t kSPTAnimatorNameMaxLength = 7;
 
 typedef struct {
     SPTAnimatorId id;
-    simd_float2 bottomLeft;
-    simd_float2 topRight;
+    SPTAnimatorSource source;
     char _name[kSPTAnimatorNameMaxLength + 1];
 } SPTAnimator;
 
@@ -42,8 +42,7 @@ void SPTAnimatorDestroy(SPTAnimatorId id);
 
 SPTAnimator SPTAnimatorGet(SPTAnimatorId id);
 
-float SPTAnimatorGetSignalX(SPTAnimator animator, float xLoc);
-float SPTAnimatorGetSignalY(SPTAnimator animator, float yLoc);
+float SPTAnimatorGetValue(SPTAnimator animator, float loc);
 
 SPTAnimatorsSlice SPTAnimatorGetAll();
 

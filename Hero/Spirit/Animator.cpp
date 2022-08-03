@@ -8,7 +8,9 @@
 #include "AnimatorManager.hpp"
 
 bool SPTAnimatorEqual(SPTAnimator lhs, SPTAnimator rhs) {
-    return simd_equal(lhs.bottomLeft, rhs.bottomLeft) && simd_equal(lhs.topRight, rhs.topRight) && strcmp(lhs._name, rhs._name) == 0;
+    // TODO: @Vanush
+//    return lhs.source.type == rhs.source.type && strcmp(lhs._name, rhs._name) == 0;
+    return false;
 }
 
 SPTAnimatorId SPTAnimatorMake(SPTAnimator object) {
@@ -27,14 +29,25 @@ SPTAnimator SPTAnimatorGet(SPTAnimatorId id) {
     return spt::AnimatorManager::active().getAnimator(id);
 }
 
-float SPTAnimatorGetSignalX(SPTAnimator animator, float xLoc) {
-    const auto v = simd_clamp(xLoc, animator.bottomLeft.x, animator.topRight.x);
-    return (v - animator.bottomLeft.x) / (animator.topRight.x - animator.bottomLeft.x);
-}
-
-float SPTAnimatorGetSignalY(SPTAnimator animator, float yLoc) {
-    const auto v = simd_clamp(yLoc, animator.bottomLeft.y, animator.topRight.y);
-    return (v - animator.bottomLeft.y) / (animator.topRight.y - animator.bottomLeft.y);
+float SPTAnimatorGetValue(SPTAnimator animator, float loc) {
+    switch (animator.source.type) {
+        case SPTAnimatorSourceTypePan: {
+            switch (animator.source.pan.axis) {
+                case SPTPanAnimatorSourceAxisHorizontal: {
+                    const auto v = simd_clamp(loc, animator.source.pan.bottomLeft.x, animator.source.pan.topRight.x);
+                    return (v - animator.source.pan.bottomLeft.x) / (animator.source.pan.topRight.x - animator.source.pan.bottomLeft.x);
+                }
+                case SPTPanAnimatorSourceAxisVertical: {
+                    const auto v = simd_clamp(loc, animator.source.pan.bottomLeft.y, animator.source.pan.topRight.y);
+                    return (v - animator.source.pan.bottomLeft.y) / (animator.source.pan.topRight.y - animator.source.pan.bottomLeft.y);
+                }
+            }
+        }
+        case SPTAnimatorSourceTypeFace: {
+            return 0.0;
+        }
+    }
+    
 }
 
 SPTAnimatorsSlice SPTAnimatorGetAll() {

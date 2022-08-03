@@ -7,17 +7,30 @@
 
 import Foundation
 
-enum PanAnimatorSignal: Identifiable, Displayable {
+
+extension SPTPanAnimatorSourceAxis: Identifiable, CaseIterable, Displayable {
     
-    case horizontal
-    case vertical
-    
-    var id: Self {
+    public var id: Self {
         self
     }
+    
+    var displayName: String {
+        switch self {
+        case .horizontal:
+            return "Horizontal"
+        case .vertical:
+            return "Vertical"
+        }
+    }
+    
+    public static var allCases: [SPTPanAnimatorSourceAxis] {
+        [.horizontal, .vertical]
+    }
+    
 }
 
-extension SPTAnimator {
+
+extension SPTAnimatorSourcePan {
     
     func boundsOffsetOnScreenSize(_ screenSize: CGSize) -> CGSize {
         let midX = (bottomLeft.x + topRight.x) * 0.5

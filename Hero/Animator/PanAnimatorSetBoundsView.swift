@@ -14,6 +14,7 @@ class PanAnimatorSetBoundsViewModel: ObservableObject {
     
     init(animatorId: SPTAnimatorId) {
         animator = SPTAnimatorGet(animatorId)
+        assert(animator.source.type == .pan)
         
         SPTAnimatorAddWillChangeListener(animatorId, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
             let me = Unmanaged<PanAnimatorSetBoundsViewModel>.fromOpaque(listener).takeUnretainedValue()
@@ -70,45 +71,45 @@ class PanAnimatorSetBoundsViewModel: ObservableObject {
     }
     
     private func updateTopRightX(delta: Float, minSize: Float) {
-        animator.topRight.x = simd_clamp(animator.topRight.x + delta, animator.bottomLeft.x + minSize, 1.0)
+        animator.source.pan.topRight.x = simd_clamp(animator.source.pan.topRight.x + delta, animator.source.pan.bottomLeft.x + minSize, 1.0)
     }
     
     private func updateTopRightY(delta: Float, minSize: Float) {
-        animator.topRight.y = simd_clamp(animator.topRight.y + delta, animator.bottomLeft.y + minSize, 1.0)
+        animator.source.pan.topRight.y = simd_clamp(animator.source.pan.topRight.y + delta, animator.source.pan.bottomLeft.y + minSize, 1.0)
     }
     
     private func updateBottomLeftX(delta: Float, minSize: Float) {
-        animator.bottomLeft.x = simd_clamp(animator.bottomLeft.x + delta, 0.0, animator.topRight.x - minSize)
+        animator.source.pan.bottomLeft.x = simd_clamp(animator.source.pan.bottomLeft.x + delta, 0.0, animator.source.pan.topRight.x - minSize)
     }
     
     private func updateBottomLeftY(delta: Float, minSize: Float) {
-        animator.bottomLeft.y = simd_clamp(animator.bottomLeft.y + delta, 0.0, animator.topRight.y - minSize)
+        animator.source.pan.bottomLeft.y = simd_clamp(animator.source.pan.bottomLeft.y + delta, 0.0, animator.source.pan.topRight.y - minSize)
     }
     
     func updateCenter(delta: CGSize, screenSize: CGSize) {
         let normDelta = normDelta(delta: delta, screenSize: screenSize)
-        let normSize = animator.topRight - animator.bottomLeft
+        let normSize = animator.source.pan.topRight - animator.source.pan.bottomLeft
 
         if normDelta.x >= 0.0 {
-            animator.topRight.x = min(animator.topRight.x + normDelta.x, 1.0)
-            animator.bottomLeft.x = animator.topRight.x - normSize.x
+            animator.source.pan.topRight.x = min(animator.source.pan.topRight.x + normDelta.x, 1.0)
+            animator.source.pan.bottomLeft.x = animator.source.pan.topRight.x - normSize.x
         } else {
-            animator.bottomLeft.x = max(animator.bottomLeft.x + normDelta.x, 0.0)
-            animator.topRight.x = animator.bottomLeft.x + normSize.x
+            animator.source.pan.bottomLeft.x = max(animator.source.pan.bottomLeft.x + normDelta.x, 0.0)
+            animator.source.pan.topRight.x = animator.source.pan.bottomLeft.x + normSize.x
         }
 
         if normDelta.y >= 0.0 {
-            animator.topRight.y = min(animator.topRight.y + normDelta.y, 1.0)
-            animator.bottomLeft.y = animator.topRight.y - normSize.y
+            animator.source.pan.topRight.y = min(animator.source.pan.topRight.y + normDelta.y, 1.0)
+            animator.source.pan.bottomLeft.y = animator.source.pan.topRight.y - normSize.y
         } else {
-            animator.bottomLeft.y = max(animator.bottomLeft.y + normDelta.y, 0.0)
-            animator.topRight.y = animator.bottomLeft.y + normSize.y
+            animator.source.pan.bottomLeft.y = max(animator.source.pan.bottomLeft.y + normDelta.y, 0.0)
+            animator.source.pan.topRight.y = animator.source.pan.bottomLeft.y + normSize.y
         }
     }
     
     func boundsRect(screenSize: CGSize) -> CGRect {
-        let topLeft = simd_float2(animator.bottomLeft.x, animator.topRight.y)
-        return CGRect(origin: CGPoint(x: CGFloat(topLeft.x) * screenSize.width, y: CGFloat(1.0 - topLeft.y) * screenSize.height), size: animator.boundsSizeOnScreenSize(screenSize))
+        let topLeft = simd_float2(animator.source.pan.bottomLeft.x, animator.source.pan.topRight.y)
+        return CGRect(origin: CGPoint(x: CGFloat(topLeft.x) * screenSize.width, y: CGFloat(1.0 - topLeft.y) * screenSize.height), size: animator.source.pan.boundsSizeOnScreenSize(screenSize))
     }
 }
 
@@ -209,8 +210,8 @@ struct PanAnimatorSetBoundsView: View {
                     handle(iconName: Self.centerHandleIconName)
                 }
             }
-            .frame(size: model.animator.boundsSizeOnScreenSize(screenSize))
-            .offset(model.animator.boundsOffsetOnScreenSize(screenSize))
+            .frame(size: model.animator.source.pan.boundsSizeOnScreenSize(screenSize))
+            .offset(model.animator.source.pan.boundsOffsetOnScreenSize(screenSize))
     }
     
     var mainDiagEdgeHandle: some View {
@@ -316,9 +317,7 @@ fileprivate struct BoundsView: View {
 struct PanAnimatorSetAreaView_Previews: PreviewProvider {
     static var previews: some View {
         PanAnimatorSetBoundsView(model: .init(animatorId:
-                                                    SPTAnimatorMake(SPTAnimator(name: "Pan 1",
-                                                                                bottomLeft: .init(0.1, 0.1),
-                                                                                topRight: .init(0.5, 0.7)))
+                                                SPTAnimatorMake(SPTAnimator(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
                                                  ))
     }
 }

@@ -15,11 +15,10 @@ extension SPTAnimatorsSlice: SPTArraySlice {
 
 extension SPTAnimator: Identifiable, Equatable {
     
-    init(name: String, bottomLeft: simd_float2 = .init(0.0, 0.0), topRight: simd_float2 = .init(1.0, 1.0)) {
+    init(name: String, source: SPTAnimatorSource) {
         self.init()
         self.id = kSPTAnimatorInvalidId
-        self.bottomLeft = bottomLeft
-        self.topRight = topRight
+        self.source = source
         self.name = name
     }
     
