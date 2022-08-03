@@ -17,8 +17,9 @@ SPT_EXTERN_C_BEGIN
 
 typedef uint32_t SPTAnimatorId;
 
-const SPTAnimatorId kSPTAnimatorInvalidId = UINT32_MAX;
-const size_t kSPTAnimatorNameMaxLength = 7;
+extern const SPTAnimatorId kSPTAnimatorInvalidId;
+
+#define kSPTAnimatorNameMaxLength 7
 
 typedef struct {
     SPTAnimatorId id;

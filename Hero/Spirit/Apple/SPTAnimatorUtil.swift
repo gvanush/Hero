@@ -25,16 +25,16 @@ extension SPTAnimator: Identifiable, Equatable {
     var name: String {
         get {
             withUnsafePointer(to: _name, { ptr in
-                ptr.withMemoryRebound(to: CChar.self, capacity: kSPTAnimatorNameMaxLength + 1) { charPtr in
+                ptr.withMemoryRebound(to: CChar.self, capacity: Int(kSPTAnimatorNameMaxLength) + 1) { charPtr in
                     String(cString: charPtr)
                 }
             })
         }
         set {
             withUnsafeMutablePointer(to: &_name) { ptr in
-                ptr.withMemoryRebound(to: CChar.self, capacity: kSPTAnimatorNameMaxLength + 1) { charPtr in
+                ptr.withMemoryRebound(to: CChar.self, capacity: Int(kSPTAnimatorNameMaxLength) + 1) { charPtr in
                     newValue.utf8CString.withUnsafeBufferPointer { sourceCharPtr in
-                        let length = min(sourceCharPtr.count, kSPTAnimatorNameMaxLength)
+                        let length = min(sourceCharPtr.count, Int(kSPTAnimatorNameMaxLength))
                         charPtr.assign(from: sourceCharPtr.baseAddress!, count: length)
                         charPtr[length] = 0
                     }

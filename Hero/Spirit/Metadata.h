@@ -11,8 +11,11 @@
 
 SPT_EXTERN_C_BEGIN
 
+#define kSPTMetadataNameMaxLength 7
+
 typedef struct {
     int32_t tag;
+    char _name[kSPTMetadataNameMaxLength + 1];
 } SPTMetadata;
 
 void SPTMetadataMake(SPTObject object, SPTMetadata metadata);

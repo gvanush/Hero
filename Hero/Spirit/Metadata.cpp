@@ -10,7 +10,6 @@
 
 #include <entt/entt.hpp>
 
-
 void SPTMetadataMake(SPTObject object, SPTMetadata metadata) {
     spt::Scene::getRegistry(object).emplace<SPTMetadata>(object.entity, metadata);
 }

@@ -7,6 +7,8 @@
 
 #include "AnimatorManager.hpp"
 
+const SPTAnimatorId kSPTAnimatorInvalidId = UINT32_MAX;
+
 
 bool SPTAnimatorEqual(SPTAnimator lhs, SPTAnimator rhs) {
     return lhs.source.type == rhs.source.type && SPTAnimatorSourceEqual(lhs.source, rhs.source) && strcmp(lhs._name, rhs._name) == 0;
