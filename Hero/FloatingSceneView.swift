@@ -25,7 +25,7 @@ struct FloatingSceneView: View {
             VStack {
                 Spacer(minLength: 0.0)
                 ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
+                    SceneView(model: sceneViewModel, uiSafeAreaInsets: .init(), isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
                         .renderingPaused(isRenderingPaused)
                         .navigationEnabled(isOpened)
                         .selectionEnabled(false)

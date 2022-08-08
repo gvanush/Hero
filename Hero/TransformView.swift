@@ -17,32 +17,35 @@ struct TransformView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        GeometryReader { geometryProxy in
+        GeometryReader { geometry in
             NavigationView {
-                ZStack {
-                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
-                    VStack(spacing: Self.margin) {
-                        Spacer()
-                        if let selectedObject = sceneViewModel.selectedObject {
-                            ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
-                                .padding(.horizontal, Self.margin)
-                                .id(activeTool.rawValue)
+                GeometryReader { navigationGeometry in
+                    ZStack {
+                        SceneView(model: sceneViewModel, uiSafeAreaInsets: navigationGeometry.safeAreaInsets.bottomInseted(BottomBar.height), isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation)) {
+                            
+                            if let selectedObject = sceneViewModel.selectedObject {
+                                ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
+                                    .id(activeTool.rawValue)
+                            }
+                            
                         }
-                        Toolbar(selection: $activeTool)
-                            .padding(.bottom, geometryProxy.safeAreaInsets.bottom)
+                        VStack {
+                            Spacer()
+                            Toolbar(selection: $activeTool)
+                                .padding(.bottom, geometry.safeAreaInsets.bottom)
+                                .offset(y: isNavigating ? BottomBar.height + geometry.safeAreaInsets.bottom : 0.0)
+                        }
                     }
-                    .visible(!isNavigating)
-                }
-                .navigationTitle("Tools")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarHidden(isNavigating)
-                .ignoresSafeArea()
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Close") {
-                            presentationMode.wrappedValue.dismiss()
+                    .navigationTitle("Tools")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarHidden(isNavigating)
+                    .ignoresSafeArea()
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Close") {
+                                presentationMode.wrappedValue.dismiss()
+                            }
                         }
-                        .visible(!isNavigating)
                     }
                 }
             }
@@ -63,9 +66,11 @@ struct ObjectControlView: View {
     var body: some View {
         VStack(spacing: Self.controlsSpacing) {
             floatField
+                .selectedObjectUI(cornerRadius: FloatField.cornerRadius)
                 .transition(.identity)
                 .id(axis.rawValue)
             Selector(selected: $axis)
+                .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
         }
         .id(model.object.entity.rawValue)
     }
@@ -81,8 +86,8 @@ struct ObjectControlView: View {
         }
     }
     
-    static let controlsMargin = 8.0
     static let controlsSpacing = 8.0
+    static let height = controlsSpacing + FloatField.height + SelectorConst.height
 }
 
 

@@ -7,10 +7,21 @@
 
 import SwiftUI
 
-struct SceneView: View {
+
+struct SceneViewConst {
+    static let zoomViewMaxHeight = 250.0
+    static let uiBgrMaterial = Material.thin
+    static let uiPadding = 8.0
+    static let uiButtonSize = 50.0
+}
+
+struct SceneView<BV>: View where BV: View {
     
     @ObservedObject var model: SceneViewModel
+    let uiSafeAreaInsets: EdgeInsets
     @Binding var isNavigating: Bool
+    let bottomView: () -> BV
+    
     private(set) var isRenderingPaused = false
     private(set) var isNavigationEnabled = true
     private(set) var isSelectionEnabled = true
@@ -19,9 +30,12 @@ struct SceneView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
+    @State private var uiSteadySafeAreaInsets = EdgeInsets()
     
-    init(model: SceneViewModel, isNavigating: Binding<Bool>) {
+    init(model: SceneViewModel, uiSafeAreaInsets: EdgeInsets, isNavigating: Binding<Bool>, @ViewBuilder bottomView: @escaping () -> BV = { EmptyView() }) {
         self.model = model
+        self.uiSafeAreaInsets = uiSafeAreaInsets
+        self.bottomView = bottomView
         self._isNavigating = isNavigating
     }
     
@@ -56,8 +70,33 @@ struct SceneView: View {
                     .gesture(isSelectionEnabled ? pickGesture(viewportSize: geometry.size) : nil)
                     .allowsHitTesting(isNavigationEnabled && !isNavigating)
                 
-                navigationControls(geometry: geometry)
-                    .visible(isNavigationEnabled && !isNavigating)
+                VStack(spacing: 0.0) {
+                    if let name = model.selectedObjectMetadata?.name {
+                        Text(name)
+                            .font(.subheadline)
+                            .foregroundColor(.secondaryLabel)
+                            .frame(height: 30)
+                            .padding(.horizontal, 8.0)
+                            .background(SceneViewConst.uiBgrMaterial)
+                            .cornerRadius(9.0)
+                            .selectedObjectUI(cornerRadius: 9.0)
+                            .offset(y: isNavigating ? -uiSteadySafeAreaInsets.top : 0.0)
+                    }
+                    Spacer()
+                    navigationControls(geometry: geometry)
+                        .padding(.bottom, 108.0)
+                    Spacer()
+                    ZStack(alignment: .bottom) {
+                        Color.clear
+                        bottomView()
+                            .tint(.primary)
+                            .offset(y: isNavigating ? uiSteadySafeAreaInsets.bottom : 0.0)
+                    }
+                    .frame(height: 121.0)
+                }
+                .padding(SceneViewConst.uiPadding)
+                .padding(uiSteadySafeAreaInsets)
+                .visible(isNavigationEnabled && !isNavigating)
             }
         }
         .onChange(of: isOrbitDragGestureActive) { newValue in
@@ -75,6 +114,11 @@ struct SceneView: View {
         .onChange(of: colorScheme) { _ in
             clearColor = UIColor.sceneBgrColor.mtlClearColor
         }
+        .onChange(of: uiSafeAreaInsets) { newValue in
+            if !isNavigating {
+                uiSteadySafeAreaInsets = newValue
+            }
+        }
     }
     
     func navigationControls(geometry: GeometryProxy) -> some View {
@@ -83,31 +127,19 @@ struct SceneView: View {
                 Spacer()
                 focusButton()
             }
-            .padding(.leading, 8.0)
             
             Spacer(minLength: 0.0)
             
             VStack {
                 Spacer()
                 ZoomView()
-                    .frame(maxHeight: min(Self.zoomMaxViewHeight, geometry.size.height))
+                    .frame(maxHeight: min(SceneViewConst.zoomViewMaxHeight, geometry.size.height))
             }
             .contentShape(Rectangle())
+            .padding(.trailing, -SceneViewConst.uiPadding)
             .gesture(zoomDragGesture(viewportSize: geometry.size))
         }
-        .padding(.bottom, geometry.size.height > Self.uiBottomPadding ? Self.uiBottomPadding : 0.0)
         .tint(.primary)
-    }
-    
-    func uiButton(iconName: String, action: @escaping (() -> Void)) -> some View {
-        Button(action: action) {
-            Image(systemName: iconName)
-                .imageScale(.large)
-                .frame(maxWidth: 50.0, maxHeight: 50.0, alignment: .center)
-        }
-        .background(Material.thin)
-        .cornerRadius(15.0)
-        .shadow(radius: 1.0)
     }
     
     func focusButton() -> some View {
@@ -142,9 +174,9 @@ struct SceneView: View {
                 }
             }
             .imageScale(.large)
-            .frame(maxWidth: 50.0, maxHeight: 50.0, alignment: .center)
+            .frame(width: SceneViewConst.uiButtonSize, height: SceneViewConst.uiButtonSize, alignment: .center)
         }
-        .background(Material.thin)
+        .background(SceneViewConst.uiBgrMaterial)
         .cornerRadius(15.0)
         .shadow(radius: 1.0)
         .disabled(model.focusState == nil)
@@ -182,9 +214,6 @@ struct SceneView: View {
             }
     }
     
-    static let margin = 8.0
-    static let uiBottomPadding = 280.0
-    static let zoomMaxViewHeight = 250.0
 }
 
 fileprivate struct ZoomView: View {
@@ -198,7 +227,7 @@ fileprivate struct ZoomView: View {
         }
         .background {
             EmptyView()
-            .background(Material.thin)
+                .background(SceneViewConst.uiBgrMaterial)
             .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
         }
         .frame(maxWidth: Self.width, maxHeight: .infinity)
@@ -209,6 +238,26 @@ fileprivate struct ZoomView: View {
     static let lineStrokeStyle = StrokeStyle(lineWidth: 4, dash: [1, 4])
 }
 
+struct SelectedObjectUI: ViewModifier {
+    
+    let cornerRadius: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .overlay {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(Color.objectSelectionColor.opacity(0.6), lineWidth: 1.0)
+                    .padding(-0.5)
+            }
+    }
+}
+
+extension View {
+    func selectedObjectUI(cornerRadius: CGFloat) -> some View {
+        modifier(SelectedObjectUI(cornerRadius: cornerRadius))
+    }
+}
+
 struct SceneView_Previews: PreviewProvider {
     
     struct SceneViewContainer: View {
@@ -216,7 +265,7 @@ struct SceneView_Previews: PreviewProvider {
         @StateObject var model = SceneViewModel()
         
         var body: some View {
-            SceneView(model: model, isNavigating: .constant(false))
+            SceneView(model: model, uiSafeAreaInsets: .init(), isNavigating: .constant(false))
         }
     }
     

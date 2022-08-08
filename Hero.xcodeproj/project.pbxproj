@@ -89,6 +89,7 @@
 		B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D982726768B00E0C934 /* UIColorUtil.swift */; };
 		B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA42726768B00E0C934 /* FloatingPointUtil.swift */; };
 		B7791DBA2726821200E0C934 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DB92726821200E0C934 /* SceneView.swift */; };
+		B77CBD50289C54EC0040B5EC /* EdgeInsetsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CBD4F289C54EC0040B5EC /* EdgeInsetsUtil.swift */; };
 		B787F2032892E50700AE784B /* DisplayLink in Frameworks */ = {isa = PBXBuildFile; productRef = B787F2022892E50700AE784B /* DisplayLink */; };
 		B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */; };
 		B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99E127B5C1430033B459 /* ComparableUtil.swift */; };
@@ -251,6 +252,7 @@
 		B7791D982726768B00E0C934 /* UIColorUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorUtil.swift; sourceTree = "<group>"; };
 		B7791DA42726768B00E0C934 /* FloatingPointUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPointUtil.swift; sourceTree = "<group>"; };
 		B7791DB92726821200E0C934 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
+		B77CBD4F289C54EC0040B5EC /* EdgeInsetsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsetsUtil.swift; sourceTree = "<group>"; };
 		B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphicsUtil.swift; sourceTree = "<group>"; };
 		B7AA99E127B5C1430033B459 /* ComparableUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparableUtil.swift; sourceTree = "<group>"; };
 		B7AA99E327B6CABB0033B459 /* SIMDUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMDUtil.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */,
 				B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */,
 				B73E47DA27CC01C600CB0AFC /* FormatterUtil.swift */,
+				B77CBD4F289C54EC0040B5EC /* EdgeInsetsUtil.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -801,6 +804,7 @@
 				B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */,
 				B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */,
 				B742447E289A8B0F00A09808 /* SPTMetadataUtil.swift in Sources */,
+				B77CBD50289C54EC0040B5EC /* EdgeInsetsUtil.swift in Sources */,
 				B7AA99ED27B81FB70033B459 /* DistinctValueSet.swift in Sources */,
 				B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */,
 				B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */,

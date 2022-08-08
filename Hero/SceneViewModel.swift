@@ -67,6 +67,11 @@ class SceneViewModel: ObservableObject {
             }
         }
     }
+    
+    var selectedObjectMetadata: SPTMetadata? {
+        guard let selectedObject = selectedObject else { return nil }
+        return SPTMetadataGet(selectedObject)
+    }
 
     init() {
 

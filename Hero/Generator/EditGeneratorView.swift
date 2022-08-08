@@ -23,37 +23,39 @@ struct EditGeneratorView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
-                    .selectionEnabled(false)
-                    .ignoresSafeArea()
-                VStack {
-                    Spacer()
-                    activeComponent.accept(Self.editComponentViewProvider)
-                        .padding(.horizontal, 8.0)
-                    ComponentTreeNavigationView(rootComponent: generatorComponent, activeComponent: $activeComponent)
+            GeometryReader { geometry in
+                ZStack {
+                    SceneView(model: sceneViewModel, uiSafeAreaInsets: geometry.safeAreaInsets, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
+                        .selectionEnabled(false)
+                        .ignoresSafeArea()
+                    VStack {
+                        Spacer()
+                        activeComponent.accept(Self.editComponentViewProvider)
+                            .padding(.horizontal, 8.0)
+                        ComponentTreeNavigationView(rootComponent: generatorComponent, activeComponent: $activeComponent)
+                    }
+                    .visible(!isNavigating)
                 }
-                .visible(!isNavigating)
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        // TODO:
-                        presentationMode.wrappedValue.dismiss()
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            // TODO:
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button {
+                            presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            Text("Done")
+                                .fontWeight(.semibold)
+                        }
                     }
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Text("Done")
-                            .fontWeight(.semibold)
-                    }
-                }
+                .navigationBarHidden(isNavigating)
+                .navigationTitle("Edit Generator")
             }
-            .navigationBarHidden(isNavigating)
-            .navigationTitle("Edit Generator")
         }
     }
     

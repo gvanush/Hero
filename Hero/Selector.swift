@@ -9,15 +9,15 @@ import SwiftUI
 
 
 struct Selector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases: RandomAccessCollection {
-    
+
     @Binding var selected: PT
     @Namespace private var matchedGeometryEffectNamespace
     
     var body: some View {
         items
-            .frame(maxWidth: .infinity, idealHeight: height)
+            .frame(maxWidth: .infinity, idealHeight: SelectorConst.height)
             .fixedSize(horizontal: false, vertical: true)
-            .background(bgrMaterial, in: RoundedRectangle(cornerRadius: cornerRadius))
+            .background(SelectorConst.bgrMaterial, in: RoundedRectangle(cornerRadius: SelectorConst.cornerRadius))
             .compositingGroup()
             .shadow(radius: 1.0)
     }
@@ -37,14 +37,14 @@ struct Selector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases:
                 .colorMultiply(property == selected ? Color.white : Color.secondary)
                 .fixedSize(horizontal: true, vertical: false)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                .padding(.horizontal, textHorizontalPadding)
+                .padding(.horizontal, SelectorConst.textHorizontalPadding)
                 .background {
-                    RoundedRectangle(cornerRadius: selectionCornerRadius)
+                    RoundedRectangle(cornerRadius: SelectorConst.selectionCornerRadius)
                         .foregroundColor(.systemFill)
                         .visible(property == selected)
                         .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: property == selected)
                 }
-                .padding(itemPadding)
+                .padding(SelectorConst.itemPadding)
                 .contentShape(Rectangle())
                 .gesture(DragGesture(minimumDistance: 0.0)
                             .onEnded({ value in
@@ -57,12 +57,16 @@ struct Selector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases:
         }
     }
     
-    let height = 38.0
-    let cornerRadius = 19.0
-    let bgrMaterial = Material.regular
-    let itemPadding = 3.0
-    let textHorizontalPadding = 8.0
-    let selectionCornerRadius = 16.0
+}
+
+
+struct SelectorConst {
+    static let height = 38.0
+    static let cornerRadius = 19.0
+    static let bgrMaterial = Material.regular
+    static let itemPadding = 3.0
+    static let textHorizontalPadding = 8.0
+    static let selectionCornerRadius = 16.0
 }
 
 

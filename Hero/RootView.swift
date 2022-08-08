@@ -16,36 +16,45 @@ struct RootView: View {
     @State private var showsNewGeneratorView = false
     
     var body: some View {
-        GeometryReader { geometryProxy in
-            NavigationView {
-                SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
+        NavigationView {
+            GeometryReader { geometryProxy in
+                SceneView(model: sceneViewModel,
+                          uiSafeAreaInsets: geometryProxy.safeAreaInsets,
+                          isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), bottomView: {
+                    if let selected = sceneViewModel.selectedObject {
+                        objectActionView(selected)
+                            .background(SceneViewConst.uiBgrMaterial)
+                            .cornerRadius(9.0)
+                            .shadow(radius: 1.0)
+                            .selectedObjectUI(cornerRadius: 9.0)
+                    }
+                })
                     .renderingPaused(showsTransformView || showsNewGeneratorView)
                     .navigationTitle("Generative")
                     .navigationBarTitleDisplayMode(.inline)
-                    .navigationBarHidden(isNavigating)
                     .toolbar {
                         ToolbarItemGroup(placement: .bottomBar) {
-                            if !isNavigating {
-                                Button {
-                                    showsNewGeneratorView = true
-                                } label: {
-                                    Image(systemName: "plus")
-                                }
-                                Spacer()
-                                Button {
-                                    showsAnimatorsView = true
-                                } label: {
-                                    Image(systemName: "circlebadge.2")
-                                }
-                                Spacer()
-                                Button {
-                                    showsTransformView = true
-                                } label: {
-                                    Image(systemName: "hammer")
-                                }
+                            Button {
+                                showsNewGeneratorView = true
+                            } label: {
+                                Image(systemName: "plus")
+                            }
+                            Spacer()
+                            Button {
+                                showsAnimatorsView = true
+                            } label: {
+                                Image(systemName: "circlebadge.2")
+                            }
+                            Spacer()
+                            Button {
+                                showsTransformView = true
+                            } label: {
+                                Image(systemName: "hammer")
                             }
                         }
                     }
+                    .toolbar(isNavigating ? .hidden : .visible, for: .bottomBar, .navigationBar)
+                    .statusBar(hidden: isNavigating)
                     .ignoresSafeArea()
             }
         }
@@ -59,9 +68,30 @@ struct RootView: View {
         .sheet(isPresented: $showsAnimatorsView) {
             AnimatorsView()
         }
-        
-        // TODO: This causes nivagtion title to animate vertically when 'isNavigating' changes
-        // .statusBar(hidden: isNavigating)
+    }
+    
+    func objectActionView(_ object: SPTObject) -> some View {
+        HStack(spacing: 4.0) {
+            objectActionButton(iconName: "slider.horizontal.3") {
+                
+            }
+            objectActionButton(iconName: "trash") {
+                
+            }
+        }
+        .frame(height: 44.0)
+        .padding(4.0)
+    }
+    
+    func objectActionButton(iconName: String, onPress: @escaping () -> Void) -> some View {
+        Button(action: onPress) {
+            ZStack {
+                Color.systemFill
+                Image(systemName: iconName)
+                    .imageScale(.large)
+            }
+            .cornerRadius(5.0)
+        }
     }
     
 }

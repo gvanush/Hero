@@ -354,16 +354,15 @@ fileprivate struct ScalePicker: View {
                 Text(scale.displayText)
             }
         }
-        .frame(width: Self.widrh, height: Self.height, alignment: .center)
+        .colorMultiply(.secondaryLabel)
+        .pickerStyle(.menu)
+        .frame(height: Self.height, alignment: .center)
         .overlay {
             RoundedRectangle(cornerRadius: Self.cornerRadius)
                 .strokeBorder(Color.tertiaryLabel, lineWidth: 1)
         }
-        .accentColor(.secondary)
-        .pickerStyle(.menu)
     }
     
-    static let widrh = 50.0
     static let height = 29.0
     static let cornerRadius = 7.0
 }
