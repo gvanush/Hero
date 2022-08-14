@@ -19,6 +19,8 @@ protocol SPTComponent: Equatable {
     typealias WillPerishCallback = () -> Void
     typealias WillPerishSubscription = SPTSubscription<WillPerishCallback, SPTComponentObserverToken>
     
+    static func make(_ component: Self, object: SPTObject)
+    
     static func makeOrUpdate(_ component: Self, object: SPTObject)
     
     static func update(_ component: Self, object: SPTObject)

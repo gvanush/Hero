@@ -19,6 +19,10 @@ extension SPTPosition: SPTComponent {
         SPTPositionEqual(lhs, rhs)
     }
     
+    static func make(_ component: SPTPosition, object: SPTObject) {
+        SPTPositionMake(object, component)
+    }
+    
     static func makeOrUpdate(_ component: SPTPosition, object: SPTObject) {
         if SPTPositionExists(object) {
             SPTPositionUpdate(object, component)
@@ -84,4 +88,5 @@ extension SPTPosition: SPTComponent {
         
         return subscription
     }
+    
 }

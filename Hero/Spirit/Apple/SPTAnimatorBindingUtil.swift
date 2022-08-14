@@ -14,6 +14,10 @@ extension SPTAnimatorBinding: SPTComponent {
         SPTAnimatorBindingEqual(lhs, rhs)
     }
     
+    static func make(_ component: SPTAnimatorBinding, object: SPTObject) {
+        SPTAnimatorBindingMake(object, component)
+    }
+    
     static func makeOrUpdate(_ component: SPTAnimatorBinding, object: SPTObject) {
         if SPTAnimatorBindingExists(object) {
             SPTAnimatorBindingUpdate(object, component)

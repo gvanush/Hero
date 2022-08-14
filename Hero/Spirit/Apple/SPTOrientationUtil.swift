@@ -18,6 +18,10 @@ extension SPTOrientation: SPTComponent {
         SPTOrientationEqual(lhs, rhs)
     }
     
+    static func make(_ component: SPTOrientation, object: SPTObject) {
+        SPTOrientationMake(object, component)
+    }
+    
     static func makeOrUpdate(_ component: SPTOrientation, object: SPTObject) {
         if SPTOrientationExists(object) {
             SPTOrientationUpdate(object, component)

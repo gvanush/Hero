@@ -15,14 +15,14 @@ enum GeneratorComponentProperty: Int, DistinctValueSet, Displayable {
 class GeneratorComponent: BasicComponent<GeneratorComponentProperty> {
     
     let object: SPTObject
-    @SPTObservedGenerator private var generator: SPTGenerator
+    @SPTObservedComponent private var generator: SPTGenerator
     lazy private(set) var transformation = TransformationComponent(object: self.object, parent: self)
     lazy private(set) var arrangement = ArrangementComponent(arrangement: $generator.arrangement, parent: self)
     
     init(object: SPTObject) {
         
         self.object = object
-        _generator = SPTObservedGenerator(object: object)
+        _generator = SPTObservedComponent(object: object)
         
         super.init(title: "Generator", selectedProperty: .quantity, parent: nil)
         

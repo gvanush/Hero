@@ -8,47 +8,84 @@
 import Foundation
 
 
-@propertyWrapper
-@dynamicMemberLookup
-class SPTObservedGenerator: SPTObservedObject {
+extension SPTGenerator: SPTComponent {
     
-    private let object: SPTObject
-    internal let binding: SPTObjectBinding<SPTGenerator>
-    
-    init(object: SPTObject) {
-        self.object = object
-        
-        binding = SPTObjectBinding(value: SPTGeneratorGet(object), setter: { newValue in
-            SPTGeneratorUpdate(object, newValue)
-        })
-        
-        SPTGeneratorAddWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
-            let me = Unmanaged<SPTObservedGenerator>.fromOpaque(listener).takeUnretainedValue()
-            me.binding.onWillChange(newValue: newValue)
-        })
-        
+    init(quantity: SPTGeneratorQuantityType, sourceMeshId: SPTMeshId) {
+        self.init(arrangement: .init(variantTag: .linear, .init(linear: .init(axis: .X))), sourceMeshId: sourceMeshId, quantity: quantity)
     }
-    
-    deinit {
-        SPTGeneratorRemoveWillChangeListener(object, Unmanaged.passUnretained(self).toOpaque())
-    }
- 
-    var wrappedValue: SPTGenerator {
-        set { binding.wrappedValue = newValue }
-        get { binding.wrappedValue }
-    }
-    
-    var projectedValue: SPTObjectBinding<SPTGenerator> {
-        binding
-    }
-    
-}
-
-
-extension SPTGenerator: Equatable {
     
     public static func == (lhs: SPTGenerator, rhs: SPTGenerator) -> Bool {
         SPTGeneratorEqual(lhs, rhs)
+    }
+    
+    static func make(_ component: SPTGenerator, object: SPTObject) {
+        SPTGeneratorMake(object, component)
+    }
+    
+    static func makeOrUpdate(_ component: SPTGenerator, object: SPTObject) {
+        if SPTGeneratorExists(object) {
+            SPTGeneratorUpdate(object, component)
+        } else {
+            SPTGeneratorMake(object, component)
+        }
+    }
+    
+    static func update(_ component: SPTGenerator, object: SPTObject) {
+        SPTGeneratorUpdate(object, component)
+    }
+    
+    static func destroy(object: SPTObject) {
+        SPTGeneratorDestroy(object)
+    }
+    
+    static func get(object: SPTObject) -> SPTGenerator {
+        SPTGeneratorGet(object)
+    }
+    
+    static func tryGet(object: SPTObject) -> SPTGenerator? {
+        SPTGeneratorTryGet(object)?.pointee
+    }
+    
+    static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription {
+        
+        let subscription = WillEmergeSubscription(callback: callback) { token in
+            SPTGeneratorRemoveWillEmergeObserver(object, token)
+        }
+        
+        subscription.token = SPTGeneratorAddWillEmergeObserver(object, { newValue, userInfo in
+            let cancellable = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            cancellable.callback(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        return subscription
+    }
+    
+    static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
+        
+        let subscription = WillChangeSubscription(callback: callback) { token in
+            SPTGeneratorRemoveWillChangeObserver(object, token)
+        }
+        
+        subscription.token = SPTGeneratorAddWillChangeObserver(object, { newValue, userInfo in
+            let cancellable = Unmanaged<WillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            cancellable.callback(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        return subscription
+    }
+    
+    static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
+        
+        let subscription = WillPerishSubscription(callback: callback) { token in
+            SPTGeneratorRemoveWillPerishObserver(object, token)
+        }
+        
+        subscription.token = SPTGeneratorAddWillPerishObserver(object, { userInfo in
+            let cancellable = Unmanaged<WillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            cancellable.callback()
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        return subscription
     }
     
 }

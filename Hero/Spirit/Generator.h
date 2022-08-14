@@ -25,15 +25,28 @@ SPT_EXTERN_C_BEGIN
 
 bool SPTGeneratorEqual(SPTGenerator lhs, SPTGenerator rhs);
 
-SPTGenerator SPTGeneratorMake(SPTObject object, SPTMeshId sourceMeshId, SPTGeneratorQuantityType quantity);
+void SPTGeneratorMake(SPTObject object, SPTGenerator generator);
 
 void SPTGeneratorUpdate(SPTObject object, SPTGenerator updated);
 
+void SPTGeneratorDestroy(SPTObject object);
+
 SPTGenerator SPTGeneratorGet(SPTObject object);
 
-typedef void (* _Nonnull SPTGeneratorWillChangeCallback) (SPTListener, SPTGenerator);
-void SPTGeneratorAddWillChangeListener(SPTObject object, SPTListener listener, SPTGeneratorWillChangeCallback callback);
-void SPTGeneratorRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTGeneratorWillChangeCallback callback);
-void SPTGeneratorRemoveWillChangeListener(SPTObject object, SPTListener listener);
+const SPTGenerator* _Nullable SPTGeneratorTryGet(SPTObject object);
+
+bool SPTGeneratorExists(SPTObject object);
+
+typedef void (* _Nonnull SPTGeneratorWillChangeObserver) (SPTGenerator, SPTComponentObserverUserInfo);
+SPTComponentObserverToken SPTGeneratorAddWillChangeObserver(SPTObject object, SPTGeneratorWillChangeObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTGeneratorRemoveWillChangeObserver(SPTObject object, SPTComponentObserverToken token);
+
+typedef void (* _Nonnull SPTGeneratorWillEmergeObserver) (SPTGenerator, SPTComponentObserverUserInfo);
+SPTComponentObserverToken SPTGeneratorAddWillEmergeObserver(SPTObject object, SPTGeneratorWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTGeneratorRemoveWillEmergeObserver(SPTObject object, SPTComponentObserverToken token);
+
+typedef void (* _Nonnull SPTGeneratorWillPerishObserver) (SPTComponentObserverUserInfo);
+SPTComponentObserverToken SPTGeneratorAddWillPerishObserver(SPTObject object, SPTGeneratorWillPerishObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTGeneratorRemoveWillPerishObserver(SPTObject object, SPTComponentObserverToken token);
 
 SPT_EXTERN_C_END

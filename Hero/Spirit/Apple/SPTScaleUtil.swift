@@ -14,6 +14,10 @@ extension SPTScale: SPTComponent {
         SPTScaleEqual(lhs, rhs)
     }
     
+    static func make(_ component: SPTScale, object: SPTObject) {
+        SPTScaleMake(object, component)
+    }
+    
     static func makeOrUpdate(_ component: SPTScale, object: SPTObject) {
         if SPTScaleExists(object) {
             SPTScaleUpdate(object, component)

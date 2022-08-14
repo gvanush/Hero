@@ -57,7 +57,7 @@ class ObjectFactory {
         SPTPositionMakeXYZ(object, .zero)
         SPTOrientationMakeEuler(object, .init(rotation: .zero, order: .XYZ))
         SPTScaleMake(object, .init(xyz: .one))
-        SPTGeneratorMake(object, sourceMeshId, 5)
+        SPTGenerator.make(.init(quantity: 5, sourceMeshId: sourceMeshId), object: object)
         SPTRayCastableMake(object)
         generatorNumber += 1
         return object
