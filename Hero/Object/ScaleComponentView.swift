@@ -12,10 +12,10 @@ class ScaleComponent: BasicComponent<Axis> {
     
     static let title = "Scale"
     
-    @SPTObservedScale var scale: SPTScale
+    @SPTObservedComponent var scale: SPTScale
     
     init(object: SPTObject, parent: Component?) {
-        _scale = SPTObservedScale(object: object)
+        _scale = SPTObservedComponent(object: object)
         
         super.init(title: Self.title, selectedProperty: .x, parent: parent)
         

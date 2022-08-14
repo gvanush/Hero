@@ -12,10 +12,10 @@ class OrientationComponent: BasicComponent<Axis> {
     
     static let title = "Oreintation"
     
-    @SPTObservedOrientation var orientation: SPTOrientation
+    @SPTObservedComponent var orientation: SPTOrientation
     
     init(object: SPTObject, parent: Component?) {
-        _orientation = SPTObservedOrientation(object: object)
+        _orientation = SPTObservedComponent(object: object)
         
         super.init(title: OrientationComponent.title, selectedProperty: .x, parent: parent)
         

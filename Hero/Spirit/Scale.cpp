@@ -18,30 +18,58 @@ bool SPTScaleEqual(SPTScale lhs, SPTScale rhs) {
 
 void SPTScaleMake(SPTObject object, SPTScale scale) {
     auto& registry = spt::Scene::getRegistry(object);
+    spt::notifyWillEmergeComponentObservers(registry, object.entity, scale);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTScale>(object.entity, scale);
 }
 
 void SPTScaleUpdate(SPTObject object, SPTScale newScale) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::ComponentUpdateNotifier<SPTScale>::onWillChange(registry, object.entity, newScale);
+    spt::notifyWillChangeComponentObservers(registry, object.entity, newScale);
     
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.get<SPTScale>(object.entity) = newScale;
+}
+
+void SPTScaleDestroy(SPTObject object) {
+    auto& registry = spt::Scene::getRegistry(object);
+    spt::notifyWillPerishComponentObservers<SPTScale>(registry, object.entity);
+    registry.erase<SPTScale>(object.entity);
 }
 
 SPTScale SPTScaleGet(SPTObject object) {
     return spt::Scene::getRegistry(object).get<SPTScale>(object.entity);
 }
 
-void SPTScaleAddWillChangeListener(SPTObject object, SPTListener listener, SPTScaleWillChangeCallback callback) {
-    spt::addComponentWillChangeListener<SPTScale>(object, listener, callback);
+const SPTScale* _Nullable SPTScaleTryGet(SPTObject object) {
+    return spt::Scene::getRegistry(object).try_get<SPTScale>(object.entity);
 }
 
-void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTScaleWillChangeCallback callback) {
-    spt::removeComponentWillChangeListenerCallback<SPTScale>(object, listener, callback);
+bool SPTScaleExists(SPTObject object) {
+    auto& registry = spt::Scene::getRegistry(object);
+    return registry.all_of<SPTScale>(object.entity);
 }
 
-void SPTScaleRemoveWillChangeListener(SPTObject object, SPTListener listener) {
-    spt::removeComponentWillChangeListener<SPTScale>(object, listener);
+SPTComponentObserverToken SPTScaleAddWillChangeObserver(SPTObject object, SPTScaleWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+    return spt::addComponentWillChangeObserver<SPTScale>(object, observer, userInfo);
+}
+
+void SPTScaleRemoveWillChangeObserver(SPTObject object, SPTComponentObserverToken token) {
+    spt::removeComponentWillChangeObserver<SPTScale>(object, token);
+}
+
+SPTComponentObserverToken SPTScaleAddWillEmergeObserver(SPTObject object, SPTScaleWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+    return spt::addComponentWillEmergeObserver<SPTScale>(object, observer, userInfo);
+}
+
+void SPTScaleRemoveWillEmergeObserver(SPTObject object, SPTComponentObserverToken token) {
+    spt::removeComponentWillEmergeObserver<SPTScale>(object, token);
+}
+
+SPTComponentObserverToken SPTScaleAddWillPerishObserver(SPTObject object, SPTScaleWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+    return spt::addComponentWillPerishObserver<SPTScale>(object, observer, userInfo);
+}
+
+void SPTScaleRemoveWillPerishObserver(SPTObject object, SPTComponentObserverToken token) {
+    spt::removeComponentWillPerishObserver<SPTScale>(object, token);
 }

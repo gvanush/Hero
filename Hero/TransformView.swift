@@ -95,15 +95,15 @@ fileprivate class ObjectControlViewModel: ObservableObject {
     
     let object: SPTObject
     @SPTObservedComponent var sptPosition: SPTPosition
-    @SPTObservedScale var sptScale: SPTScale
-    @SPTObservedOrientation var sptOrientation: SPTOrientation
+    @SPTObservedComponent var sptScale: SPTScale
+    @SPTObservedComponent var sptOrientation: SPTOrientation
     
     init(object: SPTObject) {
         self.object = object
         
         _sptPosition = SPTObservedComponent(object: object)
-        _sptOrientation = SPTObservedOrientation(object: object)
-        _sptScale = SPTObservedScale(object: object)
+        _sptOrientation = SPTObservedComponent(object: object)
+        _sptScale = SPTObservedComponent(object: object)
         
         _sptPosition.publisher = self.objectWillChange
         _sptOrientation.publisher = self.objectWillChange

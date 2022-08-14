@@ -49,7 +49,6 @@ void SPTPositionMakeSpherical(SPTObject object, SPTSphericalPosition spherical) 
 void SPTPositionUpdate(SPTObject object, SPTPosition newPosition) {
     auto& registry = spt::Scene::getRegistry(object);
     spt::notifyWillChangeComponentObservers(registry, object.entity, newPosition);
-    
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.get<SPTPosition>(object.entity) = newPosition;
 }
