@@ -1,31 +1,31 @@
 //
-//  TemplateObjectSelector.swift
+//  AnimatorSelector.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 15.01.22.
+//  Created by Vanush Grigoryan on 13.08.22.
 //
 
 import SwiftUI
 
-struct TemplateObjectSelector: View {
+
+struct AnimatorSelector: View {
     
-    let onSelected: (SPTMeshId) -> Void
+    let onSelected: (SPTAnimatorId) -> Void
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
         NavigationView {
-            List(MeshRegistry.standard.meshRecords) { record in
+            List(SPTAnimatorGetAll()) { animator in
                 HStack {
-                    Image(systemName: record.iconName)
-                    Text(record.name.capitalizingFirstLetter())
+                    Text(animator.name.capitalizingFirstLetter())
                     Spacer()
                     Button("Select") {
-                        onSelected(record.id)
+                        onSelected(animator.id)
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
-            .navigationTitle("Select Source Object")
+            .navigationTitle("Select Animator")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -39,10 +39,8 @@ struct TemplateObjectSelector: View {
     
 }
 
-
-struct TemplateObjectSelector_Previews: PreviewProvider {
+struct AnimatorSelector_Previews: PreviewProvider {
     static var previews: some View {
-        TemplateObjectSelector(onSelected: { _ in
-        })
+        AnimatorSelector { _ in }
     }
 }

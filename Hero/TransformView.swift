@@ -94,14 +94,14 @@ struct ObjectControlView: View {
 fileprivate class ObjectControlViewModel: ObservableObject {
     
     let object: SPTObject
-    @SPTObservedPosition var sptPosition: SPTPosition
+    @SPTObservedComponent var sptPosition: SPTPosition
     @SPTObservedScale var sptScale: SPTScale
     @SPTObservedOrientation var sptOrientation: SPTOrientation
     
     init(object: SPTObject) {
         self.object = object
         
-        _sptPosition = SPTObservedPosition(object: object)
+        _sptPosition = SPTObservedComponent(object: object)
         _sptOrientation = SPTObservedOrientation(object: object)
         _sptScale = SPTObservedScale(object: object)
         

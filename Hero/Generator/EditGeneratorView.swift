@@ -15,7 +15,7 @@ struct EditGeneratorView: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
     
-    static let editComponentViewProvider = GeneratorEditComponentViewProvider()
+    static let editComponentViewProvider = GeneratorComponentActionViewProvider()
     
     init(activeComponent: Component) {
         _activeComponent = State<Component>(initialValue: activeComponent)

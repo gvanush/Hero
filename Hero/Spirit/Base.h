@@ -45,4 +45,7 @@ typedef void* _Nonnull SPTListener;
 
 typedef void (* _Nonnull SPTCountWillChangeCallback) (SPTListener, size_t);
 
+typedef size_t SPTComponentObserverToken;
+typedef void* _Nullable SPTComponentObserverUserInfo;
+
 SPT_EXTERN_C_END

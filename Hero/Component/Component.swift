@@ -27,7 +27,7 @@ class Component: Identifiable, ObservableObject {
     }
     var subcomponents: [Component]? { nil }
     
-    func accept(_ provider: EditComponentViewProvider) -> AnyView? {
+    func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
         nil
     }
     

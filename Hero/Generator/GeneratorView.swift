@@ -49,7 +49,7 @@ class GeneratorComponent: BasicComponent<GeneratorComponentProperty> {
     
     override var subcomponents: [Component]? { [transformation, arrangement] }
     
-    override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
+    override func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
         provider.viewFor(self)
     }
 }

@@ -18,11 +18,11 @@ struct ComponentTreeNavigationView: View {
     var body: some View {
         VStack(spacing: 0.0) {
             ComponentView(component: rootComponent, activeComponent: $activeComponent)
-            .padding(3.0)
-            .frame(maxHeight: Self.componentViewHeight)
-            .background(Material.bar)
-            .compositingGroup()
-            .shadow(radius: 0.5)
+                .padding(3.0)
+                .frame(maxHeight: Self.componentViewHeight)
+                .background(Material.bar)
+                .compositingGroup()
+                .shadow(radius: 0.5)
             
             BottomBar()
                 .overlay {

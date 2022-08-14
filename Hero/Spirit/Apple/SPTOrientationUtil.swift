@@ -47,6 +47,10 @@ class SPTObservedOrientation: SPTObservedObject {
 
 extension SPTOrientation: Equatable {
     
+    init(euler: SPTEulerOrientation) {
+        self.init(variantTag: .euler, .init(euler: euler))
+    }
+    
     public static func == (lhs: SPTOrientation, rhs: SPTOrientation) -> Bool {
         SPTOrientationEqual(lhs, rhs)
     }

@@ -33,6 +33,7 @@ bool SPTPositionEqual(SPTPosition lhs, SPTPosition rhs) {
 
 void SPTPositionMake(SPTObject object, SPTPosition position) {
     auto& registry = spt::Scene::getRegistry(object);
+    spt::notifyWillEmergeComponentObservers(registry, object.entity, position);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTPosition>(object.entity, position);
 }
@@ -47,10 +48,16 @@ void SPTPositionMakeSpherical(SPTObject object, SPTSphericalPosition spherical) 
 
 void SPTPositionUpdate(SPTObject object, SPTPosition newPosition) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::ComponentUpdateNotifier<SPTPosition>::onWillChange(registry, object.entity, newPosition);
+    spt::notifyWillChangeComponentObservers(registry, object.entity, newPosition);
     
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.get<SPTPosition>(object.entity) = newPosition;
+}
+
+void SPTPositionDestroy(SPTObject object) {
+    auto& registry = spt::Scene::getRegistry(object);
+    spt::notifyWillPerishComponentObservers<SPTPosition>(registry, object.entity);
+    registry.erase<SPTPosition>(object.entity);
 }
 
 SPTPosition SPTPositionGet(SPTObject object) {
@@ -61,16 +68,37 @@ simd_float3 SPTPositionGetXYZ(SPTObject object) {
     return spt::Position::getXYZ(spt::Scene::getRegistry(object), object.entity);
 }
 
-void SPTPositionAddWillChangeListener(SPTObject object, SPTListener listener, SPTPositionWillChangeCallback callback) {
-    spt::addComponentWillChangeListener<SPTPosition>(object, listener, callback);
+const SPTPosition* _Nullable SPTPositionTryGet(SPTObject object) {
+    return spt::Scene::getRegistry(object).try_get<SPTPosition>(object.entity);
 }
 
-void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTListener listener, SPTPositionWillChangeCallback callback) {
-    spt::removeComponentWillChangeListenerCallback<SPTPosition>(object, listener, callback);
+bool SPTPositionExists(SPTObject object) {
+    auto& registry = spt::Scene::getRegistry(object);
+    return registry.all_of<SPTPosition>(object.entity);
 }
 
-void SPTPositionRemoveWillChangeListener(SPTObject object, SPTListener listener) {
-    spt::removeComponentWillChangeListener<SPTPosition>(object, listener);
+SPTComponentObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+    return spt::addComponentWillChangeObserver<SPTPosition>(object, observer, userInfo);
+}
+
+void SPTPositionRemoveWillChangeObserver(SPTObject object, SPTComponentObserverToken token) {
+    spt::removeComponentWillChangeObserver<SPTPosition>(object, token);
+}
+
+SPTComponentObserverToken SPTPositionAddWillEmergeObserver(SPTObject object, SPTPositionWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+    return spt::addComponentWillEmergeObserver<SPTPosition>(object, observer, userInfo);
+}
+
+void SPTPositionRemoveWillEmergeObserver(SPTObject object, SPTComponentObserverToken token) {
+    spt::removeComponentWillEmergeObserver<SPTPosition>(object, token);
+}
+
+SPTComponentObserverToken SPTPositionAddWillPerishObserver(SPTObject object, SPTPositionWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+    return spt::addComponentWillPerishObserver<SPTPosition>(object, observer, userInfo);
+}
+
+void SPTPositionRemoveWillPerishObserver(SPTObject object, SPTComponentObserverToken token) {
+    spt::removeComponentWillPerishObserver<SPTPosition>(object, token);
 }
 
 simd_float3 SPTPositionConvertSphericalToXYZ(SPTSphericalPosition sphericalPosition) {

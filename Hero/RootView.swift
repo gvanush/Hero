@@ -14,6 +14,7 @@ struct RootView: View {
     @State private var showsTransformView = false
     @State private var showsAnimatorsView = false
     @State private var showsNewGeneratorView = false
+    @State private var showsSelectedObjectInspector = false
     
     var body: some View {
         NavigationView {
@@ -68,12 +69,16 @@ struct RootView: View {
         .sheet(isPresented: $showsAnimatorsView) {
             AnimatorsView()
         }
+        .sheet(isPresented: $showsSelectedObjectInspector) {
+            MeshObjectInspector(meshComponent: MeshObjectComponent(object: sceneViewModel.selectedObject!))
+                .environmentObject(sceneViewModel)
+        }
     }
     
     func objectActionView(_ object: SPTObject) -> some View {
         HStack(spacing: 4.0) {
             objectActionButton(iconName: "slider.horizontal.3") {
-                
+                showsSelectedObjectInspector = true
             }
             objectActionButton(iconName: "trash") {
                 

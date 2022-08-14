@@ -52,8 +52,9 @@ struct FloatField: View {
     @State private var dragBaseValue: Float = 0.0
     @State private var dragInitialTranslation: CGFloat = 0.0
     
-    @State private var scrollAnimator: DisplayRefreshSync!
     @State private var scrollAnimationUtil = ScrollAnimationUtil()
+    @State private var scrollDuration: TimeInterval = 0.0
+    @State private var scrollStartTimestamp: TimeInterval = 0.0
     
     @State private var formatter: Formatter
     
@@ -110,19 +111,7 @@ struct FloatField: View {
         .cornerRadius(Self.cornerRadius)
         .shadow(radius: 1.0)
         .onAppear {
-            scrollAnimator = DisplayRefreshSync(update: { time in
-                assert(state == .scrolling)
-                updateValue(dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: time)))
-            }, completion: {
-                assert(state == .scrolling)
-                withAnimation {
-                    state = .idle
-                }
-            })
             feedbackGenerator.prepare()
-        }
-        .onDisappear {
-            stopScrolling()
         }
         .onChange(of: scale) { _ in
             stopScrolling()
@@ -146,6 +135,19 @@ struct FloatField: View {
                 if ceil(value / scale.rawValue) != ceil(newValue / scale.rawValue) {
                     playFeedback()
                 }
+            }
+        }
+        .onFrame { frame in
+            guard state == .scrolling else { return }
+            
+            let passeedTime = frame.timestamp - scrollStartTimestamp
+            if passeedTime >= scrollDuration {
+                updateValue(dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: scrollDuration)))
+                withAnimation {
+                    state = .idle
+                }
+            } else {
+                updateValue(dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: passeedTime)))
             }
         }
     }
@@ -181,10 +183,7 @@ struct FloatField: View {
             .onChanged { dragValue in
                 
                 if state == .scrolling {
-                    scrollAnimator.stop()
-                    withAnimation {
-                        state = .idle
-                    }
+                    stopScrolling()
                 }
                 
                 // NOTE: Typically the first non-zero drag translation is big which results to
@@ -226,10 +225,11 @@ struct FloatField: View {
                 // to around 25 units of change while a hard one around 100
                 scrollAnimationUtil.initialSpeed = 2.8 * initialSpeed
                 
+                scrollDuration = scrollAnimationUtil.duration
+                scrollStartTimestamp = CACurrentMediaTime()
                 withAnimation {
                     state = .scrolling
                 }
-                scrollAnimator.start(duration: scrollAnimationUtil.duration)
                 
             }
     }
@@ -280,7 +280,6 @@ struct FloatField: View {
     
     private func stopScrolling() {
         withAnimation {
-            scrollAnimator.stop()
             state = .idle
         }
     }
@@ -354,7 +353,7 @@ fileprivate struct ScalePicker: View {
                 Text(scale.displayText)
             }
         }
-        .colorMultiply(.secondaryLabel)
+        .tint(.secondaryLabel)
         .pickerStyle(.menu)
         .frame(height: Self.height, alignment: .center)
         .overlay {

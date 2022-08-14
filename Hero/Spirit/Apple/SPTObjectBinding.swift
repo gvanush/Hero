@@ -9,27 +9,6 @@ import Foundation
 import Combine
 
 
-protocol SPTObservedObject {
-    
-    associatedtype Object: Equatable
-    
-    var binding: SPTObjectBinding<Object> { get }
-
-}
-
-extension SPTObservedObject {
-    
-    var publisher: ObservableObjectPublisher? {
-        set { binding.publisher = newValue }
-        get { binding.publisher }
-    }
-    
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Object, Subject>) -> SPTObjectBinding<Subject> {
-        binding[dynamicMember: keyPath]
-    }
-    
-}
-
 @propertyWrapper
 @dynamicMemberLookup
 class SPTObjectBinding<Object> where Object: Equatable {
@@ -40,7 +19,7 @@ class SPTObjectBinding<Object> where Object: Equatable {
     typealias Listener = (binding: WeakWrapper, callback: (Object) -> Void)
     private var listeners = [Listener]()
     
-    var publisher: ObservableObjectPublisher?
+    weak var publisher: ObservableObjectPublisher?
     
     init(value: Object, setter: @escaping (Object) -> Void) {
         self.value = value
@@ -90,6 +69,30 @@ class SPTObjectBinding<Object> where Object: Equatable {
     
     struct WeakWrapper {
         private(set) weak var value: AnyObject?
+    }
+    
+}
+
+
+// TODO: Remove
+protocol SPTObservedObject {
+    
+    associatedtype Object: Equatable
+    
+    var binding: SPTObjectBinding<Object> { get }
+
+}
+
+
+extension SPTObservedObject {
+    
+    var publisher: ObservableObjectPublisher? {
+        set { binding.publisher = newValue }
+        get { binding.publisher }
+    }
+    
+    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Object, Subject>) -> SPTObjectBinding<Subject> {
+        binding[dynamicMember: keyPath]
     }
     
 }

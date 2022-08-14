@@ -97,7 +97,7 @@ class ArrangementComponent: MultiVariantComponent {
         }
     }
     
-    override func accept(_ provider: EditComponentViewProvider) -> AnyView? {
+    override func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
         provider.viewFor(self)
     }
     

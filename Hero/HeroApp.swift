@@ -26,6 +26,8 @@ struct HeroApp: App {
         UIToolbar.appearance().compactAppearance = toolbarAppearance
         UIToolbar.appearance().scrollEdgeAppearance = toolbarAppearance
         UIToolbar.appearance().compactScrollEdgeAppearance = toolbarAppearance
+        
+        SPTAnimatorMake(.init(name: "Pan 0", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
     }
     
     var body: some SwiftUI.Scene {

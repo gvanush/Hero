@@ -12,10 +12,20 @@ struct SceneEditableParam: View {
     
     let title: String
     let value: String?
+    let indent: Int
     let editAction: () -> Void
+    
+    init(title: String, value: String?, indent: Int = 0, editAction: @escaping () -> Void) {
+        self.title = title
+        self.value = value
+        self.indent = indent
+        self.editAction = editAction
+    }
     
     var body: some View {
         HStack {
+            Spacer()
+                .frame(width: CGFloat(indent) * 16.0)
             Text(title)
             Spacer()
             if let value = value {

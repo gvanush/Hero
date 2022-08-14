@@ -25,7 +25,7 @@ class SceneViewModel: ObservableObject {
     private(set) var viewCameraObject: SPTObject
     
     private var objectSelector: ObjectSelector?
-    private var selectedObjectCancellable: SPTAnyCancellable?
+    private var selectedObjectPositionWillChangeSubscription: SPTAnySubscription?
     
     var focusState: ObjectFocusState? {
         willSet {
@@ -47,17 +47,17 @@ class SceneViewModel: ObservableObject {
             
             if let newObject = newValue {
                 
-                selectedObjectCancellable = SPTPosition.willChangeSink(object: newObject, { newPos in
+                selectedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: newObject) { newPos in
                     if self.focusState == .following {
                         self.focusOn(newPos.xyz)
                     } else {
                         self.checkFocusState(targetPos: newPos.xyz)
                     }
-                })
+                }
                 
             } else {
                 focusState = nil
-                selectedObjectCancellable = nil
+                selectedObjectPositionWillChangeSubscription = nil
             }
             objectSelector = ObjectSelector(object: newValue)
         }
