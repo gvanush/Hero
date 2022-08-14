@@ -11,13 +11,13 @@ import Foundation
 protocol SPTComponent: Equatable {
     
     typealias WillEmergeCallback = (Self) -> Void
-    typealias WillEmergeSubscription = SPTSubscription<WillEmergeCallback, SPTComponentObserverToken>
+    typealias WillEmergeSubscription = SPTSubscription<WillEmergeCallback>
     
     typealias WillChangeCallback = (Self) -> Void
-    typealias WillChangeSubscription = SPTSubscription<WillChangeCallback, SPTComponentObserverToken>
+    typealias WillChangeSubscription = SPTSubscription<WillChangeCallback>
     
     typealias WillPerishCallback = () -> Void
-    typealias WillPerishSubscription = SPTSubscription<WillPerishCallback, SPTComponentObserverToken>
+    typealias WillPerishSubscription = SPTSubscription<WillPerishCallback>
     
     static func make(_ component: Self, object: SPTObject)
     

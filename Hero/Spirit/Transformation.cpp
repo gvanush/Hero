@@ -11,7 +11,7 @@
 #include "Orientation.h"
 #include "Scale.hpp"
 #include "Scene.hpp"
-#include "ComponentListenerUtil.hpp"
+#include "ComponentObserverUtil.hpp"
 #include "Base.hpp"
 
 #include <queue>

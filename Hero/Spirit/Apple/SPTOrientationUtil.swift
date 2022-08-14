@@ -48,42 +48,42 @@ extension SPTOrientation: SPTComponent {
     
     static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription {
         
-        let subscription = WillEmergeSubscription(callback: callback) { token in
-            SPTOrientationRemoveWillEmergeObserver(object, token)
-        }
+        let subscription = WillEmergeSubscription(observer: callback)
         
-        subscription.token = SPTOrientationAddWillEmergeObserver(object, { newValue, userInfo in
-            let cancellable = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            cancellable.callback(newValue)
+        let token = SPTOrientationAddWillEmergeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTOrientationRemoveWillEmergeObserver(object, token) }
         
         return subscription
     }
     
     static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
         
-        let subscription = WillChangeSubscription(callback: callback) { token in
-            SPTOrientationRemoveWillChangeObserver(object, token)
-        }
+        let subscription = WillChangeSubscription(observer: callback)
         
-        subscription.token = SPTOrientationAddWillChangeObserver(object, { newValue, userInfo in
-            let cancellable = Unmanaged<WillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            cancellable.callback(newValue)
+        let token = SPTOrientationAddWillChangeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<WillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTOrientationRemoveWillChangeObserver(object, token) }
         
         return subscription
     }
     
     static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
         
-        let subscription = WillPerishSubscription(callback: callback) { token in
-            SPTOrientationRemoveWillPerishObserver(object, token)
-        }
+        let subscription = WillPerishSubscription(observer: callback)
         
-        subscription.token = SPTOrientationAddWillPerishObserver(object, { userInfo in
-            let cancellable = Unmanaged<WillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            cancellable.callback()
+        let token = SPTOrientationAddWillPerishObserver(object, { userInfo in
+            let subscription = Unmanaged<WillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer()
         }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTOrientationRemoveWillPerishObserver(object, token) }
         
         return subscription
     }

@@ -7,46 +7,26 @@
 
 import Foundation
 
-// TODO: Remove
-public protocol SPTAnyCancellable {
 
+protocol SPTAnySubscription {
+    func cancel()
 }
 
-// TODO: Remove
-public class SPTCancellableListener<CT>: SPTAnyCancellable {
+class SPTSubscription<O>: SPTAnySubscription {
     
-    let callback: (CT) -> Void
-    private let cancel: (SPTCancellableListener<CT>) -> Void
+    let observer: O
+    var canceller: (() -> Void)! = nil
     
-    init(callback: @escaping (CT) -> Void, _ cancel: @escaping (SPTCancellableListener<CT>) -> Void) {
-        self.callback = callback
-        self.cancel = cancel
+    init(observer: O) {
+        self.observer = observer
     }
     
     deinit {
-        cancel(self)
+        cancel()
     }
     
-}
-
-
-public protocol SPTAnySubscription {
-
-}
-
-public class SPTSubscription<C, T>: SPTAnySubscription {
-    
-    let callback: C
-    private let cancel: (T) -> Void
-    var token: T!
-    
-    init(callback: C, _ cancel: @escaping (T) -> Void) {
-        self.callback = callback
-        self.cancel = cancel
-    }
-    
-    deinit {
-        cancel(token)
+    func cancel() {
+        canceller()
     }
     
 }

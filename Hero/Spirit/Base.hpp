@@ -24,31 +24,4 @@ void emplaceIfMissing(Registry& registry, SPTEntity entity, Args &&...args) {
     }
 }
 
-// TODO: Remove
-template <typename OT>
-using WillChangeCallback = void (*)(SPTListener, OT);
-
-// TODO: Remove
-template <typename OT>
-struct WillChangeListenerItem {
-    SPTListener listener;
-    WillChangeCallback<OT> callback;
-};
-
-
-template <typename C>
-using ComponentWillChangeObserver = void (*)(C, SPTComponentObserverUserInfo);
-
-template <typename C>
-using ComponentWillEmergeObserver = void (*)(C, SPTComponentObserverUserInfo);
-
-template <typename C>
-using ComponentWillPerishObserver = void (*)(SPTComponentObserverUserInfo);
-
-template <typename O>
-struct ComponentObserverItem {
-    O observer;
-    SPTComponentObserverUserInfo userInfo;
-};
-
 }

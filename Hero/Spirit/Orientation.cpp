@@ -8,8 +8,8 @@
 #include "Orientation.h"
 #include "Scene.hpp"
 #include "Transformation.hpp"
-#include "ComponentListenerUtil.hpp"
-#include "ComponentUpdateNotifier.hpp"
+#include "ComponentObserverUtil.hpp"
+
 
 bool SPTEulerOrientationEqual(SPTEulerOrientation lhs, SPTEulerOrientation rhs) {
     return simd_equal(lhs.rotation, rhs.rotation) && lhs.order == rhs.order;

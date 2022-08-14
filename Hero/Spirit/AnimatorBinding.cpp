@@ -8,8 +8,7 @@
 #include "AnimatorBinding.h"
 #include "AnimatorBinding.hpp"
 #include "Scene.hpp"
-#include "ComponentListenerUtil.hpp"
-#include "ComponentUpdateNotifier.hpp"
+#include "ComponentObserverUtil.hpp"
 
 
 bool SPTAnimatorBindingEqual(SPTAnimatorBinding lhs, SPTAnimatorBinding rhs) {

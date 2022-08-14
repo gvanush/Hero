@@ -44,14 +44,14 @@ extension SPTAnimatorBinding: SPTComponent {
     
     static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription {
         
-        let subscription = WillEmergeSubscription(callback: callback) { token in
-            SPTAnimatorBindingRemoveWillEmergeObserver(object, token)
-        }
+        let subscription = WillEmergeSubscription(observer: callback)
         
-        subscription.token = SPTAnimatorBindingAddWillEmergeObserver(object, { newValue, userInfo in
-            let cancellable = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            cancellable.callback(newValue)
+        let token = SPTAnimatorBindingAddWillEmergeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTAnimatorBindingRemoveWillEmergeObserver(object, token) }
         
         return subscription
     }
@@ -60,14 +60,14 @@ extension SPTAnimatorBinding: SPTComponent {
     
     static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
         
-        let subscription = WillChangeSubscription(callback: callback) { token in
-            SPTAnimatorBindingRemoveWillChangeObserver(object, token)
-        }
+        let subscription = WillChangeSubscription(observer: callback)
         
-        subscription.token = SPTAnimatorBindingAddWillChangeObserver(object, { newValue, userInfo in
-            let cancellable = Unmanaged<WillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            cancellable.callback(newValue)
+        let token = SPTAnimatorBindingAddWillChangeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<WillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTAnimatorBindingRemoveWillChangeObserver(object, token) }
         
         return subscription
     }
@@ -76,14 +76,14 @@ extension SPTAnimatorBinding: SPTComponent {
     
     static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
         
-        let subscription = WillPerishSubscription(callback: callback) { token in
-            SPTAnimatorBindingRemoveWillPerishObserver(object, token)
-        }
+        let subscription = WillPerishSubscription(observer: callback)
         
-        subscription.token = SPTAnimatorBindingAddWillPerishObserver(object, { userInfo in
-            let cancellable = Unmanaged<WillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            cancellable.callback()
+        let token = SPTAnimatorBindingAddWillPerishObserver(object, { userInfo in
+            let subscription = Unmanaged<WillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer()
         }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTAnimatorBindingRemoveWillPerishObserver(object, token) }
         
         return subscription
     }

@@ -185,8 +185,7 @@
 		B723585E2762844700337547 /* PolylineViewDepthBias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolylineViewDepthBias.h; sourceTree = "<group>"; };
 		B7235860276F2BEC00337547 /* OutlineView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OutlineView.cpp; sourceTree = "<group>"; };
 		B7235861276F2BEC00337547 /* OutlineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OutlineView.h; sourceTree = "<group>"; };
-		B72358662774982300337547 /* ComponentListenerUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComponentListenerUtil.hpp; sourceTree = "<group>"; };
-		B72358672774A81300337547 /* ComponentUpdateNotifier.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComponentUpdateNotifier.hpp; sourceTree = "<group>"; };
+		B72358662774982300337547 /* ComponentObserverUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComponentObserverUtil.hpp; sourceTree = "<group>"; };
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -692,8 +691,7 @@
 				B73245B8274128FD00708909 /* Spirit.h */,
 				B72358492757730700337547 /* Geometry.h */,
 				B73245A7273E677B00708909 /* Bridging-Header.h */,
-				B72358662774982300337547 /* ComponentListenerUtil.hpp */,
-				B72358672774A81300337547 /* ComponentUpdateNotifier.hpp */,
+				B72358662774982300337547 /* ComponentObserverUtil.hpp */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";

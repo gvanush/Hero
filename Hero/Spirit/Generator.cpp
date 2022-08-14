@@ -13,8 +13,7 @@
 #include "RayCast.hpp"
 #include "Scale.hpp"
 #include "MeshView.hpp"
-#include "ComponentListenerUtil.hpp"
-#include "ComponentUpdateNotifier.hpp"
+#include "ComponentObserverUtil.hpp"
 
 
 namespace spt {

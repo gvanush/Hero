@@ -15,6 +15,15 @@
 
 namespace spt {
 
+template <typename OT>
+using WillChangeCallback = void (*)(SPTListener, OT);
+
+template <typename OT>
+struct WillChangeListenerItem {
+    SPTListener listener;
+    WillChangeCallback<OT> callback;
+};
+
 class AnimatorManager {
 public:
     

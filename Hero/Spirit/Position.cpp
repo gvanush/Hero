@@ -8,8 +8,8 @@
 #include "Position.h"
 #include "Position.hpp"
 #include "Scene.hpp"
-#include "ComponentListenerUtil.hpp"
-#include "ComponentUpdateNotifier.hpp"
+#include "ComponentObserverUtil.hpp"
+
 
 bool SPTSphericalPositionEqual(SPTSphericalPosition lhs, SPTSphericalPosition rhs) {
     return simd_equal(lhs.center, rhs.center) &&

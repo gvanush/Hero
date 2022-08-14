@@ -7,8 +7,7 @@
 
 #include "Scale.h"
 #include "Scale.hpp"
-#include "ComponentListenerUtil.hpp"
-#include "ComponentUpdateNotifier.hpp"
+#include "ComponentObserverUtil.hpp"
 #include "Base.hpp"
 
 
