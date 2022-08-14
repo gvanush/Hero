@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Combine
+
 
 extension SPTAnimatorsSlice: SPTArraySlice {
 
@@ -51,7 +53,7 @@ extension SPTAnimator: Identifiable, Equatable {
 
 @propertyWrapper
 @dynamicMemberLookup
-class SPTObservedAniamtor: SPTObservedObject {
+class SPTObservedAniamtor {
     
     private let animatorId: SPTAnimatorId
     internal let binding: SPTObjectBinding<SPTAnimator>
@@ -83,6 +85,15 @@ class SPTObservedAniamtor: SPTObservedObject {
     
     var projectedValue: SPTObjectBinding<SPTAnimator> {
         binding
+    }
+    
+    var publisher: ObservableObjectPublisher? {
+        set { binding.publisher = newValue }
+        get { binding.publisher }
+    }
+    
+    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<SPTAnimator, Subject>) -> SPTObjectBinding<Subject> {
+        binding[dynamicMember: keyPath]
     }
     
 }

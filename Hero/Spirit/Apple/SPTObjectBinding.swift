@@ -72,27 +72,3 @@ class SPTObjectBinding<Object> where Object: Equatable {
     }
     
 }
-
-
-// TODO: Remove
-protocol SPTObservedObject {
-    
-    associatedtype Object: Equatable
-    
-    var binding: SPTObjectBinding<Object> { get }
-
-}
-
-
-extension SPTObservedObject {
-    
-    var publisher: ObservableObjectPublisher? {
-        set { binding.publisher = newValue }
-        get { binding.publisher }
-    }
-    
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<Object, Subject>) -> SPTObjectBinding<Subject> {
-        binding[dynamicMember: keyPath]
-    }
-    
-}
