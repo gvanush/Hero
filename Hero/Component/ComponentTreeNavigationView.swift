@@ -19,7 +19,7 @@ struct ComponentTreeNavigationView: View {
         VStack(spacing: 0.0) {
             ComponentView(component: rootComponent, activeComponent: $activeComponent)
                 .padding(3.0)
-                .frame(maxHeight: Self.componentViewHeight)
+                .frame(maxWidth: .infinity, maxHeight: Self.componentViewHeight)
                 .background(Material.bar)
                 .compositingGroup()
                 .shadow(radius: 0.5)

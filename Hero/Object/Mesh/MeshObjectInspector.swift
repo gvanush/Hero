@@ -9,11 +9,12 @@ import SwiftUI
 
 
 class MeshObjectComponent: Component {
-    
+
     let object: SPTObject
     lazy private(set) var transformation = TransformationComponent(object: self.object, parent: self)
     
     init(object: SPTObject) {
+        
         self.object = object
         
         super.init(title: "Mesh", parent: nil)
@@ -33,7 +34,7 @@ class MeshObjectComponent: Component {
 
 struct MeshObjectInspector: View {
     
-    @ObservedObject var meshComponent: MeshObjectComponent
+    @StateObject var meshComponent: MeshObjectComponent
     @State private var editedComponent: Component?
     @Environment(\.presentationMode) private var presentationMode
     
@@ -85,7 +86,6 @@ struct EditMeshObjectView: View {
                     VStack {
                         Spacer()
                         ComponentTreeNavigationView(rootComponent: meshComponent, activeComponent: $activeComponent)
-//                            .padding(.bottom, geometry.safeAreaInsets.bottom)
                             .offset(y: isNavigating ? ComponentTreeNavigationView.height + geometry.safeAreaInsets.bottom : 0.0)
                     }
                 }

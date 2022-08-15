@@ -17,7 +17,8 @@ namespace spt {
 
 namespace {
 
-constexpr size_t kMaxObserverCount = 8;
+// TODO: Set to 8 after AnimationBinding redo
+constexpr size_t kMaxObserverCount = 16;
 
 template <typename C>
 using ComponentWillChangeObserver = void (*)(C, SPTComponentObserverUserInfo);
