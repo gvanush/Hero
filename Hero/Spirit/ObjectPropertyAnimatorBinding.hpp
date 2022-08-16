@@ -13,7 +13,7 @@
 
 namespace spt {
 
-template <SPTObjectProperty P>
+template <SPTAnimatableObjectProperty P>
 struct AnimatorBinding {
     SPTAnimatorBinding base;
 };

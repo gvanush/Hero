@@ -13,9 +13,9 @@ class PositionAnimatorBindingsComponent: Component {
     static let title = "Animators"
     
     let object: SPTObject
-    lazy private(set) var x = AnimatorBindingComponent(title: "X", object: self.object, parent: self)
-    lazy private(set) var y = AnimatorBindingComponent(title: "Y", object: self.object, parent: self)
-    lazy private(set) var z = AnimatorBindingComponent(title: "Z", object: self.object, parent: self)
+    lazy private(set) var x = AnimatorBindingComponent(animatableProperty: SPTAnimatableObjectProperty.positionX, title: "X", object: self.object, parent: self)
+    lazy private(set) var y = AnimatorBindingComponent(animatableProperty: SPTAnimatableObjectProperty.positionY, title: "Y", object: self.object, parent: self)
+    lazy private(set) var z = AnimatorBindingComponent(animatableProperty: SPTAnimatableObjectProperty.positionZ, title: "Z", object: self.object, parent: self)
     
     init(object: SPTObject, parent: Component?) {
         self.object = object

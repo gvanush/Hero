@@ -6,163 +6,114 @@
 //
 
 import Foundation
+import Combine
 
 
-extension SPTObjectProperty {
-    
-    typealias AnimatorBindingWillEmergeCallback = ObjectWillEmergeCallback<SPTAnimatorBinding>
-    typealias AnimatorBindingWillEmergeSubscription = SPTSubscription<AnimatorBindingWillEmergeCallback>
-    
-    typealias AnimatorBindingWillChangeCallback = ObjectWillChangeCallback<SPTAnimatorBinding>
-    typealias AnimatorBindingWillChangeSubscription = SPTSubscription<AnimatorBindingWillChangeCallback>
-    
-    typealias AnimatorBindingWillPerishCallback = ObjectWillPerishCallback
-    typealias AnimatorBindingWillPerishSubscription = SPTSubscription<AnimatorBindingWillPerishCallback>
-    
-    func bindAnimator(object: SPTObject, binding: SPTAnimatorBinding) {
-        SPTObjectPropertyBindAnimator(self, object, binding)
-    }
-    
-    func updateAnimatorBinding(object: SPTObject, binding: SPTAnimatorBinding) {
-        SPTObjectPropertyUpdateAnimatorBinding(self, object, binding)
-    }
-    
-    func unbindAnimator(object: SPTObject) {
-        SPTObjectPropertyUnbindAnimator(self, object)
-    }
-    
-    func getAnimatorBinding(object: SPTObject) -> SPTAnimatorBinding {
-        SPTObjectPropertyGetAnimatorBinding(self, object)
-    }
-    
-    func tryGetAnimatorBinding(object: SPTObject) -> SPTAnimatorBinding? {
-        SPTObjectPropertyTryGetAnimatorBinding(self, object)?.pointee
-    }
-    
-    func isAnimatorBound(object: SPTObject) -> Bool {
-        SPTObjectPropertyIsAnimatorBound(self, object)
-    }
-    
-    func onAnimatorBindingWillEmergeSink(object: SPTObject, callback: @escaping AnimatorBindingWillEmergeCallback) -> SPTAnySubscription {
-        
-        let subscription = AnimatorBindingWillEmergeSubscription(observer: callback)
-        
-        let token = SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(self, object, { newValue, userInfo in
-            let subscription = Unmanaged<AnimatorBindingWillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            subscription.observer(newValue)
-        }, Unmanaged.passUnretained(subscription).toOpaque())
-        
-        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillEmergeObserver(self, object, token) }
-        
-        return subscription
-    }
-    
-    func onAnimatorBindingWillChangeSink(object: SPTObject, callback: @escaping AnimatorBindingWillEmergeCallback) -> SPTAnySubscription {
-        
-        let subscription = AnimatorBindingWillChangeSubscription(observer: callback)
-        
-        let token = SPTObjectPropertyAddAnimatorBindingWillChangeObserver(self, object, { newValue, userInfo in
-            let subscription = Unmanaged<AnimatorBindingWillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            subscription.observer(newValue)
-        }, Unmanaged.passUnretained(subscription).toOpaque())
-        
-        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(self, object, token) }
-        
-        return subscription
-    }
-    
-    func onAnimatorBindingWillPerishSink(object: SPTObject, callback: @escaping AnimatorBindingWillPerishCallback) -> SPTAnySubscription {
-        
-        let subscription = AnimatorBindingWillPerishSubscription(observer: callback)
-        
-        let token = SPTObjectPropertyAddAnimatorBindingWillPerishObserver(self, object, { userInfo in
-            let subscription = Unmanaged<AnimatorBindingWillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            subscription.observer()
-        }, Unmanaged.passUnretained(subscription).toOpaque())
-        
-        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(self, object, token) }
-        
-        return subscription
-    }
-    
-}
-
-extension SPTAnimatorBinding: SPTComponent {
+extension SPTAnimatorBinding: Equatable {
     
     public static func == (lhs: SPTAnimatorBinding, rhs: SPTAnimatorBinding) -> Bool {
         SPTAnimatorBindingEqual(lhs, rhs)
     }
     
-    static func make(_ component: SPTAnimatorBinding, object: SPTObject) {
-        SPTAnimatorBindingMake(object, component)
+}
+
+
+@propertyWrapper
+@dynamicMemberLookup
+class SPTObservedAnimatorBinding<P> where P: SPTAnimatableProperty {
+    
+    let property: P
+    let object: SPTObject
+    let binding: SPTObjectBinding<SPTAnimatorBinding>
+    var willChangeSubscription: SPTAnySubscription?
+
+    init(property: P, object: SPTObject) {
+        self.property = property
+        self.object = object
+        
+        binding = SPTObjectBinding(value: property.getAnimatorBinding(object: object), setter: { newValue in
+            property.updateAnimatorBinding(newValue, object: object)
+        })
+        
+        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] newValue in
+            self?.binding.onWillChange(newValue: newValue)
+        }
+
+    }
+ 
+    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<SPTAnimatorBinding, Subject>) -> SPTObjectBinding<Subject> {
+        binding[dynamicMember: keyPath]
     }
     
-    static func makeOrUpdate(_ component: SPTAnimatorBinding, object: SPTObject) {
-        if SPTAnimatorBindingExists(object) {
-            SPTAnimatorBindingUpdate(object, component)
-        } else {
-            SPTAnimatorBindingMake(object, component)
+    var publisher: ObservableObjectPublisher? {
+        set { binding.publisher = newValue }
+        get { binding.publisher }
+    }
+    
+    var wrappedValue: SPTAnimatorBinding {
+        set { binding.wrappedValue = newValue }
+        get { binding.wrappedValue }
+    }
+    
+    var projectedValue: SPTObjectBinding<SPTAnimatorBinding> {
+        binding
+    }
+    
+}
+
+
+@propertyWrapper
+@dynamicMemberLookup
+class SPTObservedOptionalAnimatorBinding<P> where P: SPTAnimatableProperty {
+    
+    let property: P
+    let object: SPTObject
+    let binding: SPTObjectBinding<SPTAnimatorBinding?>
+    var willEmergeSubscription: SPTAnySubscription?
+    var willChangeSubscription: SPTAnySubscription?
+    var willPerishSubscription: SPTAnySubscription?
+
+    init(property: P, object: SPTObject) {
+        self.property = property
+        self.object = object
+        
+        binding = SPTObjectBinding(value: property.tryGetAnimatorBinding(object: object), setter: { newValue in
+            if let newValue = newValue {
+                property.bindOrUpdate(newValue, object: object)
+            } else {
+                property.unbindAnimator(object: object)
+            }
+        })
+        
+        willEmergeSubscription = property.onAnimatorBindingWillEmergeSink(object: object) { [weak self] newValue in
+            self?.binding.onWillChange(newValue: newValue)
+        }
+        
+        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] newValue in
+            self?.binding.onWillChange(newValue: newValue)
+        }
+
+        willPerishSubscription = property.onAnimatorBindingWillPerishSink(object: object) { [weak self] in
+            self?.binding.onWillChange(newValue: nil)
         }
     }
-    
-    static func update(_ component: SPTAnimatorBinding, object: SPTObject) {
-        SPTAnimatorBindingUpdate(object, component)
+ 
+    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<SPTAnimatorBinding?, Subject>) -> SPTObjectBinding<Subject> {
+        binding[dynamicMember: keyPath]
     }
     
-    static func destroy(object: SPTObject) {
-        SPTAnimatorBindingDestroy(object)
+    var publisher: ObservableObjectPublisher? {
+        set { binding.publisher = newValue }
+        get { binding.publisher }
     }
     
-    static func get(object: SPTObject) -> SPTAnimatorBinding {
-        SPTAnimatorBindingGet(object)
+    var wrappedValue: SPTAnimatorBinding? {
+        set { binding.wrappedValue = newValue }
+        get { binding.wrappedValue }
     }
     
-    static func tryGet(object: SPTObject) -> Self? {
-        SPTAnimatorBindingTryGet(object)?.pointee
-    }
-    
-    static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription {
-        
-        let subscription = WillEmergeSubscription(observer: callback)
-        
-        let token = SPTAnimatorBindingAddWillEmergeObserver(object, { newValue, userInfo in
-            let subscription = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            subscription.observer(newValue)
-        }, Unmanaged.passUnretained(subscription).toOpaque())
-        
-        subscription.canceller = { SPTAnimatorBindingRemoveWillEmergeObserver(object, token) }
-        
-        return subscription
-    }
-    
-    static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
-        
-        let subscription = WillChangeSubscription(observer: callback)
-        
-        let token = SPTAnimatorBindingAddWillChangeObserver(object, { newValue, userInfo in
-            let subscription = Unmanaged<WillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            subscription.observer(newValue)
-        }, Unmanaged.passUnretained(subscription).toOpaque())
-        
-        subscription.canceller = { SPTAnimatorBindingRemoveWillChangeObserver(object, token) }
-        
-        return subscription
-    }
-    
-    
-    
-    static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
-        
-        let subscription = WillPerishSubscription(observer: callback)
-        
-        let token = SPTAnimatorBindingAddWillPerishObserver(object, { userInfo in
-            let subscription = Unmanaged<WillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
-            subscription.observer()
-        }, Unmanaged.passUnretained(subscription).toOpaque())
-        
-        subscription.canceller = { SPTAnimatorBindingRemoveWillPerishObserver(object, token) }
-        
-        return subscription
+    var projectedValue: SPTObjectBinding<SPTAnimatorBinding?> {
+        binding
     }
     
 }

@@ -12,170 +12,170 @@
 #include "ObjectPropertyAnimatorBindingObserverUtil.hpp"
 
 
-void SPTObjectPropertyBindAnimator(SPTObjectProperty property, SPTObject object, SPTAnimatorBinding animatorBinding) {
+void SPTObjectPropertyBindAnimator(SPTAnimatableObjectProperty property, SPTObject object, SPTAnimatorBinding animatorBinding) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::bindAnimator<SPTObjectPropertyPositionX>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyPositionX>(object, animatorBinding);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::bindAnimator<SPTObjectPropertyPositionY>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyPositionY>(object, animatorBinding);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::bindAnimator<SPTObjectPropertyPositionZ>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyPositionZ>(object, animatorBinding);
         }
     }
 }
 
-void SPTObjectPropertyUpdateAnimatorBinding(SPTObjectProperty property, SPTObject object, SPTAnimatorBinding animatorBinding) {
+void SPTObjectPropertyUpdateAnimatorBinding(SPTAnimatableObjectProperty property, SPTObject object, SPTAnimatorBinding animatorBinding) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::updateAnimatorBinding<SPTObjectPropertyPositionX>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyPositionX>(object, animatorBinding);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::updateAnimatorBinding<SPTObjectPropertyPositionY>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyPositionY>(object, animatorBinding);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::updateAnimatorBinding<SPTObjectPropertyPositionZ>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyPositionZ>(object, animatorBinding);
         }
     }
 }
 
-void SPTObjectPropertyUnbindAnimator(SPTObjectProperty property, SPTObject object) {
+void SPTObjectPropertyUnbindAnimator(SPTAnimatableObjectProperty property, SPTObject object) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::unbindAnimator<SPTObjectPropertyPositionX>(object);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyPositionX>(object);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::unbindAnimator<SPTObjectPropertyPositionY>(object);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyPositionY>(object);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::unbindAnimator<SPTObjectPropertyPositionZ>(object);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyPositionZ>(object);
         }
     }
 }
 
-SPTAnimatorBinding SPTObjectPropertyGetAnimatorBinding(SPTObjectProperty property, SPTObject object) {
+SPTAnimatorBinding SPTObjectPropertyGetAnimatorBinding(SPTAnimatableObjectProperty property, SPTObject object) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::getAnimatorBinding<SPTObjectPropertyPositionX>(object);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyPositionX>(object);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::getAnimatorBinding<SPTObjectPropertyPositionY>(object);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyPositionY>(object);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::getAnimatorBinding<SPTObjectPropertyPositionZ>(object);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyPositionZ>(object);
         }
     }
 }
 
-const SPTAnimatorBinding* _Nullable SPTObjectPropertyTryGetAnimatorBinding(SPTObjectProperty property, SPTObject object) {
+const SPTAnimatorBinding* _Nullable SPTObjectPropertyTryGetAnimatorBinding(SPTAnimatableObjectProperty property, SPTObject object) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::tryGetAnimatorBinding<SPTObjectPropertyPositionX>(object);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyPositionX>(object);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::tryGetAnimatorBinding<SPTObjectPropertyPositionY>(object);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyPositionY>(object);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::tryGetAnimatorBinding<SPTObjectPropertyPositionZ>(object);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyPositionZ>(object);
         }
     }
 }
 
-bool SPTObjectPropertyIsAnimatorBound(SPTObjectProperty property, SPTObject object) {
+bool SPTObjectPropertyIsAnimatorBound(SPTAnimatableObjectProperty property, SPTObject object) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::isAnimatorBound<SPTObjectPropertyPositionX>(object);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyPositionX>(object);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::isAnimatorBound<SPTObjectPropertyPositionY>(object);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyPositionY>(object);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::isAnimatorBound<SPTObjectPropertyPositionZ>(object);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyPositionZ>(object);
         }
     }
 }
 
-SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::addAnimatorBindingWillChangeObserver<SPTObjectPropertyPositionX>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::addAnimatorBindingWillChangeObserver<SPTObjectPropertyPositionY>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::addAnimatorBindingWillChangeObserver<SPTObjectPropertyPositionZ>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
         }
     }
 }
 
-void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
+void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::removeAnimatorBindingWillChangeObserver<SPTObjectPropertyPositionX>(object, token);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::removeAnimatorBindingWillChangeObserver<SPTObjectPropertyPositionY>(object, token);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::removeAnimatorBindingWillChangeObserver<SPTObjectPropertyPositionZ>(object, token);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
         }
     }
 }
 
-SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTObjectPropertyPositionX>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTObjectPropertyPositionY>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTObjectPropertyPositionZ>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
         }
     }
 }
 
-void SPTObjectPropertyRemoveAnimatorBindingWillEmergeObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
+void SPTObjectPropertyRemoveAnimatorBindingWillEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTObjectPropertyPositionX>(object, token);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTObjectPropertyPositionY>(object, token);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTObjectPropertyPositionZ>(object, token);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
         }
     }
 }
 
-SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::addAnimatorBindingWillPerishObserver<SPTObjectPropertyPositionX>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::addAnimatorBindingWillPerishObserver<SPTObjectPropertyPositionY>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::addAnimatorBindingWillPerishObserver<SPTObjectPropertyPositionZ>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
         }
     }
 }
 
-void SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
+void SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
-        case SPTObjectPropertyPositionX: {
-            return spt::removeAnimatorBindingWillPerishObserver<SPTObjectPropertyPositionX>(object, token);
+        case SPTAnimatableObjectPropertyPositionX: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
         }
-        case SPTObjectPropertyPositionY: {
-            return spt::removeAnimatorBindingWillPerishObserver<SPTObjectPropertyPositionY>(object, token);
+        case SPTAnimatableObjectPropertyPositionY: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
         }
-        case SPTObjectPropertyPositionZ: {
-            return spt::removeAnimatorBindingWillPerishObserver<SPTObjectPropertyPositionZ>(object, token);
+        case SPTAnimatableObjectPropertyPositionZ: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
         }
     }
 }

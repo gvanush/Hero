@@ -16,7 +16,7 @@ protocol ComponentActionViewProvider {
     func viewFor(_ component: ScaleComponent) -> AnyView?
     func viewFor(_ component: TransformationComponent) -> AnyView?
     func viewFor(_ component: ArrangementComponent) -> AnyView?
-    func viewFor(_ component: AnimatorBindingComponent) -> AnyView?
+    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>) -> AnyView? where AP: SPTAnimatableProperty
     func viewFor(_ component: GeneratorComponent) -> AnyView?
     func viewFor(_ component: MeshObjectComponent) -> AnyView?
     
@@ -30,7 +30,7 @@ extension ComponentActionViewProvider {
     func viewFor(_ component: ScaleComponent) -> AnyView? { nil }
     func viewFor(_ component: TransformationComponent) -> AnyView? { nil }
     func viewFor(_ component: ArrangementComponent) -> AnyView? { nil }
-    func viewFor(_ component: AnimatorBindingComponent) -> AnyView? { nil }
+    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>) -> AnyView? where AP: SPTAnimatableProperty { nil }
     func viewFor(_ component: GeneratorComponent) -> AnyView? { nil }
     func viewFor(_ component: MeshObjectComponent) -> AnyView? { nil }
     

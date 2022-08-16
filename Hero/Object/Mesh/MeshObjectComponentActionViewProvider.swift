@@ -22,8 +22,9 @@ struct MeshObjectComponentActionViewProvider: ComponentActionViewProvider {
         AnyView(EditScaleComponentView(component: component))
     }
     
-    func viewFor(_ component: AnimatorBindingComponent) -> AnyView? {
+    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>) -> AnyView? where AP: SPTAnimatableProperty {
         AnyView(EditAnimatorBindingComponentView(component: component))
     }
+
 }
 

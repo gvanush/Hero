@@ -8,19 +8,18 @@
 import Foundation
 import SwiftUI
 
+enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
+    case valueAt0
+    case valueAt1
+}
 
-class AnimatorBindingComponent: BasicComponent<AnimatorBindingComponent.Property> {
+class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentProperty> where AP: SPTAnimatableProperty {
     
-    enum Property: Int, DistinctValueSet, Displayable {
-        case valueAt0
-        case valueAt1
-    }
+    @SPTObservedOptionalAnimatorBinding<AP> var animatorBinding: SPTAnimatorBinding?
     
-    @SPTObservedOptionalComponent var animatorBinding: SPTAnimatorBinding?
-    
-    init(title: String, object: SPTObject, parent: Component?) {
+    init(animatableProperty: AP, title: String, object: SPTObject, parent: Component?) {
         
-        _animatorBinding = SPTObservedOptionalComponent(object: object)
+        _animatorBinding = SPTObservedOptionalAnimatorBinding(property: animatableProperty, object: object)
         
         super.init(title: title, selectedProperty: .valueAt0, parent: parent)
         
@@ -57,9 +56,9 @@ class AnimatorBindingComponent: BasicComponent<AnimatorBindingComponent.Property
 }
 
 
-struct AnimatorBindingComponentView: View {
+struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
     
-    @ObservedObject var component: AnimatorBindingComponent
+    @ObservedObject var component: AnimatorBindingComponent<AP>
     @Binding var editedComponent: Component?
     @State private var showsAnimatorSelector = false;
     
@@ -88,11 +87,11 @@ struct AnimatorBindingComponentView: View {
             }
             
             if let animatorBinding = component.animatorBinding {
-                SceneEditableParam(title: AnimatorBindingComponent.Property.valueAt0.displayName, value: "\(animatorBinding.valueAt0)") {
+                SceneEditableParam(title: AnimatorBindingComponentProperty.valueAt0.displayName, value: "\(animatorBinding.valueAt0)") {
                     component.selectedProperty = .valueAt0
                     editedComponent = component
                 }
-                SceneEditableParam(title: AnimatorBindingComponent.Property.valueAt1.displayName, value: "\(animatorBinding.valueAt1)") {
+                SceneEditableParam(title: AnimatorBindingComponentProperty.valueAt1.displayName, value: "\(animatorBinding.valueAt1)") {
                     component.selectedProperty = .valueAt1
                     editedComponent = component
                 }
@@ -108,9 +107,9 @@ struct AnimatorBindingComponentView: View {
 }
 
 
-struct EditAnimatorBindingComponentView: View {
+struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
     
-    @ObservedObject var component: AnimatorBindingComponent
+    @ObservedObject var component: AnimatorBindingComponent<AP>
     @State private var scale = FloatField.Scale._1
     
     var body: some View {

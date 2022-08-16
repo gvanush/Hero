@@ -13,7 +13,7 @@
 
 namespace spt {
 
-template <SPTObjectProperty P>
+template <SPTAnimatableObjectProperty P>
 void bindAnimator(SPTObject object, const SPTAnimatorBinding& animatorBinding) {
     auto& registry = Scene::getRegistry(object);
     
@@ -23,7 +23,7 @@ void bindAnimator(SPTObject object, const SPTAnimatorBinding& animatorBinding) {
     registry.emplace<AnimatorBinding<P>>(object.entity, comp);
 }
 
-template <SPTObjectProperty P>
+template <SPTAnimatableObjectProperty P>
 void updateAnimatorBinding(SPTObject object, const SPTAnimatorBinding& animatorBinding) {
     auto& registry = Scene::getRegistry(object);
     
@@ -33,19 +33,19 @@ void updateAnimatorBinding(SPTObject object, const SPTAnimatorBinding& animatorB
     registry.get<AnimatorBinding<P>>(object.entity) = comp;
 }
 
-template <SPTObjectProperty P>
+template <SPTAnimatableObjectProperty P>
 void unbindAnimator(SPTObject object) {
     auto& registry = Scene::getRegistry(object);
     notifyAnimatorBindingWillPerishObservers<P>(registry, object.entity);
     registry.erase<AnimatorBinding<P>>(object.entity);
 }
 
-template <SPTObjectProperty P>
+template <SPTAnimatableObjectProperty P>
 SPTAnimatorBinding getAnimatorBinding(SPTObject object) {
     return Scene::getRegistry(object).get<AnimatorBinding<P>>(object.entity).base;
 }
 
-template <SPTObjectProperty P>
+template <SPTAnimatableObjectProperty P>
 SPTAnimatorBinding* tryGetAnimatorBinding(SPTObject object) {
     if(const auto binding = Scene::getRegistry(object).try_get<AnimatorBinding<P>>(object.entity)) {
         return &binding->base;
@@ -53,7 +53,7 @@ SPTAnimatorBinding* tryGetAnimatorBinding(SPTObject object) {
     return nullptr;
 }
 
-template <SPTObjectProperty P>
+template <SPTAnimatableObjectProperty P>
 bool isAnimatorBound(SPTObject object) {
     auto& registry = Scene::getRegistry(object);
     return registry.all_of<AnimatorBinding<P>>(object.entity);

@@ -12,9 +12,9 @@
 SPT_EXTERN_C_BEGIN
 
 typedef enum {
-    SPTObjectPropertyPositionX,
-    SPTObjectPropertyPositionY,
-    SPTObjectPropertyPositionZ,
-} __attribute__((enum_extensibility(open))) SPTObjectProperty;
+    SPTAnimatableObjectPropertyPositionX,
+    SPTAnimatableObjectPropertyPositionY,
+    SPTAnimatableObjectPropertyPositionZ,
+} __attribute__((enum_extensibility(open))) SPTAnimatableObjectProperty;
 
 SPT_EXTERN_C_END
