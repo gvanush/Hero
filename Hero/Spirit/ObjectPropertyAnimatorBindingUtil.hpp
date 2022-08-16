@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "ObjectProperty.hpp"
-#include "AnimatorBindingObserverUtil.hpp"
+#include "ObjectPropertyAnimatorBinding.hpp"
+#include "ObjectPropertyAnimatorBindingObserverUtil.hpp"
 #include "Scene.hpp"
 
 namespace spt {

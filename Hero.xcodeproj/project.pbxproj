@@ -88,7 +88,7 @@
 		B75FA57D27918064001EC7C5 /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75FA57B27918064001EC7C5 /* Generator.cpp */; };
 		B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */; };
 		B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */; };
-		B76D4FC228AA25B60029E47B /* ObjectProperty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectProperty.cpp */; };
+		B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -237,7 +237,6 @@
 		B753027227D3712800886134 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
 		B757DB6B28A3C17100BB5DB4 /* EditAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
 		B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatorBinding.cpp; sourceTree = "<group>"; };
-		B757DB6E28A3E37500BB5DB4 /* AnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBinding.hpp; sourceTree = "<group>"; };
 		B757DB7028A3E38B00BB5DB4 /* AnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorBinding.h; sourceTree = "<group>"; };
 		B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAnimatorBindingUtil.swift; sourceTree = "<group>"; };
 		B757DB7528A80F0B00BB5DB4 /* AnimatorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorSelector.swift; sourceTree = "<group>"; };
@@ -257,11 +256,12 @@
 		B75FA57F2791A1D1001EC7C5 /* MeshView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MeshView.hpp; sourceTree = "<group>"; };
 		B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
 		B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateObjectSelector.swift; sourceTree = "<group>"; };
-		B76D4FC028AA25B60029E47B /* ObjectProperty.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectProperty.cpp; sourceTree = "<group>"; };
-		B76D4FC128AA25B60029E47B /* ObjectProperty.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectProperty.hpp; sourceTree = "<group>"; };
-		B76D4FC328AA25C50029E47B /* ObjectProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectProperty.h; sourceTree = "<group>"; };
-		B76D4FC428AADEE30029E47B /* AnimatorBindingObserverUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBindingObserverUtil.hpp; sourceTree = "<group>"; };
-		B76D4FC528AAE06D0029E47B /* AnimatorBindingUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBindingUtil.hpp; sourceTree = "<group>"; };
+		B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPropertyAnimatorBinding.cpp; sourceTree = "<group>"; };
+		B76D4FC128AA25B60029E47B /* ObjectPropertyAnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBinding.hpp; sourceTree = "<group>"; };
+		B76D4FC328AA25C50029E47B /* ObjectPropertyAnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectPropertyAnimatorBinding.h; sourceTree = "<group>"; };
+		B76D4FC428AADEE30029E47B /* ObjectPropertyAnimatorBindingObserverUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBindingObserverUtil.hpp; sourceTree = "<group>"; };
+		B76D4FC528AAE06D0029E47B /* ObjectPropertyAnimatorBindingUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBindingUtil.hpp; sourceTree = "<group>"; };
+		B76D4FC628AB6E340029E47B /* ObjectProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectProperty.h; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -494,7 +494,6 @@
 				B742447A2899366200A09808 /* AnimatorSource.cpp */,
 				B742447B2899366200A09808 /* AnimatorSource.h */,
 				B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */,
-				B757DB6E28A3E37500BB5DB4 /* AnimatorBinding.hpp */,
 				B757DB7028A3E38B00BB5DB4 /* AnimatorBinding.h */,
 			);
 			name = Animator;
@@ -586,11 +585,12 @@
 		B76D4FBF28AA24AF0029E47B /* ObjectProperty */ = {
 			isa = PBXGroup;
 			children = (
-				B76D4FC028AA25B60029E47B /* ObjectProperty.cpp */,
-				B76D4FC128AA25B60029E47B /* ObjectProperty.hpp */,
-				B76D4FC328AA25C50029E47B /* ObjectProperty.h */,
-				B76D4FC428AADEE30029E47B /* AnimatorBindingObserverUtil.hpp */,
-				B76D4FC528AAE06D0029E47B /* AnimatorBindingUtil.hpp */,
+				B76D4FC628AB6E340029E47B /* ObjectProperty.h */,
+				B76D4FC328AA25C50029E47B /* ObjectPropertyAnimatorBinding.h */,
+				B76D4FC128AA25B60029E47B /* ObjectPropertyAnimatorBinding.hpp */,
+				B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */,
+				B76D4FC528AAE06D0029E47B /* ObjectPropertyAnimatorBindingUtil.hpp */,
+				B76D4FC428AADEE30029E47B /* ObjectPropertyAnimatorBindingObserverUtil.hpp */,
 			);
 			name = ObjectProperty;
 			sourceTree = "<group>";
@@ -869,7 +869,7 @@
 				B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */,
 				B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
-				B76D4FC228AA25B60029E47B /* ObjectProperty.cpp in Sources */,
+				B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */,
 				B7BCB11E27D75A6A00F5AFB1 /* SPTSubscription.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,

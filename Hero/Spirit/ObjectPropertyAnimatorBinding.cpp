@@ -5,11 +5,11 @@
 //  Created by Vanush Grigoryan on 15.08.22.
 //
 
-#include "ObjectProperty.h"
-#include "ObjectProperty.hpp"
+#include "ObjectPropertyAnimatorBinding.h"
+#include "ObjectPropertyAnimatorBinding.h"
 #include "Scene.hpp"
-#include "AnimatorBindingUtil.hpp"
-#include "AnimatorBindingObserverUtil.hpp"
+#include "ObjectPropertyAnimatorBindingUtil.hpp"
+#include "ObjectPropertyAnimatorBindingObserverUtil.hpp"
 
 
 void SPTObjectPropertyBindAnimator(SPTObjectProperty property, SPTObject object, SPTAnimatorBinding animatorBinding) {

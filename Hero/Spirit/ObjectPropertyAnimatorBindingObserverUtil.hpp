@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "ObjectProperty.hpp"
+#include "ObjectPropertyAnimatorBinding.hpp"
 #include "ComponentObserverUtil.hpp"
 
 

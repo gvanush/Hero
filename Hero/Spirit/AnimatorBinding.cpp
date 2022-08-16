@@ -6,7 +6,6 @@
 //
 
 #include "AnimatorBinding.h"
-#include "AnimatorBinding.hpp"
 #include "Scene.hpp"
 #include "ComponentObserverUtil.hpp"
 
