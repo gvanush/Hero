@@ -88,6 +88,7 @@
 		B75FA57D27918064001EC7C5 /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B75FA57B27918064001EC7C5 /* Generator.cpp */; };
 		B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */; };
 		B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */; };
+		B76D4FC228AA25B60029E47B /* ObjectProperty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectProperty.cpp */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -256,6 +257,11 @@
 		B75FA57F2791A1D1001EC7C5 /* MeshView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MeshView.hpp; sourceTree = "<group>"; };
 		B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
 		B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateObjectSelector.swift; sourceTree = "<group>"; };
+		B76D4FC028AA25B60029E47B /* ObjectProperty.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectProperty.cpp; sourceTree = "<group>"; };
+		B76D4FC128AA25B60029E47B /* ObjectProperty.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectProperty.hpp; sourceTree = "<group>"; };
+		B76D4FC328AA25C50029E47B /* ObjectProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectProperty.h; sourceTree = "<group>"; };
+		B76D4FC428AADEE30029E47B /* AnimatorBindingObserverUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBindingObserverUtil.hpp; sourceTree = "<group>"; };
+		B76D4FC528AAE06D0029E47B /* AnimatorBindingUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBindingUtil.hpp; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -323,18 +329,18 @@
 		B7104BBB2729261300582DCA /* Spirit */ = {
 			isa = PBXGroup;
 			children = (
-				B7217600274F6B7D0047016B /* GHI */,
 				B7E481C82741837D003DA5B1 /* Transformation */,
 				B7E481CC2742306A003DA5B1 /* Camera */,
-				B73245BB274147F300708909 /* View */,
 				B75FA57A279175BC001EC7C5 /* Generator */,
+				B76D4FBF28AA24AF0029E47B /* ObjectProperty */,
+				B73A70062885256A0043F9FF /* Animator */,
 				B7E481C227414867003DA5B1 /* Scene */,
 				B7E481C42741498F003DA5B1 /* Rendering */,
 				B723584A2757745A00337547 /* Ray Casting */,
-				B73A70062885256A0043F9FF /* Animator */,
 				B7E481DB274777CF003DA5B1 /* Resource Management */,
 				B7E481C627414A8F003DA5B1 /* Foundation */,
 				B7BCB11527D4D3B300F5AFB1 /* Metadata */,
+				B7217600274F6B7D0047016B /* GHI */,
 				B73E47E427CFCD2400CB0AFC /* Apple */,
 			);
 			path = Spirit;
@@ -464,16 +470,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B73245BB274147F300708909 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				B7791D522726762100E0C934 /* SPTView.swift */,
-				B73245B12741188500708909 /* SPTViewController.h */,
-				B73245B22741188500708909 /* SPTViewController.mm */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
 		B73A700128840CBE0043F9FF /* Animator */ = {
 			isa = PBXGroup;
 			children = (
@@ -520,6 +516,9 @@
 				B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */,
 				B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */,
 				B757DB7928A8D1F200BB5DB4 /* SPTComponent.swift */,
+				B7791D522726762100E0C934 /* SPTView.swift */,
+				B73245B12741188500708909 /* SPTViewController.h */,
+				B73245B22741188500708909 /* SPTViewController.mm */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -582,6 +581,18 @@
 				B73E47E227CFC55D00CB0AFC /* Arrangement.h */,
 			);
 			name = Generator;
+			sourceTree = "<group>";
+		};
+		B76D4FBF28AA24AF0029E47B /* ObjectProperty */ = {
+			isa = PBXGroup;
+			children = (
+				B76D4FC028AA25B60029E47B /* ObjectProperty.cpp */,
+				B76D4FC128AA25B60029E47B /* ObjectProperty.hpp */,
+				B76D4FC328AA25C50029E47B /* ObjectProperty.h */,
+				B76D4FC428AADEE30029E47B /* AnimatorBindingObserverUtil.hpp */,
+				B76D4FC528AAE06D0029E47B /* AnimatorBindingUtil.hpp */,
+			);
+			name = ObjectProperty;
 			sourceTree = "<group>";
 		};
 		B7791D1527258F7500E0C934 /* Hero */ = {
@@ -858,6 +869,7 @@
 				B75FA585279322E2001EC7C5 /* TemplateObjectSelector.swift in Sources */,
 				B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
+				B76D4FC228AA25B60029E47B /* ObjectProperty.cpp in Sources */,
 				B7BCB11E27D75A6A00F5AFB1 /* SPTSubscription.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,

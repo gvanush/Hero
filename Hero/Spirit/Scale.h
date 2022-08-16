@@ -33,15 +33,15 @@ const SPTScale* _Nullable SPTScaleTryGet(SPTObject object);
 bool SPTScaleExists(SPTObject object);
 
 typedef void (* _Nonnull SPTScaleWillChangeObserver) (SPTScale, SPTComponentObserverUserInfo);
-SPTComponentObserverToken SPTScaleAddWillChangeObserver(SPTObject object, SPTScaleWillChangeObserver observer, SPTComponentObserverUserInfo userInfo);
-void SPTScaleRemoveWillChangeObserver(SPTObject object, SPTComponentObserverToken token);
+SPTObserverToken SPTScaleAddWillChangeObserver(SPTObject object, SPTScaleWillChangeObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTScaleRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTScaleWillEmergeObserver) (SPTScale, SPTComponentObserverUserInfo);
-SPTComponentObserverToken SPTScaleAddWillEmergeObserver(SPTObject object, SPTScaleWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo);
-void SPTScaleRemoveWillEmergeObserver(SPTObject object, SPTComponentObserverToken token);
+SPTObserverToken SPTScaleAddWillEmergeObserver(SPTObject object, SPTScaleWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTScaleRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTScaleWillPerishObserver) (SPTComponentObserverUserInfo);
-SPTComponentObserverToken SPTScaleAddWillPerishObserver(SPTObject object, SPTScaleWillPerishObserver observer, SPTComponentObserverUserInfo userInfo);
-void SPTScaleRemoveWillPerishObserver(SPTObject object, SPTComponentObserverToken token);
+SPTObserverToken SPTScaleAddWillPerishObserver(SPTObject object, SPTScaleWillPerishObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTScaleRemoveWillPerishObserver(SPTObject object, SPTObserverToken token);
 
 SPT_EXTERN_C_END

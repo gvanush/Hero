@@ -86,7 +86,7 @@ bool SPTGeneratorEqual(SPTGenerator lhs, SPTGenerator rhs) {
 void SPTGeneratorMake(SPTObject object, SPTGenerator base) {
     assert(base.quantity >= kSPTGeneratorMinQuantity && base.quantity <= kSPTGeneratorMaxQuantity);
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyWillEmergeComponentObservers(registry, object.entity, base);
+    spt::notifyComponentWillEmergeObservers(registry, object.entity, base);
     
     auto& generator = registry.emplace<spt::Generator>(object.entity, base);
     
@@ -100,7 +100,7 @@ SPTGenerator SPTGeneratorGet(SPTObject object) {
 void SPTGeneratorUpdate(SPTObject object, SPTGenerator newGenerator) {
     
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyWillChangeComponentObservers(registry, object.entity, newGenerator);
+    spt::notifyComponentWillChangeObservers(registry, object.entity, newGenerator);
     
     auto& generator = registry.get<spt::Generator>(object.entity);
     
@@ -137,7 +137,7 @@ void SPTGeneratorUpdate(SPTObject object, SPTGenerator newGenerator) {
 
 void SPTGeneratorDestroy(SPTObject object) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyWillPerishComponentObservers<SPTPosition>(registry, object.entity);
+    spt::notifyComponentWillPerishObservers<SPTPosition>(registry, object.entity);
     registry.erase<SPTGenerator>(object.entity);
 }
 
@@ -150,26 +150,26 @@ bool SPTGeneratorExists(SPTObject object) {
     return registry.all_of<SPTGenerator>(object.entity);
 }
 
-SPTComponentObserverToken SPTGeneratorAddWillChangeObserver(SPTObject object, SPTGeneratorWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTGeneratorAddWillChangeObserver(SPTObject object, SPTGeneratorWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
     return spt::addComponentWillChangeObserver<SPTGenerator>(object, observer, userInfo);
 }
 
-void SPTGeneratorRemoveWillChangeObserver(SPTObject object, SPTComponentObserverToken token) {
+void SPTGeneratorRemoveWillChangeObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillChangeObserver<SPTGenerator>(object, token);
 }
 
-SPTComponentObserverToken SPTGeneratorAddWillEmergeObserver(SPTObject object, SPTGeneratorWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTGeneratorAddWillEmergeObserver(SPTObject object, SPTGeneratorWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
     return spt::addComponentWillEmergeObserver<SPTGenerator>(object, observer, userInfo);
 }
 
-void SPTGeneratorRemoveWillEmergeObserver(SPTObject object, SPTComponentObserverToken token) {
+void SPTGeneratorRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillEmergeObserver<SPTGenerator>(object, token);
 }
 
-SPTComponentObserverToken SPTGeneratorAddWillPerishObserver(SPTObject object, SPTGeneratorWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTGeneratorAddWillPerishObserver(SPTObject object, SPTGeneratorWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
     return spt::addComponentWillPerishObserver<SPTGenerator>(object, observer, userInfo);
 }
 
-void SPTGeneratorRemoveWillPerishObserver(SPTObject object, SPTComponentObserverToken token) {
+void SPTGeneratorRemoveWillPerishObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillPerishObserver<SPTGenerator>(object, token);
 }

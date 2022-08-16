@@ -34,16 +34,15 @@ const SPTAnimatorBinding* _Nullable SPTAnimatorBindingTryGet(SPTObject object);
 bool SPTAnimatorBindingExists(SPTObject object);
 
 typedef void (* _Nonnull SPTAnimatorBindingWillChangeObserver) (SPTAnimatorBinding, SPTComponentObserverUserInfo);
-SPTComponentObserverToken SPTAnimatorBindingAddWillChangeObserver(SPTObject object, SPTAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo);
-void SPTAnimatorBindingRemoveWillChangeObserver(SPTObject object, SPTComponentObserverToken token);
+SPTObserverToken SPTAnimatorBindingAddWillChangeObserver(SPTObject object, SPTAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTAnimatorBindingRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTAnimatorBindingWillEmergeObserver) (SPTAnimatorBinding, SPTComponentObserverUserInfo);
-SPTComponentObserverToken SPTAnimatorBindingAddWillEmergeObserver(SPTObject object, SPTAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo);
-void SPTAnimatorBindingRemoveWillEmergeObserver(SPTObject object, SPTComponentObserverToken token);
+SPTObserverToken SPTAnimatorBindingAddWillEmergeObserver(SPTObject object, SPTAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTAnimatorBindingRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTAnimatorBindingWillPerishObserver) (SPTComponentObserverUserInfo);
-SPTComponentObserverToken SPTAnimatorBindingAddWillPerishObserver(SPTObject object, SPTAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo);
-void SPTAnimatorBindingRemoveWillPerishObserver(SPTObject object, SPTComponentObserverToken token);
-
+SPTObserverToken SPTAnimatorBindingAddWillPerishObserver(SPTObject object, SPTAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo);
+void SPTAnimatorBindingRemoveWillPerishObserver(SPTObject object, SPTObserverToken token);
 
 SPT_EXTERN_C_END

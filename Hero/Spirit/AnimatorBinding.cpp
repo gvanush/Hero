@@ -17,19 +17,19 @@ bool SPTAnimatorBindingEqual(SPTAnimatorBinding lhs, SPTAnimatorBinding rhs) {
 
 void SPTAnimatorBindingMake(SPTObject object, SPTAnimatorBinding animatorBinding) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyWillEmergeComponentObservers(registry, object.entity, animatorBinding);
+    spt::notifyComponentWillEmergeObservers(registry, object.entity, animatorBinding);
     registry.emplace<SPTAnimatorBinding>(object.entity, animatorBinding);
 }
 
 void SPTAnimatorBindingUpdate(SPTObject object, SPTAnimatorBinding animatorBinding) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyWillChangeComponentObservers(registry, object.entity, animatorBinding);
+    spt::notifyComponentWillChangeObservers(registry, object.entity, animatorBinding);
     registry.get<SPTAnimatorBinding>(object.entity) = animatorBinding;
 }
 
 void SPTAnimatorBindingDestroy(SPTObject object) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyWillPerishComponentObservers<SPTAnimatorBinding>(registry, object.entity);
+    spt::notifyComponentWillPerishObservers<SPTAnimatorBinding>(registry, object.entity);
     registry.erase<SPTAnimatorBinding>(object.entity);
 }
 
@@ -46,26 +46,26 @@ bool SPTAnimatorBindingExists(SPTObject object) {
     return registry.all_of<SPTAnimatorBinding>(object.entity);
 }
 
-SPTComponentObserverToken SPTAnimatorBindingAddWillChangeObserver(SPTObject object, SPTAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTAnimatorBindingAddWillChangeObserver(SPTObject object, SPTAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
     return spt::addComponentWillChangeObserver<SPTAnimatorBinding>(object, observer, userInfo);
 }
 
-void SPTAnimatorBindingRemoveWillChangeObserver(SPTObject object, SPTComponentObserverToken token) {
+void SPTAnimatorBindingRemoveWillChangeObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillChangeObserver<SPTAnimatorBinding>(object, token);
 }
 
-SPTComponentObserverToken SPTAnimatorBindingAddWillEmergeObserver(SPTObject object, SPTAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTAnimatorBindingAddWillEmergeObserver(SPTObject object, SPTAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
     return spt::addComponentWillEmergeObserver<SPTAnimatorBinding>(object, observer, userInfo);
 }
 
-void SPTAnimatorBindingRemoveWillEmergeObserver(SPTObject object, SPTComponentObserverToken token) {
+void SPTAnimatorBindingRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillEmergeObserver<SPTAnimatorBinding>(object, token);
 }
 
-SPTComponentObserverToken SPTAnimatorBindingAddWillPerishObserver(SPTObject object, SPTAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTAnimatorBindingAddWillPerishObserver(SPTObject object, SPTAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
     return spt::addComponentWillPerishObserver<SPTAnimatorBinding>(object, observer, userInfo);
 }
 
-void SPTAnimatorBindingRemoveWillPerishObserver(SPTObject object, SPTComponentObserverToken token) {
+void SPTAnimatorBindingRemoveWillPerishObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillPerishObserver<SPTAnimatorBinding>(object, token);
 }
