@@ -18,6 +18,8 @@
 #import "Animator.h"
 #import "AnimatorBinding.h"
 #import "Generator.h"
+#import "ObjectProperty.h"
+#import "ObjectPropertyAnimatorBinding.h"
 #import "RayCast.h"
 #import "Metadata.h"
 #import "Base.h"

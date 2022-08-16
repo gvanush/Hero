@@ -96,7 +96,7 @@ bool SPTObjectPropertyIsAnimatorBound(SPTObjectProperty property, SPTObject obje
     }
 }
 
-SPTObserverToken SPTObjectPropertyAnimatorBindingAddWillChangeObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
     switch (property) {
         case SPTObjectPropertyPositionX: {
             return spt::addAnimatorBindingWillChangeObserver<SPTObjectPropertyPositionX>(object, observer, userInfo);
@@ -110,7 +110,7 @@ SPTObserverToken SPTObjectPropertyAnimatorBindingAddWillChangeObserver(SPTObject
     }
 }
 
-void SPTObjectPropertyAnimatorBindingRemoveWillChangeObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
+void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
         case SPTObjectPropertyPositionX: {
             return spt::removeAnimatorBindingWillChangeObserver<SPTObjectPropertyPositionX>(object, token);
@@ -124,7 +124,7 @@ void SPTObjectPropertyAnimatorBindingRemoveWillChangeObserver(SPTObjectProperty 
     }
 }
 
-SPTObserverToken SPTObjectPropertyAnimatorBindingAddWillEmergeObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
     switch (property) {
         case SPTObjectPropertyPositionX: {
             return spt::addAnimatorBindingWillEmergeObserver<SPTObjectPropertyPositionX>(object, observer, userInfo);
@@ -138,7 +138,7 @@ SPTObserverToken SPTObjectPropertyAnimatorBindingAddWillEmergeObserver(SPTObject
     }
 }
 
-void SPTObjectPropertyAnimatorBindingRemoveWillEmergeObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
+void SPTObjectPropertyRemoveAnimatorBindingWillEmergeObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
         case SPTObjectPropertyPositionX: {
             return spt::removeAnimatorBindingWillEmergeObserver<SPTObjectPropertyPositionX>(object, token);
@@ -152,7 +152,7 @@ void SPTObjectPropertyAnimatorBindingRemoveWillEmergeObserver(SPTObjectProperty 
     }
 }
 
-SPTObserverToken SPTObjectPropertyAnimatorBindingAddWillPerishObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
     switch (property) {
         case SPTObjectPropertyPositionX: {
             return spt::addAnimatorBindingWillPerishObserver<SPTObjectPropertyPositionX>(object, observer, userInfo);
@@ -166,7 +166,7 @@ SPTObserverToken SPTObjectPropertyAnimatorBindingAddWillPerishObserver(SPTObject
     }
 }
 
-void SPTObjectPropertyAnimatorBindingRemoveWillPerishObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
+void SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(SPTObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
         case SPTObjectPropertyPositionX: {
             return spt::removeAnimatorBindingWillPerishObserver<SPTObjectPropertyPositionX>(object, token);

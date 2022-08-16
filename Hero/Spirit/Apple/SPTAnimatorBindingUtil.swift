@@ -8,6 +8,85 @@
 import Foundation
 
 
+extension SPTObjectProperty {
+    
+    typealias AnimatorBindingWillEmergeCallback = ObjectWillEmergeCallback<SPTAnimatorBinding>
+    typealias AnimatorBindingWillEmergeSubscription = SPTSubscription<AnimatorBindingWillEmergeCallback>
+    
+    typealias AnimatorBindingWillChangeCallback = ObjectWillChangeCallback<SPTAnimatorBinding>
+    typealias AnimatorBindingWillChangeSubscription = SPTSubscription<AnimatorBindingWillChangeCallback>
+    
+    typealias AnimatorBindingWillPerishCallback = ObjectWillPerishCallback
+    typealias AnimatorBindingWillPerishSubscription = SPTSubscription<AnimatorBindingWillPerishCallback>
+    
+    func bindAnimator(object: SPTObject, binding: SPTAnimatorBinding) {
+        SPTObjectPropertyBindAnimator(self, object, binding)
+    }
+    
+    func updateAnimatorBinding(object: SPTObject, binding: SPTAnimatorBinding) {
+        SPTObjectPropertyUpdateAnimatorBinding(self, object, binding)
+    }
+    
+    func unbindAnimator(object: SPTObject) {
+        SPTObjectPropertyUnbindAnimator(self, object)
+    }
+    
+    func getAnimatorBinding(object: SPTObject) -> SPTAnimatorBinding {
+        SPTObjectPropertyGetAnimatorBinding(self, object)
+    }
+    
+    func tryGetAnimatorBinding(object: SPTObject) -> SPTAnimatorBinding? {
+        SPTObjectPropertyTryGetAnimatorBinding(self, object)?.pointee
+    }
+    
+    func isAnimatorBound(object: SPTObject) -> Bool {
+        SPTObjectPropertyIsAnimatorBound(self, object)
+    }
+    
+    func onAnimatorBindingWillEmergeSink(object: SPTObject, callback: @escaping AnimatorBindingWillEmergeCallback) -> SPTAnySubscription {
+        
+        let subscription = AnimatorBindingWillEmergeSubscription(observer: callback)
+        
+        let token = SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(self, object, { newValue, userInfo in
+            let subscription = Unmanaged<AnimatorBindingWillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillEmergeObserver(self, object, token) }
+        
+        return subscription
+    }
+    
+    func onAnimatorBindingWillChangeSink(object: SPTObject, callback: @escaping AnimatorBindingWillEmergeCallback) -> SPTAnySubscription {
+        
+        let subscription = AnimatorBindingWillChangeSubscription(observer: callback)
+        
+        let token = SPTObjectPropertyAddAnimatorBindingWillChangeObserver(self, object, { newValue, userInfo in
+            let subscription = Unmanaged<AnimatorBindingWillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(self, object, token) }
+        
+        return subscription
+    }
+    
+    func onAnimatorBindingWillPerishSink(object: SPTObject, callback: @escaping AnimatorBindingWillPerishCallback) -> SPTAnySubscription {
+        
+        let subscription = AnimatorBindingWillPerishSubscription(observer: callback)
+        
+        let token = SPTObjectPropertyAddAnimatorBindingWillPerishObserver(self, object, { userInfo in
+            let subscription = Unmanaged<AnimatorBindingWillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer()
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(self, object, token) }
+        
+        return subscription
+    }
+    
+}
+
 extension SPTAnimatorBinding: SPTComponent {
     
     public static func == (lhs: SPTAnimatorBinding, rhs: SPTAnimatorBinding) -> Bool {
@@ -55,8 +134,6 @@ extension SPTAnimatorBinding: SPTComponent {
         
         return subscription
     }
-    
-    
     
     static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
         
