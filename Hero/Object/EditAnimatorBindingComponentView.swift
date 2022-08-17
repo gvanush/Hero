@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
-    case valueAt0
-    case valueAt1
+    case valueWhen0
+    case valueWhen1
 }
 
 class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentProperty> where AP: SPTAnimatableProperty {
@@ -21,7 +21,7 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         
         _animatorBinding = SPTObservedOptionalAnimatorBinding(property: animatableProperty, object: object)
         
-        super.init(title: title, selectedProperty: .valueAt0, parent: parent)
+        super.init(title: title, selectedProperty: .valueWhen0, parent: parent)
         
         _animatorBinding.publisher = self.objectWillChange
     }
@@ -67,19 +67,17 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
             LabeledContent("Animator") {
                 if let animator = component.animator {
                     Text(animator.name)
-                    Button {
+                    Button(role: .destructive) {
                         component.unbindAnimator()
                     } label: {
                         Image(systemName: "xmark.circle")
                             .imageScale(.large)
                     }
                 } else {
-                    Image(systemName: "minus")
-                        .foregroundColor(.quaternaryLabel)
                     Button {
                         showsAnimatorSelector = true
                     } label: {
-                        Image(systemName: "circlebadge.2")
+                        Image(systemName: "minus")
                             .imageScale(.large)
                     }
                 }
@@ -87,12 +85,12 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
             }
             
             if let animatorBinding = component.animatorBinding {
-                SceneEditableParam(title: AnimatorBindingComponentProperty.valueAt0.displayName, value: "\(animatorBinding.valueAt0)") {
-                    component.selectedProperty = .valueAt0
+                SceneEditableParam(title: AnimatorBindingComponentProperty.valueWhen0.displayName, value: "\(animatorBinding.valueAt0)") {
+                    component.selectedProperty = .valueWhen0
                     editedComponent = component
                 }
-                SceneEditableParam(title: AnimatorBindingComponentProperty.valueAt1.displayName, value: "\(animatorBinding.valueAt1)") {
-                    component.selectedProperty = .valueAt1
+                SceneEditableParam(title: AnimatorBindingComponentProperty.valueWhen1.displayName, value: "\(animatorBinding.valueAt1)") {
+                    component.selectedProperty = .valueWhen1
                     editedComponent = component
                 }
             }
@@ -115,10 +113,10 @@ struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatablePropert
     var body: some View {
         if let property = component.selectedProperty {
             switch property {
-            case .valueAt0:
+            case .valueWhen0:
                 FloatField(value: $component.valueAt0, scale: $scale)
                     .transition(.identity)
-            case .valueAt1:
+            case .valueWhen1:
                 FloatField(value: $component.valueAt1, scale: $scale)
                     .transition(.identity)
             }
