@@ -9,10 +9,10 @@ import SwiftUI
 
 class PanAnimatorViewModel: ObservableObject {
     
-    @SPTObservedAniamtor var animator: SPTAnimator
+    @SPTObservedAnimator var animator: SPTAnimator
     
     init(animatorId: SPTAnimatorId) {
-        _animator = SPTObservedAniamtor(animatorId: animatorId)
+        _animator = SPTObservedAnimator(animatorId: animatorId)
         _animator.publisher = self.objectWillChange
     }
     

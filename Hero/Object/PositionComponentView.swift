@@ -36,7 +36,7 @@ struct PositionComponentView: View {
             SceneEditableParam(title: component.base.title, value: String(format: "(%.1f, %.1f, %.1f)", component.base.value.x, component.base.value.y, component.base.value.z)) {
                 editedComponent = component.base
             }
-            NavigationLink(PositionAnimatorBindingsView.navigationTitle) {
+            NavigationLink("Animators") {
                 PositionAnimatorBindingsView(component: component.animators, editedComponent: $editedComponent)
             }
         }

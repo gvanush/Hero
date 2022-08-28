@@ -53,7 +53,7 @@ extension SPTAnimator: Identifiable, Equatable {
 
 @propertyWrapper
 @dynamicMemberLookup
-class SPTObservedAniamtor {
+class SPTObservedAnimator {
     
     private let animatorId: SPTAnimatorId
     internal let binding: SPTObjectBinding<SPTAnimator>
@@ -68,7 +68,7 @@ class SPTObservedAniamtor {
         })
         
         SPTAnimatorAddWillChangeListener(animatorId, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
-            let me = Unmanaged<SPTObservedAniamtor>.fromOpaque(listener).takeUnretainedValue()
+            let me = Unmanaged<SPTObservedAnimator>.fromOpaque(listener).takeUnretainedValue()
             me.binding.onWillChange(newValue: newValue)
         })
         

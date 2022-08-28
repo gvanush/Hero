@@ -11,6 +11,15 @@ import SwiftUI
 enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
     case valueWhen0
     case valueWhen1
+    
+    var displayName: String {
+        switch self {
+        case .valueWhen0:
+            return "Value:0"
+        case .valueWhen1:
+            return "Value:1"
+        }
+    }
 }
 
 class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentProperty> where AP: SPTAnimatableProperty {
@@ -73,6 +82,9 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
                         Image(systemName: "xmark.circle")
                             .imageScale(.large)
                     }
+                    // NOTE: This is necessary for an unknown reason to prevent 'Form' row
+                    // from being selectable when there is a button inside.
+                    .buttonStyle(BorderlessButtonStyle())
                 } else {
                     Button {
                         showsAnimatorSelector = true

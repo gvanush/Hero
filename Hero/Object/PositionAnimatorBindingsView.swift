@@ -10,8 +10,6 @@ import SwiftUI
 
 class PositionAnimatorBindingsComponent: Component {
     
-    static let title = "Animators"
-    
     let object: SPTObject
     lazy private(set) var x = AnimatorBindingComponent(animatableProperty: SPTAnimatableObjectProperty.positionX, title: "X", object: self.object, parent: self)
     lazy private(set) var y = AnimatorBindingComponent(animatableProperty: SPTAnimatableObjectProperty.positionY, title: "Y", object: self.object, parent: self)
@@ -19,7 +17,7 @@ class PositionAnimatorBindingsComponent: Component {
     
     init(object: SPTObject, parent: Component?) {
         self.object = object
-        super.init(title: Self.title, parent: parent)
+        super.init(title: "Animators", parent: parent)
     }
     
     override var subcomponents: [Component]? { [x, y, z] }
@@ -31,8 +29,6 @@ struct PositionAnimatorBindingsView: View {
     
     @ObservedObject var component: PositionAnimatorBindingsComponent
     @Binding var editedComponent: Component?
-    
-    static let navigationTitle = "Animators"
     
     var body: some View {
         Form {
@@ -46,6 +42,6 @@ struct PositionAnimatorBindingsView: View {
                 AnimatorBindingComponentView(component: component.z, editedComponent: $editedComponent)
             }
         }
-        .navigationTitle(Self.navigationTitle)
+        .navigationTitle("Position Animators")
     }
 }

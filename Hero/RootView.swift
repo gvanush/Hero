@@ -96,6 +96,7 @@ struct RootView: View {
                     .imageScale(.large)
             }
             .cornerRadius(5.0)
+            .containerShape(Rectangle())
         }
     }
     
