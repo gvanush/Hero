@@ -77,26 +77,25 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
     var body: some View {
         Group {
             LabeledContent("Animator") {
-                if let animator = component.animator {
-                    Text(animator.name)
-                    Button(role: .destructive) {
-                        component.unbindAnimator()
+                Group {
+                    if let animator = component.animator {
+                        Text(animator.name)
+                    }
+                    Button(role: (component.animator == nil ? nil : .destructive)) {
+                        if component.animator == nil {
+                            showsAnimatorSelector = true
+                        } else {
+                            component.unbindAnimator()
+                        }
                     } label: {
-                        Image(systemName: "xmark.circle")
+                        Image(systemName: component.animator == nil ? "minus" : "xmark.circle")
                             .imageScale(.large)
                     }
                     // NOTE: This is necessary for an unknown reason to prevent 'Form' row
                     // from being selectable when there is a button inside.
                     .buttonStyle(BorderlessButtonStyle())
-                } else {
-                    Button {
-                        showsAnimatorSelector = true
-                    } label: {
-                        Image(systemName: "minus")
-                            .imageScale(.large)
-                    }
+
                 }
-                
             }
             
             if let animatorBinding = component.animatorBinding {

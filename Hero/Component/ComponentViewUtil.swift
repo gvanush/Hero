@@ -33,7 +33,7 @@ struct SceneEditableParam: View {
                     .foregroundColor(.secondary)
             }
             Button(action: editAction) {
-                Image(systemName: "slider.horizontal.3")
+                Image(systemName: "slider.horizontal.below.rectangle")
                     .imageScale(.large)
             }
         }
