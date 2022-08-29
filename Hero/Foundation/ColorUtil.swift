@@ -28,7 +28,9 @@ extension Color {
     
     static let disabledControl = Color(hue: 240.0 / 360.0, saturation: 10.0 / 100.0, brightness: 26.0 / 100.0, opacity: 30.0 / 100.0)
  
-    static let controlValueColor = Color("ControlValueColor")
+    static let controlValue = Color("ControlValueColor")
     
     static let gestureSignalArea = Color.accentColor.opacity(0.3)
+    
+    static let lightAccentColor = Color.accentColor.opacity(0.65)
 }

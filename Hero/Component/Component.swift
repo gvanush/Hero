@@ -27,8 +27,14 @@ class Component: Identifiable, ObservableObject {
     }
     var subcomponents: [Component]? { nil }
     
+    var isSetup: Bool { true }
+    
     func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
         nil
+    }
+    
+    func accept(_ provider: ComponentSetupViewProvider, onComplete: @escaping () -> Void) -> AnyView {
+        fatalError("This method must be overridden in sub components that can have 'isSetup' false")
     }
     
 }

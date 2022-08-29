@@ -164,7 +164,7 @@ struct FloatSelector: View {
         return HStack {
             Spacer()
             valueText()
-                .foregroundColor(.controlValueColor)
+                .foregroundColor(.controlValue)
             Spacer()
         }
     }
@@ -172,7 +172,7 @@ struct FloatSelector: View {
     var pointer: some View {
         VStack {
             Spacer()
-            Color.controlValueColor
+            Color.controlValue
                 .frame(width: Self.pointerWidth, height: Ruler.onesHeight * 2)
                 .shadow(radius: 1.0)
         }

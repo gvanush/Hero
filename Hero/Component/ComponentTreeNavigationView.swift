@@ -14,15 +14,17 @@ struct ComponentTreeNavigationView: View {
 
     let rootComponent: Component
     @Binding var activeComponent: Component
+    let setupViewProvider: ComponentSetupViewProvider
+    @State private var inSetupComponent: Component?
     
     var body: some View {
         VStack(spacing: 8.0) {
-            ComponentView(component: rootComponent, activeComponent: $activeComponent)
-                .padding(4.0)
+            ComponentView(component: rootComponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
+                .padding(3.0)
                 .overlay {
                     RoundedRectangle(cornerRadius: .infinity)
                         .stroke(Color.secondaryLabel, lineWidth: 1.0)
-                        .shadow(radius: 1.0)
+                        .shadow(radius: 0.5)
                 }
                 .frame(height: Self.componentViewHeight)
             
@@ -45,6 +47,14 @@ struct ComponentTreeNavigationView: View {
         .background(Material.bar)
         .compositingGroup()
         .shadow(radius: 0.5)
+        .sheet(item: $inSetupComponent) { component in
+            component.accept(setupViewProvider) {
+                if component.isSetup {
+                    activeComponent = component
+                }
+                inSetupComponent = nil
+            }
+        }
         
     }
     
@@ -93,6 +103,8 @@ fileprivate struct ComponentView: View {
     
     @ObservedObject var component: Component
     @Binding var activeComponent: Component
+    @Binding var inSetupComponent: Component?
+    
     @Namespace private var matchedGeometryEffectNamespace
     
     
@@ -102,16 +114,20 @@ fileprivate struct ComponentView: View {
                 .overlay {
                     VStack {
                         Spacer()
-                        Image(systemName: "ellipsis")
-                            .foregroundColor(.accentColor)
+                        Image(systemName: component.isSetup ? "ellipsis" : "minus")
+                            .foregroundColor(component.isSetup ? .accentColor : .lightAccentColor)
                     }
-                    .padding(.bottom, 2.0)
+                    .padding(.bottom, component.isSetup ? 1.0 : 2.0)
                 }
                 .scaleEffect(textScale)
                 .visible(isChildOfActive)
                 .onTapGesture {
                     withAnimation(navigationAnimation) {
-                        activeComponent = component
+                        if component.isSetup {
+                            activeComponent = component
+                        } else {
+                            inSetupComponent = component
+                        }
                     }
                 }
                 .allowsHitTesting(isChildOfActive)
@@ -124,7 +140,7 @@ fileprivate struct ComponentView: View {
                 
                 if let subcomponents = component.subcomponents {
                     ForEach(subcomponents) { subcomponent in
-                        ComponentView(component: subcomponent, activeComponent: $activeComponent)
+                        ComponentView(component: subcomponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                     }
                 }
                 
@@ -228,7 +244,7 @@ struct ComponentTreeNavigationView_Previews: PreviewProvider {
         }
         
         var body: some View {
-            ComponentTreeNavigationView(rootComponent: transformation, activeComponent: $active)
+            ComponentTreeNavigationView(rootComponent: transformation, activeComponent: $active, setupViewProvider: CommonComponentSetupViewProvider())
         }
     }
     

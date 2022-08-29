@@ -16,6 +16,7 @@ struct EditGeneratorView: View {
     @Environment(\.presentationMode) private var presentationMode
     
     static let editComponentViewProvider = GeneratorComponentActionViewProvider()
+    static let setupViewProvider = CommonComponentSetupViewProvider()
     
     init(activeComponent: Component) {
         _activeComponent = State<Component>(initialValue: activeComponent)
@@ -32,7 +33,7 @@ struct EditGeneratorView: View {
                         Spacer()
                         activeComponent.accept(Self.editComponentViewProvider)
                             .padding(.horizontal, 8.0)
-                        ComponentTreeNavigationView(rootComponent: generatorComponent, activeComponent: $activeComponent)
+                        ComponentTreeNavigationView(rootComponent: generatorComponent, activeComponent: $activeComponent, setupViewProvider: Self.setupViewProvider)
                     }
                     .visible(!isNavigating)
                 }

@@ -15,7 +15,7 @@ struct FloatSlider: View {
     var body: some View {
         VStack(spacing: 4.0) {
             Text(String(format: "%.2f", value))
-                .foregroundColor(.controlValueColor)
+                .foregroundColor(.controlValue)
             Slider(value: $value, in: range)
                 .tint(.black)
                 .padding(.horizontal, 8.0)

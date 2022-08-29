@@ -68,7 +68,8 @@ struct EditMeshObjectView: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @Environment(\.presentationMode) private var presentationMode
     
-    static let editComponentViewProvider = MeshObjectComponentActionViewProvider()
+    static let actionViewProvider = MeshObjectComponentActionViewProvider()
+    static let setupViewProvider = CommonComponentSetupViewProvider()
     
     init(activeComponent: Component) {
         _activeComponent = State<Component>(initialValue: activeComponent)
@@ -79,13 +80,13 @@ struct EditMeshObjectView: View {
             GeometryReader { geometry in
                 ZStack {
                     SceneView(model: sceneViewModel, uiSafeAreaInsets: geometry.safeAreaInsets.bottomInseted(ComponentTreeNavigationView.height), isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation)) {
-                        activeComponent.accept(Self.editComponentViewProvider)
+                        activeComponent.accept(Self.actionViewProvider)
                     }
                     .selectionEnabled(false)
                     .ignoresSafeArea()
                     VStack {
                         Spacer()
-                        ComponentTreeNavigationView(rootComponent: meshComponent, activeComponent: $activeComponent)
+                        ComponentTreeNavigationView(rootComponent: meshComponent, activeComponent: $activeComponent, setupViewProvider: Self.setupViewProvider)
                             .offset(y: isNavigating ? ComponentTreeNavigationView.height + geometry.safeAreaInsets.bottom : 0.0)
                     }
                 }

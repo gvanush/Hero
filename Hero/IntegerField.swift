@@ -25,7 +25,7 @@ struct IntegerField<T: FixedWidthInteger>: View {
             ZStack {
                 HStack {
                     Text(String(value))
-                        .foregroundColor(.controlValueColor)
+                        .foregroundColor(.controlValue)
                 }
                 if deltaOptions.count > 1 {
                     HStack {

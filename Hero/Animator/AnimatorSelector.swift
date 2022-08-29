@@ -10,8 +10,7 @@ import SwiftUI
 
 struct AnimatorSelector: View {
     
-    let onSelected: (SPTAnimatorId) -> Void
-    @Environment(\.presentationMode) private var presentationMode
+    let onComplete: (SPTAnimatorId?) -> Void
     
     var body: some View {
         NavigationView {
@@ -20,8 +19,7 @@ struct AnimatorSelector: View {
                     Text(animator.name.capitalizingFirstLetter())
                     Spacer()
                     Button("Select") {
-                        onSelected(animator.id)
-                        presentationMode.wrappedValue.dismiss()
+                        onComplete(animator.id)
                     }
                 }
             }
@@ -30,7 +28,7 @@ struct AnimatorSelector: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
+                        onComplete(nil)
                     }
                 }
             }

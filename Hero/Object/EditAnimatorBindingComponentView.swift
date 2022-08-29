@@ -61,8 +61,16 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         animatorBinding = nil
     }
     
+    override var isSetup: Bool {
+        animatorBinding != nil
+    }
+    
     override func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
         provider.viewFor(self)
+    }
+    
+    override func accept(_ provider: ComponentSetupViewProvider, onComplete: @escaping () -> Void) -> AnyView {
+        provider.viewFor(self, onComplete: onComplete)
     }
     
 }
@@ -81,11 +89,11 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
                     if let animator = component.animator {
                         Text(animator.name)
                     }
-                    Button(role: (component.animator == nil ? nil : .destructive)) {
-                        if component.animator == nil {
-                            showsAnimatorSelector = true
-                        } else {
+                    Button(role: (component.isSetup ? .destructive : nil)) {
+                        if component.isSetup {
                             component.unbindAnimator()
+                        } else {
+                            showsAnimatorSelector = true
                         }
                     } label: {
                         Image(systemName: component.animator == nil ? "minus" : "xmark.circle")
@@ -94,6 +102,7 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
                     // NOTE: This is necessary for an unknown reason to prevent 'Form' row
                     // from being selectable when there is a button inside.
                     .buttonStyle(BorderlessButtonStyle())
+                    .tint(Color.lightAccentColor)
 
                 }
             }
@@ -111,7 +120,10 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
         }
         .sheet(isPresented: $showsAnimatorSelector) {
             AnimatorSelector { animatorId in
-                component.bindAnimator(id: animatorId)
+                if let animatorId = animatorId {
+                    component.bindAnimator(id: animatorId)
+                }
+                showsAnimatorSelector = false
             }
         }
     }
