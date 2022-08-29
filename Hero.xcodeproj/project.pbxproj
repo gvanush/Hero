@@ -14,10 +14,11 @@
 		B7104BC2272B00B800582DCA /* Selector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC1272B00B700582DCA /* Selector.swift */; };
 		B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC3272B069F00582DCA /* ColorUtil.swift */; };
 		B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */; };
-		B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatField.swift */; };
+		B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatSelector.swift */; };
 		B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */; };
 		B710DB8427BC106D00C57BDF /* SPTObjectBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DB8327BC106D00C57BDF /* SPTObjectBinding.swift */; };
 		B710DB8A27BD8E4000C57BDF /* PropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710DB8927BD8E4000C57BDF /* PropertySelector.swift */; };
+		B712240128BBDFB3006A31B1 /* FloatSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B712240028BBDFB3006A31B1 /* FloatSlider.swift */; };
 		B717634B27A2C7D400CE5195 /* ComponentTreeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717634A27A2C7D400CE5195 /* ComponentTreeNavigationView.swift */; };
 		B717635727ABF25600CE5195 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635627ABF25500CE5195 /* Component.swift */; };
 		B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635827AE836E00CE5195 /* EnumUtil.swift */; };
@@ -140,10 +141,11 @@
 		B7104BC1272B00B700582DCA /* Selector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selector.swift; sourceTree = "<group>"; };
 		B7104BC3272B069F00582DCA /* ColorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtil.swift; sourceTree = "<group>"; };
 		B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingSceneView.swift; sourceTree = "<group>"; };
-		B7104BC7272BBB1F00582DCA /* FloatField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatField.swift; sourceTree = "<group>"; };
+		B7104BC7272BBB1F00582DCA /* FloatSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatSelector.swift; sourceTree = "<group>"; };
 		B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierRoundedRectangle.swift; sourceTree = "<group>"; };
 		B710DB8327BC106D00C57BDF /* SPTObjectBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObjectBinding.swift; sourceTree = "<group>"; };
 		B710DB8927BD8E4000C57BDF /* PropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySelector.swift; sourceTree = "<group>"; };
+		B712240028BBDFB3006A31B1 /* FloatSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatSlider.swift; sourceTree = "<group>"; };
 		B715B23924D28B0F00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23B24D28B4E00B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B715B23E24D28E2200B4C859 /* libAppleCppAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAppleCppAPI.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -613,7 +615,8 @@
 				B7791D242725F45F00E0C934 /* TransformView.swift */,
 				B75FA56A278ACD7D001EC7C5 /* RootView.swift */,
 				B7104BC1272B00B700582DCA /* Selector.swift */,
-				B7104BC7272BBB1F00582DCA /* FloatField.swift */,
+				B7104BC7272BBB1F00582DCA /* FloatSelector.swift */,
+				B712240028BBDFB3006A31B1 /* FloatSlider.swift */,
 				B717636327B1A7F500CE5195 /* IntegerField.swift */,
 				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
 				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
@@ -849,6 +852,7 @@
 				B76D4FCA28AC0E1B0029E47B /* SPTObjectPropertyUtil.swift in Sources */,
 				B7235862276F2BEC00337547 /* OutlineView.cpp in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
+				B712240128BBDFB3006A31B1 /* FloatSlider.swift in Sources */,
 				B7235851275D34D000337547 /* Polyline.cpp in Sources */,
 				B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */,
 				B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */,
@@ -942,7 +946,7 @@
 				B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */,
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
-				B7104BC8272BBB1F00582DCA /* FloatField.swift in Sources */,
+				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
 				B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */,
 				B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,

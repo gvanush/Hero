@@ -55,11 +55,11 @@ struct ScaleComponentView: View {
 struct EditScaleComponentView: View {
     
     @ObservedObject var component: ScaleComponent
-    @State private var scale = FloatField.Scale._0_1
+    @State private var scale = FloatSelector.Scale._0_1
     
     var body: some View {
         if let axis = component.selectedProperty {
-            FloatField(value: $component.value[axis.rawValue], scale: $scale)
+            FloatSelector(value: $component.value[axis.rawValue], scale: $scale)
                 .transition(.identity)
                 .id(axis.rawValue)
         }

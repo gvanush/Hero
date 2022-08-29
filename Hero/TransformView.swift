@@ -12,7 +12,7 @@ struct TransformView: View {
     @ObservedObject var sceneViewModel: SceneViewModel
     @State private var activeTool = Tool.move
     @State private var axes = [Axis](repeating: .x, count: Tool.allCases.count)
-    @State private var scales = [FloatField.Scale._1, FloatField.Scale._10, FloatField.Scale._0_1]
+    @State private var scales = [FloatSelector.Scale._1, FloatSelector.Scale._10, FloatSelector.Scale._0_1]
     @State private var isNavigating = false
     @Environment(\.presentationMode) var presentationMode
     
@@ -60,13 +60,13 @@ struct ObjectControlView: View {
     
     fileprivate let tool: Tool
     @Binding fileprivate var axis: Axis
-    @Binding fileprivate var scale: FloatField.Scale
+    @Binding fileprivate var scale: FloatSelector.Scale
     @ObservedObject fileprivate var model: ObjectControlViewModel
     
     var body: some View {
         VStack(spacing: Self.controlsSpacing) {
             floatField
-                .selectedObjectUI(cornerRadius: FloatField.cornerRadius)
+                .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 .transition(.identity)
                 .id(axis.rawValue)
             Selector(selected: $axis)
@@ -75,19 +75,19 @@ struct ObjectControlView: View {
         .id(model.object.entity.rawValue)
     }
     
-    var floatField: FloatField {
+    var floatField: FloatSelector {
         switch tool {
         case .move:
-            return FloatField(value: $model.position[axis.rawValue], scale: $scale)
+            return FloatSelector(value: $model.position[axis.rawValue], scale: $scale)
         case .orient:
-            return FloatField(value: $model.eulerRotation[axis.rawValue], scale: $scale, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
+            return FloatSelector(value: $model.eulerRotation[axis.rawValue], scale: $scale, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
         case .scale:
-            return FloatField(value: $model.scale[axis.rawValue], scale: $scale)
+            return FloatSelector(value: $model.scale[axis.rawValue], scale: $scale)
         }
     }
     
     static let controlsSpacing = 8.0
-    static let height = controlsSpacing + FloatField.height + SelectorConst.height
+    static let height = controlsSpacing + FloatSelector.height + SelectorConst.height
 }
 
 

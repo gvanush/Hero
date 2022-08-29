@@ -9,15 +9,18 @@ import Foundation
 import SwiftUI
 
 enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
-    case valueWhen0
-    case valueWhen1
+    case valueAt0
+    case valueAt1
+    case animator
     
     var displayName: String {
         switch self {
-        case .valueWhen0:
+        case .valueAt0:
             return "Value:0"
-        case .valueWhen1:
+        case .valueAt1:
             return "Value:1"
+        case .animator:
+            return "Animator"
         }
     }
 }
@@ -30,7 +33,7 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         
         _animatorBinding = SPTObservedOptionalAnimatorBinding(property: animatableProperty, object: object)
         
-        super.init(title: title, selectedProperty: .valueWhen0, parent: parent)
+        super.init(title: title, selectedProperty: .valueAt0, parent: parent)
         
         _animatorBinding.publisher = self.objectWillChange
     }
@@ -97,12 +100,12 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
             }
             
             if let animatorBinding = component.animatorBinding {
-                SceneEditableParam(title: AnimatorBindingComponentProperty.valueWhen0.displayName, value: "\(animatorBinding.valueAt0)") {
-                    component.selectedProperty = .valueWhen0
+                SceneEditableParam(title: AnimatorBindingComponentProperty.valueAt0.displayName, value: String(format: "%.2f", animatorBinding.valueAt0)) {
+                    component.selectedProperty = .valueAt0
                     editedComponent = component
                 }
-                SceneEditableParam(title: AnimatorBindingComponentProperty.valueWhen1.displayName, value: "\(animatorBinding.valueAt1)") {
-                    component.selectedProperty = .valueWhen1
+                SceneEditableParam(title: AnimatorBindingComponentProperty.valueAt1.displayName, value: String(format: "%.2f", animatorBinding.valueAt1)) {
+                    component.selectedProperty = .valueAt1
                     editedComponent = component
                 }
             }
@@ -120,19 +123,22 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
 struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
     
     @ObservedObject var component: AnimatorBindingComponent<AP>
-    @State private var scale = FloatField.Scale._1
+    @State private var scale = FloatSelector.Scale._1
+    @State private var animatorValue: Float = 0.5
     
     var body: some View {
-        if let property = component.selectedProperty {
-            switch property {
-            case .valueWhen0:
-                FloatField(value: $component.valueAt0, scale: $scale)
-                    .transition(.identity)
-            case .valueWhen1:
-                FloatField(value: $component.valueAt1, scale: $scale)
-                    .transition(.identity)
+        Group {
+            if let property = component.selectedProperty {
+                switch property {
+                case .valueAt0:
+                    FloatSelector(value: $component.valueAt0, scale: $scale)
+                case .valueAt1:
+                    FloatSelector(value: $component.valueAt1, scale: $scale)
+                case .animator:
+                    FloatSlider(value: $animatorValue)
+                }
             }
-                
         }
+        .transition(.identity)
     }
 }

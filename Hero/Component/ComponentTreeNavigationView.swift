@@ -16,31 +16,36 @@ struct ComponentTreeNavigationView: View {
     @Binding var activeComponent: Component
     
     var body: some View {
-        VStack(spacing: 0.0) {
+        VStack(spacing: 8.0) {
             ComponentView(component: rootComponent, activeComponent: $activeComponent)
-                .padding(3.0)
-                .frame(maxWidth: .infinity, maxHeight: Self.componentViewHeight)
-                .background(Material.bar)
-                .compositingGroup()
-                .shadow(radius: 0.5)
-            
-            BottomBar()
+                .padding(4.0)
                 .overlay {
-                    HStack {
-                        backButton
-                        
-                        Text(activeComponent.title)
-                            .font(Font.system(size: 15, weight: .semibold))
-                            .lineLimit(1)
-                            .transition(.identity)
-                            .id(activeComponent.title)
-                            .layoutPriority(1.0)
-                            
-                        editComponentButton
-                    }
-                    .padding(.horizontal, 8.0)
+                    RoundedRectangle(cornerRadius: .infinity)
+                        .stroke(Color.secondaryLabel, lineWidth: 1.0)
+                        .shadow(radius: 1.0)
                 }
+                .frame(height: Self.componentViewHeight)
+            
+            HStack {
+                backButton
+                
+                Text(activeComponent.title)
+                    .font(Font.system(size: 15, weight: .semibold))
+                    .lineLimit(1)
+                    .transition(.identity)
+                    .id(activeComponent.title)
+                    .layoutPriority(1.0)
+                    
+                editComponentButton
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .padding(8.0)
+        .frame(maxWidth: .infinity, maxHeight: Self.height)
+        .background(Material.bar)
+        .compositingGroup()
+        .shadow(radius: 0.5)
+        
     }
     
     var backButton: some View {
@@ -62,7 +67,7 @@ struct ComponentTreeNavigationView: View {
                     }
                 }
             } else {
-                HStack() {}
+                HStack {}
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -79,8 +84,8 @@ struct ComponentTreeNavigationView: View {
         .hidden() // TODO
     }
  
-    static let componentViewHeight = 40.0
-    static let height = componentViewHeight + BottomBar.height
+    static let componentViewHeight = 34.0
+    static let height = componentViewHeight + 57.0
 }
 
 

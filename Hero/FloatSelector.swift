@@ -1,5 +1,5 @@
 //
-//  FloatField.swift
+//  FloatSelector.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 29.10.21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FloatField: View {
+struct FloatSelector: View {
     
     enum Scale: Float, CaseIterable, Identifiable {
         case _0_1 = 0.1
@@ -105,8 +105,8 @@ struct FloatField: View {
             .contentShape(Rectangle())
             .gesture(dragGesture())
         }
-        .frame(maxWidth: .infinity, idealHeight: Self.height)
-        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxWidth: .infinity)
+        .frame(height: Self.height)
         .background(Material.thin)
         .cornerRadius(Self.cornerRadius)
         .shadow(radius: 1.0)
@@ -345,11 +345,11 @@ fileprivate struct Ruler: View {
 
 
 fileprivate struct ScalePicker: View {
-    @Binding var scale: FloatField.Scale
+    @Binding var scale: FloatSelector.Scale
     
     var body: some View {
         Picker("", selection: $scale) {
-            ForEach(FloatField.Scale.allCases) { scale in
+            ForEach(FloatSelector.Scale.allCases) { scale in
                 Text(scale.displayText)
             }
         }
@@ -369,7 +369,7 @@ fileprivate struct ScalePicker: View {
 
 struct FloatField_Previews: PreviewProvider {
     static var previews: some View {
-        FloatField(value: .constant(0.0), scale: .constant(._1))
+        FloatSelector(value: .constant(0.0), scale: .constant(._1))
             .padding(8.0)
     }
 }

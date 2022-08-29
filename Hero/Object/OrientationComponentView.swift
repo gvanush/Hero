@@ -55,11 +55,11 @@ struct OrientationComponentView: View {
 struct EditOrientationComponentView: View {
     
     @ObservedObject var component: OrientationComponent
-    @State private var scale = FloatField.Scale._10
+    @State private var scale = FloatSelector.Scale._10
     
     var body: some View {
         if let axis = component.selectedProperty {
-            FloatField(value: $component.value[axis.rawValue], scale: $scale, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
+            FloatSelector(value: $component.value[axis.rawValue], scale: $scale, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
                 .transition(.identity)
                 .id(axis.rawValue)
         }
