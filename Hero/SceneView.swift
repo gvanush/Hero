@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct SceneViewConst {
-    static let zoomViewMaxHeight = 250.0
+    static let zoomViewMaxHeight = 200.0
     static let uiBgrMaterial = Material.thin
     static let uiPadding = 8.0
     static let uiButtonSize = 50.0
@@ -70,29 +70,36 @@ struct SceneView<BV>: View where BV: View {
                     .gesture(isSelectionEnabled ? pickGesture(viewportSize: geometry.size) : nil)
                     .allowsHitTesting(isNavigationEnabled && !isNavigating)
                 
-                VStack(spacing: 0.0) {
-                    if let name = model.selectedObjectMetadata?.name {
-                        Text(name)
-                            .font(.subheadline)
-                            .foregroundColor(.secondaryLabel)
-                            .frame(height: 30)
-                            .padding(.horizontal, 8.0)
-                            .background(SceneViewConst.uiBgrMaterial)
-                            .cornerRadius(9.0)
-                            .selectedObjectUI(cornerRadius: 9.0)
-                            .offset(y: isNavigating ? -uiSteadySafeAreaInsets.top : 0.0)
+                ZStack {
+                    VStack(spacing: 0.0) {
+                        if let name = model.selectedObjectMetadata?.name {
+                            Text(name)
+                                .font(.subheadline)
+                                .foregroundColor(.secondaryLabel)
+                                .frame(height: 30)
+                                .padding(.horizontal, 8.0)
+                                .background(SceneViewConst.uiBgrMaterial)
+                                .cornerRadius(9.0)
+                                .selectedObjectUI(cornerRadius: 9.0)
+                                .offset(y: isNavigating ? -uiSteadySafeAreaInsets.top : 0.0)
+                        }
+                        Spacer()
+                        ZStack(alignment: .bottom) {
+                            Color.clear
+                            bottomView()
+                                .tint(.primary)
+                                .offset(y: isNavigating ? uiSteadySafeAreaInsets.bottom : 0.0)
+                        }
+                        .frame(height: 121.0)
                     }
-                    Spacer()
-                    navigationControls(geometry: geometry)
-                        .padding(.bottom, 108.0)
-                    Spacer()
-                    ZStack(alignment: .bottom) {
-                        Color.clear
-                        bottomView()
-                            .tint(.primary)
-                            .offset(y: isNavigating ? uiSteadySafeAreaInsets.bottom : 0.0)
+                    
+                    VStack {
+                        Spacer()
+                        focusButton()
+                            .padding(.bottom, 280.0 + geometry.safeAreaInsets.bottom - uiSteadySafeAreaInsets.bottom)
                     }
-                    .frame(height: 121.0)
+                    
+                    zoomControl(geometry: geometry)
                 }
                 .padding(SceneViewConst.uiPadding)
                 .padding(uiSteadySafeAreaInsets)
@@ -121,65 +128,66 @@ struct SceneView<BV>: View where BV: View {
         }
     }
     
-    func navigationControls(geometry: GeometryProxy) -> some View {
-        HStack(spacing: 0.0) {
-            VStack {
-                Spacer()
-                focusButton()
-            }
-            
-            Spacer(minLength: 0.0)
-            
+    func zoomControl(geometry: GeometryProxy) -> some View {
+        HStack {
+            Spacer()
             VStack {
                 Spacer()
                 ZoomView()
-                    .frame(maxHeight: min(SceneViewConst.zoomViewMaxHeight, geometry.size.height))
+                    .frame(maxHeight: SceneViewConst.zoomViewMaxHeight)
+                Spacer()
             }
             .contentShape(Rectangle())
             .padding(.trailing, -SceneViewConst.uiPadding)
             .gesture(zoomDragGesture(viewportSize: geometry.size))
         }
-        .tint(.primary)
     }
     
     func focusButton() -> some View {
-        Button {
-            if let state = model.focusState {
-                switch state {
-                case .unfocused:
-                    model.focusState = .focused
-                case .focused:
-                    model.focusState = .following
-                case .following:
-                    model.focusState = .focused
-                }
-            }
-        } label: {
-            Group {
-                if let state = model.focusState {
-                    switch state {
-                    case .unfocused:
-                        Image(systemName: "camera.metering.center.weighted.average")
-                    case .focused:
-                        Image(systemName: "camera.metering.partial")
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.primary, .secondary)
-                    case .following:
-                        Image(systemName: "camera.metering.spot")
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.secondary, .primary)
+        HStack(spacing: 0.0) {
+            VStack {
+                Spacer()
+                Button {
+                    if let state = model.focusState {
+                        switch state {
+                        case .unfocused:
+                            model.focusState = .focused
+                        case .focused:
+                            model.focusState = .following
+                        case .following:
+                            model.focusState = .focused
+                        }
                     }
-                } else {
-                    Image(systemName: "camera.metering.center.weighted.average")
+                } label: {
+                    Group {
+                        if let state = model.focusState {
+                            switch state {
+                            case .unfocused:
+                                Image(systemName: "camera.metering.center.weighted.average")
+                            case .focused:
+                                Image(systemName: "camera.metering.partial")
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(.primary, .secondary)
+                            case .following:
+                                Image(systemName: "camera.metering.spot")
+                                    .symbolRenderingMode(.palette)
+                                    .foregroundStyle(.secondary, .primary)
+                            }
+                        } else {
+                            Image(systemName: "camera.metering.center.weighted.average")
+                        }
+                    }
+                    .imageScale(.large)
+                    .frame(width: SceneViewConst.uiButtonSize, height: SceneViewConst.uiButtonSize, alignment: .center)
                 }
+                .background(SceneViewConst.uiBgrMaterial)
+                .tint(.primary)
+                .cornerRadius(15.0)
+                .shadow(radius: 1.0)
+                .disabled(model.focusState == nil)
             }
-            .imageScale(.large)
-            .frame(width: SceneViewConst.uiButtonSize, height: SceneViewConst.uiButtonSize, alignment: .center)
+            Spacer()
         }
-        .background(SceneViewConst.uiBgrMaterial)
-        .cornerRadius(15.0)
-        .shadow(radius: 1.0)
-        .disabled(model.focusState == nil)
     }
     
     func pickGesture(viewportSize: CGSize) -> some Gesture {
