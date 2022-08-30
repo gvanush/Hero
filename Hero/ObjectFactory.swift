@@ -26,7 +26,7 @@ class ObjectFactory {
     func makeMesh(meshId: SPTMeshId) -> SPTObject {
         let object = scene.makeObject()
         SPTMetadataMake(object, .init(tag: ObjectType.mesh.rawValue, name: "Mesh \(meshNumber)"))
-        SPTPositionMakeXYZ(object, .zero)
+        SPTPosition.make(.init(x: 0.0, y: 5.0, z: 0.0), object: object)
         SPTScaleMake(object, .init(xyz: simd_float3(5.0, 5.0, 5.0)))
         SPTOrientationMakeEuler(object, .init(rotation: .zero, order: .XYZ))
         SPTMeshViewMakeBlinnPhong(object, meshId, UIColor.darkGray.rgba, 128.0)

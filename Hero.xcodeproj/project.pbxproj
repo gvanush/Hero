@@ -73,7 +73,7 @@
 		B73E47F127D2270D00CB0AFC /* PointView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47EF27D2270D00CB0AFC /* PointView.cpp */; };
 		B742447C2899366200A09808 /* AnimatorSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B742447A2899366200A09808 /* AnimatorSource.cpp */; };
 		B742447E289A8B0F00A09808 /* SPTMetadataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */; };
-		B757DB6C28A3C17100BB5DB4 /* EditAnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB6B28A3C17100BB5DB4 /* EditAnimatorBindingComponentView.swift */; };
+		B757DB6C28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB6B28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift */; };
 		B757DB6F28A3E37500BB5DB4 /* AnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */; };
 		B757DB7228A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */; };
 		B757DB7628A80F0B00BB5DB4 /* AnimatorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7528A80F0B00BB5DB4 /* AnimatorSelector.swift */; };
@@ -239,7 +239,7 @@
 		B742447B2899366200A09808 /* AnimatorSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorSource.h; sourceTree = "<group>"; };
 		B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTMetadataUtil.swift; sourceTree = "<group>"; };
 		B753027227D3712800886134 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
-		B757DB6B28A3C17100BB5DB4 /* EditAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
+		B757DB6B28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBindingComponentView.swift; sourceTree = "<group>"; };
 		B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatorBinding.cpp; sourceTree = "<group>"; };
 		B757DB7028A3E38B00BB5DB4 /* AnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorBinding.h; sourceTree = "<group>"; };
 		B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAnimatorBindingUtil.swift; sourceTree = "<group>"; };
@@ -412,7 +412,7 @@
 				B73E47D327CBD97500CB0AFC /* PositionComponentView.swift */,
 				B73E47D827CC00D900CB0AFC /* OrientationComponentView.swift */,
 				B73E47DC27CC07C100CB0AFC /* ScaleComponentView.swift */,
-				B757DB6B28A3C17100BB5DB4 /* EditAnimatorBindingComponentView.swift */,
+				B757DB6B28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift */,
 				B757DB7728A8B26500BB5DB4 /* PositionAnimatorBindingsView.swift */,
 			);
 			path = Object;
@@ -932,7 +932,7 @@
 				B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */,
 				B73A700528841C2E0043F9FF /* PanAnimatorView.swift in Sources */,
 				B7E30F5228905A1400224E09 /* PanAnimatorViewSignalView.swift in Sources */,
-				B757DB6C28A3C17100BB5DB4 /* EditAnimatorBindingComponentView.swift in Sources */,
+				B757DB6C28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B75FA571278D4CA6001EC7C5 /* NewGeneratorView.swift in Sources */,

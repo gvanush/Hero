@@ -18,7 +18,7 @@ struct FloatSlider: View {
                 .foregroundColor(.controlValue)
             Slider(value: $value, in: range)
                 .tint(.black)
-                .padding(.horizontal, 8.0)
+                .padding(.horizontal, 16.0)
         }
         .padding(Self.padding)
         .frame(maxWidth: .infinity)

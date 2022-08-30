@@ -10,6 +10,10 @@ import Foundation
 
 extension SPTScale: SPTComponent {
     
+    init(x: Float, y: Float, z: Float) {
+        self.init(xyz: .init(x: x, y: y, z: z))
+    }
+    
     public static func == (lhs: SPTScale, rhs: SPTScale) -> Bool {
         SPTScaleEqual(lhs, rhs)
     }

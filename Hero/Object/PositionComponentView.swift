@@ -18,7 +18,7 @@ class PositionComponent: Component {
     private var baseCancellable: AnyCancellable? = nil
     
     lazy private(set) var base = BasePositionComponent(object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var animators = PositionAnimatorBindingsComponent(object: self.object, parent: self)
+    lazy private(set) var animators = PositionAnimatorBindingsComponent(object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object

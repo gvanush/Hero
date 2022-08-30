@@ -27,9 +27,15 @@ enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
 
 class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentProperty> where AP: SPTAnimatableProperty {
     
+    let animatableProperty: AP
+    let object: SPTObject
     @SPTObservedOptionalAnimatorBinding<AP> var animatorBinding: SPTAnimatorBinding?
+    @Published var animatorValue: Float = 0.5
     
     init(animatableProperty: AP, title: String, object: SPTObject, parent: Component?) {
+        
+        self.animatableProperty = animatableProperty
+        self.object = object
         
         _animatorBinding = SPTObservedOptionalAnimatorBinding(property: animatableProperty, object: object)
         
@@ -54,7 +60,7 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
     }
     
     func bindAnimator(id: SPTAnimatorId) {
-        animatorBinding = SPTAnimatorBinding(animatorId: id, valueAt0: 0.0, valueAt1: 100.0)
+        animatorBinding = SPTAnimatorBinding(animatorId: id, valueAt0: -10.0, valueAt1: 10.0)
     }
     
     func unbindAnimator() {
@@ -135,7 +141,6 @@ struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatablePropert
     
     @ObservedObject var component: AnimatorBindingComponent<AP>
     @State private var scale = FloatSelector.Scale._1
-    @State private var animatorValue: Float = 0.5
     
     var body: some View {
         Group {
@@ -146,7 +151,7 @@ struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatablePropert
                 case .valueAt1:
                     FloatSelector(value: $component.valueAt1, scale: $scale)
                 case .animator:
-                    FloatSlider(value: $animatorValue)
+                    FloatSlider(value: $component.animatorValue)
                 }
             }
         }
