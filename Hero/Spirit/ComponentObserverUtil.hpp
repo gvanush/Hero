@@ -47,10 +47,15 @@ SPTObserverToken addComponentObserver(SPTObject object, typename O::Observer obs
 template <typename O>
 void removeComponentObserver(SPTObject object, SPTObserverToken token) {
     auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
+    // Object may have been destroyed before its observers trying
+    // to unsubscribe, hence simply ignoring the request
+    if(!registry.valid(object.entity)) {
+        return;
+    }
     if(auto observable = registry.try_get<O>(object.entity)) {
         observable->observerItems[token].observer = nullptr;
-        // NOTE: Not removing the observable component itself in case there are no observers
-        // with the assumption that they will come up again
+        // Not removing the observable component itself in case there are
+        // no observers with the assumption that they will come up again
     }
 }
 

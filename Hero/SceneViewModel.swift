@@ -228,6 +228,12 @@ class SceneViewModel: ObservableObject {
         prevDragValue = nil
     }
     
+    func destroySelected() {
+        guard let selectedObject = selectedObject else { return }
+        self.selectedObject = nil
+        SPTScene.destroy(selectedObject)
+    }
+    
     static let zoomFactor: Float = 3.0
     
 }

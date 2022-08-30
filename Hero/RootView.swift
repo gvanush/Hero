@@ -81,7 +81,7 @@ struct RootView: View {
                 showsSelectedObjectInspector = true
             }
             objectActionButton(iconName: "trash") {
-                
+                sceneViewModel.destroySelected()
             }
         }
         .frame(height: 44.0)
