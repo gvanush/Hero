@@ -40,4 +40,13 @@ extension UIColor {
     
     static let objectSelectionColor = UIColor.orange
     static let secondaryObjectSelectionColor = UIColor(named: "secondaryObjectSelectionColor")!
+    
+    static let xAxis = UIColor(named: "XAxisColor")!
+    static let xAxisLight = UIColor(named: "XAxisLightColor")!
+    
+    static let yAxis = UIColor(named: "YAxisColor")!
+    static let yAxisLight = UIColor(named: "YAxisLightColor")!
+    
+    static let zAxis = UIColor(named: "ZAxisColor")!
+    static let zAxisLight = UIColor(named: "ZAxisLightColor")!
 }

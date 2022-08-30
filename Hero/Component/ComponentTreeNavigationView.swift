@@ -55,6 +55,16 @@ struct ComponentTreeNavigationView: View {
                 inSetupComponent = nil
             }
         }
+        .onChange(of: activeComponent) { [activeComponent] newValue in
+            activeComponent.onInactive()
+            newValue.onActive()
+        }
+        .onAppear {
+            activeComponent.onActive()
+        }
+        .onDisappear {
+            activeComponent.onInactive()
+        }
         
     }
     
@@ -232,13 +242,15 @@ fileprivate struct ComponentView: View {
 
 struct ComponentTreeNavigationView_Previews: PreviewProvider {
     
+    static let sceneViewModel = SceneViewModel()
+    
     struct ContainerView: View {
         
         @StateObject var transformation: TransformationComponent
         @State var active: Component
         
         init() {
-            let transformation = TransformationComponent(object: kSPTNullObject, parent: nil)
+            let transformation = TransformationComponent(object: kSPTNullObject, sceneViewModel: sceneViewModel, parent: nil)
             _transformation = StateObject(wrappedValue: transformation)
             _active = State(initialValue: transformation)
         }

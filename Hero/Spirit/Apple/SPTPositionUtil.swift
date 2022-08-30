@@ -15,6 +15,10 @@ extension SPTPosition: SPTComponent {
         self.init(variantTag: .XYZ, .init(xyz: xyz))
     }
     
+    init(x: Float, y: Float, z: Float) {
+        self.init(xyz: .init(x: x, y: y, z: z))
+    }
+    
     public static func == (lhs: SPTPosition, rhs: SPTPosition) -> Bool {
         SPTPositionEqual(lhs, rhs)
     }

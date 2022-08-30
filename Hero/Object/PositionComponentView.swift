@@ -13,13 +13,17 @@ class PositionComponent: Component {
     static let title = "Position"
     
     let object: SPTObject
-    var baseCancellable: AnyCancellable? = nil
+    let sceneViewModel: SceneViewModel
     
-    lazy private(set) var base = BasePositionComponent(object: self.object, parent: self)
+    private var baseCancellable: AnyCancellable? = nil
+    
+    lazy private(set) var base = BasePositionComponent(object: self.object, sceneViewModel: sceneViewModel, parent: self)
     lazy private(set) var animators = PositionAnimatorBindingsComponent(object: self.object, parent: self)
     
-    init(object: SPTObject, parent: Component?) {
+    init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
+        self.sceneViewModel = sceneViewModel
+        
         super.init(title: Self.title, parent: parent)
         
         self.baseCancellable = base.objectWillChange.sink { [weak self] _ in
@@ -55,10 +59,14 @@ class BasePositionComponent: BasicComponent<Axis> {
     static let title = "Base"
     
     @SPTObservedComponent var position: SPTPosition
+    let sceneViewModel: SceneViewModel
     
-    init(object: SPTObject, parent: Component?) {
+    private var guideAxisObject: SPTObject?
+    
+    init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         _position = SPTObservedComponent(object: object)
+        self.sceneViewModel = sceneViewModel
         
         super.init(title: Self.title, selectedProperty: .x, parent: parent)
         
@@ -70,8 +78,55 @@ class BasePositionComponent: BasicComponent<Axis> {
         get { position.xyz }
     }
     
+    override func onActive() {
+        setupGuideObjects()
+    }
+    
+    override func onInactive() {
+        removeGuideObjects()
+    }
+    
+    override var selectedProperty: Axis? {
+        didSet {
+            removeGuideObjects()
+            setupGuideObjects()
+        }
+    }
+    
     override func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
         provider.viewFor(self)
+    }
+    
+    private func setupGuideObjects() {
+        assert(guideAxisObject == nil)
+        
+        guard let property = selectedProperty else { return }
+        
+        let guideObject = sceneViewModel.scene.makeObject()
+        SPTScaleMake(guideObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
+        SPTPolylineViewDepthBiasMake(guideObject, 5.0, 3.0, 0.0)
+        
+        switch property {
+        case .x:
+            SPTPosition.make(.init(x: 0.0, y: position.xyz.y, z: position.xyz.z), object: guideObject)
+            SPTPolylineViewMake(guideObject, sceneViewModel.lineMeshId, UIColor.xAxisLight.rgba, 3.0)
+        case .y:
+            SPTPosition.make(.init(x: position.xyz.x, y: 0.0, z: position.xyz.z), object: guideObject)
+            SPTOrientationMakeEuler(guideObject, .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ))
+            SPTPolylineViewMake(guideObject, sceneViewModel.lineMeshId, UIColor.yAxisLight.rgba, 3.0)
+        case .z:
+            SPTPosition.make(.init(x: position.xyz.x, y: position.xyz.y, z: 0.0), object: guideObject)
+            SPTOrientationMakeEuler(guideObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
+            SPTPolylineViewMake(guideObject, sceneViewModel.lineMeshId, UIColor.zAxisLight.rgba, 3.0)
+        }
+        
+        guideAxisObject = guideObject
+    }
+    
+    private func removeGuideObjects() {
+        guard let object = guideAxisObject else { return }
+        SPTScene.destroy(object)
+        guideAxisObject = nil
     }
     
 }

@@ -51,7 +51,7 @@ struct NewGeneratorView: View {
         }, content: {
             TemplateObjectSelector { meshId in
                 let generator = sceneViewModel.objectFactory.makeGenerator(sourceMeshId: meshId)
-                generatorComponent = GeneratorComponent(object: generator)
+                generatorComponent = GeneratorComponent(object: generator, sceneViewModel: sceneViewModel)
                 sceneViewModel.selectedObject = generator
             }
         })

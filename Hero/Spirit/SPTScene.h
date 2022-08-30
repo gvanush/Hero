@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(SPTObject) makeObject;
 
-+(void) destroyObject: (SPTObject) entity;
++(void) destroyObject: (SPTObject) object;
 
 -(SPTSceneHandle) cpp;
 

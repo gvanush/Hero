@@ -17,6 +17,7 @@ class SceneViewModel: ObservableObject {
     }
     
     let scene = SPTScene()
+    let lineMeshId: SPTMeshId
     
     let objectFactory: ObjectFactory
     
@@ -90,15 +91,15 @@ class SceneViewModel: ObservableObject {
         
         // Setup coordinate axis
         let linePath = Bundle.main.path(forResource: "line", ofType: "obj")!
-        let lineId = SPTCreatePolylineFromFile(linePath)
+        lineMeshId = SPTCreatePolylineFromFile(linePath)
         
         let xAxisObject = scene.makeObject()
-        SPTPolylineViewMake(xAxisObject, lineId, UIColor.red.rgba, 3.0)
+        SPTPolylineViewMake(xAxisObject, lineMeshId, UIColor.xAxis.rgba, 3.0)
         SPTScaleMake(xAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
         SPTPolylineViewDepthBiasMake(xAxisObject, 5.0, 3.0, 0.0)
         
         let zAxisObject = scene.makeObject()
-        SPTPolylineViewMake(zAxisObject, lineId, UIColor.blue.rgba, 3.0)
+        SPTPolylineViewMake(zAxisObject, lineMeshId, UIColor.zAxis.rgba, 3.0)
         SPTScaleMake(zAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
         SPTOrientationMakeEuler(zAxisObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
         SPTPolylineViewDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)

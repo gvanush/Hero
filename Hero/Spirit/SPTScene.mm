@@ -27,8 +27,8 @@
     return &_scene;
 }
 
-+(void) destroyObject: (SPTObject) entity {
-    spt::Scene::destroyObject(entity);
++(void) destroyObject: (SPTObject) object {
+    spt::Scene::destroyObject(object);
 }
 
 @end

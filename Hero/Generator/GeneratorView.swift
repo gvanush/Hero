@@ -15,13 +15,18 @@ enum GeneratorComponentProperty: Int, DistinctValueSet, Displayable {
 class GeneratorComponent: BasicComponent<GeneratorComponentProperty> {
     
     let object: SPTObject
-    @SPTObservedComponent private var generator: SPTGenerator
-    lazy private(set) var transformation = TransformationComponent(object: self.object, parent: self)
+    let sceneViewModel: SceneViewModel
+    
+    lazy private(set) var transformation = TransformationComponent(object: self.object, sceneViewModel: sceneViewModel, parent: self)
     lazy private(set) var arrangement = ArrangementComponent(arrangement: $generator.arrangement, parent: self)
     
-    init(object: SPTObject) {
+    @SPTObservedComponent private var generator: SPTGenerator
+    
+    init(object: SPTObject, sceneViewModel: SceneViewModel) {
         
         self.object = object
+        self.sceneViewModel = sceneViewModel
+        
         _generator = SPTObservedComponent(object: object)
         
         super.init(title: "Generator", selectedProperty: .quantity, parent: nil)
@@ -115,8 +120,7 @@ struct GeneratorView_Previews: PreviewProvider {
     
     static var previews: some View {
         NavigationView {
-            GeneratorView(generatorComponent: GeneratorComponent(object: data.makeGenerator(sourceMeshName: "sphere", quantity: 5)))
-                .environmentObject(data.sceneViewModel)
+            GeneratorView(generatorComponent: GeneratorComponent(object: data.makeGenerator(sourceMeshName: "sphere", quantity: 5), sceneViewModel: data.sceneViewModel))
                 .navigationBarHidden(true)
         }
     }

@@ -11,11 +11,14 @@ import SwiftUI
 class MeshObjectComponent: Component {
 
     let object: SPTObject
-    lazy private(set) var transformation = TransformationComponent(object: self.object, parent: self)
+    let sceneViewModel: SceneViewModel
     
-    init(object: SPTObject) {
+    lazy private(set) var transformation = TransformationComponent(object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    
+    init(object: SPTObject, sceneViewModel: SceneViewModel) {
         
         self.object = object
+        self.sceneViewModel = sceneViewModel
         
         super.init(title: "Mesh", parent: nil)
     }

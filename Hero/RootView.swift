@@ -70,7 +70,7 @@ struct RootView: View {
             AnimatorsView()
         }
         .sheet(isPresented: $showsSelectedObjectInspector) {
-            MeshObjectInspector(meshComponent: MeshObjectComponent(object: sceneViewModel.selectedObject!))
+            MeshObjectInspector(meshComponent: MeshObjectComponent(object: sceneViewModel.selectedObject!, sceneViewModel: sceneViewModel))
                 .environmentObject(sceneViewModel)
         }
     }

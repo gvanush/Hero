@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-class Component: Identifiable, ObservableObject {
+class Component: Identifiable, ObservableObject, Equatable {
     
     let title: String
     private(set) weak var parent: Component?
@@ -29,12 +29,20 @@ class Component: Identifiable, ObservableObject {
     
     var isSetup: Bool { true }
     
+    func onActive() { }
+    
+    func onInactive() { }
+    
     func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
         nil
     }
     
     func accept(_ provider: ComponentSetupViewProvider, onComplete: @escaping () -> Void) -> AnyView {
         fatalError("This method must be overridden in sub components that can have 'isSetup' false")
+    }
+    
+    static func == (lhs: Component, rhs: Component) -> Bool {
+        lhs === rhs
     }
     
 }

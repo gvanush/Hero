@@ -84,7 +84,7 @@ struct EditGeneratorView_Previews: PreviewProvider {
         let generatorObject = sceneViewModel.scene.makeObject()
         
         SPTGenerator.make(.init(quantity: 10, sourceMeshId: MeshRegistry.standard.recordNamed("cone")!.id), object: generatorObject)
-        let generatorComponent = GeneratorComponent(object: generatorObject)
+        let generatorComponent = GeneratorComponent(object: generatorObject, sceneViewModel: sceneViewModel)
         
         return ContainerView(sceneViewModel: sceneViewModel, generatorComponent: generatorComponent)
     }
