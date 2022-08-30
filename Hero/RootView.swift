@@ -30,7 +30,7 @@ struct RootView: View {
                             .selectedObjectUI(cornerRadius: 9.0)
                     }
                 })
-                    .renderingPaused(showsTransformView || showsNewGeneratorView)
+                    .renderingPaused(showsTransformView || showsNewGeneratorView || showsAnimatorsView)
                     .navigationTitle("Generative")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
@@ -59,10 +59,10 @@ struct RootView: View {
                     .ignoresSafeArea()
             }
         }
-        .fullScreenCover(isPresented: $showsTransformView, onDismiss: nil) {
+        .fullScreenCover(isPresented: $showsTransformView) {
             TransformView(sceneViewModel: sceneViewModel)
         }
-        .fullScreenCover(isPresented: $showsNewGeneratorView, onDismiss: nil) {
+        .fullScreenCover(isPresented: $showsNewGeneratorView) {
             NewGeneratorView()
                 .environmentObject(sceneViewModel)
         }

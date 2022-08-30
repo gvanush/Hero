@@ -24,8 +24,9 @@ struct TransformView: View {
                         SceneView(model: sceneViewModel, uiSafeAreaInsets: navigationGeometry.safeAreaInsets.bottomInseted(BottomBar.height), isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation)) {
                             
                             if let selectedObject = sceneViewModel.selectedObject {
-                                ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject))
+                                ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject, sceneViewModel: sceneViewModel))
                                     .id(activeTool.rawValue)
+                                    .id(selectedObject)
                             }
                             
                         }
@@ -61,7 +62,7 @@ struct ObjectControlView: View {
     fileprivate let tool: Tool
     @Binding fileprivate var axis: Axis
     @Binding fileprivate var scale: FloatSelector.Scale
-    @ObservedObject fileprivate var model: ObjectControlViewModel
+    @StateObject fileprivate var model: ObjectControlViewModel
     
     var body: some View {
         VStack(spacing: Self.controlsSpacing) {
@@ -73,6 +74,20 @@ struct ObjectControlView: View {
                 .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
         }
         .id(model.object.entity.rawValue)
+        .onChange(of: tool, perform: { newValue in
+            model.removeGuideObjects()
+            model.setupGuideObjects(tool: newValue, axis: axis)
+        })
+        .onChange(of: axis, perform: { newValue in
+            model.removeGuideObjects()
+            model.setupGuideObjects(tool: tool, axis: newValue)
+        })
+        .onAppear {
+            model.setupGuideObjects(tool: tool, axis: axis)
+        }
+        .onDisappear {
+            model.removeGuideObjects()
+        }
     }
     
     var floatField: FloatSelector {
@@ -94,12 +109,17 @@ struct ObjectControlView: View {
 fileprivate class ObjectControlViewModel: ObservableObject {
     
     let object: SPTObject
-    @SPTObservedComponent var sptPosition: SPTPosition
-    @SPTObservedComponent var sptScale: SPTScale
-    @SPTObservedComponent var sptOrientation: SPTOrientation
+    let sceneViewModel: SceneViewModel
     
-    init(object: SPTObject) {
+    @SPTObservedComponent private var sptPosition: SPTPosition
+    @SPTObservedComponent private var sptScale: SPTScale
+    @SPTObservedComponent private var sptOrientation: SPTOrientation
+    
+    private var guideObject: SPTObject?
+    
+    init(object: SPTObject, sceneViewModel: SceneViewModel) {
         self.object = object
+        self.sceneViewModel = sceneViewModel
         
         _sptPosition = SPTObservedComponent(object: object)
         _sptOrientation = SPTObservedComponent(object: object)
@@ -124,6 +144,54 @@ fileprivate class ObjectControlViewModel: ObservableObject {
         set { sptScale.xyz = newValue }
         get { sptScale.xyz }
     }
+    
+    func setupGuideObjects(tool: Tool, axis: Axis) {
+        switch tool {
+        case .move:
+            setupMoveToolGuideObjects(axis: axis)
+        case .orient:
+            setupOrientToolGuideObjects(axis: axis)
+        case .scale:
+            setupScaleToolGuideObjects(axis: axis)
+        }
+    }
+    
+    func removeGuideObjects() {
+        guard let object = guideObject else { return }
+        SPTScene.destroy(object)
+        guideObject = nil
+    }
+    
+    private func setupMoveToolGuideObjects(axis: Axis) {
+        assert(guideObject == nil)
+
+        let object = sceneViewModel.scene.makeObject()
+        SPTScaleMake(object, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
+        SPTPolylineViewDepthBiasMake(object, 5.0, 3.0, 0.0)
+
+        switch axis {
+        case .x:
+            SPTPosition.make(.init(x: 0.0, y: position.y, z: position.z), object: object)
+            SPTPolylineViewMake(object, sceneViewModel.lineMeshId, UIColor.xAxisLight.rgba, 3.0)
+        case .y:
+            SPTPosition.make(.init(x: position.x, y: 0.0, z: position.z), object: object)
+            SPTOrientationMakeEuler(object, .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ))
+            SPTPolylineViewMake(object, sceneViewModel.lineMeshId, UIColor.yAxisLight.rgba, 3.0)
+        case .z:
+            SPTPosition.make(.init(x: position.x, y: position.y, z: 0.0), object: object)
+            SPTOrientationMakeEuler(object, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
+            SPTPolylineViewMake(object, sceneViewModel.lineMeshId, UIColor.zAxisLight.rgba, 3.0)
+        }
+
+        guideObject = object
+    }
+    
+    private func setupOrientToolGuideObjects(axis: Axis) {
+    }
+
+    private func setupScaleToolGuideObjects(axis: Axis) {
+    }
+    
 }
 
 

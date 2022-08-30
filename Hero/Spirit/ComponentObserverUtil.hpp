@@ -16,8 +16,7 @@
 
 namespace spt {
 
-// TODO: Set to 8 after AnimationBinding redo
-constexpr size_t kMaxObserverCount = 16;
+constexpr size_t kMaxObserverCount = 8;
 
 template <typename O, typename U>
 struct ComponentObserverItem {

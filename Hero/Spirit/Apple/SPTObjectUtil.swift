@@ -7,7 +7,12 @@
 
 import Foundation
 
-extension SPTObject: Equatable {
+extension SPTObject: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(sceneHandle)
+        hasher.combine(entity.rawValue)
+    }
     
     public static func == (lhs: SPTObject, rhs: SPTObject) -> Bool {
         SPTObjectEqual(lhs, rhs)
