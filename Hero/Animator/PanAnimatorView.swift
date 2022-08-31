@@ -101,7 +101,7 @@ struct PanAnimatorView: View {
             PanAnimatorSetBoundsView(model: .init(animatorId: model.animator.id))
         }
         .fullScreenCover(isPresented: $showsViewSignalView) {
-            PanAnimatorViewSignalView(animatorId: model.animator.id)
+            PanAnimatorViewGraphView(animatorId: model.animator.id)
         }
     }
 }

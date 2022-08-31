@@ -1,5 +1,5 @@
 //
-//  PanAnimatorViewSignalView.swift
+//  PanAnimatorViewGraphView.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 26.07.22.
@@ -8,14 +8,14 @@
 import SwiftUI
 
 
-struct PanAnimatorViewSignalView: View {
+struct PanAnimatorViewGraphView: View {
     
     let animator: SPTAnimator
     @GestureState private var isDragging = false
     @State private var dragValue: DragGesture.Value?
     @State private var shouldCheckForExit = true
     
-    @State private var signalLastValue: Float?
+    @State private var animatorLastValue: Float?
     
     @Environment(\.presentationMode) private var presentationMode
     
@@ -28,13 +28,13 @@ struct PanAnimatorViewSignalView: View {
         GeometryReader { geometry in
             ZStack {
                 Color.systemBackground
+                SignalGraphView(name: animator.source.pan.axis.displayName) {
+                    animatorLastValue
+                }
                 Rectangle()
-                    .foregroundColor(.gestureSignalArea)
+                    .foregroundColor(.ultraLightAccentColor)
                     .frame(size: animator.source.pan.boundsSizeOnScreenSize(geometry.size))
                     .offset(animator.source.pan.boundsOffsetOnScreenSize(geometry.size))
-                SignalGraphView(name: animator.source.pan.axis.displayName) {
-                    signalLastValue
-                }
             }
             .gesture(dragGesture(geometry: geometry))
             .defersSystemGestures(on: .all)
@@ -45,7 +45,7 @@ struct PanAnimatorViewSignalView: View {
             if !newValue {
                 shouldCheckForExit = true
                 dragValue = nil
-                signalLastValue = nil
+                animatorLastValue = nil
             }
         }
     }
@@ -61,10 +61,16 @@ struct PanAnimatorViewSignalView: View {
                     if delta.height > 0.0 || abs(delta.height) < abs(delta.width) {
                         shouldCheckForExit = false
                     }
+                    dragValue = newDragValue
+                } else {
+                    if isInBounds(dragValue: newDragValue, geometry: geometry) {
+                        dragValue = newDragValue
+                    }
                 }
                 
-                dragValue = newDragValue
-                signalLastValue = signalValue(dragValue: newDragValue, geometry: geometry)
+                if shouldSample {
+                    animatorLastValue = animatorValue(dragValue: newDragValue, geometry: geometry)
+                }
                 
             })
             .onEnded({ newDragValue in
@@ -74,11 +80,23 @@ struct PanAnimatorViewSignalView: View {
                     presentationMode.wrappedValue.dismiss()
                 }
                 
-                signalLastValue = signalValue(dragValue: newDragValue, geometry: geometry)
+                if shouldSample {
+                    animatorLastValue = animatorValue(dragValue: newDragValue, geometry: geometry)
+                }
             })
     }
     
-    func signalValue(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Float {
+    var shouldSample: Bool {
+        dragValue != nil
+    }
+    
+    func isInBounds(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Bool {
+        let normX = Float(dragValue.location.x / geometry.size.width)
+        let normY = 1.0 - Float(dragValue.location.y / geometry.size.height)
+        return normX >= animator.source.pan.bottomLeft.x && normX <= animator.source.pan.topRight.x && normY >= animator.source.pan.bottomLeft.y && normY <= animator.source.pan.topRight.y
+    }
+    
+    func animatorValue(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Float {
         switch animator.source.pan.axis {
         case .horizontal:
             return SPTAnimatorGetValue(animator, Float(dragValue.location.x / geometry.size.width))
@@ -88,12 +106,11 @@ struct PanAnimatorViewSignalView: View {
     }
     
     static let exitStartRectHeight = 34.0
-    static let signalTextVerticalOffset = -65.0
     
 }
 
 struct PanAnimatorViewSignalView_Previews: PreviewProvider {
     static var previews: some View {
-        PanAnimatorViewSignalView(animatorId: SPTAnimatorMake(.init(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one))))
+        PanAnimatorViewGraphView(animatorId: SPTAnimatorMake(.init(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one))))
     }
 }

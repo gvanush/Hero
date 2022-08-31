@@ -123,7 +123,7 @@
 		B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */; };
 		B7E30F4D288E76BA00224E09 /* PanAnimatorViewBoundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */; };
 		B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */; };
-		B7E30F5228905A1400224E09 /* PanAnimatorViewSignalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F5128905A1400224E09 /* PanAnimatorViewSignalView.swift */; };
+		B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F5128905A1400224E09 /* PanAnimatorViewGraphView.swift */; };
 		B7E30F5628906D4800224E09 /* SignalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F5528906D4800224E09 /* SignalGraphView.swift */; };
 		B7E30F592891492100224E09 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = B7E30F582891492100224E09 /* DequeModule */; };
 		B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481C9274183BD003DA5B1 /* Transformation.cpp */; };
@@ -303,7 +303,7 @@
 		B7D8252D279DCCA4008F28CE /* AnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtil.swift; sourceTree = "<group>"; };
 		B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanAnimatorViewBoundsView.swift; sourceTree = "<group>"; };
 		B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorUtil.swift; sourceTree = "<group>"; };
-		B7E30F5128905A1400224E09 /* PanAnimatorViewSignalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanAnimatorViewSignalView.swift; sourceTree = "<group>"; };
+		B7E30F5128905A1400224E09 /* PanAnimatorViewGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanAnimatorViewGraphView.swift; sourceTree = "<group>"; };
 		B7E30F5528906D4800224E09 /* SignalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalGraphView.swift; sourceTree = "<group>"; };
 		B7E481C9274183BD003DA5B1 /* Transformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
 		B7E481CA274183BD003DA5B1 /* Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scale.h; sourceTree = "<group>"; };
@@ -483,7 +483,7 @@
 				B73A700428841C2E0043F9FF /* PanAnimatorView.swift */,
 				B73A7018288BCC280043F9FF /* PanAnimatorSetBoundsView.swift */,
 				B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */,
-				B7E30F5128905A1400224E09 /* PanAnimatorViewSignalView.swift */,
+				B7E30F5128905A1400224E09 /* PanAnimatorViewGraphView.swift */,
 				B7E30F5528906D4800224E09 /* SignalGraphView.swift */,
 				B757DB7528A80F0B00BB5DB4 /* AnimatorSelector.swift */,
 			);
@@ -931,7 +931,7 @@
 				B73E47F127D2270D00CB0AFC /* PointView.cpp in Sources */,
 				B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */,
 				B73A700528841C2E0043F9FF /* PanAnimatorView.swift in Sources */,
-				B7E30F5228905A1400224E09 /* PanAnimatorViewSignalView.swift in Sources */,
+				B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */,
 				B757DB6C28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,

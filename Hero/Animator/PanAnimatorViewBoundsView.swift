@@ -24,6 +24,11 @@ class PanAnimatorViewBoundsViewModel: ObservableObject {
         }
     }
     
+    func isInBounds(point: CGPoint, screenSize: CGSize) -> Bool {
+        let normX = Float(point.x / screenSize.width)
+        let normY = 1.0 - Float(point.y / screenSize.height)
+        return normX >= animator.source.pan.bottomLeft.x && normX <= animator.source.pan.topRight.x && normY >= animator.source.pan.bottomLeft.y && normY <= animator.source.pan.topRight.y
+    }
 }
 
 struct PanAnimatorViewBoundsView: View {
@@ -39,7 +44,7 @@ struct PanAnimatorViewBoundsView: View {
             ZStack {
                 Color.systemBackground
                 Rectangle()
-                    .foregroundColor(.gestureSignalArea)
+                    .foregroundColor(.ultraLightAccentColor)
                     .frame(size: model.animator.source.pan.boundsSizeOnScreenSize(geometry.size))
                     .offset(model.animator.source.pan.boundsOffsetOnScreenSize(geometry.size))
                 if let dragValue = dragValue {
@@ -70,14 +75,18 @@ struct PanAnimatorViewBoundsView: View {
             .updating($isDragging, body: { _, state, _ in
                 state = true
             })
-            .onChanged({ newValue in
+            .onChanged({ newDragValue in
                 if let value = dragValue {
-                    let delta = CGSize(width: newValue.translation.width - value.translation.width, height: newValue.translation.height - value.translation.height)
+                    let delta = CGSize(width: newDragValue.translation.width - value.translation.width, height: newDragValue.translation.height - value.translation.height)
                     if delta.height > 0.0 || abs(delta.height) < abs(delta.width) {
                         shouldCheckForExit = false
                     }
+                    dragValue = newDragValue
+                } else {
+                    if model.isInBounds(point: newDragValue.location, screenSize: geometry.size) {
+                        dragValue = newDragValue
+                    }
                 }
-                dragValue = newValue
             })
             .onEnded({ value in
                 let bounds = geometry.frame(in: .local)

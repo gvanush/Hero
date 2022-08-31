@@ -30,7 +30,7 @@ extension Color {
  
     static let controlValue = Color("ControlValueColor")
     
-    static let gestureSignalArea = Color.accentColor.opacity(0.3)
+    static let ultraLightAccentColor = Color.accentColor.opacity(0.3)
     
     static let lightAccentColor = Color.accentColor.opacity(0.65)
 }
