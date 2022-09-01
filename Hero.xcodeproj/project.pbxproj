@@ -42,7 +42,7 @@
 		B723585A275F51F700337547 /* coordinate_grid.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7235859275F4EE500337547 /* coordinate_grid.obj */; };
 		B723585C2761189E00337547 /* line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723585B2761173800337547 /* line.obj */; };
 		B723585F2762844700337547 /* PolylineViewDepthBias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723585D2762844700337547 /* PolylineViewDepthBias.cpp */; };
-		B7235862276F2BEC00337547 /* OutlineView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7235860276F2BEC00337547 /* OutlineView.cpp */; };
+		B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7235860276F2BEC00337547 /* OutlineLook.cpp */; };
 		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
@@ -113,6 +113,7 @@
 		B7B711D128BC96430077C7CD /* ComponentSetupViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */; };
 		B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */; };
 		B7B711D528C108D70077C7CD /* LookCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D428C108D70077C7CD /* LookCategories.swift */; };
+		B7B711D728C130740077C7CD /* SPTOutlineLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D628C130740077C7CD /* SPTOutlineLookUtil.swift */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
@@ -190,8 +191,8 @@
 		B723585B2761173800337547 /* line.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = line.obj; sourceTree = "<group>"; };
 		B723585D2762844700337547 /* PolylineViewDepthBias.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PolylineViewDepthBias.cpp; sourceTree = "<group>"; };
 		B723585E2762844700337547 /* PolylineViewDepthBias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolylineViewDepthBias.h; sourceTree = "<group>"; };
-		B7235860276F2BEC00337547 /* OutlineView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OutlineView.cpp; sourceTree = "<group>"; };
-		B7235861276F2BEC00337547 /* OutlineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OutlineView.h; sourceTree = "<group>"; };
+		B7235860276F2BEC00337547 /* OutlineLook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OutlineLook.cpp; sourceTree = "<group>"; };
+		B7235861276F2BEC00337547 /* OutlineLook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OutlineLook.h; sourceTree = "<group>"; };
 		B72358662774982300337547 /* ComponentObserverUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComponentObserverUtil.hpp; sourceTree = "<group>"; };
 		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
 		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
@@ -294,6 +295,7 @@
 		B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentSetupViewProvider.swift; sourceTree = "<group>"; };
 		B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPointLookUtil.swift; sourceTree = "<group>"; };
 		B7B711D428C108D70077C7CD /* LookCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookCategories.swift; sourceTree = "<group>"; };
+		B7B711D628C130740077C7CD /* SPTOutlineLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTOutlineLookUtil.swift; sourceTree = "<group>"; };
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 				B73245B22741188500708909 /* SPTViewController.mm */,
 				B76D4FC728AB7C990029E47B /* SPTUtil.swift */,
 				B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */,
+				B7B711D628C130740077C7CD /* SPTOutlineLookUtil.swift */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -558,8 +561,8 @@
 		B73E47ED27D226C200CB0AFC /* Outline */ = {
 			isa = PBXGroup;
 			children = (
-				B7235860276F2BEC00337547 /* OutlineView.cpp */,
-				B7235861276F2BEC00337547 /* OutlineView.h */,
+				B7235860276F2BEC00337547 /* OutlineLook.cpp */,
+				B7235861276F2BEC00337547 /* OutlineLook.h */,
 			);
 			name = Outline;
 			sourceTree = "<group>";
@@ -859,7 +862,7 @@
 				B73E47D427CBD97500CB0AFC /* PositionComponentView.swift in Sources */,
 				B73245B6274124C100708909 /* Renderer.mm in Sources */,
 				B76D4FCA28AC0E1B0029E47B /* SPTObjectPropertyUtil.swift in Sources */,
-				B7235862276F2BEC00337547 /* OutlineView.cpp in Sources */,
+				B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
 				B712240128BBDFB3006A31B1 /* FloatSlider.swift in Sources */,
 				B7235851275D34D000337547 /* Polyline.cpp in Sources */,
@@ -966,6 +969,7 @@
 				B73E47E627D00D4700CB0AFC /* SPTPositionUtil.swift in Sources */,
 				B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */,
 				B7AA99E827B7EC150033B459 /* ArrangementView.swift in Sources */,
+				B7B711D728C130740077C7CD /* SPTOutlineLookUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,7 +12,7 @@
 #import "Scale.h"
 #import "Camera.h"
 #import "MeshView.h"
-#import "OutlineView.h"
+#import "OutlineLook.h"
 #import "PolylineView.h"
 #import "PolylineViewDepthBias.h"
 #import "PointLook.h"

@@ -15,8 +15,8 @@ bool SPTPointLookEqual(SPTPointLook lhs, SPTPointLook rhs) {
     return simd_equal(lhs.color, rhs.color) && lhs.size == rhs.size && lhs.categories == rhs.categories;
 }
 
-void SPTPointLookMake(SPTObject object, SPTPointLook PointLook) {
-    spt::Scene::getRegistry(object).emplace<SPTPointLook>(object.entity, PointLook);
+void SPTPointLookMake(SPTObject object, SPTPointLook pointLook) {
+    spt::Scene::getRegistry(object).emplace<SPTPointLook>(object.entity, pointLook);
 }
 
 void SPTPointLookUpdate(SPTObject object, SPTPointLook newPointLook) {

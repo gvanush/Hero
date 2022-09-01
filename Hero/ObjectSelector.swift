@@ -24,10 +24,10 @@ class ObjectSelector {
         self.object = object
         switch type {
         case .mesh:
-            SPTOutlineViewMake(object, UIColor.objectSelectionColor.rgba, 5.0)
+            SPTOutlineLook.make(.init(color: UIColor.objectSelectionColor.rgba, thickness: 5.0, categories: LookCategories.objectSelection.rawValue), object: object)
         case .generator:
-            SPTPointLookMake(object, .init(color: UIColor.objectSelectionColor.rgba, size: 6.0, categories: LookCategories.objectSelection.rawValue))
-            SPTOutlineViewMake(object, UIColor.secondaryObjectSelectionColor.rgba, 5.0)
+            SPTPointLook.make(.init(color: UIColor.objectSelectionColor.rgba, size: 6.0, categories: LookCategories.objectSelection.rawValue), object: object)
+            SPTOutlineLook.make(.init(color: UIColor.secondaryObjectSelectionColor.rgba, thickness: 5.0, categories: LookCategories.objectSelection.rawValue), object: object)
         }
     }
     
@@ -35,9 +35,9 @@ class ObjectSelector {
         let type = ObjectType(rawValue: SPTMetadataGet(object).tag)!
         switch type {
         case .mesh:
-            SPTOutlineViewDestroy(object)
+            SPTOutlineLook.destroy(object: object)
         case .generator:
-            SPTOutlineViewDestroy(object)
+            SPTOutlineLook.destroy(object: object)
             SPTPointLook.destroy(object: object)
         }
     }
