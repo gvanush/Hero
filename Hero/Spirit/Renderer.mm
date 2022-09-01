@@ -9,7 +9,7 @@
 #include "MeshView.h"
 #include "Generator.hpp"
 #include "PolylineView.h"
-#include "PointView.h"
+#include "PointLook.h"
 #include "OutlineView.h"
 #include "ResourceManager.hpp"
 #include "Transformation.hpp"
@@ -153,7 +153,7 @@ void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registr
     
 }
 
-void renderPoint(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPointView& pointView) {
+void renderPoint(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPointLook& pointLook) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     
@@ -166,9 +166,9 @@ void renderPoint(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, 
     };
     
     [renderEncoder setVertexBytes: vertices.data() length: sizeof(PointVertex) * vertices.size() atIndex: kVertexInputIndexVertices];
-    [renderEncoder setVertexBytes: &pointView.size length: sizeof(pointView.size) atIndex: kVertexInputIndexSize];
+    [renderEncoder setVertexBytes: &pointLook.size length: sizeof(pointLook.size) atIndex: kVertexInputIndexSize];
     
-    [renderEncoder setFragmentBytes: &pointView.color length: sizeof(pointView.color) atIndex: kFragmentInputIndexColor];
+    [renderEncoder setFragmentBytes: &pointLook.color length: sizeof(pointLook.color) atIndex: kFragmentInputIndexColor];
     
     [renderEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: vertices.size()];
     
@@ -281,9 +281,11 @@ void Renderer::render(void* renderingContext) {
     [layer1RenderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
     
     [layer1RenderEncoder setRenderPipelineState: __pointPipelineState];
-    const auto pointView = _registry.view<SPTPointView>();
-    pointView.each([this, layer1RenderEncoder] (auto entity, auto& pointView) {
-        renderPoint(layer1RenderEncoder, _registry, entity, pointView);
+    const auto pointView = _registry.view<SPTPointLook>();
+    pointView.each([this, layer1RenderEncoder, rc] (auto entity, auto& pointLook) {
+        if(rc.lookCategories & pointLook.categories) {
+            renderPoint(layer1RenderEncoder, _registry, entity, pointLook);
+        }
     });
     
 //    const auto outlineView = _registry.view<SPTOutlineView>();

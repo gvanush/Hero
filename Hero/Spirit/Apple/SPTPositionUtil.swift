@@ -9,7 +9,7 @@ import Foundation
 import simd
 
 
-extension SPTPosition: SPTComponent {
+extension SPTPosition: SPTObservableComponent {
     
     init(xyz: simd_float3) {
         self.init(variantTag: .XYZ, .init(xyz: xyz))

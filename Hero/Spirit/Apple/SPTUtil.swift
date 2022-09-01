@@ -12,17 +12,7 @@ typealias ObjectWillEmergeCallback<O> = (O) -> Void
 typealias ObjectWillChangeCallback<O> = (O) -> Void
 typealias ObjectWillPerishCallback = () -> Void
 
-
 protocol SPTComponent: Equatable {
-    
-    typealias WillEmergeCallback = ObjectWillEmergeCallback<Self>
-    typealias WillEmergeSubscription = SPTSubscription<WillEmergeCallback>
-    
-    typealias WillChangeCallback = ObjectWillChangeCallback<Self>
-    typealias WillChangeSubscription = SPTSubscription<WillChangeCallback>
-    
-    typealias WillPerishCallback = ObjectWillPerishCallback
-    typealias WillPerishSubscription = SPTSubscription<WillPerishCallback>
     
     static func make(_ component: Self, object: SPTObject)
     
@@ -35,6 +25,19 @@ protocol SPTComponent: Equatable {
     static func get(object: SPTObject) -> Self
     
     static func tryGet(object: SPTObject) -> Self?
+    
+}
+
+protocol SPTObservableComponent: SPTComponent {
+    
+    typealias WillEmergeCallback = ObjectWillEmergeCallback<Self>
+    typealias WillEmergeSubscription = SPTSubscription<WillEmergeCallback>
+    
+    typealias WillChangeCallback = ObjectWillChangeCallback<Self>
+    typealias WillChangeSubscription = SPTSubscription<WillChangeCallback>
+    
+    typealias WillPerishCallback = ObjectWillPerishCallback
+    typealias WillPerishSubscription = SPTSubscription<WillPerishCallback>
     
     static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription
     

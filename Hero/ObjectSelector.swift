@@ -26,7 +26,7 @@ class ObjectSelector {
         case .mesh:
             SPTOutlineViewMake(object, UIColor.objectSelectionColor.rgba, 5.0)
         case .generator:
-            SPTPointViewMake(object, SPTPointView(color: UIColor.objectSelectionColor.rgba, size: 6.0))
+            SPTPointLookMake(object, .init(color: UIColor.objectSelectionColor.rgba, size: 6.0, categories: LookCategories.objectSelection.rawValue))
             SPTOutlineViewMake(object, UIColor.secondaryObjectSelectionColor.rgba, 5.0)
         }
     }
@@ -38,7 +38,7 @@ class ObjectSelector {
             SPTOutlineViewDestroy(object)
         case .generator:
             SPTOutlineViewDestroy(object)
-            SPTPointViewDestroy(object)
+            SPTPointLook.destroy(object: object)
         }
     }
     

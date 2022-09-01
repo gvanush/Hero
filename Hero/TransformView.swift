@@ -30,6 +30,8 @@ struct TransformView: View {
                             }
                             
                         }
+                        .lookCategories([.userCreated, .sceneGuide, .objectSelection, .toolGuide])
+                        
                         VStack {
                             Spacer()
                             Toolbar(selection: $activeTool)

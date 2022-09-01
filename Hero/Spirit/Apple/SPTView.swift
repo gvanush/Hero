@@ -15,8 +15,16 @@ struct SPTView: UIViewControllerRepresentable {
     let scene: SPTScene
     let clearColor: MTLClearColor
     let viewCameraObject: SPTObject
-    var isRenderingPaused = false
-    let lookCategories = kSPTLookCategoriesAll
+    let isRenderingPaused: Bool
+    let lookCategories: SPTLookCategories
+    
+    init(scene: SPTScene, clearColor: MTLClearColor, viewCameraObject: SPTObject, isRenderingPaused: Bool = false, lookCategories: SPTLookCategories = kSPTLookCategoriesAll) {
+        self.scene = scene
+        self.clearColor = clearColor
+        self.viewCameraObject = viewCameraObject
+        self.isRenderingPaused = isRenderingPaused
+        self.lookCategories = lookCategories
+    }
     
     func makeUIViewController(context: Context) -> SPTViewController {
         let vc = SPTViewController(scene: scene)

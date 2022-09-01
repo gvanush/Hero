@@ -8,7 +8,7 @@
 import Foundation
 
 
-extension SPTGenerator: SPTComponent {
+extension SPTGenerator: SPTObservableComponent {
     
     init(quantity: SPTGeneratorQuantityType, sourceMeshId: SPTMeshId) {
         self.init(arrangement: .init(variantTag: .linear, .init(linear: .init(axis: .X))), sourceMeshId: sourceMeshId, quantity: quantity)

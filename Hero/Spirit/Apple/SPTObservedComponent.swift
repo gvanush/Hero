@@ -11,7 +11,7 @@ import Combine
 
 @propertyWrapper
 @dynamicMemberLookup
-class SPTObservedComponent<C> where C: SPTComponent {
+class SPTObservedComponent<C> where C: SPTObservableComponent {
     
     let object: SPTObject
     let binding: SPTObjectBinding<C>
@@ -53,7 +53,7 @@ class SPTObservedComponent<C> where C: SPTComponent {
 
 @propertyWrapper
 @dynamicMemberLookup
-class SPTObservedOptionalComponent<C> where C: SPTComponent {
+class SPTObservedOptionalComponent<C> where C: SPTObservableComponent {
     
     let object: SPTObject
     let binding: SPTObjectBinding<C?>

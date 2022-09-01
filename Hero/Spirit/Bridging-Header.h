@@ -15,7 +15,7 @@
 #import "OutlineView.h"
 #import "PolylineView.h"
 #import "PolylineViewDepthBias.h"
-#import "PointView.h"
+#import "PointLook.h"
 #import "Animator.h"
 #import "AnimatorBinding.h"
 #import "Generator.h"

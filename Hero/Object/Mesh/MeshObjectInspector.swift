@@ -86,6 +86,7 @@ struct EditMeshObjectView: View {
                         activeComponent.accept(Self.actionViewProvider)
                     }
                     .selectionEnabled(false)
+                    .lookCategories([.userCreated, .sceneGuide, .toolGuide])
                     .ignoresSafeArea()
                     VStack {
                         Spacer()

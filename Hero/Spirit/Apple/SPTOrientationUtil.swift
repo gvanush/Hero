@@ -8,7 +8,7 @@
 import Foundation
 
 
-extension SPTOrientation: SPTComponent {
+extension SPTOrientation: SPTObservableComponent {
     
     init(euler: SPTEulerOrientation) {
         self.init(variantTag: .euler, .init(euler: euler))

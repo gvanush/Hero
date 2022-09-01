@@ -8,7 +8,7 @@
 import Foundation
 
 
-extension SPTScale: SPTComponent {
+extension SPTScale: SPTObservableComponent {
     
     init(x: Float, y: Float, z: Float) {
         self.init(xyz: .init(x: x, y: y, z: z))

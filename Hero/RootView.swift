@@ -31,6 +31,7 @@ struct RootView: View {
                     }
                 })
                     .renderingPaused(showsTransformView || showsNewGeneratorView || showsAnimatorsView)
+                    .lookCategories([.userCreated, .sceneGuide, .objectSelection])
                     .navigationTitle("Generative")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {

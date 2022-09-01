@@ -50,11 +50,13 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
         
         guideObjects = (sceneViewModel.scene.makeObject(), sceneViewModel.scene.makeObject(), sceneViewModel.scene.makeObject())
         
+        let pointSize: Float = 6.0
+        
         SPTPosition.make(guidePoint0Position, object: guideObjects!.point0)
-        SPTPointViewMake(guideObjects!.point0, .init(color: UIColor.yellow.rgba, size: 6.0))
+        SPTPointLook.make(.init(color: UIColor.yellow.rgba, size: pointSize, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.point0)
         
         SPTPosition.make(guidePoint1Position, object: guideObjects!.point1)
-        SPTPointViewMake(guideObjects!.point1, .init(color: UIColor.yellow.rgba, size: 6.0))
+        SPTPointLook.make(.init(color: UIColor.yellow.rgba, size: pointSize, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.point1)
         
         SPTPolylineViewMake(guideObjects!.line, sceneViewModel.lineMeshId, UIColor.objectSelectionColor.rgba, 3.0)
         SPTScale.make(guideLineScale, object: guideObjects!.line)
@@ -69,7 +71,7 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
             SPTOrientationMakeEuler(guideObjects!.line, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
         }
         
-        SPTPosition.update(guideObjectPosition, object: object)
+        SPTPosition.update(objectPosition, object: object)
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [weak self] newValue in
             
@@ -82,18 +84,18 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
             SPTScale.update(weakSelf.guideLineScale, object: guideObjects.line)
             SPTPosition.update(weakSelf.guideLinePosition, object: guideObjects.line)
             
-            SPTPosition.update(weakSelf.guideObjectPosition, object: weakSelf.object)
+            SPTPosition.update(weakSelf.objectPosition, object: weakSelf.object)
         })
         
     }
     
     override var animatorValue: Float {
         didSet {
-            SPTPosition.update(guideObjectPosition, object: object)
+            SPTPosition.update(objectPosition, object: object)
         }
     }
     
-    private var guideObjectPosition: SPTPosition {
+    private var objectPosition: SPTPosition {
         var xyz = objectInitialPosition!.xyz
         xyz[axis.rawValue] = valueAt0 + animatorValue * (valueAt1 - valueAt0)
         return .init(xyz: xyz)

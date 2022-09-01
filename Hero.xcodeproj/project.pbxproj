@@ -70,7 +70,7 @@
 		B73E47E627D00D4700CB0AFC /* SPTPositionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E527D00D4700CB0AFC /* SPTPositionUtil.swift */; };
 		B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E727D011E900CB0AFC /* SPTScaleUtil.swift */; };
 		B73E47EA27D0168400CB0AFC /* SPTOrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */; };
-		B73E47F127D2270D00CB0AFC /* PointView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47EF27D2270D00CB0AFC /* PointView.cpp */; };
+		B73E47F127D2270D00CB0AFC /* PointLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47EF27D2270D00CB0AFC /* PointLook.cpp */; };
 		B742447C2899366200A09808 /* AnimatorSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B742447A2899366200A09808 /* AnimatorSource.cpp */; };
 		B742447E289A8B0F00A09808 /* SPTMetadataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */; };
 		B757DB6C28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB6B28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift */; };
@@ -111,6 +111,8 @@
 		B7AA99ED27B81FB70033B459 /* DistinctValueSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */; };
 		B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */; };
 		B7B711D128BC96430077C7CD /* ComponentSetupViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */; };
+		B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */; };
+		B7B711D528C108D70077C7CD /* LookCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D428C108D70077C7CD /* LookCategories.swift */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
@@ -233,8 +235,8 @@
 		B73E47E527D00D4700CB0AFC /* SPTPositionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPositionUtil.swift; sourceTree = "<group>"; };
 		B73E47E727D011E900CB0AFC /* SPTScaleUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTScaleUtil.swift; sourceTree = "<group>"; };
 		B73E47E927D0168400CB0AFC /* SPTOrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTOrientationUtil.swift; sourceTree = "<group>"; };
-		B73E47EF27D2270D00CB0AFC /* PointView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PointView.cpp; sourceTree = "<group>"; };
-		B73E47F027D2270D00CB0AFC /* PointView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PointView.h; sourceTree = "<group>"; };
+		B73E47EF27D2270D00CB0AFC /* PointLook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PointLook.cpp; sourceTree = "<group>"; };
+		B73E47F027D2270D00CB0AFC /* PointLook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PointLook.h; sourceTree = "<group>"; };
 		B742447A2899366200A09808 /* AnimatorSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatorSource.cpp; sourceTree = "<group>"; };
 		B742447B2899366200A09808 /* AnimatorSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorSource.h; sourceTree = "<group>"; };
 		B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTMetadataUtil.swift; sourceTree = "<group>"; };
@@ -290,6 +292,8 @@
 		B7AA99EC27B81FB70033B459 /* DistinctValueSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistinctValueSet.swift; sourceTree = "<group>"; };
 		B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryUtil.swift; sourceTree = "<group>"; };
 		B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentSetupViewProvider.swift; sourceTree = "<group>"; };
+		B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPointLookUtil.swift; sourceTree = "<group>"; };
+		B7B711D428C108D70077C7CD /* LookCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookCategories.swift; sourceTree = "<group>"; };
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
@@ -525,6 +529,7 @@
 				B73245B12741188500708909 /* SPTViewController.h */,
 				B73245B22741188500708909 /* SPTViewController.mm */,
 				B76D4FC728AB7C990029E47B /* SPTUtil.swift */,
+				B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -562,8 +567,8 @@
 		B73E47EE27D226D700CB0AFC /* Point */ = {
 			isa = PBXGroup;
 			children = (
-				B73E47EF27D2270D00CB0AFC /* PointView.cpp */,
-				B73E47F027D2270D00CB0AFC /* PointView.h */,
+				B73E47EF27D2270D00CB0AFC /* PointLook.cpp */,
+				B73E47F027D2270D00CB0AFC /* PointLook.h */,
 			);
 			name = Point;
 			sourceTree = "<group>";
@@ -667,6 +672,7 @@
 			isa = PBXGroup;
 			children = (
 				B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */,
+				B7B711D428C108D70077C7CD /* LookCategories.swift */,
 			);
 			path = Spirit;
 			sourceTree = "<group>";
@@ -899,12 +905,14 @@
 				B757DB7628A80F0B00BB5DB4 /* AnimatorSelector.swift in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
+				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
 				B736450627B3DB7100FAD433 /* EditGeneratorComponentView.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
 				B73E47DD27CC07C100CB0AFC /* ScaleComponentView.swift in Sources */,
 				B75FA56D278B3414001EC7C5 /* Views.swift in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B73E47CC27C5762500CB0AFC /* Position.cpp in Sources */,
+				B7B711D528C108D70077C7CD /* LookCategories.swift in Sources */,
 				B710DB8A27BD8E4000C57BDF /* PropertySelector.swift in Sources */,
 				B73E47CF27C5827700CB0AFC /* Scale.cpp in Sources */,
 				B75FA577278D6DBD001EC7C5 /* GeneratorView.swift in Sources */,
@@ -928,7 +936,7 @@
 				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,
 				B76D4FC828AB7C990029E47B /* SPTUtil.swift in Sources */,
 				B7791D252725F45F00E0C934 /* TransformView.swift in Sources */,
-				B73E47F127D2270D00CB0AFC /* PointView.cpp in Sources */,
+				B73E47F127D2270D00CB0AFC /* PointLook.cpp in Sources */,
 				B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */,
 				B73A700528841C2E0043F9FF /* PanAnimatorView.swift in Sources */,
 				B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */,

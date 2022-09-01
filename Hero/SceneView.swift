@@ -23,6 +23,7 @@ struct SceneView<BV>: View where BV: View {
     let bottomView: () -> BV
     
     private(set) var isRenderingPaused = false
+    private(set) var lookCategories = LookCategories.all
     private(set) var isNavigationEnabled = true
     private(set) var isSelectionEnabled = true
     @GestureState private var isOrbitDragGestureActive = false
@@ -57,10 +58,16 @@ struct SceneView<BV>: View where BV: View {
         return view
     }
     
+    func lookCategories(_ categories: LookCategories) -> SceneView {
+        var view = self
+        view.lookCategories = categories
+        return view
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                SPTView(scene: model.scene, clearColor: clearColor, viewCameraObject: model.viewCameraObject, isRenderingPaused: isRenderingPaused)
+                SPTView(scene: model.scene, clearColor: clearColor, viewCameraObject: model.viewCameraObject, isRenderingPaused: isRenderingPaused, lookCategories: lookCategories.rawValue)
                 // NOTE: Adding 'allowsHitTesting' to 'SPTView' will cause its underlying
                 // view controller's 'viewWillAppear' to be called on each gesture start,
                 // hence creating a separate view on top

@@ -72,8 +72,7 @@ const SPTPosition* _Nullable SPTPositionTryGet(SPTObject object) {
 }
 
 bool SPTPositionExists(SPTObject object) {
-    auto& registry = spt::Scene::getRegistry(object);
-    return registry.all_of<SPTPosition>(object.entity);
+    return spt::Scene::getRegistry(object).all_of<SPTPosition>(object.entity);
 }
 
 SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
