@@ -6,7 +6,7 @@
 //
 
 #include "RayCast.h"
-#include "MeshView.h"
+#include "MeshLook.h"
 #include "Generator.hpp"
 #include "Scene.hpp"
 #include "Transformation.hpp"
@@ -47,18 +47,18 @@ RayCastResult rayCastMesh(const Mesh& mesh, const SPTRay& ray, float tolerance) 
     return result;
 }
 
-RayCastResult tryRayCastMeshView(Registry& registry, SPTEntity entity, const SPTRay& ray, float tolerance) {
+RayCastResult tryRayCastMeshLook(Registry& registry, SPTEntity entity, const SPTRay& ray, float tolerance) {
     
     RayCastResult result {INFINITY, false};
-    const auto meshView = registry.try_get<SPTMeshView>(entity);
-    if(!meshView) {
+    const auto meshLook = registry.try_get<SPTMeshLook>(entity);
+    if(!meshLook) {
         return result;
     }
     
     const auto& globalMat = registry.get<spt::Transformation>(entity).global;
     SPTRay localRay = SPTRayTransform(ray, simd_inverse(globalMat));
     
-    const auto& mesh = spt::ResourceManager::active().getMesh(meshView->meshId);
+    const auto& mesh = spt::ResourceManager::active().getMesh(meshLook->meshId);
     
     const auto meshRayCastResult = rayCastMesh(mesh, localRay, tolerance);
     
@@ -136,7 +136,7 @@ SPTRayCastResult SPTRayCastScene(SPTSceneHandle sceneHandle, SPTRay ray, float t
     SPTRayCastResult result {kSPTNullObject, INFINITY};
     registry.view<SPTRayCastable>().each([&registry, &result, ray, tolerance, sceneHandle] (auto entity, auto& rayCastableMesh) {
         
-        if(const auto& subResult = spt::tryRayCastMeshView(registry, entity, ray, tolerance);
+        if(const auto& subResult = spt::tryRayCastMeshLook(registry, entity, ray, tolerance);
            subResult.intersected && result.rayDirectionFactor > subResult.rayDirectionFactor) {
             result.object = SPTObject {entity, sceneHandle};
             result.rayDirectionFactor = subResult.rayDirectionFactor;

@@ -21,9 +21,9 @@ typedef struct {
 
 bool SPTPointLookEqual(SPTPointLook lhs, SPTPointLook rhs);
 
-void SPTPointLookMake(SPTObject object, SPTPointLook point);
+void SPTPointLookMake(SPTObject object, SPTPointLook pointLook);
 
-void SPTPointLookUpdate(SPTObject object, SPTPointLook point);
+void SPTPointLookUpdate(SPTObject object, SPTPointLook pointLook);
 
 void SPTPointLookDestroy(SPTObject object);
 

@@ -11,7 +11,7 @@
 #import "Orientation.h"
 #import "Scale.h"
 #import "Camera.h"
-#import "MeshView.h"
+#import "MeshLook.h"
 #import "OutlineLook.h"
 #import "PolylineView.h"
 #import "PolylineViewDepthBias.h"

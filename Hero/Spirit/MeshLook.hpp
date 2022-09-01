@@ -1,5 +1,5 @@
 //
-//  MeshView.hpp
+//  MeshLook.hpp
 //  Hero
 //
 //  Created by Vanush Grigoryan on 14.01.22.
@@ -9,28 +9,28 @@
 
 #include "Base.h"
 #include "Base.hpp"
-#include "MeshView.h"
+#include "MeshLook.h"
 
 #include <vector>
 
 namespace spt {
 
-namespace MeshView {
+namespace MeshLook {
 
 template <typename It>
 void makeBlinnPhong(spt::Registry& registry, It beginEntity, It endEntity, SPTMeshId meshId, simd_float4 color, float specularRoughness) {
-    SPTMeshView meshView {color, SPTMeshShadingBlinnPhong, meshId};
-    meshView.blinnPhong.specularRoughness = specularRoughness;
-    registry.insert(beginEntity, endEntity, meshView);
+    SPTMeshLook meshLook {color, SPTMeshShadingBlinnPhong, meshId};
+    meshLook.blinnPhong.specularRoughness = specularRoughness;
+    registry.insert(beginEntity, endEntity, meshLook);
 }
 
 template <typename It>
 void update(spt::Registry& registry, It beginEntity, It endEntity, SPTMeshId meshId) {
-    auto updater = [meshId] (auto& meshView) {
-        meshView.meshId = meshId;
+    auto updater = [meshId] (auto& meshLook) {
+        meshLook.meshId = meshId;
     };
     for(auto it = beginEntity; it != endEntity; ++it) {
-        registry.patch<SPTMeshView>(*it, updater);
+        registry.patch<SPTMeshLook>(*it, updater);
     }
 }
 

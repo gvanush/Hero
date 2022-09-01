@@ -19,8 +19,8 @@ void SPTPointLookMake(SPTObject object, SPTPointLook pointLook) {
     spt::Scene::getRegistry(object).emplace<SPTPointLook>(object.entity, pointLook);
 }
 
-void SPTPointLookUpdate(SPTObject object, SPTPointLook newPointLook) {
-    spt::Scene::getRegistry(object).get<SPTPointLook>(object.entity) = newPointLook;
+void SPTPointLookUpdate(SPTObject object, SPTPointLook pointLook) {
+    spt::Scene::getRegistry(object).get<SPTPointLook>(object.entity) = pointLook;
 }
 
 void SPTPointLookDestroy(SPTObject object) {

@@ -6,7 +6,7 @@
 //
 
 #include "Renderer.hpp"
-#include "MeshView.h"
+#include "MeshLook.h"
 #include "Generator.hpp"
 #include "PolylineView.h"
 #include "PointLook.h"
@@ -14,6 +14,7 @@
 #include "ResourceManager.hpp"
 #include "Transformation.hpp"
 #include "PolylineViewDepthBias.h"
+#include "Materials.h"
 #import "SPTRenderingContext.h"
 #import "ShaderTypes.h"
 
@@ -75,14 +76,14 @@ id<MTLRenderPipelineState> createPipelineState(NSString* name, NSString* vertexS
     return pipelineState;
 }
 
-void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTMeshView& meshView) {
+void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTMeshLook& meshLook) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     
-    switch (meshView.shading) {
+    switch (meshLook.shading) {
         case SPTMeshShadingPlainColor: {
             [renderEncoder setRenderPipelineState: __plainColorMeshPipelineState];
-            [renderEncoder setFragmentBytes: &meshView.plainColor.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
+            [renderEncoder setFragmentBytes: &meshLook.plainColor.color length: sizeof(SPTPlainColorMaterial) atIndex: kFragmentInputIndexColor];
             break;
         }
         case SPTMeshShadingBlinnPhong: {
@@ -92,7 +93,7 @@ void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, S
             [renderEncoder setVertexBytes: &transposedInverseWorldMatrix
                                    length: sizeof(simd_float4x4)
                                   atIndex: kVertexInputIndexTransposedInverseWorldMatrix];
-            [renderEncoder setFragmentBytes: &meshView.blinnPhong length: sizeof(PhongMaterial) atIndex: kFragmentInputIndexMaterial];
+            [renderEncoder setFragmentBytes: &meshLook.blinnPhong length: sizeof(SPTPhongMaterial) atIndex: kFragmentInputIndexMaterial];
             break;
         }
     }
@@ -101,7 +102,7 @@ void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, S
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexWorldMatrix];
     
-    const auto& mesh = ResourceManager::active().getMesh(meshView.meshId);
+    const auto& mesh = ResourceManager::active().getMesh(meshLook.meshId);
     
     id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
     [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
@@ -195,8 +196,8 @@ void renderMeshOutline(id<MTLRenderCommandEncoder> renderEncoder, const Mesh& me
 
 void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTOutlineLook& outlineLook) {
     
-    if(const auto meshView = registry.try_get<SPTMeshView>(entity)) {
-        const auto& mesh = ResourceManager::active().getMesh(meshView->meshId);
+    if(const auto meshLook = registry.try_get<SPTMeshLook>(entity)) {
+        const auto& mesh = ResourceManager::active().getMesh(meshLook->meshId);
         renderMeshOutline(renderEncoder, mesh, outlineLook, registry.get<Transformation>(entity).global);
     }
     
@@ -235,9 +236,11 @@ void Renderer::render(void* renderingContext) {
     [renderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
     
     // Render meshes
-    const auto meshView = _registry.view<SPTMeshView>();
-    meshView.each([this, renderEncoder] (auto entity, auto& meshView) {
-        renderMesh(renderEncoder, _registry, entity, meshView);
+    const auto meshLookView = _registry.view<SPTMeshLook>();
+    meshLookView.each([this, renderEncoder, rc] (auto entity, auto& meshLook) {
+        if(rc.lookCategories & meshLook.categories) {
+            renderMesh(renderEncoder, _registry, entity, meshLook);
+        }
     });
     
     // Render outlines
@@ -245,8 +248,8 @@ void Renderer::render(void* renderingContext) {
     [renderEncoder setCullMode: MTLCullModeFront];
 //    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
 
-    const auto outlineView = _registry.view<SPTOutlineLook>();
-    outlineView.each([this, renderEncoder, rc] (auto entity, auto& outlineLook) {
+    const auto outlineLookView = _registry.view<SPTOutlineLook>();
+    outlineLookView.each([this, renderEncoder, rc] (auto entity, auto& outlineLook) {
         if(rc.lookCategories & outlineLook.categories) {
             renderOutline(renderEncoder, _registry, entity, outlineLook);
         }
@@ -283,8 +286,8 @@ void Renderer::render(void* renderingContext) {
     [layer1RenderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
     
     [layer1RenderEncoder setRenderPipelineState: __pointPipelineState];
-    const auto pointView = _registry.view<SPTPointLook>();
-    pointView.each([this, layer1RenderEncoder, rc] (auto entity, auto& pointLook) {
+    const auto pointLookView = _registry.view<SPTPointLook>();
+    pointLookView.each([this, layer1RenderEncoder, rc] (auto entity, auto& pointLook) {
         if(rc.lookCategories & pointLook.categories) {
             renderPoint(layer1RenderEncoder, _registry, entity, pointLook);
         }

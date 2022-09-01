@@ -12,7 +12,7 @@
 #include "Position.hpp"
 #include "RayCast.hpp"
 #include "Scale.hpp"
-#include "MeshView.hpp"
+#include "MeshLook.hpp"
 #include "ComponentObserverUtil.hpp"
 
 
@@ -30,7 +30,7 @@ void makeObjects(spt::Registry& registry, SPTObject object, spt::Generator& gene
     
     Transformation::makeChildren(registry, object, beginEntity, generator.entities.end());
     
-    MeshView::makeBlinnPhong(registry, beginEntity, generator.entities.end(), generator.base.sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
+    MeshLook::makeBlinnPhong(registry, beginEntity, generator.entities.end(), generator.base.sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
     
     switch (generator.base.arrangement.variantTag) {
         case SPTArrangementVariantTagLinear: {
@@ -114,7 +114,7 @@ void SPTGeneratorUpdate(SPTObject object, SPTGenerator newGenerator) {
     }
     
     if(generator.base.sourceMeshId != newGenerator.sourceMeshId) {
-        spt::MeshView::update(registry, generator.entities.begin(), generator.entities.end(), newGenerator.sourceMeshId);
+        spt::MeshLook::update(registry, generator.entities.begin(), generator.entities.end(), newGenerator.sourceMeshId);
         generator.base.sourceMeshId = newGenerator.sourceMeshId;
     }
     
