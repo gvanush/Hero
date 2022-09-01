@@ -6,6 +6,8 @@
 //  Copyright © 2020 Vanush Grigoryan. All rights reserved.
 //
 
+#include "Base.h"
+
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 #import <CoreVideo/CoreVideo.h>
@@ -16,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SPTRenderingContext: NSObject
 
+@property (nonatomic) SPTLookCategories lookCategories;
 @property (nonatomic) simd_float4x4 projectionViewMatrix;
 @property (nonatomic) simd_float3 cameraPosition;
 @property (nonatomic) simd_float2 viewportSize;

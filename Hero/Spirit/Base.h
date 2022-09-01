@@ -48,4 +48,7 @@ typedef void (* _Nonnull SPTCountWillChangeCallback) (SPTListener, size_t);
 typedef size_t SPTObserverToken;
 typedef void* _Nullable SPTComponentObserverUserInfo;
 
+typedef uint32_t SPTLookCategories;
+extern const SPTLookCategories kSPTLookCategoriesAll;
+
 SPT_EXTERN_C_END
