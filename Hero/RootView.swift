@@ -15,6 +15,7 @@ struct RootView: View {
     @State private var showsAnimatorsView = false
     @State private var showsNewGeneratorView = false
     @State private var showsSelectedObjectInspector = false
+    @State private var showsPlayView = false
     
     var body: some View {
         NavigationView {
@@ -54,6 +55,13 @@ struct RootView: View {
                                 Image(systemName: "hammer")
                             }
                         }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                showsPlayView = true
+                            } label: {
+                                Image(systemName: "play")
+                            }
+                        }
                     }
                     .toolbar(isNavigating ? .hidden : .visible, for: .bottomBar, .navigationBar)
                     .statusBar(hidden: isNavigating)
@@ -73,6 +81,9 @@ struct RootView: View {
         .sheet(isPresented: $showsSelectedObjectInspector) {
             MeshObjectInspector(meshComponent: MeshObjectComponent(object: sceneViewModel.selectedObject!, sceneViewModel: sceneViewModel))
                 .environmentObject(sceneViewModel)
+        }
+        .fullScreenCover(isPresented: $showsPlayView) {
+            PlayView(model: PlayViewModel(scene: sceneViewModel.scene, viewCameraObject: sceneViewModel.viewCameraObject))
         }
     }
     

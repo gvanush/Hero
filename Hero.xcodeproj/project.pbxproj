@@ -117,6 +117,7 @@
 		B7B711DC28C13B570077C7CD /* Materials.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B711DB28C13B570077C7CD /* Materials.cpp */; };
 		B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711DD28C13E060077C7CD /* SPTMeshLookUtil.swift */; };
 		B7B711E028C1D8100077C7CD /* SPTPolylineLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711DF28C1D8100077C7CD /* SPTPolylineLookUtil.swift */; };
+		B7B711E228C1E4720077C7CD /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711E128C1E4720077C7CD /* PlayView.swift */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
@@ -302,6 +303,7 @@
 		B7B711DB28C13B570077C7CD /* Materials.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Materials.cpp; sourceTree = "<group>"; };
 		B7B711DD28C13E060077C7CD /* SPTMeshLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTMeshLookUtil.swift; sourceTree = "<group>"; };
 		B7B711DF28C1D8100077C7CD /* SPTPolylineLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPolylineLookUtil.swift; sourceTree = "<group>"; };
+		B7B711E128C1E4720077C7CD /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
@@ -642,10 +644,11 @@
 				B710DB8927BD8E4000C57BDF /* PropertySelector.swift */,
 				B73E47D627CBDFDC00CB0AFC /* ObjectFactory.swift */,
 				B717636127B0242300CE5195 /* SampleSceneData.swift */,
+				B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */,
+				B7B711E128C1E4720077C7CD /* PlayView.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
-				B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -902,6 +905,7 @@
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */,
 				B7BCB11E27D75A6A00F5AFB1 /* SPTSubscription.swift in Sources */,
+				B7B711E228C1E4720077C7CD /* PlayView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
 				B7038C5728A18D5900C14A51 /* MeshObjectInspector.swift in Sources */,
