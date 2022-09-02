@@ -169,20 +169,22 @@ fileprivate class ObjectControlViewModel: ObservableObject {
 
         let object = sceneViewModel.scene.makeObject()
         SPTScaleMake(object, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
-        SPTPolylineViewDepthBiasMake(object, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBiasMake(object, 5.0, 3.0, 0.0)
 
         switch axis {
         case .x:
             SPTPosition.make(.init(x: 0.0, y: position.y, z: position.z), object: object)
-            SPTPolylineViewMake(object, sceneViewModel.lineMeshId, UIColor.xAxisLight.rgba, 3.0)
+            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: object)
+            
         case .y:
             SPTPosition.make(.init(x: position.x, y: 0.0, z: position.z), object: object)
             SPTOrientationMakeEuler(object, .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ))
-            SPTPolylineViewMake(object, sceneViewModel.lineMeshId, UIColor.yAxisLight.rgba, 3.0)
+            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: object)
+            
         case .z:
             SPTPosition.make(.init(x: position.x, y: position.y, z: 0.0), object: object)
             SPTOrientationMakeEuler(object, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
-            SPTPolylineViewMake(object, sceneViewModel.lineMeshId, UIColor.zAxisLight.rgba, 3.0)
+            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: object)
         }
 
         guideObject = object

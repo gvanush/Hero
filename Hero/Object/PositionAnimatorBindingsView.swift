@@ -58,10 +58,10 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
         SPTPosition.make(guidePoint1Position, object: guideObjects!.point1)
         SPTPointLook.make(.init(color: UIColor.yellow.rgba, size: pointSize, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.point1)
         
-        SPTPolylineViewMake(guideObjects!.line, sceneViewModel.lineMeshId, UIColor.objectSelectionColor.rgba, 3.0)
+        SPTPolylineLook.make(.init(color: UIColor.objectSelectionColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.line)
         SPTScale.make(guideLineScale, object: guideObjects!.line)
         SPTPosition.make(guideLinePosition, object: guideObjects!.line)
-        SPTPolylineViewDepthBiasMake(guideObjects!.line, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBiasMake(guideObjects!.line, 5.0, 3.0, 0.0)
         switch axis {
         case .x:
             break

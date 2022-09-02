@@ -104,20 +104,21 @@ class BasePositionComponent: BasicComponent<Axis> {
         
         let guideObject = sceneViewModel.scene.makeObject()
         SPTScaleMake(guideObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
-        SPTPolylineViewDepthBiasMake(guideObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBiasMake(guideObject, 5.0, 3.0, 0.0)
         
         switch property {
         case .x:
             SPTPosition.make(.init(x: 0.0, y: position.xyz.y, z: position.xyz.z), object: guideObject)
-            SPTPolylineViewMake(guideObject, sceneViewModel.lineMeshId, UIColor.xAxisLight.rgba, 3.0)
+            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObject)
         case .y:
             SPTPosition.make(.init(x: position.xyz.x, y: 0.0, z: position.xyz.z), object: guideObject)
             SPTOrientationMakeEuler(guideObject, .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ))
-            SPTPolylineViewMake(guideObject, sceneViewModel.lineMeshId, UIColor.yAxisLight.rgba, 3.0)
+            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObject)
+            
         case .z:
             SPTPosition.make(.init(x: position.xyz.x, y: position.xyz.y, z: 0.0), object: guideObject)
             SPTOrientationMakeEuler(guideObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
-            SPTPolylineViewMake(guideObject, sceneViewModel.lineMeshId, UIColor.zAxisLight.rgba, 3.0)
+            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObject)
         }
         
         guideAxisObject = guideObject

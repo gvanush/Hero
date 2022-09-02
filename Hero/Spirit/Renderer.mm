@@ -8,12 +8,12 @@
 #include "Renderer.hpp"
 #include "MeshLook.h"
 #include "Generator.hpp"
-#include "PolylineView.h"
+#include "PolylineLook.h"
 #include "PointLook.h"
 #include "OutlineLook.h"
 #include "ResourceManager.hpp"
 #include "Transformation.hpp"
-#include "PolylineViewDepthBias.h"
+#include "PolylineLookDepthBias.h"
 #include "Materials.h"
 #import "SPTRenderingContext.h"
 #import "ShaderTypes.h"
@@ -132,21 +132,21 @@ void renderMeshDepthOnly(id<MTLRenderCommandEncoder> renderEncoder, Registry& re
     
 }
 
-void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPolylineView& polylineView) {
+void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPolylineLook& polylineLook) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     [renderEncoder setVertexBytes: &worldMatrix
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexWorldMatrix];
     
-    const auto& polyline = ResourceManager::active().getPolyline(polylineView.polylineId);
+    const auto& polyline = ResourceManager::active().getPolyline(polylineLook.polylineId);
     
-    [renderEncoder setVertexBytes: &polylineView.thickness length: sizeof(float) atIndex: kVertexInputIndexThickness];
+    [renderEncoder setVertexBytes: &polylineLook.thickness length: sizeof(float) atIndex: kVertexInputIndexThickness];
     
     id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) polyline.vertexBuffer()->apiObject();
     [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
     
-    [renderEncoder setFragmentBytes: &polylineView.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
+    [renderEncoder setFragmentBytes: &polylineLook.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
     
     id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) polyline.indexBuffer()->apiObject();
     
@@ -258,15 +258,19 @@ void Renderer::render(void* renderingContext) {
     // Render polylines
     [renderEncoder setCullMode: MTLCullModeBack];
     [renderEncoder setRenderPipelineState: __polylinePipelineState];
-    const auto polylineView = _registry.view<SPTPolylineView>(entt::exclude<SPTPolylineViewDepthBias>);
-    polylineView.each([this, renderEncoder] (auto entity, auto& polylineView) {
-        renderPolyline(renderEncoder, _registry, entity, polylineView);
+    const auto polylineLookView = _registry.view<SPTPolylineLook>(entt::exclude<SPTPolylineLookDepthBias>);
+    polylineLookView.each([this, renderEncoder, rc] (auto entity, auto& polylineLook) {
+        if(rc.lookCategories & polylineLook.categories) {
+            renderPolyline(renderEncoder, _registry, entity, polylineLook);
+        }
     });
     
-    const auto depthBiasedPolylineView = _registry.view<SPTPolylineView, SPTPolylineViewDepthBias>();
-    depthBiasedPolylineView.each([this, renderEncoder] (auto entity, auto& polylineView, auto& depthBias) {
+    const auto depthBiasedPolylineLookView = _registry.view<SPTPolylineLook, SPTPolylineLookDepthBias>();
+    depthBiasedPolylineLookView.each([this, renderEncoder, rc] (auto entity, auto& polylineLook, auto& depthBias) {
         [renderEncoder setDepthBias: -depthBias.bias slopeScale: -depthBias.slopeScale clamp: depthBias.clamp];
-        renderPolyline(renderEncoder, _registry, entity, polylineView);
+        if(rc.lookCategories & polylineLook.categories) {
+            renderPolyline(renderEncoder, _registry, entity, polylineLook);
+        }
     });
     
     [renderEncoder endEncoding];

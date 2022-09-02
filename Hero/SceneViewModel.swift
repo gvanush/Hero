@@ -87,22 +87,24 @@ class SceneViewModel: ObservableObject {
         let gridPath = Bundle.main.path(forResource: "coordinate_grid", ofType: "obj")!
         let gridPolylineId = SPTCreatePolylineFromFile(gridPath)
         let gridObject = scene.makeObject()
-        SPTPolylineViewMake(gridObject, gridPolylineId, UIColor.systemGray.rgba, 2.0)
+        SPTPolylineLook.make(.init(color: UIColor.systemGray.rgba, polylineId: gridPolylineId, thickness: 2.0, categories: LookCategories.sceneGuide.rawValue), object: gridObject)
         
         // Setup coordinate axis
         let linePath = Bundle.main.path(forResource: "line", ofType: "obj")!
         lineMeshId = SPTCreatePolylineFromFile(linePath)
         
         let xAxisObject = scene.makeObject()
-        SPTPolylineViewMake(xAxisObject, lineMeshId, UIColor.xAxis.rgba, 3.0)
+        SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: lineMeshId, thickness: 3.0, categories: LookCategories.sceneGuide.rawValue), object: xAxisObject)
+        
         SPTScaleMake(xAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
-        SPTPolylineViewDepthBiasMake(xAxisObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBiasMake(xAxisObject, 5.0, 3.0, 0.0)
         
         let zAxisObject = scene.makeObject()
-        SPTPolylineViewMake(zAxisObject, lineMeshId, UIColor.zAxis.rgba, 3.0)
+        SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: lineMeshId, thickness: 3.0, categories: LookCategories.sceneGuide.rawValue), object: zAxisObject)
+        
         SPTScaleMake(zAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
         SPTOrientationMakeEuler(zAxisObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
-        SPTPolylineViewDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
         
         objectFactory = ObjectFactory(scene: scene)
         

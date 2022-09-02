@@ -1,5 +1,5 @@
 //
-//  PolylineViewDepthBias.h
+//  PolylineLookDepthBias.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 09.12.21.
@@ -15,8 +15,8 @@ typedef struct {
     float bias;
     float slopeScale;
     float clamp;
-} SPTPolylineViewDepthBias;
+} SPTPolylineLookDepthBias;
 
-SPTPolylineViewDepthBias SPTPolylineViewDepthBiasMake(SPTObject object, float bias, float slopeScale, float clamp);
+SPTPolylineLookDepthBias SPTPolylineLookDepthBiasMake(SPTObject object, float bias, float slopeScale, float clamp);
 
 SPT_EXTERN_C_END
