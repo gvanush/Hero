@@ -26,20 +26,22 @@ struct PanAnimatorViewGraphView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                Color.systemBackground
-                SignalGraphView(name: animator.source.pan.axis.displayName) {
-                    animatorLastValue
+            GeometryReader { dargAreaGeometry in
+                ZStack {
+                    Color.systemBackground
+                    SignalGraphView(name: animator.source.pan.axis.displayName) {
+                        animatorLastValue
+                    }
+                    Rectangle()
+                        .foregroundColor(.ultraLightAccentColor)
+                        .frame(size: animator.source.pan.boundsSizeOnScreenSize(dargAreaGeometry.size))
+                        .offset(animator.source.pan.boundsOffsetOnScreenSize(dargAreaGeometry.size))
                 }
-                Rectangle()
-                    .foregroundColor(.ultraLightAccentColor)
-                    .frame(size: animator.source.pan.boundsSizeOnScreenSize(geometry.size))
-                    .offset(animator.source.pan.boundsOffsetOnScreenSize(geometry.size))
+                .gesture(dragGesture(geometry: dargAreaGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
+                .defersSystemGestures(on: .all)
             }
-            .gesture(dragGesture(geometry: geometry))
-            .defersSystemGestures(on: .all)
+            .ignoresSafeArea()
         }
-        .ignoresSafeArea()
         .statusBarHidden()
         .onChange(of: isDragging) { newValue in
             if !newValue {
@@ -50,7 +52,7 @@ struct PanAnimatorViewGraphView: View {
         }
     }
     
-    func dragGesture(geometry: GeometryProxy) -> some Gesture {
+    func dragGesture(geometry: GeometryProxy, bottomSafeAreaInset: CGFloat) -> some Gesture {
         DragGesture(minimumDistance: 0.0)
             .updating($isDragging, body: { _, state, _ in
                 state = true
@@ -75,7 +77,7 @@ struct PanAnimatorViewGraphView: View {
             })
             .onEnded({ newDragValue in
                 let bounds = geometry.frame(in: .local)
-                let exitStartRect = bounds.inset(by: .init(top: bounds.height - Self.exitStartRectHeight, left: 0.0, bottom: 0.0, right: 0.0))
+                let exitStartRect = bounds.inset(by: .init(top: bounds.height - bottomSafeAreaInset, left: 0.0, bottom: 0.0, right: 0.0))
                 if shouldCheckForExit && exitStartRect.contains(newDragValue.startLocation) {
                     presentationMode.wrappedValue.dismiss()
                 }
@@ -104,8 +106,6 @@ struct PanAnimatorViewGraphView: View {
             return SPTAnimatorGetValue(animator, 1.0 - Float(dragValue.location.y / geometry.size.height))
         }
     }
-    
-    static let exitStartRectHeight = 34.0
     
 }
 

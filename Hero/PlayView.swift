@@ -32,16 +32,14 @@ struct PlayView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            Group {
-                GeometryReader { sptViewGeometry in
-                    SPTView(scene: model.scene, clearColor: UIColor.lightGray.mtlClearColor, viewCameraObject: model.viewCameraObject, lookCategories: LookCategories.userCreated.rawValue)
-                        .gesture(dragGesture(geometry: sptViewGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
-                        .defersSystemGestures(on: .all)
-                }
+            GeometryReader { dargViewGeometry in
+                SPTView(scene: model.scene, clearColor: UIColor.lightGray.mtlClearColor, viewCameraObject: model.viewCameraObject, lookCategories: LookCategories.userCreated.rawValue)
+                    .gesture(dragGesture(geometry: dargViewGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
+                    .defersSystemGestures(on: .all)
             }
             .ignoresSafeArea()
-            .statusBarHidden()
         }
+        .statusBarHidden()
         .onChange(of: isDragging) { newValue in
             if !newValue {
                 shouldCheckForExit = true

@@ -41,26 +41,28 @@ struct PanAnimatorViewBoundsView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                Color.systemBackground
-                Rectangle()
-                    .foregroundColor(.ultraLightAccentColor)
-                    .frame(size: model.animator.source.pan.boundsSizeOnScreenSize(geometry.size))
-                    .offset(model.animator.source.pan.boundsOffsetOnScreenSize(geometry.size))
-                if let dragValue = dragValue {
-                    HStack {
-                        Image(systemName: "waveform.path.ecg")
-                            .foregroundColor(.secondaryLabel)
-                        Text(String(format: "%.2f", model.valueAt(dragValue.location, screenSize: geometry.size)))
-                            .foregroundColor(.secondaryLabel)
+            GeometryReader { dargViewGeometry in
+                ZStack {
+                    Color.systemBackground
+                    Rectangle()
+                        .foregroundColor(.ultraLightAccentColor)
+                        .frame(size: model.animator.source.pan.boundsSizeOnScreenSize(dargViewGeometry.size))
+                        .offset(model.animator.source.pan.boundsOffsetOnScreenSize(dargViewGeometry.size))
+                    if let dragValue = dragValue {
+                        HStack {
+                            Image(systemName: "waveform.path.ecg")
+                                .foregroundColor(.secondaryLabel)
+                            Text(String(format: "%.2f", model.valueAt(dragValue.location, screenSize: dargViewGeometry.size)))
+                                .foregroundColor(.secondaryLabel)
+                        }
+                        .offset(.init(width: dragValue.location.x - 0.5 * dargViewGeometry.size.width, height: dragValue.location.y - 0.5 * dargViewGeometry.size.height + Self.signalTextVerticalOffset))
                     }
-                    .offset(.init(width: dragValue.location.x - 0.5 * geometry.size.width, height: dragValue.location.y - 0.5 * geometry.size.height + Self.signalTextVerticalOffset))
                 }
+                .gesture(dragGesture(geometry: dargViewGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
+                .defersSystemGestures(on: .all)
             }
-            .gesture(dragGesture(geometry: geometry))
-            .defersSystemGestures(on: .all)
+            .ignoresSafeArea()
         }
-        .ignoresSafeArea()
         .statusBarHidden()
         .onChange(of: isDragging) { newValue in
             if !newValue {
@@ -70,7 +72,7 @@ struct PanAnimatorViewBoundsView: View {
         }
     }
     
-    func dragGesture(geometry: GeometryProxy) -> some Gesture {
+    func dragGesture(geometry: GeometryProxy, bottomSafeAreaInset: CGFloat) -> some Gesture {
         DragGesture(minimumDistance: 0.0)
             .updating($isDragging, body: { _, state, _ in
                 state = true
@@ -90,7 +92,7 @@ struct PanAnimatorViewBoundsView: View {
             })
             .onEnded({ value in
                 let bounds = geometry.frame(in: .local)
-                let exitStartRect = bounds.inset(by: .init(top: bounds.height - Self.exitStartRectHeight, left: 0.0, bottom: 0.0, right: 0.0))
+                let exitStartRect = bounds.inset(by: .init(top: bounds.height - bottomSafeAreaInset, left: 0.0, bottom: 0.0, right: 0.0))
                 if shouldCheckForExit && exitStartRect.contains(value.startLocation) {
                     presentationMode.wrappedValue.dismiss()
                 }
@@ -98,7 +100,6 @@ struct PanAnimatorViewBoundsView: View {
             })
     }
     
-    static let exitStartRectHeight = 34.0
     static let signalTextVerticalOffset = -65.0
 }
 
