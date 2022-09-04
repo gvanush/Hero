@@ -36,40 +36,44 @@ struct PanAnimatorViewBoundsView: View {
     @ObservedObject var model: PanAnimatorViewBoundsViewModel
     @GestureState private var isDragging = false
     @State private var dragValue: DragGesture.Value?
-    @State private var shouldCheckForExit = true
+    @State private var showsAnimatorValue = false
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
         GeometryReader { geometry in
-            GeometryReader { dargViewGeometry in
+            GeometryReader { dragAreaGeometry in
                 ZStack {
                     Color.systemBackground
                     Rectangle()
                         .foregroundColor(.ultraLightAccentColor)
-                        .frame(size: model.animator.source.pan.boundsSizeOnScreenSize(dargViewGeometry.size))
-                        .offset(model.animator.source.pan.boundsOffsetOnScreenSize(dargViewGeometry.size))
-                    if let dragValue = dragValue {
+                        .frame(size: model.animator.source.pan.boundsSizeOnScreenSize(dragAreaGeometry.size))
+                        .offset(model.animator.source.pan.boundsOffsetOnScreenSize(dragAreaGeometry.size))
+                    if showsAnimatorValue {
                         HStack {
                             Image(systemName: "waveform.path.ecg")
                                 .foregroundColor(.secondaryLabel)
-                            Text(String(format: "%.2f", model.valueAt(dragValue.location, screenSize: dargViewGeometry.size)))
+                            Text(String(format: "%.2f", model.valueAt(dragValue!.location, screenSize: dragAreaGeometry.size)))
                                 .foregroundColor(.secondaryLabel)
                         }
-                        .offset(.init(width: dragValue.location.x - 0.5 * dargViewGeometry.size.width, height: dragValue.location.y - 0.5 * dargViewGeometry.size.height + Self.signalTextVerticalOffset))
+                        .offset(.init(width: dragValue!.location.x - 0.5 * dragAreaGeometry.size.width, height: dragValue!.location.y - 0.5 * dragAreaGeometry.size.height + Self.signalTextVerticalOffset))
                     }
                 }
-                .gesture(dragGesture(geometry: dargViewGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
+                .gesture(dragGesture(geometry: dragAreaGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
                 .defersSystemGestures(on: .all)
+                .onChange(of: isDragging) { [isDragging] newValue in
+                    if newValue {
+                        if !isDragging {
+                            showsAnimatorValue = model.isInBounds(point: dragValue!.startLocation, screenSize: dragAreaGeometry.size)
+                        }
+                    } else {
+                        dragValue = nil
+                        showsAnimatorValue = false
+                    }
+                }
             }
             .ignoresSafeArea()
         }
         .statusBarHidden()
-        .onChange(of: isDragging) { newValue in
-            if !newValue {
-                shouldCheckForExit = true
-                dragValue = nil
-            }
-        }
     }
     
     func dragGesture(geometry: GeometryProxy, bottomSafeAreaInset: CGFloat) -> some Gesture {
@@ -78,22 +82,19 @@ struct PanAnimatorViewBoundsView: View {
                 state = true
             })
             .onChanged({ newDragValue in
-                if let value = dragValue {
-                    let delta = CGSize(width: newDragValue.translation.width - value.translation.width, height: newDragValue.translation.height - value.translation.height)
-                    if delta.height > 0.0 || abs(delta.height) < abs(delta.width) {
-                        shouldCheckForExit = false
-                    }
-                    dragValue = newDragValue
-                } else {
-                    if model.isInBounds(point: newDragValue.location, screenSize: geometry.size) {
-                        dragValue = newDragValue
-                    }
-                }
+                dragValue = newDragValue
             })
-            .onEnded({ value in
+            .onEnded({ newDragValue in
+                
+                guard let value = dragValue else { return }
+                let delta = CGSize(width: newDragValue.translation.width - value.translation.width, height: newDragValue.translation.height - value.translation.height)
+                if delta.height > 0.0 || abs(delta.height) < abs(delta.width) {
+                    return
+                }
+                
                 let bounds = geometry.frame(in: .local)
                 let exitStartRect = bounds.inset(by: .init(top: bounds.height - bottomSafeAreaInset, left: 0.0, bottom: 0.0, right: 0.0))
-                if shouldCheckForExit && exitStartRect.contains(value.startLocation) {
+                if exitStartRect.contains(newDragValue.startLocation) {
                     presentationMode.wrappedValue.dismiss()
                 }
                 

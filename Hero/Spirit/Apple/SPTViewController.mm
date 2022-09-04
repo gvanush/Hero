@@ -53,6 +53,14 @@
     }
 }
 
+-(void)setPanLocation:(NSValue *)panLocation {
+    if(panLocation == nil) {
+        NSLog(@"panLocation nil");
+    } else {
+        NSLog(@"panLocation %@", NSStringFromCGPoint(panLocation.CGPointValue));
+    }
+}
+
 // MARK: MTKViewDelegate
 -(void) drawInMTKView: (nonnull MTKView*) view {
     

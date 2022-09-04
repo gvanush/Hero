@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) MTKView* mtkView;
 @property (nonatomic, readonly) SPTRenderingContext* renderingContext;
 
+@property (nonatomic, readwrite) NSValue* _Nullable panLocation;
+
 @end
 
 NS_ASSUME_NONNULL_END

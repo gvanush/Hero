@@ -522,6 +522,7 @@
 		B73E47E427CFCD2400CB0AFC /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				B7B711E328C4730F0077C7CD /* Viewport */,
 				B710DB8327BC106D00C57BDF /* SPTObjectBinding.swift */,
 				B757DB7E28A900CF00BB5DB4 /* SPTObservedComponent.swift */,
 				B73E47DF27CEA1F100CB0AFC /* SPTGeneratortUtil.swift */,
@@ -535,9 +536,6 @@
 				B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */,
 				B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */,
 				B76D4FC928AC0E1B0029E47B /* SPTObjectPropertyUtil.swift */,
-				B7791D522726762100E0C934 /* SPTView.swift */,
-				B73245B12741188500708909 /* SPTViewController.h */,
-				B73245B22741188500708909 /* SPTViewController.mm */,
 				B76D4FC728AB7C990029E47B /* SPTUtil.swift */,
 				B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */,
 				B7B711D628C130740077C7CD /* SPTOutlineLookUtil.swift */,
@@ -671,6 +669,16 @@
 				B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */,
 			);
 			path = Component;
+			sourceTree = "<group>";
+		};
+		B7B711E328C4730F0077C7CD /* Viewport */ = {
+			isa = PBXGroup;
+			children = (
+				B7791D522726762100E0C934 /* SPTView.swift */,
+				B73245B12741188500708909 /* SPTViewController.h */,
+				B73245B22741188500708909 /* SPTViewController.mm */,
+			);
+			name = Viewport;
 			sourceTree = "<group>";
 		};
 		B7BCB11527D4D3B300F5AFB1 /* Metadata */ = {
@@ -1116,6 +1124,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_TIDY_BUGPRONE_REDUNDANT_BRANCH_CONDITION = YES;
+				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";
@@ -1156,6 +1166,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_TIDY_BUGPRONE_REDUNDANT_BRANCH_CONDITION = YES;
+				CLANG_TIDY_MISC_REDUNDANT_EXPRESSION = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Hero/Preview Content\"";

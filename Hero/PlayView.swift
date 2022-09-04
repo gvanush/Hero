@@ -27,13 +27,14 @@ struct PlayView: View {
     @Environment(\.presentationMode) private var presentationMode
     @GestureState private var isDragging = false
     @State private var dragValue: DragGesture.Value?
-    @State private var shouldCheckForExit = true
     
     
     var body: some View {
         GeometryReader { geometry in
             GeometryReader { dargViewGeometry in
-                SPTView(scene: model.scene, clearColor: UIColor.lightGray.mtlClearColor, viewCameraObject: model.viewCameraObject, lookCategories: LookCategories.userCreated.rawValue)
+                SPTView(scene: model.scene, clearColor: UIColor.lightGray.mtlClearColor, viewCameraObject: model.viewCameraObject)
+                    .lookCategories(LookCategories.userCreated.rawValue)
+                    .panLocation(dragValue?.location)
                     .gesture(dragGesture(geometry: dargViewGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
                     .defersSystemGestures(on: .all)
             }
@@ -42,7 +43,6 @@ struct PlayView: View {
         .statusBarHidden()
         .onChange(of: isDragging) { newValue in
             if !newValue {
-                shouldCheckForExit = true
                 dragValue = nil
             }
         }
@@ -54,20 +54,22 @@ struct PlayView: View {
                 state = true
             })
             .onChanged({ newDragValue in
-                if let value = dragValue {
-                    let delta = CGSize(width: newDragValue.translation.width - value.translation.width, height: newDragValue.translation.height - value.translation.height)
-                    if delta.height > 0.0 || abs(delta.height) < abs(delta.width) {
-                        shouldCheckForExit = false
-                    }
-                    dragValue = newDragValue
-                }
+                dragValue = newDragValue
             })
-            .onEnded({ value in
+            .onEnded({ newDragValue in
+                
+                guard let value = dragValue else { return }
+                let delta = CGSize(width: newDragValue.translation.width - value.translation.width, height: newDragValue.translation.height - value.translation.height)
+                if delta.height > 0.0 || abs(delta.height) < abs(delta.width) {
+                    return
+                }
+                
                 let bounds = geometry.frame(in: .local)
                 let exitStartRect = bounds.inset(by: .init(top: bounds.height - bottomSafeAreaInset, left: 0.0, bottom: 0.0, right: 0.0))
-                if shouldCheckForExit && exitStartRect.contains(value.startLocation) {
+                if exitStartRect.contains(newDragValue.startLocation) {
                     presentationMode.wrappedValue.dismiss()
                 }
+                
             })
     }
 }

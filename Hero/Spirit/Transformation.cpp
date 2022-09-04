@@ -206,7 +206,7 @@ void Transformation::update(Registry& registry, GroupType& group) {
 
             const auto& parentTran = registry.get<Transformation>(entityQueue.front());
             forEachChild(registry, entityQueue.front(), [&registry, &entityQueue, &parentTran] (auto childEntity, Transformation& childTran) {
-                // If child is dirty it will be updated as part of outer lopp
+                // If child is dirty it will be updated as part of outer loop
                 if(!registry.all_of<DirtyTransformationFlag>(childEntity)) {
                     childTran.global = simd_mul(parentTran.global, childTran.local);
                     entityQueue.push(childEntity);
