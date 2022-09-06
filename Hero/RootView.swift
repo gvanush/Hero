@@ -31,7 +31,7 @@ struct RootView: View {
                             .selectedObjectUI(cornerRadius: 9.0)
                     }
                 })
-                    .renderingPaused(showsTransformView || showsNewGeneratorView || showsAnimatorsView)
+                    .renderingPaused(showsTransformView || showsNewGeneratorView || showsAnimatorsView || showsPlayView)
                     .lookCategories([.userCreated, .sceneGuide, .objectSelection])
                     .navigationTitle("Generative")
                     .navigationBarTitleDisplayMode(.inline)

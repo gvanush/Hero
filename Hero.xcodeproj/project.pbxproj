@@ -118,6 +118,7 @@
 		B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711DD28C13E060077C7CD /* SPTMeshLookUtil.swift */; };
 		B7B711E028C1D8100077C7CD /* SPTPolylineLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711DF28C1D8100077C7CD /* SPTPolylineLookUtil.swift */; };
 		B7B711E228C1E4720077C7CD /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711E128C1E4720077C7CD /* PlayView.swift */; };
+		B7B711E928C4CE9B0077C7CD /* AnimatorEvaluation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B711E728C4CE9B0077C7CD /* AnimatorEvaluation.cpp */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
@@ -304,6 +305,8 @@
 		B7B711DD28C13E060077C7CD /* SPTMeshLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTMeshLookUtil.swift; sourceTree = "<group>"; };
 		B7B711DF28C1D8100077C7CD /* SPTPolylineLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPolylineLookUtil.swift; sourceTree = "<group>"; };
 		B7B711E128C1E4720077C7CD /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
+		B7B711E728C4CE9B0077C7CD /* AnimatorEvaluation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatorEvaluation.cpp; sourceTree = "<group>"; };
+		B7B711E828C4CE9B0077C7CD /* AnimatorEvaluation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorEvaluation.h; sourceTree = "<group>"; };
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
@@ -515,6 +518,8 @@
 				B742447B2899366200A09808 /* AnimatorSource.h */,
 				B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */,
 				B757DB7028A3E38B00BB5DB4 /* AnimatorBinding.h */,
+				B7B711E728C4CE9B0077C7CD /* AnimatorEvaluation.cpp */,
+				B7B711E828C4CE9B0077C7CD /* AnimatorEvaluation.h */,
 			);
 			name = Animator;
 			sourceTree = "<group>";
@@ -885,6 +890,7 @@
 				B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
 				B712240128BBDFB3006A31B1 /* FloatSlider.swift in Sources */,
+				B7B711E928C4CE9B0077C7CD /* AnimatorEvaluation.cpp in Sources */,
 				B7235851275D34D000337547 /* Polyline.cpp in Sources */,
 				B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */,
 				B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */,

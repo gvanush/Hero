@@ -151,6 +151,14 @@ bool AnimatorManager::validateAnimator(const SPTAnimator& animator) {
     }
 }
 
+void AnimatorManager::evaluate(SPTAnimatorId animatorId, const SPTAnimatorEvaluationContext* context) {
+    
+}
+
+void AnimatorManager::evaluateAll(const SPTAnimatorEvaluationContext* context) {
+    
+}
+
 SPTAnimatorId AnimatorManager::nextId = 0;
 
 }
