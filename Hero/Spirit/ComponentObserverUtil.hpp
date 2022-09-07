@@ -28,7 +28,7 @@ struct ComponentObserverItem {
 template <typename O, typename U>
 SPTObserverToken addComponentObserver(SPTObject object, typename O::Observer observer, U userInfo) {
     assert(observer);
-    auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
+    auto& registry = Scene::getRegistry(object);
     if(auto observable = registry.try_get<O>(object.entity)) {
         auto it = std::find_if(observable->observerItems.begin(), observable->observerItems.end(), [](const auto& item) {
             return item.observer == nullptr;
@@ -46,7 +46,7 @@ SPTObserverToken addComponentObserver(SPTObject object, typename O::Observer obs
 
 template <typename O>
 void removeComponentObserver(SPTObject object, SPTObserverToken token) {
-    auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
+    auto& registry = Scene::getRegistry(object);
     // Object may have been destroyed before its observers trying
     // to unsubscribe, hence simply ignoring the request
     if(!registry.valid(object.entity)) {

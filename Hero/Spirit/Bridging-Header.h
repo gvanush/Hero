@@ -3,8 +3,10 @@
 //
 
 #import "SPTScene.h"
+#import "SPTPlayableScene.h"
 #import "SPTRenderingContext.h"
 #import "SPTViewController.h"
+#import "SPTPlayViewController.h"
 #import "Spirit.h"
 #import "ResourceManager.h"
 #import "Position.h"

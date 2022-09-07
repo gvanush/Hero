@@ -67,7 +67,7 @@ struct SceneView<BV>: View where BV: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                SPTView(scene: model.scene, clearColor: clearColor, viewCameraObject: model.viewCameraObject)
+                SPTView(scene: model.scene, clearColor: clearColor, viewCameraEntity: model.viewCameraObject.entity)
                     .renderingPaused(isRenderingPaused)
                     .lookCategories(lookCategories.rawValue)
                 // NOTE: Adding 'allowsHitTesting' to 'SPTView' will cause its underlying

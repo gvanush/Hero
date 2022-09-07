@@ -11,6 +11,7 @@
 #include "Base.hpp"
 #include "Renderer.hpp"
 #include "Transformation.hpp"
+
 #include <entt/entt.hpp>
 #include <tuple>
 
@@ -32,7 +33,7 @@ struct Scene {
     }
     
     Registry registry;
-    Renderer meshRenderer {registry};
+    Renderer renderer {registry};
     Transformation::GroupType transformationGroup;
 };
 

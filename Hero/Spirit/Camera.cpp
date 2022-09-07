@@ -9,13 +9,9 @@
 #include "Camera.hpp"
 #include "Scene.hpp"
 #include "Transformation.hpp"
+#include "Base.hpp"
 
 namespace spt {
-
-struct ProjectionMatrix {
-    simd_float4x4 float4x4;
-    bool isDirty;
-};
 
 simd_float4x4 computeProjectionMatrix(const SPTPerspectiveCamera& camera) {
     const auto c = 1.f / tanf(0.5f * camera.fovy);
@@ -49,17 +45,16 @@ simd_float4x4 computeViewportMatrix(simd_float2 screenSize) {
 
 namespace Camera {
 
-simd_float4x4 getViewMatrix(SPTObject object) {
-    return simd_inverse(spt::Transformation::getGlobal(spt::Scene::getRegistry(object), object.entity));
+simd_float4x4 getViewMatrix(Registry& registry, SPTEntity entity) {
+    return simd_inverse(spt::Transformation::getGlobal(registry, entity));
 }
 
-simd_float4x4 getProjectionMatrix(SPTObject object) {
-    auto& registry = spt::Scene::getRegistry(object);
-    if(auto projectionMatrix = registry.try_get<ProjectionMatrix>(object.entity); projectionMatrix) {
+simd_float4x4 getProjectionMatrix(Registry& registry, SPTEntity entity) {
+    if(auto projectionMatrix = registry.try_get<ProjectionMatrix>(entity); projectionMatrix) {
         if(projectionMatrix->isDirty) {
-            if(const auto perspectiveCamera = registry.try_get<SPTPerspectiveCamera>(object.entity)) {
+            if(const auto perspectiveCamera = registry.try_get<SPTPerspectiveCamera>(entity)) {
                 projectionMatrix->float4x4 = spt::computeProjectionMatrix(*perspectiveCamera);
-            } else if(const auto orthoCamera = registry.try_get<SPTOrthographicCamera>(object.entity)) {
+            } else if(const auto orthoCamera = registry.try_get<SPTOrthographicCamera>(entity)) {
                 projectionMatrix->float4x4 = spt::computeProjectionMatrix(*orthoCamera);
             } else {
                 assert(false);
@@ -71,8 +66,18 @@ simd_float4x4 getProjectionMatrix(SPTObject object) {
     return matrix_identity_float4x4;
 }
 
+simd_float4x4 getProjectionViewMatrix(Registry& registry, SPTEntity entity) {
+    return simd_mul(getProjectionMatrix(registry, entity), getViewMatrix(registry, entity));
+}
+
 simd_float4x4 getProjectionViewMatrix(SPTObject object) {
-    return simd_mul(getProjectionMatrix(object), getViewMatrix(object));
+    auto& registry = spt::Scene::getRegistry(object);
+    return getProjectionViewMatrix(registry, object.entity);
+}
+
+void updatePerspectiveAspectRatio(Registry& registry, SPTEntity entity, float aspectRatio) {
+    registry.get<spt::ProjectionMatrix>(entity).isDirty = true;
+    registry.get<SPTPerspectiveCamera>(entity).aspectRatio = aspectRatio;
 }
 
 }
@@ -94,9 +99,7 @@ SPTOrthographicCamera SPTCameraMakeOrthographic(SPTObject object, float sizeY, f
 }
 
 void SPTCameraUpdatePerspectiveAspectRatio(SPTObject object, float aspectRatio) {
-    auto& registry = spt::Scene::getRegistry(object);
-    registry.get<spt::ProjectionMatrix>(object.entity).isDirty = true;
-    registry.get<SPTPerspectiveCamera>(object.entity).aspectRatio = aspectRatio;
+    spt::Camera::updatePerspectiveAspectRatio(spt::Scene::getRegistry(object), object.entity, aspectRatio);
 }
 
 void SPTCameraUpdateOrthographicAspectRatio(SPTObject object, float aspectRatio) {

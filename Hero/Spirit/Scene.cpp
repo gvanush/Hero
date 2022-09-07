@@ -44,7 +44,7 @@ void Scene::destroyObject(SPTObject object) {
         });
     }
     
-    // Destroy children first then parents since children needs to remove itself from the parent
+    // Destroy children first then parents since children need to remove themselves from their parents
     for(auto it = entities.crbegin(); it != entities.crend(); ++it) {
         registry.destroy(*it);
     }
@@ -55,7 +55,7 @@ void Scene::onPrerender() {
 }
 
 void Scene::render(void* renderingContext) {
-    meshRenderer.render(renderingContext);
+    renderer.render(renderingContext);
 }
 
 }

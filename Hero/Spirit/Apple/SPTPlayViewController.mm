@@ -1,27 +1,25 @@
 //
-//  SPTViewController.m
+//  SPTPlayViewController.m
 //  Hero
 //
-//  Created by Vanush Grigoryan on 14.11.21.
+//  Created by Vanush Grigoryan on 06.09.22.
 //
 
-#import "SPTViewController.h"
-#import "SPTScene.h"
+#import "SPTPlayViewController.h"
+#import "SPTPlayableScene.h"
 #import "SPTRenderingContext.h"
 
-#include "Scene.hpp"
-#include "Camera.h"
+#include "PlayableScene.hpp"
 #include "Camera.hpp"
-#include "Transformation.hpp"
 #include "Position.hpp"
 
-@interface SPTViewController () <MTKViewDelegate>
+@interface SPTPlayViewController () <MTKViewDelegate>
 
 @end
 
-@implementation SPTViewController
+@implementation SPTPlayViewController
 
--(instancetype) initWithScene: (SPTScene*) scene {
+-(instancetype) initWithScene: (SPTPlayableScene*) scene {
     if (self = [super initWithNibName: nil bundle: nil]) {
         _scene = scene;
         _renderingContext = [[SPTRenderingContext alloc] init];
@@ -38,19 +36,16 @@
     self.mtkView.autoResizeDrawable = YES;
     self.mtkView.colorPixelFormat = [SPTRenderingContext colorPixelFormat];
     self.mtkView.depthStencilPixelFormat = [SPTRenderingContext depthPixelFormat];
-    self.mtkView.presentsWithTransaction = YES;
     self.mtkView.delegate = self;
     [self.view addSubview: self.mtkView];
     [self updateViewportSize: self.mtkView.drawableSize];
 }
 
--(void) setRenderingPaused: (BOOL) paused {
-    if(paused == self.mtkView.paused) {
-        return;
-    }
-    self.mtkView.paused = paused;
-    if(!paused) {
-        [self updateViewportSize: self.mtkView.drawableSize];
+-(void)setPanLocation:(NSValue *)panLocation {
+    if(panLocation == nil) {
+        NSLog(@"panLocation nil");
+    } else {
+        NSLog(@"panLocation %@", NSStringFromCGPoint(panLocation.CGPointValue));
     }
 }
 
@@ -58,11 +53,11 @@
 -(void) drawInMTKView: (nonnull MTKView*) view {
     
     id<MTLCommandBuffer> commandBuffer = [[SPTRenderingContext defaultCommandQueue] commandBuffer];
-    commandBuffer.label = @"MainCommandBuffer";
+    commandBuffer.label = @"PlayViewRenderCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
     
-    auto sceneCpp = static_cast<spt::Scene*>(self.scene.cpp);
-    sceneCpp->onPrerender();
+    auto sceneCpp = static_cast<spt::PlayableScene*>(self.scene.cpp);
+//    scene->onPrerender();
     
     self.renderingContext.cameraPosition = spt::Position::getXYZ(sceneCpp->registry, self.viewCameraEntity);
     self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(sceneCpp->registry, self.viewCameraEntity);
@@ -74,10 +69,9 @@
         
         sceneCpp->render((__bridge void*) self.renderingContext);
         
-        [commandBuffer commit];
-        [commandBuffer waitUntilScheduled];
+        [commandBuffer presentDrawable: view.currentDrawable];
         
-        [view.currentDrawable present];
+        [commandBuffer commit];
         
         self.renderingContext.renderPassDescriptor = nil;
         
@@ -95,7 +89,8 @@
 // MARK: Utils
 -(void) updateViewportSize: (CGSize) size {
     self.renderingContext.viewportSize = simd_make_float2(size.width, size.height);
-    auto sceneCpp = static_cast<spt::Scene*>(self.scene.cpp);
+    // Support both options
+    auto sceneCpp = static_cast<spt::PlayableScene*>(self.scene.cpp);
     spt::Camera::updatePerspectiveAspectRatio(sceneCpp->registry, self.viewCameraEntity, size.width / size.height);
 //    SPTCameraUpdateOrthographicAspectRatio(self.viewCameraEntity, size.width / size.height);
 }

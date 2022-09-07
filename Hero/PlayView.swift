@@ -10,12 +10,12 @@ import SwiftUI
 
 class PlayViewModel: ObservableObject {
     
-    let scene: SPTScene
-    let viewCameraObject: SPTObject
+    let scene: SPTPlayableScene
+    let viewCameraEntity: SPTEntity
     
-    init(scene: SPTScene, viewCameraObject: SPTObject) {
+    init(scene: SPTPlayableScene, viewCameraEntity: SPTEntity) {
         self.scene = scene
-        self.viewCameraObject = viewCameraObject
+        self.viewCameraEntity = viewCameraEntity
     }
 }
 
@@ -32,7 +32,7 @@ struct PlayView: View {
     var body: some View {
         GeometryReader { geometry in
             GeometryReader { dargViewGeometry in
-                SPTView(scene: model.scene, clearColor: UIColor.lightGray.mtlClearColor, viewCameraObject: model.viewCameraObject)
+                SPTPlayView(scene: model.scene, clearColor: UIColor.lightGray.mtlClearColor, viewCameraEntity: model.viewCameraEntity)
                     .lookCategories(LookCategories.userCreated.rawValue)
                     .panLocation(dragValue?.location)
                     .gesture(dragGesture(geometry: dargViewGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))

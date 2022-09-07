@@ -14,16 +14,15 @@ struct SPTView: UIViewControllerRepresentable {
 
     let scene: SPTScene
     let clearColor: MTLClearColor
-    let viewCameraObject: SPTObject
+    let viewCameraEntity: SPTEntity
     
     private var isRenderingPaused = false
-    private var panLocation: CGPoint?
     private var lookCategories: SPTLookCategories = kSPTLookCategoriesAll
     
-    init(scene: SPTScene, clearColor: MTLClearColor, viewCameraObject: SPTObject) {
+    init(scene: SPTScene, clearColor: MTLClearColor, viewCameraEntity: SPTEntity) {
         self.scene = scene
         self.clearColor = clearColor
-        self.viewCameraObject = viewCameraObject
+        self.viewCameraEntity = viewCameraEntity
     }
     
     func makeUIViewController(context: Context) -> SPTViewController {
@@ -34,12 +33,6 @@ struct SPTView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ vc: SPTViewController, context: Context) {
         updateVC(vc)
-    }
-    
-    func panLocation(_ location: CGPoint?) -> SPTView {
-        var view = self
-        view.panLocation = location
-        return view
     }
     
     func renderingPaused(_ paused: Bool) -> SPTView {
@@ -58,12 +51,7 @@ struct SPTView: UIViewControllerRepresentable {
         vc.mtkView.clearColor = clearColor
         vc.setRenderingPaused(isRenderingPaused)
         vc.renderingContext.lookCategories = lookCategories
-        vc.viewCameraObject = viewCameraObject
-        if let loc = panLocation {
-            vc.panLocation = .init(cgPoint: loc)
-        } else {
-            vc.panLocation = nil
-        }
+        vc.viewCameraEntity = viewCameraEntity
     }
     
     typealias UIViewControllerType = SPTViewController
