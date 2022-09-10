@@ -16,7 +16,7 @@ class SceneViewModel: ObservableObject {
         case following
     }
     
-    let scene = SPTScene()
+    let scene = SPTSceneProxy()
     let lineMeshId: SPTMeshId
     
     let objectFactory: ObjectFactory
@@ -120,7 +120,7 @@ class SceneViewModel: ObservableObject {
         let locationInScene = SPTCameraConvertViewportToWorld(viewCameraObject, simd_float3(location.float2, 1.0), viewportSize.float2)
         let cameraPos = SPTPositionGetXYZ(viewCameraObject)
         
-        let object = SPTRayCastScene(scene.cpp(), SPTRay(origin: cameraPos, direction: locationInScene - cameraPos), 0.0001).object
+        let object = SPTRayCastScene(scene.handle, SPTRay(origin: cameraPos, direction: locationInScene - cameraPos), 0.0001).object
         
         if SPTIsNull(object) {
             return nil
@@ -233,7 +233,7 @@ class SceneViewModel: ObservableObject {
     func destroySelected() {
         guard let selectedObject = selectedObject else { return }
         self.selectedObject = nil
-        SPTScene.destroy(selectedObject)
+        SPTSceneProxy.destroyObject(selectedObject)
     }
     
     static let zoomFactor: Float = 3.0

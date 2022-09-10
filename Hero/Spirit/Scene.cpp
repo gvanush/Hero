@@ -6,6 +6,7 @@
 //
 
 #include "Scene.hpp"
+#include "Scene.h"
 #include "Generator.hpp"
 
 #include <vector>
@@ -23,33 +24,6 @@ Scene::~Scene() {
     registry.on_destroy<Transformation>().disconnect<&Transformation::onDestroy>();
 }
 
-SPTObject Scene::makeObject() {
-    const auto entity = registry.create();
-    registry.emplace<Transformation>(entity);
-    return SPTObject { entity, this };
-}
-
-void Scene::destroyObject(SPTObject object) {
-    assert(!SPTIsNull(object));
-    // Removing all 'Transformation' component children as well.
-    // Prefering iterative over recursive algorithm to avoid stack overflow.
-    // Possibly this can be optimized by vector reserve
-    auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
-    
-    std::vector<SPTEntity> entities {1, object.entity};
-    for (std::size_t i = 0; i < entities.size(); ++i) {
-        const auto entity = entities[i];
-        Transformation::forEachChild(registry, entity, [&entities] (auto childEntity, const auto&) {
-            entities.push_back(childEntity);
-        });
-    }
-    
-    // Destroy children first then parents since children need to remove themselves from their parents
-    for(auto it = entities.crbegin(); it != entities.crend(); ++it) {
-        registry.destroy(*it);
-    }
-}
-
 void Scene::onPrerender() {
     Transformation::update(registry, transformationGroup);
 }
@@ -58,4 +32,40 @@ void Scene::render(void* renderingContext) {
     renderer.render(renderingContext);
 }
 
+}
+
+SPTHandle SPTSceneMake() {
+    return new spt::Scene();
+}
+
+void SPTSceneDestroy(SPTHandle handle) {
+    delete static_cast<spt::Scene*>(handle);
+}
+
+SPTObject SPTSceneMakeObject(SPTHandle sceneHandle) {
+    auto& registry = spt::Scene::getRegistry(sceneHandle);
+    const auto entity = registry.create();
+    registry.emplace<spt::Transformation>(entity);
+    return SPTObject { entity, sceneHandle };
+}
+
+void SPTSceneDestroyObject(SPTObject object) {
+    assert(!SPTIsNull(object));
+    // Removing all 'Transformation' component children as well.
+    // Prefering iterative over recursive algorithm to avoid stack overflow.
+    // Possibly this can be optimized by vector reserve
+    auto& registry = spt::Scene::getRegistry(object);
+    
+    std::vector<SPTEntity> entities {1, object.entity};
+    for (std::size_t i = 0; i < entities.size(); ++i) {
+        const auto entity = entities[i];
+        spt::Transformation::forEachChild(registry, entity, [&entities] (auto childEntity, const auto&) {
+            entities.push_back(childEntity);
+        });
+    }
+    
+    // Destroy children first then parents since children need to remove themselves from their parents
+    for(auto it = entities.crbegin(); it != entities.crend(); ++it) {
+        registry.destroy(*it);
+    }
 }

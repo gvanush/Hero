@@ -2,13 +2,13 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-#import "SPTScene.h"
-#import "SPTPlayableScene.h"
 #import "SPTRenderingContext.h"
 #import "SPTViewController.h"
 #import "SPTPlayViewController.h"
 #import "Spirit.h"
 #import "ResourceManager.h"
+#import "Scene.h"
+#import "PlayableScene.h"
 #import "Position.h"
 #import "Orientation.h"
 #import "Scale.h"

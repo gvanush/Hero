@@ -10,10 +10,10 @@ import SwiftUI
 
 class PlayViewModel: ObservableObject {
     
-    let scene: SPTPlayableScene
+    let scene: SPTPlayableSceneProxy
     let viewCameraEntity: SPTEntity
     
-    init(scene: SPTPlayableScene, viewCameraEntity: SPTEntity) {
+    init(scene: SPTPlayableSceneProxy, viewCameraEntity: SPTEntity) {
         self.scene = scene
         self.viewCameraEntity = viewCameraEntity
     }

@@ -6,6 +6,7 @@
 //
 
 #include "PlayableScene.hpp"
+#include "PlayableScene.h"
 #include "Scene.hpp"
 #include "MeshLook.h"
 #include "Transformation.hpp"
@@ -15,11 +16,22 @@
 
 namespace spt {
 
-void PlayableScene::setupFromScene(const Scene* scene, SPTEntity viewCameraEntity) {
+void PlayableScene::render(void* renderingContext) {
+    renderer.render(renderingContext);
+}
+
+}
+
+SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTEntity viewCameraEntity) {
     
+    auto scene = static_cast<spt::Scene*>(sceneHandle);
     const auto& sourceRegistry = scene->registry;
     auto view = sourceRegistry.view<SPTMeshLook, spt::Transformation>();
-    view.each([this] (auto entity, auto& meshLook, auto& transformation) {
+    
+    auto playableScene = new spt::PlayableScene{};
+    auto& registry = playableScene->registry;
+    
+    view.each([&registry] (auto entity, auto& meshLook, auto& transformation) {
         auto newEntity = registry.create();
         registry.emplace<SPTMeshLook>(newEntity, meshLook);
         registry.emplace<spt::Transformation>(newEntity, transformation);
@@ -42,14 +54,18 @@ void PlayableScene::setupFromScene(const Scene* scene, SPTEntity viewCameraEntit
     registry.emplace<SPTPerspectiveCamera>(cameraEntity, sourceRegistry.get<SPTPerspectiveCamera>(viewCameraEntity));
     registry.emplace<spt::ProjectionMatrix>(cameraEntity, sourceRegistry.get<spt::ProjectionMatrix>(viewCameraEntity));
     registry.emplace<spt::Transformation>(cameraEntity, sourceRegistry.get<spt::Transformation>(viewCameraEntity));
-    this->viewCameraEntity = cameraEntity;
+    playableScene->params.viewCameraEntity = cameraEntity;
     
     assert(sourceRegistry.all_of<spt::Transformation>(viewCameraEntity));
-    assert(registry.all_of<spt::Transformation>(this->viewCameraEntity));
+    assert(registry.all_of<spt::Transformation>(playableScene->params.viewCameraEntity));
+    
+    return playableScene;
 }
 
-void PlayableScene::render(void* renderingContext) {
-    renderer.render(renderingContext);
+void SPTPlayableSceneDestroy(SPTHandle sceneHandle) {
+    delete static_cast<spt::PlayableScene*>(sceneHandle);
 }
 
+SPTPlayableSceneParams SPTPlayableSceneGetParams(SPTHandle sceneHandle) {
+    return static_cast<spt::PlayableScene*>(sceneHandle)->params;
 }

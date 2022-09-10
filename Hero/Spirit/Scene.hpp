@@ -22,14 +22,15 @@ struct Scene {
     Scene();
     ~Scene();
     
-    SPTObject makeObject();
-    static void destroyObject(SPTObject entity);
-    
     void onPrerender();
     void render(void* renderingContext);
     
+    static Registry& getRegistry(SPTHandle sceneHandle) {
+        return static_cast<spt::Scene*>(sceneHandle)->registry;
+    }
+    
     static Registry& getRegistry(SPTObject object) {
-        return static_cast<spt::Scene*>(object.sceneHandle)->registry;
+        return getRegistry(object.sceneHandle);
     }
     
     Registry registry;

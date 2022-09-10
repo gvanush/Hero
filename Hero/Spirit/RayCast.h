@@ -35,7 +35,7 @@ typedef struct {
     float rayDirectionFactor;
 } SPTRayCastResult;
 
-SPTRayCastResult SPTRayCastScene(SPTSceneHandle scene, SPTRay ray, float tolerance);
+SPTRayCastResult SPTRayCastScene(SPTHandle scene, SPTRay ray, float tolerance);
 
 typedef struct {
     float rayDirectionFactor;

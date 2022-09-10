@@ -60,7 +60,7 @@ struct NewGeneratorView: View {
             // is accessed by SwiftUI views during the dismissal
             if let generatorComponent = generatorComponent, isCancelled {
                 sceneViewModel.selectedObject = nil
-                SPTScene.destroy(generatorComponent.object)
+                SPTSceneProxy.destroyObject(generatorComponent.object)
             }
         }
     }

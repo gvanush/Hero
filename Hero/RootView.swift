@@ -83,8 +83,8 @@ struct RootView: View {
                 .environmentObject(sceneViewModel)
         }
         .fullScreenCover(isPresented: $showsPlayView) {
-            let playableScene = SPTPlayableScene.make(from: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCameraObject.entity)
-            PlayView(model: PlayViewModel(scene: playableScene, viewCameraEntity: playableScene.viewCameraEntity()))
+            let playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCameraObject.entity)
+            PlayView(model: PlayViewModel(scene: playableScene, viewCameraEntity: playableScene.params.viewCameraEntity))
         }
     }
     

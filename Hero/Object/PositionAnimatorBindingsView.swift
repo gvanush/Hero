@@ -47,7 +47,7 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
     }
         
     private func setupGuideObjects() {
-        
+
         guideObjects = (sceneViewModel.scene.makeObject(), sceneViewModel.scene.makeObject(), sceneViewModel.scene.makeObject())
         
         let pointSize: Float = 6.0
@@ -125,9 +125,9 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
  
     private func removeGuideObjects() {
         guard let objects = guideObjects else { return }
-        SPTScene.destroy(objects.point0)
-        SPTScene.destroy(objects.point1)
-        SPTScene.destroy(objects.line)
+        SPTSceneProxy.destroyObject(objects.point0)
+        SPTSceneProxy.destroyObject(objects.point1)
+        SPTSceneProxy.destroyObject(objects.line)
         guideObjects = nil
     }
     

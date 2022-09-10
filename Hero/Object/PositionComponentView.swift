@@ -126,7 +126,7 @@ class BasePositionComponent: BasicComponent<Axis> {
     
     private func removeGuideObjects() {
         guard let object = guideAxisObject else { return }
-        SPTScene.destroy(object)
+        SPTSceneProxy.destroyObject(object)
         guideAxisObject = nil
     }
     

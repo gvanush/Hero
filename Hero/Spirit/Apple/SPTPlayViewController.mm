@@ -6,7 +6,6 @@
 //
 
 #import "SPTPlayViewController.h"
-#import "SPTPlayableScene.h"
 #import "SPTRenderingContext.h"
 
 #include "PlayableScene.hpp"
@@ -19,9 +18,9 @@
 
 @implementation SPTPlayViewController
 
--(instancetype) initWithScene: (SPTPlayableScene*) scene {
+-(instancetype) initWithSceneHandle: (SPTHandle) sceneHandle {
     if (self = [super initWithNibName: nil bundle: nil]) {
-        _scene = scene;
+        _sceneHandle = sceneHandle;
         _renderingContext = [[SPTRenderingContext alloc] init];
         _renderingContext.screenScale = [UIScreen mainScreen].nativeScale;
     }
@@ -56,7 +55,7 @@
     commandBuffer.label = @"PlayViewRenderCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
     
-    auto sceneCpp = static_cast<spt::PlayableScene*>(self.scene.cpp);
+    auto sceneCpp = static_cast<spt::PlayableScene*>(self.sceneHandle);
 //    scene->onPrerender();
     
     self.renderingContext.cameraPosition = spt::Position::getXYZ(sceneCpp->registry, self.viewCameraEntity);
@@ -90,7 +89,7 @@
 -(void) updateViewportSize: (CGSize) size {
     self.renderingContext.viewportSize = simd_make_float2(size.width, size.height);
     // Support both options
-    auto sceneCpp = static_cast<spt::PlayableScene*>(self.scene.cpp);
+    auto sceneCpp = static_cast<spt::PlayableScene*>(self.sceneHandle);
     spt::Camera::updatePerspectiveAspectRatio(sceneCpp->registry, self.viewCameraEntity, size.width / size.height);
 //    SPTCameraUpdateOrthographicAspectRatio(self.viewCameraEntity, size.width / size.height);
 }

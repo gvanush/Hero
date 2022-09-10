@@ -25,11 +25,11 @@ typedef enum : uint32_t {
     _dummy
 } SPTEntity;
 
-typedef void* _Nonnull SPTSceneHandle;
+typedef void* _Nonnull SPTHandle;
 
 typedef struct {
     SPTEntity entity;
-    SPTSceneHandle sceneHandle;
+    SPTHandle sceneHandle;
 } SPTObject;
 
 extern const SPTEntity kSPTNullEntity;

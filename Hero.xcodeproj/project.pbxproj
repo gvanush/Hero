@@ -43,7 +43,6 @@
 		B723585C2761189E00337547 /* line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723585B2761173800337547 /* line.obj */; };
 		B723585F2762844700337547 /* PolylineLookDepthBias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723585D2762844700337547 /* PolylineLookDepthBias.cpp */; };
 		B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7235860276F2BEC00337547 /* OutlineLook.cpp */; };
-		B73245A6273D92BF00708909 /* SPTScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245A5273D92BF00708909 /* SPTScene.mm */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
 		B73245B6274124C100708909 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B4274124C100708909 /* Renderer.mm */; };
@@ -122,7 +121,8 @@
 		B7B711EC28C70ACC0077C7CD /* SPTPlayViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7B711EB28C70ACC0077C7CD /* SPTPlayViewController.mm */; };
 		B7B711EE28C70B1B0077C7CD /* SPTPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711ED28C70B1B0077C7CD /* SPTPlayView.swift */; };
 		B7B711F128C722770077C7CD /* PlayableScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B711EF28C722770077C7CD /* PlayableScene.cpp */; };
-		B7B711F628C726C80077C7CD /* SPTPlayableScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7B711F528C726C80077C7CD /* SPTPlayableScene.mm */; };
+		B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711FA28CC45A90077C7CD /* SPTSceneUtil.swift */; };
+		B7B711FE28CC525C0077C7CD /* SPTPlayableSceneUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711FD28CC525C0077C7CD /* SPTPlayableSceneUtil.swift */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
@@ -203,8 +203,6 @@
 		B7235860276F2BEC00337547 /* OutlineLook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OutlineLook.cpp; sourceTree = "<group>"; };
 		B7235861276F2BEC00337547 /* OutlineLook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OutlineLook.h; sourceTree = "<group>"; };
 		B72358662774982300337547 /* ComponentObserverUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComponentObserverUtil.hpp; sourceTree = "<group>"; };
-		B73245A4273D92BF00708909 /* SPTScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTScene.h; sourceTree = "<group>"; };
-		B73245A5273D92BF00708909 /* SPTScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTScene.mm; sourceTree = "<group>"; };
 		B73245A7273E677B00708909 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		B73245AA273EB7D400708909 /* Base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Base.h; sourceTree = "<group>"; };
 		B73245AE27410CA400708909 /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
@@ -316,8 +314,10 @@
 		B7B711ED28C70B1B0077C7CD /* SPTPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPlayView.swift; sourceTree = "<group>"; };
 		B7B711EF28C722770077C7CD /* PlayableScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayableScene.cpp; sourceTree = "<group>"; };
 		B7B711F028C722770077C7CD /* PlayableScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayableScene.hpp; sourceTree = "<group>"; };
-		B7B711F428C726C80077C7CD /* SPTPlayableScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTPlayableScene.h; sourceTree = "<group>"; };
-		B7B711F528C726C80077C7CD /* SPTPlayableScene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTPlayableScene.mm; sourceTree = "<group>"; };
+		B7B711F928CB11430077C7CD /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		B7B711FA28CC45A90077C7CD /* SPTSceneUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTSceneUtil.swift; sourceTree = "<group>"; };
+		B7B711FC28CC4F240077C7CD /* PlayableScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayableScene.h; sourceTree = "<group>"; };
+		B7B711FD28CC525C0077C7CD /* SPTPlayableSceneUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPlayableSceneUtil.swift; sourceTree = "<group>"; };
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
@@ -539,6 +539,8 @@
 			isa = PBXGroup;
 			children = (
 				B7B711E328C4730F0077C7CD /* Viewport */,
+				B7B711FA28CC45A90077C7CD /* SPTSceneUtil.swift */,
+				B7B711FD28CC525C0077C7CD /* SPTPlayableSceneUtil.swift */,
 				B710DB8327BC106D00C57BDF /* SPTObjectBinding.swift */,
 				B757DB7E28A900CF00BB5DB4 /* SPTObservedComponent.swift */,
 				B73E47DF27CEA1F100CB0AFC /* SPTGeneratortUtil.swift */,
@@ -721,14 +723,12 @@
 		B7E481C227414867003DA5B1 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				B73245A5273D92BF00708909 /* SPTScene.mm */,
-				B73245A4273D92BF00708909 /* SPTScene.h */,
+				B7B711F928CB11430077C7CD /* Scene.h */,
 				B73245AE27410CA400708909 /* Scene.cpp */,
 				B73245AF27410CA400708909 /* Scene.hpp */,
-				B7B711F428C726C80077C7CD /* SPTPlayableScene.h */,
-				B7B711F528C726C80077C7CD /* SPTPlayableScene.mm */,
 				B7B711EF28C722770077C7CD /* PlayableScene.cpp */,
 				B7B711F028C722770077C7CD /* PlayableScene.hpp */,
+				B7B711FC28CC4F240077C7CD /* PlayableScene.h */,
 			);
 			name = Scene;
 			sourceTree = "<group>";
@@ -952,9 +952,9 @@
 				B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */,
 				B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */,
 				B73E47E027CEA1F100CB0AFC /* SPTGeneratortUtil.swift in Sources */,
-				B73245A6273D92BF00708909 /* SPTScene.mm in Sources */,
 				B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */,
 				B757DB7628A80F0B00BB5DB4 /* AnimatorSelector.swift in Sources */,
+				B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
@@ -982,8 +982,8 @@
 				B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */,
 				B7B711D128BC96430077C7CD /* ComponentSetupViewProvider.swift in Sources */,
 				B736450427B3BA1100FAD433 /* ComponentActionViewProvider.swift in Sources */,
-				B7B711F628C726C80077C7CD /* SPTPlayableScene.mm in Sources */,
 				B73A7019288BCC280043F9FF /* PanAnimatorSetBoundsView.swift in Sources */,
+				B7B711FE28CC525C0077C7CD /* SPTPlayableSceneUtil.swift in Sources */,
 				B7B711F128C722770077C7CD /* PlayableScene.cpp in Sources */,
 				B757DB7F28A900CF00BB5DB4 /* SPTObservedComponent.swift in Sources */,
 				B7104BC6272B1D3300582DCA /* FloatingSceneView.swift in Sources */,

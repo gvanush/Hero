@@ -10,21 +10,21 @@ import SwiftUI
 
 struct SPTPlayView: UIViewControllerRepresentable {
     
-    let scene: SPTPlayableScene
+    let scene: SPTPlayableSceneProxy
     let clearColor: MTLClearColor
     let viewCameraEntity: SPTEntity
     
     private var panLocation: CGPoint?
     private var lookCategories: SPTLookCategories = kSPTLookCategoriesAll
     
-    init(scene: SPTPlayableScene, clearColor: MTLClearColor, viewCameraEntity: SPTEntity) {
+    init(scene: SPTPlayableSceneProxy, clearColor: MTLClearColor, viewCameraEntity: SPTEntity) {
         self.scene = scene
         self.clearColor = clearColor
         self.viewCameraEntity = viewCameraEntity
     }
     
     func makeUIViewController(context: Context) -> SPTPlayViewController {
-        let vc = SPTPlayViewController(scene: scene)
+        let vc = SPTPlayViewController(sceneHandle: scene.handle)
         updateVC(vc)
         return vc
     }

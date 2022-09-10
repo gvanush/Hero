@@ -15,11 +15,11 @@ enum ObjectType: Int32 {
 
 class ObjectFactory {
     
-    let scene: SPTScene
+    let scene: SPTSceneProxy
     private var meshNumber = 1
     private var generatorNumber = 1
     
-    init(scene: SPTScene) {
+    init(scene: SPTSceneProxy) {
         self.scene = scene
     }
     

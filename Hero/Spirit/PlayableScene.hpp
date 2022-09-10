@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Base.hpp"
+#include "PlayableScene.h"
 #include "Renderer.hpp"
 
 #include <entt/entt.hpp>
@@ -17,12 +18,10 @@ namespace spt {
 struct Scene;
 
 struct PlayableScene {
-  
-    void setupFromScene(const Scene* scene, SPTEntity viewCameraEntity);
     
     void render(void* renderingContext);
     
-    SPTEntity viewCameraEntity;
+    SPTPlayableSceneParams params;
     
     Registry registry;
     Renderer renderer {registry};

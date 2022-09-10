@@ -126,7 +126,7 @@ simd_float3 SPTRayGetPoint(SPTRay ray, float factor) {
     return ray.origin + factor * ray.direction;
 }
 
-SPTRayCastResult SPTRayCastScene(SPTSceneHandle sceneHandle, SPTRay ray, float tolerance) {
+SPTRayCastResult SPTRayCastScene(SPTHandle sceneHandle, SPTRay ray, float tolerance) {
     
     auto scene = static_cast<spt::Scene*>(sceneHandle);
     auto& registry = scene->registry;

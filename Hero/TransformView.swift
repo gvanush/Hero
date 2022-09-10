@@ -160,7 +160,7 @@ fileprivate class ObjectControlViewModel: ObservableObject {
     
     func removeGuideObjects() {
         guard let object = guideObject else { return }
-        SPTScene.destroy(object)
+        SPTSceneProxy.destroyObject(object)
         guideObject = nil
     }
     

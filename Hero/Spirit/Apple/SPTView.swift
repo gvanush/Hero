@@ -12,21 +12,21 @@ import SwiftUI
 
 struct SPTView: UIViewControllerRepresentable {
 
-    let scene: SPTScene
+    let scene: SPTSceneProxy
     let clearColor: MTLClearColor
     let viewCameraEntity: SPTEntity
     
     private var isRenderingPaused = false
     private var lookCategories: SPTLookCategories = kSPTLookCategoriesAll
     
-    init(scene: SPTScene, clearColor: MTLClearColor, viewCameraEntity: SPTEntity) {
+    init(scene: SPTSceneProxy, clearColor: MTLClearColor, viewCameraEntity: SPTEntity) {
         self.scene = scene
         self.clearColor = clearColor
         self.viewCameraEntity = viewCameraEntity
     }
     
     func makeUIViewController(context: Context) -> SPTViewController {
-        let vc = SPTViewController(scene: scene)
+        let vc = SPTViewController(sceneHandle: scene.handle)
         updateVC(vc)
         return vc
     }
