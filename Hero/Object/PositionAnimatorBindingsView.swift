@@ -97,7 +97,7 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
     
     private var objectPosition: SPTPosition {
         var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] = valueAt0 + animatorValue * (valueAt1 - valueAt0)
+        xyz[axis.rawValue] += valueAt0 + animatorValue * (valueAt1 - valueAt0)
         return .init(xyz: xyz)
     }
     

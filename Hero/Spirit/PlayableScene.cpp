@@ -9,6 +9,7 @@
 #include "PlayableScene.h"
 #include "Scene.hpp"
 #include "MeshLook.h"
+#include "Position.h"
 #include "Transformation.hpp"
 #include "Camera.hpp"
 #include "AnimatorManager.hpp"
@@ -62,6 +63,7 @@ SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTPlayableSceneDescriptor
     registry.emplace<SPTPerspectiveCamera>(cameraEntity, sourceRegistry.get<SPTPerspectiveCamera>(descriptor.viewCameraEntity));
     registry.emplace<spt::ProjectionMatrix>(cameraEntity, sourceRegistry.get<spt::ProjectionMatrix>(descriptor.viewCameraEntity));
     registry.emplace<spt::Transformation>(cameraEntity, sourceRegistry.get<spt::Transformation>(descriptor.viewCameraEntity));
+    registry.emplace<SPTPosition>(cameraEntity, sourceRegistry.get<SPTPosition>(descriptor.viewCameraEntity));
     playableScene->params.viewCameraEntity = cameraEntity;
     
     assert(sourceRegistry.all_of<spt::Transformation>(descriptor.viewCameraEntity));
