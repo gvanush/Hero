@@ -11,8 +11,10 @@
 #include "MeshLook.h"
 #include "Transformation.hpp"
 #include "Camera.hpp"
+#include "AnimatorManager.hpp"
 
 #include <entt/entt.hpp>
+
 
 namespace spt {
 
@@ -20,9 +22,15 @@ void PlayableScene::render(void* renderingContext) {
     renderer.render(renderingContext);
 }
 
+void PlayableScene::evaluateAnimators(const SPTAnimatorEvaluationContext& context) {
+    for(auto& item: animatorItems) {
+        item.value = spt::AnimatorManager::evaluate(item.animator, context);
+    }
 }
 
-SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTEntity viewCameraEntity) {
+}
+
+SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTPlayableSceneDescriptor descriptor) {
     
     auto scene = static_cast<spt::Scene*>(sceneHandle);
     const auto& sourceRegistry = scene->registry;
@@ -51,13 +59,27 @@ SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTEntity viewCameraEntity
 //    auto view = registry.view<spt::Transformation>();
 //    assert(!view.empty());
     auto cameraEntity = registry.create();
-    registry.emplace<SPTPerspectiveCamera>(cameraEntity, sourceRegistry.get<SPTPerspectiveCamera>(viewCameraEntity));
-    registry.emplace<spt::ProjectionMatrix>(cameraEntity, sourceRegistry.get<spt::ProjectionMatrix>(viewCameraEntity));
-    registry.emplace<spt::Transformation>(cameraEntity, sourceRegistry.get<spt::Transformation>(viewCameraEntity));
+    registry.emplace<SPTPerspectiveCamera>(cameraEntity, sourceRegistry.get<SPTPerspectiveCamera>(descriptor.viewCameraEntity));
+    registry.emplace<spt::ProjectionMatrix>(cameraEntity, sourceRegistry.get<spt::ProjectionMatrix>(descriptor.viewCameraEntity));
+    registry.emplace<spt::Transformation>(cameraEntity, sourceRegistry.get<spt::Transformation>(descriptor.viewCameraEntity));
     playableScene->params.viewCameraEntity = cameraEntity;
     
-    assert(sourceRegistry.all_of<spt::Transformation>(viewCameraEntity));
+    assert(sourceRegistry.all_of<spt::Transformation>(descriptor.viewCameraEntity));
     assert(registry.all_of<spt::Transformation>(playableScene->params.viewCameraEntity));
+    
+    // Prepare animators
+    const auto& animatorManager = spt::AnimatorManager::active();
+    if(const auto animators = descriptor.animators) {
+        playableScene->animatorItems.reserve(descriptor.animatorsSize);
+        for(auto it = animators; it != animators + descriptor.animatorsSize; ++it) {
+            playableScene->animatorItems.emplace_back(spt::AnimatorItem {animatorManager.getAnimator(*it), 0.f});
+        }
+    } else {
+        playableScene->animatorItems.reserve(animatorManager.animators().size());
+        for(const auto& animator: animatorManager.animators()) {
+            playableScene->animatorItems.emplace_back(spt::AnimatorItem {animator, 0.f});
+        }
+    }
     
     return playableScene;
 }

@@ -117,7 +117,6 @@
 		B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711DD28C13E060077C7CD /* SPTMeshLookUtil.swift */; };
 		B7B711E028C1D8100077C7CD /* SPTPolylineLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711DF28C1D8100077C7CD /* SPTPolylineLookUtil.swift */; };
 		B7B711E228C1E4720077C7CD /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711E128C1E4720077C7CD /* PlayView.swift */; };
-		B7B711E928C4CE9B0077C7CD /* AnimatorEvaluation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B711E728C4CE9B0077C7CD /* AnimatorEvaluation.cpp */; };
 		B7B711EC28C70ACC0077C7CD /* SPTPlayViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7B711EB28C70ACC0077C7CD /* SPTPlayViewController.mm */; };
 		B7B711EE28C70B1B0077C7CD /* SPTPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711ED28C70B1B0077C7CD /* SPTPlayView.swift */; };
 		B7B711F128C722770077C7CD /* PlayableScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B711EF28C722770077C7CD /* PlayableScene.cpp */; };
@@ -307,8 +306,6 @@
 		B7B711DD28C13E060077C7CD /* SPTMeshLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTMeshLookUtil.swift; sourceTree = "<group>"; };
 		B7B711DF28C1D8100077C7CD /* SPTPolylineLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPolylineLookUtil.swift; sourceTree = "<group>"; };
 		B7B711E128C1E4720077C7CD /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
-		B7B711E728C4CE9B0077C7CD /* AnimatorEvaluation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatorEvaluation.cpp; sourceTree = "<group>"; };
-		B7B711E828C4CE9B0077C7CD /* AnimatorEvaluation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorEvaluation.h; sourceTree = "<group>"; };
 		B7B711EA28C70ACB0077C7CD /* SPTPlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPTPlayViewController.h; sourceTree = "<group>"; };
 		B7B711EB28C70ACC0077C7CD /* SPTPlayViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPTPlayViewController.mm; sourceTree = "<group>"; };
 		B7B711ED28C70B1B0077C7CD /* SPTPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPlayView.swift; sourceTree = "<group>"; };
@@ -529,8 +526,6 @@
 				B742447B2899366200A09808 /* AnimatorSource.h */,
 				B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */,
 				B757DB7028A3E38B00BB5DB4 /* AnimatorBinding.h */,
-				B7B711E728C4CE9B0077C7CD /* AnimatorEvaluation.cpp */,
-				B7B711E828C4CE9B0077C7CD /* AnimatorEvaluation.h */,
 			);
 			name = Animator;
 			sourceTree = "<group>";
@@ -908,7 +903,6 @@
 				B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
 				B712240128BBDFB3006A31B1 /* FloatSlider.swift in Sources */,
-				B7B711E928C4CE9B0077C7CD /* AnimatorEvaluation.cpp in Sources */,
 				B7235851275D34D000337547 /* Polyline.cpp in Sources */,
 				B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */,
 				B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */,

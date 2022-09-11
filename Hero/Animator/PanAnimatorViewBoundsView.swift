@@ -16,12 +16,9 @@ class PanAnimatorViewBoundsViewModel: ObservableObject {
     }
     
     func valueAt(_ p: CGPoint, screenSize: CGSize) -> Float {
-        switch animator.source.pan.axis {
-        case .horizontal:
-            return SPTAnimatorGetValue(animator, Float(p.x / screenSize.width))
-        case .vertical:
-            return SPTAnimatorGetValue(animator, Float(1.0 - p.y / screenSize.height))
-        }
+        var context = SPTAnimatorEvaluationContext()
+        context.panLocation = .init(x: Float(p.x / screenSize.width), y: Float(1.0 - p.y / screenSize.height))
+        return SPTAnimatorEvaluateValue(animator, context)
     }
     
     func isInBounds(point: CGPoint, screenSize: CGSize) -> Bool {

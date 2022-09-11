@@ -27,6 +27,8 @@ typedef enum : uint32_t {
 
 typedef void* _Nonnull SPTHandle;
 
+typedef uint32_t SPTAnimatorId;
+
 typedef struct {
     SPTEntity entity;
     SPTHandle sceneHandle;

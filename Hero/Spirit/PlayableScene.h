@@ -16,7 +16,13 @@ typedef struct {
     SPTEntity viewCameraEntity;
 } SPTPlayableSceneParams;
 
-SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTEntity viewCameraEntity);
+typedef struct {
+    SPTEntity viewCameraEntity;
+    const SPTAnimatorId* _Nullable animators;
+    uint32_t animatorsSize;
+} SPTPlayableSceneDescriptor;
+
+SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTPlayableSceneDescriptor descriptor);
 
 void SPTPlayableSceneDestroy(SPTHandle sceneHandle);
 

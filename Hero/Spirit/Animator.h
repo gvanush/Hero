@@ -15,11 +15,13 @@
 
 SPT_EXTERN_C_BEGIN
 
-typedef uint32_t SPTAnimatorId;
-
 extern const SPTAnimatorId kSPTAnimatorInvalidId;
 
 #define kSPTAnimatorNameMaxLength 7
+
+typedef struct {
+    simd_float2 panLocation;
+} SPTAnimatorEvaluationContext;
 
 typedef struct {
     SPTAnimatorId id;
@@ -54,5 +56,7 @@ void SPTAnimatorRemoveWillChangeListener(SPTAnimatorId id, SPTListener listener)
 void SPTAnimatorAddCountWillChangeListener(SPTListener listener, SPTCountWillChangeCallback callback);
 void SPTAnimatorRemoveCountWillChangeListenerCallback(SPTListener listener, SPTCountWillChangeCallback callback);
 void SPTAnimatorRemoveCountWillChangeListener(SPTListener listener);
+
+float SPTAnimatorEvaluateValue(SPTAnimator animator, SPTAnimatorEvaluationContext context);
 
 SPT_EXTERN_C_END

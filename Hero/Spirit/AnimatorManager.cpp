@@ -51,7 +51,7 @@ void AnimatorManager::destroyAnimator(SPTAnimatorId id) {
     _animators.erase(it);
 }
 
-const SPTAnimator& AnimatorManager::getAnimator(SPTAnimatorId id) {
+const SPTAnimator& AnimatorManager::getAnimator(SPTAnimatorId id) const {
     auto it = std::find_if(_animators.begin(), _animators.end(), [id] (const auto& animator) {
         return animator.id == id;
     });
@@ -151,12 +151,24 @@ bool AnimatorManager::validateAnimator(const SPTAnimator& animator) {
     }
 }
 
-void AnimatorManager::evaluate(SPTAnimatorId animatorId, const SPTAnimatorEvaluationContext* context) {
-    
-}
-
-void AnimatorManager::evaluateAll(const SPTAnimatorEvaluationContext* context) {
-    
+float AnimatorManager::evaluate(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
+    switch (animator.source.type) {
+        case SPTAnimatorSourceTypePan: {
+            switch (animator.source.pan.axis) {
+                case SPTPanAnimatorSourceAxisHorizontal: {
+                    const auto v = simd_clamp(context.panLocation.x, animator.source.pan.bottomLeft.x, animator.source.pan.topRight.x);
+                    return (v - animator.source.pan.bottomLeft.x) / (animator.source.pan.topRight.x - animator.source.pan.bottomLeft.x);
+                }
+                case SPTPanAnimatorSourceAxisVertical: {
+                    const auto v = simd_clamp(context.panLocation.y, animator.source.pan.bottomLeft.y, animator.source.pan.topRight.y);
+                    return (v - animator.source.pan.bottomLeft.y) / (animator.source.pan.topRight.y - animator.source.pan.bottomLeft.y);
+                }
+            }
+        }
+        case SPTAnimatorSourceTypeFace:
+            // TODO
+            return 0.f;
+    }
 }
 
 SPTAnimatorId AnimatorManager::nextId = 0;

@@ -97,12 +97,9 @@ struct PanAnimatorViewGraphView: View {
     }
     
     func animatorValue(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Float {
-        switch animator.source.pan.axis {
-        case .horizontal:
-            return SPTAnimatorGetValue(animator, Float(dragValue.location.x / geometry.size.width))
-        case .vertical:
-            return SPTAnimatorGetValue(animator, 1.0 - Float(dragValue.location.y / geometry.size.height))
-        }
+        var context = SPTAnimatorEvaluationContext()
+        context.panLocation = .init(x: Float(dragValue.location.x / geometry.size.width), y: 1.0 - Float(dragValue.location.y / geometry.size.height))
+        return SPTAnimatorEvaluateValue(animator, context)
     }
     
 }

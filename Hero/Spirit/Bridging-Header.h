@@ -19,7 +19,6 @@
 #import "PolylineLookDepthBias.h"
 #import "PointLook.h"
 #import "Animator.h"
-#import "AnimatorEvaluation.h"
 #import "AnimatorBinding.h"
 #import "Generator.h"
 #import "ObjectProperty.h"

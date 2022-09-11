@@ -9,10 +9,13 @@
 #import "SPTRenderingContext.h"
 
 #include "PlayableScene.hpp"
+#include "AnimatorManager.hpp"
 #include "Camera.hpp"
 #include "Position.hpp"
 
-@interface SPTPlayViewController () <MTKViewDelegate>
+@interface SPTPlayViewController () <MTKViewDelegate> {
+    SPTAnimatorEvaluationContext _animatorEvaluationContext;
+}
 
 @end
 
@@ -40,23 +43,19 @@
     [self updateViewportSize: self.mtkView.drawableSize];
 }
 
--(void)setPanLocation:(NSValue *)panLocation {
-    if(panLocation == nil) {
-        NSLog(@"panLocation nil");
-    } else {
-        NSLog(@"panLocation %@", NSStringFromCGPoint(panLocation.CGPointValue));
-    }
-}
-
 // MARK: MTKViewDelegate
 -(void) drawInMTKView: (nonnull MTKView*) view {
     
     id<MTLCommandBuffer> commandBuffer = [[SPTRenderingContext defaultCommandQueue] commandBuffer];
     commandBuffer.label = @"PlayViewRenderCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
+        
+    [self updateAnimatorEvaluationContext];
     
     auto sceneCpp = static_cast<spt::PlayableScene*>(self.sceneHandle);
 //    scene->onPrerender();
+    
+    sceneCpp->evaluateAnimators(_animatorEvaluationContext);
     
     self.renderingContext.cameraPosition = spt::Position::getXYZ(sceneCpp->registry, self.viewCameraEntity);
     self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(sceneCpp->registry, self.viewCameraEntity);
@@ -92,6 +91,15 @@
     auto sceneCpp = static_cast<spt::PlayableScene*>(self.sceneHandle);
     spt::Camera::updatePerspectiveAspectRatio(sceneCpp->registry, self.viewCameraEntity, size.width / size.height);
 //    SPTCameraUpdateOrthographicAspectRatio(self.viewCameraEntity, size.width / size.height);
+}
+
+-(void) updateAnimatorEvaluationContext {
+    if(self.panLocation == nil) {
+        _animatorEvaluationContext.panLocation = simd_make_float2(0.f, 0.f);
+    } else {
+        CGPoint loc = [self.panLocation CGPointValue];
+        _animatorEvaluationContext.panLocation = simd_make_float2(loc.x / self.view.bounds.size.width, 1.0 - loc.y / self.view.bounds.size.height);
+    }
 }
 
 @end

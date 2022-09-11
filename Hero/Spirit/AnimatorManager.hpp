@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Animator.h"
-#include "AnimatorEvaluation.h"
 #include "Base.hpp"
 
 #include <vector>
@@ -36,7 +35,7 @@ public:
     
     void destroyAnimator(SPTAnimatorId id);
     
-    const SPTAnimator& getAnimator(SPTAnimatorId id);
+    const SPTAnimator& getAnimator(SPTAnimatorId id) const;
     
     const std::vector<SPTAnimator>& animators() const { return _animators; };
     
@@ -48,8 +47,7 @@ public:
     void removeCountWillChangeListenerCallback(SPTListener listener, SPTCountWillChangeCallback callback);
     void removeCountWillChangeListener(SPTListener listener);
     
-    void evaluate(SPTAnimatorId animatorId, const SPTAnimatorEvaluationContext* context);
-    void evaluateAll(const SPTAnimatorEvaluationContext* context);
+    static float evaluate(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
     
 private:
     

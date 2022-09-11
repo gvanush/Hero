@@ -58,3 +58,7 @@ void SPTAnimatorRemoveCountWillChangeListenerCallback(SPTListener listener, SPTC
 void SPTAnimatorRemoveCountWillChangeListener(SPTListener listener) {
     spt::AnimatorManager::active().removeCountWillChangeListener(listener);
 }
+
+float SPTAnimatorEvaluateValue(SPTAnimator animator, SPTAnimatorEvaluationContext context) {
+    return spt::AnimatorManager::evaluate(animator, context);
+}
