@@ -20,7 +20,7 @@ namespace spt {
 
 namespace {
 
-void makeObjects(spt::Registry& registry, SPTObject object, spt::Generator& generator, std::size_t count) {
+void makeObjects(spt::Registry& registry, SPTEntity entity, spt::Generator& generator, std::size_t count) {
 
     const auto initialSize = generator.entities.size();
     generator.entities.resize(generator.entities.size() + count);
@@ -28,7 +28,7 @@ void makeObjects(spt::Registry& registry, SPTObject object, spt::Generator& gene
     auto beginEntity = generator.entities.begin() + initialSize;
     registry.create(beginEntity, generator.entities.end());
     
-    Transformation::makeChildren(registry, object, beginEntity, generator.entities.end());
+    Transformation::makeChildren(registry, entity, beginEntity, generator.entities.end());
     
     MeshLook::makeBlinnPhong(registry, beginEntity, generator.entities.end(), generator.base.sourceMeshId, simd_float4 {1.f, 0.f, 0.f, 1.f}, 128.f);
     
@@ -90,7 +90,7 @@ void SPTGeneratorMake(SPTObject object, SPTGenerator base) {
     
     auto& generator = registry.emplace<spt::Generator>(object.entity, base);
     
-    spt::makeObjects(registry, object, generator, base.quantity);
+    spt::makeObjects(registry, object.entity, generator, base.quantity);
 }
 
 SPTGenerator SPTGeneratorGet(SPTObject object) {
@@ -107,7 +107,7 @@ void SPTGeneratorUpdate(SPTObject object, SPTGenerator newGenerator) {
     assert(newGenerator.quantity >= kSPTGeneratorMinQuantity && newGenerator.quantity <= kSPTGeneratorMaxQuantity);
     if(generator.base.quantity != newGenerator.quantity) {
         if(newGenerator.quantity > generator.base.quantity) {
-            spt::makeObjects(registry, object, generator, newGenerator.quantity - generator.base.quantity);
+            spt::makeObjects(registry, object.entity, generator, newGenerator.quantity - generator.base.quantity);
         } else {
             spt::destroyObjects(registry, generator, generator.base.quantity - newGenerator.quantity);
         }

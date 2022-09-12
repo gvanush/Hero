@@ -143,20 +143,20 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
 }
 
 void removeFromParent(Registry& registry, SPTEntity entity, const Transformation& tran) {
-    if(SPTIsNull(tran.node.parent)) {
+    if(tran.node.parent == kSPTNullEntity) {
         return;
     }
     
-    auto& oldParentTran = registry.get<spt::Transformation>(tran.node.parent.entity);
-    if(oldParentTran.node.firstChild.entity == entity) {
+    auto& oldParentTran = registry.get<spt::Transformation>(tran.node.parent);
+    if(oldParentTran.node.firstChild == entity) {
         oldParentTran.node.firstChild = tran.node.nextSibling;
     }
-    if(!SPTIsNull(tran.node.nextSibling)) {
-        auto& nexSiblingTran = registry.get<spt::Transformation>(tran.node.nextSibling.entity);
-        nexSiblingTran.node.prevSibling = tran.node.prevSibling;
+    if(tran.node.nextSibling != kSPTNullEntity) {
+        auto& nextSiblingTran = registry.get<spt::Transformation>(tran.node.nextSibling);
+        nextSiblingTran.node.prevSibling = tran.node.prevSibling;
     }
-    if(!SPTIsNull(tran.node.prevSibling)) {
-        auto& prevSiblingTran = registry.get<spt::Transformation>(tran.node.prevSibling.entity);
+    if(tran.node.prevSibling != kSPTNullEntity) {
+        auto& prevSiblingTran = registry.get<spt::Transformation>(tran.node.prevSibling);
         prevSiblingTran.node.nextSibling = tran.node.nextSibling;
     }
     --oldParentTran.node.childrenCount;
@@ -174,7 +174,7 @@ simd_float4x4 Transformation::getGlobal(Registry& registry, SPTEntity entity) {
                              computeTransformationMatrix(registry, nextEntity) :
                              registry.get<spt::Transformation>(nextEntity).local);
         result = simd_mul(local, result);
-        nextEntity = registry.get<spt::Transformation>(nextEntity).node.parent.entity;
+        nextEntity = registry.get<spt::Transformation>(nextEntity).node.parent;
     }
     
     return result;
@@ -191,10 +191,10 @@ void Transformation::update(Registry& registry, GroupType& group) {
     group.each([&registry] (const auto entity, Transformation& tran) {
         
         tran.local = computeTransformationMatrix(registry, entity);
-        if(tran.node.parent.entity == kSPTNullEntity) {
+        if(tran.node.parent == kSPTNullEntity) {
             tran.global = tran.local;
         } else {
-            tran.global = simd_mul(registry.get<Transformation>(tran.node.parent.entity).global, tran.local);
+            tran.global = simd_mul(registry.get<Transformation>(tran.node.parent).global, tran.local);
         }
         
         // Update substree
@@ -235,19 +235,20 @@ SPTTranformationNode SPTTransformationGetNode(SPTObject object) {
     if(const auto transformation = spt::Scene::getRegistry(object).try_get<spt::Transformation>(object.entity)) {
         return transformation->node;
     }
-    return SPTTranformationNode {kSPTNullObject, kSPTNullObject, kSPTNullObject, kSPTNullObject};
+    return SPTTranformationNode {kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, kSPTNullEntity};
 }
 
-void SPTTransformationSetParent(SPTObject object, SPTObject parent) {
-    assert(object.sceneHandle == parent.sceneHandle);
-    assert(object.entity != parent.entity);
+void SPTTransformationSetParent(SPTObject object, SPTEntity parentEntity) {
+    assert(object.entity != parentEntity);
     assert(!SPTIsNull(object));
-    assert(!SPTTransformationIsDescendant(parent, object));
+    assert(!SPTTransformationIsDescendant(SPTObject {parentEntity, object.sceneHandle}, object));
     
     auto& registry = spt::Scene::getRegistry(object);
+    assert(registry.valid(parentEntity));
+    
     auto& tran = registry.get<spt::Transformation>(object.entity);
     
-    if(SPTObjectEqual(tran.node.parent, parent)) {
+    if(tran.node.parent == parentEntity) {
         return;
     }
     
@@ -255,23 +256,23 @@ void SPTTransformationSetParent(SPTObject object, SPTObject parent) {
     spt::removeFromParent(registry, object.entity, tran);
     
     // Add to new parent
-    tran.node.prevSibling = kSPTNullObject;
-    if(SPTIsNull(parent)) {
-        tran.node.nextSibling = kSPTNullObject;
+    tran.node.prevSibling = kSPTNullEntity;
+    if(parentEntity == kSPTNullEntity) {
+        tran.node.nextSibling = kSPTNullEntity;
         tran.node.level = 0;
     } else {
-        auto& parentTran = registry.get<spt::Transformation>(parent.entity);
+        auto& parentTran = registry.get<spt::Transformation>(parentEntity);
         tran.node.nextSibling = parentTran.node.firstChild;
         
-        auto& firstChildTran = registry.get<spt::Transformation>(parentTran.node.firstChild.entity);
-        firstChildTran.node.prevSibling = object;
+        auto& firstChildTran = registry.get<spt::Transformation>(parentTran.node.firstChild);
+        firstChildTran.node.prevSibling = object.entity;
         
-        parentTran.node.firstChild = object;
+        parentTran.node.firstChild = object.entity;
         ++parentTran.node.childrenCount;
         tran.node.level = parentTran.node.level + 1;
     }
     
-    tran.node.parent = parent;
+    tran.node.parent = parentEntity;
     
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
 }
@@ -283,7 +284,7 @@ bool SPTTransformationIsDescendant(SPTObject object, SPTObject ancestor) {
     const auto& registry = spt::Scene::getRegistry(object);
     auto nextAncestorEntity = object.entity;
     while (nextAncestorEntity != kSPTNullEntity) {
-        nextAncestorEntity = registry.get<spt::Transformation>(nextAncestorEntity).node.parent.entity;
+        nextAncestorEntity = registry.get<spt::Transformation>(nextAncestorEntity).node.parent;
         if(nextAncestorEntity == ancestor.entity) {
             return true;
         }
