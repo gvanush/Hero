@@ -34,37 +34,39 @@ void PlayableScene::evaluateAnimators(const SPTAnimatorEvaluationContext& contex
 SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTPlayableSceneDescriptor descriptor) {
     
     auto scene = static_cast<spt::Scene*>(sceneHandle);
+    
+    // Update global matrices
+    spt::Transformation::update(scene->registry, scene->transformationGroup);
+    
     const auto& sourceRegistry = scene->registry;
-    auto view = sourceRegistry.view<SPTMeshLook, spt::Transformation>();
     
     auto playableScene = new spt::PlayableScene{};
     auto& registry = playableScene->registry;
     
-    view.each([&registry] (auto entity, auto& meshLook, auto& transformation) {
-        auto newEntity = registry.create();
-        registry.emplace<SPTMeshLook>(newEntity, meshLook);
-        registry.emplace<spt::Transformation>(newEntity, transformation);
-    });
+    // Clone entities
+    registry.assign(sourceRegistry.data(), sourceRegistry.data() + sourceRegistry.size(), sourceRegistry.released());
+    
+    // Clone transformations
+    auto sourceTransView = sourceRegistry.view<spt::Transformation>();
+    registry.insert<spt::Transformation>(sourceTransView.data(), sourceTransView.data() + sourceTransView.size(), *sourceTransView.raw());
+    
+    // Clone mesh looks
+    auto sourceMeshLookView = sourceRegistry.view<SPTMeshLook>();
+    registry.insert<SPTMeshLook>(sourceMeshLookView.data(), sourceMeshLookView.data() + sourceMeshLookView.size(), *sourceMeshLookView.raw());
     
     
+//    auto transView = registry.view<spt::Transformation>();
+//    transView.each([] (auto& trans) {
+//        trans.node
+//    });
     
-//    registry.assign(sourceRegistry.data(), sourceRegistry.data() + sourceRegistry.size(), sourceRegistry.released());
+    //
     
-//    auto meshLookView = sourceRegistry.view<SPTMeshLook>();
-////    const SPTMeshLook* meshLookArray = meshLookView.raw();
-//    registry.insert(meshLookView.data(), meshLookView.data() + meshLookView.size(), *meshLookView.raw());
-//
-//    auto transformationView = sourceRegistry.view<spt::Transformation>();
-//    registry.insert(transformationView.data(), transformationView.data() + transformationView.size(), *transformationView.raw());
-//
-//    auto view = registry.view<spt::Transformation>();
-//    assert(!view.empty());
-    auto cameraEntity = registry.create();
-    registry.emplace<SPTPerspectiveCamera>(cameraEntity, sourceRegistry.get<SPTPerspectiveCamera>(descriptor.viewCameraEntity));
-    registry.emplace<spt::ProjectionMatrix>(cameraEntity, sourceRegistry.get<spt::ProjectionMatrix>(descriptor.viewCameraEntity));
-    registry.emplace<spt::Transformation>(cameraEntity, sourceRegistry.get<spt::Transformation>(descriptor.viewCameraEntity));
-    registry.emplace<SPTPosition>(cameraEntity, sourceRegistry.get<SPTPosition>(descriptor.viewCameraEntity));
-    playableScene->params.viewCameraEntity = cameraEntity;
+    // Clone camera
+    registry.emplace<SPTPerspectiveCamera>(descriptor.viewCameraEntity, sourceRegistry.get<SPTPerspectiveCamera>(descriptor.viewCameraEntity));
+    registry.emplace<spt::ProjectionMatrix>(descriptor.viewCameraEntity, sourceRegistry.get<spt::ProjectionMatrix>(descriptor.viewCameraEntity));
+    registry.emplace<SPTPosition>(descriptor.viewCameraEntity, sourceRegistry.get<SPTPosition>(descriptor.viewCameraEntity));
+    playableScene->params.viewCameraEntity = descriptor.viewCameraEntity;
     
     assert(sourceRegistry.all_of<spt::Transformation>(descriptor.viewCameraEntity));
     assert(registry.all_of<spt::Transformation>(playableScene->params.viewCameraEntity));
