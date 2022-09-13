@@ -5,11 +5,126 @@
 //  Created by Vanush Grigoryan on 22.02.22.
 //
 
-#include "Orientation.h"
+#include "Orientation.hpp"
 #include "Scene.hpp"
 #include "Transformation.hpp"
 #include "ComponentObserverUtil.hpp"
 
+#include <simd/simd.h>
+
+
+namespace spt::Orientation {
+
+simd_float4x4 computeRotationXMatrix(float rx) {
+    const auto c = cosf(rx);
+    const auto s = sinf(rx);
+    return simd_float4x4 {
+        simd_float4 {1.f, 0.f, 0.f, 0.f},
+        simd_float4 {0.f, c, s, 0.f},
+        simd_float4 {0.f, -s, c, 0.f},
+        simd_float4 {0.f, 0.f, 0.f, 1.f}
+    };
+}
+
+simd_float4x4 computeRotationYMatrix(float ry) {
+    const auto c = cosf(ry);
+    const auto s = sinf(ry);
+    return simd_float4x4 {
+        simd_float4 {c, 0.f, -s, 0.f},
+        simd_float4 {0.f, 1.f, 0.f, 0.f},
+        simd_float4 {s, 0.f, c, 0.f},
+        simd_float4 {0.f, 0.f, 0.f, 1.f}
+    };
+}
+
+simd_float4x4 computeRotationZMatrix(float rz) {
+    const auto c = cosf(rz);
+    const auto s = sinf(rz);
+    return simd_float4x4 {
+        simd_float4 {c, s, 0.f, 0.f},
+        simd_float4 {-s, c, 0.f, 0.f},
+        simd_float4 {0.f, 0.f, 1.f, 0.f},
+        simd_float4 {0.f, 0.f, 0.f, 1.f}
+    };
+}
+
+simd_float4x4 computeEulerOrientationMatrix(const SPTEulerOrientation& eulerOrientation) {
+    
+    const auto& xMat = computeRotationXMatrix(eulerOrientation.rotation.x);
+    const auto& yMat = computeRotationYMatrix(eulerOrientation.rotation.y);
+    const auto& zMat = computeRotationZMatrix(eulerOrientation.rotation.z);
+    
+    switch (eulerOrientation.order) {
+        case SPTEulerOrderXYZ:
+            return simd_mul(zMat, simd_mul(yMat, xMat));
+        case SPTEulerOrderXZY:
+            return simd_mul(yMat, simd_mul(zMat, xMat));
+        case SPTEulerOrderYXZ:
+            return simd_mul(zMat, simd_mul(xMat, yMat));
+        case SPTEulerOrderYZX:
+            return simd_mul(xMat, simd_mul(zMat, yMat));
+        case SPTEulerOrderZXY:
+            return simd_mul(yMat, simd_mul(xMat, zMat));
+        case SPTEulerOrderZYX:
+            return simd_mul(xMat, simd_mul(yMat, zMat));
+    }
+}
+
+simd_float4x4 computeLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& lookAtOrientation) {
+    const auto sign = (lookAtOrientation.positive ? 1 : -1);
+    switch(lookAtOrientation.axis) {
+        case SPTAxisX: {
+            const auto xAxis = sign * simd_normalize(lookAtOrientation.target - pos);
+            const auto yAxis = simd_normalize(simd_cross(lookAtOrientation.up, xAxis));
+            
+            return simd_float4x4 {
+                simd_make_float4(xAxis, 0.f),
+                simd_make_float4(yAxis, 0.f),
+                simd_make_float4(simd_normalize(simd_cross(xAxis, yAxis)), 0.f),
+                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            };
+        }
+        case SPTAxisY: {
+            const auto yAxis = sign * simd_normalize(lookAtOrientation.target - pos);
+            const auto zAxis = simd_normalize(simd_cross(lookAtOrientation.up, yAxis));
+            return simd_float4x4 {
+                simd_make_float4(simd_normalize(simd_cross(yAxis, zAxis)), 0.f),
+                simd_make_float4(yAxis, 0.f),
+                simd_make_float4(zAxis, 0.f),
+                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            };
+        }
+        case SPTAxisZ: {
+            const auto zAxis = sign * simd_normalize(lookAtOrientation.target - pos);
+            const auto xAxis = simd_normalize(simd_cross(lookAtOrientation.up, zAxis));
+            return simd_float4x4 {
+                simd_make_float4(xAxis, 0.f),
+                simd_make_float4(simd_normalize(simd_cross(zAxis, xAxis)), 0.f),
+                simd_make_float4(zAxis, 0.f),
+                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            };
+        }
+    }
+    
+}
+
+simd_float4x4 getMatrix(const spt::Registry& registry, SPTEntity entity, const simd_float3& position) {
+    
+    if(const auto orientation = registry.try_get<SPTOrientation>(entity)) {
+        switch (orientation->variantTag) {
+            case SPTOrientationVariantTagEuler: {
+                return computeEulerOrientationMatrix(orientation->euler);
+            }
+            case SPTOrientationVariantTagLookAt: {
+                return computeLookAtMatrix(position, orientation->lookAt);
+            }
+        }
+    }
+    
+    return matrix_identity_float4x4;
+}
+
+}
 
 bool SPTEulerOrientationEqual(SPTEulerOrientation lhs, SPTEulerOrientation rhs) {
     return simd_equal(lhs.rotation, rhs.rotation) && lhs.order == rhs.order;
@@ -34,8 +149,6 @@ bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
             return SPTLookAtOrientationEqual(lhs.lookAt, rhs.lookAt);
     }
 }
-
-
 
 void SPTOrientationMake(SPTObject object, SPTOrientation orientation) {
     auto& registry = spt::Scene::getRegistry(object);

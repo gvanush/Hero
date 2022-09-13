@@ -11,28 +11,30 @@
 #include "PlayableScene.h"
 #include "Renderer.hpp"
 #include "Animator.h"
+#include "Transformation.hpp"
 
 #include <entt/entt.hpp>
 
 namespace spt {
 
-struct AnimatorItem {
-    SPTAnimator animator;
-    float value;
-};
+class Scene;
 
-
-struct PlayableScene {
-    
-    void render(void* renderingContext);
+class PlayableScene {
+public:
+    PlayableScene(const Scene& scene, const SPTPlayableSceneDescriptor& descriptor);
     
     void evaluateAnimators(const SPTAnimatorEvaluationContext& context);
+    void update();
     
-    std::vector<AnimatorItem> animatorItems;
     SPTPlayableSceneParams params;
-    
     Registry registry;
-    Renderer renderer {registry};
+    
+private:
+    
+    std::vector<SPTAnimator> _animators;
+    std::vector<float> _animatorValues;
+    Transformation::AnimatorsGroupType _transformationGroup;
+    
 };
 
 }

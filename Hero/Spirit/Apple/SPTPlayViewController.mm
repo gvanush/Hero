@@ -15,6 +15,7 @@
 
 @interface SPTPlayViewController () <MTKViewDelegate> {
     SPTAnimatorEvaluationContext _animatorEvaluationContext;
+    spt::Renderer _renderer;
 }
 
 @end
@@ -38,6 +39,7 @@
     self.mtkView.autoResizeDrawable = YES;
     self.mtkView.colorPixelFormat = [SPTRenderingContext colorPixelFormat];
     self.mtkView.depthStencilPixelFormat = [SPTRenderingContext depthPixelFormat];
+    self.mtkView.presentsWithTransaction = YES;
     self.mtkView.delegate = self;
     [self.view addSubview: self.mtkView];
     [self updateViewportSize: self.mtkView.drawableSize];
@@ -52,31 +54,29 @@
         
     [self updateAnimatorEvaluationContext];
     
-    auto sceneCpp = static_cast<spt::PlayableScene*>(self.sceneHandle);
-//    scene->onPrerender();
+    auto scene = static_cast<spt::PlayableScene*>(self.sceneHandle);
+    scene->update();
     
-    sceneCpp->evaluateAnimators(_animatorEvaluationContext);
+    scene->evaluateAnimators(_animatorEvaluationContext);
     
-    self.renderingContext.cameraPosition = spt::Position::getXYZ(sceneCpp->registry, self.viewCameraEntity);
-    self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(sceneCpp->registry, self.viewCameraEntity);
+    self.renderingContext.cameraPosition = spt::Position::getXYZ(scene->registry, self.viewCameraEntity);
+    self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(scene->registry, self.viewCameraEntity);
     
-    MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
-    if(renderPassDescriptor != nil) {
+    if(self.renderingContext.renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
+       self.renderingContext.renderPassDescriptor != nil) {
         
-        self.renderingContext.renderPassDescriptor = renderPassDescriptor;
-        
-        sceneCpp->render((__bridge void*) self.renderingContext);
-        
-        [commandBuffer presentDrawable: view.currentDrawable];
+        _renderer.render(scene->registry, (__bridge void*) self.renderingContext);
         
         [commandBuffer commit];
+        [commandBuffer waitUntilScheduled];
+        
+        [view.currentDrawable present];
         
         self.renderingContext.renderPassDescriptor = nil;
         
-    } else {
+    } else {   
         [commandBuffer commit];
     }
-    
     
 }
 

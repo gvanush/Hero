@@ -17,13 +17,12 @@
 
 namespace spt {
 
-struct Scene {
-    
+class Scene {
+public:
     Scene();
     ~Scene();
     
-    void onPrerender();
-    void render(void* renderingContext);
+    void update();
     
     static Registry& getRegistry(SPTHandle sceneHandle) {
         return static_cast<spt::Scene*>(sceneHandle)->registry;
@@ -34,8 +33,9 @@ struct Scene {
     }
     
     Registry registry;
-    Renderer renderer {registry};
-    Transformation::GroupType transformationGroup;
+    
+private:
+    Transformation::GroupType _transformationGroup;
 };
 
 }

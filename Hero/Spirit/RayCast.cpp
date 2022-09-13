@@ -131,7 +131,7 @@ SPTRayCastResult SPTRayCastScene(SPTHandle sceneHandle, SPTRay ray, float tolera
     auto scene = static_cast<spt::Scene*>(sceneHandle);
     auto& registry = scene->registry;
     
-    spt::Transformation::update(registry, scene->transformationGroup);
+    scene->update();
     
     SPTRayCastResult result {kSPTNullObject, INFINITY};
     registry.view<SPTRayCastable>().each([&registry, &result, ray, tolerance, sceneHandle] (auto entity, auto& rayCastableMesh) {

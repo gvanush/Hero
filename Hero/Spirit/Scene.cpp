@@ -14,7 +14,7 @@
 namespace spt {
 
 Scene::Scene()
-: transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()} {
+: _transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()} {
     registry.on_destroy<Generator>().connect<&Generator::onDestroy>();
     registry.on_destroy<Transformation>().connect<&Transformation::onDestroy>();
 }
@@ -24,12 +24,8 @@ Scene::~Scene() {
     registry.on_destroy<Transformation>().disconnect<&Transformation::onDestroy>();
 }
 
-void Scene::onPrerender() {
-    Transformation::update(registry, transformationGroup);
-}
-
-void Scene::render(void* renderingContext) {
-    renderer.render(renderingContext);
+void Scene::update() {
+    Transformation::updateWithoutAnimators(registry, _transformationGroup);
 }
 
 }

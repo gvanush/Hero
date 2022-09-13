@@ -320,6 +320,8 @@
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
 		B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObjectUtil.swift; sourceTree = "<group>"; };
 		B7BCB11D27D75A6A00F5AFB1 /* SPTSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTSubscription.swift; sourceTree = "<group>"; };
+		B7C7489828D0427900E270FB /* AnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBinding.hpp; sourceTree = "<group>"; };
+		B7C7489928D0EF9C00E270FB /* Orientation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Orientation.hpp; sourceTree = "<group>"; };
 		B7D19EB327310DFC005C9F82 /* BindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingUtil.swift; sourceTree = "<group>"; };
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
 		B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureUtil.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 				B742447B2899366200A09808 /* AnimatorSource.h */,
 				B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */,
 				B757DB7028A3E38B00BB5DB4 /* AnimatorBinding.h */,
+				B7C7489828D0427900E270FB /* AnimatorBinding.hpp */,
 			);
 			name = Animator;
 			sourceTree = "<group>";
@@ -777,6 +780,7 @@
 				B73E47CD27C5827700CB0AFC /* Scale.cpp */,
 				B7E481CA274183BD003DA5B1 /* Scale.h */,
 				B73E47D027C5841C00CB0AFC /* Scale.hpp */,
+				B7C7489928D0EF9C00E270FB /* Orientation.hpp */,
 			);
 			name = Transformation;
 			sourceTree = "<group>";

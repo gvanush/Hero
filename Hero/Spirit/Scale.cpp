@@ -10,6 +10,17 @@
 #include "ComponentObserverUtil.hpp"
 #include "Base.hpp"
 
+namespace spt::Scale {
+
+simd_float3 getXYZ(const spt::Registry& registry, SPTEntity entity) {
+    if(const auto scale = registry.try_get<SPTScale>(entity); scale) {
+        return scale->xyz;
+    }
+    return {1.f, 1.f, 1.f};
+}
+
+}
+
 
 bool SPTScaleEqual(SPTScale lhs, SPTScale rhs) {
     return simd_equal(lhs.xyz, rhs.xyz);

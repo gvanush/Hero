@@ -14,7 +14,9 @@
 #include "Transformation.hpp"
 #include "Position.hpp"
 
-@interface SPTViewController () <MTKViewDelegate>
+@interface SPTViewController () <MTKViewDelegate> {
+    spt::Renderer _renderer;
+}
 
 @end
 
@@ -60,18 +62,16 @@
     commandBuffer.label = @"MainCommandBuffer";
     self.renderingContext.commandBuffer = commandBuffer;
     
-    auto sceneCpp = static_cast<spt::Scene*>(self.sceneHandle);
-    sceneCpp->onPrerender();
+    auto scene = static_cast<spt::Scene*>(self.sceneHandle);
+    scene->update();
     
-    self.renderingContext.cameraPosition = spt::Position::getXYZ(sceneCpp->registry, self.viewCameraEntity);
-    self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(sceneCpp->registry, self.viewCameraEntity);
+    self.renderingContext.cameraPosition = spt::Position::getXYZ(scene->registry, self.viewCameraEntity);
+    self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(scene->registry, self.viewCameraEntity);
     
-    MTLRenderPassDescriptor* renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
-    if(renderPassDescriptor != nil) {
+    if(self.renderingContext.renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
+       self.renderingContext.renderPassDescriptor != nil) {
         
-        self.renderingContext.renderPassDescriptor = renderPassDescriptor;
-        
-        sceneCpp->render((__bridge void*) self.renderingContext);
+        _renderer.render(scene->registry, (__bridge void*) self.renderingContext);
         
         [commandBuffer commit];
         [commandBuffer waitUntilScheduled];

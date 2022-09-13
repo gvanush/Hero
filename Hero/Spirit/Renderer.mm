@@ -76,7 +76,7 @@ id<MTLRenderPipelineState> createPipelineState(NSString* name, NSString* vertexS
     return pipelineState;
 }
 
-void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTMeshLook& meshLook) {
+void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, const SPTMeshLook& meshLook) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     
@@ -113,7 +113,7 @@ void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, S
     
 }
 
-void renderMeshDepthOnly(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, SPTMeshId meshId) {
+void renderMeshDepthOnly(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, SPTMeshId meshId) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     
@@ -132,7 +132,7 @@ void renderMeshDepthOnly(id<MTLRenderCommandEncoder> renderEncoder, Registry& re
     
 }
 
-void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPolylineLook& polylineLook) {
+void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, const SPTPolylineLook& polylineLook) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     [renderEncoder setVertexBytes: &worldMatrix
@@ -154,7 +154,7 @@ void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registr
     
 }
 
-void renderPoint(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTPointLook& pointLook) {
+void renderPoint(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, const SPTPointLook& pointLook) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     
@@ -194,7 +194,7 @@ void renderMeshOutline(id<MTLRenderCommandEncoder> renderEncoder, const Mesh& me
     
 }
 
-void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry, SPTEntity entity, const SPTOutlineLook& outlineLook) {
+void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, const SPTOutlineLook& outlineLook) {
     
     if(const auto meshLook = registry.try_get<SPTMeshLook>(entity)) {
         const auto& mesh = ResourceManager::active().getMesh(meshLook->meshId);
@@ -206,17 +206,13 @@ void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, Registry& registry
         const auto& mesh = ResourceManager::active().getMesh(generator->base.sourceMeshId);
         
         // TODO: Refactor to access only generator items
-        Transformation::forEachChild(registry, entity, [&registry, &renderEncoder, &mesh, &outlineLook] (auto childEntity, const auto& childTran) {
+        Transformation::forEachChild(registry, entity, [&renderEncoder, &mesh, &outlineLook] (auto childEntity, const auto& childTran) {
             renderMeshOutline(renderEncoder, mesh, outlineLook, childTran.global);
         });
     }
 }
 
-Renderer::Renderer(Registry& registry)
-: _registry {registry} {
-}
-
-void Renderer::render(void* renderingContext) {
+void Renderer::render(const Registry& registry, void* renderingContext) {
     
     SPTRenderingContext* rc = (__bridge SPTRenderingContext*) renderingContext;
 
@@ -236,10 +232,10 @@ void Renderer::render(void* renderingContext) {
     [renderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
     
     // Render meshes
-    const auto meshLookView = _registry.view<SPTMeshLook>();
-    meshLookView.each([this, renderEncoder, rc] (auto entity, auto& meshLook) {
+    const auto meshLookView = registry.view<SPTMeshLook>();
+    meshLookView.each([&registry, renderEncoder, rc] (auto entity, auto& meshLook) {
         if(rc.lookCategories & meshLook.categories) {
-            renderMesh(renderEncoder, _registry, entity, meshLook);
+            renderMesh(renderEncoder, registry, entity, meshLook);
         }
     });
     
@@ -248,28 +244,28 @@ void Renderer::render(void* renderingContext) {
     [renderEncoder setCullMode: MTLCullModeFront];
 //    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
 
-    const auto outlineLookView = _registry.view<SPTOutlineLook>();
-    outlineLookView.each([this, renderEncoder, rc] (auto entity, auto& outlineLook) {
+    const auto outlineLookView = registry.view<SPTOutlineLook>();
+    outlineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& outlineLook) {
         if(rc.lookCategories & outlineLook.categories) {
-            renderOutline(renderEncoder, _registry, entity, outlineLook);
+            renderOutline(renderEncoder, registry, entity, outlineLook);
         }
     });
     
     // Render polylines
     [renderEncoder setCullMode: MTLCullModeBack];
     [renderEncoder setRenderPipelineState: __polylinePipelineState];
-    const auto polylineLookView = _registry.view<SPTPolylineLook>(entt::exclude<SPTPolylineLookDepthBias>);
-    polylineLookView.each([this, renderEncoder, rc] (auto entity, auto& polylineLook) {
+    const auto polylineLookView = registry.view<SPTPolylineLook>(entt::exclude<SPTPolylineLookDepthBias>);
+    polylineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& polylineLook) {
         if(rc.lookCategories & polylineLook.categories) {
-            renderPolyline(renderEncoder, _registry, entity, polylineLook);
+            renderPolyline(renderEncoder, registry, entity, polylineLook);
         }
     });
     
-    const auto depthBiasedPolylineLookView = _registry.view<SPTPolylineLook, SPTPolylineLookDepthBias>();
-    depthBiasedPolylineLookView.each([this, renderEncoder, rc] (auto entity, auto& polylineLook, auto& depthBias) {
+    const auto depthBiasedPolylineLookView = registry.view<SPTPolylineLook, SPTPolylineLookDepthBias>();
+    depthBiasedPolylineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& polylineLook, auto& depthBias) {
         [renderEncoder setDepthBias: -depthBias.bias slopeScale: -depthBias.slopeScale clamp: depthBias.clamp];
         if(rc.lookCategories & polylineLook.categories) {
-            renderPolyline(renderEncoder, _registry, entity, polylineLook);
+            renderPolyline(renderEncoder, registry, entity, polylineLook);
         }
     });
     
@@ -290,10 +286,10 @@ void Renderer::render(void* renderingContext) {
     [layer1RenderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
     
     [layer1RenderEncoder setRenderPipelineState: __pointPipelineState];
-    const auto pointLookView = _registry.view<SPTPointLook>();
-    pointLookView.each([this, layer1RenderEncoder, rc] (auto entity, auto& pointLook) {
+    const auto pointLookView = registry.view<SPTPointLook>();
+    pointLookView.each([&registry, layer1RenderEncoder, rc] (auto entity, auto& pointLook) {
         if(rc.lookCategories & pointLook.categories) {
-            renderPoint(layer1RenderEncoder, _registry, entity, pointLook);
+            renderPoint(layer1RenderEncoder, registry, entity, pointLook);
         }
     });
     

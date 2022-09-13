@@ -10,6 +10,7 @@
 #include "Base.hpp"
 #include "Base.h"
 #include "Transformation.h"
+#include "AnimatorBinding.hpp"
 
 #include <simd/simd.h>
 
@@ -19,25 +20,38 @@ struct DirtyTransformationFlag {
 };
 
 struct Transformation {
+    
     simd_float4x4 local { matrix_identity_float4x4 };
     simd_float4x4 global { matrix_identity_float4x4 };
     SPTTranformationNode node { kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, 0 };
     
-    using GroupType = decltype(Registry().group<DirtyTransformationFlag, Transformation>());
+    struct AnimatorRecord {
+        AnimatorBindingItem positionX;
+        AnimatorBindingItem positionY;
+        AnimatorBindingItem positionZ;
+        simd_float3 basePosition;
+        
+        simd_float4x4 baseOrientation;
+        
+        simd_float3 baseScale;
+    };
     
     static simd_float4x4 getGlobal(Registry& registry, SPTEntity entity);
     
     template <typename It>
     static void makeChildren(spt::Registry& registry, SPTEntity parent, It beginEntity, It endEntity);
     
-    template <typename UF>
-    static void forEachChild(Registry& registry, SPTEntity entity, UF unaryFunction);
+    template <typename R, typename UF>
+    static void forEachChild(R& registry, SPTEntity entity, UF unaryFunction);
+        
+    using GroupType = decltype(Registry().group<DirtyTransformationFlag, Transformation>());
+    static void updateWithoutAnimators(Registry& registry, GroupType& group);
     
-    static void update(Registry& registry, GroupType& group);
+    using AnimatorsGroupType = decltype(Registry().group<AnimatorRecord, Transformation>());
+    static void updateWithOnlyAnimatorsChanging(Registry& registry, AnimatorsGroupType& group, const std::vector<float> animatorValues);
     
     static void onDestroy(spt::Registry& registry, SPTEntity entity);
 };
-
 
 template <typename It>
 void Transformation::makeChildren(spt::Registry& registry, SPTEntity parent, It beginEntity, It endEntity) {
@@ -65,12 +79,12 @@ void Transformation::makeChildren(spt::Registry& registry, SPTEntity parent, It 
     }
 }
 
-template <typename UF>
-void Transformation::forEachChild(Registry& registry, SPTEntity entity, UF unaryFunction) {
+template <typename R, typename UF>
+void Transformation::forEachChild(R& registry, SPTEntity entity, UF unaryFunction) {
     
-    auto nextChild = registry.get<Transformation>(entity).node.firstChild;
+    auto nextChild = registry.template get<Transformation>(entity).node.firstChild;
     while(nextChild != kSPTNullEntity) {
-        auto& childTran = registry.get<Transformation>(nextChild);
+        auto& childTran = registry.template get<Transformation>(nextChild);
         unaryFunction(nextChild, childTran);
         nextChild = childTran.node.nextSibling;
     }
