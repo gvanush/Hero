@@ -50,7 +50,11 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
         evaluateAnimatorBinding(animRecord.positionY.binding, animatorValues[animRecord.positionY.index]),
         evaluateAnimatorBinding(animRecord.positionZ.binding, animatorValues[animRecord.positionZ.index])
     };
-    matrix.columns[3].xyz = animRecord.basePosition + animatedPos;
+    const auto& pos = animRecord.basePosition + animatedPos;
+    
+    matrix = simd_mul(Orientation::getMatrix(registry, entity, pos), matrix);
+    
+    matrix.columns[3].xyz = pos;
     
     return matrix;
 }

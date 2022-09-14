@@ -11,7 +11,7 @@ import SwiftUI
 struct HeroApp: App {
     
     init() {
-        spt_init()
+        SPTInit()
         
         let navigationBarAppearance = UINavigationBarAppearance()
         navigationBarAppearance.configureWithDefaultBackground()

@@ -25,6 +25,7 @@ struct PlayView: View {
     @ObservedObject var model: PlayViewModel
     
     @Environment(\.presentationMode) private var presentationMode
+    
     @GestureState private var isDragging = false
     @State private var dragValue: DragGesture.Value?
     

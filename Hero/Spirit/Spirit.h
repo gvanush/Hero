@@ -13,7 +13,7 @@ extern "C" {
 
 #endif
 
-void spt_init();
+void SPTInit();
 
 #ifdef __cplusplus
 

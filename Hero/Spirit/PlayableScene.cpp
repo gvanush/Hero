@@ -29,23 +29,33 @@ PlayableScene::PlayableScene(const Scene& scene, const SPTPlayableSceneDescripto
     
     // Clone transformations
     auto sourceTransView = scene.registry.view<spt::Transformation>();
-    registry.insert<spt::Transformation>(sourceTransView.data(), sourceTransView.data() + sourceTransView.size(), *sourceTransView.raw());
+    if(!sourceTransView.empty()) {
+        registry.insert<spt::Transformation>(sourceTransView.data(), sourceTransView.data() + sourceTransView.size(), *sourceTransView.raw());
+    }
     
     // Clone positions
     auto sourcePositionView = scene.registry.view<SPTPosition>();
-    registry.insert<SPTPosition>(sourcePositionView.data(), sourcePositionView.data() + sourcePositionView.size(), *sourcePositionView.raw());
+    if(!sourcePositionView.empty()) {
+        registry.insert<SPTPosition>(sourcePositionView.data(), sourcePositionView.data() + sourcePositionView.size(), *sourcePositionView.raw());
+    }
     
     // Clone orientations
     auto sourceOrientationView = scene.registry.view<SPTOrientation>();
-    registry.insert<SPTOrientation>(sourceOrientationView.data(), sourceOrientationView.data() + sourceOrientationView.size(), *sourceOrientationView.raw());
+    if(!sourceOrientationView.empty()) {
+        registry.insert<SPTOrientation>(sourceOrientationView.data(), sourceOrientationView.data() + sourceOrientationView.size(), *sourceOrientationView.raw());
+    }
     
     // Clone scales
     auto sourceScaleView = scene.registry.view<SPTScale>();
-    registry.insert<SPTScale>(sourceScaleView.data(), sourceScaleView.data() + sourceScaleView.size(), *sourceScaleView.raw());
+    if(!sourceScaleView.empty()) {
+        registry.insert<SPTScale>(sourceScaleView.data(), sourceScaleView.data() + sourceScaleView.size(), *sourceScaleView.raw());
+    }
     
     // Clone mesh looks
     auto sourceMeshLookView = scene.registry.view<SPTMeshLook>();
-    registry.insert<SPTMeshLook>(sourceMeshLookView.data(), sourceMeshLookView.data() + sourceMeshLookView.size(), *sourceMeshLookView.raw());
+    if(!sourceMeshLookView.empty()) {
+        registry.insert<SPTMeshLook>(sourceMeshLookView.data(), sourceMeshLookView.data() + sourceMeshLookView.size(), *sourceMeshLookView.raw());
+    }
     
     // Clone camera
     registry.emplace<SPTPerspectiveCamera>(descriptor.viewCameraEntity, scene.registry.get<SPTPerspectiveCamera>(descriptor.viewCameraEntity));

@@ -12,7 +12,9 @@ import SwiftUI
 
 struct SPTView: UIViewControllerRepresentable {
 
-    let scene: SPTSceneProxy
+    // Needs to be @State to keep the scene alive as long as the view controller is
+    @State var scene: SPTSceneProxy
+    
     let clearColor: MTLClearColor
     let viewCameraEntity: SPTEntity
     

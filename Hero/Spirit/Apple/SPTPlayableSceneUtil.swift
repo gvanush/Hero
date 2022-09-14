@@ -8,7 +8,7 @@
 import Foundation
 
 
-class SPTPlayableSceneProxy {
+class SPTPlayableSceneProxy: Identifiable {
     
     let handle: SPTHandle
     

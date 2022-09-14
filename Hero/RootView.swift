@@ -15,7 +15,9 @@ struct RootView: View {
     @State private var showsAnimatorsView = false
     @State private var showsNewGeneratorView = false
     @State private var showsSelectedObjectInspector = false
-    @State private var showsPlayView = false
+    @State private var playableScene: SPTPlayableSceneProxy?
+
+    @Environment(\.scenePhase) private var scenePhase
     
     var body: some View {
         NavigationView {
@@ -31,11 +33,18 @@ struct RootView: View {
                             .selectedObjectUI(cornerRadius: 9.0)
                     }
                 })
-                    .renderingPaused(showsTransformView || showsNewGeneratorView || showsAnimatorsView || showsPlayView)
+                    .renderingPaused(showsTransformView || showsNewGeneratorView || showsAnimatorsView || playableScene != nil)
                     .lookCategories([.userCreated, .sceneGuide, .objectSelection])
                     .navigationTitle("Generative")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCameraObject.entity)
+                            } label: {
+                                Image(systemName: "play")
+                            }
+                        }
                         ToolbarItemGroup(placement: .bottomBar) {
                             Button {
                                 showsNewGeneratorView = true
@@ -55,13 +64,6 @@ struct RootView: View {
                                 Image(systemName: "hammer")
                             }
                         }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button {
-                                showsPlayView = true
-                            } label: {
-                                Image(systemName: "play")
-                            }
-                        }
                     }
                     .toolbar(isNavigating ? .hidden : .visible, for: .bottomBar, .navigationBar)
                     .statusBar(hidden: isNavigating)
@@ -71,9 +73,11 @@ struct RootView: View {
         .fullScreenCover(isPresented: $showsTransformView) {
             TransformView(sceneViewModel: sceneViewModel)
         }
-        .fullScreenCover(isPresented: $showsNewGeneratorView) {
-            NewGeneratorView()
-                .environmentObject(sceneViewModel)
+        .sheet(isPresented: $showsNewGeneratorView) {
+            NewObjectView() { meshId in
+                let newObject = sceneViewModel.objectFactory.makeMesh(meshId: meshId)
+                sceneViewModel.selectedObject = newObject
+            }
         }
         .sheet(isPresented: $showsAnimatorsView) {
             AnimatorsView()
@@ -82,9 +86,16 @@ struct RootView: View {
             MeshObjectInspector(meshComponent: MeshObjectComponent(object: sceneViewModel.selectedObject!, sceneViewModel: sceneViewModel))
                 .environmentObject(sceneViewModel)
         }
-        .fullScreenCover(isPresented: $showsPlayView) {
-            let playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCameraObject.entity)
-            PlayView(model: PlayViewModel(scene: playableScene, viewCameraEntity: playableScene.params.viewCameraEntity))
+        .fullScreenCover(item: $playableScene, content: { scene in
+            PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))
+        })
+        
+        .onChange(of: scenePhase) { [scenePhase] newScenePhase in
+            // This should be part of 'PlayView' however for some reason
+            // scene phase notifications work on the root view of the app
+            if scenePhase == .active && newScenePhase == .inactive {
+                playableScene = nil
+            }
         }
     }
     
