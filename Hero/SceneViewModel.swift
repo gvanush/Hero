@@ -111,9 +111,17 @@ class SceneViewModel: ObservableObject {
         // Setup objects
 //        let centerObjectMeshId = MeshRegistry.standard.recordNamed("cone")!.id
 //        _ = objectFactory.makeMesh(meshId: centerObjectMeshId)
-//        
+//
 //        objectFactory.makeRandomMeshes()
         
+    }
+    
+    func createNewObject(meshId: SPTMeshId) {
+        selectedObject = objectFactory.makeMesh(meshId: meshId)
+    }
+    
+    func duplicateObject(_ object: SPTObject) {
+        selectedObject = objectFactory.duplicateObject(object)
     }
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {

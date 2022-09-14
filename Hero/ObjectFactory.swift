@@ -35,6 +35,18 @@ class ObjectFactory {
         return object
     }
     
+    func duplicateObject(_ object: SPTObject) -> SPTObject {
+        let duplicate = scene.makeObject()
+        SPTMetadataMake(duplicate, .init(tag: ObjectType.mesh.rawValue, name: "Mesh \(meshNumber)"))
+        SPTPosition.make(SPTPosition.get(object: object), object: duplicate)
+        SPTScale.make(SPTScale.get(object: object), object: duplicate)
+        SPTOrientation.make(SPTOrientation.get(object: object), object: duplicate)
+        SPTMeshLook.make(SPTMeshLook.get(object: object), object: duplicate)
+        SPTRayCastableMake(duplicate)
+        meshNumber += 1
+        return duplicate
+    }
+    
     func makeRandomMeshes() {
         let positionRange: ClosedRange<Float> = -500.0...500.0
         let scaleRange: ClosedRange<Float> = 10.0...40.0

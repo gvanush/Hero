@@ -13,7 +13,7 @@ struct RootView: View {
     @State private var isNavigating = false
     @State private var showsTransformView = false
     @State private var showsAnimatorsView = false
-    @State private var showsNewGeneratorView = false
+    @State private var showsNewObjectView = false
     @State private var showsSelectedObjectInspector = false
     @State private var playableScene: SPTPlayableSceneProxy?
 
@@ -33,7 +33,7 @@ struct RootView: View {
                             .selectedObjectUI(cornerRadius: 9.0)
                     }
                 })
-                    .renderingPaused(showsTransformView || showsNewGeneratorView || showsAnimatorsView || playableScene != nil)
+                    .renderingPaused(showsTransformView || showsNewObjectView || showsAnimatorsView || playableScene != nil)
                     .lookCategories([.userCreated, .sceneGuide, .objectSelection])
                     .navigationTitle("Generative")
                     .navigationBarTitleDisplayMode(.inline)
@@ -47,7 +47,7 @@ struct RootView: View {
                         }
                         ToolbarItemGroup(placement: .bottomBar) {
                             Button {
-                                showsNewGeneratorView = true
+                                showsNewObjectView = true
                             } label: {
                                 Image(systemName: "plus")
                             }
@@ -73,10 +73,9 @@ struct RootView: View {
         .fullScreenCover(isPresented: $showsTransformView) {
             TransformView(sceneViewModel: sceneViewModel)
         }
-        .sheet(isPresented: $showsNewGeneratorView) {
+        .sheet(isPresented: $showsNewObjectView) {
             NewObjectView() { meshId in
-                let newObject = sceneViewModel.objectFactory.makeMesh(meshId: meshId)
-                sceneViewModel.selectedObject = newObject
+                sceneViewModel.createNewObject(meshId: meshId)
             }
         }
         .sheet(isPresented: $showsAnimatorsView) {
@@ -103,6 +102,11 @@ struct RootView: View {
         HStack(spacing: 4.0) {
             objectActionButton(iconName: "slider.horizontal.3") {
                 showsSelectedObjectInspector = true
+            }
+            objectActionButton(iconName: "plus.square.on.square") {
+                sceneViewModel.duplicateObject(object)
+                showsTransformView = true
+                
             }
             objectActionButton(iconName: "trash") {
                 sceneViewModel.destroySelected()
