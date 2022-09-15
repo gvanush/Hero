@@ -27,26 +27,33 @@ struct FloatSelector: View {
             }
         }
         
-        var maximumFractionDigits: Int {
+        var fractionDigits: Int {
             switch self {
             case ._0_1:
-                return 2
+                return 3
             case ._1:
-                return 1
+                return 2
             case ._10:
-                return 0
+                return 1
             }
         }
+        
+        var snappedFractionDigits: Int {
+            max(0, self.fractionDigits - 2)
+        }
+        
     }
     
     private enum EditingState {
         case idle
         case dragging
         case scrolling
+        case snapping
     }
     
     @Binding var value: Float
     @Binding var scale: Scale
+    @Binding var isSnappingEnabled: Bool
     @State private var state = EditingState.idle
     
     @State private var dragBaseValue: Float = 0.0
@@ -55,48 +62,69 @@ struct FloatSelector: View {
     @State private var scrollAnimationUtil = ScrollAnimationUtil()
     @State private var scrollDuration: TimeInterval = 0.0
     @State private var scrollStartTimestamp: TimeInterval = 0.0
+    @State private var snapInitialValue: Float = 0.0
+    @State private var snapDeltaValue: Float = 0.0
     
     @State private var formatter: Formatter
     
     typealias FormatterSubjectProvider = (Float) -> NSObject
-    private let formatterSubjectProvider: FormatterSubjectProvider?
+    private var formatterSubjectProvider: FormatterSubjectProvider?
     
-    @State var feedbackGenerator = UISelectionFeedbackGenerator()
+    @State private var feedbackGenerator = UISelectionFeedbackGenerator()
+    
+    @State private var rawValue: Float {
+        willSet {
+            if isSnappingEnabled {
+                value = roundedValue(newValue)
+            } else {
+                value = newValue
+            }
+        }
+    }
         
-    init(value: Binding<Float>, scale: Binding<Scale>) {
+    init(value: Binding<Float>, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>) {
         _value = value
         _scale = scale
+        _isSnappingEnabled = isSnappingEnabled
+        self.rawValue = value.wrappedValue
         self.formatter = NumberFormatter()
         self.formatterSubjectProvider = nil
         
-        numberFormatter.roundingMode = .floor
-        numberFormatter.maximumFractionDigits = self.scale.maximumFractionDigits
+        numberFormatter.roundingMode = .halfEven
+        numberFormatter.maximumFractionDigits = self.scale.fractionDigits
+        numberFormatter.minimumFractionDigits = self.scale.fractionDigits
+        
     }
     
-    init(value: Binding<Float>, scale: Binding<Scale>, measurementFormatter: MeasurementFormatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
+    init(value: Binding<Float>, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>, measurementFormatter: MeasurementFormatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
         _value = value
         _scale = scale
+        _isSnappingEnabled = isSnappingEnabled
+        self.rawValue = value.wrappedValue
         self.formatter = measurementFormatter
         self.formatterSubjectProvider = formatterSubjectProvider
         
-        numberFormatter.roundingMode = .floor
-        numberFormatter.maximumFractionDigits = self.scale.maximumFractionDigits
+        numberFormatter.roundingMode = .halfEven
+        numberFormatter.maximumFractionDigits = self.scale.fractionDigits
+        numberFormatter.minimumFractionDigits = self.scale.fractionDigits
+        
     }
     
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .top) {
-                Ruler(unitSize: Self.rulerUnitSize, additionalUnitsCount: Self.rulerAdditionalUnitCount)
+                Ruler(unitSize: Self.rulerUnitSize, additionalUnitsCount: Self.rulerAdditionalUnitCount, integerNumbers: isSnappingEnabled)
                     .offset(x: rulerOffsetX, y: 0.0)
                     .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
                     .padding(.horizontal, Self.padding)
+                    .animation(nil, value: rawValue)
                 ZStack {
                     HStack {
                         ScalePicker(scale: $scale)
-                            .visible(!(state == .dragging || state == .scrolling))
-                            
                         Spacer()
+                        SnappingToggle(isOn: $isSnappingEnabled)
                     }
+                    .visible(!(state == .dragging || state == .scrolling))
                     valueView
                 }
                 .padding(Self.padding)
@@ -115,9 +143,18 @@ struct FloatSelector: View {
         }
         .onChange(of: scale) { _ in
             stopScrolling()
-            updateFormatter(maximumFractionDigits: scale.maximumFractionDigits)
+            updateFormatter(fractionDigits: scale.fractionDigits)
             // NOTE: This is needed because updating formatter does not trigger value text refresh
-            updateValue(value.nextUp)
+            rawValue = rawValue.nextUp
+        }
+        .onChange(of: isSnappingEnabled) { newValue in
+            stopScrolling()
+            if newValue {
+                updateFormatter(fractionDigits: scale.snappedFractionDigits)
+                startSnapping()
+            } else {
+                updateFormatter(fractionDigits: scale.fractionDigits)
+            }
         }
         .onChange(of: value) { [value] newValue in
             guard state == .dragging || state == .scrolling else { return }
@@ -138,32 +175,48 @@ struct FloatSelector: View {
             }
         }
         .onFrame { frame in
-            guard state == .scrolling else { return }
             
-            let passeedTime = frame.timestamp - scrollStartTimestamp
-            if passeedTime >= scrollDuration {
-                updateValue(dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: scrollDuration)))
-                withAnimation {
-                    state = .idle
+            switch state {
+            case .scrolling:
+                var passeedTime = frame.timestamp - scrollStartTimestamp
+                if passeedTime >= scrollDuration {
+                    passeedTime = scrollDuration
+                    withAnimation {
+                        state = .idle
+                    }
                 }
-            } else {
-                updateValue(dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: passeedTime)))
+                rawValue = dragBaseValue + deltaValue(translation: scrollAnimationUtil.value(at: passeedTime))
+                
+            case .snapping:
+                var passeedTime = frame.timestamp - scrollStartTimestamp
+                if passeedTime >= scrollDuration {
+                    passeedTime = scrollDuration
+                    withAnimation {
+                        state = .idle
+                    }
+                }
+                rawValue = snapInitialValue + snapDeltaValue * Float((passeedTime / scrollDuration))
+                
+            case .dragging:
+                break
+            case .idle:
+                break
             }
+            
         }
     }
     
     var valueView: some View {
         let valueText = { () -> Text in
-            if formatter is MeasurementFormatter {
-                return Text(formatterSubjectProvider!(value), formatter: formatter)
-            } else {
-                return Text(NSNumber(value: value), formatter: formatter)
-            }
+            // This is to eliminate minus zero being displayed (no option found in formatter API)
+            let value = (value == 0.0 ? 0.0 : value)
+            return formatter is MeasurementFormatter ? Text(formatterSubjectProvider!(value), formatter: formatter) : Text(NSNumber(value: value), formatter: formatter)
         }
         
         return HStack {
             Spacer()
             valueText()
+                .font(.body.monospacedDigit())
                 .foregroundColor(.controlValue)
             Spacer()
         }
@@ -182,7 +235,7 @@ struct FloatSelector: View {
         DragGesture(minimumDistance: 0.0)
             .onChanged { dragValue in
                 
-                if state == .scrolling {
+                if state == .scrolling || state == .snapping {
                     stopScrolling()
                 }
                 
@@ -191,39 +244,49 @@ struct FloatSelector: View {
                 if state == .idle && dragValue.translation.width != 0.0 {
                     withAnimation {
                         state = .dragging
-                        dragBaseValue = value
+                        dragBaseValue = rawValue
                     }
                     dragInitialTranslation = dragValue.translation.width
                     return
                 }
                 
                 if state == .dragging {
-                    updateValue(dragBaseValue + deltaValue(translation: dragValue.translation.width - dragInitialTranslation))
+                    rawValue = dragBaseValue + deltaValue(translation: dragValue.translation.width - dragInitialTranslation)
                 }
                 
             }
             .onEnded { dragValue in
                 
-                guard state == .dragging else { return }
-                    
-                let initialSpeed = dragValue.scrollInitialSpeedX(decelerationRate: scrollAnimationUtil.decelerationRate)
+                guard state == .dragging || state == .idle else { return }
+                
+                var initialSpeed = dragValue.scrollInitialSpeedX(decelerationRate: scrollAnimationUtil.decelerationRate) * Self.scrollInitialSpeedFactor
                 if abs(initialSpeed) < Self.scrollMinInitialSpeed {
                     // NOTE: Not setting the value matching drag last translation because
                     // it becomes very hard to stick to certain desired value since during
                     // relasing finger some undesired drag happens nearly unavoidably
-                    withAnimation {
-                        state = .idle
+                    if isSnappingEnabled {
+                        startSnapping()
+                    } else {
+                        withAnimation {
+                            state = .idle
+                        }
                     }
                     return
                 }
                 
+                if isSnappingEnabled {
+                    // Adjust 'initialSpeed' so that ruler stops at right location
+                    var endTranslation = ScrollAnimationUtil.distance(initialSpeed: initialSpeed, decelerationRate: scrollAnimationUtil.decelerationRate)
+                    let finalValue = roundedValue(dragBaseValue + deltaValue(translation: endTranslation - dragInitialTranslation))
+                    endTranslation = translation(deltaValue: finalValue - dragBaseValue) + dragInitialTranslation
+                    initialSpeed = ScrollAnimationUtil.initialSpeed(distance: endTranslation - dragValue.translation.width, decelerationRate: scrollAnimationUtil.decelerationRate)
+                }
+                
                 let translation = dragValue.translation.width - dragInitialTranslation
-                updateValue(dragBaseValue + deltaValue(translation: translation))
+                rawValue = dragBaseValue + deltaValue(translation: translation)
                 
                 scrollAnimationUtil.initialValue = translation
-                // NOTE: This speed factor is tweaked such that a soft scrolling results
-                // to around 25 units of change while a hard one around 100
-                scrollAnimationUtil.initialSpeed = 2.8 * initialSpeed
+                scrollAnimationUtil.initialSpeed = initialSpeed
                 
                 scrollDuration = scrollAnimationUtil.duration
                 scrollStartTimestamp = CACurrentMediaTime()
@@ -234,31 +297,30 @@ struct FloatSelector: View {
             }
     }
     
-    private func updateValue(_ newValue: Float) {
-        if newValue > value {
-            updateFormatter(roundingMode: .floor)
-        } else if newValue < value {
-            updateFormatter(roundingMode: .ceiling)
+    private func startSnapping() {
+        snapInitialValue = rawValue
+        snapDeltaValue = roundedValue(rawValue) - rawValue
+        scrollDuration = 0.1
+        scrollStartTimestamp = CACurrentMediaTime()
+        withAnimation {
+            state = .snapping
         }
-        value = newValue
     }
     
-    private func updateFormatter(roundingMode: NumberFormatter.RoundingMode? = nil, maximumFractionDigits: Int? = nil) {
+    private func updateFormatter(fractionDigits: Int) {
         let numberFormatter = numberFormatter
-        let roundingMode = roundingMode ?? numberFormatter.roundingMode
-        let maximumFractionDigits = maximumFractionDigits ?? numberFormatter.maximumFractionDigits
         
         if let measurementFormatter = formatter as? MeasurementFormatter {
             // NOTE: This is needed because measurement formatter is buggy in a sense that
             // changing underlying number formatter directly does not have any effect
             // after first formatting is requested, therefore new one is supllied
             let newNumberFormatter = NumberFormatter()
-            newNumberFormatter.roundingMode = roundingMode
-            newNumberFormatter.maximumFractionDigits = maximumFractionDigits
+            newNumberFormatter.minimumFractionDigits = fractionDigits
+            newNumberFormatter.maximumFractionDigits = fractionDigits
             measurementFormatter.numberFormatter = newNumberFormatter
         } else {
-            numberFormatter.roundingMode = roundingMode
-            numberFormatter.maximumFractionDigits = maximumFractionDigits
+            numberFormatter.minimumFractionDigits = fractionDigits
+            numberFormatter.maximumFractionDigits = fractionDigits
         }
     }
     
@@ -274,8 +336,12 @@ struct FloatSelector: View {
         -scale.rawValue * Float(translation / Self.rulerUnitSize)
     }
     
+    private func translation(deltaValue: Float) -> CGFloat {
+        -CGFloat(deltaValue / scale.rawValue) * Self.rulerUnitSize
+    }
+    
     private var rulerOffsetX: CGFloat {
-        -fmod(CGFloat(value / scale.rawValue), CGFloat(Self.rulerAdditionalUnitCount)) * Self.rulerUnitSize
+        -fmod(CGFloat(rawValue / scale.rawValue), CGFloat(Self.rulerAdditionalUnitCount)) * Self.rulerUnitSize
     }
     
     private func stopScrolling() {
@@ -284,15 +350,29 @@ struct FloatSelector: View {
         }
     }
     
+    private func roundedValue(_ value: Float) -> Float {
+        switch scale {
+        case ._0_1:
+            return (value * 10.0).rounded() / 10.0
+        case ._1:
+            return value.rounded()
+        case ._10:
+            return (value / 10.0).rounded() * 10.0
+        }
+    }
+    
     static let height = 75.0
     static let padding = 4.0
     static let cornerRadius = 11.0
-    static let rulerUnitSize: CGFloat = 20.0
+    static let rulerUnitSize: CGFloat = 30.0
     static let rulerAdditionalUnitCount = 10
     static let pointerWidth = 1.0
     static let pointerHeight = 32.0
-    static let scrollMinInitialSpeed = 100.0
     
+    // NOTE: This speed factor is tweaked such that a soft scrolling results
+    // to around 25 units of change while a hard one around 100
+    static let scrollInitialSpeedFactor = 2.8
+    static let scrollMinInitialSpeed = 100.0 * scrollInitialSpeedFactor
 }
 
 
@@ -300,6 +380,7 @@ fileprivate struct Ruler: View {
     
     let unitSize: CGFloat
     let additionalUnitsCount: Int
+    let integerNumbers: Bool
     
     var body: some View {
         GeometryReader { geometry in
@@ -315,7 +396,7 @@ fileprivate struct Ruler: View {
                 var baseX: CGFloat = 0.0
                 let halfWidth = CGFloat(additionalUnitsCount) * unitSize + 0.5 * geometry.size.width
                 while baseX <= halfWidth {
-                    number += 1
+                    number += (integerNumbers ? 10 : 1)
                     baseX = CGFloat(number) * subUnitSize
                     
                     let y = geometry.size.height - heightFor(number)
@@ -366,10 +447,40 @@ fileprivate struct ScalePicker: View {
     static let cornerRadius = 7.0
 }
 
+struct SnappingToggle: View {
+    
+    @Binding var isOn: Bool
+    
+    var body: some View {
+        Button {
+            isOn.toggle()
+        } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 7.0)
+                    .fill(.shadow(.inner(radius: 3.0)))
+                    .foregroundColor(Color.systemFill)
+                    .visible(isOn)
+                Image(systemName: isOn ? "arrow.right.and.line.vertical.and.arrow.left" : "arrow.left.and.right")
+            }
+            .frame(width: Self.width, height: Self.height, alignment: .center)
+            .overlay {
+                RoundedRectangle(cornerRadius: Self.cornerRadius)
+                    .strokeBorder(Color.tertiaryLabel, lineWidth: 1)
+            }
+        }
+        .tint(.secondaryLabel)
+    }
+    
+    static let width = 58.0
+    static let height = 29.0
+    static let cornerRadius = 7.0
+    
+}
+
 
 struct FloatField_Previews: PreviewProvider {
     static var previews: some View {
-        FloatSelector(value: .constant(0.0), scale: .constant(._1))
+        FloatSelector(value: .constant(0.0), scale: .constant(._1), isSnappingEnabled: .constant(false))
             .padding(8.0)
     }
 }

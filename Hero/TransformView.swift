@@ -13,6 +13,7 @@ struct TransformView: View {
     @State private var activeTool = Tool.move
     @State private var axes = [Axis](repeating: .x, count: Tool.allCases.count)
     @State private var scales = [FloatSelector.Scale._1, FloatSelector.Scale._10, FloatSelector.Scale._0_1]
+    @State private var snappingsEnabled = [false, false, false]
     @State private var isNavigating = false
     @Environment(\.presentationMode) var presentationMode
     
@@ -24,7 +25,7 @@ struct TransformView: View {
                         SceneView(model: sceneViewModel, uiSafeAreaInsets: navigationGeometry.safeAreaInsets.bottomInseted(BottomBar.height), isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation)) {
                             
                             if let selectedObject = sceneViewModel.selectedObject {
-                                ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject, sceneViewModel: sceneViewModel))
+                                ObjectControlView(tool: activeTool, axis: $axes[activeTool.rawValue], scale: $scales[activeTool.rawValue], isSnappingEnabled: $snappingsEnabled[activeTool.rawValue], model: ObjectControlViewModel(object: selectedObject, sceneViewModel: sceneViewModel))
                                     .id(activeTool.rawValue)
                                     .id(selectedObject)
                             }
@@ -64,6 +65,7 @@ struct ObjectControlView: View {
     fileprivate let tool: Tool
     @Binding fileprivate var axis: Axis
     @Binding fileprivate var scale: FloatSelector.Scale
+    @Binding fileprivate var isSnappingEnabled: Bool
     @StateObject fileprivate var model: ObjectControlViewModel
     
     var body: some View {
@@ -95,11 +97,11 @@ struct ObjectControlView: View {
     var floatField: FloatSelector {
         switch tool {
         case .move:
-            return FloatSelector(value: $model.position[axis.rawValue], scale: $scale)
+            return FloatSelector(value: $model.position[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
         case .orient:
-            return FloatSelector(value: $model.eulerRotation[axis.rawValue], scale: $scale, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
+            return FloatSelector(value: $model.eulerRotation[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
         case .scale:
-            return FloatSelector(value: $model.scale[axis.rawValue], scale: $scale)
+            return FloatSelector(value: $model.scale[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
         }
     }
     

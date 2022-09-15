@@ -80,6 +80,8 @@ struct SceneView<BV>: View where BV: View {
                     .allowsHitTesting(isNavigationEnabled && !isNavigating)
                 
                 ZStack {
+                    zoomControl(geometry: geometry)
+                    
                     VStack(spacing: 0.0) {
                         if let name = model.selectedObjectMetadata?.name {
                             Text(name)
@@ -108,7 +110,6 @@ struct SceneView<BV>: View where BV: View {
                             .padding(.bottom, 280.0 + geometry.safeAreaInsets.bottom - uiSteadySafeAreaInsets.bottom)
                     }
                     
-                    zoomControl(geometry: geometry)
                 }
                 .padding(SceneViewConst.uiPadding)
                 .padding(uiSteadySafeAreaInsets)

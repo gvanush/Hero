@@ -56,10 +56,11 @@ struct EditOrientationComponentView: View {
     
     @ObservedObject var component: OrientationComponent
     @State private var scale = FloatSelector.Scale._10
+    @State private var isSnappingEnabled = false
     
     var body: some View {
         if let axis = component.selectedProperty {
-            FloatSelector(value: $component.value[axis.rawValue], scale: $scale, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
+            FloatSelector(value: $component.value[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
                 .transition(.identity)
                 .id(axis.rawValue)
         }

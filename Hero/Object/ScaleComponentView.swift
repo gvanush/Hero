@@ -56,10 +56,11 @@ struct EditScaleComponentView: View {
     
     @ObservedObject var component: ScaleComponent
     @State private var scale = FloatSelector.Scale._0_1
+    @State private var isSnappingEnabled = false
     
     var body: some View {
         if let axis = component.selectedProperty {
-            FloatSelector(value: $component.value[axis.rawValue], scale: $scale)
+            FloatSelector(value: $component.value[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                 .transition(.identity)
                 .id(axis.rawValue)
         }

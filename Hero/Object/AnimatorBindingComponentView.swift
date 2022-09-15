@@ -141,15 +141,16 @@ struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatablePropert
     
     @ObservedObject var component: AnimatorBindingComponent<AP>
     @State private var scale = FloatSelector.Scale._1
+    @State private var isSnappingEnabled = false
     
     var body: some View {
         Group {
             if let property = component.selectedProperty {
                 switch property {
                 case .valueAt0:
-                    FloatSelector(value: $component.valueAt0, scale: $scale)
+                    FloatSelector(value: $component.valueAt0, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                 case .valueAt1:
-                    FloatSelector(value: $component.valueAt1, scale: $scale)
+                    FloatSelector(value: $component.valueAt1, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                 case .animator:
                     FloatSlider(value: $component.animatorValue)
                 }
