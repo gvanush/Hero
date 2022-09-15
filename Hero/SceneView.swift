@@ -152,48 +152,13 @@ struct SceneView<BV>: View where BV: View {
         }
     }
     
+    
+    
     func focusButton() -> some View {
         HStack(spacing: 0.0) {
             VStack {
                 Spacer()
-                Button {
-                    if let state = model.focusState {
-                        switch state {
-                        case .unfocused:
-                            model.focusState = .focused
-                        case .focused:
-                            model.focusState = .following
-                        case .following:
-                            model.focusState = .focused
-                        }
-                    }
-                } label: {
-                    Group {
-                        if let state = model.focusState {
-                            switch state {
-                            case .unfocused:
-                                Image(systemName: "camera.metering.center.weighted.average")
-                            case .focused:
-                                Image(systemName: "camera.metering.partial")
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundStyle(.primary, .secondary)
-                            case .following:
-                                Image(systemName: "camera.metering.spot")
-                                    .symbolRenderingMode(.palette)
-                                    .foregroundStyle(.secondary, .primary)
-                            }
-                        } else {
-                            Image(systemName: "camera.metering.center.weighted.average")
-                        }
-                    }
-                    .imageScale(.large)
-                    .frame(width: SceneViewConst.uiButtonSize, height: SceneViewConst.uiButtonSize, alignment: .center)
-                }
-                .background(SceneViewConst.uiBgrMaterial)
-                .tint(.primary)
-                .cornerRadius(15.0)
-                .shadow(radius: 1.0)
-                .disabled(model.focusState == nil)
+                SceneUIToggle(isOn: $model.isFocusing, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
             }
             Spacer()
         }

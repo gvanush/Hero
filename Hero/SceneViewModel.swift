@@ -10,12 +10,6 @@ import SwiftUI
 
 class SceneViewModel: ObservableObject {
     
-    enum ObjectFocusState {
-        case unfocused
-        case focused
-        case following
-    }
-    
     let scene = SPTSceneProxy()
     let lineMeshId: SPTMeshId
     
@@ -28,15 +22,15 @@ class SceneViewModel: ObservableObject {
     private var objectSelector: ObjectSelector?
     private var selectedObjectPositionWillChangeSubscription: SPTAnySubscription?
     
-    var focusState: ObjectFocusState? {
+    var isFocusing: Bool? {
         willSet {
-            guard focusState != newValue else {
+            guard isFocusing != newValue else {
                 return
             }
             
             objectWillChange.send()
             
-            if let selectedObject = selectedObject, focusState == .unfocused && newValue == .focused {
+            if let selectedObject = selectedObject, newValue ?? false {
                 focusOn(selectedObject)
             }
         }
@@ -47,25 +41,19 @@ class SceneViewModel: ObservableObject {
             guard selectedObject != newValue else { return }
             
             if let newObject = newValue {
+                isFocusing = false
                 
                 selectedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: newObject) { newPos in
-                    if self.focusState == .following {
+                    if self.isFocusing ?? false {
                         self.focusOn(newPos.xyz)
-                    } else {
-                        self.checkFocusState(targetPos: newPos.xyz)
                     }
                 }
                 
             } else {
-                focusState = nil
+                isFocusing = nil
                 selectedObjectPositionWillChangeSubscription = nil
             }
             objectSelector = ObjectSelector(object: newValue)
-        }
-        didSet {
-            if let selectedObject = selectedObject {
-                checkFocusState(targetPos: SPTPositionGet(selectedObject).xyz)
-            }
         }
     }
     
@@ -135,14 +123,6 @@ class SceneViewModel: ObservableObject {
         }
         
         return object
-    }
-    
-    private func checkFocusState(targetPos: simd_float3) {
-        if targetPos == SPTPositionGet(viewCameraObject).spherical.center {
-            focusState = .focused
-        } else {
-            focusState = .unfocused
-        }
     }
     
     private func focusOn(_ object: SPTObject) {

@@ -127,6 +127,7 @@
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
 		B7BCB11E27D75A6A00F5AFB1 /* SPTSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11D27D75A6A00F5AFB1 /* SPTSubscription.swift */; };
 		B7C7489B28D1A3EE00E270FB /* NewObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489A28D1A3EE00E270FB /* NewObjectView.swift */; };
+		B7C7489D28D2FFC700E270FB /* SceneUIToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489C28D2FFC700E270FB /* SceneUIToggle.swift */; };
 		B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB327310DFC005C9F82 /* BindingUtil.swift */; };
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
 		B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */; };
@@ -324,6 +325,7 @@
 		B7C7489828D0427900E270FB /* AnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBinding.hpp; sourceTree = "<group>"; };
 		B7C7489928D0EF9C00E270FB /* Orientation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Orientation.hpp; sourceTree = "<group>"; };
 		B7C7489A28D1A3EE00E270FB /* NewObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewObjectView.swift; sourceTree = "<group>"; };
+		B7C7489C28D2FFC700E270FB /* SceneUIToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneUIToggle.swift; sourceTree = "<group>"; };
 		B7D19EB327310DFC005C9F82 /* BindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingUtil.swift; sourceTree = "<group>"; };
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
 		B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureUtil.swift; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 				B712240028BBDFB3006A31B1 /* FloatSlider.swift */,
 				B717636327B1A7F500CE5195 /* IntegerField.swift */,
 				B7104BC5272B1D3300582DCA /* FloatingSceneView.swift */,
+				B7C7489C28D2FFC700E270FB /* SceneUIToggle.swift */,
 				B75FA584279322E2001EC7C5 /* TemplateObjectSelector.swift */,
 				B717635F27B00CCF00CE5195 /* MeshRegistry.swift */,
 				B710DB8927BD8E4000C57BDF /* PropertySelector.swift */,
@@ -901,6 +904,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */,
+				B7C7489D28D2FFC700E270FB /* SceneUIToggle.swift in Sources */,
 				B721760A2750AD990047016B /* Buffer_metal.mm in Sources */,
 				B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */,
 				B717634B27A2C7D400CE5195 /* ComponentTreeNavigationView.swift in Sources */,
