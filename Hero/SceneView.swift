@@ -15,12 +15,10 @@ struct SceneViewConst {
     static let uiButtonSize = 50.0
 }
 
-struct SceneView<BV>: View where BV: View {
+struct SceneView: View {
     
     @ObservedObject var model: SceneViewModel
-    let uiSafeAreaInsets: EdgeInsets
     @Binding var isNavigating: Bool
-    let bottomView: () -> BV
     
     private(set) var isRenderingPaused = false
     private(set) var lookCategories = LookCategories.all
@@ -31,12 +29,9 @@ struct SceneView<BV>: View where BV: View {
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
-    @State private var uiSteadySafeAreaInsets = EdgeInsets()
     
-    init(model: SceneViewModel, uiSafeAreaInsets: EdgeInsets, isNavigating: Binding<Bool>, @ViewBuilder bottomView: @escaping () -> BV = { EmptyView() }) {
+    init(model: SceneViewModel, uiSafeAreaInsets: EdgeInsets, isNavigating: Binding<Bool>) {
         self.model = model
-        self.uiSafeAreaInsets = uiSafeAreaInsets
-        self.bottomView = bottomView
         self._isNavigating = isNavigating
     }
     
@@ -82,37 +77,14 @@ struct SceneView<BV>: View where BV: View {
                 ZStack {
                     zoomControl(geometry: geometry)
                     
-                    VStack(spacing: 0.0) {
-                        if let name = model.selectedObjectMetadata?.name {
-                            Text(name)
-                                .font(.subheadline)
-                                .foregroundColor(.secondaryLabel)
-                                .frame(height: 30)
-                                .padding(.horizontal, 8.0)
-                                .background(SceneViewConst.uiBgrMaterial)
-                                .cornerRadius(9.0)
-                                .selectedObjectUI(cornerRadius: 9.0)
-                                .offset(y: isNavigating ? -uiSteadySafeAreaInsets.top : 0.0)
-                        }
-                        Spacer()
-                        ZStack(alignment: .bottom) {
-                            Color.clear
-                            bottomView()
-                                .tint(.primary)
-                                .offset(y: isNavigating ? uiSteadySafeAreaInsets.bottom : 0.0)
-                        }
-                        .frame(height: 121.0)
-                    }
-                    
                     VStack {
                         Spacer()
                         focusButton()
-                            .padding(.bottom, 280.0 + geometry.safeAreaInsets.bottom - uiSteadySafeAreaInsets.bottom)
                     }
+                    .padding(.bottom, 280.0)
                     
                 }
                 .padding(SceneViewConst.uiPadding)
-                .padding(uiSteadySafeAreaInsets)
                 .visible(isNavigationEnabled && !isNavigating)
             }
         }
@@ -130,11 +102,6 @@ struct SceneView<BV>: View where BV: View {
         }
         .onChange(of: colorScheme) { _ in
             clearColor = UIColor.sceneBgrColor.mtlClearColor
-        }
-        .onChange(of: uiSafeAreaInsets) { newValue in
-            if !isNavigating {
-                uiSteadySafeAreaInsets = newValue
-            }
         }
     }
     

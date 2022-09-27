@@ -7,11 +7,45 @@
 
 import SwiftUI
 
+
+enum Tool: Int, CaseIterable, Identifiable {
+    
+    case move
+    case orient
+    case scale
+    
+    var id: Self { self }
+    
+    var title: String {
+        switch self {
+        case .move:
+            return "Move"
+        case .orient:
+            return "Orient"
+        case .scale:
+            return "Scale"
+        }
+    }
+    
+    var iconName: String {
+        switch self {
+        case .move:
+            return "move.3d"
+        case .orient:
+            return "rotate.3d"
+        case .scale:
+            return "scale.3d"
+        }
+    }
+}
+
+
 struct RootView: View {
     
     @StateObject var sceneViewModel = SceneViewModel()
     @State private var isNavigating = false
-    @State private var showsTransformView = false
+    @State private var isToolActive = false
+    @State private var tool = Tool.move
     @State private var showsAnimatorsView = false
     @State private var showsNewObjectView = false
     @State private var showsSelectedObjectInspector = false
@@ -20,62 +54,40 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     
     var body: some View {
-        NavigationView {
-            GeometryReader { geometryProxy in
-                SceneView(model: sceneViewModel,
-                          uiSafeAreaInsets: geometryProxy.safeAreaInsets,
-                          isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), bottomView: {
-                    if let selected = sceneViewModel.selectedObject {
-                        objectActionView(selected)
-                            .background(SceneViewConst.uiBgrMaterial)
-                            .cornerRadius(9.0)
-                            .shadow(radius: 1.0)
-                            .selectedObjectUI(cornerRadius: 9.0)
-                    }
-                })
-                    .renderingPaused(showsTransformView || showsNewObjectView || showsAnimatorsView || playableScene != nil)
-                    .lookCategories([.userCreated, .sceneGuide, .objectSelection])
-                    .navigationTitle("Generative")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button {
-                                playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCameraObject.entity)
-                            } label: {
-                                Image(systemName: "play")
-                            }
-                        }
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            Button {
-                                showsNewObjectView = true
-                            } label: {
-                                Image(systemName: "plus")
-                            }
-                            Spacer()
-                            Button {
-                                showsAnimatorsView = true
-                            } label: {
-                                Image(systemName: "circlebadge.2")
-                            }
-                            Spacer()
-                            Button {
-                                showsTransformView = true
-                            } label: {
-                                Image(systemName: "hammer")
-                            }
-                        }
-                    }
-                    .toolbar(isNavigating ? .hidden : .visible, for: .bottomBar, .navigationBar)
-                    .statusBar(hidden: isNavigating)
-                    .ignoresSafeArea()
+        ZStack {
+            SceneView(model: sceneViewModel,
+                      uiSafeAreaInsets: .init(top: 0.0, leading: 0.0, bottom: 0.0, trailing: 0.0),
+                      isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
+            .ignoresSafeArea()
+            
+            VStack(spacing: 0.0) {
+                VStack(spacing: 0.0) {
+                    topbar()
+                    Divider()
+                    editorsView()
+                }
+                .background(Material.bar)
+                .compositingGroup()
+                .shadow(radius: 0.5)
+                
+                objectInfoView()
+                    .padding(8.0)
+                
+                Spacer()
+                
+                controlsView()
+                    .padding(8.0)
+                bottombar()
             }
+            .visible(!isNavigating)
         }
-        .fullScreenCover(isPresented: $showsTransformView) {
-            TransformView(sceneViewModel: sceneViewModel)
-        }
+        .statusBar(hidden: isNavigating)
+        .persistentSystemOverlays(isNavigating ? .hidden : .automatic)
         .sheet(isPresented: $showsNewObjectView) {
             NewObjectView() { meshId in
                 sceneViewModel.createNewObject(meshId: meshId)
+                tool = .move
+                isToolActive = true
             }
         }
         .sheet(isPresented: $showsAnimatorsView) {
@@ -88,12 +100,171 @@ struct RootView: View {
         .fullScreenCover(item: $playableScene, content: { scene in
             PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))
         })
-        
         .onChange(of: scenePhase) { [scenePhase] newScenePhase in
             // This should be part of 'PlayView' however for some reason
             // scene phase notifications work on the root view of the app
             if scenePhase == .active && newScenePhase == .inactive {
                 playableScene = nil
+            }
+        }
+    }
+    
+    func topbar() -> some View {
+        ZStack {
+            HStack {
+                Button {
+                } label: {
+                    Image(systemName: "square.stack.3d.down.right")
+                        .imageScale(.large)
+                }
+                .hidden()
+                Spacer()
+                Button {
+                    playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCameraObject.entity)
+                } label: {
+                    Image(systemName: "play")
+                        .imageScale(.large)
+                }
+            }
+            HStack {
+                Spacer()
+                Text("Generative")
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Spacer()
+            }
+        }
+        .frame(height: 44.0)
+        .padding(.horizontal)
+    }
+    
+    func editorsView() -> some View {
+        HStack(spacing: 0.0) {
+            Button {
+                showsAnimatorsView = true
+            } label: {
+                Image(systemName: "circlebadge.2")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .contentShape(Rectangle())
+            Divider()
+            Button {
+            } label: {
+                Image(systemName: "list.bullet.indent")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .contentShape(Rectangle())
+        }
+        .tint(.primary)
+        .frame(height: 33.0)
+    }
+    
+    func objectInfoView() -> some View {
+        Group {
+            if let name = sceneViewModel.selectedObjectMetadata?.name {
+                Text(name)
+                    .font(.subheadline)
+                    .foregroundColor(.secondaryLabel)
+                    .frame(height: 30)
+                    .padding(.horizontal, 8.0)
+                    .background(SceneViewConst.uiBgrMaterial)
+                    .cornerRadius(9.0)
+                    .selectedObjectUI(cornerRadius: 9.0)
+            }
+        }
+    }
+    
+    func controlsView() -> some View {
+        
+        Group {
+            if isToolActive {
+                switch tool {
+                case .move:
+                    MoveToolControlsView(model: .init(sceneViewModel: sceneViewModel))
+                case .orient:
+                    OrientToolControlsView(model: .init(sceneViewModel: sceneViewModel))
+                case .scale:
+                    ScaleToolControlsView(model: .init(sceneViewModel: sceneViewModel))
+                }
+            } else {
+                if let selected = sceneViewModel.selectedObject {
+                    objectActionView(selected)
+                }
+            }
+        }
+    }
+    
+    func bottombar() -> some View {
+        ZStack {
+            if isToolActive {
+                activeToolOptionsView()
+            } else {
+                defaultActionsView()
+            }
+            HStack {
+                Spacer()
+                toolSelector()
+                Spacer()
+            }
+        }
+        .frame(height: 50.0)
+        .padding(.horizontal)
+        .background(Material.bar)
+        .compositingGroup()
+        .shadow(radius: 0.5)
+    }
+    
+    func toolSelector() -> some View {
+        Menu {
+            ForEach(Tool.allCases, id: \.id) { tool in
+                Button(tool.title) {
+                    self.tool = tool
+                    isToolActive = true
+                }
+            }
+        } label: {
+            
+            VStack(spacing: 2.0) {
+                Image(systemName: tool.iconName)
+                    .imageScale(.large)
+                Image(systemName: "ellipsis")
+                    .imageScale(.medium)
+            }
+            .fontWeight(.semibold)
+            .foregroundColor(isToolActive ? .systemBackground : .primary)
+            .frame(width: 48.0, height: 42.0)
+            .background {
+                Color.primary.opacity(isToolActive ? 0.8 : 0.0)
+                    .cornerRadius(5.0)
+            }
+            .shadow(radius: isToolActive ? 0.0 : 0.5)
+            
+        } primaryAction: {
+            isToolActive.toggle()
+        }
+    }
+    
+    func defaultActionsView() -> some View {
+        HStack {
+            Button {
+                showsNewObjectView = true
+            } label: {
+                Image(systemName: "plus")
+                    .imageScale(.large)
+            }
+            Spacer()
+        }
+    }
+    
+    func activeToolOptionsView() -> some View {
+        Group {
+            switch tool {
+            case .move:
+                EmptyView()
+            case .orient:
+                EmptyView()
+            case .scale:
+                EmptyView()
             }
         }
     }
@@ -105,7 +276,8 @@ struct RootView: View {
             }
             objectActionButton(iconName: "plus.square.on.square") {
                 sceneViewModel.duplicateObject(object)
-                showsTransformView = true
+                tool = .move
+                isToolActive = true
                 
             }
             objectActionButton(iconName: "trash") {
@@ -114,6 +286,11 @@ struct RootView: View {
         }
         .frame(height: 44.0)
         .padding(4.0)
+        .background(SceneViewConst.uiBgrMaterial)
+        .cornerRadius(9.0)
+        .shadow(radius: 1.0)
+        .selectedObjectUI(cornerRadius: 9.0)
+        .tint(.primary)
     }
     
     func objectActionButton(iconName: String, onPress: @escaping () -> Void) -> some View {

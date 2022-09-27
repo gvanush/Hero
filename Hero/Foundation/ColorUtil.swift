@@ -33,4 +33,8 @@ extension Color {
     static let ultraLightAccentColor = Color.accentColor.opacity(0.3)
     
     static let lightAccentColor = Color.accentColor.opacity(0.65)
+    
+    static let darkGray = Color(uiColor: .darkGray)
+    static let gray = Color(uiColor: .gray)
+    static let lightGray = Color(uiColor: .lightGray)
 }
