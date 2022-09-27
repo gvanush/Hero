@@ -10,12 +10,14 @@ import Combine
 
 fileprivate class SelectedObjectViewModel: ObservableObject {
     
+    let object: SPTObject
     let sceneViewModel: SceneViewModel
     
     @SPTObservedComponent private var sptPosition: SPTPosition
     private var guideObject: SPTObject?
     
     init(object: SPTObject, sceneViewModel: SceneViewModel) {
+        self.object = object
         self.sceneViewModel = sceneViewModel
         
         _sptPosition = SPTObservedComponent(object: object)
@@ -76,6 +78,7 @@ fileprivate struct SelectedObjectControlsView: View {
                 .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 .transition(.identity)
                 .id(axis.rawValue)
+                .id(model.object)
             Selector(selected: $axis)
                 .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
         }
