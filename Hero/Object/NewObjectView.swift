@@ -25,7 +25,7 @@ struct NewObjectView: View {
                     }
                 }
             }
-            .navigationTitle("Select Object")
+            .navigationTitle("New Object")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

@@ -86,14 +86,14 @@ fileprivate struct SelectedObjectControlsView: View {
                 .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
         }
         .onChange(of: axis, perform: { newValue in
-            model.removeGuideObjects()
-            model.setupGuideObjects(axis: newValue)
+//            model.removeGuideObjects()
+//            model.setupGuideObjects(axis: newValue)
         })
         .onAppear {
-            model.setupGuideObjects(axis: axis)
+//            model.setupGuideObjects(axis: axis)
         }
         .onDisappear {
-            model.removeGuideObjects()
+//            model.removeGuideObjects()
         }
     }
     
