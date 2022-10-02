@@ -16,7 +16,7 @@ struct NewObjectView: View {
         NavigationView {
             List(MeshRegistry.standard.meshRecords) { record in
                 HStack {
-                    Image(systemName: record.iconName)
+                    Image(record.iconName)
                     Text(record.name.capitalizingFirstLetter())
                     Spacer()
                     Button("Select") {

@@ -13,6 +13,11 @@ enum Tool: Int, CaseIterable, Identifiable {
     case move
     case orient
     case scale
+    case shade
+    case animmove
+    case animorient
+    case animscale
+    case animshade
     
     var id: Self { self }
     
@@ -24,17 +29,37 @@ enum Tool: Int, CaseIterable, Identifiable {
             return "Orient"
         case .scale:
             return "Scale"
+        case .shade:
+            return "Shade"
+        case .animmove:
+            return "Animmove"
+        case .animorient:
+            return "Animorient"
+        case .animscale:
+            return "Animscale"
+        case .animshade:
+            return "Animashade"
         }
     }
     
     var iconName: String {
         switch self {
         case .move:
-            return "move.3d"
+            return "move"
         case .orient:
-            return "rotate.3d"
+            return "orient"
         case .scale:
-            return "scale.3d"
+            return "scale"
+        case .shade:
+            return "shade"
+        case .animmove:
+            return "animmove"
+        case .animorient:
+            return "animorient"
+        case .animscale:
+            return "animscale"
+        case .animshade:
+            return "animshade"
         }
     }
 }
@@ -143,7 +168,7 @@ struct RootView: View {
             Button {
                 showsAnimatorsView = true
             } label: {
-                Image(systemName: "circlebadge.2")
+                Image(systemName: "bolt")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .contentShape(Rectangle())
@@ -185,6 +210,16 @@ struct RootView: View {
                     OrientToolControlsView(model: .init(sceneViewModel: sceneViewModel))
                 case .scale:
                     ScaleToolControlsView(model: .init(sceneViewModel: sceneViewModel))
+                case .shade:
+                    EmptyView()
+                case .animmove:
+                    EmptyView()
+                case .animorient:
+                    EmptyView()
+                case .animscale:
+                    EmptyView()
+                case .animshade:
+                    EmptyView()
                 }
             } else {
                 if let selected = sceneViewModel.selectedObject {
@@ -217,27 +252,35 @@ struct RootView: View {
     func toolSelector() -> some View {
         Menu {
             ForEach(Tool.allCases, id: \.id) { tool in
-                Button(tool.title) {
+                Button {
                     self.tool = tool
                     isToolActive = true
+                } label: {
+                    HStack {
+                        Text(tool.title)
+                        Spacer()
+                        Image(tool.iconName)
+                    }
                 }
             }
         } label: {
             
             VStack(spacing: 2.0) {
-                Image(systemName: tool.iconName)
+                Image(tool.iconName)
                     .imageScale(.large)
+                    .foregroundColor(isToolActive ? .systemBackground : .primary)
                 Image(systemName: "ellipsis")
-                    .imageScale(.medium)
+                    .imageScale(.small)
+                    .foregroundColor(isToolActive ? .secondarySystemBackground : .secondary)
+                    .fontWeight(.light)
             }
-            .fontWeight(.semibold)
-            .foregroundColor(isToolActive ? .systemBackground : .primary)
             .frame(width: 48.0, height: 42.0)
             .background {
                 Color.primary.opacity(isToolActive ? 0.8 : 0.0)
                     .cornerRadius(5.0)
+                    .shadow(radius: 1.0)
             }
-            .shadow(radius: isToolActive ? 0.0 : 0.5)
+            .shadow(radius: isToolActive ? 0.0 : 1.0)
             
         } primaryAction: {
             isToolActive.toggle()
@@ -264,6 +307,16 @@ struct RootView: View {
             case .orient:
                 EmptyView()
             case .scale:
+                EmptyView()
+            case .shade:
+                EmptyView()
+            case .animmove:
+                EmptyView()
+            case .animorient:
+                EmptyView()
+            case .animscale:
+                EmptyView()
+            case .animshade:
                 EmptyView()
             }
         }
