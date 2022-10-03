@@ -8,8 +8,6 @@
 import SwiftUI
 
 
-fileprivate let navigationAnimation = Animation.easeOut(duration: 0.25)
-
 struct PropertyTreeNavigationVIew: View {
 
     let rootComponent: Component
@@ -25,17 +23,12 @@ struct PropertyTreeNavigationVIew: View {
             
             ComponentView(component: rootComponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                 .padding(3.0)
-                .overlay {
-                    RoundedRectangle(cornerRadius: .infinity)
-                        .stroke(Color.secondaryLabel, lineWidth: 1.0)
-                        .shadow(radius: 0.5)
-                }
                 .frame(height: Self.componentViewHeight)
+                .background(Material.thin)
+                .cornerRadius(SelectorConst.cornerRadius)
+                .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
             
         }
-        .padding(8.0)
-        .frame(maxWidth: .infinity, maxHeight: Self.height)
-        .background(Material.bar)
         .compositingGroup()
         .shadow(radius: 0.5)
         .sheet(item: $inSetupComponent) { component in
@@ -59,8 +52,8 @@ struct PropertyTreeNavigationVIew: View {
         
     }
  
-    static let componentViewHeight = 34.0
-    static let height = componentViewHeight + 57.0
+    static let componentViewHeight = 38.0
+    static let defaultNavigationAnimation = Animation.easeOut(duration: 0.25)
 }
 
 
@@ -80,14 +73,16 @@ fileprivate struct ComponentView: View {
                     VStack {
                         Spacer()
                         Image(systemName: component.isSetup ? "ellipsis" : "minus")
-                            .foregroundColor(component.isSetup ? .accentColor : .lightAccentColor)
+                            .imageScale(.small)
+                            .fontWeight(.light)
+                            .foregroundColor(.primary)
                     }
                     .padding(.bottom, component.isSetup ? 1.0 : 2.0)
                 }
-                .scaleEffect(textScale)
+                .scaleEffect(x: textHorizontalScale)
                 .visible(isChildOfActive)
                 .onTapGesture {
-                    withAnimation(navigationAnimation) {
+                    withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
                         if component.isSetup {
                             activeComponent = component
                         } else {
@@ -99,6 +94,10 @@ fileprivate struct ComponentView: View {
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
                 
+                if !isRoot {
+                    backButton(iconName: "chevron.right.2", shadowX: -0.5)
+                }
+                
                 if let properties = component.properties {
                     propertyViews(properties)
                 }
@@ -107,6 +106,10 @@ fileprivate struct ComponentView: View {
                     ForEach(subcomponents) { subcomponent in
                         ComponentView(component: subcomponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                     }
+                }
+                
+                if !isRoot {
+                    backButton(iconName: "chevron.left.2", shadowX: 0.5)
                 }
                 
             }
@@ -125,6 +128,10 @@ fileprivate struct ComponentView: View {
     
     private var isParentOfActive: Bool {
         activeComponent.parent === component
+    }
+    
+    private var isRoot: Bool {
+        component.parent == nil
     }
     
     private var isDisclosed: Bool {
@@ -156,6 +163,22 @@ fileprivate struct ComponentView: View {
         return nil
     }
     
+    private func backButton(iconName: String, shadowX: CGFloat) -> some View {
+        Button {
+            withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
+                activeComponent = activeComponent.parent!
+            }
+        } label: {
+            Image(systemName: iconName)
+                .imageScale(.small)
+                .frame(width: 30.0)
+                .frame(maxHeight: .infinity)
+        }
+        .tint(.primary)
+        .shadow(radius: 0.5, x: shadowX)
+        .visible(isActive)
+    }
+    
     private func propertyViews(_ properties: [String]) -> some View {
         ForEach(Array(properties.enumerated()), id: \.element, content: { index, property in
             textViewFor(property)
@@ -166,7 +189,7 @@ fileprivate struct ComponentView: View {
                         .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: index == component.selectedPropertyIndex)
                 }
                 .onTapGesture {
-                    withAnimation(navigationAnimation) {
+                    withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
                         component.selectedPropertyIndex = index
                     }
                 }
@@ -187,9 +210,55 @@ fileprivate struct ComponentView: View {
             .contentShape(Rectangle())
     }
     
-    private var textScale: CGFloat {
+    private var textHorizontalScale: CGFloat {
         guard let distance = distanceToActiveAncestor else { return 1.0 }
         return pow(1.3, 1.0 - CGFloat(distance))
     }
     
+}
+
+
+struct PropertyTreeNavigationVIew_Previews: PreviewProvider {
+    
+    class Root: Component {
+        
+        lazy var child1 = BasicComponent(title: "Child1", selectedProperty: Axis.x, parent: self)
+        lazy var child2 = BasicComponent(title: "Child2", selectedProperty: Axis.x, parent: self)
+        lazy var child3 = BasicComponent(title: "Child3", selectedProperty: Axis.x, parent: self)
+        
+        init() {
+            super.init(title: "Root", parent: nil)
+        }
+        
+        override var subcomponents: [Component]? {
+            [child1, child2, child3]
+        }
+        
+    }
+    
+    class ContentViewModel: ObservableObject {
+        
+        let rootComponent = Root()
+        @Published var activeComponent: Component
+        
+        init() {
+            self.activeComponent = rootComponent
+        }
+        
+    }
+    
+    struct ContentView: View {
+        
+        @StateObject private var model = ContentViewModel()
+        
+        var body: some View {
+            PropertyTreeNavigationVIew(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, actionViewViewProvider: EmptyComponentActionViewProvider(), setupViewProvider: EmptyComponentSetupViewProvider())
+                .padding()
+        }
+        
+    }
+    
+    static var previews: some View {
+        ContentView()
+    }
 }

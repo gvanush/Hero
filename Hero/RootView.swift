@@ -67,7 +67,9 @@ enum Tool: Int, CaseIterable, Identifiable {
 
 struct RootView: View {
     
-    @StateObject var sceneViewModel = SceneViewModel()
+    @StateObject private var sceneViewModel: SceneViewModel
+    @StateObject private var animmoveToolViewModel: AnimmoveToolViewModel
+    
     @State private var isNavigating = false
     @State private var isToolActive = false
     @State private var tool = Tool.move
@@ -77,6 +79,12 @@ struct RootView: View {
     @State private var playableScene: SPTPlayableSceneProxy?
 
     @Environment(\.scenePhase) private var scenePhase
+    
+    init() {
+        let sceneVM = SceneViewModel()
+        _sceneViewModel = .init(wrappedValue: sceneVM)
+        _animmoveToolViewModel = .init(wrappedValue: .init(sceneViewModel: sceneVM))
+    }
     
     var body: some View {
         ZStack {
@@ -213,7 +221,7 @@ struct RootView: View {
                 case .shade:
                     EmptyView()
                 case .animmove:
-                    EmptyView()
+                    AnimmoveToolControlsView(model: animmoveToolViewModel)
                 case .animorient:
                     EmptyView()
                 case .animscale:
@@ -274,7 +282,7 @@ struct RootView: View {
                     .foregroundColor(isToolActive ? .secondarySystemBackground : .secondary)
                     .fontWeight(.light)
             }
-            .frame(width: 48.0, height: 42.0)
+            .frame(width: 48.0, height: 40.0)
             .background {
                 Color.primary.opacity(isToolActive ? 0.8 : 0.0)
                     .cornerRadius(5.0)
@@ -311,7 +319,7 @@ struct RootView: View {
             case .shade:
                 EmptyView()
             case .animmove:
-                EmptyView()
+                AnimmoveToolOptionsView(model: animmoveToolViewModel)
             case .animorient:
                 EmptyView()
             case .animscale:

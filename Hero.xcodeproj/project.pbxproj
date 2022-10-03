@@ -101,6 +101,7 @@
 		B7791DBA2726821200E0C934 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DB92726821200E0C934 /* SceneView.swift */; };
 		B77CBD50289C54EC0040B5EC /* EdgeInsetsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CBD4F289C54EC0040B5EC /* EdgeInsetsUtil.swift */; };
 		B787F2032892E50700AE784B /* DisplayLink in Frameworks */ = {isa = PBXBuildFile; productRef = B787F2022892E50700AE784B /* DisplayLink */; };
+		B7923B8B28E9C89300D8F66F /* AnimmoveToolControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7923B8A28E9C89300D8F66F /* AnimmoveToolControlsView.swift */; };
 		B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */; };
 		B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99E127B5C1430033B459 /* ComparableUtil.swift */; };
 		B7AA99E427B6CABB0033B459 /* SIMDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99E327B6CABB0033B459 /* SIMDUtil.swift */; };
@@ -295,6 +296,7 @@
 		B7791DA42726768B00E0C934 /* FloatingPointUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPointUtil.swift; sourceTree = "<group>"; };
 		B7791DB92726821200E0C934 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
 		B77CBD4F289C54EC0040B5EC /* EdgeInsetsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsetsUtil.swift; sourceTree = "<group>"; };
+		B7923B8A28E9C89300D8F66F /* AnimmoveToolControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimmoveToolControlsView.swift; sourceTree = "<group>"; };
 		B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphicsUtil.swift; sourceTree = "<group>"; };
 		B7AA99E127B5C1430033B459 /* ComparableUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparableUtil.swift; sourceTree = "<group>"; };
 		B7AA99E327B6CABB0033B459 /* SIMDUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMDUtil.swift; sourceTree = "<group>"; };
@@ -674,6 +676,7 @@
 				B7C7489E28E2D7D100E270FB /* MoveToolControlsView.swift */,
 				B7C748A028E377F600E270FB /* ScaleToolControlsView.swift */,
 				B7C748A228E37C0D00E270FB /* OrientToolControlsView.swift */,
+				B7923B8A28E9C89300D8F66F /* AnimmoveToolControlsView.swift */,
 				B7C748A628E5647800E270FB /* PropertyTreeNavigationView.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
@@ -998,6 +1001,7 @@
 				B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */,
 				B7B711D128BC96430077C7CD /* ComponentSetupViewProvider.swift in Sources */,
 				B736450427B3BA1100FAD433 /* ComponentActionViewProvider.swift in Sources */,
+				B7923B8B28E9C89300D8F66F /* AnimmoveToolControlsView.swift in Sources */,
 				B73A7019288BCC280043F9FF /* PanAnimatorSetBoundsView.swift in Sources */,
 				B7B711FE28CC525C0077C7CD /* SPTPlayableSceneUtil.swift in Sources */,
 				B7B711F128C722770077C7CD /* PlayableScene.cpp in Sources */,

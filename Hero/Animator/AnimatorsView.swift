@@ -64,7 +64,7 @@ struct AnimatorsView: View {
                             
                         }
                         Button("Pan") {
-                            selection = model.makeAnimator(SPTAnimator(name: "Pan \(SPTAnimatorGetAll().count)", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+                            selection = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimatorGetAll().count)", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
                         }
                     } label: {
                         Text("New From Source")

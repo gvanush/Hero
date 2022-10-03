@@ -109,7 +109,7 @@ struct PanAnimatorView: View {
 struct PanAnimatorView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            PanAnimatorView(model: PanAnimatorViewModel(animatorId: SPTAnimatorMake(SPTAnimator(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))))
+            PanAnimatorView(model: PanAnimatorViewModel(animatorId: SPTAnimatorMake(SPTAnimator(name: "Pan.1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))))
                 .navigationBarTitleDisplayMode(.inline)
         }
         

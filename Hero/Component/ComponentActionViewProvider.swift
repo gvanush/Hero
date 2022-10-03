@@ -36,6 +36,9 @@ extension ComponentActionViewProvider {
     
 }
 
+struct EmptyComponentActionViewProvider: ComponentActionViewProvider {
+    
+}
 
 struct GeneratorComponentActionViewProvider: ComponentActionViewProvider {
     

@@ -149,8 +149,10 @@ struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatablePropert
                 switch property {
                 case .valueAt0:
                     FloatSelector(value: $component.valueAt0, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+                        .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 case .valueAt1:
                     FloatSelector(value: $component.valueAt1, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+                        .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 case .animator:
                     FloatSlider(value: $component.animatorValue)
                 }

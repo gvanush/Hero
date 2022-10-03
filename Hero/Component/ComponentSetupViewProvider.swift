@@ -16,15 +16,26 @@ protocol ComponentSetupViewProvider {
 }
 
 
+class EmptyComponentSetupViewProvider: ComponentSetupViewProvider {
+    
+    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>, onComplete: @escaping () -> Void) -> AnyView where AP: SPTAnimatableProperty {
+        AnyView(EmptyView())
+    }
+    
+}
+
+
 struct CommonComponentSetupViewProvider: ComponentSetupViewProvider {
     
     func viewFor<AP>(_ component: AnimatorBindingComponent<AP>,  onComplete: @escaping () -> Void) -> AnyView where AP : SPTAnimatableProperty {
-        AnyView(AnimatorSelector { animatorId in
-            if let animatorId = animatorId {
-                component.bindAnimator(id: animatorId)
+        AnyView(
+            AnimatorSelector { animatorId in
+                if let animatorId = animatorId {
+                    component.bindAnimator(id: animatorId)
+                }
+                onComplete()
             }
-            onComplete()
-        })
+        )
     }
         
 }
