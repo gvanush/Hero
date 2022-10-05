@@ -10,7 +10,7 @@ import Foundation
 
 extension SPTAnimatableObjectProperty: SPTAnimatableProperty {
     
-    func bindAnimator(_ binding: SPTAnimatorBinding, object: SPTObject) {
+    func bind(_ binding: SPTAnimatorBinding, object: SPTObject) {
         SPTObjectPropertyBindAnimator(self, object, binding)
     }
     

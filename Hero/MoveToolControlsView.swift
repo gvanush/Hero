@@ -78,7 +78,6 @@ fileprivate struct SelectedObjectControlsView: View {
                 .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 .transition(.identity)
                 .id(axis.rawValue)
-                .id(model.object)
             Selector(selected: $axis)
                 .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
         }
@@ -92,6 +91,7 @@ fileprivate struct SelectedObjectControlsView: View {
         .onDisappear {
             model.removeGuideObjects()
         }
+        .id(model.object)
     }
     
 }

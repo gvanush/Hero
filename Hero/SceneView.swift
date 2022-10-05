@@ -81,7 +81,7 @@ struct SceneView: View {
                         Spacer()
                         focusButton()
                     }
-                    .padding(.bottom, 280.0)
+                    .padding(.bottom, 310.0)
                     
                 }
                 .padding(SceneViewConst.uiPadding)

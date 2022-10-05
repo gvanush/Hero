@@ -59,7 +59,7 @@ protocol SPTAnimatableProperty {
     typealias AnimatorBindingWillPerishCallback = ObjectWillPerishCallback
     typealias AnimatorBindingWillPerishSubscription = SPTSubscription<AnimatorBindingWillPerishCallback>
     
-    func bindAnimator(_ binding: SPTAnimatorBinding, object: SPTObject)
+    func bind(_ binding: SPTAnimatorBinding, object: SPTObject)
     
     func bindOrUpdate(_ binding: SPTAnimatorBinding, object: SPTObject)
     

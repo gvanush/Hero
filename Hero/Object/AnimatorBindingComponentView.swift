@@ -7,11 +7,12 @@
 
 import Foundation
 import SwiftUI
+import Combine
+
 
 enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
     case valueAt0
     case valueAt1
-    case animator
     
     var displayName: String {
         switch self {
@@ -19,17 +20,40 @@ enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
             return "Value:0"
         case .valueAt1:
             return "Value:1"
-        case .animator:
-            return "Animator"
         }
     }
 }
 
+
 class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentProperty> where AP: SPTAnimatableProperty {
+    
+    class Binding: ObservableObject {
+        
+        @SPTObservedAnimatorBinding<AP> var sptBinding: SPTAnimatorBinding
+        
+        init(animatableProperty: AP, object: SPTObject) {
+            _sptBinding = SPTObservedAnimatorBinding(property: animatableProperty, object: object)
+            _sptBinding.publisher = objectWillChange
+        }
+        
+        var valueAt0: Float {
+            set { sptBinding.valueAt0 = newValue }
+            get { sptBinding.valueAt0 }
+        }
+
+        var valueAt1: Float {
+            set { sptBinding.valueAt1 = newValue }
+            get { sptBinding.valueAt1 }
+        }
+        
+    }
     
     let animatableProperty: AP
     let object: SPTObject
-    @SPTObservedOptionalAnimatorBinding<AP> var animatorBinding: SPTAnimatorBinding?
+    
+    @Published var binding: Binding?
+    private var bindingCancellable: AnyCancellable?
+    
     @Published var animatorValue: Float = 0.5
     
     init(animatableProperty: AP, title: String, object: SPTObject, parent: Component?) {
@@ -37,38 +61,33 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         self.animatableProperty = animatableProperty
         self.object = object
         
-        _animatorBinding = SPTObservedOptionalAnimatorBinding(property: animatableProperty, object: object)
-        
         super.init(title: title, selectedProperty: .valueAt0, parent: parent)
         
-        _animatorBinding.publisher = self.objectWillChange
-    }
-    
-    var valueAt0: Float {
-        set { animatorBinding!.valueAt0 = newValue }
-        get { animatorBinding!.valueAt0 }
-    }
-    
-    var valueAt1: Float {
-        set { animatorBinding!.valueAt1 = newValue }
-        get { animatorBinding!.valueAt1 }
     }
     
     var animator: SPTAnimator? {
-        guard let animatorBinding = self.animatorBinding else { return nil }
-        return SPTAnimatorGet(animatorBinding.animatorId)
+        guard let binding = self.binding else { return nil }
+        return SPTAnimatorGet(binding.sptBinding.animatorId)
     }
     
     func bindAnimator(id: SPTAnimatorId) {
-        animatorBinding = SPTAnimatorBinding(animatorId: id, valueAt0: -10.0, valueAt1: 10.0)
+        animatableProperty.bindOrUpdate(.init(animatorId: id, valueAt0: -10.0, valueAt1: 10.0), object: object)
+        
+        let newBinding = Binding(animatableProperty: animatableProperty, object: object)
+        bindingCancellable = newBinding.objectWillChange.sink { _ in
+            self.objectWillChange.send()
+        }
+        binding = newBinding
     }
     
     func unbindAnimator() {
-        animatorBinding = nil
+        binding = nil
+        bindingCancellable = nil
+        animatableProperty.unbindAnimator(object: object)
     }
     
     override var isSetup: Bool {
-        animatorBinding != nil
+        binding != nil
     }
     
     override func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
@@ -113,7 +132,7 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
                 }
             }
             
-            if let animatorBinding = component.animatorBinding {
+            if let animatorBinding = component.binding {
                 SceneEditableParam(title: AnimatorBindingComponentProperty.valueAt0.displayName, value: String(format: "%.2f", animatorBinding.valueAt0)) {
                     component.selectedProperty = .valueAt0
                     editedComponent = component
@@ -140,24 +159,35 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
 struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
     
     @ObservedObject var component: AnimatorBindingComponent<AP>
-    @State private var scale = FloatSelector.Scale._1
-    @State private var isSnappingEnabled = false
     
     var body: some View {
-        Group {
-            if let property = component.selectedProperty {
+        if let property = component.selectedProperty, let animatorBinding = component.binding {
+            ContentView(property: property, binding: animatorBinding)
+        }
+    }
+    
+    private struct ContentView: View {
+        
+        let property: AnimatorBindingComponentProperty
+        @ObservedObject var binding: AnimatorBindingComponent<AP>.Binding
+        
+        @State private var scale = FloatSelector.Scale._1
+        @State private var isSnappingEnabled = false
+        
+        var body: some View {
+            Group {
                 switch property {
                 case .valueAt0:
-                    FloatSelector(value: $component.valueAt0, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+                    FloatSelector(value: $binding.valueAt0, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                         .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 case .valueAt1:
-                    FloatSelector(value: $component.valueAt1, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+                    FloatSelector(value: $binding.valueAt1, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                         .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
-                case .animator:
-                    FloatSlider(value: $component.animatorValue)
                 }
             }
+            .transition(.identity)
         }
-        .transition(.identity)
+        
     }
+    
 }

@@ -68,39 +68,51 @@ fileprivate struct AnimatorBindingOptionsView<AP>: View where AP: SPTAnimatableP
     @State private var showsAnimatorSelector = false
     
     var body: some View {
-        HStack {
-            Group {
+        if let animator = component.animator {
+            HStack {
+                
+                Button {
+                    
+                } label: {
+                    Image(systemName: "slider.horizontal.below.rectangle")
+                        .imageScale(.large)
+                }
+                
+                Spacer()
+                
                 Button {
                     showsAnimatorSelector = true
                 } label: {
                     HStack(spacing: 0.0) {
                         Image(systemName: "bolt")
-                        Text(component.animator!.name)
+                            .imageScale(.large)
+                        Text(animator.name)
                             .font(Font.system(size: 15, weight: .light))
                     }
                 }
+                .tint(.objectSelectionColor)
+                
+                Spacer()
+                
                 Button {
                     withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
+                        //                    model.activeComponent = component
                         component.unbindAnimator()
                     }
                 } label: {
                     Image(systemName: "bolt.slash")
+                        .imageScale(.large)
                 }
-            }
-            .tint(.objectSelectionColor)
-            Spacer()
-            Button {
+                .tint(.objectSelectionColor)
                 
-            } label: {
-                Image(systemName: "slider.horizontal.below.rectangle")
             }
-        }
-        .sheet(isPresented: $showsAnimatorSelector) {
-            AnimatorSelector { animatorId in
-                if let animatorId = animatorId {
-                    component.bindAnimator(id: animatorId)
+            .sheet(isPresented: $showsAnimatorSelector) {
+                AnimatorSelector { animatorId in
+                    if let animatorId = animatorId {
+                        component.bindAnimator(id: animatorId)
+                    }
+                    showsAnimatorSelector = false
                 }
-                showsAnimatorSelector = false
             }
         }
     }

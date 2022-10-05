@@ -97,29 +97,29 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
     
     private var objectPosition: SPTPosition {
         var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] += SPTAnimatorBindingEvaluate(animatorBinding!, animatorValue)
+        xyz[axis.rawValue] += SPTAnimatorBindingEvaluate(binding!.sptBinding, animatorValue)
         return .init(xyz: xyz)
     }
     
     private var guideLineScale: SPTScale {
-        .init(x: 0.5 * abs(valueAt1 - valueAt0), y: 1.0, z: 1.0)
+        .init(x: 0.5 * abs(binding!.valueAt1 - binding!.valueAt0), y: 1.0, z: 1.0)
     }
     
     private var guideLinePosition: SPTPosition {
         var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] += 0.5 * (valueAt0 + valueAt1)
+        xyz[axis.rawValue] += 0.5 * (binding!.valueAt0 + binding!.valueAt1)
         return .init(xyz: xyz)
     }
     
     private var guidePoint0Position: SPTPosition {
         var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] += valueAt0
+        xyz[axis.rawValue] += binding!.valueAt0
         return .init(xyz: xyz)
     }
     
     private var guidePoint1Position: SPTPosition {
         var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] += valueAt1
+        xyz[axis.rawValue] += binding!.valueAt1
         return .init(xyz: xyz)
     }
  

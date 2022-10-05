@@ -116,6 +116,13 @@ fileprivate struct ComponentView: View {
         }
         .frame(maxWidth: isDisclosed || isChildOfActive ? .infinity : 0.0)
         .visible(isDisclosed || isChildOfActive)
+        .onChange(of: component.isSetup, perform: { newValue in
+            if isActive && !newValue {
+                withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
+                    activeComponent = activeComponent.parent!
+                }
+            }
+        })
     }
     
     private var isActive: Bool {
