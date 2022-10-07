@@ -9,9 +9,8 @@ import SwiftUI
 
 
 struct SceneViewConst {
-    static let zoomViewMaxHeight = 200.0
     static let uiBgrMaterial = Material.thin
-    static let uiPadding = 8.0
+    static let uiPadding = 16.0
     static let uiButtonSize = 50.0
 }
 
@@ -19,6 +18,8 @@ struct SceneView: View {
     
     @ObservedObject var model: SceneViewModel
     @Binding var isNavigating: Bool
+    @State private var viewportSize = CGSize.zero
+    let edgeInsets: EdgeInsets
     
     private(set) var isRenderingPaused = false
     private(set) var lookCategories = LookCategories.all
@@ -30,9 +31,10 @@ struct SceneView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
-    init(model: SceneViewModel, uiSafeAreaInsets: EdgeInsets, isNavigating: Binding<Bool>) {
+    init(model: SceneViewModel, isNavigating: Binding<Bool>, edgeInsets: EdgeInsets = EdgeInsets()) {
         self.model = model
         self._isNavigating = isNavigating
+        self.edgeInsets = edgeInsets
     }
     
     func navigationEnabled(_ enabled: Bool) -> SceneView {
@@ -62,29 +64,46 @@ struct SceneView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                SPTView(scene: model.scene, clearColor: clearColor, viewCameraEntity: model.viewCameraObject.entity)
-                    .renderingPaused(isRenderingPaused)
-                    .lookCategories(lookCategories.rawValue)
-                // NOTE: Adding 'allowsHitTesting' to 'SPTView' will cause its underlying
-                // view controller's 'viewWillAppear' to be called on each gesture start,
-                // hence creating a separate view on top
-                Color.clear
-                    .contentShape(Rectangle())
-                    .gesture(isNavigationEnabled ? orbitDragGesture : nil)
-                    .gesture(isSelectionEnabled ? pickGesture(viewportSize: geometry.size) : nil)
-                    .allowsHitTesting(isNavigationEnabled && !isNavigating)
-                
-                ZStack {
-                    zoomControl(geometry: geometry)
-                    
-                    VStack {
-                        Spacer()
-                        focusButton()
+                GeometryReader { sptViewGeometry in
+                    Group {
+                        SPTView(scene: model.scene, clearColor: clearColor, viewCameraEntity: model.viewCameraObject.entity)
+                            .renderingPaused(isRenderingPaused)
+                            .lookCategories(lookCategories.rawValue)
+                        
+                        // NOTE: Adding 'allowsHitTesting' to 'SPTView' will cause its underlying
+                        // view controller's 'viewWillAppear' to be called on each gesture start,
+                        // hence creating a separate view on top
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .gesture(isNavigationEnabled ? orbitDragGesture : nil)
+                            .gesture(isSelectionEnabled ? pickGesture(viewportSize: viewportSize) : nil)
+                            .allowsHitTesting(isNavigationEnabled && !isNavigating)
                     }
-                    .padding(.bottom, 310.0)
-                    
+                    .modifier(SizeModifier())
+                    // Adjust SPTView size so that its center (hence where the camera points) matches with safe area center
+                    .padding(sptViewPadding(safeArea: geometry.frame(in: .global), fullArea: sptViewGeometry.frame(in: .global)))
                 }
-                .padding(SceneViewConst.uiPadding)
+                .ignoresSafeArea()
+                
+                Group {
+                    VStack {
+                        objectInfoView()
+                        Spacer()
+                    }
+                    
+                    HStack(spacing: 0.0) {
+                        Spacer()
+                        VStack {
+                            Spacer()
+                            focusButton()
+                        }
+                        ZoomView()
+                            .frame(width: 16.0, alignment: .trailing)
+                            .contentShape(Rectangle())
+                            .gesture(zoomDragGesture(viewportSize: viewportSize))
+                            .padding(.bottom, edgeInsets.bottom)
+                    }
+                }
                 .visible(isNavigationEnabled && !isNavigating)
             }
         }
@@ -103,33 +122,13 @@ struct SceneView: View {
         .onChange(of: colorScheme) { _ in
             clearColor = UIColor.sceneBgrColor.mtlClearColor
         }
-    }
-    
-    func zoomControl(geometry: GeometryProxy) -> some View {
-        HStack {
-            Spacer()
-            VStack {
-                Spacer()
-                ZoomView()
-                    .frame(maxHeight: SceneViewConst.zoomViewMaxHeight)
-                Spacer()
-            }
-            .contentShape(Rectangle())
-            .padding(.trailing, -SceneViewConst.uiPadding)
-            .gesture(zoomDragGesture(viewportSize: geometry.size))
+        .onPreferenceChange(SizePreferenceKey.self) { size in
+            viewportSize = size
         }
     }
-    
-    
     
     func focusButton() -> some View {
-        HStack(spacing: 0.0) {
-            VStack {
-                Spacer()
-                SceneUIToggle(isOn: $model.isFocusing, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
-            }
-            Spacer()
-        }
+        SceneUIToggle(isOn: $model.isFocusing, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
     }
     
     func pickGesture(viewportSize: CGSize) -> some Gesture {
@@ -164,28 +163,56 @@ struct SceneView: View {
             }
     }
     
+    func objectInfoView() -> some View {
+        Group {
+            if let name = model.selectedObjectMetadata?.name {
+                Text(name)
+                    .font(.subheadline)
+                    .foregroundColor(.secondaryLabel)
+                    .frame(height: 30)
+                    .padding(.horizontal, 8.0)
+                    .background(SceneViewConst.uiBgrMaterial)
+                    .cornerRadius(9.0)
+                    .selectedObjectUI(cornerRadius: 9.0)
+            }
+        }
+    }
+    
+    func sptViewPadding(safeArea: CGRect, fullArea: CGRect) -> EdgeInsets {
+        var insets = EdgeInsets(top: 0.0, leading: 0.0, bottom: 0.0, trailing: 0.0)
+        
+        let verticalInset = 2.0 * (safeArea.center.y - fullArea.center.y)
+        if verticalInset < 0.0 {
+            insets.top = verticalInset
+        } else {
+            insets.bottom = verticalInset
+        }
+        
+        let horizontalInset = -2.0 * (safeArea.center.x - fullArea.center.x)
+        if horizontalInset < 0.0 {
+            insets.leading = horizontalInset
+        } else {
+            insets.trailing = horizontalInset
+        }
+        
+        return insets
+    }
+    
 }
 
 fileprivate struct ZoomView: View {
     
     var body: some View {
-        VStack(alignment: .center) {
-            VLine().stroke(style: Self.lineStrokeStyle)
-            Image(systemName: "magnifyingglass")
-                            .foregroundColor(.primary)
-            VLine().stroke(style: Self.lineStrokeStyle)
-        }
-        .background {
-            EmptyView()
-                .background(SceneViewConst.uiBgrMaterial)
-            .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
-        }
-        .frame(maxWidth: Self.width, maxHeight: .infinity)
-        .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black.opacity(0.0)], startPoint: .bottom, endPoint: .top))
+        VLine()
+            .stroke(style: Self.lineStrokeStyle)
+            .background(SceneViewConst.uiBgrMaterial)
+            .frame(width: Self.width)
+            .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black.opacity(0.0)], startPoint: .bottom, endPoint: .top))
+
     }
     
-    static let width = 30.0
-    static let lineStrokeStyle = StrokeStyle(lineWidth: 4, dash: [1, 4])
+    static let width = 8.0
+    static let lineStrokeStyle = StrokeStyle(lineWidth: Self.width, dash: [1, 4])
 }
 
 struct SelectedObjectUI: ViewModifier {
@@ -215,7 +242,7 @@ struct SceneView_Previews: PreviewProvider {
         @StateObject var model = SceneViewModel()
         
         var body: some View {
-            SceneView(model: model, uiSafeAreaInsets: .init(), isNavigating: .constant(false))
+            SceneView(model: model, isNavigating: .constant(false))
         }
     }
     

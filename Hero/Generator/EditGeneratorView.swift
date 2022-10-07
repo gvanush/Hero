@@ -26,7 +26,7 @@ struct EditGeneratorView: View {
         NavigationView {
             GeometryReader { geometry in
                 ZStack {
-                    SceneView(model: sceneViewModel, uiSafeAreaInsets: geometry.safeAreaInsets, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
                         .selectionEnabled(false)
                         .ignoresSafeArea()
                     VStack {

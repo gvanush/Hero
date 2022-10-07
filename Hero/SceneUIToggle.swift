@@ -30,7 +30,7 @@ struct SceneUIToggle: View {
             }
             .frame(width: SceneViewConst.uiButtonSize, height: SceneViewConst.uiButtonSize, alignment: .center)
         }
-        .background(SceneViewConst.uiBgrMaterial)
+        .background(SceneViewConst.uiBgrMaterial, ignoresSafeAreaEdges: [])
         .cornerRadius(15.0)
         .shadow(radius: 1.0)
         .disabled(isOn == nil)

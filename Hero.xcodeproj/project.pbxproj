@@ -122,6 +122,7 @@
 		B7B711F128C722770077C7CD /* PlayableScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B711EF28C722770077C7CD /* PlayableScene.cpp */; };
 		B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711FA28CC45A90077C7CD /* SPTSceneUtil.swift */; };
 		B7B711FE28CC525C0077C7CD /* SPTPlayableSceneUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711FD28CC525C0077C7CD /* SPTPlayableSceneUtil.swift */; };
+		B7BC3A0928EDF6250050766F /* ActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BC3A0828EDF6250050766F /* ActionsView.swift */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
@@ -148,6 +149,7 @@
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
 		B7E481DA274648DB003DA5B1 /* MeshLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* MeshLook.cpp */; };
 		B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */; };
+		B7EDBDBB28EE97D70048EF93 /* ToolSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBA28EE97D70048EF93 /* ToolSelector.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -321,6 +323,7 @@
 		B7B711FA28CC45A90077C7CD /* SPTSceneUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTSceneUtil.swift; sourceTree = "<group>"; };
 		B7B711FC28CC4F240077C7CD /* PlayableScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayableScene.h; sourceTree = "<group>"; };
 		B7B711FD28CC525C0077C7CD /* SPTPlayableSceneUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPlayableSceneUtil.swift; sourceTree = "<group>"; };
+		B7BC3A0828EDF6250050766F /* ActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsView.swift; sourceTree = "<group>"; };
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
@@ -356,6 +359,7 @@
 		B7E481D9274648DB003DA5B1 /* MeshLook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MeshLook.cpp; sourceTree = "<group>"; };
 		B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
 		B7E481DD2747782B003DA5B1 /* ResourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
+		B7EDBDBA28EE97D70048EF93 /* ToolSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSelector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -678,9 +682,11 @@
 				B7C748A228E37C0D00E270FB /* OrientToolControlsView.swift */,
 				B7923B8A28E9C89300D8F66F /* AnimmoveToolControlsView.swift */,
 				B7C748A628E5647800E270FB /* PropertyTreeNavigationView.swift */,
+				B7BC3A0828EDF6250050766F /* ActionsView.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
 				B7791D1C27258F7700E0C934 /* Preview Content */,
+				B7EDBDBA28EE97D70048EF93 /* ToolSelector.swift */,
 			);
 			path = Hero;
 			sourceTree = "<group>";
@@ -975,6 +981,7 @@
 				B757DB7628A80F0B00BB5DB4 /* AnimatorSelector.swift in Sources */,
 				B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
+				B7BC3A0928EDF6250050766F /* ActionsView.swift in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
 				B736450627B3DB7100FAD433 /* EditGeneratorComponentView.swift in Sources */,
@@ -1041,6 +1048,7 @@
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,
 				B73A7014288736370043F9FF /* SPTAnimatorUtil.swift in Sources */,
 				B73E47E627D00D4700CB0AFC /* SPTPositionUtil.swift in Sources */,
+				B7EDBDBB28EE97D70048EF93 /* ToolSelector.swift in Sources */,
 				B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */,
 				B7AA99E827B7EC150033B459 /* ArrangementView.swift in Sources */,
 				B7B711D728C130740077C7CD /* SPTOutlineLookUtil.swift in Sources */,

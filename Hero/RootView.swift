@@ -8,78 +8,58 @@
 import SwiftUI
 
 
-enum Tool: Int, CaseIterable, Identifiable {
+class RootViewModel: ObservableObject {
     
-    case inspect
-    case move
-    case orient
-    case scale
-    case shade
-    case animmove
-    case animorient
-    case animscale
-    case animshade
+    let sceneViewModel: SceneViewModel
     
-    var id: Self { self }
+    @Published var showsNewObjectView = false
+    @Published var showsSelectedObjectInspector = false
     
-    var title: String {
-        switch self {
-        case .inspect:
-            return "Inspect"
-        case .move:
-            return "Move"
-        case .orient:
-            return "Orient"
-        case .scale:
-            return "Scale"
-        case .shade:
-            return "Shade"
-        case .animmove:
-            return "Animmove"
-        case .animorient:
-            return "Animorient"
-        case .animscale:
-            return "Animscale"
-        case .animshade:
-            return "Animashade"
-        }
+    init(sceneViewModel: SceneViewModel) {
+        self.sceneViewModel = sceneViewModel
     }
     
-    var iconName: String {
-        switch self {
-        case .inspect:
-            return "inspect"
-        case .move:
-            return "move"
-        case .orient:
-            return "orient"
-        case .scale:
-            return "scale"
-        case .shade:
-            return "shade"
-        case .animmove:
-            return "animmove"
-        case .animorient:
-            return "animorient"
-        case .animscale:
-            return "animscale"
-        case .animshade:
-            return "animshade"
-        }
+    lazy var genericActions = [
+        ActionItem(iconName: "plus", action: onNewObjectAction),
+        ActionItem(iconName: "plus.square.on.square", disabled: objectActionsDisabled, action: onDuplicateAction),
+        ActionItem(iconName: "slider.horizontal.3", disabled: objectActionsDisabled, action: onInspectObjectAction),
+        ActionItem(iconName: "trash", disabled: objectActionsDisabled, action: onRemoveObjectAction)
+    ]
+    
+    @Published var objectActions: [ActionItem]?
+    
+    func onNewObjectAction() {
+        showsNewObjectView = true
     }
+    
+    func onDuplicateAction() {
+        sceneViewModel.duplicateObject(sceneViewModel.selectedObject!)
+    }
+    
+    func onInspectObjectAction() {
+        showsSelectedObjectInspector = true
+    }
+    
+    func onRemoveObjectAction() {
+        sceneViewModel.destroySelected()
+    }
+    
+    func objectActionsDisabled() -> Bool {
+        !sceneViewModel.isObjectSelected
+    }
+    
 }
 
 
 struct RootView: View {
     
+    @StateObject private var model: RootViewModel
     @StateObject private var sceneViewModel: SceneViewModel
     @StateObject private var animmoveToolViewModel: AnimmoveToolViewModel
     
     @State private var isNavigating = false
     @State private var tool = Tool.inspect
     @State private var showsAnimatorsView = false
-    @State private var showsNewObjectView = false
-    @State private var showsSelectedObjectInspector = false
     @State private var playableScene: SPTPlayableSceneProxy?
 
     @Environment(\.scenePhase) private var scenePhase
@@ -87,17 +67,30 @@ struct RootView: View {
     init() {
         let sceneVM = SceneViewModel()
         _sceneViewModel = .init(wrappedValue: sceneVM)
+        _model = .init(wrappedValue: .init(sceneViewModel: sceneVM))
         _animmoveToolViewModel = .init(wrappedValue: .init(sceneViewModel: sceneVM))
     }
     
     var body: some View {
         ZStack {
             SceneView(model: sceneViewModel,
-                      uiSafeAreaInsets: .init(top: 0.0, leading: 0.0, bottom: 0.0, trailing: 0.0),
-                      isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))
-            .ignoresSafeArea()
-            
-            VStack(spacing: 0.0) {
+                      isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), edgeInsets: .init(top: 0.0, leading: 0.0, bottom: -Self.navigationEmptyVerticalAreaHeight, trailing: 0.0))
+            .overlay {
+                VStack(alignment: .leading) {
+                    Spacer()
+                    HStack {
+                        EmptyView()
+                        ActionsView(primaryActions: $model.genericActions, secondaryActions: $model.objectActions)
+                            .padding(3.0)
+                            .background(Material.bar, ignoresSafeAreaEdges: [])
+                            .cornerRadius(5.0, corners: [.topRight, .bottomRight])
+                            .shadow(radius: 1.0)
+                        Spacer()
+                    }
+                }
+                .visible(!isNavigating)
+            }
+            .safeAreaInset(edge: .top) {
                 VStack(spacing: 0.0) {
                     topbar()
                     Divider()
@@ -106,21 +99,33 @@ struct RootView: View {
                 .background(Material.bar)
                 .compositingGroup()
                 .shadow(radius: 0.5)
-                
-                objectInfoView()
-                    .padding(8.0)
-                
-                Spacer()
-                
-                controlsView()
-                    .padding(8.0)
-                bottombar()
+                .visible(!isNavigating)
             }
-            .visible(!isNavigating)
+            .safeAreaInset(edge: .bottom, spacing: Self.navigationEmptyVerticalAreaHeight) {
+                VStack(spacing: 8.0) {
+                    ZStack {
+                        Color.clear
+                        controlsView()
+                            .padding(.horizontal, 8.0)
+                            .transition(.identity)
+                            .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
+                    }
+                    .frame(height: Self.toolControlViewsAreaHeight)
+                    
+                    ToolSelector($tool)
+                        .contentHorizontalPadding(32.0)
+                        .padding(.vertical, 4.0)
+                        .background(Material.bar)
+                        .compositingGroup()
+                        .shadow(radius: 0.5)
+                }
+                .visible(!isNavigating)
+            }
+            
         }
         .statusBar(hidden: isNavigating)
         .persistentSystemOverlays(isNavigating ? .hidden : .automatic)
-        .sheet(isPresented: $showsNewObjectView) {
+        .sheet(isPresented: $model.showsNewObjectView) {
             NewObjectView() { meshId in
                 sceneViewModel.createNewObject(meshId: meshId)
                 tool = .move
@@ -129,7 +134,7 @@ struct RootView: View {
         .sheet(isPresented: $showsAnimatorsView) {
             AnimatorsView()
         }
-        .sheet(isPresented: $showsSelectedObjectInspector) {
+        .sheet(isPresented: $model.showsSelectedObjectInspector) {
             MeshObjectInspector(meshComponent: MeshObjectComponent(object: sceneViewModel.selectedObject!, sceneViewModel: sceneViewModel))
                 .environmentObject(sceneViewModel)
         }
@@ -196,23 +201,7 @@ struct RootView: View {
         .frame(height: 33.0)
     }
     
-    func objectInfoView() -> some View {
-        Group {
-            if let name = sceneViewModel.selectedObjectMetadata?.name {
-                Text(name)
-                    .font(.subheadline)
-                    .foregroundColor(.secondaryLabel)
-                    .frame(height: 30)
-                    .padding(.horizontal, 8.0)
-                    .background(SceneViewConst.uiBgrMaterial)
-                    .cornerRadius(9.0)
-                    .selectedObjectUI(cornerRadius: 9.0)
-            }
-        }
-    }
-    
     func controlsView() -> some View {
-        
         Group {
             switch tool {
             case .inspect:
@@ -237,120 +226,8 @@ struct RootView: View {
         }
     }
     
-    func bottombar() -> some View {
-        VStack(spacing: 0.0) {
-            activeToolOptionsView()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .frame(height: 44.0)
-            HStack(spacing: 0.0) {
-                HLine()
-                    .stroke(lineWidth: 0.5)
-                    .foregroundColor(.gray)
-                toolSelector()
-                HLine()
-                    .stroke(lineWidth: 0.5)
-                    .foregroundColor(.gray)
-            }
-            .padding(.vertical, 4.0)
-        }
-        .frame(height: 82.0)
-        .padding(.horizontal)
-        .background(Material.bar)
-        .compositingGroup()
-        .shadow(radius: 0.5)
-    }
-    
-    func toolSelector() -> some View {
-        Menu {
-            ForEach(Tool.allCases, id: \.id) { tool in
-                Button {
-                    self.tool = tool
-                } label: {
-                    HStack {
-                        Text(tool.title)
-                        Spacer()
-                        Image(tool.iconName)
-                    }
-                }
-            }
-        } label: {
-            Image(tool.iconName)
-                .foregroundColor(.primary)
-                .imageScale(.large)
-                .frame(width: 48.0, height: 30.0)
-        }
-    }
-    
-    func defaultActionsView() -> some View {
-        HStack {
-            Button {
-                showsNewObjectView = true
-            } label: {
-                Image(systemName: "plus")
-                    .imageScale(.large)
-            }
-            
-            Spacer()
-            
-            Button {
-                sceneViewModel.duplicateObject(sceneViewModel.selectedObject!)
-                tool = .move
-            } label: {
-                Image(systemName: "plus.square.on.square")
-                    .imageScale(.large)
-            }
-            .disabled(!sceneViewModel.isObjectSelected)
-            
-            Spacer()
-            
-            Button {
-                showsSelectedObjectInspector = true
-            } label: {
-                Image(systemName: "slider.horizontal.3")
-                    .imageScale(.large)
-            }
-            .disabled(!sceneViewModel.isObjectSelected)
-            .tint(Color.objectSelectionColor)
-            
-            Spacer()
-            
-            Button {
-                sceneViewModel.destroySelected()
-            } label: {
-                Image(systemName: "trash")
-                    .imageScale(.large)
-            }
-            .disabled(!sceneViewModel.isObjectSelected)
-            .tint(Color.objectSelectionColor)
-            
-        }
-    }
-    
-    func activeToolOptionsView() -> some View {
-        Group {
-            switch tool {
-            case .inspect:
-                defaultActionsView()
-            case .move:
-                defaultActionsView()
-            case .orient:
-                defaultActionsView()
-            case .scale:
-                defaultActionsView()
-            case .shade:
-                defaultActionsView()
-            case .animmove:
-                AnimmoveToolOptionsView(model: animmoveToolViewModel)
-            case .animorient:
-                EmptyView()
-            case .animscale:
-                EmptyView()
-            case .animshade:
-                EmptyView()
-            }
-        }
-    }
-    
+    static let navigationEmptyVerticalAreaHeight: CGFloat = 80.0
+    static let toolControlViewsAreaHeight: CGFloat = 121.0
 }
 
 struct RootView_Previews: PreviewProvider {

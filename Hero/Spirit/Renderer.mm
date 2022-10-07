@@ -224,7 +224,7 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     // Create a render command encoder.
     id<MTLRenderCommandEncoder> renderEncoder = [rc.commandBuffer renderCommandEncoderWithDescriptor: rc.renderPassDescriptor];
     renderEncoder.label = @"Renderer encoder";
-    [renderEncoder setViewport: MTLViewport {0.0, 0.0, rc.viewportSize.x, rc.viewportSize.y, 0.0, 1.0 }];
+    [renderEncoder setViewport: MTLViewport {0.0, 0.0, rc.viewportSize.x, rc.viewportSize.y, 0.0, 1.0}];
     [renderEncoder setDepthStencilState: SPTRenderingContext.defaultDepthStencilState];
     [renderEncoder setCullMode: MTLCullModeBack];
     [renderEncoder setFrontFacingWinding: MTLWindingCounterClockwise];

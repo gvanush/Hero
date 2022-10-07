@@ -82,7 +82,7 @@ struct EditMeshObjectView: View {
         NavigationView {
             GeometryReader { geometry in
                 ZStack {
-                    SceneView(model: sceneViewModel, uiSafeAreaInsets: geometry.safeAreaInsets.bottomInseted(ComponentTreeNavigationView.height), isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))/* {
+                    SceneView(model: sceneViewModel, isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation))/* {
                         activeComponent.accept(Self.actionViewProvider)
                     }*/
                     .selectionEnabled(false)
