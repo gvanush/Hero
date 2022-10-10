@@ -32,7 +32,7 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
             animatableProperty = .positionZ
         }
         
-        super.init(animatableProperty: animatableProperty, title: axis.displayName, object: object, parent: parent)
+        super.init(animatableProperty: animatableProperty, title: "\(axis.displayName) Binding", object: object, parent: parent)
     }
     
     override func onActive() {
@@ -129,6 +129,7 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
         SPTSceneProxy.destroyObject(objects.point1)
         SPTSceneProxy.destroyObject(objects.line)
         guideObjects = nil
+        bindingWillChangeSubscription = nil
     }
     
 }

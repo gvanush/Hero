@@ -1,5 +1,5 @@
 //
-//  OrientToolControlsView.swift
+//  ScaleToolView.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 27.09.22.
@@ -14,20 +14,20 @@ fileprivate class SelectedObjectViewModel: ObservableObject {
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    @SPTObservedComponent private var sptOrientation: SPTOrientation
+    @SPTObservedComponent private var sptScale: SPTScale
     private var guideObject: SPTObject?
     
     init(object: SPTObject, sceneViewModel: SceneViewModel) {
         self.object = object
         self.sceneViewModel = sceneViewModel
         
-        _sptOrientation = SPTObservedComponent(object: object)
-        _sptOrientation.publisher = self.objectWillChange
+        _sptScale = SPTObservedComponent(object: object)
+        _sptScale.publisher = self.objectWillChange
     }
     
-    var eulerRotation: simd_float3 {
-        set { sptOrientation.euler.rotation = SPTToRadFloat3(newValue) }
-        get { SPTToDegFloat3(sptOrientation.euler.rotation) }
+    var scale: simd_float3 {
+        set { sptScale.xyz = newValue }
+        get { sptScale.xyz }
     }
     
     func setupGuideObjects(axis: Axis) {
@@ -72,12 +72,12 @@ fileprivate struct SelectedObjectControlsView: View {
     @ObservedObject var model: SelectedObjectViewModel
     
     @State private var axis = Axis.x
-    @State private var scale = FloatSelector.Scale._10
+    @State private var scale = FloatSelector.Scale._0_1
     @State private var isSnappingEnabled = false
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.eulerRotation[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
+            FloatSelector(value: $model.scale[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                 .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 .transition(.identity)
                 .id(axis.rawValue)
@@ -99,17 +99,15 @@ fileprivate struct SelectedObjectControlsView: View {
     
 }
 
-class OrientToolViewModel: ObservableObject {
-    
-    let sceneViewModel: SceneViewModel
+class ScaleToolViewModel: ToolViewModel {
     
     fileprivate var selectedObjectViewModel: SelectedObjectViewModel?
     
     private var selectedObjectSubscription: AnyCancellable?
     
     init(sceneViewModel: SceneViewModel) {
-        self.sceneViewModel = sceneViewModel
-        
+        super.init(tool: .scale, sceneViewModel: sceneViewModel)
+    
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
             self?.setupSelectedObjectViewModel(object: selected)
         }
@@ -129,9 +127,8 @@ class OrientToolViewModel: ObservableObject {
 }
 
 
-struct OrientToolControlsView: View {
-    
-    @StateObject var model: OrientToolViewModel
+struct ScaleToolView: View {
+    @ObservedObject var model: ScaleToolViewModel
     
     var body: some View {
         if let selectedObjectVM = model.selectedObjectViewModel {

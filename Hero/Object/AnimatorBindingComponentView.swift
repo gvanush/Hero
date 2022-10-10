@@ -63,6 +63,10 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         
         super.init(title: title, selectedProperty: .valueAt0, parent: parent)
         
+        if animatableProperty.isAnimatorBound(object: object) {
+            setupBinding()
+        }
+        
     }
     
     var animator: SPTAnimator? {
@@ -73,11 +77,7 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
     func bindAnimator(id: SPTAnimatorId) {
         animatableProperty.bindOrUpdate(.init(animatorId: id, valueAt0: -10.0, valueAt1: 10.0), object: object)
         
-        let newBinding = Binding(animatableProperty: animatableProperty, object: object)
-        bindingCancellable = newBinding.objectWillChange.sink { _ in
-            self.objectWillChange.send()
-        }
-        binding = newBinding
+        setupBinding()
     }
     
     func unbindAnimator() {
@@ -98,6 +98,13 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         provider.viewFor(self, onComplete: onComplete)
     }
     
+    private func setupBinding() {
+        let newBinding = Binding(animatableProperty: animatableProperty, object: object)
+        bindingCancellable = newBinding.objectWillChange.sink { [weak self] _ in
+            self?.objectWillChange.send()
+        }
+        binding = newBinding
+    }
 }
 
 

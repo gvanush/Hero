@@ -12,11 +12,33 @@ class RootViewModel: ObservableObject {
     
     let sceneViewModel: SceneViewModel
     
+    let inspectToolViewModel: InspectToolViewModel
+    let moveToolViewModel: MoveToolViewModel
+    let orientToolViewModel: OrientToolViewModel
+    let scaleToolViewModel: ScaleToolViewModel
+    let animatePositionToolView: AnimatePositionToolViewModel
+    lazy var toolViewModels: [ToolViewModel] = [
+        inspectToolViewModel,
+        moveToolViewModel,
+        orientToolViewModel,
+        scaleToolViewModel,
+        animatePositionToolView,
+    ]
+    
+    @Published var activeToolViewModel: ToolViewModel
     @Published var showsNewObjectView = false
     @Published var showsSelectedObjectInspector = false
     
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
+        
+        self.inspectToolViewModel = InspectToolViewModel(sceneViewModel: sceneViewModel)
+        self.moveToolViewModel = MoveToolViewModel(sceneViewModel: sceneViewModel)
+        self.orientToolViewModel = OrientToolViewModel(sceneViewModel: sceneViewModel)
+        self.scaleToolViewModel = ScaleToolViewModel(sceneViewModel: sceneViewModel)
+        self.animatePositionToolView = AnimatePositionToolViewModel(sceneViewModel: sceneViewModel)
+        
+        self.activeToolViewModel = inspectToolViewModel
     }
     
     lazy var genericActions = [
@@ -55,10 +77,8 @@ struct RootView: View {
     
     @StateObject private var model: RootViewModel
     @StateObject private var sceneViewModel: SceneViewModel
-    @StateObject private var animmoveToolViewModel: AnimmoveToolViewModel
     
     @State private var isNavigating = false
-    @State private var tool = Tool.inspect
     @State private var showsAnimatorsView = false
     @State private var playableScene: SPTPlayableSceneProxy?
 
@@ -68,7 +88,6 @@ struct RootView: View {
         let sceneVM = SceneViewModel()
         _sceneViewModel = .init(wrappedValue: sceneVM)
         _model = .init(wrappedValue: .init(sceneViewModel: sceneVM))
-        _animmoveToolViewModel = .init(wrappedValue: .init(sceneViewModel: sceneVM))
     }
     
     var body: some View {
@@ -105,14 +124,14 @@ struct RootView: View {
                 VStack(spacing: 8.0) {
                     ZStack {
                         Color.clear
-                        controlsView()
+                        activeToolView()
                             .padding(.horizontal, 8.0)
                             .transition(.identity)
                             .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
                     }
                     .frame(height: Self.toolControlViewsAreaHeight)
                     
-                    ToolSelector($tool)
+                    ToolSelector(activeToolViewModel: $model.activeToolViewModel, toolViewModels: model.toolViewModels)
                         .contentHorizontalPadding(32.0)
                         .padding(.vertical, 4.0)
                         .background(Material.bar)
@@ -128,7 +147,6 @@ struct RootView: View {
         .sheet(isPresented: $model.showsNewObjectView) {
             NewObjectView() { meshId in
                 sceneViewModel.createNewObject(meshId: meshId)
-                tool = .move
             }
         }
         .sheet(isPresented: $showsAnimatorsView) {
@@ -201,26 +219,26 @@ struct RootView: View {
         .frame(height: 33.0)
     }
     
-    func controlsView() -> some View {
+    func activeToolView() -> some View {
         Group {
-            switch tool {
+            switch model.activeToolViewModel.tool {
             case .inspect:
                 EmptyView()
             case .move:
-                MoveToolControlsView(model: .init(sceneViewModel: sceneViewModel))
+                MoveToolView(model: model.moveToolViewModel)
             case .orient:
-                OrientToolControlsView(model: .init(sceneViewModel: sceneViewModel))
+                OrientToolView(model: model.orientToolViewModel)
             case .scale:
-                ScaleToolControlsView(model: .init(sceneViewModel: sceneViewModel))
+                ScaleToolView(model: model.scaleToolViewModel)
             case .shade:
                 EmptyView()
-            case .animmove:
-                AnimmoveToolControlsView(model: animmoveToolViewModel)
-            case .animorient:
+            case .animatePosition:
+                AnimatePositionToolView(model: model.animatePositionToolView)
+            case .animateOrientation:
                 EmptyView()
-            case .animscale:
+            case .animateScale:
                 EmptyView()
-            case .animshade:
+            case .animateShade:
                 EmptyView()
             }
         }

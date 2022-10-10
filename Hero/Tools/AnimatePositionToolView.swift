@@ -1,5 +1,5 @@
 //
-//  AnimmoveToolControlsView.swift
+//  AnimatePositionToolView.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 02.10.22.
@@ -17,22 +17,12 @@ fileprivate class SelectedObjectViewModel: ObservableObject {
     let rootComponent: PositionAnimatorBindingsComponent
     @Published var activeComponent: Component
     
-    @SPTObservedComponent private var sptPosition: SPTPosition
-    
     init(object: SPTObject, sceneViewModel: SceneViewModel) {
         self.object = object
         self.sceneViewModel = sceneViewModel
         
         self.rootComponent = PositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: nil)
         self.activeComponent = rootComponent
-        
-        _sptPosition = SPTObservedComponent(object: object)
-        _sptPosition.publisher = self.objectWillChange
-    }
-    
-    var position: simd_float3 {
-        set { sptPosition.xyz = newValue }
-        get { sptPosition.xyz }
     }
     
 }
@@ -119,16 +109,16 @@ fileprivate struct AnimatorBindingOptionsView<AP>: View where AP: SPTAnimatableP
 }
 
 
-class AnimmoveToolViewModel: ObservableObject {
-    
-    let sceneViewModel: SceneViewModel
+class AnimatePositionToolViewModel: ToolViewModel {
     
     @Published fileprivate var selectedObjectViewModel: SelectedObjectViewModel?
     
     private var selectedObjectSubscription: AnyCancellable?
+    private var activeComponentSubscription: AnyCancellable?
     
     init(sceneViewModel: SceneViewModel) {
-        self.sceneViewModel = sceneViewModel
+        
+        super.init(tool: .animatePosition, sceneViewModel: sceneViewModel)
         
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
             self?.setupSelectedObjectViewModel(object: selected)
@@ -138,20 +128,36 @@ class AnimmoveToolViewModel: ObservableObject {
         
     }
     
+    override var activeComponent: Component? {
+        set {
+            guard let selectedObjectViewModel = selectedObjectViewModel else {
+                return
+            }
+            selectedObjectViewModel.activeComponent = newValue ?? selectedObjectViewModel.rootComponent
+        }
+        get {
+            selectedObjectViewModel?.activeComponent
+        }
+    }
+    
     private func setupSelectedObjectViewModel(object: SPTObject?) {
         if let object = object {
             selectedObjectViewModel = .init(object: object, sceneViewModel: sceneViewModel)
+            activeComponentSubscription = selectedObjectViewModel!.$activeComponent.sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
         } else {
             selectedObjectViewModel = nil
+            activeComponentSubscription = nil
         }
     }
     
 }
 
 
-struct AnimmoveToolControlsView: View {
+struct AnimatePositionToolView: View {
     
-    @ObservedObject var model: AnimmoveToolViewModel
+    @ObservedObject var model: AnimatePositionToolViewModel
     
     var body: some View {
         if let selectedObjectVM = model.selectedObjectViewModel {
@@ -160,18 +166,4 @@ struct AnimmoveToolControlsView: View {
             EmptyView()
         }
     }
-}
-
-struct AnimmoveToolOptionsView: View {
-    
-    @ObservedObject var model: AnimmoveToolViewModel
-    
-    var body: some View {
-        if let selectedObjectVM = model.selectedObjectViewModel {
-            SelectedObjectOptionsView(model: selectedObjectVM)
-        } else {
-            EmptyView()
-        }
-    }
-    
 }

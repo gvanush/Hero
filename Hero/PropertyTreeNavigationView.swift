@@ -94,10 +94,6 @@ fileprivate struct ComponentView: View {
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
                 
-                if !isRoot {
-                    backButton(iconName: "chevron.right.2", shadowX: -0.5)
-                }
-                
                 if let properties = component.properties {
                     propertyViews(properties)
                 }
@@ -106,10 +102,6 @@ fileprivate struct ComponentView: View {
                     ForEach(subcomponents) { subcomponent in
                         ComponentView(component: subcomponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                     }
-                }
-                
-                if !isRoot {
-                    backButton(iconName: "chevron.left.2", shadowX: 0.5)
                 }
                 
             }
@@ -168,22 +160,6 @@ fileprivate struct ComponentView: View {
             return distance
         }
         return nil
-    }
-    
-    private func backButton(iconName: String, shadowX: CGFloat) -> some View {
-        Button {
-            withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
-                activeComponent = activeComponent.parent!
-            }
-        } label: {
-            Image(systemName: iconName)
-                .imageScale(.small)
-                .frame(width: 30.0)
-                .frame(maxHeight: .infinity)
-        }
-        .tint(.primary)
-        .shadow(radius: 0.5, x: shadowX)
-        .visible(isActive)
     }
     
     private func propertyViews(_ properties: [String]) -> some View {

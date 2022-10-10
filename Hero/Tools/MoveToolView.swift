@@ -1,5 +1,5 @@
 //
-//  MoveToolControlsView.swift
+//  MoveToolView.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 27.09.22.
@@ -96,16 +96,14 @@ fileprivate struct SelectedObjectControlsView: View {
     
 }
 
-class MoveToolViewModel: ObservableObject {
-    
-    let sceneViewModel: SceneViewModel
+class MoveToolViewModel: ToolViewModel {
     
     fileprivate var selectedObjectViewModel: SelectedObjectViewModel?
     
     private var selectedObjectSubscription: AnyCancellable?
     
     init(sceneViewModel: SceneViewModel) {
-        self.sceneViewModel = sceneViewModel
+        super.init(tool: .move, sceneViewModel: sceneViewModel)
         
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
             self?.setupSelectedObjectViewModel(object: selected)
@@ -126,9 +124,9 @@ class MoveToolViewModel: ObservableObject {
 }
 
 
-struct MoveToolControlsView: View {
+struct MoveToolView: View {
     
-    @StateObject var model: MoveToolViewModel
+    @ObservedObject var model: MoveToolViewModel
     
     var body: some View {
         if let selectedObjectVM = model.selectedObjectViewModel {

@@ -33,7 +33,7 @@ SPTObserverToken addComponentObserver(SPTObject object, typename O::Observer obs
         auto it = std::find_if(observable->observerItems.begin(), observable->observerItems.end(), [](const auto& item) {
             return item.observer == nullptr;
         });
-        assert(it != observable->observerItems.end());
+        assert(it != observable->observerItems.end()); // No free slot to register observer
         it->observer = observer;
         it->userInfo = userInfo;
         return static_cast<SPTObserverToken>(it - observable->observerItems.begin());

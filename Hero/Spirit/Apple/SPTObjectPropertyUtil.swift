@@ -65,7 +65,9 @@ extension SPTAnimatableObjectProperty: SPTAnimatableProperty {
             subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
         
-        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(self, object, token) }
+        subscription.canceller = {
+            SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(self, object, token)
+        }
         
         return subscription
     }
