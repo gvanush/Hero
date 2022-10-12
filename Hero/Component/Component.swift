@@ -33,6 +33,8 @@ class Component: Identifiable, ObservableObject, Equatable {
     
     func onInactive() { }
     
+    @Published var actions = [ActionItem]()
+    
     func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
         nil
     }

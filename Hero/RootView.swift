@@ -26,8 +26,6 @@ class RootViewModel: ObservableObject {
     ]
     
     @Published var activeToolViewModel: ToolViewModel
-    @Published var showsNewObjectView = false
-    @Published var showsSelectedObjectInspector = false
     
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
@@ -39,35 +37,6 @@ class RootViewModel: ObservableObject {
         self.animatePositionToolView = AnimatePositionToolViewModel(sceneViewModel: sceneViewModel)
         
         self.activeToolViewModel = inspectToolViewModel
-    }
-    
-    lazy var genericActions = [
-        ActionItem(iconName: "plus", action: onNewObjectAction),
-        ActionItem(iconName: "plus.square.on.square", disabled: objectActionsDisabled, action: onDuplicateAction),
-        ActionItem(iconName: "slider.horizontal.3", disabled: objectActionsDisabled, action: onInspectObjectAction),
-        ActionItem(iconName: "trash", disabled: objectActionsDisabled, action: onRemoveObjectAction)
-    ]
-    
-    @Published var objectActions: [ActionItem]?
-    
-    func onNewObjectAction() {
-        showsNewObjectView = true
-    }
-    
-    func onDuplicateAction() {
-        sceneViewModel.duplicateObject(sceneViewModel.selectedObject!)
-    }
-    
-    func onInspectObjectAction() {
-        showsSelectedObjectInspector = true
-    }
-    
-    func onRemoveObjectAction() {
-        sceneViewModel.destroySelected()
-    }
-    
-    func objectActionsDisabled() -> Bool {
-        !sceneViewModel.isObjectSelected
     }
     
 }
@@ -99,7 +68,7 @@ struct RootView: View {
                     Spacer()
                     HStack {
                         EmptyView()
-                        ActionsView(primaryActions: $model.genericActions, secondaryActions: $model.objectActions)
+                        ActionsView(sceneViewModel: sceneViewModel, activeToolViewModel: $model.activeToolViewModel)
                             .padding(3.0)
                             .background(Material.bar, ignoresSafeAreaEdges: [])
                             .cornerRadius(5.0, corners: [.topRight, .bottomRight])
@@ -144,17 +113,8 @@ struct RootView: View {
         }
         .statusBar(hidden: isNavigating)
         .persistentSystemOverlays(isNavigating ? .hidden : .automatic)
-        .sheet(isPresented: $model.showsNewObjectView) {
-            NewObjectView() { meshId in
-                sceneViewModel.createNewObject(meshId: meshId)
-            }
-        }
         .sheet(isPresented: $showsAnimatorsView) {
             AnimatorsView()
-        }
-        .sheet(isPresented: $model.showsSelectedObjectInspector) {
-            MeshObjectInspector(meshComponent: MeshObjectComponent(object: sceneViewModel.selectedObject!, sceneViewModel: sceneViewModel))
-                .environmentObject(sceneViewModel)
         }
         .fullScreenCover(item: $playableScene, content: { scene in
             PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))

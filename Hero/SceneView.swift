@@ -168,12 +168,12 @@ struct SceneView: View {
             if let name = model.selectedObjectMetadata?.name {
                 Text(name)
                     .font(.subheadline)
-                    .foregroundColor(.secondaryLabel)
+                    .foregroundColor(.objectSelectionColor)
                     .frame(height: 30)
                     .padding(.horizontal, 8.0)
                     .background(SceneViewConst.uiBgrMaterial)
                     .cornerRadius(9.0)
-                    .selectedObjectUI(cornerRadius: 9.0)
+                    .shadow(radius: 1.0)
             }
         }
     }
@@ -213,26 +213,6 @@ fileprivate struct ZoomView: View {
     
     static let width = 8.0
     static let lineStrokeStyle = StrokeStyle(lineWidth: Self.width, dash: [1, 4])
-}
-
-struct SelectedObjectUI: ViewModifier {
-    
-    let cornerRadius: CGFloat
-    
-    func body(content: Content) -> some View {
-        content
-            .overlay {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.objectSelectionColor.opacity(0.6), lineWidth: 1.0)
-                    .padding(-0.5)
-            }
-    }
-}
-
-extension View {
-    func selectedObjectUI(cornerRadius: CGFloat) -> some View {
-        modifier(SelectedObjectUI(cornerRadius: cornerRadius))
-    }
 }
 
 struct SceneView_Previews: PreviewProvider {

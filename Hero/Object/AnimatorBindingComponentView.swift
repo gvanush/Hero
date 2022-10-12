@@ -11,11 +11,15 @@ import Combine
 
 
 enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
+    
+    case animator
     case valueAt0
     case valueAt1
     
     var displayName: String {
         switch self {
+        case .animator:
+            return "Animator"
         case .valueAt0:
             return "Value:0"
         case .valueAt1:
@@ -36,6 +40,15 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
             _sptBinding.publisher = objectWillChange
         }
         
+        var animatorId: SPTAnimatorId {
+            set {
+                sptBinding.animatorId = newValue
+            }
+            get {
+                sptBinding.animatorId
+            }
+        }
+        
         var valueAt0: Float {
             set { sptBinding.valueAt0 = newValue }
             get { sptBinding.valueAt0 }
@@ -54,7 +67,7 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
     @Published var binding: Binding?
     private var bindingCancellable: AnyCancellable?
     
-    @Published var animatorValue: Float = 0.5
+    @Published var isControllingAnimator = false
     
     init(animatableProperty: AP, title: String, object: SPTObject, parent: Component?) {
         
@@ -66,7 +79,10 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         if animatableProperty.isAnimatorBound(object: object) {
             setupBinding()
         }
-        
+    
+        self.actions.append(.init(iconName: "bolt.slash", action: { [weak self] in
+            self?.unbindAnimator()
+        }))
     }
     
     var animator: SPTAnimator? {
@@ -184,12 +200,12 @@ struct EditAnimatorBindingComponentView<AP>: View where AP: SPTAnimatablePropert
         var body: some View {
             Group {
                 switch property {
+                case .animator:
+                    AnimatorControl(animatorId: $binding.animatorId)
                 case .valueAt0:
                     FloatSelector(value: $binding.valueAt0, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
-                        .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 case .valueAt1:
                     FloatSelector(value: $binding.valueAt1, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
-                        .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 }
             }
             .transition(.identity)

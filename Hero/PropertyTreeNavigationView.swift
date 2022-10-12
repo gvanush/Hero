@@ -26,11 +26,9 @@ struct PropertyTreeNavigationVIew: View {
                 .frame(height: Self.componentViewHeight)
                 .background(Material.thin)
                 .cornerRadius(SelectorConst.cornerRadius)
-                .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
-            
         }
         .compositingGroup()
-        .shadow(radius: 0.5)
+        .shadow(radius: 1.0)
         .sheet(item: $inSetupComponent) { component in
             component.accept(setupViewProvider) {
                 if component.isSetup {

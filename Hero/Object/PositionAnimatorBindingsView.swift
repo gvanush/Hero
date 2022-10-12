@@ -71,8 +71,6 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
             SPTOrientationMakeEuler(guideObjects!.line, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
         }
         
-        SPTPosition.update(objectPosition, object: object)
-        
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [weak self] newValue in
             
             guard let weakSelf = self, let guideObjects = weakSelf.guideObjects else { return }
@@ -84,21 +82,8 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
             SPTScale.update(weakSelf.guideLineScale, object: guideObjects.line)
             SPTPosition.update(weakSelf.guideLinePosition, object: guideObjects.line)
             
-            SPTPosition.update(weakSelf.objectPosition, object: weakSelf.object)
         })
         
-    }
-    
-    override var animatorValue: Float {
-        didSet {
-            SPTPosition.update(objectPosition, object: object)
-        }
-    }
-    
-    private var objectPosition: SPTPosition {
-        var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] += SPTAnimatorBindingEvaluate(binding!.sptBinding, animatorValue)
-        return .init(xyz: xyz)
     }
     
     private var guideLineScale: SPTScale {

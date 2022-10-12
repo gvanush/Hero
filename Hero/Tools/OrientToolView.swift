@@ -78,12 +78,10 @@ fileprivate struct SelectedObjectControlsView: View {
     var body: some View {
         VStack {
             FloatSelector(value: $model.eulerRotation[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
-                .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 .transition(.identity)
                 .id(axis.rawValue)
                 .id(model.object)
             Selector(selected: $axis)
-                .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
         }
         .onChange(of: axis, perform: { newValue in
 //            model.removeGuideObjects()

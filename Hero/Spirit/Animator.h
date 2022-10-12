@@ -17,7 +17,7 @@ SPT_EXTERN_C_BEGIN
 
 extern const SPTAnimatorId kSPTAnimatorInvalidId;
 
-#define kSPTAnimatorNameMaxLength 7
+#define kSPTAnimatorNameMaxLength 16
 
 typedef struct {
     simd_float2 panLocation;

@@ -75,11 +75,9 @@ fileprivate struct SelectedObjectControlsView: View {
     var body: some View {
         VStack {
             FloatSelector(value: $model.position[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
-                .selectedObjectUI(cornerRadius: FloatSelector.cornerRadius)
                 .transition(.identity)
                 .id(axis.rawValue)
             Selector(selected: $axis)
-                .selectedObjectUI(cornerRadius: SelectorConst.cornerRadius)
         }
         .onChange(of: axis, perform: { newValue in
             model.removeGuideObjects()
