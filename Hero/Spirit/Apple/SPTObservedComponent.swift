@@ -10,97 +10,67 @@ import Combine
 
 
 @propertyWrapper
-@dynamicMemberLookup
 class SPTObservedComponent<C> where C: SPTObservableComponent {
     
     let object: SPTObject
-    let binding: SPTObjectBinding<C>
     var willChangeSubscription: SPTAnySubscription?
 
+    weak var publisher: ObservableObjectPublisher?
+    
     init(object: SPTObject) {
         self.object = object
         
-        binding = SPTObjectBinding(value: C.get(object: object), setter: { newValue in
-            C.update(newValue, object: object)
-        })
-        
         willChangeSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
-            self?.binding.onWillChange(newValue: newValue)
+            self?.publisher?.send()
         }
 
     }
- 
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<C, Subject>) -> SPTObjectBinding<Subject> {
-        binding[dynamicMember: keyPath]
-    }
-    
-    var publisher: ObservableObjectPublisher? {
-        set { binding.publisher = newValue }
-        get { binding.publisher }
-    }
     
     var wrappedValue: C {
-        set { binding.wrappedValue = newValue }
-        get { binding.wrappedValue }
-    }
-    
-    var projectedValue: SPTObjectBinding<C> {
-        binding
+        set { C.update(newValue, object: object) }
+        get { C.get(object: object) }
     }
     
 }
 
 
 @propertyWrapper
-@dynamicMemberLookup
 class SPTObservedOptionalComponent<C> where C: SPTObservableComponent {
     
     let object: SPTObject
-    let binding: SPTObjectBinding<C?>
     var willEmergeSubscription: SPTAnySubscription?
     var willChangeSubscription: SPTAnySubscription?
     var willPerishSubscription: SPTAnySubscription?
 
+    weak var publisher: ObservableObjectPublisher?
+    
     init(object: SPTObject) {
         self.object = object
         
-        binding = SPTObjectBinding(value: C.tryGet(object: object), setter: { newValue in
+        willEmergeSubscription = C.onWillEmergeSink(object: object) { [weak self] newValue in
+            self?.publisher?.send()
+        }
+        
+        willChangeSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
+            self?.publisher?.send()
+        }
+
+        willPerishSubscription = C.onWillPerishSink(object: object) { [weak self] in
+            self?.publisher?.send()
+        }
+    }
+    
+    var wrappedValue: C? {
+        set {
             if let newValue = newValue {
                 C.makeOrUpdate(newValue, object: object)
             } else {
                 C.destroy(object: object)
             }
-        })
-        
-        willEmergeSubscription = C.onWillEmergeSink(object: object) { [weak self] newValue in
-            self?.binding.onWillChange(newValue: newValue)
         }
-        
-        willChangeSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
-            self?.binding.onWillChange(newValue: newValue)
+        get {
+            C.tryGet(object: object)
         }
-
-        willPerishSubscription = C.onWillPerishSink(object: object) { [weak self] in
-            self?.binding.onWillChange(newValue: nil)
-        }
-    }
- 
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<C?, Subject>) -> SPTObjectBinding<Subject> {
-        binding[dynamicMember: keyPath]
-    }
-    
-    var publisher: ObservableObjectPublisher? {
-        set { binding.publisher = newValue }
-        get { binding.publisher }
-    }
-    
-    var wrappedValue: C? {
-        set { binding.wrappedValue = newValue }
-        get { binding.wrappedValue }
-    }
-    
-    var projectedValue: SPTObjectBinding<C?> {
-        binding
     }
     
 }

@@ -21,14 +21,16 @@ struct ActionItem: Identifiable {
     let action: () -> Void
 }
 
+class ActionsViewModel: ObservableObject {
+    
+    
+    
+}
+
 struct ActionsView: View {
     
-    @ObservedObject var sceneViewModel: SceneViewModel
+    let defaultActions: [ActionItem]
     @Binding var activeToolViewModel: ToolViewModel
-    
-    @State private var showsNewObjectView = false
-    @State private var showsSelectedObjectInspector = false
-    
     
     var body: some View {
         VStack {
@@ -36,32 +38,6 @@ struct ActionsView: View {
             ToolActionsView(toolViewModel: activeToolViewModel)
         }
         .frame(width: itemSize.width)
-        .sheet(isPresented: $showsNewObjectView) {
-            NewObjectView() { meshId in
-                sceneViewModel.createNewObject(meshId: meshId)
-            }
-        }
-        .sheet(isPresented: $showsSelectedObjectInspector) {
-            MeshObjectInspector(meshComponent: MeshObjectComponent(object: sceneViewModel.selectedObject!, sceneViewModel: sceneViewModel))
-                .environmentObject(sceneViewModel)
-        }
-    }
-    
-    var defaultActions: [ActionItem] {
-        [
-            ActionItem(iconName: "plus") {
-                showsNewObjectView = true
-            },
-            ActionItem(iconName: "plus.square.on.square", disabled: !sceneViewModel.isObjectSelected) {
-                sceneViewModel.duplicateObject(sceneViewModel.selectedObject!)
-            },
-            ActionItem(iconName: "slider.horizontal.3", disabled: !sceneViewModel.isObjectSelected) {
-                showsSelectedObjectInspector = true
-            },
-            ActionItem(iconName: "trash", disabled: !sceneViewModel.isObjectSelected) {
-                sceneViewModel.destroySelected()
-            }
-        ]
     }
     
 }
@@ -131,13 +107,30 @@ struct ActionsView_Previews: PreviewProvider {
             ZStack {
                 Color.gray
                 HStack {
-                    ActionsView(sceneViewModel: sceneViewModel, activeToolViewModel: $activeToolViewModel)
+                    ActionsView(defaultActions: defaultActions, activeToolViewModel: $activeToolViewModel)
                         .padding(3.0)
                         .background(Material.bar)
                         .cornerRadius(3.0, corners: [.topRight, .bottomRight])
                     Spacer()
                 }
             }
+        }
+        
+        var defaultActions: [ActionItem] {
+            [
+                ActionItem(iconName: "plus") {
+                    
+                },
+                ActionItem(iconName: "plus.square.on.square", disabled: !sceneViewModel.isObjectSelected) {
+                    
+                },
+                ActionItem(iconName: "slider.horizontal.3", disabled: !sceneViewModel.isObjectSelected) {
+                    
+                },
+                ActionItem(iconName: "trash", disabled: !sceneViewModel.isObjectSelected) {
+                    
+                }
+            ]
         }
         
     }

@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 
-fileprivate class SelectedObjectViewModel: ObservableObject {
+class AnimatePositionToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
@@ -30,7 +30,7 @@ fileprivate class SelectedObjectViewModel: ObservableObject {
 
 fileprivate struct SelectedObjectControlsView: View {
     
-    @ObservedObject var model: SelectedObjectViewModel
+    @ObservedObject var model: AnimatePositionToolSelectedObjectViewModel
     
     var body: some View {
         PropertyTreeNavigationVIew(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, actionViewViewProvider: MeshObjectComponentActionViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
@@ -41,7 +41,7 @@ fileprivate struct SelectedObjectControlsView: View {
 
 class AnimatePositionToolViewModel: ToolViewModel {
     
-    @Published fileprivate var selectedObjectViewModel: SelectedObjectViewModel?
+    @Published private(set) var selectedObjectViewModel: AnimatePositionToolSelectedObjectViewModel?
     
     private var selectedObjectSubscription: AnyCancellable?
     private var activeComponentSubscription: AnyCancellable?

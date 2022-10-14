@@ -8,10 +8,13 @@
 import SwiftUI
 import Combine
 
-fileprivate class SelectedObjectViewModel: ObservableObject {
+
+class MoveToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
+    
+    @Published var axis = Axis.x
     
     @SPTObservedComponent private var sptPosition: SPTPosition
     private var guideObject: SPTObject?
@@ -66,25 +69,24 @@ fileprivate class SelectedObjectViewModel: ObservableObject {
 
 fileprivate struct SelectedObjectControlsView: View {
     
-    @ObservedObject var model: SelectedObjectViewModel
+    @ObservedObject var model: MoveToolSelectedObjectViewModel
     
-    @State private var axis = Axis.x
     @State private var scale = FloatSelector.Scale._1
     @State private var isSnappingEnabled = false
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.position[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+            FloatSelector(value: $model.position[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                 .transition(.identity)
-                .id(axis.rawValue)
-            Selector(selected: $axis)
+                .id(model.axis.rawValue)
+            Selector(selected: $model.axis)
         }
-        .onChange(of: axis, perform: { newValue in
+        .onChange(of: model.axis, perform: { newValue in
             model.removeGuideObjects()
             model.setupGuideObjects(axis: newValue)
         })
         .onAppear {
-            model.setupGuideObjects(axis: axis)
+            model.setupGuideObjects(axis: model.axis)
         }
         .onDisappear {
             model.removeGuideObjects()
@@ -96,7 +98,7 @@ fileprivate struct SelectedObjectControlsView: View {
 
 class MoveToolViewModel: ToolViewModel {
     
-    fileprivate var selectedObjectViewModel: SelectedObjectViewModel?
+    @Published private(set) var selectedObjectViewModel: MoveToolSelectedObjectViewModel?
     
     private var selectedObjectSubscription: AnyCancellable?
     

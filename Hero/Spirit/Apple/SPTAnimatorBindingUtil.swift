@@ -19,101 +19,69 @@ extension SPTAnimatorBinding: Equatable {
 
 
 @propertyWrapper
-@dynamicMemberLookup
 class SPTObservedAnimatorBinding<P> where P: SPTAnimatableProperty {
     
     let property: P
     let object: SPTObject
-    let binding: SPTObjectBinding<SPTAnimatorBinding>
     var willChangeSubscription: SPTAnySubscription?
 
+    weak var publisher: ObservableObjectPublisher?
+    
     init(property: P, object: SPTObject) {
         self.property = property
         self.object = object
         
-        binding = SPTObjectBinding(value: property.getAnimatorBinding(object: object), setter: { newValue in
-            property.updateAnimatorBinding(newValue, object: object)
-        })
-        
-        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] newValue in
-            self?.binding.onWillChange(newValue: newValue)
+        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] _ in
+            self?.publisher?.send()
         }
 
     }
- 
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<SPTAnimatorBinding, Subject>) -> SPTObjectBinding<Subject> {
-        binding[dynamicMember: keyPath]
-    }
-    
-    var publisher: ObservableObjectPublisher? {
-        set { binding.publisher = newValue }
-        get { binding.publisher }
-    }
     
     var wrappedValue: SPTAnimatorBinding {
-        set { binding.wrappedValue = newValue }
-        get { binding.wrappedValue }
-    }
-    
-    var projectedValue: SPTObjectBinding<SPTAnimatorBinding> {
-        binding
+        set { property.updateAnimatorBinding(newValue, object: object) }
+        get { property.getAnimatorBinding(object: object) }
     }
     
 }
 
 
 @propertyWrapper
-@dynamicMemberLookup
 class SPTObservedOptionalAnimatorBinding<P> where P: SPTAnimatableProperty {
     
     let property: P
     let object: SPTObject
-    let binding: SPTObjectBinding<SPTAnimatorBinding?>
     var willEmergeSubscription: SPTAnySubscription?
     var willChangeSubscription: SPTAnySubscription?
     var willPerishSubscription: SPTAnySubscription?
 
+    weak var publisher: ObservableObjectPublisher?
+    
     init(property: P, object: SPTObject) {
         self.property = property
         self.object = object
         
-        binding = SPTObjectBinding(value: property.tryGetAnimatorBinding(object: object), setter: { newValue in
+        willEmergeSubscription = property.onAnimatorBindingWillEmergeSink(object: object) { [weak self] newValue in
+            self?.publisher?.send()
+        }
+        
+        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] newValue in
+            self?.publisher?.send()
+        }
+
+        willPerishSubscription = property.onAnimatorBindingWillPerishSink(object: object) { [weak self] in
+            self?.publisher?.send()
+        }
+    }
+    
+    var wrappedValue: SPTAnimatorBinding? {
+        set {
             if let newValue = newValue {
                 property.bindOrUpdate(newValue, object: object)
             } else {
                 property.unbindAnimator(object: object)
             }
-        })
-        
-        willEmergeSubscription = property.onAnimatorBindingWillEmergeSink(object: object) { [weak self] newValue in
-            self?.binding.onWillChange(newValue: newValue)
         }
-        
-        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] newValue in
-            self?.binding.onWillChange(newValue: newValue)
-        }
-
-        willPerishSubscription = property.onAnimatorBindingWillPerishSink(object: object) { [weak self] in
-            self?.binding.onWillChange(newValue: nil)
-        }
-    }
- 
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<SPTAnimatorBinding?, Subject>) -> SPTObjectBinding<Subject> {
-        binding[dynamicMember: keyPath]
-    }
-    
-    var publisher: ObservableObjectPublisher? {
-        set { binding.publisher = newValue }
-        get { binding.publisher }
-    }
-    
-    var wrappedValue: SPTAnimatorBinding? {
-        set { binding.wrappedValue = newValue }
-        get { binding.wrappedValue }
-    }
-    
-    var projectedValue: SPTObjectBinding<SPTAnimatorBinding?> {
-        binding
+        get { property.tryGetAnimatorBinding(object: object) }
     }
     
 }

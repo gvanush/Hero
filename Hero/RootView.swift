@@ -49,6 +49,8 @@ struct RootView: View {
     
     @State private var isNavigating = false
     @State private var showsAnimatorsView = false
+    @State private var showsNewObjectView = false
+    @State private var showsSelectedObjectInspector = false
     @State private var playableScene: SPTPlayableSceneProxy?
 
     @Environment(\.scenePhase) private var scenePhase
@@ -63,12 +65,13 @@ struct RootView: View {
         ZStack {
             SceneView(model: sceneViewModel,
                       isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), edgeInsets: .init(top: 0.0, leading: 0.0, bottom: -Self.navigationEmptyVerticalAreaHeight, trailing: 0.0))
+            .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
             .overlay {
                 VStack(alignment: .leading) {
                     Spacer()
                     HStack {
                         EmptyView()
-                        ActionsView(sceneViewModel: sceneViewModel, activeToolViewModel: $model.activeToolViewModel)
+                        ActionsView(defaultActions: defaultActions, activeToolViewModel: $model.activeToolViewModel)
                             .padding(3.0)
                             .background(Material.bar, ignoresSafeAreaEdges: [])
                             .cornerRadius(5.0, corners: [.topRight, .bottomRight])
@@ -116,6 +119,15 @@ struct RootView: View {
         .sheet(isPresented: $showsAnimatorsView) {
             AnimatorsView()
         }
+        .sheet(isPresented: $showsNewObjectView) {
+            NewObjectView() { meshId in
+                sceneViewModel.createNewObject(meshId: meshId)
+            }
+        }
+        .sheet(isPresented: $showsSelectedObjectInspector) {
+            MeshObjectInspector(model: .init(object: sceneViewModel.selectedObject!))
+                .environmentObject(model)
+        }
         .fullScreenCover(item: $playableScene, content: { scene in
             PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))
         })
@@ -126,6 +138,23 @@ struct RootView: View {
                 playableScene = nil
             }
         }
+    }
+    
+    var defaultActions: [ActionItem] {
+        [
+            ActionItem(iconName: "plus") {
+                showsNewObjectView = true
+            },
+            ActionItem(iconName: "plus.square.on.square", disabled: !sceneViewModel.isObjectSelected) {
+                sceneViewModel.duplicateObject(sceneViewModel.selectedObject!)
+            },
+            ActionItem(iconName: "slider.horizontal.3", disabled: !sceneViewModel.isObjectSelected) {
+                showsSelectedObjectInspector = true
+            },
+            ActionItem(iconName: "trash", disabled: !sceneViewModel.isObjectSelected) {
+                sceneViewModel.destroySelected()
+            }
+        ]
     }
     
     func topbar() -> some View {

@@ -9,17 +9,13 @@ import SwiftUI
 
 class AnimatorsViewModel: ObservableObject {
     
-    @Published var selection: SPTAnimatorId?
+    @Published var disclosedAnimatorIds = [SPTAnimatorId]()
     
     init() {
+        
         SPTAnimatorAddCountWillChangeListener(Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
-            
             let me = Unmanaged<AnimatorsViewModel>.fromOpaque(listener).takeUnretainedValue()
-            
-            if !SPTAnimatorGetAll().contains(where: { $0.id == me.selection }) {
-                me.selection = nil
-            }
-            
+            me.disclosedAnimatorIds.removeAll()
             me.objectWillChange.send()
         })
     }
@@ -32,6 +28,10 @@ class AnimatorsViewModel: ObservableObject {
         SPTAnimatorMake(animator)
     }
     
+    func discloseAnimator(id: SPTAnimatorId) {
+        disclosedAnimatorIds = [id]
+    }
+    
     func destroyAnimator(id: SPTAnimatorId) {
         SPTAnimatorDestroy(id)
     }
@@ -39,17 +39,17 @@ class AnimatorsViewModel: ObservableObject {
 
 struct AnimatorsView: View {
     
-    @State var selection: SPTAnimatorId?
     @StateObject var model = AnimatorsViewModel()
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $model.disclosedAnimatorIds) {
             List(SPTAnimatorGetAll()) { animator in
-                NavigationLink(animator.name.capitalizingFirstLetter(), tag: animator.id, selection: $selection, destination: {
-                    PanAnimatorView(model: PanAnimatorViewModel(animatorId: animator.id))
-                })
+                NavigationLink(animator.name.capitalizingFirstLetter(), value: animator.id)
             }
+            .navigationDestination(for: SPTAnimatorId.self, destination: { animatorId in
+                PanAnimatorView(model: PanAnimatorViewModel(animatorId: animatorId))
+            })
             .navigationTitle("Animators")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -64,7 +64,8 @@ struct AnimatorsView: View {
                             
                         }
                         Button("Pan") {
-                            selection = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimatorGetAll().count)", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+                            let animatorId = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimatorGetAll().count)", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+                            model.discloseAnimator(id: animatorId)
                         }
                     } label: {
                         Text("New From Source")

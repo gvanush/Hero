@@ -13,10 +13,6 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
     let axis: Axis
     let sceneViewModel: SceneViewModel
     
-    private var guideObjects: (point0: SPTObject, point1: SPTObject, line: SPTObject)?
-    private var objectInitialPosition: SPTPosition?
-    private var bindingWillChangeSubscription: SPTAnySubscription?
-    
     init(axis: Axis, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         self.axis = axis
@@ -35,17 +31,45 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
         super.init(animatableProperty: animatableProperty, title: "\(axis.displayName) Binding", object: object, parent: parent)
     }
     
-    override func onActive() {
-        objectInitialPosition = SPTPosition.get(object: object)
+    override func makeEditViewModel() -> EditAnimatorBindingViewModel<SPTAnimatableObjectProperty>? {
+        EditPositionAnimatorBindingViewModel(axis: axis, object: object, sceneViewModel: sceneViewModel)
+    }
+}
+
+
+class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnimatableObjectProperty> {
+    
+    let axis: Axis
+    let sceneViewModel: SceneViewModel
+    
+    private var guideObjects: (point0: SPTObject, point1: SPTObject, line: SPTObject)?
+    private var bindingWillChangeSubscription: SPTAnySubscription?
+    
+    init(axis: Axis, object: SPTObject, sceneViewModel: SceneViewModel) {
+        self.axis = axis
+        self.sceneViewModel = sceneViewModel
+        
+        var animatableProperty: SPTAnimatableObjectProperty!
+        switch axis {
+        case .x:
+            animatableProperty = .positionX
+        case .y:
+            animatableProperty = .positionY
+        case .z:
+            animatableProperty = .positionZ
+        }
+        
+        super.init(animatableProperty: animatableProperty, object: object)
+    }
+    
+    override func onAppear() {
         setupGuideObjects()
     }
     
-    override func onInactive() {
+    override func onDisappear() {
         removeGuideObjects()
-        SPTPosition.update(objectInitialPosition!, object: object)
-        objectInitialPosition = nil
     }
-        
+    
     private func setupGuideObjects() {
 
         guideObjects = (sceneViewModel.scene.makeObject(), sceneViewModel.scene.makeObject(), sceneViewModel.scene.makeObject())
@@ -72,39 +96,39 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
         }
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [weak self] newValue in
-            
+
             guard let weakSelf = self, let guideObjects = weakSelf.guideObjects else { return }
-            
+
             SPTPosition.update(weakSelf.guidePoint0Position, object: guideObjects.point0)
-            
+
             SPTPosition.update(weakSelf.guidePoint1Position, object: guideObjects.point1)
-            
+
             SPTScale.update(weakSelf.guideLineScale, object: guideObjects.line)
             SPTPosition.update(weakSelf.guideLinePosition, object: guideObjects.line)
-            
+
         })
         
     }
     
     private var guideLineScale: SPTScale {
-        .init(x: 0.5 * abs(binding!.valueAt1 - binding!.valueAt0), y: 1.0, z: 1.0)
+        .init(x: 0.5 * abs(binding.valueAt1 - binding.valueAt0), y: 1.0, z: 1.0)
     }
     
     private var guideLinePosition: SPTPosition {
-        var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] += 0.5 * (binding!.valueAt0 + binding!.valueAt1)
+        var xyz = objectPositionXYZ
+        xyz[axis.rawValue] += 0.5 * (binding.valueAt0 + binding.valueAt1)
         return .init(xyz: xyz)
     }
     
     private var guidePoint0Position: SPTPosition {
-        var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] += binding!.valueAt0
+        var xyz = objectPositionXYZ
+        xyz[axis.rawValue] += binding.valueAt0
         return .init(xyz: xyz)
     }
     
     private var guidePoint1Position: SPTPosition {
-        var xyz = objectInitialPosition!.xyz
-        xyz[axis.rawValue] += binding!.valueAt1
+        var xyz = objectPositionXYZ
+        xyz[axis.rawValue] += binding.valueAt1
         return .init(xyz: xyz)
     }
  
@@ -117,7 +141,12 @@ class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableOb
         bindingWillChangeSubscription = nil
     }
     
+    private var objectPositionXYZ: simd_float3 {
+        SPTPosition.get(object: object).xyz
+    }
+    
 }
+
 
 class PositionAnimatorBindingsComponent: Component {
     
@@ -136,26 +165,4 @@ class PositionAnimatorBindingsComponent: Component {
     
     override var subcomponents: [Component]? { [x, y, z] }
     
-}
-
-
-struct PositionAnimatorBindingsView: View {
-    
-    @ObservedObject var component: PositionAnimatorBindingsComponent
-    @Binding var editedComponent: Component?
-    
-    var body: some View {
-        Form {
-            Section("X") {
-                AnimatorBindingComponentView(component: component.x, editedComponent: $editedComponent)
-            }
-            Section("Y") {
-                AnimatorBindingComponentView(component: component.y, editedComponent: $editedComponent)
-            }
-            Section("Z") {
-                AnimatorBindingComponentView(component: component.z, editedComponent: $editedComponent)
-            }
-        }
-        .navigationTitle("Position Animators")
-    }
 }

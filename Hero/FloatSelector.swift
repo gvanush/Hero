@@ -87,13 +87,8 @@ struct FloatSelector: View {
         _scale = scale
         _isSnappingEnabled = isSnappingEnabled
         self.rawValue = value.wrappedValue
-        self.formatter = NumberFormatter()
+        self.formatter = Self.defaultNumberFormatter(scale: scale.wrappedValue)
         self.formatterSubjectProvider = nil
-        
-        numberFormatter.roundingMode = .halfEven
-        numberFormatter.maximumFractionDigits = self.scale.fractionDigits
-        numberFormatter.minimumFractionDigits = self.scale.fractionDigits
-        
     }
     
     init(value: Binding<Float>, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>, measurementFormatter: MeasurementFormatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
@@ -359,6 +354,14 @@ struct FloatSelector: View {
         case ._10:
             return (value / 10.0).rounded() * 10.0
         }
+    }
+    
+    static func defaultNumberFormatter(scale: Scale) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.roundingMode = .halfEven
+        formatter.maximumFractionDigits = scale.fractionDigits
+        formatter.minimumFractionDigits = scale.fractionDigits
+        return formatter
     }
     
     static let height = 75.0

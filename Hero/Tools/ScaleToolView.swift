@@ -9,13 +9,15 @@ import SwiftUI
 import Combine
 
 
-fileprivate class SelectedObjectViewModel: ObservableObject {
+class ScaleToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
     @SPTObservedComponent private var sptScale: SPTScale
     private var guideObject: SPTObject?
+    
+    @Published var axis = Axis.x
     
     init(object: SPTObject, sceneViewModel: SceneViewModel) {
         self.object = object
@@ -69,29 +71,18 @@ fileprivate class SelectedObjectViewModel: ObservableObject {
 
 fileprivate struct SelectedObjectControlsView: View {
     
-    @ObservedObject var model: SelectedObjectViewModel
+    @ObservedObject var model: ScaleToolSelectedObjectViewModel
     
-    @State private var axis = Axis.x
     @State private var scale = FloatSelector.Scale._0_1
     @State private var isSnappingEnabled = false
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.scale[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+            FloatSelector(value: $model.scale[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                 .transition(.identity)
-                .id(axis.rawValue)
+                .id(model.axis.rawValue)
                 .id(model.object)
-            Selector(selected: $axis)
-        }
-        .onChange(of: axis, perform: { newValue in
-//            model.removeGuideObjects()
-//            model.setupGuideObjects(axis: newValue)
-        })
-        .onAppear {
-//            model.setupGuideObjects(axis: axis)
-        }
-        .onDisappear {
-//            model.removeGuideObjects()
+            Selector(selected: $model.axis)
         }
     }
     
@@ -99,7 +90,7 @@ fileprivate struct SelectedObjectControlsView: View {
 
 class ScaleToolViewModel: ToolViewModel {
     
-    fileprivate var selectedObjectViewModel: SelectedObjectViewModel?
+    @Published private(set) var selectedObjectViewModel: ScaleToolSelectedObjectViewModel?
     
     private var selectedObjectSubscription: AnyCancellable?
     

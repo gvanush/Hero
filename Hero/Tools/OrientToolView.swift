@@ -9,13 +9,15 @@ import SwiftUI
 import Combine
 
 
-fileprivate class SelectedObjectViewModel: ObservableObject {
+class OrientToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
     @SPTObservedComponent private var sptOrientation: SPTOrientation
     private var guideObject: SPTObject?
+    
+    @Published var axis = Axis.x
     
     init(object: SPTObject, sceneViewModel: SceneViewModel) {
         self.object = object
@@ -69,29 +71,18 @@ fileprivate class SelectedObjectViewModel: ObservableObject {
 
 fileprivate struct SelectedObjectControlsView: View {
     
-    @ObservedObject var model: SelectedObjectViewModel
+    @ObservedObject var model: OrientToolSelectedObjectViewModel
     
-    @State private var axis = Axis.x
     @State private var scale = FloatSelector.Scale._10
     @State private var isSnappingEnabled = false
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.eulerRotation[axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
+            FloatSelector(value: $model.eulerRotation[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
                 .transition(.identity)
-                .id(axis.rawValue)
+                .id(model.axis.rawValue)
                 .id(model.object)
-            Selector(selected: $axis)
-        }
-        .onChange(of: axis, perform: { newValue in
-//            model.removeGuideObjects()
-//            model.setupGuideObjects(axis: newValue)
-        })
-        .onAppear {
-//            model.setupGuideObjects(axis: axis)
-        }
-        .onDisappear {
-//            model.removeGuideObjects()
+            Selector(selected: $model.axis)
         }
     }
     
@@ -99,7 +90,7 @@ fileprivate struct SelectedObjectControlsView: View {
 
 class OrientToolViewModel: ToolViewModel {
     
-    fileprivate var selectedObjectViewModel: SelectedObjectViewModel?
+    @Published private(set) var selectedObjectViewModel: OrientToolSelectedObjectViewModel?
     
     private var selectedObjectSubscription: AnyCancellable?
     

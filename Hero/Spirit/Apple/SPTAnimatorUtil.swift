@@ -52,24 +52,18 @@ extension SPTAnimator: Identifiable, Equatable {
 }
 
 @propertyWrapper
-@dynamicMemberLookup
 class SPTObservedAnimator {
     
     private let animatorId: SPTAnimatorId
-    internal let binding: SPTObjectBinding<SPTAnimator>
+    
+    weak var publisher: ObservableObjectPublisher?
     
     init(animatorId: SPTAnimatorId) {
         self.animatorId = animatorId
         
-        binding = SPTObjectBinding(value: SPTAnimatorGet(animatorId), setter: { newValue in
-            var updated = newValue
-            updated.id = animatorId
-            SPTAnimatorUpdate(updated)
-        })
-        
         SPTAnimatorAddWillChangeListener(animatorId, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
             let me = Unmanaged<SPTObservedAnimator>.fromOpaque(listener).takeUnretainedValue()
-            me.binding.onWillChange(newValue: newValue)
+            me.publisher?.send()
         })
         
     }
@@ -79,21 +73,12 @@ class SPTObservedAnimator {
     }
  
     var wrappedValue: SPTAnimator {
-        set { binding.wrappedValue = newValue }
-        get { binding.wrappedValue }
-    }
-    
-    var projectedValue: SPTObjectBinding<SPTAnimator> {
-        binding
-    }
-    
-    var publisher: ObservableObjectPublisher? {
-        set { binding.publisher = newValue }
-        get { binding.publisher }
-    }
-    
-    subscript<Subject>(dynamicMember keyPath: WritableKeyPath<SPTAnimator, Subject>) -> SPTObjectBinding<Subject> {
-        binding[dynamicMember: keyPath]
+        set {
+            var updated = newValue
+            updated.id = animatorId
+            SPTAnimatorUpdate(updated)
+        }
+        get { SPTAnimatorGet(animatorId) }
     }
     
 }

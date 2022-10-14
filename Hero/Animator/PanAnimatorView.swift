@@ -37,7 +37,7 @@ class PanAnimatorViewModel: ObservableObject {
 
 struct PanAnimatorView: View {
     
-    @ObservedObject var model: PanAnimatorViewModel
+    @StateObject var model: PanAnimatorViewModel
     @State private var showsSetBoundsView = false
     @State private var showsViewSignalView = false
     
