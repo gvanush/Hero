@@ -79,7 +79,7 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         animatableProperty.isAnimatorBound(object: object)
     }
     
-    override func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
+    override func accept(_ provider: ComponentViewProvider) -> AnyView? {
         provider.viewFor(self)
     }
     

@@ -53,13 +53,13 @@ fileprivate struct ToolActionsView: View {
                 .foregroundColor(Color.primary)
         }
         if let component = toolViewModel.activeComponent {
-            ToolComponentActionsView(component: component)
+            ComponentActionsView(component: component)
         }
     }
     
 }
 
-fileprivate struct ToolComponentActionsView: View {
+fileprivate struct ComponentActionsView: View {
     
     @ObservedObject var component: Component
     

@@ -1,5 +1,5 @@
 //
-//  Selector.swift
+//  PropertySelector.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 28.10.21.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct Selector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases: RandomAccessCollection {
+struct PropertySelector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases: RandomAccessCollection {
 
     @Binding var selected: PT
     @Namespace private var matchedGeometryEffectNamespace
@@ -77,7 +77,7 @@ struct Selector_Previews: PreviewProvider {
         @State var axis = Axis.x
         
         var body: some View {
-            Selector(selected: $axis)
+            PropertySelector(selected: $axis)
         }
     }
     

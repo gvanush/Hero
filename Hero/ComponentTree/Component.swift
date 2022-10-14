@@ -35,7 +35,7 @@ class Component: Identifiable, ObservableObject, Equatable {
     
     @Published var actions = [ActionItem]()
     
-    func accept(_ provider: ComponentActionViewProvider) -> AnyView? {
+    func accept(_ provider: ComponentViewProvider) -> AnyView? {
         nil
     }
     

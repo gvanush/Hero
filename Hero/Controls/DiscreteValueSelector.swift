@@ -1,5 +1,5 @@
 //
-//  PropertySelector.swift
+//  DiscreteValueSelector.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 16.02.22.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct PropertyValueSelector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases: RandomAccessCollection {
+struct DiscreteValueSelector<PT>: View where PT: DistinctValueSet & Displayable, PT.AllCases: RandomAccessCollection {
     
     @Binding var selected: PT
     @Namespace private var matchedGeometryEffectNamespace
@@ -73,7 +73,7 @@ struct PropertyValueSelector_Previews: PreviewProvider {
         @State var axis = Axis.x
         
         var body: some View {
-            PropertyValueSelector(selected: $axis)
+            DiscreteValueSelector(selected: $axis)
                 .padding()
         }
     }

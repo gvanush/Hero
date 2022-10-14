@@ -79,7 +79,7 @@ fileprivate struct SelectedObjectControlsView: View {
             FloatSelector(value: $model.position[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
                 .transition(.identity)
                 .id(model.axis.rawValue)
-            Selector(selected: $model.axis)
+            PropertySelector(selected: $model.axis)
         }
         .onChange(of: model.axis, perform: { newValue in
             model.removeGuideObjects()

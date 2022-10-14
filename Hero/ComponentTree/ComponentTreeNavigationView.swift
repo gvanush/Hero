@@ -1,5 +1,5 @@
 //
-//  PropertyTreeNavigationView.swift
+//  ComponentTreeNavigationView.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 29.09.22.
@@ -8,18 +8,18 @@
 import SwiftUI
 
 
-struct PropertyTreeNavigationVIew: View {
+struct ComponentTreeNavigationView: View {
 
     let rootComponent: Component
     @Binding var activeComponent: Component
-    let actionViewViewProvider: ComponentActionViewProvider
+    let viewProvider: ComponentViewProvider
     let setupViewProvider: ComponentSetupViewProvider
     @State private var inSetupComponent: Component?
     
     var body: some View {
         VStack(spacing: 8.0) {
             
-            activeComponent.accept(actionViewViewProvider)
+            activeComponent.accept(viewProvider)
             
             ComponentView(component: rootComponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                 .padding(3.0)
@@ -80,7 +80,7 @@ fileprivate struct ComponentView: View {
                 .scaleEffect(x: textHorizontalScale)
                 .visible(isChildOfActive)
                 .onTapGesture {
-                    withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
+                    withAnimation(ComponentTreeNavigationView.defaultNavigationAnimation) {
                         if component.isSetup {
                             activeComponent = component
                         } else {
@@ -108,7 +108,7 @@ fileprivate struct ComponentView: View {
         .visible(isDisclosed || isChildOfActive)
         .onChange(of: component.isSetup, perform: { newValue in
             if isActive && !newValue {
-                withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
+                withAnimation(ComponentTreeNavigationView.defaultNavigationAnimation) {
                     activeComponent = activeComponent.parent!
                 }
             }
@@ -170,7 +170,7 @@ fileprivate struct ComponentView: View {
                         .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: index == component.selectedPropertyIndex)
                 }
                 .onTapGesture {
-                    withAnimation(PropertyTreeNavigationVIew.defaultNavigationAnimation) {
+                    withAnimation(ComponentTreeNavigationView.defaultNavigationAnimation) {
                         component.selectedPropertyIndex = index
                     }
                 }
@@ -233,7 +233,7 @@ struct PropertyTreeNavigationVIew_Previews: PreviewProvider {
         @StateObject private var model = ContentViewModel()
         
         var body: some View {
-            PropertyTreeNavigationVIew(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, actionViewViewProvider: EmptyComponentActionViewProvider(), setupViewProvider: EmptyComponentSetupViewProvider())
+            ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: EmptyComponentViewProvider(), setupViewProvider: EmptyComponentSetupViewProvider())
                 .padding()
         }
         

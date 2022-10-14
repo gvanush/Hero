@@ -82,7 +82,7 @@ fileprivate struct SelectedObjectControlsView: View {
                 .transition(.identity)
                 .id(model.axis.rawValue)
                 .id(model.object)
-            Selector(selected: $model.axis)
+            PropertySelector(selected: $model.axis)
         }
     }
     

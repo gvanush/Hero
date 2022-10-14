@@ -33,7 +33,7 @@ fileprivate struct SelectedObjectControlsView: View {
     @ObservedObject var model: AnimatePositionToolSelectedObjectViewModel
     
     var body: some View {
-        PropertyTreeNavigationVIew(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, actionViewViewProvider: MeshObjectComponentActionViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
+        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: MeshObjectComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
     }
     
 }
