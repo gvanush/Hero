@@ -7,8 +7,6 @@
 
 #include "AnimatorManager.hpp"
 
-const SPTAnimatorId kSPTAnimatorInvalidId = UINT32_MAX;
-
 
 bool SPTAnimatorEqual(SPTAnimator lhs, SPTAnimator rhs) {
     return lhs.source.type == rhs.source.type && SPTAnimatorSourceEqual(lhs.source, rhs.source) && strcmp(lhs._name, rhs._name) == 0;
@@ -18,8 +16,8 @@ SPTAnimatorId SPTAnimatorMake(SPTAnimator object) {
     return spt::AnimatorManager::active().makeAnimator(object);
 }
 
-void SPTAnimatorUpdate(SPTAnimator updated) {
-    spt::AnimatorManager::active().updateAnimator(updated);
+void SPTAnimatorUpdate(SPTAnimatorId id, SPTAnimator updated) {
+    spt::AnimatorManager::active().updateAnimator(id, updated);
 }
 
 void SPTAnimatorDestroy(SPTAnimatorId id) {
@@ -30,35 +28,39 @@ SPTAnimator SPTAnimatorGet(SPTAnimatorId id) {
     return spt::AnimatorManager::active().getAnimator(id);
 }
 
-SPTAnimatorsSlice SPTAnimatorGetAll() {
-    const auto& all = spt::AnimatorManager::active().animators();
-    return SPTAnimatorsSlice{ all.data(), 0, all.size() };
+SPTAnimatorIdSlice SPTAnimatorGetAllIds() {
+    const auto& span = spt::AnimatorManager::active().animatorIds();
+    return SPTAnimatorIdSlice{ span.data(), 0, span.size() };
 }
 
-void SPTAnimatorAddWillChangeListener(SPTAnimatorId id, SPTListener listener, SPTAnimatorWillChangeCallback callback) {
-    spt::AnimatorManager::active().addWillChangeListener(id, listener, callback);
+SPTObserverToken SPTAnimatorAddWillChangeObserver(SPTAnimatorId id, SPTAnimatorWillChangeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::AnimatorManager::active().addAnimatorWillChangeObserver(id, observer, userInfo);
 }
 
-void SPTAnimatorRemoveWillChangeListenerCallback(SPTAnimatorId id, SPTListener listener, SPTAnimatorWillChangeCallback callback) {
-    spt::AnimatorManager::active().removeWillChangeListenerCallback(id, listener, callback);
+void SPTAnimatorRemoveWillChangeObserver(SPTAnimatorId id, SPTObserverToken token) {
+    spt::AnimatorManager::active().removeAnimatorWillChangeObserver(id, token);
 }
 
-void SPTAnimatorRemoveWillChangeListener(SPTAnimatorId id, SPTListener listener) {
-    spt::AnimatorManager::active().removeWillChangeListener(id, listener);
+size_t SPTAnimatorGetCount() {
+    return spt::AnimatorManager::active().animatorsCount();
 }
 
-void SPTAnimatorAddCountWillChangeListener(SPTListener listener, SPTCountWillChangeCallback callback) {
-    spt::AnimatorManager::active().addCountWillChangeListener(listener, callback);
+SPTObserverToken SPTAnimatorAddCountWillChangeObserver(SPTAnimatorCountWillChangeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::AnimatorManager::active().addCountWillChangeObserver(observer, userInfo);
 }
 
-void SPTAnimatorRemoveCountWillChangeListenerCallback(SPTListener listener, SPTCountWillChangeCallback callback) {
-    spt::AnimatorManager::active().removeCountWillChangeListenerCallback(listener, callback);
+void SPTAnimatorRemoveCountWillChangeObserver(SPTObserverToken token) {
+    spt::AnimatorManager::active().removeCountWillChangeObserver(token);
 }
 
-void SPTAnimatorRemoveCountWillChangeListener(SPTListener listener) {
-    spt::AnimatorManager::active().removeCountWillChangeListener(listener);
+float SPTAnimatorEvaluateValue(SPTAnimatorId id, SPTAnimatorEvaluationContext context) {
+    return spt::AnimatorManager::active().evaluate(id, context);
 }
 
-float SPTAnimatorEvaluateValue(SPTAnimator animator, SPTAnimatorEvaluationContext context) {
-    return spt::AnimatorManager::evaluate(animator, context);
+void SPTAnimatorReset(SPTAnimatorId id) {
+    spt::AnimatorManager::active().resetAnimator(id);
+}
+
+void SPTAnimatorResetAll() {
+    spt::AnimatorManager::active().resetAllAnimators();
 }

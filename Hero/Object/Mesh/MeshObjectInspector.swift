@@ -55,7 +55,7 @@ class MeshObjectInspectorModel: ObservableObject {
     }
     
     func getAnimator(id: SPTAnimatorId) -> SPTAnimator {
-        SPTAnimatorGet(id)
+        SPTAnimator.get(id: id)
     }
 }
 

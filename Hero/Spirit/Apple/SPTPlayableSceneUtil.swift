@@ -12,17 +12,17 @@ class SPTPlayableSceneProxy: Identifiable {
     
     let handle: SPTHandle
     
-    init(scene: SPTSceneProxy, viewCameraEntity: SPTEntity, animators: [SPTAnimatorId]? = nil) {
+    init(scene: SPTSceneProxy, viewCameraEntity: SPTEntity, animatorIds: [SPTAnimatorId]? = nil) {
         var descriptor = SPTPlayableSceneDescriptor()
         descriptor.viewCameraEntity = viewCameraEntity
-        if let animators = animators {
-            handle = animators.withUnsafeBufferPointer({ bufferPtr in
-                descriptor.animators = bufferPtr.baseAddress!
+        if let animatorIds = animatorIds {
+            handle = animatorIds.withUnsafeBufferPointer({ bufferPtr in
+                descriptor.animatorIds = bufferPtr.baseAddress!
                 descriptor.animatorsSize = UInt32(bufferPtr.count)
                 return SPTPlayableSceneMake(scene.handle, descriptor)
             })
         } else {
-            descriptor.animators = nil
+            descriptor.animatorIds = nil
             descriptor.animatorsSize = 0
             handle = SPTPlayableSceneMake(scene.handle, descriptor)
         }

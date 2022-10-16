@@ -72,16 +72,16 @@ const SPTOrientation* _Nullable SPTOrientationTryGet(SPTObject object);
 
 bool SPTOrientationExists(SPTObject object);
 
-typedef void (* _Nonnull SPTOrientationWillChangeObserver) (SPTOrientation, SPTComponentObserverUserInfo);
-SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTComponentObserverUserInfo userInfo);
+typedef void (* _Nonnull SPTOrientationWillChangeObserver) (SPTOrientation, SPTObserverUserInfo);
+SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTObserverUserInfo userInfo);
 void SPTOrientationRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
 
-typedef void (* _Nonnull SPTOrientationWillEmergeObserver) (SPTOrientation, SPTComponentObserverUserInfo);
-SPTObserverToken SPTOrientationAddWillEmergeObserver(SPTObject object, SPTOrientationWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo);
+typedef void (* _Nonnull SPTOrientationWillEmergeObserver) (SPTOrientation, SPTObserverUserInfo);
+SPTObserverToken SPTOrientationAddWillEmergeObserver(SPTObject object, SPTOrientationWillEmergeObserver observer, SPTObserverUserInfo userInfo);
 void SPTOrientationRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
 
-typedef void (* _Nonnull SPTOrientationWillPerishObserver) (SPTComponentObserverUserInfo);
-SPTObserverToken SPTOrientationAddWillPerishObserver(SPTObject object, SPTOrientationWillPerishObserver observer, SPTComponentObserverUserInfo userInfo);
+typedef void (* _Nonnull SPTOrientationWillPerishObserver) (SPTObserverUserInfo);
+SPTObserverToken SPTOrientationAddWillPerishObserver(SPTObject object, SPTOrientationWillPerishObserver observer, SPTObserverUserInfo userInfo);
 void SPTOrientationRemoveWillPerishObserver(SPTObject object, SPTObserverToken token);
 
 SPT_EXTERN_C_END

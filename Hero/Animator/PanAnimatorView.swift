@@ -12,8 +12,12 @@ class PanAnimatorViewModel: ObservableObject {
     @SPTObservedAnimator var animator: SPTAnimator
     
     init(animatorId: SPTAnimatorId) {
-        _animator = SPTObservedAnimator(animatorId: animatorId)
+        _animator = SPTObservedAnimator(id: animatorId)
         _animator.publisher = self.objectWillChange
+    }
+    
+    var animatorId: SPTAnimatorId {
+        _animator.id
     }
     
     var name: String {
@@ -30,7 +34,7 @@ class PanAnimatorViewModel: ObservableObject {
     }
     
     func destroy() {
-        SPTAnimatorDestroy(animator.id)
+        SPTAnimator.destroy(id: _animator.id)
     }
 }
 
@@ -98,10 +102,10 @@ struct PanAnimatorView: View {
             }
         }
         .sheet(isPresented: $showsSetBoundsView) {
-            PanAnimatorSetBoundsView(model: .init(animatorId: model.animator.id))
+            PanAnimatorSetBoundsView(model: .init(animatorId: model.animatorId))
         }
         .fullScreenCover(isPresented: $showsViewSignalView) {
-            PanAnimatorViewGraphView(animatorId: model.animator.id)
+            PanAnimatorViewGraphView(model: .init(animatorId: model.animatorId))
         }
     }
 }
@@ -109,7 +113,7 @@ struct PanAnimatorView: View {
 struct PanAnimatorView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            PanAnimatorView(model: PanAnimatorViewModel(animatorId: SPTAnimatorMake(SPTAnimator(name: "Pan.1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))))
+            PanAnimatorView(model: PanAnimatorViewModel(animatorId: SPTAnimator.make(SPTAnimator(name: "Pan.1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))))
                 .navigationBarTitleDisplayMode(.inline)
         }
         

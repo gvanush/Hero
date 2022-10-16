@@ -10,22 +10,18 @@ import SwiftUI
 class AnimatorsViewModel: ObservableObject {
     
     @Published var disclosedAnimatorIds = [SPTAnimatorId]()
+    var countWillChangeSubscription: SPTAnySubscription?
     
     init() {
-        
-        SPTAnimatorAddCountWillChangeListener(Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
-            let me = Unmanaged<AnimatorsViewModel>.fromOpaque(listener).takeUnretainedValue()
-            me.disclosedAnimatorIds.removeAll()
-            me.objectWillChange.send()
-        })
+        countWillChangeSubscription = SPTAnimator.onCountWillChangeSink { [weak self] _ in
+            self?.disclosedAnimatorIds.removeAll()
+            self?.objectWillChange.send()
+        }
     }
     
-    deinit {
-        SPTAnimatorRemoveCountWillChangeListener(Unmanaged.passUnretained(self).toOpaque())
-    }
  
     func makeAnimator(_ animator: SPTAnimator) -> SPTAnimatorId {
-        SPTAnimatorMake(animator)
+        SPTAnimator.make(animator)
     }
     
     func discloseAnimator(id: SPTAnimatorId) {
@@ -33,7 +29,7 @@ class AnimatorsViewModel: ObservableObject {
     }
     
     func destroyAnimator(id: SPTAnimatorId) {
-        SPTAnimatorDestroy(id)
+        SPTAnimator.destroy(id: id)
     }
 }
 
@@ -44,8 +40,8 @@ struct AnimatorsView: View {
     
     var body: some View {
         NavigationStack(path: $model.disclosedAnimatorIds) {
-            List(SPTAnimatorGetAll()) { animator in
-                NavigationLink(animator.name.capitalizingFirstLetter(), value: animator.id)
+            List(SPTAnimator.getAllIds()) { animatorId in
+                NavigationLink(SPTAnimator.get(id: animatorId).name.capitalizingFirstLetter(), value: animatorId)
             }
             .navigationDestination(for: SPTAnimatorId.self, destination: { animatorId in
                 PanAnimatorView(model: PanAnimatorViewModel(animatorId: animatorId))
@@ -64,7 +60,7 @@ struct AnimatorsView: View {
                             
                         }
                         Button("Pan") {
-                            let animatorId = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimatorGetAll().count)", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+                            let animatorId = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimator.getCount())", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
                             model.discloseAnimator(id: animatorId)
                         }
                     } label: {

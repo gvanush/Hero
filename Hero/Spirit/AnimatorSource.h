@@ -15,7 +15,7 @@ SPT_EXTERN_C_BEGIN
 
 typedef enum {
     SPTAnimatorSourceTypePan,
-    SPTAnimatorSourceTypeFace,
+    SPTAnimatorSourceTypeRandom,
 } __attribute__((enum_extensibility(open))) SPTAnimatorSourceType;
 
 typedef enum {
@@ -30,13 +30,19 @@ typedef struct {
 } SPTAnimatorSourcePan;
 
 typedef struct {
+    uint32_t seed;
+} SPTAnimatorSourceRandom;
+
+typedef struct {
     SPTAnimatorSourceType type;
     union {
         SPTAnimatorSourcePan pan;
+        SPTAnimatorSourceRandom random;
     };
 } SPTAnimatorSource;
 
 SPTAnimatorSource SPTAnimatorSourceMakePan(SPTPanAnimatorSourceAxis axis, simd_float2 bottomLeft, simd_float2 topRight);
+SPTAnimatorSource SPTAnimatorSourceMakeRandom(uint32_t seed);
 
 bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs);
 

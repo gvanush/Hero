@@ -54,16 +54,16 @@ bool SPTPositionExists(SPTObject object);
 
 simd_float3 SPTPositionConvertSphericalToXYZ(SPTSphericalPosition sphericalPosition);
 
-typedef void (* _Nonnull SPTPositionWillChangeObserver) (SPTPosition, SPTComponentObserverUserInfo);
-SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTComponentObserverUserInfo userInfo);
+typedef void (* _Nonnull SPTPositionWillChangeObserver) (SPTPosition, SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTObserverUserInfo userInfo);
 void SPTPositionRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
 
-typedef void (* _Nonnull SPTPositionWillEmergeObserver) (SPTPosition, SPTComponentObserverUserInfo);
-SPTObserverToken SPTPositionAddWillEmergeObserver(SPTObject object, SPTPositionWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo);
+typedef void (* _Nonnull SPTPositionWillEmergeObserver) (SPTPosition, SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddWillEmergeObserver(SPTObject object, SPTPositionWillEmergeObserver observer, SPTObserverUserInfo userInfo);
 void SPTPositionRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
 
-typedef void (* _Nonnull SPTPositionWillPerishObserver) (SPTComponentObserverUserInfo);
-SPTObserverToken SPTPositionAddWillPerishObserver(SPTObject object, SPTPositionWillPerishObserver observer, SPTComponentObserverUserInfo userInfo);
+typedef void (* _Nonnull SPTPositionWillPerishObserver) (SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddWillPerishObserver(SPTObject object, SPTPositionWillPerishObserver observer, SPTObserverUserInfo userInfo);
 void SPTPositionRemoveWillPerishObserver(SPTObject object, SPTObserverToken token);
 
 SPT_EXTERN_C_END

@@ -11,6 +11,10 @@ SPTAnimatorSource SPTAnimatorSourceMakePan(SPTPanAnimatorSourceAxis axis, simd_f
     return SPTAnimatorSource {SPTAnimatorSourceTypePan, {.pan = SPTAnimatorSourcePan {bottomLeft, topRight, axis}}};
 }
 
+SPTAnimatorSource SPTAnimatorSourceMakeRandom(uint32_t seed) {
+    return SPTAnimatorSource {SPTAnimatorSourceTypeRandom, {.random = SPTAnimatorSourceRandom {seed}}};
+}
+
 bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs) {
     if(lhs.type != rhs.type) {
         return false;
@@ -20,9 +24,8 @@ bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs) {
         case SPTAnimatorSourceTypePan: {
             return lhs.pan.axis == rhs.pan.axis && simd_equal(lhs.pan.bottomLeft, rhs.pan.bottomLeft) && simd_equal(lhs.pan.topRight, rhs.pan.topRight);
         }
-        case SPTAnimatorSourceTypeFace: {
-            return false;
-            break;
+        case SPTAnimatorSourceTypeRandom: {
+            return lhs.random.seed == rhs.random.seed;
         }
     }
 }

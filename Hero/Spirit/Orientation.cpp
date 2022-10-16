@@ -192,7 +192,7 @@ bool SPTOrientationExists(SPTObject object) {
     return registry.all_of<SPTOrientation>(object.entity);
 }
 
-SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillChangeObserver<SPTOrientation>(object, observer, userInfo);
 }
 
@@ -200,7 +200,7 @@ void SPTOrientationRemoveWillChangeObserver(SPTObject object, SPTObserverToken t
     spt::removeComponentWillChangeObserver<SPTOrientation>(object, token);
 }
 
-SPTObserverToken SPTOrientationAddWillEmergeObserver(SPTObject object, SPTOrientationWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTOrientationAddWillEmergeObserver(SPTObject object, SPTOrientationWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillEmergeObserver<SPTOrientation>(object, observer, userInfo);
 }
 
@@ -208,7 +208,7 @@ void SPTOrientationRemoveWillEmergeObserver(SPTObject object, SPTObserverToken t
     spt::removeComponentWillEmergeObserver<SPTOrientation>(object, token);
 }
 
-SPTObserverToken SPTOrientationAddWillPerishObserver(SPTObject object, SPTOrientationWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTOrientationAddWillPerishObserver(SPTObject object, SPTOrientationWillPerishObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillPerishObserver<SPTOrientation>(object, observer, userInfo);
 }
 

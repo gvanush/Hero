@@ -14,8 +14,11 @@
 
 namespace spt {
 
+constexpr size_t kMaxObserverCount = 8;
+
 using Registry = entt::basic_registry<SPTEntity>;
-using EntityObserver = entt::basic_observer<SPTEntity>;
+
+using AnimatorRegistry = entt::basic_registry<SPTAnimatorId>;
 
 template <typename EIt>
 bool checkValid(const Registry& registry, EIt first, EIt last) {

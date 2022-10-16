@@ -75,7 +75,7 @@ bool SPTPositionExists(SPTObject object) {
     return spt::Scene::getRegistry(object).all_of<SPTPosition>(object.entity);
 }
 
-SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillChangeObserver<SPTPosition>(object, observer, userInfo);
 }
 
@@ -83,7 +83,7 @@ void SPTPositionRemoveWillChangeObserver(SPTObject object, SPTObserverToken toke
     spt::removeComponentWillChangeObserver<SPTPosition>(object, token);
 }
 
-SPTObserverToken SPTPositionAddWillEmergeObserver(SPTObject object, SPTPositionWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTPositionAddWillEmergeObserver(SPTObject object, SPTPositionWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillEmergeObserver<SPTPosition>(object, observer, userInfo);
 }
 
@@ -91,7 +91,7 @@ void SPTPositionRemoveWillEmergeObserver(SPTObject object, SPTObserverToken toke
     spt::removeComponentWillEmergeObserver<SPTPosition>(object, token);
 }
 
-SPTObserverToken SPTPositionAddWillPerishObserver(SPTObject object, SPTPositionWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTPositionAddWillPerishObserver(SPTObject object, SPTPositionWillPerishObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillPerishObserver<SPTPosition>(object, observer, userInfo);
 }
 

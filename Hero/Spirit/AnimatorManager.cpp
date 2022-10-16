@@ -6,137 +6,117 @@
 //
 
 #include "AnimatorManager.hpp"
+#include "ComponentObserverUtil.hpp"
 
 #include <algorithm>
+#include <random>
+
 
 namespace spt {
+
+namespace {
+
+std::uniform_real_distribution<float> uniformDistribution;
+
+struct RandomAnimatorState {
+    
+    explicit RandomAnimatorState(uint32_t seed)
+    : randomEngine{seed} {
+        
+    }
+    
+    std::minstd_rand randomEngine;
+};
+
+}
 
 AnimatorManager& AnimatorManager::active() {
     static AnimatorManager instance;
     return instance;
 }
 
-
-
 SPTAnimatorId AnimatorManager::makeAnimator(const SPTAnimator& animator) {
-    notifyCountListeners(_animators.size() + 1);
-    return _animators.emplace_back(animator).id = AnimatorManager::nextId++;
-}
-
-void AnimatorManager::updateAnimator(const SPTAnimator& updated) {
-    assert(validateAnimator(updated));
+    assert(validateAnimator(animator));
     
-    auto it = std::find_if(_animators.begin(), _animators.end(), [&updated] (const auto& animator) {
-        return animator.id == updated.id;
-    });
-    if(it == _animators.end()) {
-        assert(false);
-        return;
+    notifyCountListeners(animatorsCount() + 1);
+    
+    auto id = _registry.create();
+    _registry.emplace<SPTAnimator>(id, animator);
+    
+    switch (animator.source.type) {
+        case SPTAnimatorSourceTypePan:
+            break;
+        case SPTAnimatorSourceTypeRandom: {
+            _registry.emplace<RandomAnimatorState>(id, animator.source.random.seed);
+            break;
+        }
     }
     
-    notifyListeners(updated);
+    return id;
+}
+
+void AnimatorManager::updateAnimator(SPTAnimatorId id, const SPTAnimator& updated) {
+    assert(validateAnimator(updated));
     
-    *it = updated;
+    spt::notifyComponentWillChangeObservers(_registry, id, updated);
+    
+    auto& animator = _registry.get<SPTAnimator>(id);
+    
+    switch (animator.source.type) {
+        case SPTAnimatorSourceTypePan:
+            break;
+        case SPTAnimatorSourceTypeRandom: {
+            _registry.get<RandomAnimatorState>(id).randomEngine.seed(updated.source.random.seed);
+            break;
+        }
+    }
+    
+    animator = updated;
 }
 
 void AnimatorManager::destroyAnimator(SPTAnimatorId id) {
-    // NOTE: Swap and pop is also a possibility for efficient removal
-    auto it = std::find_if(_animators.begin(), _animators.end(), [id] (const auto& animator) {
-        return animator.id == id;
-    });
-    if(it == _animators.end()) {
-        return;
-    }
-    notifyCountListeners(_animators.size() - 1);
-    _animators.erase(it);
+    notifyCountListeners(animatorsCount() - 1);
+    _registry.destroy(id);
 }
 
 const SPTAnimator& AnimatorManager::getAnimator(SPTAnimatorId id) const {
-    auto it = std::find_if(_animators.begin(), _animators.end(), [id] (const auto& animator) {
-        return animator.id == id;
+    return _registry.get<SPTAnimator>(id);
+}
+
+std::span<const SPTAnimatorId> AnimatorManager::animatorIds() const {
+    const auto& view = _registry.view<SPTAnimator>();
+    return {view.data(), view.size()};
+}
+
+SPTObserverToken AnimatorManager::addAnimatorWillChangeObserver(SPTAnimatorId id, SPTAnimatorWillChangeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentWillChangeObserver<SPTAnimator>(observer, userInfo, _registry, id);
+}
+
+void AnimatorManager::removeAnimatorWillChangeObserver(SPTAnimatorId id, SPTObserverToken token) {
+    spt::removeComponentWillChangeObserver<SPTAnimator>(token, _registry, id);
+}
+
+SPTObserverToken AnimatorManager::addCountWillChangeObserver(SPTAnimatorCountWillChangeObserver observer, SPTObserverUserInfo userInfo) {
+    
+    auto it = std::find_if(_countObserverItems.begin(), _countObserverItems.end(), [](const auto& item) {
+        return item.observer == nullptr;
     });
-    if(it == _animators.end()) {
-        assert(false);
-    }
-    return *it;
-}
-
-void AnimatorManager::addWillChangeListener(SPTAnimatorId id, SPTListener listener, SPTAnimatorWillChangeCallback callback) {
-    _listeners[id].emplace_back(WillChangeListenerItem<SPTAnimator> {listener, callback});
-}
-
-void AnimatorManager::removeWillChangeListenerCallback(SPTAnimatorId id, SPTListener listener, SPTAnimatorWillChangeCallback callback) {
-    auto it = _listeners.find(id);
-    if(it == _listeners.end()) {
-        return;
-    }
+    assert(it != _countObserverItems.end()); // No free slot to register observer
     
-    auto& animListeners = it->second;
-    auto lit = std::find_if(animListeners.begin(), animListeners.end(), [listener, callback] (const auto& item) {
-        return item.listener == listener && item.callback == callback;
-    });
-    
-    if(lit != animListeners.end()) {
-        animListeners.erase(lit);
-    }
-    
-    if(animListeners.empty()) {
-        _listeners.erase(it);
-    }
-    
+    it->observer = observer;
+    it->userInfo = userInfo;
+    return static_cast<SPTObserverToken>(it - _countObserverItems.begin());
 }
 
-void AnimatorManager::removeWillChangeListener(SPTAnimatorId id, SPTListener listener) {
-    auto it = _listeners.find(id);
-    if(it == _listeners.end()) {
-        return;
-    }
-    
-    auto& animListeners = it->second;
-    auto rit = std::remove_if(animListeners.begin(), animListeners.end(), [listener] (const auto& item) {
-        return item.listener == listener;
-    });
-    animListeners.erase(rit, animListeners.end());
-    
-    if(animListeners.empty()) {
-        _listeners.erase(it);
-    }
+void AnimatorManager::removeCountWillChangeObserver(SPTObserverToken token) {
+    _countObserverItems[token].observer = nullptr;
 }
 
-void AnimatorManager::addCountWillChangeListener(SPTListener listener, SPTCountWillChangeCallback callback) {
-    _countListeners.emplace_back(WillChangeListenerItem<size_t> {listener, callback});
-}
-
-void AnimatorManager::removeCountWillChangeListenerCallback(SPTListener listener, SPTCountWillChangeCallback callback) {
-    auto it = std::find_if(_countListeners.begin(), _countListeners.end(), [listener, callback] (const auto& item) {
-        return item.listener == listener && item.callback == callback;
-    });
-    if(it == _countListeners.end()) {
-        return;
-    }
-    _countListeners.erase(it);
-}
-
-void AnimatorManager::removeCountWillChangeListener(SPTListener listener) {
-    _countListeners.erase(std::remove_if(_countListeners.begin(), _countListeners.end(), [listener] (const auto& item) {
-        return item.listener == listener;
-    }), _countListeners.end());
-}
-
-void AnimatorManager::notifyListeners(const SPTAnimator& newValue) {
-    auto it = _listeners.find(newValue.id);
-    if(it == _listeners.end()) {
-        return;
-    }
-    
-    for(const auto& item: it->second) {
-        item.callback(item.listener, newValue);
-    }
-}
-
-void AnimatorManager::notifyCountListeners(size_t newValue) {
-    for(const auto& item: _countListeners) {
-        item.callback(item.listener, newValue);
+void AnimatorManager::notifyCountListeners(size_t newCount) {
+    for(const auto& item: _countObserverItems) {
+        if(item.observer) {
+            item.observer(newCount, item.userInfo);
+        }
     }
 }
 
@@ -145,32 +125,60 @@ bool AnimatorManager::validateAnimator(const SPTAnimator& animator) {
         case SPTAnimatorSourceTypePan: {
             return animator.source.pan.bottomLeft.x >= 0.f && animator.source.pan.bottomLeft.x <= animator.source.pan.topRight.x && animator.source.pan.topRight.x <= 1.f && animator.source.pan.bottomLeft.y >= 0.f && animator.source.pan.bottomLeft.y <= animator.source.pan.topRight.y && animator.source.pan.topRight.y <= 1.f;
         }
-        case SPTAnimatorSourceTypeFace: {
-            return false;
+        case SPTAnimatorSourceTypeRandom: {
+            return true;
         }
     }
 }
 
-float AnimatorManager::evaluate(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
+float AnimatorManager::evaluate(SPTAnimatorId id, const SPTAnimatorEvaluationContext& context) {
+    
+    const auto& animator = _registry.get<SPTAnimator>(id);
+    
     switch (animator.source.type) {
         case SPTAnimatorSourceTypePan: {
-            switch (animator.source.pan.axis) {
-                case SPTPanAnimatorSourceAxisHorizontal: {
-                    const auto v = simd_clamp(context.panLocation.x, animator.source.pan.bottomLeft.x, animator.source.pan.topRight.x);
-                    return (v - animator.source.pan.bottomLeft.x) / (animator.source.pan.topRight.x - animator.source.pan.bottomLeft.x);
-                }
-                case SPTPanAnimatorSourceAxisVertical: {
-                    const auto v = simd_clamp(context.panLocation.y, animator.source.pan.bottomLeft.y, animator.source.pan.topRight.y);
-                    return (v - animator.source.pan.bottomLeft.y) / (animator.source.pan.topRight.y - animator.source.pan.bottomLeft.y);
-                }
-            }
+            return evaluatePan(animator, context);
         }
-        case SPTAnimatorSourceTypeFace:
-            // TODO
-            return 0.f;
+        case SPTAnimatorSourceTypeRandom:
+            return evaluateRandom(id);
     }
 }
 
-SPTAnimatorId AnimatorManager::nextId = 0;
+float AnimatorManager::evaluatePan(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
+    switch (animator.source.pan.axis) {
+        case SPTPanAnimatorSourceAxisHorizontal: {
+            const auto v = simd_clamp(context.panLocation.x, animator.source.pan.bottomLeft.x, animator.source.pan.topRight.x);
+            return (v - animator.source.pan.bottomLeft.x) / (animator.source.pan.topRight.x - animator.source.pan.bottomLeft.x);
+        }
+        case SPTPanAnimatorSourceAxisVertical: {
+            const auto v = simd_clamp(context.panLocation.y, animator.source.pan.bottomLeft.y, animator.source.pan.topRight.y);
+            return (v - animator.source.pan.bottomLeft.y) / (animator.source.pan.topRight.y - animator.source.pan.bottomLeft.y);
+        }
+    }
+}
+
+float AnimatorManager::evaluateRandom(SPTAnimatorId id) {
+    return uniformDistribution(_registry.get<RandomAnimatorState>(id).randomEngine);
+}
+
+void AnimatorManager::resetAnimator(SPTAnimatorId id) {
+    const auto& animator = _registry.get<SPTAnimator>(id);
+    switch (animator.source.type) {
+        case SPTAnimatorSourceTypePan: {
+            break;
+        }
+        case SPTAnimatorSourceTypeRandom: {
+            _registry.get<RandomAnimatorState>(id).randomEngine.seed(animator.source.random.seed);
+            break;
+        }
+    }
+}
+
+void AnimatorManager::resetAllAnimators() {
+    _registry.view<SPTAnimator, RandomAnimatorState>().each([](auto entity, const auto& animator, auto& state) {
+        assert(animator.source.type == SPTAnimatorSourceTypeRandom);
+        state.randomEngine.seed(animator.source.random.seed);
+    });
+}
 
 }

@@ -12,17 +12,10 @@
 
 #include <vector>
 #include <unordered_map>
+#include <span>
+
 
 namespace spt {
-
-template <typename OT>
-using WillChangeCallback = void (*)(SPTListener, OT);
-
-template <typename OT>
-struct WillChangeListenerItem {
-    SPTListener listener;
-    WillChangeCallback<OT> callback;
-};
 
 class AnimatorManager {
 public:
@@ -31,27 +24,32 @@ public:
     
     SPTAnimatorId makeAnimator(const SPTAnimator& animator);
     
-    void updateAnimator(const SPTAnimator& updated);
+    void updateAnimator(SPTAnimatorId animatorId, const SPTAnimator& updated);
     
     void destroyAnimator(SPTAnimatorId id);
     
     const SPTAnimator& getAnimator(SPTAnimatorId id) const;
     
-    const std::vector<SPTAnimator>& animators() const { return _animators; };
+    std::span<const SPTAnimatorId> animatorIds() const;
     
-    void addWillChangeListener(SPTAnimatorId id, SPTListener listener, SPTAnimatorWillChangeCallback callback);
-    void removeWillChangeListenerCallback(SPTAnimatorId id, SPTListener listener, SPTAnimatorWillChangeCallback callback);
-    void removeWillChangeListener(SPTAnimatorId id, SPTListener listener);
+    size_t animatorsCount() const { return _registry.view<SPTAnimator>().size(); }
     
-    void addCountWillChangeListener(SPTListener listener, SPTCountWillChangeCallback callback);
-    void removeCountWillChangeListenerCallback(SPTListener listener, SPTCountWillChangeCallback callback);
-    void removeCountWillChangeListener(SPTListener listener);
+    SPTObserverToken addAnimatorWillChangeObserver(SPTAnimatorId id, SPTAnimatorWillChangeObserver observer, SPTObserverUserInfo userInfo);
+    void removeAnimatorWillChangeObserver(SPTAnimatorId id, SPTObserverToken token);
     
-    static float evaluate(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
+    SPTObserverToken addCountWillChangeObserver(SPTAnimatorCountWillChangeObserver observer, SPTObserverUserInfo userInfo);
+    void removeCountWillChangeObserver(SPTObserverToken token);
+    
+    float evaluate(SPTAnimatorId id, const SPTAnimatorEvaluationContext& context);
+    
+    void resetAnimator(SPTAnimatorId id);
+    void resetAllAnimators();
     
 private:
     
-    void notifyListeners(const SPTAnimator& newValue);
+    float evaluatePan(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
+    float evaluateRandom(SPTAnimatorId id);
+    
     void notifyCountListeners(size_t newValue);
     
     bool validateAnimator(const SPTAnimator& updated);
@@ -62,11 +60,15 @@ private:
     AnimatorManager& operator=(const AnimatorManager&) = delete;
     AnimatorManager& operator=(AnimatorManager&&) = delete;
     
-    static SPTAnimatorId nextId;
+    AnimatorRegistry _registry;
     
-    std::vector<SPTAnimator> _animators;
-    std::unordered_map<SPTAnimatorId, std::vector<WillChangeListenerItem<SPTAnimator>>> _listeners;
-    std::vector<WillChangeListenerItem<size_t>> _countListeners;
+    template <typename O, typename U>
+    struct ObserverItem {
+        O observer;
+        U userInfo;
+    };
+    
+    std::array<ObserverItem<SPTAnimatorCountWillChangeObserver, SPTObserverUserInfo>, kMaxObserverCount> _countObserverItems {};
 };
 
 };

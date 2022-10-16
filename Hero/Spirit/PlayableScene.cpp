@@ -66,21 +66,17 @@ PlayableScene::PlayableScene(const Scene& scene, const SPTPlayableSceneDescripto
     std::unordered_map<SPTAnimatorId, size_t> animatorIdToValueIndex;
     const auto& animatorManager = spt::AnimatorManager::active();
     
-    if(const auto activeAnimators = descriptor.animators) {
-        _animators.reserve(descriptor.animatorsSize);
-        for(size_t i = 0; i < descriptor.animatorsSize; ++i) {
-            const auto& animator = animatorManager.getAnimator(activeAnimators[i]);
-            _animators.emplace_back(animator);
-            animatorIdToValueIndex[animator.id] = i + 1;
-        }
-        _animatorValues.assign(descriptor.animatorsSize + 1, 0.f);
+    if(descriptor.animatorsSize > 0) {
+        _animatorIds = std::vector<SPTAnimatorId>{descriptor.animatorIds, descriptor.animatorIds + descriptor.animatorsSize};
     } else {
-        _animators = animatorManager.animators();
-        for(size_t i = 0; i < _animators.size(); ++i) {
-            animatorIdToValueIndex[_animators[i].id] = i + 1;
-        }
-        _animatorValues.assign(_animators.size() + 1, 0.f);
+        const auto& span = animatorManager.animatorIds();
+        _animatorIds = std::vector<SPTAnimatorId>{span.begin(), span.end()};
     }
+    
+    for(size_t i = 0; i < _animatorIds.size(); ++i) {
+        animatorIdToValueIndex[_animatorIds[i]] = i + 1;
+    }
+    _animatorValues.assign(_animatorIds.size() + 1, 0.f);
     
     // Prepare transformation animators
     std::unordered_map<SPTEntity, spt::Transformation::AnimatorRecord> transformAnimatedEntityRecord;
@@ -123,8 +119,8 @@ PlayableScene::PlayableScene(const Scene& scene, const SPTPlayableSceneDescripto
 
 void PlayableScene::evaluateAnimators(const SPTAnimatorEvaluationContext& context) {
     size_t i = 1;
-    for(auto& animator: _animators) {
-        _animatorValues[i++] = spt::AnimatorManager::evaluate(animator, context);
+    for(auto& animatorId: _animatorIds) {
+        _animatorValues[i++] = spt::AnimatorManager::active().evaluate(animatorId, context);
     }
 }
 

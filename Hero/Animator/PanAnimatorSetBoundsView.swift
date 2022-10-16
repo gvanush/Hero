@@ -10,28 +10,43 @@ import SwiftUI
 
 class PanAnimatorSetBoundsViewModel: ObservableObject {
     
-    @Published private(set) var animator: SPTAnimator
+    @SPTObservedAnimator private(set) var animator: SPTAnimator
+    private let initialAnimator: SPTAnimator!
     
     init(animatorId: SPTAnimatorId) {
-        animator = SPTAnimatorGet(animatorId)
+        _animator = .init(id: animatorId)
+        self.initialAnimator = SPTAnimator.get(id: animatorId)
         assert(animator.source.type == .pan)
-        
-        SPTAnimatorAddWillChangeListener(animatorId, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
-            let me = Unmanaged<PanAnimatorSetBoundsViewModel>.fromOpaque(listener).takeUnretainedValue()
-            me.animator = newValue
-        })
     }
     
-    deinit {
-        SPTAnimatorRemoveWillChangeListener(animator.id, Unmanaged.passUnretained(self).toOpaque())
-    }
-    
-    func commit() {
-        SPTAnimatorUpdate(animator)
+    var animatorId: SPTAnimatorId {
+        _animator.id
     }
     
     var name: String {
         animator.name.capitalizingFirstLetter()
+    }
+    
+    var bottomLeft: simd_float2 {
+        get {
+            animator.source.pan.bottomLeft
+        }
+        set {
+            animator.source.pan.bottomLeft = newValue
+        }
+    }
+    
+    var topRight: simd_float2 {
+        get {
+            animator.source.pan.topRight
+        }
+        set {
+            animator.source.pan.topRight = newValue
+        }
+    }
+    
+    func reset() {
+        animator = initialAnimator
     }
     
     func updateTopLeft(delta: CGSize, screenSize: CGSize, minSize: CGSize) {
@@ -71,44 +86,44 @@ class PanAnimatorSetBoundsViewModel: ObservableObject {
     }
     
     private func updateTopRightX(delta: Float, minSize: Float) {
-        animator.source.pan.topRight.x = simd_clamp(animator.source.pan.topRight.x + delta, animator.source.pan.bottomLeft.x + minSize, 1.0)
+        topRight.x = simd_clamp(topRight.x + delta, bottomLeft.x + minSize, 1.0)
     }
     
     private func updateTopRightY(delta: Float, minSize: Float) {
-        animator.source.pan.topRight.y = simd_clamp(animator.source.pan.topRight.y + delta, animator.source.pan.bottomLeft.y + minSize, 1.0)
+        topRight.y = simd_clamp(topRight.y + delta, bottomLeft.y + minSize, 1.0)
     }
     
     private func updateBottomLeftX(delta: Float, minSize: Float) {
-        animator.source.pan.bottomLeft.x = simd_clamp(animator.source.pan.bottomLeft.x + delta, 0.0, animator.source.pan.topRight.x - minSize)
+        bottomLeft.x = simd_clamp(bottomLeft.x + delta, 0.0, topRight.x - minSize)
     }
     
     private func updateBottomLeftY(delta: Float, minSize: Float) {
-        animator.source.pan.bottomLeft.y = simd_clamp(animator.source.pan.bottomLeft.y + delta, 0.0, animator.source.pan.topRight.y - minSize)
+        bottomLeft.y = simd_clamp(bottomLeft.y + delta, 0.0, topRight.y - minSize)
     }
     
     func updateCenter(delta: CGSize, screenSize: CGSize) {
         let normDelta = normDelta(delta: delta, screenSize: screenSize)
-        let normSize = animator.source.pan.topRight - animator.source.pan.bottomLeft
+        let normSize = topRight - bottomLeft
 
         if normDelta.x >= 0.0 {
-            animator.source.pan.topRight.x = min(animator.source.pan.topRight.x + normDelta.x, 1.0)
-            animator.source.pan.bottomLeft.x = animator.source.pan.topRight.x - normSize.x
+            topRight.x = min(topRight.x + normDelta.x, 1.0)
+            bottomLeft.x = topRight.x - normSize.x
         } else {
-            animator.source.pan.bottomLeft.x = max(animator.source.pan.bottomLeft.x + normDelta.x, 0.0)
-            animator.source.pan.topRight.x = animator.source.pan.bottomLeft.x + normSize.x
+            bottomLeft.x = max(bottomLeft.x + normDelta.x, 0.0)
+            topRight.x = bottomLeft.x + normSize.x
         }
 
         if normDelta.y >= 0.0 {
-            animator.source.pan.topRight.y = min(animator.source.pan.topRight.y + normDelta.y, 1.0)
-            animator.source.pan.bottomLeft.y = animator.source.pan.topRight.y - normSize.y
+            topRight.y = min(topRight.y + normDelta.y, 1.0)
+            bottomLeft.y = topRight.y - normSize.y
         } else {
-            animator.source.pan.bottomLeft.y = max(animator.source.pan.bottomLeft.y + normDelta.y, 0.0)
-            animator.source.pan.topRight.y = animator.source.pan.bottomLeft.y + normSize.y
+            bottomLeft.y = max(bottomLeft.y + normDelta.y, 0.0)
+            topRight.y = bottomLeft.y + normSize.y
         }
     }
     
     func boundsRect(screenSize: CGSize) -> CGRect {
-        let topLeft = simd_float2(animator.source.pan.bottomLeft.x, animator.source.pan.topRight.y)
+        let topLeft = simd_float2(bottomLeft.x, topRight.y)
         return CGRect(origin: CGPoint(x: CGFloat(topLeft.x) * screenSize.width, y: CGFloat(1.0 - topLeft.y) * screenSize.height), size: animator.source.pan.boundsSizeOnScreenSize(screenSize))
     }
 }
@@ -123,7 +138,7 @@ struct PanAnimatorSetBoundsView: View {
         case center
     }
     
-    @ObservedObject var model: PanAnimatorSetBoundsViewModel
+    @StateObject var model: PanAnimatorSetBoundsViewModel
     @GestureState var isDragging = false
     @State var prevTranslation: CGSize?
     @State var activeHandle: Handle?
@@ -146,12 +161,12 @@ struct PanAnimatorSetBoundsView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
+                        model.reset()
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        model.commit()
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
@@ -164,7 +179,7 @@ struct PanAnimatorSetBoundsView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .fullScreenCover(isPresented: $showsViewBoundsView) {
-            PanAnimatorViewBoundsView(model: PanAnimatorViewBoundsViewModel(animator: model.animator))   
+            PanAnimatorViewBoundsView(model: PanAnimatorViewBoundsViewModel(animatorId: model.animatorId))   
         }
         .onChange(of: isDragging) { newValue in
             if !newValue {
@@ -317,7 +332,7 @@ fileprivate struct BoundsView: View {
 struct PanAnimatorSetAreaView_Previews: PreviewProvider {
     static var previews: some View {
         PanAnimatorSetBoundsView(model: .init(animatorId:
-                                                SPTAnimatorMake(SPTAnimator(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+                                                SPTAnimator.make(SPTAnimator(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
                                                  ))
     }
 }

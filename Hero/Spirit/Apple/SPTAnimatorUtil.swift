@@ -8,18 +8,24 @@
 import Foundation
 import Combine
 
+extension SPTAnimatorId: Identifiable, Hashable {
+    
+    public var id: Self.RawValue {
+        self.rawValue
+    }
+    
+}
 
-extension SPTAnimatorsSlice: SPTArraySlice {
+extension SPTAnimatorIdSlice: SPTArraySlice {
 
-    public typealias Element = SPTAnimator
+    public typealias Element = SPTAnimatorId
 
 }
 
-extension SPTAnimator: Identifiable, Equatable {
+extension SPTAnimator: Equatable {
     
     init(name: String, source: SPTAnimatorSource) {
         self.init()
-        self.id = kSPTAnimatorInvalidId
         self.source = source
         self.name = name
     }
@@ -49,36 +55,98 @@ extension SPTAnimator: Identifiable, Equatable {
         SPTAnimatorEqual(lhs, rhs)
     }
     
+    static func make(_ animator: SPTAnimator) -> SPTAnimatorId {
+        SPTAnimatorMake(animator)
+    }
+    
+    static func update(_ animator: SPTAnimator, id: SPTAnimatorId) {
+        SPTAnimatorUpdate(id, animator)
+    }
+    
+    static func destroy(id: SPTAnimatorId) {
+        SPTAnimatorDestroy(id)
+    }
+    
+    static func get(id: SPTAnimatorId) -> SPTAnimator {
+        SPTAnimatorGet(id)
+    }
+    
+    static func getAllIds() -> SPTAnimatorIdSlice {
+        SPTAnimatorGetAllIds()
+    }
+    
+    typealias WillChangeCallback = (SPTAnimator) -> Void
+    typealias WillChangeSubscription = SPTSubscription<WillChangeCallback>
+    
+    static func onWillChangeSink(id: SPTAnimatorId, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
+        
+        let subscription = WillChangeSubscription(observer: callback)
+        
+        let token = SPTAnimatorAddWillChangeObserver(id, { newValue, userInfo in
+            let subscription = Unmanaged<WillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTAnimatorRemoveWillChangeObserver(id, token) }
+        
+        return subscription
+    }
+    
+    static func getCount() -> Int {
+        SPTAnimatorGetCount()
+    }
+    
+    typealias CountWillChangeCallback = (Int) -> Void
+    typealias CountWillChangeSubscription = SPTSubscription<CountWillChangeCallback>
+    
+    static func onCountWillChangeSink(callback: @escaping CountWillChangeCallback) -> SPTAnySubscription {
+        
+        let subscription = CountWillChangeSubscription(observer: callback)
+        
+        let token = SPTAnimatorAddCountWillChangeObserver({ newValue, userInfo in
+            let subscription = Unmanaged<CountWillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTAnimatorRemoveCountWillChangeObserver(token) }
+        
+        return subscription
+    }
+    
+    static func evaluateValue(id: SPTAnimatorId, context: SPTAnimatorEvaluationContext) -> Float {
+        SPTAnimatorEvaluateValue(id, context)
+    }
+    
+    static func reset(id: SPTAnimatorId) {
+        SPTAnimatorReset(id)
+    }
+    
+    static func resetAll() {
+        SPTAnimatorResetAll()
+    }
+    
 }
 
 @propertyWrapper
 class SPTObservedAnimator {
     
-    private let animatorId: SPTAnimatorId
+    let id: SPTAnimatorId
+    var willChangeSubscription: SPTAnySubscription?
     
     weak var publisher: ObservableObjectPublisher?
     
-    init(animatorId: SPTAnimatorId) {
-        self.animatorId = animatorId
+    init(id: SPTAnimatorId) {
+        self.id = id
         
-        SPTAnimatorAddWillChangeListener(animatorId, Unmanaged.passUnretained(self).toOpaque(), { listener, newValue  in
-            let me = Unmanaged<SPTObservedAnimator>.fromOpaque(listener).takeUnretainedValue()
-            me.publisher?.send()
-        })
+        willChangeSubscription = SPTAnimator.onWillChangeSink(id: id) { [weak self] newValue in
+            self?.publisher?.send()
+        }
         
-    }
-    
-    deinit {
-        SPTAnimatorRemoveWillChangeListener(animatorId, Unmanaged.passUnretained(self).toOpaque())
     }
  
     var wrappedValue: SPTAnimator {
-        set {
-            var updated = newValue
-            updated.id = animatorId
-            SPTAnimatorUpdate(updated)
-        }
-        get { SPTAnimatorGet(animatorId) }
+        set { SPTAnimator.update(newValue, id: id) }
+        get { SPTAnimator.get(id: id) }
     }
     
 }

@@ -15,8 +15,6 @@
 
 SPT_EXTERN_C_BEGIN
 
-extern const SPTAnimatorId kSPTAnimatorInvalidId;
-
 #define kSPTAnimatorNameMaxLength 16
 
 typedef struct {
@@ -24,39 +22,42 @@ typedef struct {
 } SPTAnimatorEvaluationContext;
 
 typedef struct {
-    SPTAnimatorId id;
     SPTAnimatorSource source;
     char _name[kSPTAnimatorNameMaxLength + 1];
 } SPTAnimator;
 
 typedef struct {
-    const SPTAnimator* _Nullable _data;
+    const SPTAnimatorId* _Nullable _data;
     size_t startIndex;
     size_t endIndex;
-} SPTAnimatorsSlice;
+} SPTAnimatorIdSlice;
 
 bool SPTAnimatorEqual(SPTAnimator lhs, SPTAnimator rhs);
 
 SPTAnimatorId SPTAnimatorMake(SPTAnimator animator);
 
-void SPTAnimatorUpdate(SPTAnimator updated);
+void SPTAnimatorUpdate(SPTAnimatorId id, SPTAnimator updated);
 
 void SPTAnimatorDestroy(SPTAnimatorId id);
 
 SPTAnimator SPTAnimatorGet(SPTAnimatorId id);
 
-SPTAnimatorsSlice SPTAnimatorGetAll();
+SPTAnimatorIdSlice SPTAnimatorGetAllIds();
 
-typedef void (* _Nonnull SPTAnimatorWillChangeCallback) (SPTListener, SPTAnimator);
+typedef void (* _Nonnull SPTAnimatorWillChangeObserver) (SPTAnimator, SPTObserverUserInfo);
+SPTObserverToken SPTAnimatorAddWillChangeObserver(SPTAnimatorId id, SPTAnimatorWillChangeObserver observer, SPTObserverUserInfo userInfo);
+void SPTAnimatorRemoveWillChangeObserver(SPTAnimatorId id, SPTObserverToken token);
 
-void SPTAnimatorAddWillChangeListener(SPTAnimatorId id, SPTListener listener, SPTAnimatorWillChangeCallback callback);
-void SPTAnimatorRemoveWillChangeListenerCallback(SPTAnimatorId id, SPTListener listener, SPTAnimatorWillChangeCallback callback);
-void SPTAnimatorRemoveWillChangeListener(SPTAnimatorId id, SPTListener listener);
+size_t SPTAnimatorGetCount();
 
-void SPTAnimatorAddCountWillChangeListener(SPTListener listener, SPTCountWillChangeCallback callback);
-void SPTAnimatorRemoveCountWillChangeListenerCallback(SPTListener listener, SPTCountWillChangeCallback callback);
-void SPTAnimatorRemoveCountWillChangeListener(SPTListener listener);
+typedef void (* _Nonnull SPTAnimatorCountWillChangeObserver) (size_t, SPTObserverUserInfo);
+SPTObserverToken SPTAnimatorAddCountWillChangeObserver(SPTAnimatorCountWillChangeObserver observer, SPTObserverUserInfo userInfo);
+void SPTAnimatorRemoveCountWillChangeObserver(SPTObserverToken token);
 
-float SPTAnimatorEvaluateValue(SPTAnimator animator, SPTAnimatorEvaluationContext context);
+float SPTAnimatorEvaluateValue(SPTAnimatorId id, SPTAnimatorEvaluationContext context);
+
+void SPTAnimatorReset(SPTAnimatorId id);
+
+void SPTAnimatorResetAll();
 
 SPT_EXTERN_C_END

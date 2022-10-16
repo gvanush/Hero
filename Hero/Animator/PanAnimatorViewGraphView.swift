@@ -7,10 +7,47 @@
 
 import SwiftUI
 
+class PanAnimatorViewGraphViewModel: ObservableObject {
+    
+    let animatorId: SPTAnimatorId
+    
+    init(animatorId: SPTAnimatorId) {
+        self.animatorId = animatorId
+    }
+    
+    var animator: SPTAnimator {
+        SPTAnimator.get(id: animatorId)
+    }
+    
+    var axis: SPTPanAnimatorSourceAxis {
+        animator.source.pan.axis
+    }
+    
+    func boundsSizeOnScreenSize(_ size: CGSize) -> CGSize {
+        animator.source.pan.boundsSizeOnScreenSize(size)
+    }
+    
+    func boundsOffsetOnScreenSize(_ size: CGSize) -> CGSize {
+        animator.source.pan.boundsOffsetOnScreenSize(size)
+    }
+    
+    func isInBounds(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Bool {
+        let normX = Float(dragValue.startLocation.x / geometry.size.width)
+        let normY = 1.0 - Float(dragValue.startLocation.y / geometry.size.height)
+        return normX >= animator.source.pan.bottomLeft.x && normX <= animator.source.pan.topRight.x && normY >= animator.source.pan.bottomLeft.y && normY <= animator.source.pan.topRight.y
+    }
+    
+    func animatorValue(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Float {
+        var context = SPTAnimatorEvaluationContext()
+        context.panLocation = .init(x: Float(dragValue.location.x / geometry.size.width), y: 1.0 - Float(dragValue.location.y / geometry.size.height))
+        return SPTAnimator.evaluateValue(id: animatorId, context: context)
+    }
+    
+}
 
 struct PanAnimatorViewGraphView: View {
     
-    let animator: SPTAnimator
+    @StateObject var model: PanAnimatorViewGraphViewModel
     @GestureState private var isDragging = false
     @State private var dragValue: DragGesture.Value?
     @State private var shouldSample = false
@@ -19,30 +56,26 @@ struct PanAnimatorViewGraphView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     
-    init(animatorId: SPTAnimatorId) {
-        self.animator = SPTAnimatorGet(animatorId)
-        assert(animator.source.type == .pan)
-    }
     
     var body: some View {
         GeometryReader { geometry in
             GeometryReader { dargAreaGeometry in
                 ZStack {
                     Color.systemBackground
-                    SignalGraphView(name: animator.source.pan.axis.displayName) {
+                    SignalGraphView(name: model.axis.displayName) {
                         animatorLastValue
                     }
                     Rectangle()
                         .foregroundColor(.ultraLightAccentColor)
-                        .frame(size: animator.source.pan.boundsSizeOnScreenSize(dargAreaGeometry.size))
-                        .offset(animator.source.pan.boundsOffsetOnScreenSize(dargAreaGeometry.size))
+                        .frame(size: model.boundsSizeOnScreenSize(dargAreaGeometry.size))
+                        .offset(model.boundsOffsetOnScreenSize(dargAreaGeometry.size))
                 }
                 .gesture(dragGesture(geometry: dargAreaGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
                 .defersSystemGestures(on: .all)
                 .onChange(of: isDragging) { [isDragging] newValue in
                     if newValue {
                         if !isDragging {
-                            shouldSample = isInBounds(dragValue: dragValue!, geometry: dargAreaGeometry)
+                            shouldSample = model.isInBounds(dragValue: dragValue!, geometry: dargAreaGeometry)
                         }
                     } else {
                         dragValue = nil
@@ -66,13 +99,13 @@ struct PanAnimatorViewGraphView: View {
                 dragValue = newDragValue
                 
                 if shouldSample {
-                    animatorLastValue = animatorValue(dragValue: newDragValue, geometry: geometry)
+                    animatorLastValue = model.animatorValue(dragValue: newDragValue, geometry: geometry)
                 }
                 
             })
             .onEnded({ newDragValue in
                 if shouldSample {
-                    animatorLastValue = animatorValue(dragValue: newDragValue, geometry: geometry)
+                    animatorLastValue = model.animatorValue(dragValue: newDragValue, geometry: geometry)
                 }
                 
                 guard let value = dragValue else { return }
@@ -90,22 +123,11 @@ struct PanAnimatorViewGraphView: View {
             })
     }
     
-    func isInBounds(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Bool {
-        let normX = Float(dragValue.startLocation.x / geometry.size.width)
-        let normY = 1.0 - Float(dragValue.startLocation.y / geometry.size.height)
-        return normX >= animator.source.pan.bottomLeft.x && normX <= animator.source.pan.topRight.x && normY >= animator.source.pan.bottomLeft.y && normY <= animator.source.pan.topRight.y
-    }
-    
-    func animatorValue(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Float {
-        var context = SPTAnimatorEvaluationContext()
-        context.panLocation = .init(x: Float(dragValue.location.x / geometry.size.width), y: 1.0 - Float(dragValue.location.y / geometry.size.height))
-        return SPTAnimatorEvaluateValue(animator, context)
-    }
-    
 }
 
 struct PanAnimatorViewSignalView_Previews: PreviewProvider {
     static var previews: some View {
-        PanAnimatorViewGraphView(animatorId: SPTAnimatorMake(.init(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one))))
+        let animatorId = SPTAnimator.make(.init(name: "Pan.1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+        return PanAnimatorViewGraphView(model: .init(animatorId: animatorId))
     }
 }

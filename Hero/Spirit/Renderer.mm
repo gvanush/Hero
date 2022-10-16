@@ -7,7 +7,6 @@
 
 #include "Renderer.hpp"
 #include "MeshLook.h"
-#include "Generator.hpp"
 #include "PolylineLook.h"
 #include "PointLook.h"
 #include "OutlineLook.h"
@@ -201,15 +200,6 @@ void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, const Registry& re
         renderMeshOutline(renderEncoder, mesh, outlineLook, registry.get<Transformation>(entity).global);
     }
     
-    if(const auto generator = registry.try_get<spt::Generator>(entity)) {
-        
-        const auto& mesh = ResourceManager::active().getMesh(generator->base.sourceMeshId);
-        
-        // TODO: Refactor to access only generator items
-        Transformation::forEachChild(registry, entity, [&renderEncoder, &mesh, &outlineLook] (auto childEntity, const auto& childTran) {
-            renderMeshOutline(renderEncoder, mesh, outlineLook, childTran.global);
-        });
-    }
 }
 
 void Renderer::render(const Registry& registry, void* renderingContext) {

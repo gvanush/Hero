@@ -14,7 +14,7 @@ struct AnimatorControl: View {
     
     var body: some View {
         HStack {
-            Text(SPTAnimatorGet(animatorId).name)
+            Text(SPTAnimator.get(id: animatorId).name)
                 .foregroundColor(.controlValue)
             Spacer()
             Button {
@@ -67,9 +67,9 @@ struct AnimatorControl_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        let id1 = SPTAnimatorMake(.init(name: "TestAnimator1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
-        SPTAnimatorMake(.init(name: "TestAnimator2", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
-        SPTAnimatorMake(.init(name: "TestAnimator3", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+        let id1 = SPTAnimator.make(.init(name: "TestAnimator1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+        _ = SPTAnimator.make(.init(name: "TestAnimator2", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+        _ = SPTAnimator.make(.init(name: "TestAnimator3", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
         
         return ContentView(animatorId: id1)
     }

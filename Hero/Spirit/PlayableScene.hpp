@@ -31,7 +31,7 @@ public:
     
 private:
     
-    std::vector<SPTAnimator> _animators;
+    std::vector<SPTAnimatorId> _animatorIds;
     std::vector<float> _animatorValues;
     Transformation::AnimatorsGroupType _transformationGroup;
     

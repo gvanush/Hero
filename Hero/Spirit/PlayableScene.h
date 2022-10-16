@@ -18,7 +18,7 @@ typedef struct {
 
 typedef struct {
     SPTEntity viewCameraEntity;
-    const SPTAnimatorId* _Nullable animators;
+    const SPTAnimatorId* _Nullable animatorIds;
     uint32_t animatorsSize;
 } SPTPlayableSceneDescriptor;
 

@@ -14,12 +14,12 @@ struct AnimatorSelector: View {
     
     var body: some View {
         NavigationView {
-            List(SPTAnimatorGetAll()) { animator in
+            List(SPTAnimator.getAllIds()) { animatorId in
                 HStack {
-                    Text(animator.name.capitalizingFirstLetter())
+                    Text(SPTAnimator.get(id: animatorId).name.capitalizingFirstLetter())
                     Spacer()
                     Button("Select") {
-                        onComplete(animator.id)
+                        onComplete(animatorId)
                     }
                 }
             }

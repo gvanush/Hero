@@ -7,7 +7,6 @@
 
 #include "RayCast.h"
 #include "MeshLook.h"
-#include "Generator.hpp"
 #include "Scene.hpp"
 #include "Transformation.hpp"
 #include "ResourceManager.hpp"
@@ -78,38 +77,6 @@ RayCastResult tryRayCastMeshLook(Registry& registry, SPTEntity entity, const SPT
     return result;
 }
 
-RayCastResult tryRayCastGenerator(Registry& registry, SPTEntity entity, const SPTRay& ray, float tolerance) {
-    
-    RayCastResult result {INFINITY, false};
-    const auto generator = registry.try_get<spt::Generator>(entity);
-    if(!generator) {
-        return result;
-    }
-    const auto& mesh = spt::ResourceManager::active().getMesh(generator->base.sourceMeshId);
-    
-    // TODO: Refactor to access only generator items
-    Transformation::forEachChild(registry, entity, [&registry, &ray, &mesh, &result, tolerance] (auto childEntity, const auto& childTran) {
-        
-        SPTRay localRay = SPTRayTransform(ray, simd_inverse(childTran.global));
-        const auto meshRayCastResult = rayCastMesh(mesh, localRay, tolerance);
-        
-        if(meshRayCastResult.intersected) {
-            
-            const auto& point = SPTRayGetPoint(localRay, meshRayCastResult.rayDirectionFactor);
-            auto globalPoint = simd_mul(childTran.global, simd_make_float4(point, 1.f)).xyz;
-            
-            auto rayFactor = computeRayDirectionFactor(ray, globalPoint);;
-            
-            if(result.rayDirectionFactor > rayFactor) {
-                result.rayDirectionFactor = rayFactor;
-                result.intersected = true;
-            }
-        }
-    });
-    
-    return result;
-}
-
 }
 
 }
@@ -137,12 +104,6 @@ SPTRayCastResult SPTRayCastScene(SPTHandle sceneHandle, SPTRay ray, float tolera
     registry.view<SPTRayCastable>().each([&registry, &result, ray, tolerance, sceneHandle] (auto entity, auto& rayCastableMesh) {
         
         if(const auto& subResult = spt::tryRayCastMeshLook(registry, entity, ray, tolerance);
-           subResult.intersected && result.rayDirectionFactor > subResult.rayDirectionFactor) {
-            result.object = SPTObject {entity, sceneHandle};
-            result.rayDirectionFactor = subResult.rayDirectionFactor;
-        }
-        
-        if(const auto& subResult = spt::tryRayCastGenerator(registry, entity, ray, tolerance);
            subResult.intersected && result.rayDirectionFactor > subResult.rayDirectionFactor) {
             result.object = SPTObject {entity, sceneHandle};
             result.rayDirectionFactor = subResult.rayDirectionFactor;

@@ -60,7 +60,7 @@ bool SPTScaleExists(SPTObject object) {
     return registry.all_of<SPTScale>(object.entity);
 }
 
-SPTObserverToken SPTScaleAddWillChangeObserver(SPTObject object, SPTScaleWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTScaleAddWillChangeObserver(SPTObject object, SPTScaleWillChangeObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillChangeObserver<SPTScale>(object, observer, userInfo);
 }
 
@@ -68,7 +68,7 @@ void SPTScaleRemoveWillChangeObserver(SPTObject object, SPTObserverToken token) 
     spt::removeComponentWillChangeObserver<SPTScale>(object, token);
 }
 
-SPTObserverToken SPTScaleAddWillEmergeObserver(SPTObject object, SPTScaleWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTScaleAddWillEmergeObserver(SPTObject object, SPTScaleWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillEmergeObserver<SPTScale>(object, observer, userInfo);
 }
 
@@ -76,7 +76,7 @@ void SPTScaleRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token) 
     spt::removeComponentWillEmergeObserver<SPTScale>(object, token);
 }
 
-SPTObserverToken SPTScaleAddWillPerishObserver(SPTObject object, SPTScaleWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTScaleAddWillPerishObserver(SPTObject object, SPTScaleWillPerishObserver observer, SPTObserverUserInfo userInfo) {
     return spt::addComponentWillPerishObserver<SPTScale>(object, observer, userInfo);
 }
 

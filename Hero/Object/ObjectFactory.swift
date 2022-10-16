@@ -66,16 +66,4 @@ class ObjectFactory {
         }
     }
     
-    func makeGenerator(sourceMeshId: SPTMeshId) -> SPTObject {
-        let object = scene.makeObject()
-        SPTMetadataMake(object, .init(tag: ObjectType.generator.rawValue, name: "Generator.\(generatorNumber)"))
-        SPTPositionMakeXYZ(object, .zero)
-        SPTOrientationMakeEuler(object, .init(rotation: .zero, order: .XYZ))
-        SPTScaleMake(object, .init(xyz: .one))
-        SPTGenerator.make(.init(quantity: 5, sourceMeshId: sourceMeshId), object: object)
-        SPTRayCastableMake(object)
-        generatorNumber += 1
-        return object
-    }
-    
 }

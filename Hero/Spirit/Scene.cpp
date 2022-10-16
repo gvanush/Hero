@@ -7,7 +7,6 @@
 
 #include "Scene.hpp"
 #include "Scene.h"
-#include "Generator.hpp"
 
 #include <vector>
 
@@ -15,12 +14,10 @@ namespace spt {
 
 Scene::Scene()
 : _transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()} {
-    registry.on_destroy<Generator>().connect<&Generator::onDestroy>();
     registry.on_destroy<Transformation>().connect<&Transformation::onDestroy>();
 }
 
 Scene::~Scene() {
-    registry.on_destroy<Generator>().disconnect<&Generator::onDestroy>();
     registry.on_destroy<Transformation>().disconnect<&Transformation::onDestroy>();
 }
 

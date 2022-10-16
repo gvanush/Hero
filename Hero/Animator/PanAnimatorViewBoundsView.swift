@@ -9,16 +9,20 @@ import SwiftUI
 
 class PanAnimatorViewBoundsViewModel: ObservableObject {
     
-    let animator: SPTAnimator
+    let animatorId: SPTAnimatorId
     
-    init(animator: SPTAnimator) {
-        self.animator = animator
+    init(animatorId: SPTAnimatorId) {
+        self.animatorId = animatorId
+    }
+    
+    var animator: SPTAnimator {
+        SPTAnimator.get(id: animatorId)
     }
     
     func valueAt(_ p: CGPoint, screenSize: CGSize) -> Float {
         var context = SPTAnimatorEvaluationContext()
         context.panLocation = .init(x: Float(p.x / screenSize.width), y: Float(1.0 - p.y / screenSize.height))
-        return SPTAnimatorEvaluateValue(animator, context)
+        return SPTAnimator.evaluateValue(id: animatorId, context: context)
     }
     
     func isInBounds(point: CGPoint, screenSize: CGSize) -> Bool {
@@ -103,6 +107,7 @@ struct PanAnimatorViewBoundsView: View {
 
 struct PanAnimatorViewBoundsView_Previews: PreviewProvider {
     static var previews: some View {
-        PanAnimatorViewBoundsView(model: PanAnimatorViewBoundsViewModel(animator: SPTAnimator(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one))))
+        let animatorId = SPTAnimator.make(.init(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+        return PanAnimatorViewBoundsView(model: PanAnimatorViewBoundsViewModel(animatorId: animatorId))
     }
 }

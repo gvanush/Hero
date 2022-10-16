@@ -22,12 +22,14 @@
 SPT_EXTERN_C_BEGIN
 
 typedef enum : uint32_t {
-    _dummy
+    _SPTEntityDummy
 } SPTEntity;
 
 typedef void* _Nonnull SPTHandle;
 
-typedef uint32_t SPTAnimatorId;
+typedef enum : uint32_t {
+    _SPTAnimatorIdDummy
+} SPTAnimatorId;
 
 typedef struct {
     SPTEntity entity;
@@ -45,10 +47,8 @@ bool SPTObjectEqual(SPTObject object1, SPTObject object2);
 
 typedef void* _Nonnull SPTListener;
 
-typedef void (* _Nonnull SPTCountWillChangeCallback) (SPTListener, size_t);
-
 typedef size_t SPTObserverToken;
-typedef void* _Nullable SPTComponentObserverUserInfo;
+typedef void* _Nullable SPTObserverUserInfo;
 
 typedef uint32_t SPTLookCategories;
 extern const SPTLookCategories kSPTLookCategoriesAll;

@@ -96,7 +96,7 @@ bool SPTObjectPropertyIsAnimatorBound(SPTAnimatableObjectProperty property, SPTO
     }
 }
 
-SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTObserverUserInfo userInfo) {
     switch (property) {
         case SPTAnimatableObjectPropertyPositionX: {
             return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
@@ -124,7 +124,7 @@ void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTAnimatableObjec
     }
 }
 
-SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
     switch (property) {
         case SPTAnimatableObjectPropertyPositionX: {
             return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
@@ -152,7 +152,7 @@ void SPTObjectPropertyRemoveAnimatorBindingWillEmergeObserver(SPTAnimatableObjec
     }
 }
 
-SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTObserverUserInfo userInfo) {
     switch (property) {
         case SPTAnimatableObjectPropertyPositionX: {
             return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);

@@ -17,19 +17,19 @@ namespace spt {
 template <SPTAnimatableObjectProperty P>
 using AnimatorBindingWillChangeObservable = spt::WillChangeObservable<
     spt::AnimatorBinding<P>,
-    std::pair<SPTObjectPropertyAnimatorBindingWillChangeObserver, SPTComponentObserverUserInfo>>;
+    std::pair<SPTObjectPropertyAnimatorBindingWillChangeObserver, SPTObserverUserInfo>>;
 
 template <SPTAnimatableObjectProperty P>
-SPTObserverToken addAnimatorBindingWillChangeObserver(SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken addAnimatorBindingWillChangeObserver(SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTObserverUserInfo userInfo) {
     
-    return spt::addComponentObserver<AnimatorBindingWillChangeObservable<P>>(object, [] (auto comp, auto userInfo) {
+    return spt::addComponentObserver<AnimatorBindingWillChangeObservable<P>>([] (auto comp, auto userInfo) {
         userInfo.first(comp.base, userInfo.second);
-    }, std::make_pair(observer, userInfo));
+    }, std::make_pair(observer, userInfo), object);
 }
 
 template <SPTAnimatableObjectProperty P>
 void removeAnimatorBindingWillChangeObserver(SPTObject object, SPTObserverToken token) {
-    spt::removeComponentObserver<AnimatorBindingWillChangeObservable<P>>(object, token);
+    spt::removeComponentObserver<AnimatorBindingWillChangeObservable<P>>(token, object);
 }
 
 template <SPTAnimatableObjectProperty P>
@@ -41,19 +41,19 @@ void notifyAnimatorBindingWillChangeObservers(const spt::Registry& registry, SPT
 template <SPTAnimatableObjectProperty P>
 using AnimatorBindingWillEmergeObservable = spt::WillEmergeObservable<
     spt::AnimatorBinding<P>,
-    std::pair<SPTObjectPropertyAnimatorBindingWillEmergeObserver, SPTComponentObserverUserInfo>>;
+    std::pair<SPTObjectPropertyAnimatorBindingWillEmergeObserver, SPTObserverUserInfo>>;
 
 template <SPTAnimatableObjectProperty P>
-SPTObserverToken addAnimatorBindingWillEmergeObserver(SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken addAnimatorBindingWillEmergeObserver(SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
     
-    return spt::addComponentObserver<AnimatorBindingWillEmergeObservable<P>>(object, [] (auto comp, auto userInfo) {
+    return spt::addComponentObserver<AnimatorBindingWillEmergeObservable<P>>([] (auto comp, auto userInfo) {
         userInfo.first(comp.base, userInfo.second);
-    }, std::make_pair(observer, userInfo));
+    }, std::make_pair(observer, userInfo), object);
 }
 
 template <SPTAnimatableObjectProperty P>
 void removeAnimatorBindingWillEmergeObserver(SPTObject object, SPTObserverToken token) {
-    spt::removeComponentObserver<AnimatorBindingWillEmergeObservable<P>>(object, token);
+    spt::removeComponentObserver<AnimatorBindingWillEmergeObservable<P>>(token, object);
 }
 
 template <SPTAnimatableObjectProperty P>
@@ -65,19 +65,19 @@ void notifyAnimatorBindingWillEmergeObservers(const spt::Registry& registry, SPT
 template <SPTAnimatableObjectProperty P>
 using AnimatorBindingWillPerishObservable = spt::WillPerishObservable<
     spt::AnimatorBinding<P>,
-    std::pair<SPTObjectPropertyAnimatorBindingWillPerishObserver, SPTComponentObserverUserInfo>>;
+    std::pair<SPTObjectPropertyAnimatorBindingWillPerishObserver, SPTObserverUserInfo>>;
 
 template <SPTAnimatableObjectProperty P>
-SPTObserverToken addAnimatorBindingWillPerishObserver(SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTComponentObserverUserInfo userInfo) {
+SPTObserverToken addAnimatorBindingWillPerishObserver(SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTObserverUserInfo userInfo) {
     
-    return spt::addComponentObserver<AnimatorBindingWillPerishObservable<P>>(object, [] (auto userInfo) {
+    return spt::addComponentObserver<AnimatorBindingWillPerishObservable<P>>([] (auto userInfo) {
         userInfo.first(userInfo.second);
-    }, std::make_pair(observer, userInfo));
+    }, std::make_pair(observer, userInfo), object);
 }
 
 template <SPTAnimatableObjectProperty P>
 void removeAnimatorBindingWillPerishObserver(SPTObject object, SPTObserverToken token) {
-    spt::removeComponentObserver<AnimatorBindingWillPerishObservable<P>>(object, token);
+    spt::removeComponentObserver<AnimatorBindingWillPerishObservable<P>>(token, object);
 }
 
 template <SPTAnimatableObjectProperty P>
