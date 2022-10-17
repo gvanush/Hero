@@ -75,6 +75,10 @@ extension SPTAnimator: Equatable {
         SPTAnimatorGetAllIds()
     }
     
+    static func exists(id: SPTAnimatorId) -> Bool {
+        SPTAnimatorExists(id)
+    }
+    
     typealias WillChangeCallback = (SPTAnimator) -> Void
     typealias WillChangeSubscription = SPTSubscription<WillChangeCallback>
     

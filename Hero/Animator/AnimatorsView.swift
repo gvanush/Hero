@@ -31,6 +31,7 @@ class AnimatorsViewModel: ObservableObject {
     func destroyAnimator(id: SPTAnimatorId) {
         SPTAnimator.destroy(id: id)
     }
+    
 }
 
 struct AnimatorsView: View {
@@ -44,7 +45,19 @@ struct AnimatorsView: View {
                 NavigationLink(SPTAnimator.get(id: animatorId).name.capitalizingFirstLetter(), value: animatorId)
             }
             .navigationDestination(for: SPTAnimatorId.self, destination: { animatorId in
-                PanAnimatorView(model: PanAnimatorViewModel(animatorId: animatorId))
+                // NOTE: For some reason 'navigationDestination' is called
+                // after removing the last element in the list at which point
+                // all animators are daed hence checking to avoid crash
+                if SPTAnimator.exists(id: animatorId) {
+                    switch SPTAnimator.get(id: animatorId).source.type {
+                    case .pan:
+                        PanAnimatorView(model: .init(animatorId: animatorId))
+                    case .random:
+                        RandomAnimatorView(model: .init(animatorId: animatorId))
+                    @unknown default:
+                        fatalError()
+                    }
+                }
             })
             .navigationTitle("Animators")
             .navigationBarTitleDisplayMode(.inline)
@@ -56,8 +69,9 @@ struct AnimatorsView: View {
                 }
                 ToolbarItem(placement: .bottomBar) {
                     Menu {
-                        Button("Face") {
-                            
+                        Button("Random") {
+                            let animatorId = model.makeAnimator(SPTAnimator(name: "Random.\(SPTAnimator.getCount())", source: SPTAnimatorSourceMakeRandom(.randomInFullRange())))
+                            model.discloseAnimator(id: animatorId)
                         }
                         Button("Pan") {
                             let animatorId = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimator.getCount())", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))

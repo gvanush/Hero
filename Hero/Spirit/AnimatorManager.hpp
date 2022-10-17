@@ -34,6 +34,8 @@ public:
     
     size_t animatorsCount() const { return _registry.view<SPTAnimator>().size(); }
     
+    bool animatorExists(SPTAnimatorId id) const { return _registry.valid(id); }
+    
     SPTObserverToken addAnimatorWillChangeObserver(SPTAnimatorId id, SPTAnimatorWillChangeObserver observer, SPTObserverUserInfo userInfo);
     void removeAnimatorWillChangeObserver(SPTAnimatorId id, SPTObserverToken token);
     

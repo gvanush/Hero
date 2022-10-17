@@ -7,22 +7,8 @@
 
 import SwiftUI
 
-class PanAnimatorViewModel: ObservableObject {
-    
-    @SPTObservedAnimator var animator: SPTAnimator
-    
-    init(animatorId: SPTAnimatorId) {
-        _animator = SPTObservedAnimator(id: animatorId)
-        _animator.publisher = self.objectWillChange
-    }
-    
-    var animatorId: SPTAnimatorId {
-        _animator.id
-    }
-    
-    var name: String {
-        animator.name.capitalizingFirstLetter()
-    }
+
+class PanAnimatorViewModel: AnimatorViewModel {
     
     var axis: SPTPanAnimatorSourceAxis {
         set {
@@ -32,10 +18,7 @@ class PanAnimatorViewModel: ObservableObject {
             animator.source.pan.axis
         }
     }
-    
-    func destroy() {
-        SPTAnimator.destroy(id: _animator.id)
-    }
+
 }
 
 
@@ -86,12 +69,6 @@ struct PanAnimatorView: View {
                     showsViewSignalView = true
                 } label: {
                     Image(systemName: "waveform.path.ecg.rectangle")
-                }
-                Spacer()
-                Button {
-                    
-                } label: {
-                    Image(systemName: "play")
                 }
                 Spacer()
                 Button {

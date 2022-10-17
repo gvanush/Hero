@@ -17,6 +17,10 @@ class PlayViewModel: ObservableObject {
         self.scene = scene
         self.viewCameraEntity = viewCameraEntity
     }
+    
+    func resetAnimators() {
+        SPTAnimator.resetAll()
+    }
 }
 
 
@@ -46,6 +50,9 @@ struct PlayView: View {
             if !newValue {
                 dragValue = nil
             }
+        }
+        .onAppear {
+            model.resetAnimators()
         }
     }
     

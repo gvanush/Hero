@@ -7,17 +7,7 @@
 
 import SwiftUI
 
-class PanAnimatorViewGraphViewModel: ObservableObject {
-    
-    let animatorId: SPTAnimatorId
-    
-    init(animatorId: SPTAnimatorId) {
-        self.animatorId = animatorId
-    }
-    
-    var animator: SPTAnimator {
-        SPTAnimator.get(id: animatorId)
-    }
+class PanAnimatorViewGraphViewModel: AnimatorViewModel {
     
     var axis: SPTPanAnimatorSourceAxis {
         animator.source.pan.axis
@@ -37,10 +27,10 @@ class PanAnimatorViewGraphViewModel: ObservableObject {
         return normX >= animator.source.pan.bottomLeft.x && normX <= animator.source.pan.topRight.x && normY >= animator.source.pan.bottomLeft.y && normY <= animator.source.pan.topRight.y
     }
     
-    func animatorValue(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Float {
+    func getAnimatorValue(dragValue: DragGesture.Value, geometry: GeometryProxy) -> Float? {
         var context = SPTAnimatorEvaluationContext()
         context.panLocation = .init(x: Float(dragValue.location.x / geometry.size.width), y: 1.0 - Float(dragValue.location.y / geometry.size.height))
-        return SPTAnimator.evaluateValue(id: animatorId, context: context)
+        return getAnimatorValue(context: context)
     }
     
 }
@@ -65,6 +55,7 @@ struct PanAnimatorViewGraphView: View {
                     SignalGraphView(name: model.axis.displayName) {
                         animatorLastValue
                     }
+                    .padding()
                     Rectangle()
                         .foregroundColor(.ultraLightAccentColor)
                         .frame(size: model.boundsSizeOnScreenSize(dargAreaGeometry.size))
@@ -99,13 +90,13 @@ struct PanAnimatorViewGraphView: View {
                 dragValue = newDragValue
                 
                 if shouldSample {
-                    animatorLastValue = model.animatorValue(dragValue: newDragValue, geometry: geometry)
+                    animatorLastValue = model.getAnimatorValue(dragValue: newDragValue, geometry: geometry)
                 }
                 
             })
             .onEnded({ newDragValue in
                 if shouldSample {
-                    animatorLastValue = model.animatorValue(dragValue: newDragValue, geometry: geometry)
+                    animatorLastValue = model.getAnimatorValue(dragValue: newDragValue, geometry: geometry)
                 }
                 
                 guard let value = dragValue else { return }

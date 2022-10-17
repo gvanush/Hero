@@ -139,8 +139,9 @@ float AnimatorManager::evaluate(SPTAnimatorId id, const SPTAnimatorEvaluationCon
         case SPTAnimatorSourceTypePan: {
             return evaluatePan(animator, context);
         }
-        case SPTAnimatorSourceTypeRandom:
+        case SPTAnimatorSourceTypeRandom: {
             return evaluateRandom(id);
+        }
     }
 }
 

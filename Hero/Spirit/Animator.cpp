@@ -33,6 +33,10 @@ SPTAnimatorIdSlice SPTAnimatorGetAllIds() {
     return SPTAnimatorIdSlice{ span.data(), 0, span.size() };
 }
 
+bool SPTAnimatorExists(SPTAnimatorId id) {
+    return spt::AnimatorManager::active().animatorExists(id);
+}
+
 SPTObserverToken SPTAnimatorAddWillChangeObserver(SPTAnimatorId id, SPTAnimatorWillChangeObserver observer, SPTObserverUserInfo userInfo) {
     return spt::AnimatorManager::active().addAnimatorWillChangeObserver(id, observer, userInfo);
 }

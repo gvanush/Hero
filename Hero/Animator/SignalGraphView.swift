@@ -89,6 +89,10 @@ fileprivate struct SignalGraph<V>: Shape where V: RandomAccessCollection, V.Elem
                 index = samples.index(before: index)
             }
             
+            if index < samples.startIndex {
+                break
+            }
+            
             slice = samples[samples.startIndex..<index]
         }
         
@@ -106,7 +110,10 @@ fileprivate struct SignalGraph<V>: Shape where V: RandomAccessCollection, V.Elem
  */
 struct SignalGraphView: View {
     
-    let name: String
+    var name: String?
+    let connectSamples: Bool
+    let isActive: Bool
+    let resetGraph: Bool
     let signal: () -> Float?
     @State private var samples = Deque<SignalSample>()
     @State private var timer = Timer.publish(every: TimeInterval.infinity, on: .main, in: .common).autoconnect()
@@ -114,18 +121,28 @@ struct SignalGraphView: View {
     static let signalMaxFrequency = UIScreen.main.maximumFramesPerSecond
     static let lineWidth: CGFloat = 1.5
     
+    init(name: String? = nil, connectSamples: Bool = true, isActive: Bool = true, resetGraph: Bool = false, signal: @escaping () -> Float?) {
+        self.name = name
+        self.resetGraph = resetGraph
+        self.isActive = isActive
+        self.connectSamples = connectSamples
+        self.signal = signal
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             SignalGraph(samples: samples, signalMaxFrequency: Self.signalMaxFrequency, lineWidth: Self.lineWidth)
                 .stroke(.primary, style: StrokeStyle(lineWidth: Self.lineWidth, lineCap: .round, lineJoin: .round))
                 .background { background }
                 .modifier(SizeModifier())
-                .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .padding()
-        .onFrame { frame in
+        .aspectRatio(contentMode: .fit)
+        .onFrame(isActive: isActive) { frame in
             samples.append(.init(value: signal(), timestamp: frame.timestamp))
+            if !connectSamples {
+                samples.append(.init(value: nil, timestamp: frame.timestamp))
+            }
         }
         .onPreferenceChange(SizePreferenceKey.self) { size in
             timer = Timer.publish(every: graphTimespan(width: size.width, signalMaxFrequency: Self.signalMaxFrequency, lineWidth: Self.lineWidth), on: .main, in: .common).autoconnect()
@@ -141,6 +158,9 @@ struct SignalGraphView: View {
             } else {
                 samples.removeAll()
             }
+        }
+        .onChange(of: resetGraph) { _ in
+            samples.removeAll()
         }
     }
     
@@ -162,14 +182,16 @@ struct SignalGraphView: View {
                             .font(.callout)
                             .foregroundColor(.tertiaryLabel)
                     }
-                    HStack(spacing: 4.0) {
-                        Spacer()
-                        Image(systemName: "waveform.path.ecg")
-                        Text(name)
-                        Spacer()
+                    if let name = name {
+                        HStack(spacing: 4.0) {
+                            Spacer()
+                            Image(systemName: "waveform.path.ecg")
+                            Text(name)
+                            Spacer()
+                        }
+                        .font(.callout)
+                        .foregroundColor(.secondaryLabel)
                     }
-                    .font(.callout)
-                    .foregroundColor(.secondaryLabel)
                 }
             }
             .padding(.horizontal, 4.0)

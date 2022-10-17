@@ -44,6 +44,8 @@ SPTAnimator SPTAnimatorGet(SPTAnimatorId id);
 
 SPTAnimatorIdSlice SPTAnimatorGetAllIds();
 
+bool SPTAnimatorExists(SPTAnimatorId id);
+
 typedef void (* _Nonnull SPTAnimatorWillChangeObserver) (SPTAnimator, SPTObserverUserInfo);
 SPTObserverToken SPTAnimatorAddWillChangeObserver(SPTAnimatorId id, SPTAnimatorWillChangeObserver observer, SPTObserverUserInfo userInfo);
 void SPTAnimatorRemoveWillChangeObserver(SPTAnimatorId id, SPTObserverToken token);

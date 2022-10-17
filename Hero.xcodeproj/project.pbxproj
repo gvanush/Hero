@@ -85,6 +85,7 @@
 		B7791DB42726768C00E0C934 /* FloatingPointUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DA42726768B00E0C934 /* FloatingPointUtil.swift */; };
 		B7791DBA2726821200E0C934 /* SceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791DB92726821200E0C934 /* SceneView.swift */; };
 		B77CBD50289C54EC0040B5EC /* EdgeInsetsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77CBD4F289C54EC0040B5EC /* EdgeInsetsUtil.swift */; };
+		B787799528FC36E500E3CDA7 /* RandomAnimatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B787799428FC36E500E3CDA7 /* RandomAnimatorView.swift */; };
 		B787F2032892E50700AE784B /* DisplayLink in Frameworks */ = {isa = PBXBuildFile; productRef = B787F2022892E50700AE784B /* DisplayLink */; };
 		B7923B8B28E9C89300D8F66F /* AnimatePositionToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7923B8A28E9C89300D8F66F /* AnimatePositionToolView.swift */; };
 		B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */; };
@@ -117,6 +118,8 @@
 		B7C748A128E377F600E270FB /* ScaleToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C748A028E377F600E270FB /* ScaleToolView.swift */; };
 		B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C748A228E37C0D00E270FB /* OrientToolView.swift */; };
 		B7C748A728E5647800E270FB /* ComponentTreeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C748A628E5647800E270FB /* ComponentTreeNavigationView.swift */; };
+		B7C9D6C328FD256600621BA1 /* AnimatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C9D6C228FD256600621BA1 /* AnimatorViewModel.swift */; };
+		B7C9D6C528FD30BA00621BA1 /* IntegerUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C9D6C428FD30BA00621BA1 /* IntegerUtil.swift */; };
 		B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB327310DFC005C9F82 /* BindingUtil.swift */; };
 		B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */; };
 		B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */; };
@@ -266,6 +269,7 @@
 		B7791DA42726768B00E0C934 /* FloatingPointUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPointUtil.swift; sourceTree = "<group>"; };
 		B7791DB92726821200E0C934 /* SceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneView.swift; sourceTree = "<group>"; };
 		B77CBD4F289C54EC0040B5EC /* EdgeInsetsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsetsUtil.swift; sourceTree = "<group>"; };
+		B787799428FC36E500E3CDA7 /* RandomAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAnimatorView.swift; sourceTree = "<group>"; };
 		B7923B8A28E9C89300D8F66F /* AnimatePositionToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatePositionToolView.swift; sourceTree = "<group>"; };
 		B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphicsUtil.swift; sourceTree = "<group>"; };
 		B7AA99E127B5C1430033B459 /* ComparableUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparableUtil.swift; sourceTree = "<group>"; };
@@ -304,6 +308,8 @@
 		B7C748A028E377F600E270FB /* ScaleToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleToolView.swift; sourceTree = "<group>"; };
 		B7C748A228E37C0D00E270FB /* OrientToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientToolView.swift; sourceTree = "<group>"; };
 		B7C748A628E5647800E270FB /* ComponentTreeNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentTreeNavigationView.swift; sourceTree = "<group>"; };
+		B7C9D6C228FD256600621BA1 /* AnimatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorViewModel.swift; sourceTree = "<group>"; };
+		B7C9D6C428FD30BA00621BA1 /* IntegerUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerUtil.swift; sourceTree = "<group>"; };
 		B7D19EB327310DFC005C9F82 /* BindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingUtil.swift; sourceTree = "<group>"; };
 		B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAnimationUtil.swift; sourceTree = "<group>"; };
 		B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureUtil.swift; sourceTree = "<group>"; };
@@ -477,13 +483,12 @@
 		B73A700128840CBE0043F9FF /* Animator */ = {
 			isa = PBXGroup;
 			children = (
+				B787799328FC36C600E3CDA7 /* Pan */,
 				B73A700228840DB70043F9FF /* AnimatorsView.swift */,
-				B73A700428841C2E0043F9FF /* PanAnimatorView.swift */,
-				B73A7018288BCC280043F9FF /* PanAnimatorSetBoundsView.swift */,
-				B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */,
-				B7E30F5128905A1400224E09 /* PanAnimatorViewGraphView.swift */,
 				B7E30F5528906D4800224E09 /* SignalGraphView.swift */,
 				B757DB7528A80F0B00BB5DB4 /* AnimatorSelector.swift */,
+				B787799428FC36E500E3CDA7 /* RandomAnimatorView.swift */,
+				B7C9D6C228FD256600621BA1 /* AnimatorViewModel.swift */,
 			);
 			path = Animator;
 			sourceTree = "<group>";
@@ -623,6 +628,17 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		B787799328FC36C600E3CDA7 /* Pan */ = {
+			isa = PBXGroup;
+			children = (
+				B73A700428841C2E0043F9FF /* PanAnimatorView.swift */,
+				B73A7018288BCC280043F9FF /* PanAnimatorSetBoundsView.swift */,
+				B7E30F4C288E76BA00224E09 /* PanAnimatorViewBoundsView.swift */,
+				B7E30F5128905A1400224E09 /* PanAnimatorViewGraphView.swift */,
+			);
+			path = Pan;
+			sourceTree = "<group>";
+		};
 		B7AA99E927B7F2FE0033B459 /* ComponentTree */ = {
 			isa = PBXGroup;
 			children = (
@@ -662,6 +678,7 @@
 			children = (
 				B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */,
 				B7B711D428C108D70077C7CD /* LookCategories.swift */,
+				B7C9D6C428FD30BA00621BA1 /* IntegerUtil.swift */,
 			);
 			path = Spirit;
 			sourceTree = "<group>";
@@ -903,6 +920,7 @@
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
 				B7B711EC28C70ACC0077C7CD /* SPTPlayViewController.mm in Sources */,
 				B7B711EE28C70B1B0077C7CD /* SPTPlayView.swift in Sources */,
+				B787799528FC36E500E3CDA7 /* RandomAnimatorView.swift in Sources */,
 				B7C748A128E377F600E270FB /* ScaleToolView.swift in Sources */,
 				B7B711DC28C13B570077C7CD /* Materials.cpp in Sources */,
 				B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */,
@@ -944,6 +962,7 @@
 				B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */,
 				B7E30F5628906D4800224E09 /* SignalGraphView.swift in Sources */,
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
+				B7C9D6C528FD30BA00621BA1 /* IntegerUtil.swift in Sources */,
 				B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */,
 				B7B711D128BC96430077C7CD /* ComponentSetupViewProvider.swift in Sources */,
 				B736450427B3BA1100FAD433 /* ComponentViewProvider.swift in Sources */,
@@ -984,6 +1003,7 @@
 				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
 				B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */,
 				B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */,
+				B7C9D6C328FD256600621BA1 /* AnimatorViewModel.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,
 				B73A7014288736370043F9FF /* SPTAnimatorUtil.swift in Sources */,
 				B73E47E627D00D4700CB0AFC /* SPTPositionUtil.swift in Sources */,

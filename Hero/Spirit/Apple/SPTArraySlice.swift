@@ -32,13 +32,14 @@ extension SPTArraySlice {
         return _data![position]
     }
     
-    public func index(before i: Int) -> Int {
-        i - 1
+    public func formIndex(after i: inout Int) {
+        i = i + 1
     }
     
-    public func index(after i: Int) -> Int {
-        i + 1
+    public func formIndex(before i: inout Int) {
+        i = i - 1
     }
+    
     
 }
 
