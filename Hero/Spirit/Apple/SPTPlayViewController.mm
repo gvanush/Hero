@@ -16,6 +16,7 @@
 @interface SPTPlayViewController () <MTKViewDelegate> {
     SPTAnimatorEvaluationContext _animatorEvaluationContext;
     spt::Renderer _renderer;
+    CFTimeInterval _startTime;
 }
 
 @end
@@ -43,6 +44,15 @@
     self.mtkView.delegate = self;
     [self.view addSubview: self.mtkView];
     [self updateViewportSize: self.mtkView.drawableSize];
+    
+    _animatorEvaluationContext.samplingRate = self.mtkView.preferredFramesPerSecond;
+}
+
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear: animated];
+    
+    _startTime = CACurrentMediaTime();
 }
 
 // MARK: MTKViewDelegate
@@ -57,7 +67,9 @@
     auto scene = static_cast<spt::PlayableScene*>(self.sceneHandle);
     scene->update();
     
+    _animatorEvaluationContext.time = CACurrentMediaTime() - _startTime;
     scene->evaluateAnimators(_animatorEvaluationContext);
+    
     
     self.renderingContext.cameraPosition = spt::Position::getXYZ(scene->registry, self.viewCameraEntity);
     self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(scene->registry, self.viewCameraEntity);

@@ -332,7 +332,7 @@ fileprivate struct BoundsView: View {
 struct PanAnimatorSetAreaView_Previews: PreviewProvider {
     static var previews: some View {
         PanAnimatorSetBoundsView(model: .init(animatorId:
-                                                SPTAnimator.make(SPTAnimator(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+                                                SPTAnimator.make(SPTAnimator(name: "Pan 1", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
                                                  ))
     }
 }

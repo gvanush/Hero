@@ -22,6 +22,18 @@ extension SPTAnimatorIdSlice: SPTArraySlice {
 
 }
 
+extension SPTAnimatorSource {
+    
+    init(panWithAxis axis: SPTPanAnimatorSourceAxis, bottomLeft: simd_float2 , topRight: simd_float2) {
+        self.init(type: .pan, .init(pan: .init(bottomLeft: bottomLeft, topRight: topRight, axis: axis)))
+    }
+    
+    init(randomWithSeed seed: UInt32, frequency: Float) {
+        self.init(type: .random, .init(random: .init(seed: seed, frequency: frequency)))
+    }
+    
+}
+
 extension SPTAnimator: Equatable {
     
     init(name: String, source: SPTAnimatorSource) {

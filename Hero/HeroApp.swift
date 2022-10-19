@@ -27,8 +27,8 @@ struct HeroApp: App {
         UIToolbar.appearance().scrollEdgeAppearance = toolbarAppearance
         UIToolbar.appearance().compactScrollEdgeAppearance = toolbarAppearance
         
-        _ = SPTAnimator.make(.init(name: "Pan.0", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
-        _ = SPTAnimator.make(.init(name: "Random.1", source: SPTAnimatorSourceMakeRandom(1)))
+        _ = SPTAnimator.make(.init(name: "Pan.0", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
+        _ = SPTAnimator.make(.init(name: "Random.1", source: .init(randomWithSeed: 1, frequency: 3.0)))
     }
     
     var body: some SwiftUI.Scene {

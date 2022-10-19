@@ -70,11 +70,11 @@ struct AnimatorsView: View {
                 ToolbarItem(placement: .bottomBar) {
                     Menu {
                         Button("Random") {
-                            let animatorId = model.makeAnimator(SPTAnimator(name: "Random.\(SPTAnimator.getCount())", source: SPTAnimatorSourceMakeRandom(.randomInFullRange())))
+                            let animatorId = model.makeAnimator(.init(name: "Random.\(SPTAnimator.getCount())", source: .init(randomWithSeed: .randomInFullRange(), frequency: 1.0)))
                             model.discloseAnimator(id: animatorId)
                         }
                         Button("Pan") {
-                            let animatorId = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimator.getCount())", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+                            let animatorId = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimator.getCount())", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
                             model.discloseAnimator(id: animatorId)
                         }
                     } label: {

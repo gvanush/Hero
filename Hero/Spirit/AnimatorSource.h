@@ -31,6 +31,7 @@ typedef struct {
 
 typedef struct {
     uint32_t seed;
+    float frequency;
 } SPTAnimatorSourceRandom;
 
 typedef struct {
@@ -40,9 +41,6 @@ typedef struct {
         SPTAnimatorSourceRandom random;
     };
 } SPTAnimatorSource;
-
-SPTAnimatorSource SPTAnimatorSourceMakePan(SPTPanAnimatorSourceAxis axis, simd_float2 bottomLeft, simd_float2 topRight);
-SPTAnimatorSource SPTAnimatorSourceMakeRandom(uint32_t seed);
 
 bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs);
 

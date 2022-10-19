@@ -50,7 +50,7 @@ public:
 private:
     
     float evaluatePan(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
-    float evaluateRandom(SPTAnimatorId id);
+    float evaluateRandom(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
     
     void notifyCountListeners(size_t newValue);
     

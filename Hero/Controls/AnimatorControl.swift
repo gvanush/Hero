@@ -66,11 +66,9 @@ struct AnimatorControl_Previews: PreviewProvider {
     }
     
     static var previews: some View {
-        
-        let id1 = SPTAnimator.make(.init(name: "TestAnimator1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
-        _ = SPTAnimator.make(.init(name: "TestAnimator2", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
-        _ = SPTAnimator.make(.init(name: "TestAnimator3", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
-        
+        let id1 = SPTAnimator.make(.init(name: "TestAnimator.1", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
+        _ = SPTAnimator.make(.init(name: "TestAnimator.2", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
+        _ = SPTAnimator.make(.init(name: "TestAnimator.3", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
         return ContentView(animatorId: id1)
     }
 }

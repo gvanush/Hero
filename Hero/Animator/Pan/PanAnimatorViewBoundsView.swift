@@ -107,7 +107,7 @@ struct PanAnimatorViewBoundsView: View {
 
 struct PanAnimatorViewBoundsView_Previews: PreviewProvider {
     static var previews: some View {
-        let animatorId = SPTAnimator.make(.init(name: "Pan 1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+        let animatorId = SPTAnimator.make(.init(name: "Pan 1", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
         return PanAnimatorViewBoundsView(model: PanAnimatorViewBoundsViewModel(animatorId: animatorId))
     }
 }

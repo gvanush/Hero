@@ -19,6 +19,8 @@ SPT_EXTERN_C_BEGIN
 
 typedef struct {
     simd_float2 panLocation;
+    double time;
+    long samplingRate;
 } SPTAnimatorEvaluationContext;
 
 typedef struct {

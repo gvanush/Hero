@@ -11,8 +11,8 @@ import DisplayLink
 import Combine
 
 
-struct SignalSample {
-    var value: Float?
+fileprivate struct SignalSample {
+    var valueItem: SignalValueItem?
     let timestamp: TimeInterval
 }
 
@@ -61,31 +61,45 @@ fileprivate struct SignalGraph<V>: Shape where V: RandomAccessCollection, V.Elem
         
         var slice = samples[samples.startIndex..<samples.endIndex]
         
-        outer: while var index = slice.lastIndex(where: { $0.value != nil }) {
+        outer: while var index = slice.lastIndex(where: { $0.valueItem != nil }) {
             
             var x = getX(samples[index].timestamp)
-            var y = getY(samples[index].value!)
+            guard x >= rect.minX else {
+                break
+            }
+            
+            let lastValueItem = samples[index].valueItem!
+            var y = getY(lastValueItem.value)
             
             path.move(to: .init(x: x, y: y))
-            if x >= rect.minX {
-                path.addLine(to: .init(x: x, y: y)) // for drawing samples without neighbors
+            path.addLine(to: .init(x: x, y: y)) // for drawing solo samples
+            
+            guard lastValueItem.interpolate else {
+                slice = samples[samples.startIndex..<index]
+                continue
             }
+            
             index = samples.index(before: index)
             
-            while index >= samples.startIndex && samples[index].value != nil {
+            while index >= samples.startIndex {
                 
-                if x < rect.minX {
+                guard x >= rect.minX else {
                     break outer
                 }
                 
+                guard let valueItem = samples[index].valueItem else {
+                    break
+                }
+                
                 x = getX(samples[index].timestamp)
-                y = getY(samples[index].value!)
+                y = getY(valueItem.value)
                 
                 path.addLine(to: .init(x: x, y: y))
                 
-                if index == samples.startIndex {
+                guard valueItem.interpolate else {
                     break
                 }
+                
                 index = samples.index(before: index)
             }
             
@@ -102,6 +116,11 @@ fileprivate struct SignalGraph<V>: Shape where V: RandomAccessCollection, V.Elem
     
 }
 
+struct SignalValueItem {
+    var value: Float
+    var interpolate = true
+}
+
 /*
  The goal is to draw the signal as it will appear when applied to the objects. Therefore signal is sampled
  on display sync rather than using the source samples of the signal. For example, gesture sampling rate
@@ -111,41 +130,45 @@ fileprivate struct SignalGraph<V>: Shape where V: RandomAccessCollection, V.Elem
 struct SignalGraphView: View {
     
     var name: String?
-    let connectSamples: Bool
-    let isActive: Bool
-    let resetGraph: Bool
-    let signal: () -> Float?
+    @Binding var resetGraph: Bool
+    let signal: (Int, TimeInterval) -> SignalValueItem?
     @State private var samples = Deque<SignalSample>()
     @State private var timer = Timer.publish(every: TimeInterval.infinity, on: .main, in: .common).autoconnect()
+    @State private var startTime: TimeInterval = 0.0
     
-    static let signalMaxFrequency = UIScreen.main.maximumFramesPerSecond
+    static let samplingRate = UIScreen.main.maximumFramesPerSecond
     static let lineWidth: CGFloat = 1.5
     
-    init(name: String? = nil, connectSamples: Bool = true, isActive: Bool = true, resetGraph: Bool = false, signal: @escaping () -> Float?) {
+    init(name: String? = nil, resetGraph: Binding<Bool> = .constant(false), signal: @escaping (Int, TimeInterval) -> SignalValueItem?) {
         self.name = name
-        self.resetGraph = resetGraph
-        self.isActive = isActive
-        self.connectSamples = connectSamples
+        _resetGraph = resetGraph
         self.signal = signal
     }
     
     var body: some View {
         GeometryReader { geometry in
-            SignalGraph(samples: samples, signalMaxFrequency: Self.signalMaxFrequency, lineWidth: Self.lineWidth)
+            SignalGraph(samples: samples, signalMaxFrequency: Self.samplingRate, lineWidth: Self.lineWidth)
                 .stroke(.primary, style: StrokeStyle(lineWidth: Self.lineWidth, lineCap: .round, lineJoin: .round))
                 .background { background }
                 .modifier(SizeModifier())
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .aspectRatio(contentMode: .fit)
-        .onFrame(isActive: isActive) { frame in
-            samples.append(.init(value: signal(), timestamp: frame.timestamp))
-            if !connectSamples {
-                samples.append(.init(value: nil, timestamp: frame.timestamp))
+        .onFrame { _ in
+            if resetGraph {
+                startTime = CACurrentMediaTime()
+                samples.removeAll()
+                resetGraph = false
+                return
             }
+            let time = CACurrentMediaTime() - startTime
+            samples.append(.init(valueItem: signal(Self.samplingRate, time), timestamp: time))
+        }
+        .onAppear {
+            startTime = CACurrentMediaTime()
         }
         .onPreferenceChange(SizePreferenceKey.self) { size in
-            timer = Timer.publish(every: graphTimespan(width: size.width, signalMaxFrequency: Self.signalMaxFrequency, lineWidth: Self.lineWidth), on: .main, in: .common).autoconnect()
+            timer = Timer.publish(every: graphTimespan(width: size.width, signalMaxFrequency: Self.samplingRate, lineWidth: Self.lineWidth), on: .main, in: .common).autoconnect()
         }
         .onReceive(timer) { _ in
             
@@ -158,9 +181,6 @@ struct SignalGraphView: View {
             } else {
                 samples.removeAll()
             }
-        }
-        .onChange(of: resetGraph) { _ in
-            samples.removeAll()
         }
     }
     

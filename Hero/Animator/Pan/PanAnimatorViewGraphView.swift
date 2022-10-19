@@ -52,8 +52,11 @@ struct PanAnimatorViewGraphView: View {
             GeometryReader { dargAreaGeometry in
                 ZStack {
                     Color.systemBackground
-                    SignalGraphView(name: model.axis.displayName) {
-                        animatorLastValue
+                    SignalGraphView(name: model.axis.displayName) { _, _ in
+                        if let value = animatorLastValue {
+                            return .init(value: value)
+                        }
+                        return nil
                     }
                     .padding()
                     Rectangle()
@@ -118,7 +121,7 @@ struct PanAnimatorViewGraphView: View {
 
 struct PanAnimatorViewSignalView_Previews: PreviewProvider {
     static var previews: some View {
-        let animatorId = SPTAnimator.make(.init(name: "Pan.1", source: SPTAnimatorSourceMakePan(.horizontal, .zero, .one)))
+        let animatorId = SPTAnimator.make(.init(name: "Pan.1", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
         return PanAnimatorViewGraphView(model: .init(animatorId: animatorId))
     }
 }

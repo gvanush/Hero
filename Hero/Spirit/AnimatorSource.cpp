@@ -7,13 +7,6 @@
 
 #include "AnimatorSource.h"
 
-SPTAnimatorSource SPTAnimatorSourceMakePan(SPTPanAnimatorSourceAxis axis, simd_float2 bottomLeft, simd_float2 topRight) {
-    return SPTAnimatorSource {SPTAnimatorSourceTypePan, {.pan = SPTAnimatorSourcePan {bottomLeft, topRight, axis}}};
-}
-
-SPTAnimatorSource SPTAnimatorSourceMakeRandom(uint32_t seed) {
-    return SPTAnimatorSource {SPTAnimatorSourceTypeRandom, {.random = SPTAnimatorSourceRandom {seed}}};
-}
 
 bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs) {
     if(lhs.type != rhs.type) {
