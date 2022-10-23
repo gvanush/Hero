@@ -23,8 +23,6 @@ struct AnimatorControl: View {
                 Image(systemName: "square.and.pencil")
                     .imageScale(.large)
             }
-            .tint(Color.objectSelectionColor)
-
         }
         .sheet(isPresented: $showsAnimatorSelector) {
             AnimatorSelector { animatorId in

@@ -77,6 +77,7 @@ fileprivate struct SelectedObjectControlsView: View {
     var body: some View {
         VStack {
             FloatSelector(value: $model.position[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+                .tint(Color.objectSelectionColor)
                 .transition(.identity)
                 .id(model.axis.rawValue)
             PropertySelector(selected: $model.axis)

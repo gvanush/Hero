@@ -388,8 +388,7 @@ fileprivate struct Ruler: View {
                     
                 }
             }
-            .stroke(lineWidth: 1.0)
-            .foregroundColor(Color.objectSelectionColor)
+            .stroke(.tint, lineWidth: 1.0)
         }
     }
     

@@ -49,36 +49,42 @@ struct PanAnimatorViewGraphView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            GeometryReader { dargAreaGeometry in
-                ZStack {
-                    Color.systemBackground
+            ZStack {
+                VStack {
                     SignalGraphView { _, _ in
                         if let value = animatorLastValue {
                             return .init(value: value)
                         }
                         return nil
                     }
-                    .padding()
+                    Spacer()
+                    Text("Pan in the marked area \(model.axis == .horizontal ? "horizontally" : "vertically")")
+                        .multilineTextAlignment(.center)
+                        .font(.caption)
+                        .foregroundColor(.secondaryLabel)
+                }
+                .padding()
+                GeometryReader { dargAreaGeometry in
                     Rectangle()
                         .foregroundColor(.ultraLightAccentColor)
                         .frame(size: model.boundsSizeOnScreenSize(dargAreaGeometry.size))
                         .offset(model.boundsOffsetOnScreenSize(dargAreaGeometry.size))
-                }
-                .gesture(dragGesture(geometry: dargAreaGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
-                .defersSystemGestures(on: .all)
-                .onChange(of: isDragging) { [isDragging] newValue in
-                    if newValue {
-                        if !isDragging {
-                            shouldSample = model.isInBounds(dragValue: dragValue!, geometry: dargAreaGeometry)
+                        .gesture(dragGesture(geometry: dargAreaGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
+                        .defersSystemGestures(on: .all)
+                        .onChange(of: isDragging) { [isDragging] newValue in
+                            if newValue {
+                                if !isDragging {
+                                    shouldSample = model.isInBounds(dragValue: dragValue!, geometry: dargAreaGeometry)
+                                }
+                            } else {
+                                dragValue = nil
+                                animatorLastValue = nil
+                                shouldSample = false
+                            }
                         }
-                    } else {
-                        dragValue = nil
-                        animatorLastValue = nil
-                        shouldSample = false
-                    }
                 }
+                .ignoresSafeArea()
             }
-            .ignoresSafeArea()
         }
         .statusBarHidden()
     }

@@ -146,6 +146,7 @@ struct EditAnimatorBindingView<AP>: View where AP: SPTAnimatableProperty {
                 FloatSelector(value: $model.binding.valueAt1, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
             }
         }
+        .tint(Color.objectSelectionColor)
         .transition(.identity)
         .onAppear {
             model.onAppear()

@@ -80,6 +80,7 @@ fileprivate struct SelectedObjectControlsView: View {
     var body: some View {
         VStack {
             FloatSelector(value: $model.eulerRotation[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: model.rotationFormatter)
+                .tint(Color.objectSelectionColor)
                 .transition(.identity)
                 .id(model.axis.rawValue)
                 .id(model.object)
