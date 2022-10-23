@@ -7,7 +7,30 @@
 
 import SwiftUI
 
+
 struct FloatSelector: View {
+    
+    struct ValueTransformer {
+        
+        let transform: (Float) -> Float
+        let inverse: (Float) -> Float
+        
+        static let identity = ValueTransformer(transform: { $0 }, inverse: { $0 })
+        static let frequency = ValueTransformer { value in
+            if value >= 0.0 {
+                return value + 1.0
+            } else {
+                return 1.0 / (1.0 - value)
+            }
+        } inverse: { freq in
+            if freq >= 1.0 {
+                return freq - 1.0
+            } else {
+                return 1.0 - 1.0 / freq
+            }
+        }
+
+    }
     
     enum Scale: Float, CaseIterable, Identifiable {
         case _0_1 = 0.1
@@ -52,6 +75,7 @@ struct FloatSelector: View {
     }
     
     @Binding var value: Float
+    let valueTransformer: ValueTransformer
     @Binding var scale: Scale
     @Binding var isSnappingEnabled: Bool
     @State private var state = EditingState.idle
@@ -65,44 +89,25 @@ struct FloatSelector: View {
     @State private var snapInitialValue: Float = 0.0
     @State private var snapDeltaValue: Float = 0.0
     
-    @State private var formatter: Formatter
-    
-    typealias FormatterSubjectProvider = (Float) -> NSObject
-    private var formatterSubjectProvider: FormatterSubjectProvider?
+    private let formatter: FloatFormatter
     
     @State private var feedbackGenerator = UISelectionFeedbackGenerator()
     
     @State private var rawValue: Float {
         willSet {
-            if isSnappingEnabled {
-                value = roundedValue(newValue)
-            } else {
-                value = newValue
-            }
+            value = valueTransformer.transform(isSnappingEnabled ? roundedValue(newValue) : newValue)
         }
     }
         
-    init(value: Binding<Float>, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>) {
+    init(value: Binding<Float>, valueTransformer: ValueTransformer = .identity, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>, formatter: FloatFormatter = BasicFloatFormatter()) {
         _value = value
+        self.valueTransformer = valueTransformer
         _scale = scale
         _isSnappingEnabled = isSnappingEnabled
-        self.rawValue = value.wrappedValue
-        self.formatter = Self.defaultNumberFormatter(scale: scale.wrappedValue)
-        self.formatterSubjectProvider = nil
-    }
-    
-    init(value: Binding<Float>, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>, measurementFormatter: MeasurementFormatter, formatterSubjectProvider: @escaping FormatterSubjectProvider) {
-        _value = value
-        _scale = scale
-        _isSnappingEnabled = isSnappingEnabled
-        self.rawValue = value.wrappedValue
-        self.formatter = measurementFormatter
-        self.formatterSubjectProvider = formatterSubjectProvider
+        self.rawValue = valueTransformer.inverse(value.wrappedValue)
+        self.formatter = formatter
         
-        numberFormatter.roundingMode = .halfEven
-        numberFormatter.maximumFractionDigits = self.scale.fractionDigits
-        numberFormatter.minimumFractionDigits = self.scale.fractionDigits
-        
+        self.formatter.updateFractionDigits(self.isSnappingEnabled ? self.scale.snappedFractionDigits : self.scale.fractionDigits)
     }
     
     var body: some View {
@@ -121,6 +126,8 @@ struct FloatSelector: View {
                     }
                     .visible(!(state == .dragging || state == .scrolling))
                     valueView
+                        .id(scale)
+                        .id(isSnappingEnabled)
                 }
                 .padding(Self.padding)
                 pointer
@@ -136,22 +143,23 @@ struct FloatSelector: View {
         .onAppear {
             feedbackGenerator.prepare()
         }
-        .onChange(of: scale) { _ in
+        .onChange(of: scale) { newScale in
             stopScrolling()
-            updateFormatter(fractionDigits: scale.fractionDigits)
-            // NOTE: This is needed because updating formatter does not trigger value text refresh
-            rawValue = rawValue.nextUp
+            formatter.updateFractionDigits(isSnappingEnabled ? newScale.snappedFractionDigits : newScale.fractionDigits)
+            if isSnappingEnabled {
+                startSnapping()
+            }
         }
         .onChange(of: isSnappingEnabled) { newValue in
             stopScrolling()
             if newValue {
-                updateFormatter(fractionDigits: scale.snappedFractionDigits)
                 startSnapping()
+                formatter.updateFractionDigits(scale.snappedFractionDigits)
             } else {
-                updateFormatter(fractionDigits: scale.fractionDigits)
+                formatter.updateFractionDigits(scale.fractionDigits)
             }
         }
-        .onChange(of: value) { [value] newValue in
+        .onChange(of: rawValue) { [rawValue] newRawValue in
             guard state == .dragging || state == .scrolling else { return }
             
             let playFeedback = {
@@ -159,6 +167,8 @@ struct FloatSelector: View {
                 feedbackGenerator.prepare()
             }
             
+            let value = isSnappingEnabled ? roundedValue(rawValue) : rawValue
+            let newValue = isSnappingEnabled ? roundedValue(newRawValue) : newRawValue
             if newValue > value {
                 if floor(value / scale.rawValue) != floor(newValue / scale.rawValue) {
                     playFeedback()
@@ -205,7 +215,7 @@ struct FloatSelector: View {
         let valueText = { () -> Text in
             // This is to eliminate minus zero being displayed (no option found in formatter API)
             let value = (value == 0.0 ? 0.0 : value)
-            return formatter is MeasurementFormatter ? Text(formatterSubjectProvider!(value), formatter: formatter) : Text(NSNumber(value: value), formatter: formatter)
+            return Text(NSNumber(value: value), formatter: formatter)
         }
         
         return HStack {
@@ -302,31 +312,6 @@ struct FloatSelector: View {
         }
     }
     
-    private func updateFormatter(fractionDigits: Int) {
-        let numberFormatter = numberFormatter
-        
-        if let measurementFormatter = formatter as? MeasurementFormatter {
-            // NOTE: This is needed because measurement formatter is buggy in a sense that
-            // changing underlying number formatter directly does not have any effect
-            // after first formatting is requested, therefore new one is supllied
-            let newNumberFormatter = NumberFormatter()
-            newNumberFormatter.minimumFractionDigits = fractionDigits
-            newNumberFormatter.maximumFractionDigits = fractionDigits
-            measurementFormatter.numberFormatter = newNumberFormatter
-        } else {
-            numberFormatter.minimumFractionDigits = fractionDigits
-            numberFormatter.maximumFractionDigits = fractionDigits
-        }
-    }
-    
-    private var numberFormatter: NumberFormatter {
-        if let measurementFormatter = formatter as? MeasurementFormatter {
-            return measurementFormatter.numberFormatter
-        } else {
-            return formatter as! NumberFormatter
-        }
-    }
-    
     private func deltaValue(translation: CGFloat) -> Float {
         -scale.rawValue * Float(translation / Self.rulerUnitSize)
     }
@@ -354,14 +339,6 @@ struct FloatSelector: View {
         case ._10:
             return (value / 10.0).rounded() * 10.0
         }
-    }
-    
-    static func defaultNumberFormatter(scale: Scale) -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.roundingMode = .halfEven
-        formatter.maximumFractionDigits = scale.fractionDigits
-        formatter.minimumFractionDigits = scale.fractionDigits
-        return formatter
     }
     
     static let height = 75.0

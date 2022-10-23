@@ -7,28 +7,34 @@
 
 import SwiftUI
 
+fileprivate let componentViewHeight = 38.0
+fileprivate let defaultNavigationAnimation = Animation.easeOut(duration: 0.25)
 
-struct ComponentTreeNavigationView: View {
+struct ComponentTreeNavigationView<RC>: View where RC: Component {
 
-    let rootComponent: Component
+    let rootComponent: RC
     @Binding var activeComponent: Component
-    let viewProvider: ComponentViewProvider
+    let viewProvider: ComponentViewProvider<RC>
     let setupViewProvider: ComponentSetupViewProvider
     @State private var inSetupComponent: Component?
     
     var body: some View {
         VStack(spacing: 8.0) {
             
-            activeComponent.accept(viewProvider)
+            if rootComponent === activeComponent {
+                viewProvider.viewForRoot(rootComponent)
+            } else {
+                activeComponent.accept(viewProvider)
+            }
             
             ComponentView(component: rootComponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                 .padding(3.0)
-                .frame(height: Self.componentViewHeight)
+                .frame(height: componentViewHeight)
                 .background(Material.thin)
                 .cornerRadius(SelectorConst.cornerRadius)
+                .compositingGroup()
+                .shadow(radius: 1.0)
         }
-        .compositingGroup()
-        .shadow(radius: 1.0)
         .sheet(item: $inSetupComponent) { component in
             component.accept(setupViewProvider) {
                 if component.isSetup {
@@ -49,9 +55,7 @@ struct ComponentTreeNavigationView: View {
         }
         
     }
- 
-    static let componentViewHeight = 38.0
-    static let defaultNavigationAnimation = Animation.easeOut(duration: 0.25)
+
 }
 
 
@@ -80,7 +84,7 @@ fileprivate struct ComponentView: View {
                 .scaleEffect(x: textHorizontalScale)
                 .visible(isChildOfActive)
                 .onTapGesture {
-                    withAnimation(ComponentTreeNavigationView.defaultNavigationAnimation) {
+                    withAnimation(defaultNavigationAnimation) {
                         if component.isSetup {
                             activeComponent = component
                         } else {
@@ -108,7 +112,7 @@ fileprivate struct ComponentView: View {
         .visible(isDisclosed || isChildOfActive)
         .onChange(of: component.isSetup, perform: { newValue in
             if isActive && !newValue {
-                withAnimation(ComponentTreeNavigationView.defaultNavigationAnimation) {
+                withAnimation(defaultNavigationAnimation) {
                     activeComponent = activeComponent.parent!
                 }
             }
@@ -170,7 +174,7 @@ fileprivate struct ComponentView: View {
                         .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: index == component.selectedPropertyIndex)
                 }
                 .onTapGesture {
-                    withAnimation(ComponentTreeNavigationView.defaultNavigationAnimation) {
+                    withAnimation(defaultNavigationAnimation) {
                         component.selectedPropertyIndex = index
                     }
                 }

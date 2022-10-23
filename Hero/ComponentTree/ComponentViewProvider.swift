@@ -9,19 +9,14 @@ import Foundation
 import SwiftUI
 
 
-protocol ComponentViewProvider {
+class ComponentViewProvider<RC> {
     
-    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>) -> AnyView? where AP: SPTAnimatableProperty
+    func viewForRoot(_ root: RC) -> AnyView? { nil }
     
-}
-
-
-extension ComponentViewProvider {
-
     func viewFor<AP>(_ component: AnimatorBindingComponent<AP>) -> AnyView? where AP: SPTAnimatableProperty { nil }
     
 }
 
-struct EmptyComponentViewProvider: ComponentViewProvider {
+final class EmptyComponentViewProvider<RC>: ComponentViewProvider<RC> {
     
 }

@@ -8,9 +8,9 @@
 import SwiftUI
 
 
-struct MeshObjectComponentViewProvider: ComponentViewProvider {
+class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
     
-    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>) -> AnyView? where AP: SPTAnimatableProperty {
+    override func viewFor<AP>(_ component: AnimatorBindingComponent<AP>) -> AnyView? where AP: SPTAnimatableProperty {
         AnyView(AnimatorBindingComponentView(component: component))
     }
 

@@ -70,7 +70,8 @@ struct PanAnimatorView: View {
                 } label: {
                     Image(systemName: "waveform.path.ecg.rectangle")
                 }
-                Spacer()
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button {
                     model.destroy()
                 } label: {

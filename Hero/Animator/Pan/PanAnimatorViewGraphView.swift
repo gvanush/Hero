@@ -52,7 +52,7 @@ struct PanAnimatorViewGraphView: View {
             GeometryReader { dargAreaGeometry in
                 ZStack {
                     Color.systemBackground
-                    SignalGraphView(name: model.axis.displayName) { _, _ in
+                    SignalGraphView { _, _ in
                         if let value = animatorLastValue {
                             return .init(value: value)
                         }

@@ -13,6 +13,7 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
+    let rotationFormatter = AngleFormatter()
     
     @SPTObservedComponent private var sptOrientation: SPTOrientation
     private var guideObject: SPTObject?
@@ -78,7 +79,7 @@ fileprivate struct SelectedObjectControlsView: View {
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.eulerRotation[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, measurementFormatter: .angleFormatter, formatterSubjectProvider: MeasurementFormatter.angleSubjectProvider)
+            FloatSelector(value: $model.eulerRotation[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: model.rotationFormatter)
                 .transition(.identity)
                 .id(model.axis.rawValue)
                 .id(model.object)

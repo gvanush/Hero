@@ -54,7 +54,7 @@ fileprivate struct SignalGraph<V>: Shape where V: RandomAccessCollection, V.Elem
             rect.maxX - graphWidth(timespan: latestSampleTimestamp - timestamp, signalMaxFrequency: signalMaxFrequency, lineWidth: lineWidth)
         }
         let getY = { (value: Float) in
-            CGFloat(1.0 - value) * rect.height
+            0.5 * lineWidth + CGFloat(1.0 - value) * (rect.height - lineWidth)
         }
         
         var path = Path()
@@ -129,19 +129,17 @@ struct SignalValueItem {
  */
 struct SignalGraphView: View {
     
-    var name: String?
-    @Binding var resetGraph: Bool
     let signal: (Int, TimeInterval) -> SignalValueItem?
     @State private var samples = Deque<SignalSample>()
     @State private var timer = Timer.publish(every: TimeInterval.infinity, on: .main, in: .common).autoconnect()
-    @State private var startTime: TimeInterval = 0.0
+    @State private var startTime: TimeInterval?
+    @State private var time: TimeInterval = 0.0
+    @State private var fps: Double = 1.0
     
     static let samplingRate = UIScreen.main.maximumFramesPerSecond
     static let lineWidth: CGFloat = 1.5
     
-    init(name: String? = nil, resetGraph: Binding<Bool> = .constant(false), signal: @escaping (Int, TimeInterval) -> SignalValueItem?) {
-        self.name = name
-        _resetGraph = resetGraph
+    init(signal: @escaping (Int, TimeInterval) -> SignalValueItem?) {
         self.signal = signal
     }
     
@@ -149,23 +147,23 @@ struct SignalGraphView: View {
         GeometryReader { geometry in
             SignalGraph(samples: samples, signalMaxFrequency: Self.samplingRate, lineWidth: Self.lineWidth)
                 .stroke(.primary, style: StrokeStyle(lineWidth: Self.lineWidth, lineCap: .round, lineJoin: .round))
+                .clipped()
                 .background { background }
                 .modifier(SizeModifier())
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .aspectRatio(contentMode: .fit)
-        .onFrame { _ in
-            if resetGraph {
-                startTime = CACurrentMediaTime()
+        .onFrame { frame in
+            guard let startTime = startTime else {
+                startTime = frame.timestamp
+                time = 0.0
                 samples.removeAll()
-                resetGraph = false
                 return
             }
-            let time = CACurrentMediaTime() - startTime
+            let lastTime = time
+            time = frame.timestamp - startTime
+            fps = 1.0 / (time - lastTime)
             samples.append(.init(valueItem: signal(Self.samplingRate, time), timestamp: time))
-        }
-        .onAppear {
-            startTime = CACurrentMediaTime()
         }
         .onPreferenceChange(SizePreferenceKey.self) { size in
             timer = Timer.publish(every: graphTimespan(width: size.width, signalMaxFrequency: Self.samplingRate, lineWidth: Self.lineWidth), on: .main, in: .common).autoconnect()
@@ -186,37 +184,80 @@ struct SignalGraphView: View {
     
     var background: some View {
         ZStack {
-            Color.systemFill
             VStack {
                 HStack {
+                    Group {
+                        Text(Measurement(value: fps, unit: UnitFrequency.framesPerSecond), formatter: Self.fpsFormatter)
+                        Divider()
+                            .padding(.vertical, 4.0)
+                        Text(Measurement(value: time, unit: UnitDuration.seconds), formatter: Self.timeFormatter)
+                    }
+                    .font(.callout.monospacedDigit())
+                    .foregroundColor(.tertiaryLabel)
                     Spacer()
                     Text("1")
-                        .font(.callout)
-                        .foregroundColor(.tertiaryLabel)
+                        .font(.caption)
+                        .foregroundColor(.secondaryLabel)
                 }
+                .fixedSize(horizontal: false, vertical: true)
                 Spacer()
                 ZStack {
                     HStack {
                         Spacer()
                         Text("0")
-                            .font(.callout)
-                            .foregroundColor(.tertiaryLabel)
+                            .font(.caption)
+                            .foregroundColor(.secondaryLabel)
                     }
-                    if let name = name {
-                        HStack(spacing: 4.0) {
-                            Spacer()
-                            Image(systemName: "waveform.path.ecg")
-                            Text(name)
-                            Spacer()
+                    HStack(spacing: 2.0) {
+                        Spacer()
+                        if let valueItem = samples.last?.valueItem {
+                            Group {
+                                Image(systemName: "bolt")
+                                    .imageScale(.small)
+                                Text(NSNumber(value: valueItem.value), formatter: Self.valueFormatter)
+                            }
+                            .font(.callout.monospacedDigit())
+                            .foregroundColor(.secondaryLabel)
                         }
-                        .font(.callout)
-                        .foregroundColor(.secondaryLabel)
+                        Spacer()
                     }
                 }
             }
             .padding(.horizontal, 4.0)
         }
+        .background(content: {
+            Color.secondarySystemBackground
+        })
+        .cornerRadius(4.0)
+        .shadow(radius: 0.5)
     }
+    
+    static let timeFormatter = {
+        let formatter = MeasurementFormatter()
+        formatter.unitStyle = .medium
+        formatter.numberFormatter.roundingMode = .halfEven
+        formatter.numberFormatter.minimumFractionDigits = 1
+        formatter.numberFormatter.maximumFractionDigits = 1
+        return formatter
+    } ()
+    
+    static let fpsFormatter = {
+        let formatter = MeasurementFormatter()
+        formatter.unitStyle = .medium
+        formatter.unitOptions = .providedUnit
+        formatter.numberFormatter.roundingMode = .halfEven
+        formatter.numberFormatter.minimumFractionDigits = 0
+        formatter.numberFormatter.maximumFractionDigits = 0
+        return formatter
+    } ()
+    
+    static let valueFormatter = {
+        let formatter = NumberFormatter()
+        formatter.roundingMode = .halfEven
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        return formatter
+    } ()
     
 }
 

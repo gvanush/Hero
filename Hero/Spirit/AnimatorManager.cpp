@@ -21,14 +21,19 @@ std::uniform_real_distribution<float> uniformDistribution;
 struct RandomAnimatorState {
     
     explicit RandomAnimatorState(uint32_t seed)
-    : randomEngine{seed}
-    , step {0}
-    , lastValue{0.f} {
-        
+    : randomEngine {seed}
+    , lastValueGenerationTime {0.0}
+    , lastValue {uniformDistribution(randomEngine)} {
+    }
+    
+    void reset(uint32_t seed) {
+        randomEngine.seed(seed);
+        lastValueGenerationTime = 0.0;
+        lastValue = uniformDistribution(randomEngine);
     }
     
     std::minstd_rand randomEngine;
-    uint32_t step;
+    double lastValueGenerationTime;
     float lastValue;
 };
 
@@ -71,7 +76,7 @@ void AnimatorManager::updateAnimator(SPTAnimatorId id, const SPTAnimator& update
             break;
         case SPTAnimatorSourceTypeRandom: {
             if(animator.source.random.seed != updated.source.random.seed) {
-                _registry.get<RandomAnimatorState>(id).randomEngine.seed(updated.source.random.seed);
+                _registry.get<RandomAnimatorState>(id).reset(updated.source.random.seed);
             }
             break;
         }
@@ -132,7 +137,7 @@ bool AnimatorManager::validateAnimator(const SPTAnimator& animator) {
             return animator.source.pan.bottomLeft.x >= 0.f && animator.source.pan.bottomLeft.x <= animator.source.pan.topRight.x && animator.source.pan.topRight.x <= 1.f && animator.source.pan.bottomLeft.y >= 0.f && animator.source.pan.bottomLeft.y <= animator.source.pan.topRight.y && animator.source.pan.topRight.y <= 1.f;
         }
         case SPTAnimatorSourceTypeRandom: {
-            return true;
+            return animator.source.random.frequency >= 0.f;
         }
     }
 }
@@ -167,13 +172,10 @@ float AnimatorManager::evaluatePan(const SPTAnimator& animator, const SPTAnimato
 float AnimatorManager::evaluateRandom(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
     
     auto& state = _registry.get<RandomAnimatorState>(id);
-    const auto freq = std::min(animator.source.random.frequency, static_cast<float>(context.samplingRate));
-    const auto step = std::floor(context.time * freq);
-    bool setted = false;
-    while(step >= state.step) {
+    const auto period = 1.f / std::min(animator.source.random.frequency, static_cast<float>(context.samplingRate));
+    while((context.time - state.lastValueGenerationTime) >= period) {
         state.lastValue = uniformDistribution(state.randomEngine);
-        ++state.step;
-        setted = true;
+        state.lastValueGenerationTime += period;
     }
     return state.lastValue;
 }
@@ -185,10 +187,7 @@ void AnimatorManager::resetAnimator(SPTAnimatorId id) {
             break;
         }
         case SPTAnimatorSourceTypeRandom: {
-            auto& state = _registry.get<RandomAnimatorState>(id);
-            state.randomEngine.seed(animator.source.random.seed);
-            state.step = 0;
-            state.lastValue = 0.f;
+            _registry.get<RandomAnimatorState>(id).reset(animator.source.random.seed);
             break;
         }
     }
@@ -197,9 +196,7 @@ void AnimatorManager::resetAnimator(SPTAnimatorId id) {
 void AnimatorManager::resetAllAnimators() {
     _registry.view<SPTAnimator, RandomAnimatorState>().each([](auto entity, const auto& animator, auto& state) {
         assert(animator.source.type == SPTAnimatorSourceTypeRandom);
-        state.randomEngine.seed(animator.source.random.seed);
-        state.step = 0;
-        state.lastValue = 0.f;
+        state.reset(animator.source.random.seed);
     });
 }
 

@@ -21,12 +21,6 @@ struct ActionItem: Identifiable {
     let action: () -> Void
 }
 
-class ActionsViewModel: ObservableObject {
-    
-    
-    
-}
-
 struct ActionsView: View {
     
     let defaultActions: [ActionItem]

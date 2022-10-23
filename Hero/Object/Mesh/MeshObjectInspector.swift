@@ -30,20 +30,19 @@ class MeshObjectInspectorModel: ObservableObject {
         SPTMetadataGet(object).name
     }
     
-    let positionFormatter = FloatSelector.defaultNumberFormatter(scale: ._1)
+    let positionFormatter = PositionComponentFormatter()
     
     var position: SPTPosition {
         SPTPosition.get(object: object)
     }
     
-    let scaleFormatter = FloatSelector.defaultNumberFormatter(scale: ._10)
+    let scaleFormatter = ScaleComponentFormatter()
     
     var scale: SPTScale {
         SPTScale.get(object: object)
     }
     
-    let rotationFormatter = MeasurementFormatter.angleFormatter
-    let rotationSubjectProvider = MeasurementFormatter.angleSubjectProvider
+    let rotationFormatter = AngleFormatter()
     
     var orientation: SPTOrientation {
         SPTOrientation.get(object: object)
@@ -140,9 +139,9 @@ struct MeshObjectInspector: View {
     
     func orientationView() -> some View {
         Section("Orientation") {
-            SceneEditableParam(title: "X", valueText: Text(model.rotationSubjectProvider(model.orientation.euler.rotation.x), formatter: model.rotationFormatter), editAction: { self.onEditOrientation(axis: .x) })
-            SceneEditableParam(title: "Y", valueText: Text(model.rotationSubjectProvider(model.orientation.euler.rotation.y), formatter: model.rotationFormatter), editAction: { self.onEditOrientation(axis: .y) })
-            SceneEditableParam(title: "Z", valueText: Text(model.rotationSubjectProvider(model.orientation.euler.rotation.z), formatter: model.rotationFormatter), editAction: { self.onEditOrientation(axis: .z) })
+            SceneEditableParam(title: "X", valueText: Text(NSNumber(value: model.orientation.euler.rotation.x), formatter: model.rotationFormatter), editAction: { self.onEditOrientation(axis: .x) })
+            SceneEditableParam(title: "Y", valueText: Text(NSNumber(value: model.orientation.euler.rotation.y), formatter: model.rotationFormatter), editAction: { self.onEditOrientation(axis: .y) })
+            SceneEditableParam(title: "Z", valueText: Text(NSNumber(value: model.orientation.euler.rotation.z), formatter: model.rotationFormatter), editAction: { self.onEditOrientation(axis: .z) })
         }
     }
     
