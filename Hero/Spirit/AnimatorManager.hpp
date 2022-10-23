@@ -47,6 +47,9 @@ public:
     void resetAnimator(SPTAnimatorId id);
     void resetAllAnimators();
     
+    void onObjectPropertyBind(SPTAnimatorId animatorId, SPTObject object, SPTAnimatableObjectProperty property);
+    void onObjectPropertyUnbind(SPTAnimatorId animatorId, SPTObject object, SPTAnimatableObjectProperty property);
+    
 private:
     
     float evaluatePan(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);

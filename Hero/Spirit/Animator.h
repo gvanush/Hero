@@ -9,6 +9,7 @@
 
 #include "Base.h"
 #include "AnimatorSource.h"
+#include "ObjectProperty.h"
 
 #include <simd/simd.h>
 #include <limits.h>
@@ -27,6 +28,11 @@ typedef struct {
     SPTAnimatorSource source;
     char _name[kSPTAnimatorNameMaxLength + 1];
 } SPTAnimator;
+
+typedef struct {
+    SPTObject object;
+    SPTAnimatableObjectProperty property;
+} SPTObjectAnimatorBindingMetadataItem;
 
 typedef struct {
     const SPTAnimatorId* _Nullable _data;

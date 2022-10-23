@@ -7,9 +7,11 @@
 
 #include "AnimatorManager.hpp"
 #include "ComponentObserverUtil.hpp"
+#include "ObjectPropertyAnimatorBinding.h"
 
 #include <algorithm>
 #include <random>
+#include <vector>
 
 
 namespace spt {
@@ -17,6 +19,12 @@ namespace spt {
 namespace {
 
 std::uniform_real_distribution<float> uniformDistribution;
+
+struct AnimatorBindingMetadata {
+    
+    std::vector<SPTObjectAnimatorBindingMetadataItem> objectBindingMetadata;
+    
+};
 
 struct RandomAnimatorState {
     
@@ -51,6 +59,7 @@ SPTAnimatorId AnimatorManager::makeAnimator(const SPTAnimator& animator) {
     
     auto id = _registry.create();
     _registry.emplace<SPTAnimator>(id, animator);
+    _registry.emplace<AnimatorBindingMetadata>(id);
     
     switch (animator.source.type) {
         case SPTAnimatorSourceTypePan:
@@ -85,9 +94,15 @@ void AnimatorManager::updateAnimator(SPTAnimatorId id, const SPTAnimator& update
     animator = updated;
 }
 
-void AnimatorManager::destroyAnimator(SPTAnimatorId id) {
+void AnimatorManager::destroyAnimator(SPTAnimatorId animatorId) {
     notifyCountListeners(animatorsCount() - 1);
-    _registry.destroy(id);
+    
+    auto& metadata = _registry.get<AnimatorBindingMetadata>(animatorId);
+    for(const auto& item: metadata.objectBindingMetadata) {
+        SPTObjectPropertyUnbindAnimator(item.property, item.object);
+    }
+    
+    _registry.destroy(animatorId);
 }
 
 const SPTAnimator& AnimatorManager::getAnimator(SPTAnimatorId id) const {
@@ -198,6 +213,25 @@ void AnimatorManager::resetAllAnimators() {
         assert(animator.source.type == SPTAnimatorSourceTypeRandom);
         state.reset(animator.source.random.seed);
     });
+}
+
+void AnimatorManager::onObjectPropertyBind(SPTAnimatorId animatorId, SPTObject object, SPTAnimatableObjectProperty property) {
+    auto& metadata = _registry.get<AnimatorBindingMetadata>(animatorId);
+    metadata.objectBindingMetadata.push_back({object, property});
+}
+
+void AnimatorManager::onObjectPropertyUnbind(SPTAnimatorId animatorId, SPTObject object, SPTAnimatableObjectProperty property) {
+    
+    auto& metadata = _registry.get<AnimatorBindingMetadata>(animatorId);
+    auto it = std::find_if(metadata.objectBindingMetadata.begin(), metadata.objectBindingMetadata.end(), [object, property] (const auto& item) {
+        return SPTObjectEqual(item.object, object) && item.property == property;
+    });
+    
+    if(it == metadata.objectBindingMetadata.end()) {
+        return;
+    }
+    
+    metadata.objectBindingMetadata.erase(it);
 }
 
 }

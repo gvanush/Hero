@@ -10,6 +10,7 @@
 #include "ObjectPropertyAnimatorBinding.hpp"
 #include "ObjectPropertyAnimatorBindingObserverUtil.hpp"
 #include "Scene.hpp"
+#include "AnimatorManager.hpp"
 
 namespace spt {
 
@@ -21,22 +22,38 @@ void bindAnimator(SPTObject object, const SPTAnimatorBinding& animatorBinding) {
     notifyAnimatorBindingWillEmergeObservers<P>(registry, object.entity, comp);
     
     registry.emplace<AnimatorBinding<P>>(object.entity, comp);
+    
+    spt::AnimatorManager::active().onObjectPropertyBind(animatorBinding.animatorId, object, P);
 }
 
 template <SPTAnimatableObjectProperty P>
 void updateAnimatorBinding(SPTObject object, const SPTAnimatorBinding& animatorBinding) {
     auto& registry = Scene::getRegistry(object);
     
-    AnimatorBinding<P> comp {animatorBinding};
-    notifyAnimatorBindingWillChangeObservers<P>(registry, object.entity, comp);
+    AnimatorBinding<P> newBinding {animatorBinding};
+    notifyAnimatorBindingWillChangeObservers<P>(registry, object.entity, newBinding);
     
-    registry.get<AnimatorBinding<P>>(object.entity) = comp;
+    auto& binding = registry.get<AnimatorBinding<P>>(object.entity);
+    const auto animatorChanged = (binding.base.animatorId != animatorBinding.animatorId);
+    
+    if(animatorChanged) {
+        spt::AnimatorManager::active().onObjectPropertyUnbind(binding.base.animatorId, object, P);
+    }
+    
+    binding = newBinding;
+    
+    if(animatorChanged) {
+        spt::AnimatorManager::active().onObjectPropertyBind(animatorBinding.animatorId, object, P);
+    }
 }
 
 template <SPTAnimatableObjectProperty P>
 void unbindAnimator(SPTObject object) {
     auto& registry = Scene::getRegistry(object);
     notifyAnimatorBindingWillPerishObservers<P>(registry, object.entity);
+    
+    const auto& animatorBinding = registry.get<AnimatorBinding<P>>(object.entity);
+    spt::AnimatorManager::active().onObjectPropertyUnbind(animatorBinding.base.animatorId, object, P);
     registry.erase<AnimatorBinding<P>>(object.entity);
 }
 
