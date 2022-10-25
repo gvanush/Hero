@@ -29,7 +29,7 @@ struct RandomSeedSelector: View {
             Button {
                 onSelect(.randomInFullRange())
             } label: {
-                Image(systemName: "arrow.clockwise")
+                Image(systemName: "arrow.2.squarepath")
                     .imageScale(.large)
                     .frame(width: 44.0, height: 44.0)
             }

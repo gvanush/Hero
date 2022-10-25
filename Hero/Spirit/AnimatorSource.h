@@ -16,6 +16,7 @@ SPT_EXTERN_C_BEGIN
 typedef enum {
     SPTAnimatorSourceTypePan,
     SPTAnimatorSourceTypeRandom,
+    SPTAnimatorSourceTypeNoise,
 } __attribute__((enum_extensibility(open))) SPTAnimatorSourceType;
 
 typedef enum {
@@ -35,10 +36,16 @@ typedef struct {
 } SPTAnimatorSourceRandom;
 
 typedef struct {
+    uint32_t seed;
+    float frequency;
+} SPTAnimatorSourceNoise;
+
+typedef struct {
     SPTAnimatorSourceType type;
     union {
         SPTAnimatorSourcePan pan;
         SPTAnimatorSourceRandom random;
+        SPTAnimatorSourceNoise noise;
     };
 } SPTAnimatorSource;
 

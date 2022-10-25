@@ -1,18 +1,18 @@
 //
-//  RandomAnimatorView.swift
+//  NoiseAnimatorView.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 16.10.22.
+//  Created by Vanush Grigoryan on 24.10.22.
 //
 
 import SwiftUI
 
-enum RandomAnimatorProperty: Int, DistinctValueSet, Displayable {
+enum NoiseAnimatorProperty: Int, DistinctValueSet, Displayable {
     case seed
     case frequency
 }
 
-class RandomAnimatorComponent: BasicComponent<RandomAnimatorProperty> {
+class NoiseAnimatorComponent: BasicComponent<NoiseAnimatorProperty> {
 
     @SPTObservedAnimator var animator: SPTAnimator
     let frequencyFormatter = FrequencyFormatter()
@@ -20,41 +20,41 @@ class RandomAnimatorComponent: BasicComponent<RandomAnimatorProperty> {
     init(animatorId: SPTAnimatorId) {
         _animator = .init(id: animatorId)
         
-        super.init(title: "Random", selectedProperty: .seed, parent: nil)
+        super.init(title: "Noise", selectedProperty: .seed, parent: nil)
         
         _animator.publisher = self.objectWillChange
     }
     
     var seed: UInt32 {
         get {
-            animator.source.random.seed
+            animator.source.noise.seed
         }
         set {
-            animator.source.random.seed = newValue
+            animator.source.noise.seed = newValue
         }
     }
     
     var frequency: Float {
         get {
-            animator.source.random.frequency
+            animator.source.noise.frequency
         }
         set {
-            animator.source.random.frequency = newValue
+            animator.source.noise.frequency = newValue
         }
     }
     
 }
 
-class RandomAnimatorComponentViewProvider: ComponentViewProvider<RandomAnimatorComponent> {
+class NoiseAnimatorComponentViewProvider: ComponentViewProvider<NoiseAnimatorComponent> {
     
-    override func viewForRoot(_ root: RandomAnimatorComponent) -> AnyView? {
-        AnyView(RandomAnimatorComponentView(component: root))
+    override func viewForRoot(_ root: NoiseAnimatorComponent) -> AnyView? {
+        AnyView(NoiseAnimatorComponentView(component: root))
     }
 }
 
-struct RandomAnimatorComponentView: View {
+struct NoiseAnimatorComponentView: View {
     
-    @ObservedObject var component: RandomAnimatorComponent
+    @ObservedObject var component: NoiseAnimatorComponent
     @State private var scale = FloatSelector.Scale._1
     @State private var isSnappingEnabled = false
     
@@ -77,18 +77,16 @@ struct RandomAnimatorComponentView: View {
     
 }
 
-class RandomAnimatorViewModel: AnimatorViewModel {
+class NoiseAnimatorViewModel: AnimatorViewModel {
     
-    fileprivate let rootComponent: RandomAnimatorComponent
+    fileprivate let rootComponent: NoiseAnimatorComponent
     @Published fileprivate var activeComponent: Component
-    @Published var resetGraph = false
     
-    private var animatorLastValue: Float?
     private var willChangeSubscription: SPTAnySubscription?
     
     override init(animatorId: SPTAnimatorId) {
         
-        self.rootComponent = RandomAnimatorComponent(animatorId: animatorId)
+        self.rootComponent = NoiseAnimatorComponent(animatorId: animatorId)
         self.activeComponent = self.rootComponent
         
         super.init(animatorId: animatorId)
@@ -107,30 +105,21 @@ class RandomAnimatorViewModel: AnimatorViewModel {
         context.samplingRate = samplingRate
         context.time = time
 
-        let lastValue = animatorLastValue
-        let value = getAnimatorValue(context: context)
-        animatorLastValue = value
-
-        guard let value = value else {
-            return nil
+        if let value = getAnimatorValue(context: context) {
+            return .init(value: value, interpolate: true)
         }
-
-        var interpolate = false
-        if let lastValue = lastValue {
-            interpolate = (lastValue == value)
-        }
-
-        return .init(value: value, interpolate: interpolate)
+        
+        return nil
     }
     
 }
 
-struct RandomAnimatorView: View {
+struct NoiseAnimatorView: View {
     
-    @StateObject var model: RandomAnimatorViewModel
+    @StateObject var model: NoiseAnimatorViewModel
     @State private var isEditing = false
     
-    static let componentViewProvider = RandomAnimatorComponentViewProvider()
+    static let componentViewProvider = NoiseAnimatorComponentViewProvider()
     
     var body: some View {
         ZStack {
@@ -143,6 +132,7 @@ struct RandomAnimatorView: View {
                 }
                 .padding()
                 .layoutPriority(1)
+                
                 if isEditing {
                     componentNavigationView()
                 } else {
@@ -215,7 +205,7 @@ struct RandomAnimatorView: View {
     }
 }
 
-struct RandomAnimatorView_Previews: PreviewProvider {
+struct NoiseAnimatorView_Previews: PreviewProvider {
     
     struct ContentView: View {
         
@@ -223,14 +213,15 @@ struct RandomAnimatorView_Previews: PreviewProvider {
         
         var body: some View {
             NavigationStack {
-                RandomAnimatorView(model: .init(animatorId: animatorId))
+                NoiseAnimatorView(model: .init(animatorId: animatorId))
                     .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
     
     static var previews: some View {
-        let id = SPTAnimator.make(.init(name: "Rand.1", source: .init(randomWithSeed: 1, frequency: 1.0)))
+        let id = SPTAnimator.make(.init(name: "Noise.1", source: .init(noiseWithSeed: 1, frequency: 1.0)))
+        SPTAnimator.reset(id: id)
         return ContentView(animatorId: id)
     }
 }

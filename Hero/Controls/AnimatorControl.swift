@@ -31,6 +31,7 @@ struct AnimatorControl: View {
                 }
                 showsAnimatorSelector = false
             }
+            .tint(Color.accentColor)
         }
         .padding(Self.padding)
         .frame(height: Self.height)

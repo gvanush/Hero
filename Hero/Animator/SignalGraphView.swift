@@ -129,18 +129,23 @@ struct SignalValueItem {
  */
 struct SignalGraphView: View {
     
+    @Binding var restartFlag: Bool
     let signal: (Int, TimeInterval) -> SignalValueItem?
+    let onStart: () -> Void
     @State private var samples = Deque<SignalSample>()
     @State private var timer = Timer.publish(every: TimeInterval.infinity, on: .main, in: .common).autoconnect()
     @State private var startTime: TimeInterval?
     @State private var time: TimeInterval = 0.0
     @State private var fps: Double = 1.0
+    private var showsRestartIcon = true
     
     static let samplingRate = UIScreen.main.maximumFramesPerSecond
     static let lineWidth: CGFloat = 1.5
     
-    init(signal: @escaping (Int, TimeInterval) -> SignalValueItem?) {
+    init(restartFlag: Binding<Bool> = .constant(false), signal: @escaping (Int, TimeInterval) -> SignalValueItem?, onStart: @escaping () -> Void) {
+        _restartFlag = restartFlag
         self.signal = signal
+        self.onStart = onStart
     }
     
     var body: some View {
@@ -153,11 +158,24 @@ struct SignalGraphView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .aspectRatio(contentMode: .fit)
+        .overlay(alignment: .bottomTrailing, content: {
+            if showsRestartIcon {
+                Button {
+                    restartFlag = true
+                } label: {
+                    Image(systemName: "arrow.counterclockwise")
+                }
+                .tint(.primary)
+                .frame(width: 34.0, height: 34.0)
+            }
+        })
         .onFrame { frame in
-            guard let startTime = startTime else {
+            guard let startTime = startTime, !restartFlag else {
                 startTime = frame.timestamp
                 time = 0.0
                 samples.removeAll()
+                onStart()
+                restartFlag = false
                 return
             }
             let lastTime = time
@@ -182,31 +200,37 @@ struct SignalGraphView: View {
         }
     }
     
+    func showsRestartIcon(_ shows: Bool) -> some View {
+        var view = self
+        view.showsRestartIcon = shows
+        return view
+    }
+    
     var background: some View {
         ZStack {
             VStack {
                 HStack {
-                    Group {
-                        Text(Measurement(value: fps, unit: UnitFrequency.framesPerSecond), formatter: Self.fpsFormatter)
-                        Divider()
-                            .padding(.vertical, 4.0)
-                        Text(Measurement(value: time, unit: UnitDuration.seconds), formatter: Self.timeFormatter)
-                    }
-                    .font(.callout.monospacedDigit())
-                    .foregroundColor(.tertiaryLabel)
-                    Spacer()
                     Text("1")
                         .font(.caption)
                         .foregroundColor(.secondaryLabel)
+                    Spacer()
+                    Group {
+                        Text(Measurement(value: time, unit: UnitDuration.seconds), formatter: Self.timeFormatter)
+                        Divider()
+                            .padding(.vertical, 4.0)
+                        Text(Measurement(value: fps, unit: UnitFrequency.framesPerSecond), formatter: Self.fpsFormatter)
+                    }
+                    .font(.callout.monospacedDigit())
+                    .foregroundColor(.tertiaryLabel)
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 Spacer()
                 ZStack {
                     HStack {
-                        Spacer()
                         Text("0")
                             .font(.caption)
                             .foregroundColor(.secondaryLabel)
+                        Spacer()
                     }
                     HStack(spacing: 2.0) {
                         Spacer()

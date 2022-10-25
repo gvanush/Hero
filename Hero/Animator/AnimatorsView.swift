@@ -54,6 +54,8 @@ struct AnimatorsView: View {
                         PanAnimatorView(model: .init(animatorId: animatorId))
                     case .random:
                         RandomAnimatorView(model: .init(animatorId: animatorId))
+                    case .noise:
+                        NoiseAnimatorView(model: .init(animatorId: animatorId))
                     @unknown default:
                         fatalError()
                     }
@@ -69,6 +71,10 @@ struct AnimatorsView: View {
                 }
                 ToolbarItem(placement: .bottomBar) {
                     Menu {
+                        Button("Noise") {
+                            let animatorId = model.makeAnimator(.init(name: "Noise.\(SPTAnimator.getCount())", source: .init(noiseWithSeed: .randomInFullRange(), frequency: 1.0)))
+                            model.discloseAnimator(id: animatorId)
+                        }
                         Button("Random") {
                             let animatorId = model.makeAnimator(.init(name: "Random.\(SPTAnimator.getCount())", source: .init(randomWithSeed: .randomInFullRange(), frequency: 1.0)))
                             model.discloseAnimator(id: animatorId)

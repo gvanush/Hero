@@ -11,6 +11,7 @@ import Foundation
 class AnimatorViewModel: ObservableObject {
     
     @SPTObservedAnimator var animator: SPTAnimator
+    @Published var restartFlag = false
     
     init(animatorId: SPTAnimatorId) {
         _animator = .init(id: animatorId)
@@ -26,14 +27,11 @@ class AnimatorViewModel: ObservableObject {
     }
     
     func getAnimatorValue(context: SPTAnimatorEvaluationContext) -> Float? {
+        // TODO: @Vanush
         if isAlive {
             return SPTAnimator.evaluateValue(id: _animator.id, context: context)
         }
         return nil
-    }
-    
-    func resetAnimator() {
-        SPTAnimator.reset(id: _animator.id)
     }
     
     func destroy() {
@@ -44,4 +42,7 @@ class AnimatorViewModel: ObservableObject {
         SPTAnimator.exists(id: animatorId)
     }
     
+    func resetAnimator() {
+        SPTAnimator.reset(id: _animator.id)
+    }
 }

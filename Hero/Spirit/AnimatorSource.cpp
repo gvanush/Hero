@@ -18,7 +18,10 @@ bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs) {
             return lhs.pan.axis == rhs.pan.axis && simd_equal(lhs.pan.bottomLeft, rhs.pan.bottomLeft) && simd_equal(lhs.pan.topRight, rhs.pan.topRight);
         }
         case SPTAnimatorSourceTypeRandom: {
-            return lhs.random.seed == rhs.random.seed;
+            return lhs.random.seed == rhs.random.seed && lhs.random.frequency == rhs.random.frequency;
+        }
+        case SPTAnimatorSourceTypeNoise: {
+            return lhs.noise.seed == rhs.noise.seed && lhs.noise.frequency == rhs.noise.frequency;
         }
     }
 }
