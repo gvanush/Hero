@@ -51,7 +51,8 @@ class AnimatePositionToolViewModel: ToolViewModel {
         super.init(tool: .animatePosition, sceneViewModel: sceneViewModel)
         
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
-            self?.setupSelectedObjectViewModel(object: selected)
+            guard let self = self, self.selectedObjectViewModel?.object != selected else { return }
+            self.setupSelectedObjectViewModel(object: selected)
         }
         
         setupSelectedObjectViewModel(object: sceneViewModel.selectedObject)
@@ -92,6 +93,7 @@ struct AnimatePositionToolView: View {
     var body: some View {
         if let selectedObjectVM = model.selectedObjectViewModel {
             SelectedObjectControlsView(model: selectedObjectVM)
+                .id(selectedObjectVM.object)
         } else {
             EmptyView()
         }

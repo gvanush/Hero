@@ -33,40 +33,6 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
         get { SPTToDegFloat3(sptOrientation.euler.rotation) }
     }
     
-    func setupGuideObjects(axis: Axis) {
-        assert(guideObject == nil)
-
-        let guideObject = sceneViewModel.scene.makeObject()
-        SPTScaleMake(guideObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
-        SPTPolylineLookDepthBiasMake(guideObject, 5.0, 3.0, 0.0)
-
-        let position = SPTPosition.get(object: object).xyz
-        
-        switch axis {
-        case .x:
-            SPTPosition.make(.init(x: 0.0, y: position.y, z: position.z), object: guideObject)
-            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObject)
-            
-        case .y:
-            SPTPosition.make(.init(x: position.x, y: 0.0, z: position.z), object: guideObject)
-            SPTOrientationMakeEuler(guideObject, .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ))
-            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObject)
-            
-        case .z:
-            SPTPosition.make(.init(x: position.x, y: position.y, z: 0.0), object: guideObject)
-            SPTOrientationMakeEuler(guideObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
-            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObject)
-        }
-
-        self.guideObject = guideObject
-    }
-    
-    func removeGuideObjects() {
-        guard let object = guideObject else { return }
-        SPTSceneProxy.destroyObject(object)
-        guideObject = nil
-    }
-    
 }
 
 
@@ -83,7 +49,6 @@ fileprivate struct SelectedObjectControlsView: View {
                 .tint(Color.objectSelectionColor)
                 .transition(.identity)
                 .id(model.axis.rawValue)
-                .id(model.object)
             PropertySelector(selected: $model.axis)
         }
     }
@@ -100,7 +65,8 @@ class OrientToolViewModel: ToolViewModel {
         super.init(tool: .orient, sceneViewModel: sceneViewModel)
         
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
-            self?.setupSelectedObjectViewModel(object: selected)
+            guard let self = self, self.selectedObjectViewModel?.object != selected else { return }
+            self.setupSelectedObjectViewModel(object: selected)
         }
         
         setupSelectedObjectViewModel(object: sceneViewModel.selectedObject)
@@ -125,6 +91,7 @@ struct OrientToolView: View {
     var body: some View {
         if let selectedObjectVM = model.selectedObjectViewModel {
             SelectedObjectControlsView(model: selectedObjectVM)
+                .id(selectedObjectVM.object)
         } else {
             EmptyView()
         }

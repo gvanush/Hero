@@ -14,7 +14,12 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    @Published var axis = Axis.x
+    @Published var axis = Axis.x {
+        willSet {
+            removeGuideObjects()
+            setupGuideObjects(axis: newValue)
+        }
+    }
     
     @SPTObservedComponent private var sptPosition: SPTPosition
     private var guideObject: SPTObject?
@@ -25,6 +30,12 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
         
         _sptPosition = SPTObservedComponent(object: object)
         _sptPosition.publisher = self.objectWillChange
+        
+        setupGuideObjects(axis: axis)
+    }
+    
+    deinit {
+        removeGuideObjects()
     }
     
     var position: simd_float3 {
@@ -32,7 +43,7 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
         get { sptPosition.xyz }
     }
     
-    func setupGuideObjects(axis: Axis) {
+    private func setupGuideObjects(axis: Axis) {
         assert(guideObject == nil)
 
         let object = sceneViewModel.scene.makeObject()
@@ -58,7 +69,7 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
         guideObject = object
     }
     
-    func removeGuideObjects() {
+    private func removeGuideObjects() {
         guard let object = guideObject else { return }
         SPTSceneProxy.destroyObject(object)
         guideObject = nil
@@ -82,17 +93,6 @@ fileprivate struct SelectedObjectControlsView: View {
                 .id(model.axis.rawValue)
             PropertySelector(selected: $model.axis)
         }
-        .onChange(of: model.axis, perform: { newValue in
-            model.removeGuideObjects()
-            model.setupGuideObjects(axis: newValue)
-        })
-        .onAppear {
-            model.setupGuideObjects(axis: model.axis)
-        }
-        .onDisappear {
-            model.removeGuideObjects()
-        }
-        .id(model.object)
     }
     
 }
@@ -107,7 +107,8 @@ class MoveToolViewModel: ToolViewModel {
         super.init(tool: .move, sceneViewModel: sceneViewModel)
         
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
-            self?.setupSelectedObjectViewModel(object: selected)
+            guard let self = self, self.selectedObjectViewModel?.object != selected else { return }
+            self.setupSelectedObjectViewModel(object: selected)
         }
         
         setupSelectedObjectViewModel(object: sceneViewModel.selectedObject)
@@ -132,6 +133,7 @@ struct MoveToolView: View {
     var body: some View {
         if let selectedObjectVM = model.selectedObjectViewModel {
             SelectedObjectControlsView(model: selectedObjectVM)
+                .id(selectedObjectVM.object)
         } else {
             EmptyView()
         }
