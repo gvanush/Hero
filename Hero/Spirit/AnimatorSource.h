@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Easing.h"
 
 #include <simd/simd.h>
 
@@ -38,6 +39,7 @@ typedef struct {
 typedef struct {
     uint32_t seed;
     float frequency;
+    SPTEasingType interpolation;
 } SPTAnimatorSourceNoise;
 
 typedef struct {

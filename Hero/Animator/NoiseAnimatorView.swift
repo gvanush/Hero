@@ -10,6 +10,7 @@ import SwiftUI
 enum NoiseAnimatorProperty: Int, DistinctValueSet, Displayable {
     case seed
     case frequency
+    case interpolation
 }
 
 class NoiseAnimatorComponent: BasicComponent<NoiseAnimatorProperty> {
@@ -43,6 +44,15 @@ class NoiseAnimatorComponent: BasicComponent<NoiseAnimatorProperty> {
         }
     }
     
+    var interpolation: SPTEasingType {
+        get {
+            animator.source.noise.interpolation
+        }
+        set {
+            animator.source.noise.interpolation = newValue
+        }
+    }
+    
 }
 
 class NoiseAnimatorComponentViewProvider: ComponentViewProvider<NoiseAnimatorComponent> {
@@ -63,11 +73,11 @@ struct NoiseAnimatorComponentView: View {
             Group {
                 switch property {
                 case .seed:
-                    RandomSeedSelector(seed: component.seed) { newValue in
-                        component.seed = newValue
-                    }
+                    RandomSeedSelector(seed: $component.seed)
                 case .frequency:
                     FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
+                case .interpolation:
+                    EasingSelector(easing: $component.interpolation)
                 }
             }
             .tint(.primary)
@@ -75,6 +85,38 @@ struct NoiseAnimatorComponentView: View {
         }
     }
     
+}
+
+struct NoiseAnimatorOutlineView: View {
+    
+    @ObservedObject var component: NoiseAnimatorComponent
+    var onEnterEditMode: () -> Void
+    
+    var body: some View {
+        Form {
+            SceneEditableParam(title: "Seed", valueText: Text(component.seed, format: .number)) {
+                withAnimation {
+                    component.selectedProperty = .seed
+                    onEnterEditMode()
+                }
+            }
+            SceneEditableParam(title: "Frequency", valueText: Text(NSNumber(value: component.frequency), formatter: component.frequencyFormatter)) {
+                withAnimation {
+                    component.selectedProperty = .frequency
+                    onEnterEditMode()
+                }
+            }
+            LabeledContent("Interpolation") {
+                HStack {
+                    Text(component.interpolation.displayName)
+                    EasingTypeSelector(easing: $component.interpolation)
+                }
+            }
+        }
+        // NOTE: This is necessary for unknown reason to prevent 'Form' row
+        // from being selectable when there is a button inside.
+        .buttonStyle(BorderlessButtonStyle())
+    }
 }
 
 class NoiseAnimatorViewModel: AnimatorViewModel {
@@ -93,7 +135,7 @@ class NoiseAnimatorViewModel: AnimatorViewModel {
         
         willChangeSubscription = SPTAnimator.onWillChangeSink(id: animatorId) { [weak self] newValue in
             guard let self = self else { return }
-            if newValue.source.noise.seed != self.animator.source.noise.seed {
+            if newValue.source.noise.seed != self.animator.source.noise.seed || newValue.source.noise.interpolation != self.animator.source.noise.interpolation {
                 self.restartFlag = true
             }
         }
@@ -136,23 +178,9 @@ struct NoiseAnimatorView: View {
                 if isEditing {
                     componentNavigationView()
                 } else {
-                    Form {
-                        SceneEditableParam(title: "Seed", valueText: Text(model.rootComponent.seed, format: .number)) {
-                            withAnimation {
-                                model.rootComponent.selectedProperty = .seed
-                                isEditing = true
-                            }
-                        }
-                        SceneEditableParam(title: "Frequency", valueText: Text(NSNumber(value: model.rootComponent.frequency), formatter: model.rootComponent.frequencyFormatter)) {
-                            withAnimation {
-                                model.rootComponent.selectedProperty = .frequency
-                                isEditing = true
-                            }
-                        }
+                    NoiseAnimatorOutlineView(component: model.rootComponent) {
+                        isEditing = true
                     }
-                    // NOTE: This is necessary for unknown reason to prevent 'Form' row
-                    // from being selectable when there is a button inside.
-                    .buttonStyle(BorderlessButtonStyle())
                 }
             }
         }
@@ -220,7 +248,7 @@ struct NoiseAnimatorView_Previews: PreviewProvider {
     }
     
     static var previews: some View {
-        let id = SPTAnimator.make(.init(name: "Noise.1", source: .init(noiseWithSeed: 1, frequency: 1.0)))
+        let id = SPTAnimator.make(.init(name: "Noise.1", source: .init(noiseWithSeed: 1, frequency: 1.0, interpolation: .smoothStep)))
         SPTAnimator.reset(id: id)
         return ContentView(animatorId: id)
     }

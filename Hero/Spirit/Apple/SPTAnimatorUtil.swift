@@ -32,8 +32,8 @@ extension SPTAnimatorSource {
         self.init(type: .random, .init(random: .init(seed: seed, frequency: frequency)))
     }
     
-    init(noiseWithSeed seed: UInt32, frequency: Float) {
-        self.init(type: .noise, .init(noise: .init(seed: seed, frequency: frequency)))
+    init(noiseWithSeed seed: UInt32, frequency: Float, interpolation: SPTEasingType) {
+        self.init(type: .noise, .init(noise: .init(seed: seed, frequency: frequency, interpolation: interpolation)))
     }
 }
 

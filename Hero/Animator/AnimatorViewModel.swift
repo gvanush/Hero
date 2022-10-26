@@ -27,7 +27,6 @@ class AnimatorViewModel: ObservableObject {
     }
     
     func getAnimatorValue(context: SPTAnimatorEvaluationContext) -> Float? {
-        // TODO: @Vanush
         if isAlive {
             return SPTAnimator.evaluateValue(id: _animator.id, context: context)
         }

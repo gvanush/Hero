@@ -21,7 +21,7 @@ bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs) {
             return lhs.random.seed == rhs.random.seed && lhs.random.frequency == rhs.random.frequency;
         }
         case SPTAnimatorSourceTypeNoise: {
-            return lhs.noise.seed == rhs.noise.seed && lhs.noise.frequency == rhs.noise.frequency;
+            return lhs.noise.seed == rhs.noise.seed && lhs.noise.frequency == rhs.noise.frequency && lhs.noise.interpolation == rhs.noise.interpolation;
         }
     }
 }

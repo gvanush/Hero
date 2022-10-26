@@ -72,7 +72,7 @@ struct AnimatorsView: View {
                 ToolbarItem(placement: .bottomBar) {
                     Menu {
                         Button("Noise") {
-                            let animatorId = model.makeAnimator(.init(name: "Noise.\(SPTAnimator.getCount())", source: .init(noiseWithSeed: .randomInFullRange(), frequency: 1.0)))
+                            let animatorId = model.makeAnimator(.init(name: "Noise.\(SPTAnimator.getCount())", source: .init(noiseWithSeed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
                             model.discloseAnimator(id: animatorId)
                         }
                         Button("Random") {

@@ -7,15 +7,14 @@
 
 import SwiftUI
 
+
 struct RandomSeedSelector: View {
     
-    let seed: UInt32
-    let onSelect: (UInt32) -> Void
+    @Binding var seed: UInt32
     
     var body: some View {
         HStack {
             Button {
-                onSelect(.randomInFullRange())
             } label: {
                 Image(systemName: "keyboard")
                     .imageScale(.large)
@@ -27,7 +26,7 @@ struct RandomSeedSelector: View {
                 .foregroundColor(.controlValue)
             Spacer()
             Button {
-                onSelect(.randomInFullRange())
+                seed = .randomInFullRange()
             } label: {
                 Image(systemName: "arrow.2.squarepath")
                     .imageScale(.large)
@@ -53,10 +52,8 @@ struct RandomSeedSelector_Previews: PreviewProvider {
         @State var seed: UInt32 = 1
         
         var body: some View {
-            RandomSeedSelector(seed: seed) { newValue in
-                seed = newValue
-            }
-            .padding()
+            RandomSeedSelector(seed: $seed)
+                .padding()
         }
         
     }

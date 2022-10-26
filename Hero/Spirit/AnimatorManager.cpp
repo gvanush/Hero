@@ -8,6 +8,7 @@
 #include "AnimatorManager.hpp"
 #include "ComponentObserverUtil.hpp"
 #include "ObjectPropertyAnimatorBinding.h"
+#include "Easing.h"
 
 #include <algorithm>
 #include <random>
@@ -213,7 +214,8 @@ float AnimatorManager::evaluateNoise(SPTAnimatorId id, const SPTAnimator& animat
         state.startTime += state.interpolationDuration;
         state.interpolationDuration = 1.f / std::min(animator.source.random.frequency, static_cast<float>(context.samplingRate));
     }
-    return simd_mix(state.startValue, state.targetValue, static_cast<float>((context.time - state.startTime) / state.interpolationDuration));
+    const auto t = SPTEasingEvaluate(animator.source.noise.interpolation, static_cast<float>((context.time - state.startTime) / state.interpolationDuration));
+    return simd_mix(state.startValue, state.targetValue, t);
 }
 
 void AnimatorManager::resetAnimator(SPTAnimatorId id) {

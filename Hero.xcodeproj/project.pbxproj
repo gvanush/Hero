@@ -74,6 +74,8 @@
 		B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */; };
 		B7643B2629027C7900F6A05B /* RandomSeedSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B2529027C7900F6A05B /* RandomSeedSelector.swift */; };
 		B7643B2A2906700400F6A05B /* NoiseAnimatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B292906700300F6A05B /* NoiseAnimatorView.swift */; };
+		B7643B2C2907C8CD00F6A05B /* EasingSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B2B2907C8CC00F6A05B /* EasingSelector.swift */; };
+		B7643B2F29084DAF00F6A05B /* SPTEasingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B2E29084DAF00F6A05B /* SPTEasingUtil.swift */; };
 		B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */; };
 		B76D4FC828AB7C990029E47B /* SPTUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC728AB7C990029E47B /* SPTUtil.swift */; };
 		B76D4FCA28AC0E1B0029E47B /* SPTObjectPropertyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC928AC0E1B0029E47B /* SPTObjectPropertyUtil.swift */; };
@@ -251,6 +253,9 @@
 		B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
 		B7643B2529027C7900F6A05B /* RandomSeedSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomSeedSelector.swift; sourceTree = "<group>"; };
 		B7643B292906700300F6A05B /* NoiseAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseAnimatorView.swift; sourceTree = "<group>"; };
+		B7643B2B2907C8CC00F6A05B /* EasingSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasingSelector.swift; sourceTree = "<group>"; };
+		B7643B2D2907D41D00F6A05B /* Easing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Easing.h; sourceTree = "<group>"; };
+		B7643B2E29084DAF00F6A05B /* SPTEasingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTEasingUtil.swift; sourceTree = "<group>"; };
 		B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPropertyAnimatorBinding.cpp; sourceTree = "<group>"; };
 		B76D4FC128AA25B60029E47B /* ObjectPropertyAnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBinding.hpp; sourceTree = "<group>"; };
 		B76D4FC328AA25C50029E47B /* ObjectPropertyAnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectPropertyAnimatorBinding.h; sourceTree = "<group>"; };
@@ -536,6 +541,7 @@
 				B7B711D628C130740077C7CD /* SPTOutlineLookUtil.swift */,
 				B7B711DD28C13E060077C7CD /* SPTMeshLookUtil.swift */,
 				B7B711DF28C1D8100077C7CD /* SPTPolylineLookUtil.swift */,
+				B7643B2E29084DAF00F6A05B /* SPTEasingUtil.swift */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -732,6 +738,7 @@
 				B72358492757730700337547 /* Geometry.h */,
 				B73245A7273E677B00708909 /* Bridging-Header.h */,
 				B72358662774982300337547 /* ComponentObserverUtil.hpp */,
+				B7643B2D2907D41D00F6A05B /* Easing.h */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -807,6 +814,7 @@
 				B712240028BBDFB3006A31B1 /* FloatSlider.swift */,
 				B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */,
 				B7643B2529027C7900F6A05B /* RandomSeedSelector.swift */,
+				B7643B2B2907C8CC00F6A05B /* EasingSelector.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -950,6 +958,7 @@
 				B757DB7628A80F0B00BB5DB4 /* AnimatorSelector.swift in Sources */,
 				B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
+				B7643B2C2907C8CD00F6A05B /* EasingSelector.swift in Sources */,
 				B7BC3A0928EDF6250050766F /* ActionsView.swift in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
@@ -985,6 +994,7 @@
 				B73A700528841C2E0043F9FF /* PanAnimatorView.swift in Sources */,
 				B7C7489B28D1A3EE00E270FB /* NewObjectView.swift in Sources */,
 				B7EDBDC028F3558F0048EF93 /* InspectToolView.swift in Sources */,
+				B7643B2F29084DAF00F6A05B /* SPTEasingUtil.swift in Sources */,
 				B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */,
 				B757DB6C28A3C17100BB5DB4 /* AnimatorBindingComponentView.swift in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,

@@ -63,9 +63,7 @@ struct RandomAnimatorComponentView: View {
             Group {
                 switch property {
                 case .seed:
-                    RandomSeedSelector(seed: component.seed) { newValue in
-                        component.seed = newValue
-                    }
+                    RandomSeedSelector(seed: $component.seed)
                 case .frequency:
                     FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
                 }
