@@ -131,8 +131,6 @@ struct MeshObjectInspector: View {
             selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.y
         case .positionZ:
             selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.z
-        @unknown default:
-            assert(false)
         }
         presentationMode.wrappedValue.dismiss()
     }
@@ -193,7 +191,7 @@ struct MeshObjectInspector_Previews: PreviewProvider {
     static var previews: some View {
         
         let factory = ObjectFactory(scene: sceneViewModel.scene)
-        let object = factory.makeMesh(meshId: MeshRegistry.standard.meshRecords.first!.id)
+        let object = factory.makeMesh(meshId: MeshRegistry.standard.meshRecords.first!.id, position: .zero)
         sceneViewModel.selectedObject = object
         
         return MeshObjectInspector(model: .init(object: object))

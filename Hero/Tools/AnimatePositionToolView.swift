@@ -94,8 +94,6 @@ struct AnimatePositionToolView: View {
         if let selectedObjectVM = model.selectedObjectViewModel {
             SelectedObjectControlsView(model: selectedObjectVM)
                 .id(selectedObjectVM.object)
-        } else {
-            EmptyView()
         }
     }
 }

@@ -85,6 +85,9 @@ class ToolViewModel: ObservableObject, Identifiable, Equatable {
         get { nil }
     }
     
+    func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
+    }
+    
     @Published var actions: [ActionItem]?
     
     static func == (lhs: ToolViewModel, rhs: ToolViewModel) -> Bool {

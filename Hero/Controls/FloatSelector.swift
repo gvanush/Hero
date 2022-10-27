@@ -212,15 +212,9 @@ struct FloatSelector: View {
     }
     
     var valueView: some View {
-        let valueText = { () -> Text in
-            // This is to eliminate minus zero being displayed (no option found in formatter API)
-            let value = (value == 0.0 ? 0.0 : value)
-            return Text(NSNumber(value: value), formatter: formatter)
-        }
-        
-        return HStack {
+        HStack {
             Spacer()
-            valueText()
+            Text(NSNumber(value: value == 0.0 ? 0.0 : value), formatter: formatter)
                 .font(.body.monospacedDigit())
                 .foregroundColor(.controlValue)
             Spacer()

@@ -25,9 +25,6 @@ class ObjectSelector {
         switch type {
         case .mesh:
             SPTOutlineLook.make(.init(color: UIColor.objectSelectionColor.rgba, thickness: 5.0, categories: LookCategories.objectSelection.rawValue), object: object)
-        case .generator:
-            SPTPointLook.make(.init(color: UIColor.objectSelectionColor.rgba, size: 6.0, categories: LookCategories.objectSelection.rawValue), object: object)
-            SPTOutlineLook.make(.init(color: UIColor.secondaryObjectSelectionColor.rgba, thickness: 5.0, categories: LookCategories.objectSelection.rawValue), object: object)
         }
     }
     
@@ -36,9 +33,6 @@ class ObjectSelector {
         switch type {
         case .mesh:
             SPTOutlineLook.destroy(object: object)
-        case .generator:
-            SPTOutlineLook.destroy(object: object)
-            SPTPointLook.destroy(object: object)
         }
     }
     

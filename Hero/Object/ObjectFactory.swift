@@ -10,7 +10,6 @@ import SwiftUI
 
 enum ObjectType: Int32 {
     case mesh
-    case generator
 }
 
 class ObjectFactory {
@@ -23,10 +22,10 @@ class ObjectFactory {
         self.scene = scene
     }
     
-    func makeMesh(meshId: SPTMeshId) -> SPTObject {
+    func makeMesh(meshId: SPTMeshId, position: simd_float3) -> SPTObject {
         let object = scene.makeObject()
         SPTMetadataMake(object, .init(tag: ObjectType.mesh.rawValue, name: "Mesh.\(meshNumber)"))
-        SPTPosition.make(.init(x: 0.0, y: 0.0, z: 0.0), object: object)
+        SPTPosition.make(.init(xyz: position), object: object)
         SPTScaleMake(object, .init(xyz: simd_float3(5.0, 5.0, 5.0)))
         SPTOrientationMakeEuler(object, .init(rotation: .zero, order: .XYZ))
         SPTMeshLook.make(.init(material: SPTPhongMaterial(color: UIColor.darkGray.rgba, specularRoughness: 128.0), meshId: meshId, categories: LookCategories.userCreated.rawValue), object: object)
@@ -43,6 +42,13 @@ class ObjectFactory {
         SPTOrientation.make(SPTOrientation.get(object: object), object: duplicate)
         SPTMeshLook.make(SPTMeshLook.get(object: object), object: duplicate)
         SPTRayCastableMake(duplicate)
+        
+        for property in SPTAnimatableObjectProperty.allCases {
+            if let binding = property.tryGetAnimatorBinding(object: object) {
+                property.bind(binding, object: duplicate)
+            }
+        }
+
         meshNumber += 1
         return duplicate
     }

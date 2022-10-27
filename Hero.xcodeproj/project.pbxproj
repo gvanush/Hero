@@ -10,7 +10,6 @@
 		B7038C5728A18D5900C14A51 /* MeshObjectInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038C5628A18D5900C14A51 /* MeshObjectInspector.swift */; };
 		B70A310A272F1502003432C4 /* AnimationCompletionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3109272F1502003432C4 /* AnimationCompletionObserver.swift */; };
 		B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB727286B3700582DCA /* SceneViewModel.swift */; };
-		B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */; };
 		B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC1272B00B700582DCA /* PropertySelector.swift */; };
 		B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC3272B069F00582DCA /* ColorUtil.swift */; };
 		B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC7272BBB1F00582DCA /* FloatSelector.swift */; };
@@ -149,7 +148,6 @@
 		B7038C5628A18D5900C14A51 /* MeshObjectInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshObjectInspector.swift; sourceTree = "<group>"; };
 		B70A3109272F1502003432C4 /* AnimationCompletionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionObserver.swift; sourceTree = "<group>"; };
 		B7104BB727286B3700582DCA /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
-		B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatedTapGesture.swift; sourceTree = "<group>"; };
 		B7104BC0272931AB00582DCA /* SIMDUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SIMDUtil.h; sourceTree = "<group>"; };
 		B7104BC1272B00B700582DCA /* PropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySelector.swift; sourceTree = "<group>"; };
 		B7104BC3272B069F00582DCA /* ColorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtil.swift; sourceTree = "<group>"; };
@@ -385,7 +383,6 @@
 				B7791D982726768B00E0C934 /* UIColorUtil.swift */,
 				B7104BC3272B069F00582DCA /* ColorUtil.swift */,
 				B7791DA42726768B00E0C934 /* FloatingPointUtil.swift */,
-				B7104BB927287A0A00582DCA /* LocatedTapGesture.swift */,
 				B7104BC9272C07B300582DCA /* BezierRoundedRectangle.swift */,
 				B70A3109272F1502003432C4 /* AnimationCompletionObserver.swift */,
 				B7D19EB327310DFC005C9F82 /* BindingUtil.swift */,
@@ -1014,7 +1011,6 @@
 				B73E47EA27D0168400CB0AFC /* SPTOrientationUtil.swift in Sources */,
 				B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */,
 				B73A700328840DB70043F9FF /* AnimatorsView.swift in Sources */,
-				B7104BBA27287A0A00582DCA /* LocatedTapGesture.swift in Sources */,
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,

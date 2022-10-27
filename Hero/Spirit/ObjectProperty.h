@@ -15,6 +15,6 @@ typedef enum {
     SPTAnimatableObjectPropertyPositionX,
     SPTAnimatableObjectPropertyPositionY,
     SPTAnimatableObjectPropertyPositionZ,
-} __attribute__((enum_extensibility(open))) SPTAnimatableObjectProperty;
+} __attribute__((enum_extensibility(closed))) SPTAnimatableObjectProperty;
 
 SPT_EXTERN_C_END

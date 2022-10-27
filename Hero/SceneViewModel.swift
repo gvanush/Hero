@@ -13,45 +13,33 @@ class SceneViewModel: ObservableObject {
     let scene = SPTSceneProxy()
     let lineMeshId: SPTMeshId
     
-    let objectFactory: ObjectFactory
-    
     private var prevDragValue: DragGesture.Value?
 
     private(set) var viewCameraObject: SPTObject
     
     private var objectSelector: ObjectSelector?
-    private var selectedObjectPositionWillChangeSubscription: SPTAnySubscription?
+    private var focusedObjectPositionWillChangeSubscription: SPTAnySubscription?
     
-    var isFocusing: Bool? {
+    @Published var focusedObject: SPTObject? {
         willSet {
-            guard isFocusing != newValue else {
-                return
+            if let newObject = newValue {
+                focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: newObject) { newPos in
+                    self.focusOn(newPos.xyz)
+                }
+                
+                focusOn(newObject)
+            } else {
+                focusedObjectPositionWillChangeSubscription = nil
             }
             
-            objectWillChange.send()
-            
-            if let selectedObject = selectedObject, newValue ?? false {
-                focusOn(selectedObject)
-            }
         }
     }
     
     @Published var selectedObject: SPTObject? {
         willSet {
-            guard selectedObject != newValue else { return }
-            
-            if let newObject = newValue {
-                isFocusing = false
-                
-                selectedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: newObject) { newPos in
-                    if self.isFocusing ?? false {
-                        self.focusOn(newPos.xyz)
-                    }
-                }
-                
-            } else {
-                isFocusing = nil
-                selectedObjectPositionWillChangeSubscription = nil
+            if let newObject = newValue, selectedObject == newObject {
+                focusedObject = newObject
+                return
             }
             objectSelector = ObjectSelector(object: newValue)
         }
@@ -98,22 +86,6 @@ class SceneViewModel: ObservableObject {
         SPTOrientationMakeEuler(zAxisObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
         SPTPolylineLookDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
         
-        objectFactory = ObjectFactory(scene: scene)
-        
-        // Setup objects
-//        let centerObjectMeshId = MeshRegistry.standard.recordNamed("cone")!.id
-//        _ = objectFactory.makeMesh(meshId: centerObjectMeshId)
-//
-//        objectFactory.makeRandomMeshes()
-        
-    }
-    
-    func createNewObject(meshId: SPTMeshId) {
-        selectedObject = objectFactory.makeMesh(meshId: meshId)
-    }
-    
-    func duplicateObject(_ object: SPTObject) {
-        selectedObject = objectFactory.duplicateObject(object)
     }
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {
@@ -220,12 +192,6 @@ class SceneViewModel: ObservableObject {
     
     func cancelZoom() {
         prevDragValue = nil
-    }
-    
-    func destroySelected() {
-        guard let selectedObject = selectedObject else { return }
-        self.selectedObject = nil
-        SPTSceneProxy.destroyObject(selectedObject)
     }
     
     static let zoomFactor: Float = 3.0

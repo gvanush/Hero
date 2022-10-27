@@ -76,7 +76,10 @@ struct SceneView: View {
                         Color.clear
                             .contentShape(Rectangle())
                             .gesture(isNavigationEnabled ? orbitDragGesture : nil)
-                            .gesture(isSelectionEnabled ? pickGesture(viewportSize: viewportSize) : nil)
+                            .onTapGesture { location in
+                                guard isSelectionEnabled else { return }
+                                model.selectedObject = model.pickObjectAt(location, viewportSize: viewportSize)
+                            }
                             .allowsHitTesting(isNavigationEnabled && !isNavigating)
                     }
                     .modifier(SizeModifier())
@@ -128,13 +131,21 @@ struct SceneView: View {
     }
     
     func focusButton() -> some View {
-        SceneUIToggle(isOn: $model.isFocusing, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
-    }
-    
-    func pickGesture(viewportSize: CGSize) -> some Gesture {
-        LocatedTapGesture().onEnded(perform: { location in
-            model.selectedObject = model.pickObjectAt(location, viewportSize: viewportSize)
-        })
+        SceneUIToggle(isOn: .init(get: {
+            guard let selected = model.selectedObject else {
+                return nil
+            }
+            return selected == model.focusedObject
+            
+        }, set: { newValue in
+            
+            if newValue! {
+                model.focusedObject = model.selectedObject
+            } else {
+                model.focusedObject = nil
+            }
+            
+        }), offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
     }
     
     var orbitDragGesture: some Gesture {

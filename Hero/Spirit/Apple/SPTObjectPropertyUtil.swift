@@ -8,7 +8,13 @@
 import Foundation
 
 
-extension SPTAnimatableObjectProperty: SPTAnimatableProperty {
+extension SPTAnimatableObjectProperty: SPTAnimatableProperty, CaseIterable {
+    
+    public static var allCases: [SPTAnimatableObjectProperty] = [
+        .positionX,
+        .positionY,
+        .positionZ
+    ]
     
     public var id: Self {
         self

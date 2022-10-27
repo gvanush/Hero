@@ -27,6 +27,8 @@ class RootViewModel: ObservableObject {
     
     @Published var activeToolViewModel: ToolViewModel
     
+    let objectFactory: ObjectFactory
+    
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
         
@@ -37,6 +39,33 @@ class RootViewModel: ObservableObject {
         self.animatePositionToolView = AnimatePositionToolViewModel(sceneViewModel: sceneViewModel)
         
         self.activeToolViewModel = inspectToolViewModel
+        
+        objectFactory = ObjectFactory(scene: sceneViewModel.scene)
+    }
+    
+    func createObject(meshId: SPTMeshId) {
+        let object = objectFactory.makeMesh(meshId: meshId, position: SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.center)
+        sceneViewModel.selectedObject = object
+        sceneViewModel.focusedObject = object
+    }
+    
+    func duplicateObject(_ original: SPTObject) {
+        let duplicate = objectFactory.duplicateObject(original)
+        for toolVM in toolViewModels {
+            toolVM.onObjectDuplicate(original: original, duplicate: duplicate)
+        }
+        sceneViewModel.selectedObject = duplicate
+        sceneViewModel.focusedObject = duplicate
+    }
+    
+    func destroyObject(_ object: SPTObject) {
+        if object == sceneViewModel.selectedObject {
+            sceneViewModel.selectedObject = nil
+        }
+        if object == sceneViewModel.focusedObject {
+            sceneViewModel.focusedObject = nil
+        }
+        SPTSceneProxy.destroyObject(object)
     }
     
 }
@@ -121,7 +150,7 @@ struct RootView: View {
         }
         .sheet(isPresented: $showsNewObjectView) {
             NewObjectView() { meshId in
-                sceneViewModel.createNewObject(meshId: meshId)
+                model.createObject(meshId: meshId)
             }
         }
         .sheet(isPresented: $showsSelectedObjectInspector) {
@@ -146,13 +175,13 @@ struct RootView: View {
                 showsNewObjectView = true
             },
             ActionItem(iconName: "plus.square.on.square", disabled: !sceneViewModel.isObjectSelected) {
-                sceneViewModel.duplicateObject(sceneViewModel.selectedObject!)
+                model.duplicateObject(sceneViewModel.selectedObject!)
             },
             ActionItem(iconName: "slider.horizontal.3", disabled: !sceneViewModel.isObjectSelected) {
                 showsSelectedObjectInspector = true
             },
             ActionItem(iconName: "trash", disabled: !sceneViewModel.isObjectSelected) {
-                sceneViewModel.destroySelected()
+                model.destroyObject(sceneViewModel.selectedObject!)
             }
         ]
     }

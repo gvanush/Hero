@@ -8,34 +8,67 @@
 import SwiftUI
 import Combine
 
+fileprivate struct PropertyEditingParams {
+    
+    struct Item {
+        var scale = FloatSelector.Scale._1
+        var isSnapping = false
+    }
+    
+    var x = Item()
+    var y = Item()
+    var z = Item()
+    
+    subscript(_ axis: Axis) -> Item {
+        set {
+            switch axis {
+            case .x:
+                x = newValue
+            case .y:
+                y = newValue
+            case .z:
+                z = newValue
+            }
+        }
+        get {
+            switch axis {
+            case .x:
+                return x
+            case .y:
+                return y
+            case .z:
+                return z
+            }
+        }
+    }
+    
+}
 
 class MoveToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    @Published var axis = Axis.x {
-        willSet {
+    @Published var axis: Axis {
+        didSet {
             removeGuideObjects()
-            setupGuideObjects(axis: newValue)
+            setupGuideObjects()
         }
     }
+    
+    @Published fileprivate var propertyEditingParams: PropertyEditingParams
     
     @SPTObservedComponent private var sptPosition: SPTPosition
     private var guideObject: SPTObject?
     
-    init(object: SPTObject, sceneViewModel: SceneViewModel) {
+    fileprivate init(axis: Axis, propertyEditingParams: PropertyEditingParams, object: SPTObject, sceneViewModel: SceneViewModel) {
+        self.axis = axis
+        self.propertyEditingParams = propertyEditingParams
         self.object = object
         self.sceneViewModel = sceneViewModel
         
         _sptPosition = SPTObservedComponent(object: object)
         _sptPosition.publisher = self.objectWillChange
-        
-        setupGuideObjects(axis: axis)
-    }
-    
-    deinit {
-        removeGuideObjects()
     }
     
     var position: simd_float3 {
@@ -43,7 +76,16 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
         get { sptPosition.xyz }
     }
     
-    private func setupGuideObjects(axis: Axis) {
+    fileprivate var editingParam: PropertyEditingParams.Item {
+        set {
+            propertyEditingParams[axis] = newValue
+        }
+        get {
+            propertyEditingParams[axis]
+        }
+    }
+    
+    func setupGuideObjects() {
         assert(guideObject == nil)
 
         let object = sceneViewModel.scene.makeObject()
@@ -69,7 +111,7 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
         guideObject = object
     }
     
-    private func removeGuideObjects() {
+    func removeGuideObjects() {
         guard let object = guideObject else { return }
         SPTSceneProxy.destroyObject(object)
         guideObject = nil
@@ -82,16 +124,19 @@ fileprivate struct SelectedObjectControlsView: View {
     
     @ObservedObject var model: MoveToolSelectedObjectViewModel
     
-    @State private var scale = FloatSelector.Scale._1
-    @State private var isSnappingEnabled = false
-    
     var body: some View {
         VStack {
-            FloatSelector(value: $model.position[model.axis.rawValue], scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+            FloatSelector(value: $model.position[model.axis.rawValue], scale: $model.editingParam.scale, isSnappingEnabled: $model.editingParam.isSnapping)
                 .tint(Color.objectSelectionColor)
                 .transition(.identity)
                 .id(model.axis.rawValue)
             PropertySelector(selected: $model.axis)
+        }
+        .onAppear {
+            model.setupGuideObjects()
+        }
+        .onDisappear {
+            model.removeGuideObjects()
         }
     }
     
@@ -101,6 +146,8 @@ class MoveToolViewModel: ToolViewModel {
     
     @Published private(set) var selectedObjectViewModel: MoveToolSelectedObjectViewModel?
     
+    private var axis = Axis.x
+    private var propertyEditingParams = [SPTObject : PropertyEditingParams]()
     private var selectedObjectSubscription: AnyCancellable?
     
     init(sceneViewModel: SceneViewModel) {
@@ -116,10 +163,24 @@ class MoveToolViewModel: ToolViewModel {
     }
     
     private func setupSelectedObjectViewModel(object: SPTObject?) {
+        
+        if let selectedVM = selectedObjectViewModel {
+            axis = selectedVM.axis
+            propertyEditingParams[selectedVM.object] = selectedVM.propertyEditingParams
+        }
+        
         if let object = object {
-            selectedObjectViewModel = .init(object: object, sceneViewModel: sceneViewModel)
+            selectedObjectViewModel = .init(axis: axis, propertyEditingParams: propertyEditingParams[object, default: .init()], object: object, sceneViewModel: sceneViewModel)
         } else {
             selectedObjectViewModel = nil
+        }
+    }
+    
+    override func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
+        if let selectedObjectVM = selectedObjectViewModel, original == selectedObjectVM.object {
+            propertyEditingParams[duplicate] = selectedObjectVM.propertyEditingParams
+        } else {
+            propertyEditingParams[duplicate] = propertyEditingParams[original]
         }
     }
     
@@ -134,8 +195,6 @@ struct MoveToolView: View {
         if let selectedObjectVM = model.selectedObjectViewModel {
             SelectedObjectControlsView(model: selectedObjectVM)
                 .id(selectedObjectVM.object)
-        } else {
-            EmptyView()
         }
     }
 }
