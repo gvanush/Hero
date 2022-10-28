@@ -98,20 +98,13 @@ struct RootView: View {
             SceneView(model: sceneViewModel,
                       isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), edgeInsets: .init(top: 0.0, leading: 0.0, bottom: -Self.navigationEmptyVerticalAreaHeight, trailing: 0.0))
             .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
-            .overlay {
-                VStack(alignment: .leading) {
-                    Spacer()
-                    HStack {
-                        EmptyView()
-                        ActionsView(defaultActions: defaultActions, activeToolViewModel: $model.activeToolViewModel)
-                            .padding(3.0)
-                            .background(Material.bar, ignoresSafeAreaEdges: [])
-                            .cornerRadius(5.0, corners: [.topRight, .bottomRight])
-                            .shadow(radius: 1.0)
-                        Spacer()
-                    }
-                }
-                .visible(!isNavigating)
+            .overlay(alignment: .bottomTrailing) {
+                ActionsView(defaultActions: defaultActions, activeToolViewModel: $model.activeToolViewModel)
+                    .background(Material.bar, ignoresSafeAreaEdges: [])
+                    .cornerRadius(5.0)
+                    .padding(.trailing, 16.0)
+                    .shadow(radius: 1.0)
+                    .visible(!isNavigating)
             }
             .safeAreaInset(edge: .top) {
                 VStack(spacing: 0.0) {

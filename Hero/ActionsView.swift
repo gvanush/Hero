@@ -102,11 +102,11 @@ struct ActionsView_Previews: PreviewProvider {
                 Color.gray
                 HStack {
                     ActionsView(defaultActions: defaultActions, activeToolViewModel: $activeToolViewModel)
-                        .padding(3.0)
                         .background(Material.bar)
-                        .cornerRadius(3.0, corners: [.topRight, .bottomRight])
+                        .cornerRadius(5.0)
                     Spacer()
                 }
+                .padding()
             }
         }
         

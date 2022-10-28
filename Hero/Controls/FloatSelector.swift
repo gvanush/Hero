@@ -115,7 +115,7 @@ struct FloatSelector: View {
             ZStack(alignment: .top) {
                 Ruler(unitSize: Self.rulerUnitSize, additionalUnitsCount: Self.rulerAdditionalUnitCount, integerNumbers: isSnappingEnabled)
                     .offset(x: rulerOffsetX, y: 0.0)
-                    .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
+                    .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black, .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
                     .padding(.horizontal, Self.padding)
                     .animation(nil, value: rawValue)
                 ZStack {

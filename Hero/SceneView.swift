@@ -95,11 +95,12 @@ struct SceneView: View {
                     }
                     
                     HStack(spacing: 0.0) {
-                        Spacer()
                         VStack {
                             Spacer()
                             focusButton()
                         }
+                        .padding(.leading, 8.0)
+                        Spacer()
                         ZoomView()
                             .frame(width: 16.0, alignment: .trailing)
                             .contentShape(Rectangle())
