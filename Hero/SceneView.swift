@@ -179,7 +179,7 @@ struct SceneView: View {
             if let name = model.selectedObjectMetadata?.name {
                 Text(name)
                     .font(.subheadline)
-                    .foregroundColor(.objectSelectionColor)
+                    .foregroundColor(.primarySelectionColor)
                     .frame(height: 30)
                     .padding(.horizontal, 8.0)
                     .background(SceneViewConst.uiBgrMaterial)

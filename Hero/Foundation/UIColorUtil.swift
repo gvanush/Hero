@@ -38,8 +38,10 @@ extension UIColor {
         UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: alpha)
     }
     
-    static let objectSelectionColor = UIColor.orange
-    static let secondaryObjectSelectionColor = UIColor(named: "secondaryObjectSelectionColor")!
+    static let primarySelectionColor = UIColor.orange
+    static let primaryLightSelectionColor = UIColor.yellow
+    static let secondarySelectionColor = UIColor.systemTeal
+    static let secondaryLightSelectionColor = UIColor.cyan
     
     static let xAxis = UIColor(named: "XAxisColor")!
     static let xAxisLight = UIColor(named: "XAxisLightColor")!

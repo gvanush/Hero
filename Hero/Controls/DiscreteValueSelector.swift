@@ -35,7 +35,7 @@ struct DiscreteValueSelector<PT>: View where PT: DistinctValueSet & Displayable,
         GeometryReader { geometry in
             Text(property.displayName)
                 .foregroundColor(.white)
-                .colorMultiply(property == selected ? .controlValue : .objectSelectionColor)
+                .colorMultiply(property == selected ? .controlValue : .primarySelectionColor)
                 .fixedSize(horizontal: true, vertical: false)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 .padding(.horizontal, textHorizontalPadding)

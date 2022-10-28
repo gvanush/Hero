@@ -24,7 +24,7 @@ class ObjectSelector {
         self.object = object
         switch type {
         case .mesh:
-            SPTOutlineLook.make(.init(color: UIColor.objectSelectionColor.rgba, thickness: 5.0, categories: LookCategories.objectSelection.rawValue), object: object)
+            SPTOutlineLook.make(.init(color: UIColor.primarySelectionColor.rgba, thickness: 5.0, categories: LookCategories.objectSelection.rawValue), object: object)
         }
     }
     

@@ -45,7 +45,7 @@ struct IntegerField<T: FixedWidthInteger>: View {
                     .disabled(value == range.upperBound)
                 Spacer()
             }
-            .tint(Color.objectSelectionColor)
+            .tint(Color.primarySelectionColor)
         }
         .frame(maxWidth: .infinity, maxHeight: 75.0)
         .background(Material.thin)

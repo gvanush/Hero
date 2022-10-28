@@ -46,7 +46,7 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         super.init(title: title, selectedProperty: .valueAt0, parent: parent)
         
         bindingWillEmergeSubscription = animatableProperty.onAnimatorBindingWillEmergeSink(object: object) { [weak self] _ in
-            self?.editViewModel = self?.makeEditViewModel()
+            self?.setupEditViewModel()
         }
         
         bindingWillPerishSubscription = animatableProperty.onAnimatorBindingWillPerishSink(object: object, callback: { [weak self] in
@@ -54,12 +54,17 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
         })
         
         if animatableProperty.isAnimatorBound(object: object) {
-            self.editViewModel = makeEditViewModel()
+            setupEditViewModel()
         }
         
         self.actions.append(.init(iconName: "bolt.slash", action: { [weak self] in
             self?.unbindAnimator()
         }))
+    }
+    
+    private func setupEditViewModel() {
+        self.editViewModel = makeEditViewModel()
+        self.editViewModel?.selectedProperty = selectedProperty
     }
     
     func bindAnimator(id: SPTAnimatorId) {
@@ -76,6 +81,12 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
     
     override var isSetup: Bool {
         animatableProperty.isAnimatorBound(object: object)
+    }
+    
+    override var selectedProperty: AnimatorBindingComponentProperty? {
+        willSet {
+            editViewModel?.selectedProperty = newValue
+        }
     }
     
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
@@ -95,8 +106,8 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
     
     var body: some View {
         Group {
-            if let property = component.selectedProperty, let model = component.editViewModel {
-                EditAnimatorBindingView<AP>(property: property, model: model)
+            if let model = component.editViewModel {
+                EditAnimatorBindingView<AP>(model: model)
             }
         }
         .id(component.id)
@@ -117,6 +128,7 @@ class EditAnimatorBindingViewModel<AP>: ObservableObject where AP: SPTAnimatable
     
     @SPTObservedAnimatorBinding<AP> var binding: SPTAnimatorBinding
     @Published var editingParams: EditingParams
+    @Published fileprivate(set) var selectedProperty: AnimatorBindingComponentProperty?
     
     init(editingParams: EditingParams, animatableProperty: AP, object: SPTObject) {
         self.animatableProperty = animatableProperty
@@ -135,21 +147,24 @@ class EditAnimatorBindingViewModel<AP>: ObservableObject where AP: SPTAnimatable
 
 struct EditAnimatorBindingView<AP>: View where AP: SPTAnimatableProperty {
     
-    let property: AnimatorBindingComponentProperty
     @ObservedObject var model: EditAnimatorBindingViewModel<AP>
     
     var body: some View {
         Group {
-            switch property {
+            switch model.selectedProperty {
             case .animator:
                 AnimatorControl(animatorId: $model.binding.animatorId)
+                    .tint(Color.primarySelectionColor)
             case .valueAt0:
                 FloatSelector(value: $model.binding.valueAt0, scale: $model.editingParams.value0.scale, isSnappingEnabled: $model.editingParams.value0.isSnapping)
+                    .tint(Color.secondaryLightSelectionColor)
             case .valueAt1:
                 FloatSelector(value: $model.binding.valueAt1, scale: $model.editingParams.value1.scale, isSnappingEnabled: $model.editingParams.value1.isSnapping)
+                    .tint(Color.secondaryLightSelectionColor)
+            case .none:
+                EmptyView()
             }
         }
-        .tint(Color.objectSelectionColor)
         .transition(.identity)
         .onAppear {
             model.onAppear()

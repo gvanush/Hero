@@ -61,7 +61,7 @@ fileprivate struct ComponentActionsView: View {
         if !component.actions.isEmpty {
             Divider()
             ActionsGroupView(actions: component.actions)
-                .foregroundColor(Color.objectSelectionColor)
+                .foregroundColor(Color.primarySelectionColor)
         }
     }
     

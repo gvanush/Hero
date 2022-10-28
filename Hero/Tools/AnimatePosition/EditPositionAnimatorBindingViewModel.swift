@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import Combine
 
 class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnimatableObjectProperty> {
     
@@ -15,6 +15,7 @@ class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnim
     
     private var guideObjects: (point0: SPTObject, point1: SPTObject, line: SPTObject)?
     private var bindingWillChangeSubscription: SPTAnySubscription?
+    private var selectedPropertySubscription: AnyCancellable?
     
     init(editingParams: EditingParams, axis: Axis, object: SPTObject, sceneViewModel: SceneViewModel) {
         self.axis = axis
@@ -31,6 +32,20 @@ class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnim
         }
         
         super.init(editingParams: editingParams, animatableProperty: animatableProperty, object: object)
+        
+        selectedPropertySubscription = self.$selectedProperty.sink { [weak self] newValue in
+            guard let property = newValue, let self = self, let guideObjects = self.guideObjects else {
+                return
+            }
+            
+            var point0Look = SPTPointLook.get(object: guideObjects.point0)
+            point0Look.color = Self.guidePoint0Color(selectedProperty: property).rgba
+            SPTPointLook.update(point0Look, object: guideObjects.point0)
+            
+            var point1Look = SPTPointLook.get(object: guideObjects.point1)
+            point1Look.color = Self.guidePoint1Color(selectedProperty: property).rgba
+            SPTPointLook.update(point1Look, object: guideObjects.point1)
+        }
     }
     
     override func onAppear() {
@@ -48,12 +63,12 @@ class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnim
         let pointSize: Float = 6.0
         
         SPTPosition.make(guidePoint0Position, object: guideObjects!.point0)
-        SPTPointLook.make(.init(color: UIColor.yellow.rgba, size: pointSize, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.point0)
+        SPTPointLook.make(.init(color: Self.guidePoint0Color(selectedProperty: selectedProperty).rgba, size: pointSize, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.point0)
         
         SPTPosition.make(guidePoint1Position, object: guideObjects!.point1)
-        SPTPointLook.make(.init(color: UIColor.yellow.rgba, size: pointSize, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.point1)
+        SPTPointLook.make(.init(color: Self.guidePoint1Color(selectedProperty: selectedProperty).rgba, size: pointSize, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.point1)
         
-        SPTPolylineLook.make(.init(color: UIColor.objectSelectionColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.line)
+        SPTPolylineLook.make(.init(color: UIColor.secondarySelectionColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: guideObjects!.line)
         SPTScale.make(guideLineScale, object: guideObjects!.line)
         SPTPosition.make(guideLinePosition, object: guideObjects!.line)
         SPTPolylineLookDepthBiasMake(guideObjects!.line, 5.0, 3.0, 0.0)
@@ -102,7 +117,21 @@ class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnim
         xyz[axis.rawValue] += binding.valueAt1
         return .init(xyz: xyz)
     }
+    
+    static private func guidePoint0Color(selectedProperty: AnimatorBindingComponentProperty?) -> UIColor {
+        if selectedProperty == .valueAt0 {
+            return .secondaryLightSelectionColor
+        }
+        return .secondarySelectionColor
+    }
  
+    static private func guidePoint1Color(selectedProperty: AnimatorBindingComponentProperty?) -> UIColor {
+        if selectedProperty == .valueAt1 {
+            return .secondaryLightSelectionColor
+        }
+        return .secondarySelectionColor
+    }
+    
     private func removeGuideObjects() {
         guard let objects = guideObjects else { return }
         SPTSceneProxy.destroyObject(objects.point0)
