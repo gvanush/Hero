@@ -10,16 +10,11 @@ import Combine
 
 fileprivate struct PropertyEditingParams {
     
-    struct Item {
-        var scale = FloatSelector.Scale._1
-        var isSnapping = false
-    }
+    var x = FloatPropertyEditingParams(scale: ._0_1)
+    var y = FloatPropertyEditingParams(scale: ._0_1)
+    var z = FloatPropertyEditingParams(scale: ._0_1)
     
-    var x = Item()
-    var y = Item()
-    var z = Item()
-    
-    subscript(_ axis: Axis) -> Item {
+    subscript(_ axis: Axis) -> FloatPropertyEditingParams {
         set {
             switch axis {
             case .x:
@@ -71,7 +66,7 @@ class ScaleToolSelectedObjectViewModel: ObservableObject {
         get { sptScale.xyz }
     }
  
-    fileprivate var editingParam: PropertyEditingParams.Item {
+    fileprivate var editingParam: FloatPropertyEditingParams {
         set {
             propertyEditingParams[axis] = newValue
         }
@@ -139,6 +134,10 @@ class ScaleToolViewModel: ToolViewModel {
         } else {
             propertyEditingParams[duplicate] = propertyEditingParams[original]
         }
+    }
+    
+    override func onObjectDestroy(_ object: SPTObject) {
+        propertyEditingParams.removeValue(forKey: object)
     }
     
 }

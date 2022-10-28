@@ -30,13 +30,13 @@ class MeshObjectInspectorModel: ObservableObject {
         SPTMetadataGet(object).name
     }
     
-    let positionFormatter = PositionComponentFormatter()
+    let positionFormatter = PositionFieldFormatter()
     
     var position: SPTPosition {
         SPTPosition.get(object: object)
     }
     
-    let scaleFormatter = ScaleComponentFormatter()
+    let scaleFormatter = ScaleFieldFormatter()
     
     var scale: SPTScale {
         SPTScale.get(object: object)

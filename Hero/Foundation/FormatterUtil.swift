@@ -48,7 +48,7 @@ class BasicFloatFormatter: FloatFormatter {
     }
 }
 
-class PositionComponentFormatter: BasicFloatFormatter {
+class PositionFieldFormatter: BasicFloatFormatter {
     
     override init() {
         super.init()
@@ -61,7 +61,7 @@ class PositionComponentFormatter: BasicFloatFormatter {
     
 }
 
-class ScaleComponentFormatter: BasicFloatFormatter {
+class ScaleFieldFormatter: BasicFloatFormatter {
     
     override init() {
         super.init()

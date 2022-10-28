@@ -65,6 +65,9 @@ class RootViewModel: ObservableObject {
         if object == sceneViewModel.focusedObject {
             sceneViewModel.focusedObject = nil
         }
+        for toolVM in toolViewModels {
+            toolVM.onObjectDestroy(object)
+        }
         SPTSceneProxy.destroyObject(object)
     }
     

@@ -1,40 +1,11 @@
 //
-//  PositionAnimatorBindingsView.swift
+//  EditPositionAnimatorBindingViewModel.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 14.08.22.
+//  Created by Vanush Grigoryan on 28.10.22.
 //
 
-import SwiftUI
-
-
-class PositionAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimatableObjectProperty> {
-    
-    let axis: Axis
-    let sceneViewModel: SceneViewModel
-    
-    init(axis: Axis, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
-        
-        self.axis = axis
-        self.sceneViewModel = sceneViewModel
-        
-        var animatableProperty: SPTAnimatableObjectProperty!
-        switch axis {
-        case .x:
-            animatableProperty = .positionX
-        case .y:
-            animatableProperty = .positionY
-        case .z:
-            animatableProperty = .positionZ
-        }
-        
-        super.init(animatableProperty: animatableProperty, title: "\(axis.displayName) Binding", object: object, parent: parent)
-    }
-    
-    override func makeEditViewModel() -> EditAnimatorBindingViewModel<SPTAnimatableObjectProperty>? {
-        EditPositionAnimatorBindingViewModel(axis: axis, object: object, sceneViewModel: sceneViewModel)
-    }
-}
+import Foundation
 
 
 class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnimatableObjectProperty> {
@@ -45,7 +16,7 @@ class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnim
     private var guideObjects: (point0: SPTObject, point1: SPTObject, line: SPTObject)?
     private var bindingWillChangeSubscription: SPTAnySubscription?
     
-    init(axis: Axis, object: SPTObject, sceneViewModel: SceneViewModel) {
+    init(editingParams: EditingParams, axis: Axis, object: SPTObject, sceneViewModel: SceneViewModel) {
         self.axis = axis
         self.sceneViewModel = sceneViewModel
         
@@ -59,7 +30,7 @@ class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnim
             animatableProperty = .positionZ
         }
         
-        super.init(animatableProperty: animatableProperty, object: object)
+        super.init(editingParams: editingParams, animatableProperty: animatableProperty, object: object)
     }
     
     override func onAppear() {
@@ -144,25 +115,5 @@ class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnim
     private var objectPositionXYZ: simd_float3 {
         SPTPosition.get(object: object).xyz
     }
-    
-}
-
-
-class PositionAnimatorBindingsComponent: Component {
-    
-    let object: SPTObject
-    let sceneViewModel: SceneViewModel
-    
-    lazy private(set) var x = PositionAnimatorBindingComponent(axis: .x, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var y = PositionAnimatorBindingComponent(axis: .y, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var z = PositionAnimatorBindingComponent(axis: .z, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    
-    init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
-        self.object = object
-        self.sceneViewModel = sceneViewModel
-        super.init(title: "Animators", parent: parent)
-    }
-    
-    override var subcomponents: [Component]? { [x, y, z] }
     
 }

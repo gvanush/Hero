@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+fileprivate typealias EditingParams = PositionAnimatorBindingsComponent.EditingParams
 
 class AnimatePositionToolSelectedObjectViewModel: ObservableObject {
     
@@ -17,12 +18,19 @@ class AnimatePositionToolSelectedObjectViewModel: ObservableObject {
     let rootComponent: PositionAnimatorBindingsComponent
     @Published var activeComponent: Component
     
-    init(object: SPTObject, sceneViewModel: SceneViewModel) {
+    fileprivate init(editingParams: EditingParams, selectedPropertyIndex: Int?, activeComponentPath: ComponentPath, object: SPTObject, sceneViewModel: SceneViewModel) {
         self.object = object
         self.sceneViewModel = sceneViewModel
         
-        self.rootComponent = PositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: nil)
-        self.activeComponent = rootComponent
+        self.rootComponent = PositionAnimatorBindingsComponent(editingParams: editingParams, object: object, sceneViewModel: sceneViewModel, parent: nil)
+        
+        var activeComponent = rootComponent.componentAt(activeComponentPath)
+        while let component = activeComponent, !component.isSetup {
+            activeComponent = component.parent
+        }
+        
+        self.activeComponent = activeComponent ?? rootComponent
+        self.activeComponent.selectedPropertyIndex = selectedPropertyIndex
     }
     
 }
@@ -43,6 +51,9 @@ class AnimatePositionToolViewModel: ToolViewModel {
     
     @Published private(set) var selectedObjectViewModel: AnimatePositionToolSelectedObjectViewModel?
     
+    private var lastActiveComponentPath = ComponentPath()
+    private var lastSelectedPropertyIndex: Int?
+    private var propertyEditingParams = [SPTObject : EditingParams]()
     private var selectedObjectSubscription: AnyCancellable?
     private var activeComponentSubscription: AnyCancellable?
     
@@ -72,8 +83,15 @@ class AnimatePositionToolViewModel: ToolViewModel {
     }
     
     private func setupSelectedObjectViewModel(object: SPTObject?) {
+        
+        if let selectedVM = selectedObjectViewModel {
+            lastActiveComponentPath = selectedVM.activeComponent.pathIn(selectedVM.rootComponent)!
+            lastSelectedPropertyIndex = selectedVM.activeComponent.selectedPropertyIndex
+            propertyEditingParams[selectedVM.object] = selectedVM.rootComponent.editingParams
+        }
+        
         if let object = object {
-            selectedObjectViewModel = .init(object: object, sceneViewModel: sceneViewModel)
+            selectedObjectViewModel = .init(editingParams: propertyEditingParams[object, default: .init()], selectedPropertyIndex: lastSelectedPropertyIndex, activeComponentPath: lastActiveComponentPath, object: object, sceneViewModel: sceneViewModel)
             activeComponentSubscription = selectedObjectViewModel!.$activeComponent.sink { [weak self] _ in
                 self?.objectWillChange.send()
             }
@@ -81,6 +99,18 @@ class AnimatePositionToolViewModel: ToolViewModel {
             selectedObjectViewModel = nil
             activeComponentSubscription = nil
         }
+    }
+    
+    override func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
+        if let selectedObjectVM = selectedObjectViewModel, original == selectedObjectVM.object {
+            propertyEditingParams[duplicate] = selectedObjectVM.rootComponent.editingParams
+        } else {
+            propertyEditingParams[duplicate] = propertyEditingParams[original]
+        }
+    }
+    
+    override func onObjectDestroy(_ object: SPTObject) {
+        propertyEditingParams.removeValue(forKey: object)
     }
     
 }

@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-
 enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
     
     case animator
@@ -108,14 +107,21 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
 
 class EditAnimatorBindingViewModel<AP>: ObservableObject where AP: SPTAnimatableProperty {
     
+    struct EditingParams {
+        var value0 = FloatPropertyEditingParams()
+        var value1 = FloatPropertyEditingParams()
+    }
+
     let animatableProperty: AP
     let object: SPTObject
     
     @SPTObservedAnimatorBinding<AP> var binding: SPTAnimatorBinding
+    @Published var editingParams: EditingParams
     
-    init(animatableProperty: AP, object: SPTObject) {
+    init(editingParams: EditingParams, animatableProperty: AP, object: SPTObject) {
         self.animatableProperty = animatableProperty
         self.object = object
+        self.editingParams = editingParams
         
         _binding = .init(property: animatableProperty, object: object)
         _binding.publisher = self.objectWillChange
@@ -132,18 +138,15 @@ struct EditAnimatorBindingView<AP>: View where AP: SPTAnimatableProperty {
     let property: AnimatorBindingComponentProperty
     @ObservedObject var model: EditAnimatorBindingViewModel<AP>
     
-    @State private var scale = FloatSelector.Scale._1
-    @State private var isSnappingEnabled = false
-    
     var body: some View {
         Group {
             switch property {
             case .animator:
                 AnimatorControl(animatorId: $model.binding.animatorId)
             case .valueAt0:
-                FloatSelector(value: $model.binding.valueAt0, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+                FloatSelector(value: $model.binding.valueAt0, scale: $model.editingParams.value0.scale, isSnappingEnabled: $model.editingParams.value0.isSnapping)
             case .valueAt1:
-                FloatSelector(value: $model.binding.valueAt1, scale: $scale, isSnappingEnabled: $isSnappingEnabled)
+                FloatSelector(value: $model.binding.valueAt1, scale: $model.editingParams.value1.scale, isSnappingEnabled: $model.editingParams.value1.isSnapping)
             }
         }
         .tint(Color.objectSelectionColor)
