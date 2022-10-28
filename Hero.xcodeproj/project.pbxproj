@@ -25,7 +25,7 @@
 		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
 		B7217607274FFA770047016B /* Device_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7217605274FFA770047016B /* Device_metal.mm */; };
 		B721760A2750AD990047016B /* Buffer_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = B72176082750AD990047016B /* Buffer_metal.mm */; };
-		B723583E2756147200337547 /* square.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723583D2756147200337547 /* square.obj */; };
+		B723583E2756147200337547 /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723583D2756147200337547 /* plane.obj */; };
 		B723584027568C6300337547 /* cube.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723583F27568C6300337547 /* cube.obj */; };
 		B72358422756902F00337547 /* cylinder.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72358412756902F00337547 /* cylinder.obj */; };
 		B7235844275691C000337547 /* cone.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7235843275691C000337547 /* cone.obj */; };
@@ -178,7 +178,7 @@
 		B72176092750AD990047016B /* Buffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Buffer.hpp; sourceTree = "<group>"; };
 		B721760B2750B8870047016B /* ResourceOptions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceOptions.hpp; sourceTree = "<group>"; };
 		B721760C2750BFAC0047016B /* ResourceOptionsUtil_metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceOptionsUtil_metal.h; sourceTree = "<group>"; };
-		B723583D2756147200337547 /* square.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = square.obj; sourceTree = "<group>"; };
+		B723583D2756147200337547 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
 		B723583F27568C6300337547 /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
 		B72358412756902F00337547 /* cylinder.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cylinder.obj; sourceTree = "<group>"; };
 		B7235843275691C000337547 /* cone.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cone.obj; sourceTree = "<group>"; };
@@ -433,7 +433,7 @@
 		B72175FD274CF1CF0047016B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B723583D2756147200337547 /* square.obj */,
+				B723583D2756147200337547 /* plane.obj */,
 				B72175FE274CF1DE0047016B /* circle.obj */,
 				B723583F27568C6300337547 /* cube.obj */,
 				B72358412756902F00337547 /* cylinder.obj */,
@@ -897,7 +897,7 @@
 			files = (
 				B723585C2761189E00337547 /* line.obj in Resources */,
 				B723585A275F51F700337547 /* coordinate_grid.obj in Resources */,
-				B723583E2756147200337547 /* square.obj in Resources */,
+				B723583E2756147200337547 /* plane.obj in Resources */,
 				B72358422756902F00337547 /* cylinder.obj in Resources */,
 				B72358482756928F00337547 /* sphere.obj in Resources */,
 				B723584027568C6300337547 /* cube.obj in Resources */,

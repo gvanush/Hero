@@ -19,14 +19,14 @@ struct MeshRegistry {
     static let standard = MeshRegistry()
     
     private init() {
-        for item in [("cube"), ("cylinder"), ("cone"), ("sphere")] {
+        for item in ["cube", "cylinder", "cone", "sphere"] {
             let meshPath = Bundle.main.path(forResource: item, ofType: "obj")!
             meshRecords.append(MeshRecord(name: item, iconName: item, id: SPTCreate3DMeshFromFile(meshPath)))
         }
-//        for item in [("square", "square"), ("circle", "circle")] {
-//            let meshPath = Bundle.main.path(forResource: item.0, ofType: "obj")!
-//            meshRecords.append(MeshRecord(name: item.0, iconName: item.1, id: SPTCreate2DMeshFromFile(meshPath)))
-//        }
+        for item in ["plane", "circle"] {
+            let meshPath = Bundle.main.path(forResource: item, ofType: "obj")!
+            meshRecords.append(MeshRecord(name: item, iconName: item, id: SPTCreate2DMeshFromFile(meshPath)))
+        }
     }
     
     func recordById(_ id: SPTMeshId) -> MeshRecord? {
