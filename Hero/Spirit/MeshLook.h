@@ -40,7 +40,7 @@ bool SPTMeshShadingEqual(SPTMeshShading lhs, SPTMeshShading rhs);
 
 void SPTMeshLookMake(SPTObject object, SPTMeshLook meshLook);
 
-void SPTMeshLookUpdate(SPTObject object, SPTMeshLook meshLook);
+void SPTMeshLookUpdate(SPTObject object, SPTMeshLook updated);
 
 void SPTMeshLookDestroy(SPTObject object);
 

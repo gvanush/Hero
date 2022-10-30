@@ -6,7 +6,7 @@
 //
 
 #import "ShaderTypes.h"
-#import "Materials.h"
+#import "RenderableMaterials.h"
 
 #include <metal_stdlib>
 
@@ -289,7 +289,7 @@ vertex MeshRasterizerData meshVS(uint vertexID [[vertex_id]],
 
 fragment float4 blinnPhongFS(MeshRasterizerData in [[stage_in]],
                              constant Uniforms& uniforms [[buffer(kFragmentInputIndexUniforms)]],
-                             constant SPTPhongMaterial& material [[buffer(kFragmentInputIndexMaterial)]]) {
+                             constant spt::PhongRenderableMaterial& material [[buffer(kFragmentInputIndexMaterial)]]) {
     constexpr float3 ambientLightColor = {0.3f, 0.3f, 0.3f};
     constexpr float3 lightColor = {0.7f, 0.7f, 0.7f};
     const float3 lightDirection = normalize(-float3 {1.f, 1.f, 1.f});

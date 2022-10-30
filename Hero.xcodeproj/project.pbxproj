@@ -256,6 +256,7 @@
 		B7643B2E29084DAF00F6A05B /* SPTEasingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTEasingUtil.swift; sourceTree = "<group>"; };
 		B7643B30290BD31B00F6A05B /* EditingParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingParams.swift; sourceTree = "<group>"; };
 		B7643B33290BE8FA00F6A05B /* EditPositionAnimatorBindingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPositionAnimatorBindingViewModel.swift; sourceTree = "<group>"; };
+		B7643B35290F075200F6A05B /* RenderableMaterials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderableMaterials.h; sourceTree = "<group>"; };
 		B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPropertyAnimatorBinding.cpp; sourceTree = "<group>"; };
 		B76D4FC128AA25B60029E47B /* ObjectPropertyAnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBinding.hpp; sourceTree = "<group>"; };
 		B76D4FC328AA25C50029E47B /* ObjectPropertyAnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectPropertyAnimatorBinding.h; sourceTree = "<group>"; };
@@ -729,6 +730,7 @@
 				B7791D552726762100E0C934 /* ShaderTypes.h */,
 				B75FA5692788C82C001EC7C5 /* Materials.h */,
 				B7B711DB28C13B570077C7CD /* Materials.cpp */,
+				B7643B35290F075200F6A05B /* RenderableMaterials.h */,
 			);
 			name = Rendering;
 			sourceTree = "<group>";

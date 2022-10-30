@@ -157,10 +157,12 @@ void SPTOrientationMake(SPTObject object, SPTOrientation orientation) {
     registry.emplace<SPTOrientation>(object.entity, orientation);
 }
 
+// TODO: Remove
 void SPTOrientationMakeEuler(SPTObject object, SPTEulerOrientation euler) {
     SPTOrientationMake(object, {SPTOrientationVariantTagEuler, {.euler = euler}});
 }
 
+// TODO: Remove
 void SPTOrientationMakeLookAt(SPTObject object, SPTLookAtOrientation lookAt) {
     SPTOrientationMake(object, {SPTOrientationVariantTagLookAt, {.lookAt = lookAt}});
 }

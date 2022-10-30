@@ -7,22 +7,27 @@
 
 #include "Scene.hpp"
 #include "Scene.h"
+#include "MeshLook.hpp"
 
 #include <vector>
 
 namespace spt {
 
 Scene::Scene()
+// TODO: Use MeshLook-Transformation group
 : _transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()} {
     registry.on_destroy<Transformation>().connect<&Transformation::onDestroy>();
+    registry.on_destroy<SPTMeshLook>().connect<&MeshLook::onDestroy>();
 }
 
 Scene::~Scene() {
     registry.on_destroy<Transformation>().disconnect<&Transformation::onDestroy>();
+    registry.on_destroy<SPTMeshLook>().disconnect<&MeshLook::onDestroy>();
 }
 
 void Scene::update() {
     Transformation::updateWithoutAnimators(registry, _transformationGroup);
+    MeshLook::update(registry);
 }
 
 }

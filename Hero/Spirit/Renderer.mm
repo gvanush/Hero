@@ -13,7 +13,7 @@
 #include "ResourceManager.hpp"
 #include "Transformation.hpp"
 #include "PolylineLookDepthBias.h"
-#include "Materials.h"
+#include "RenderableMaterials.h"
 #import "SPTRenderingContext.h"
 #import "ShaderTypes.h"
 
@@ -75,33 +75,43 @@ id<MTLRenderPipelineState> createPipelineState(NSString* name, NSString* vertexS
     return pipelineState;
 }
 
-void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, const SPTMeshLook& meshLook) {
+void renderPlainColorMesh(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, SPTMeshId meshId, const spt::PlainColorRenderableMaterial& material) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     
-    switch (meshLook.shading.type) {
-        case SPTMeshShadingPlainColor: {
-            [renderEncoder setRenderPipelineState: __plainColorMeshPipelineState];
-            [renderEncoder setFragmentBytes: &meshLook.shading.plainColor.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
-            break;
-        }
-        case SPTMeshShadingBlinnPhong: {
-            [renderEncoder setRenderPipelineState: __blinnPhongMeshPipelineState];
-            // TODO: Optimize this computation to not happen each frame (perhaps as part of instancing optimization)
-            const auto& transposedInverseWorldMatrix = (simd_transpose(simd_inverse(worldMatrix)));
-            [renderEncoder setVertexBytes: &transposedInverseWorldMatrix
-                                   length: sizeof(simd_float4x4)
-                                  atIndex: kVertexInputIndexTransposedInverseWorldMatrix];
-            [renderEncoder setFragmentBytes: &meshLook.shading.blinnPhong length: sizeof(SPTPhongMaterial) atIndex: kFragmentInputIndexMaterial];
-            break;
-        }
-    }
+    [renderEncoder setFragmentBytes: &material.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
     
     [renderEncoder setVertexBytes: &worldMatrix
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexWorldMatrix];
     
-    const auto& mesh = ResourceManager::active().getMesh(meshLook.meshId);
+    const auto& mesh = ResourceManager::active().getMesh(meshId);
+    
+    id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
+    [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
+    
+    id<MTLBuffer> indexBuffer = (__bridge id<MTLBuffer>) mesh.indexBuffer()->apiObject();
+    
+    [renderEncoder drawIndexedPrimitives: MTLPrimitiveTypeTriangle indexCount: mesh.indexCount() indexType: MTLIndexTypeUInt16 indexBuffer: indexBuffer indexBufferOffset: 0];
+    
+}
+
+void renderPhongMesh(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, SPTMeshId meshId, const spt::PhongRenderableMaterial& material) {
+    
+    const auto& worldMatrix = registry.get<Transformation>(entity).global;
+    
+    // TODO: Optimize this computation to not happen each frame (perhaps as part of instancing optimization)
+    const auto& transposedInverseWorldMatrix = (simd_transpose(simd_inverse(worldMatrix)));
+    [renderEncoder setVertexBytes: &transposedInverseWorldMatrix
+                           length: sizeof(simd_float4x4)
+                          atIndex: kVertexInputIndexTransposedInverseWorldMatrix];
+    [renderEncoder setFragmentBytes: &material length: sizeof(spt::PhongRenderableMaterial) atIndex: kFragmentInputIndexMaterial];
+    
+    [renderEncoder setVertexBytes: &worldMatrix
+                           length: sizeof(simd_float4x4)
+                          atIndex: kVertexInputIndexWorldMatrix];
+    
+    const auto& mesh = ResourceManager::active().getMesh(meshId);
     
     id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
     [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
@@ -222,12 +232,22 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     [renderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
     
     // Render meshes
-    const auto meshLookView = registry.view<SPTMeshLook>();
-    meshLookView.each([&registry, renderEncoder, rc] (auto entity, auto& meshLook) {
+    [renderEncoder setRenderPipelineState: __plainColorMeshPipelineState];
+    const auto plainColorMeshLookView = registry.view<spt::PlainColorRenderableMaterial, SPTMeshLook>();
+    plainColorMeshLookView.each([&registry, renderEncoder, rc] (auto entity, const auto& material, const auto& meshLook) {
         if(rc.lookCategories & meshLook.categories) {
-            renderMesh(renderEncoder, registry, entity, meshLook);
+            renderPlainColorMesh(renderEncoder, registry, entity, meshLook.meshId, material);
         }
     });
+    
+    [renderEncoder setRenderPipelineState: __blinnPhongMeshPipelineState];
+    const auto phongMeshLookView = registry.view<spt::PhongRenderableMaterial, SPTMeshLook>();
+    phongMeshLookView.each([&registry, renderEncoder, rc] (auto entity, const auto& material, const auto& meshLook) {
+        if(rc.lookCategories & meshLook.categories) {
+            renderPhongMesh(renderEncoder, registry, entity, meshLook.meshId, material);
+        }
+    });
+    
     
     // Render outlines
     [renderEncoder setRenderPipelineState: __outlinePipelineState];

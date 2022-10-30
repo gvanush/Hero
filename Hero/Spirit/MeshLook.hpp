@@ -15,5 +15,16 @@
 
 namespace spt {
 
+struct DirtyRenderableMaterialFlag {
+};
+
+namespace MeshLook {
+
+void update(spt::Registry& registry);
+
+void onDestroy(spt::Registry& registry, SPTEntity entity);
+
+};
+
 }
 
