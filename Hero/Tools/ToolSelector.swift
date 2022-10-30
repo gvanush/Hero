@@ -26,8 +26,8 @@ struct ToolSelector: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            ScrollViewReader { scrollViewProxy in
+        ScrollViewReader { scrollViewProxy in
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0.0) {
                     ForEach(toolViewModels) { toolViewModel in
                         itemForToolViewModel(toolViewModel, scrollViewProxy: scrollViewProxy)
@@ -46,8 +46,8 @@ struct ToolSelector: View {
                     }
                 }
             }
+            .tint(.primary)
         }
-        .tint(.primary)
     }
     
     func itemForToolViewModel(_ toolViewModel: ToolViewModel, scrollViewProxy: ScrollViewProxy) -> some View {

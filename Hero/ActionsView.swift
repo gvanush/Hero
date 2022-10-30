@@ -101,12 +101,16 @@ fileprivate struct ActionsGroupView: View {
         }
         .onChange(of: actions) { newValue in
             if let id = newValue.first?.id {
-                scrollViewProxy.scrollTo(id, anchor: .bottom)
+                withAnimation {
+                    scrollViewProxy.scrollTo(id, anchor: .bottom)
+                }
             }
         }
         .onAppear {
             if let id = actions.first?.id {
-                scrollViewProxy.scrollTo(id, anchor: .bottom)
+                withAnimation {
+                    scrollViewProxy.scrollTo(id, anchor: .bottom)
+                }
             }
         }
     }
