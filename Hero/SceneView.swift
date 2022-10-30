@@ -11,7 +11,7 @@ import SwiftUI
 struct SceneViewConst {
     static let uiBgrMaterial = Material.thin
     static let uiPadding = 16.0
-    static let uiButtonSize = 50.0
+    static let uiButtonSize = 44.0
 }
 
 struct SceneView: View {
@@ -97,7 +97,7 @@ struct SceneView: View {
                     HStack(spacing: 0.0) {
                         VStack {
                             Spacer()
-                            focusButton()
+                            focusToggle()
                         }
                         .padding(.leading, 8.0)
                         Spacer()
@@ -131,7 +131,7 @@ struct SceneView: View {
         }
     }
     
-    func focusButton() -> some View {
+    func focusToggle() -> some View {
         SceneUIToggle(isOn: .init(get: {
             guard let selected = model.selectedObject else {
                 return nil

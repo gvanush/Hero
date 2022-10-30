@@ -100,8 +100,8 @@ struct RootView: View {
             .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
             .overlay(alignment: .bottomTrailing) {
                 ActionsView(defaultActions: defaultActions, activeToolViewModel: $model.activeToolViewModel)
-                    .background(Material.bar, ignoresSafeAreaEdges: [])
-                    .cornerRadius(5.0)
+                    .background(Material.thin, ignoresSafeAreaEdges: [])
+                    .cornerRadius(10.0)
                     .padding(.trailing, 16.0)
                     .shadow(radius: 1.0)
                     .visible(!isNavigating)
@@ -173,9 +173,6 @@ struct RootView: View {
             ActionItem(iconName: "plus.square.on.square", disabled: !sceneViewModel.isObjectSelected) {
                 model.duplicateObject(sceneViewModel.selectedObject!)
             },
-            ActionItem(iconName: "slider.horizontal.3", disabled: !sceneViewModel.isObjectSelected) {
-                showsSelectedObjectInspector = true
-            },
             ActionItem(iconName: "trash", disabled: !sceneViewModel.isObjectSelected) {
                 model.destroyObject(sceneViewModel.selectedObject!)
             }
@@ -214,20 +211,20 @@ struct RootView: View {
     func editorsView() -> some View {
         HStack(spacing: 0.0) {
             Button {
+                showsSelectedObjectInspector = true
+            } label: {
+                Image(systemName: "slider.horizontal.3")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .disabled(!sceneViewModel.isObjectSelected)
+            Divider()
+                .padding(.vertical, 4.0)
+            Button {
                 showsAnimatorsView = true
             } label: {
                 Image(systemName: "bolt")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .contentShape(Rectangle())
-            Divider()
-                .padding(.vertical, 4.0)
-            Button {
-            } label: {
-                Image(systemName: "list.bullet.indent")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            .contentShape(Rectangle())
         }
         .tint(.primary)
         .frame(height: 33.0)

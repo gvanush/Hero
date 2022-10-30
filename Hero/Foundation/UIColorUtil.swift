@@ -40,8 +40,8 @@ extension UIColor {
     
     static let primarySelectionColor = UIColor.orange
     static let primaryLightSelectionColor = UIColor.yellow
-    static let secondarySelectionColor = UIColor.systemTeal
-    static let secondaryLightSelectionColor = UIColor.cyan
+    static let secondarySelectionColor = UIColor(named: "secondarySelectionColor")!
+    static let secondaryLightSelectionColor = UIColor(named: "secondaryLightSelectionColor")!
     
     static let xAxis = UIColor(named: "XAxisColor")!
     static let xAxisLight = UIColor(named: "XAxisLightColor")!

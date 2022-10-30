@@ -68,7 +68,6 @@
 		B757DB7D28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7C28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift */; };
 		B757DB7F28A900CF00BB5DB4 /* SPTObservedComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7E28A900CF00BB5DB4 /* SPTObservedComponent.swift */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
-		B75FA56D278B3414001EC7C5 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56C278B3414001EC7C5 /* Views.swift */; };
 		B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA572278D5001001EC7C5 /* StringUtil.swift */; };
 		B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */; };
 		B7643B2629027C7900F6A05B /* RandomSeedSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B2529027C7900F6A05B /* RandomSeedSelector.swift */; };
@@ -247,7 +246,6 @@
 		B757DB7E28A900CF00BB5DB4 /* SPTObservedComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObservedComponent.swift; sourceTree = "<group>"; };
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		B75FA56C278B3414001EC7C5 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		B75FA572278D5001001EC7C5 /* StringUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtil.swift; sourceTree = "<group>"; };
 		B75FA57F2791A1D1001EC7C5 /* MeshLook.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MeshLook.hpp; sourceTree = "<group>"; };
 		B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
@@ -393,7 +391,6 @@
 				B7D19EB727317025005C9F82 /* ScrollAnimationUtil.swift */,
 				B7D19EB92731A456005C9F82 /* DragGestureUtil.swift */,
 				B7D19EBB273306F4005C9F82 /* Line.swift */,
-				B75FA56C278B3414001EC7C5 /* Views.swift */,
 				B75FA572278D5001001EC7C5 /* StringUtil.swift */,
 				B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */,
 				B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */,
@@ -975,7 +972,6 @@
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
-				B75FA56D278B3414001EC7C5 /* Views.swift in Sources */,
 				B7643B34290BE8FA00F6A05B /* EditPositionAnimatorBindingViewModel.swift in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B73E47CC27C5762500CB0AFC /* Position.cpp in Sources */,
