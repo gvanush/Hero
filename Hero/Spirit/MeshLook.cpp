@@ -11,10 +11,14 @@
 
 
 bool SPTMeshLookEqual(SPTMeshLook lhs, SPTMeshLook rhs) {
-    if(lhs.shading != rhs.shading || lhs.meshId != rhs.meshId || lhs.categories != rhs.categories) {
+    return SPTMeshShadingEqual(lhs.shading, rhs.shading) && lhs.meshId == rhs.meshId && lhs.categories == rhs.categories;
+}
+
+bool SPTMeshShadingEqual(SPTMeshShading lhs, SPTMeshShading rhs) {
+    if(lhs.type != rhs.type) {
         return false;
     }
-    switch (lhs.shading) {
+    switch (lhs.type) {
         case SPTMeshShadingPlainColor: {
             return SPTPlainColorMaterialEqual(lhs.plainColor, rhs.plainColor);
         }

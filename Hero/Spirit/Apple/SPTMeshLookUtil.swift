@@ -11,11 +11,11 @@ import Foundation
 extension SPTMeshLook: SPTComponent {
     
     init(material: SPTPlainColorMaterial, meshId: SPTMeshId, categories: SPTLookCategories = kSPTLookCategoriesAll) {
-        self.init(.init(plainColor: material), shading: .plainColor, meshId: meshId, categories: categories)
+        self.init(shading: .init(type: .plainColor, .init(plainColor: material)), meshId: meshId, categories: categories)
     }
     
     init(material: SPTPhongMaterial, meshId: SPTMeshId, categories: SPTLookCategories = kSPTLookCategoriesAll) {
-        self.init(.init(blinnPhong: material), shading: .blinnPhong, meshId: meshId, categories: categories)
+        self.init(shading: .init(type: .blinnPhong, .init(blinnPhong: material)), meshId: meshId, categories: categories)
     }
     
     public static func == (lhs: SPTMeshLook, rhs: SPTMeshLook) -> Bool {

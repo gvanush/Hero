@@ -79,10 +79,10 @@ void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, const Registry& regis
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
     
-    switch (meshLook.shading) {
+    switch (meshLook.shading.type) {
         case SPTMeshShadingPlainColor: {
             [renderEncoder setRenderPipelineState: __plainColorMeshPipelineState];
-            [renderEncoder setFragmentBytes: &meshLook.plainColor.color length: sizeof(SPTPlainColorMaterial) atIndex: kFragmentInputIndexColor];
+            [renderEncoder setFragmentBytes: &meshLook.shading.plainColor.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
             break;
         }
         case SPTMeshShadingBlinnPhong: {
@@ -92,7 +92,7 @@ void renderMesh(id<MTLRenderCommandEncoder> renderEncoder, const Registry& regis
             [renderEncoder setVertexBytes: &transposedInverseWorldMatrix
                                    length: sizeof(simd_float4x4)
                                   atIndex: kVertexInputIndexTransposedInverseWorldMatrix];
-            [renderEncoder setFragmentBytes: &meshLook.blinnPhong length: sizeof(SPTPhongMaterial) atIndex: kFragmentInputIndexMaterial];
+            [renderEncoder setFragmentBytes: &meshLook.shading.blinnPhong length: sizeof(SPTPhongMaterial) atIndex: kFragmentInputIndexMaterial];
             break;
         }
     }
