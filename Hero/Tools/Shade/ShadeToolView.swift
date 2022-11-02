@@ -1,34 +1,43 @@
 //
-//  AnimatePositionToolView.swift
+//  ShadeToolView.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 02.10.22.
+//  Created by Vanush Grigoryan on 31.10.22.
 //
 
 import SwiftUI
 import Combine
 
 
-class AnimatePositionToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<PositionAnimatorBindingsComponent> {
-}
-
-
-fileprivate struct SelectedObjectControlsView: View {
+class ShadeToolComponentViewProvider: MeshObjectComponentViewProvider<ShadeComponent> {
     
-    @ObservedObject var model: AnimatePositionToolSelectedObjectViewModel
-    
-    var body: some View {
-        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: MeshObjectComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
+    override func viewForRoot(_ root: ShadeComponent) -> AnyView? {
+        AnyView(ShadeComponentView(component: root))
     }
     
 }
 
 
-class AnimatePositionToolViewModel: ToolViewModel {
+class ShadeToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<ShadeComponent> {
+}
+
+
+fileprivate struct SelectedObjectControlsView: View {
     
-    typealias EditingParams = AnimatePositionToolSelectedObjectViewModel.EditingParams
+    @ObservedObject var model: ShadeToolSelectedObjectViewModel
     
-    @Published private(set) var selectedObjectViewModel: AnimatePositionToolSelectedObjectViewModel?
+    var body: some View {
+        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: ShadeToolComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
+    }
+    
+}
+
+
+class ShadeToolViewModel: ToolViewModel {
+    
+    typealias EditingParams = ShadeToolSelectedObjectViewModel.EditingParams
+    
+    @Published private(set) var selectedObjectViewModel: ShadeToolSelectedObjectViewModel?
     
     private var lastActiveComponentPath = ComponentPath()
     private var lastSelectedPropertyIndex: Int?
@@ -38,7 +47,7 @@ class AnimatePositionToolViewModel: ToolViewModel {
     
     init(sceneViewModel: SceneViewModel) {
         
-        super.init(tool: .animatePosition, sceneViewModel: sceneViewModel)
+        super.init(tool: .shade, sceneViewModel: sceneViewModel)
         
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
             guard let self = self, self.selectedObjectViewModel?.object != selected else { return }
@@ -95,9 +104,9 @@ class AnimatePositionToolViewModel: ToolViewModel {
 }
 
 
-struct AnimatePositionToolView: View {
+struct ShadeToolView: View {
     
-    @ObservedObject var model: AnimatePositionToolViewModel
+    @ObservedObject var model: ShadeToolViewModel
     
     var body: some View {
         if let selectedObjectVM = model.selectedObjectViewModel {

@@ -8,7 +8,7 @@
 import Foundation
 
 
-extension SPTMeshLook: SPTComponent {
+extension SPTMeshLook: SPTObservableComponent {
     
     init(material: SPTPlainColorMaterial, meshId: SPTMeshId, categories: SPTLookCategories = kSPTLookCategoriesAll) {
         self.init(shading: .init(type: .plainColor, .init(plainColor: material)), meshId: meshId, categories: categories)
@@ -49,4 +49,44 @@ extension SPTMeshLook: SPTComponent {
     static func tryGet(object: SPTObject) -> SPTMeshLook? {
         SPTMeshLookTryGet(object)?.pointee
     }
+    
+    static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription {
+        let subscription = WillEmergeSubscription(observer: callback)
+        
+        let token = SPTMeshLookAddWillEmergeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTMeshLookRemoveWillEmergeObserver(object, token) }
+        
+        return subscription
+    }
+    
+    static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
+        let subscription = WillChangeSubscription(observer: callback)
+        
+        let token = SPTMeshLookAddWillChangeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<WillChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTMeshLookRemoveWillChangeObserver(object, token) }
+        
+        return subscription
+    }
+    
+    static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
+        let subscription = WillPerishSubscription(observer: callback)
+        
+        let token = SPTMeshLookAddWillPerishObserver(object, { userInfo in
+            let subscription = Unmanaged<WillPerishSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer()
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTMeshLookRemoveWillPerishObserver(object, token) }
+        
+        return subscription
+    }
+    
 }

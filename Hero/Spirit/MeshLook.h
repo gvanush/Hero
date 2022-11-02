@@ -50,4 +50,16 @@ const SPTMeshLook* _Nullable SPTMeshLookTryGet(SPTObject object);
 
 bool SPTMeshLookExists(SPTObject object);
 
+typedef void (* _Nonnull SPTMeshLookWillChangeObserver) (SPTMeshLook, SPTObserverUserInfo);
+SPTObserverToken SPTMeshLookAddWillChangeObserver(SPTObject object, SPTMeshLookWillChangeObserver observer, SPTObserverUserInfo userInfo);
+void SPTMeshLookRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTMeshLookWillEmergeObserver) (SPTMeshLook, SPTObserverUserInfo);
+SPTObserverToken SPTMeshLookAddWillEmergeObserver(SPTObject object, SPTMeshLookWillEmergeObserver observer, SPTObserverUserInfo userInfo);
+void SPTMeshLookRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTMeshLookWillPerishObserver) (SPTObserverUserInfo);
+SPTObserverToken SPTMeshLookAddWillPerishObserver(SPTObject object, SPTMeshLookWillPerishObserver observer, SPTObserverUserInfo userInfo);
+void SPTMeshLookRemoveWillPerishObserver(SPTObject object, SPTObserverToken token);
+
 SPT_EXTERN_C_END

@@ -33,6 +33,38 @@ class SPTObservedComponent<C> where C: SPTObservableComponent {
     
 }
 
+@propertyWrapper
+class SPTObservedComponentProperty<C, V> where C: SPTObservableComponent, V: Equatable {
+    
+    let object: SPTObject
+    let keyPath: WritableKeyPath<C, V>
+    var willChangeSubscription: SPTAnySubscription?
+
+    weak var publisher: ObservableObjectPublisher?
+    
+    init(object: SPTObject, keyPath: WritableKeyPath<C, V>) {
+        self.object = object
+        self.keyPath = keyPath
+        
+        willChangeSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
+            if C.get(object: object)[keyPath: keyPath] != newValue[keyPath: keyPath] {
+                self?.publisher?.send()
+            }
+        }
+
+    }
+    
+    var wrappedValue: V {
+        set {
+            var component = C.get(object: object)
+            component[keyPath: keyPath] = newValue
+            C.update(component, object: object)
+        }
+        get { C.get(object: object)[keyPath: keyPath] }
+    }
+    
+}
+
 
 @propertyWrapper
 class SPTObservedOptionalComponent<C> where C: SPTObservableComponent {

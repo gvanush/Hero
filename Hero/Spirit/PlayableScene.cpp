@@ -9,6 +9,7 @@
 #include "PlayableScene.h"
 #include "Scene.hpp"
 #include "MeshLook.h"
+#include "RenderableMaterials.h"
 #include "Position.hpp"
 #include "Scale.hpp"
 #include "Orientation.hpp"
@@ -52,9 +53,20 @@ PlayableScene::PlayableScene(const Scene& scene, const SPTPlayableSceneDescripto
     }
     
     // Clone mesh looks
-    auto sourceMeshLookView = scene.registry.view<SPTMeshLook>();
-    if(!sourceMeshLookView.empty()) {
-        registry.insert<SPTMeshLook>(sourceMeshLookView.data(), sourceMeshLookView.data() + sourceMeshLookView.size(), *sourceMeshLookView.raw());
+    auto sourceMeshLooks = scene.registry.view<SPTMeshLook>();
+    if(!sourceMeshLooks.empty()) {
+        registry.insert<SPTMeshLook>(sourceMeshLooks.data(), sourceMeshLooks.data() + sourceMeshLooks.size(), *sourceMeshLooks.raw());
+    }
+    
+    // Clone renderable materials
+    auto sourcePhongRenderableMaterial = scene.registry.view<PhongRenderableMaterial>();
+    if(!sourcePhongRenderableMaterial.empty()) {
+        registry.insert<PhongRenderableMaterial>(sourcePhongRenderableMaterial.data(), sourcePhongRenderableMaterial.data() + sourcePhongRenderableMaterial.size(), *sourcePhongRenderableMaterial.raw());
+    }
+
+    auto sourcePlainColorRenderableMaterial = scene.registry.view<PlainColorRenderableMaterial>();
+    if(!sourcePlainColorRenderableMaterial.empty()) {
+        registry.insert<PlainColorRenderableMaterial>(sourcePlainColorRenderableMaterial.data(), sourcePlainColorRenderableMaterial.data() + sourcePlainColorRenderableMaterial.size(), *sourcePlainColorRenderableMaterial.raw());
     }
     
     // Clone camera

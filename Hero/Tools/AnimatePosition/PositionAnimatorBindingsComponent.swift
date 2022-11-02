@@ -45,7 +45,7 @@ class PositionFieldAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimata
 }
 
 
-class PositionAnimatorBindingsComponent: Component {
+class PositionAnimatorBindingsComponent: Component, BasicToolSelectedObjectRootComponent {
     
     struct EditingParams {
         var x = PositionFieldAnimatorBindingComponent.EditingParams()
@@ -61,7 +61,7 @@ class PositionAnimatorBindingsComponent: Component {
     lazy private(set) var y = PositionFieldAnimatorBindingComponent(editingParams: initialEditingParams.y, axis: .y, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     lazy private(set) var z = PositionFieldAnimatorBindingComponent(editingParams: initialEditingParams.z, axis: .z, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
-    init(editingParams: EditingParams, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required init(editingParams: EditingParams, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
         self.sceneViewModel = sceneViewModel
         self.initialEditingParams = editingParams

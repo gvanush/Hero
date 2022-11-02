@@ -21,7 +21,7 @@ struct ActionItem: Identifiable, Equatable {
     let action: () -> Void
     
     static func == (lhs: ActionItem, rhs: ActionItem) -> Bool {
-        lhs.id == rhs.id
+        lhs.id == rhs.id && lhs.disabled == rhs.disabled
     }
 }
     
@@ -99,10 +99,10 @@ fileprivate struct ActionsGroupView: View {
                 viewFor(item)
             }
         }
-        .onChange(of: actions) { newValue in
-            if let id = newValue.first?.id {
+        .onChange(of: actions) { [actions] newValue in
+            if let firstId = newValue.first?.id, firstId != actions.first?.id {
                 withAnimation {
-                    scrollViewProxy.scrollTo(id, anchor: .bottom)
+                    scrollViewProxy.scrollTo(firstId, anchor: .bottom)
                 }
             }
         }

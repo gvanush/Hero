@@ -9,6 +9,8 @@
 #include "MeshLook.hpp"
 #include "Scene.hpp"
 #include "RenderableMaterials.h"
+#include "ComponentObserverUtil.hpp"
+
 
 namespace {
 
@@ -64,6 +66,7 @@ bool SPTMeshShadingEqual(SPTMeshShading lhs, SPTMeshShading rhs) {
 
 void SPTMeshLookMake(SPTObject object, SPTMeshLook meshLook) {
     auto& registry = spt::Scene::getRegistry(object);
+    spt::notifyComponentWillEmergeObservers(registry, object.entity, meshLook);
     registry.emplace<SPTMeshLook>(object.entity, meshLook);
     addRenderableMaterial(meshLook.shading.type, registry, object.entity);
     spt::emplaceIfMissing<spt::DirtyRenderableMaterialFlag>(registry, object.entity);
@@ -71,8 +74,9 @@ void SPTMeshLookMake(SPTObject object, SPTMeshLook meshLook) {
 
 void SPTMeshLookUpdate(SPTObject object, SPTMeshLook updated) {
     auto& registry = spt::Scene::getRegistry(object);
+    spt::notifyComponentWillChangeObservers(registry, object.entity, updated);
     auto& meshLook = registry.get<SPTMeshLook>(object.entity);
-    if(SPTMeshShadingEqual(meshLook.shading, updated.shading)) {
+    if(!SPTMeshShadingEqual(meshLook.shading, updated.shading)) {
         spt::emplaceIfMissing<spt::DirtyRenderableMaterialFlag>(registry, object.entity);
         if(meshLook.shading.type != updated.shading.type) {
             removeRenderableMaterial(meshLook.shading.type, registry, object.entity);
@@ -83,7 +87,9 @@ void SPTMeshLookUpdate(SPTObject object, SPTMeshLook updated) {
 }
 
 void SPTMeshLookDestroy(SPTObject object) {
-    spt::Scene::getRegistry(object).erase<SPTMeshLook>(object.entity);
+    auto& registry = spt::Scene::getRegistry(object);
+    spt::notifyComponentWillPerishObservers<SPTMeshLook>(registry, object.entity);
+    registry.erase<SPTMeshLook>(object.entity);
 }
 
 SPTMeshLook SPTMeshLookGet(SPTObject object) {
@@ -97,6 +103,30 @@ const SPTMeshLook* _Nullable SPTMeshLookTryGet(SPTObject object) {
 bool SPTMeshLookExists(SPTObject object) {
     auto& registry = spt::Scene::getRegistry(object);
     return registry.all_of<SPTMeshLook>(object.entity);
+}
+
+SPTObserverToken SPTMeshLookAddWillChangeObserver(SPTObject object, SPTMeshLookWillChangeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentWillChangeObserver<SPTMeshLook>(object, observer, userInfo);
+}
+
+void SPTMeshLookRemoveWillChangeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentWillChangeObserver<SPTMeshLook>(object, token);
+}
+
+SPTObserverToken SPTMeshLookAddWillEmergeObserver(SPTObject object, SPTMeshLookWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentWillEmergeObserver<SPTMeshLook>(object, observer, userInfo);
+}
+
+void SPTMeshLookRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentWillEmergeObserver<SPTMeshLook>(object, token);
+}
+
+SPTObserverToken SPTMeshLookAddWillPerishObserver(SPTObject object, SPTMeshLookWillPerishObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentWillPerishObserver<SPTMeshLook>(object, observer, userInfo);
+}
+
+void SPTMeshLookRemoveWillPerishObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentWillPerishObserver<SPTMeshLook>(object, token);
 }
 
 namespace spt {
