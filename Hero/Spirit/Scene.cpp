@@ -14,7 +14,6 @@
 namespace spt {
 
 Scene::Scene()
-// TODO: Use MeshLook-Transformation group
 : _transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()} {
     registry.on_destroy<Transformation>().connect<&Transformation::onDestroy>();
     registry.on_destroy<SPTMeshLook>().connect<&MeshLook::onDestroy>();
