@@ -11,7 +11,11 @@ import Foundation
 extension SPTOrientation: SPTObservableComponent {
     
     init(euler: SPTEulerOrientation) {
-        self.init(variantTag: .euler, .init(euler: euler))
+        self.init(type: .euler, .init(euler: euler))
+    }
+    
+    init(lookAt: SPTLookAtOrientation) {
+        self.init(type: .lookAt, .init(lookAt: lookAt))
     }
     
     public static func == (lhs: SPTOrientation, rhs: SPTOrientation) -> Bool {

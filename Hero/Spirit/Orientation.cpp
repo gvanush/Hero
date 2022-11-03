@@ -111,11 +111,11 @@ simd_float4x4 computeLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& l
 simd_float4x4 getMatrix(const spt::Registry& registry, SPTEntity entity, const simd_float3& position) {
     
     if(const auto orientation = registry.try_get<SPTOrientation>(entity)) {
-        switch (orientation->variantTag) {
-            case SPTOrientationVariantTagEuler: {
+        switch (orientation->type) {
+            case SPTOrientationTypeEuler: {
                 return computeEulerOrientationMatrix(orientation->euler);
             }
-            case SPTOrientationVariantTagLookAt: {
+            case SPTOrientationTypeLookAt: {
                 return computeLookAtMatrix(position, orientation->lookAt);
             }
         }
@@ -138,14 +138,14 @@ bool SPTLookAtOrientationEqual(SPTLookAtOrientation lhs, SPTLookAtOrientation rh
 }
 
 bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
-    if(lhs.variantTag != rhs.variantTag) {
+    if(lhs.type != rhs.type) {
         return false;
     }
     
-    switch (lhs.variantTag) {
-        case SPTOrientationVariantTagEuler:
+    switch (lhs.type) {
+        case SPTOrientationTypeEuler:
             return SPTEulerOrientationEqual(lhs.euler, rhs.euler);
-        case SPTOrientationVariantTagLookAt:
+        case SPTOrientationTypeLookAt:
             return SPTLookAtOrientationEqual(lhs.lookAt, rhs.lookAt);
     }
 }
@@ -155,16 +155,6 @@ void SPTOrientationMake(SPTObject object, SPTOrientation orientation) {
     spt::notifyComponentWillEmergeObservers(registry, object.entity, orientation);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTOrientation>(object.entity, orientation);
-}
-
-// TODO: Remove
-void SPTOrientationMakeEuler(SPTObject object, SPTEulerOrientation euler) {
-    SPTOrientationMake(object, {SPTOrientationVariantTagEuler, {.euler = euler}});
-}
-
-// TODO: Remove
-void SPTOrientationMakeLookAt(SPTObject object, SPTLookAtOrientation lookAt) {
-    SPTOrientationMake(object, {SPTOrientationVariantTagLookAt, {.lookAt = lookAt}});
 }
 
 void SPTOrientationUpdate(SPTObject object, SPTOrientation newOrientation) {

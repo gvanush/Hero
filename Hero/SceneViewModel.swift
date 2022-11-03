@@ -59,7 +59,7 @@ class SceneViewModel: ObservableObject {
         // Setup view camera
         viewCameraObject = scene.makeObject()
         SPTPositionMakeSpherical(viewCameraObject, .init(center: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi))
-        SPTOrientationMakeLookAt(viewCameraObject, .init(target: .zero, up: .up, axis: .Z, positive: false))
+        SPTOrientation.make(.init(lookAt: .init(target: .zero, up: .up, axis: .Z, positive: false)), object: viewCameraObject)
         SPTCameraMakePerspective(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
 //        SPTCameraMakeOrthographic(viewCameraObject, 100.0, 1.0, 0.1, 2000.0)
         
@@ -83,7 +83,7 @@ class SceneViewModel: ObservableObject {
         SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: lineMeshId, thickness: 3.0, categories: LookCategories.sceneGuide.rawValue), object: zAxisObject)
         
         SPTScaleMake(zAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
-        SPTOrientationMakeEuler(zAxisObject, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
+        SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: zAxisObject)
         SPTPolylineLookDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
         
     }

@@ -76,9 +76,9 @@ class EditPositionAnimatorBindingViewModel: EditAnimatorBindingViewModel<SPTAnim
         case .x:
             break
         case .y:
-            SPTOrientationMakeEuler(guideObjects!.line, .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ))
+            SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ)), object: guideObjects!.line)
         case .z:
-            SPTOrientationMakeEuler(guideObjects!.line, .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ))
+            SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: guideObjects!.line)
         }
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [weak self] newValue in

@@ -16,9 +16,9 @@
 SPT_EXTERN_C_BEGIN
 
 typedef enum {
-    SPTOrientationVariantTagEuler,
-    SPTOrientationVariantTagLookAt,
-} __attribute__((enum_extensibility(closed))) SPTOrientationVariantTag;
+    SPTOrientationTypeEuler,
+    SPTOrientationTypeLookAt,
+} __attribute__((enum_extensibility(closed))) SPTOrientationType;
 
 typedef enum {
     SPTEulerOrderXYZ,
@@ -49,7 +49,7 @@ typedef struct {
 bool SPTLookAtOrientationEqual(SPTLookAtOrientation lhs, SPTLookAtOrientation rhs);
 
 typedef struct {
-    SPTOrientationVariantTag variantTag;
+    SPTOrientationType type;
     union {
         SPTEulerOrientation euler;
         SPTLookAtOrientation lookAt;
@@ -59,8 +59,6 @@ typedef struct {
 bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs);
 
 void SPTOrientationMake(SPTObject object, SPTOrientation orientation);
-void SPTOrientationMakeEuler(SPTObject object, SPTEulerOrientation euler);
-void SPTOrientationMakeLookAt(SPTObject object, SPTLookAtOrientation lookAt);
 
 void SPTOrientationUpdate(SPTObject object, SPTOrientation orientation);
 
