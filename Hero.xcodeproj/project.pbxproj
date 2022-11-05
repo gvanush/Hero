@@ -144,6 +144,7 @@
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
 		B7E481DA274648DB003DA5B1 /* MeshLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D9274648DB003DA5B1 /* MeshLook.cpp */; };
 		B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */; };
+		B7E6257E29142CA600343B67 /* HueSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6257D29142CA600343B67 /* HueSelector.swift */; };
 		B7EDBDBB28EE97D70048EF93 /* ToolSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBA28EE97D70048EF93 /* ToolSelector.swift */; };
 		B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */; };
 		B7EDBDC028F3558F0048EF93 /* InspectToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */; };
@@ -351,6 +352,7 @@
 		B7E481D9274648DB003DA5B1 /* MeshLook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MeshLook.cpp; sourceTree = "<group>"; };
 		B7E481DC2747782B003DA5B1 /* ResourceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
 		B7E481DD2747782B003DA5B1 /* ResourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
+		B7E6257D29142CA600343B67 /* HueSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HueSelector.swift; sourceTree = "<group>"; };
 		B7EDBDBA28EE97D70048EF93 /* ToolSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolSelector.swift; sourceTree = "<group>"; };
 		B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolViewModel.swift; sourceTree = "<group>"; };
 		B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectToolView.swift; sourceTree = "<group>"; };
@@ -848,6 +850,7 @@
 				B7643B2529027C7900F6A05B /* RandomSeedSelector.swift */,
 				B7643B2B2907C8CC00F6A05B /* EasingSelector.swift */,
 				B7643B3F2912516F00F6A05B /* RGBFieldSelector.swift */,
+				B7E6257D29142CA600343B67 /* HueSelector.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -962,6 +965,7 @@
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7E30F4D288E76BA00224E09 /* PanAnimatorViewBoundsView.swift in Sources */,
+				B7E6257E29142CA600343B67 /* HueSelector.swift in Sources */,
 				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshLook.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,

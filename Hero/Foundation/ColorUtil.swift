@@ -9,6 +9,10 @@ import SwiftUI
 
 extension Color {
     
+    init(hsba: HSBAColor) {
+        self.init(hue: Double(hsba.x), saturation: Double(hsba.y), brightness: Double(hsba.z), opacity: Double(hsba.w))
+    }
+    
     static let defaultShadowColor = Color("DefaultShadowColor")
     static let primarySelectionColor = Color(uiColor: .primarySelectionColor)
     static let primaryLightSelectionColor = Color(uiColor: .primaryLightSelectionColor)
