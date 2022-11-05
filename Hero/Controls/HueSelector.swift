@@ -40,7 +40,7 @@ extension HSBAColor {
 
 fileprivate let gradientColorSpace = Gradient.ColorSpace.device
 
-struct HSVAColorSelector: View {
+struct HSVColorSelector: View {
     
     @Binding var hsbaColor: HSBAColor
     let component: HSBAColorComponent
@@ -75,16 +75,12 @@ struct HSVAColorSelector: View {
                 }
             VStack {
                 Text(String(format: "%.2f", componentValue))
+                    .font(.body.monospacedDigit())
                     .foregroundColor(.controlValue)
                 GeometryReader { geometry in
                     ZStack {
                         track()
-                            .frame(height: 4.0)
-                        RoundedRectangle(cornerRadius: 3.0)
-                            .fill(thumbColor)
-                            .frame(width: 8.0)
-                            .shadow(radius: 1.0)
-                            .offset(x: thumbOffset(geometry: geometry))
+                        thumb(geometry: geometry)
                     }
                     .contentShape(Rectangle())
                     .gesture(dragGesture(geometry: geometry))
@@ -95,8 +91,8 @@ struct HSVAColorSelector: View {
                 .background(alignment: .top) {
                     dragIndicator()
                 }
-                .padding(.horizontal, 8.0)
             }
+            .padding(.horizontal, 8.0)
         }
         .padding(Self.padding)
         .frame(maxWidth: .infinity, maxHeight: Self.maxHeight)
@@ -107,6 +103,14 @@ struct HSVAColorSelector: View {
     
     var componentValue: Float {
         hsbaColor[component.rawValue]
+    }
+    
+    func thumb(geometry: GeometryProxy) -> some View {
+        RoundedRectangle(cornerRadius: 3.0)
+            .fill(thumbColor)
+            .frame(width: 8.0)
+            .shadow(radius: 1.0)
+            .offset(x: thumbOffset(geometry: geometry))
     }
     
     func track() -> some View {
@@ -125,6 +129,7 @@ struct HSVAColorSelector: View {
                 EmptyView()
             }
         }
+        .frame(height: 4.0)
     }
     
     var hueTrackGradient: AnyGradient {
@@ -188,7 +193,7 @@ struct HSVAColorSelector: View {
     }
     
     func dragIndicator() -> some View {
-        return HLine()
+        HLine()
             .stroke(style: StrokeStyle(lineWidth: 4.0, dash: [1, 4]))
             .foregroundColor(.primarySelectionColor)
             .frame(height: 4.0)
@@ -235,13 +240,13 @@ struct HSVColorSelector_Previews: PreviewProvider {
         
         var body: some View {
             VStack {
-                HSVAColorSelector(hsbaColor: $color, component: .hue)
+                HSVColorSelector(hsbaColor: $color, component: .hue)
                     .tint(.primarySelectionColor)
                 
-                HSVAColorSelector(hsbaColor: $color, component: .saturation)
+                HSVColorSelector(hsbaColor: $color, component: .saturation)
                     .tint(.primarySelectionColor)
                 
-                HSVAColorSelector(hsbaColor: $color, component: .brightness)
+                HSVColorSelector(hsbaColor: $color, component: .brightness)
                     .tint(.primarySelectionColor)
             }
         }

@@ -1,5 +1,5 @@
 //
-//  RGBColorFieldSelector.swift
+//  RGBColorSelector.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 02.11.22.
@@ -18,31 +18,72 @@ enum RGBAColorComponent: Int {
 
 typealias RGBAColor = simd_float4
 
-struct RGBColorFieldSelector: View {
+extension RGBAColor {
+    
+    func reded(_ red: Float) -> RGBAColor {
+        var color = self
+        color.x = red
+        return color
+    }
+    
+    func greened(_ green: Float) -> RGBAColor {
+        var color = self
+        color.y = green
+        return color
+    }
+    
+    func blued(_ blue: Float) -> RGBAColor {
+        var color = self
+        color.z = blue
+        return color
+    }
+    
+}
+
+fileprivate let gradientColorSpace = Gradient.ColorSpace.device
+
+struct RGBColorSelector: View {
     
     @Binding var rgbaColor: RGBAColor
     let component: RGBAColorComponent
     
     @State private var prevLocation: CGPoint?
-    @State private var feedbackGenerator = UIImpactFeedbackGenerator()
+    @State private var feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 8.0) {
-                Text(String(format: "%.2f", componentValue))
-                    .foregroundColor(.controlValue)
-                VStack(spacing: 0.0) {
-                    Capsule()
-                        .fill(.linearGradient(colors: [startColor, endColor], startPoint: .leading, endPoint: .trailing))
-                        .frame(height: 4.0)
-                    thumb(geometry: geometry)
+        HStack {
+            HStack(spacing: 12.0) {
+                HStack(spacing: 2.0) {
+                    textForSecondaryComponent(secondaryComponent1)
+                    trackForSecondaryComponent(secondaryComponent1)
                 }
-                .contentShape(Rectangle())
-                .gesture(dragGesture(geometry: geometry))
+                HStack(spacing: 2.0) {
+                    trackForSecondaryComponent(secondaryComponent2)
+                    textForSecondaryComponent(secondaryComponent2)
+                }
             }
+            VStack {
+                Text(String(format: "%.2f", componentValue))
+                    .font(.body.monospacedDigit())
+                    .foregroundColor(.controlValue)
+                GeometryReader { geometry in
+                    ZStack {
+                        track
+                        thumb(geometry: geometry)
+                    }
+                    .contentShape(Rectangle())
+                    .gesture(dragGesture(geometry: geometry))
+                    .background(alignment: .bottom) {
+                        dragIndicator()
+                    }
+                    .background(alignment: .top) {
+                        dragIndicator()
+                    }
+                }
+            }
+            .padding(.horizontal, 8.0)
         }
-        .padding(.horizontal, Self.horizontalPadding)
-        .padding(.vertical, Self.verticalPadding)
+        .padding(Self.padding)
         .frame(maxWidth: .infinity, maxHeight: Self.maxHeight)
         .background(Material.thin)
         .cornerRadius(Self.cornerRadius)
@@ -52,14 +93,21 @@ struct RGBColorFieldSelector: View {
         }
     }
     
+    var track: some View {
+        Capsule()
+            .fill(.linearGradient(trackGradient, startPoint: .leading, endPoint: .trailing))
+            .frame(height: 4.0)
+    }
+    
+    var trackGradient: AnyGradient {
+        Gradient(colors: [startColor(component: component), endColor(component: component)])
+            .colorSpace(gradientColorSpace)
+    }
+    
     func thumb(geometry: GeometryProxy) -> some View {
-        ThumbShape()
-            .stroke(TintShapeStyle(), style: .init(lineWidth: 2.0, lineCap: .round, lineJoin: .round))
-            .background {
-                ThumbShape()
-                    .fill(color)
-            }
-            .frame(width: 32.0)
+        RoundedRectangle(cornerRadius: 3.0)
+            .fill(Color(rgba: rgbaColor))
+            .frame(width: 8.0)
             .shadow(radius: 1.0)
             .offset(x: thumbOffset(geometry: geometry))
     }
@@ -69,7 +117,6 @@ struct RGBColorFieldSelector: View {
     }
     
     func dragGesture(geometry: GeometryProxy) -> some Gesture {
-        
         DragGesture(minimumDistance: 0.0)
             .onChanged { value in
                 guard let prevLocation = prevLocation else {
@@ -90,28 +137,96 @@ struct RGBColorFieldSelector: View {
             }
     }
     
-    var color: Color {
-        .init(red: Double(rgbaColor.x), green: Double(rgbaColor.y), blue: Double(rgbaColor.z))
-    }
-    
     var componentValue: Float {
         rgbaColor[component.rawValue]
     }
     
-    var startColor: Color {
-        .init(red: Double(component == .red ? 0.0 : rgbaColor.x),
-              green: Double(component == .green ? 0.0 : rgbaColor.y),
-              blue: Double(component == .blue ? 0.0 : rgbaColor.z))
+    func dragIndicator() -> some View {
+        HLine()
+            .stroke(style: StrokeStyle(lineWidth: 4.0, dash: [1, 4]))
+            .foregroundColor(.primarySelectionColor)
+            .frame(height: 4.0)
+            .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
     }
     
-    var endColor: Color {
-        .init(red: Double(component == .red ? 1.0 : rgbaColor.x),
-              green: Double(component == .green ? 1.0 : rgbaColor.y),
-              blue: Double(component == .blue ? 1.0 : rgbaColor.z))
+    func textForSecondaryComponent(_ component: RGBAColorComponent) -> some View {
+        Text(nameForSecondaryComponent(component))
+            .font(.caption.monospaced())
+            .foregroundColor(.secondary)
     }
     
-    static let horizontalPadding = 24.0
-    static let verticalPadding = 8.0
+    func trackForSecondaryComponent(_ component: RGBAColorComponent) -> some View {
+        Capsule()
+            .fill(.linearGradient(colors: [startColor(component: component), endColor(component: component)], startPoint: .bottom, endPoint: .top))
+            .frame(width: 4.0)
+    }
+    
+    func nameForSecondaryComponent(_ component: RGBAColorComponent) -> String {
+        switch component {
+        case .red:
+            return "R"
+        case .green:
+            return "G"
+        case .blue:
+            return "B"
+        case .alpha:
+            return "A"
+        }
+    }
+    
+    var secondaryComponent1: RGBAColorComponent {
+        switch component {
+        case .red:
+            return .green
+        case .green:
+            return .blue
+        case .blue:
+            return .red
+        case .alpha:
+            return .alpha
+        }
+    }
+    
+    var secondaryComponent2: RGBAColorComponent {
+        switch component {
+        case .red:
+            return .blue
+        case .green:
+            return .red
+        case .blue:
+            return .green
+        case .alpha:
+            return .alpha
+        }
+    }
+    
+    func startColor(component: RGBAColorComponent) -> Color {
+        switch component {
+        case .red:
+            return .init(rgba: rgbaColor.reded(0.0))
+        case .green:
+            return .init(rgba: rgbaColor.greened(0.0))
+        case .blue:
+            return .init(rgba: rgbaColor.blued(0.0))
+        case .alpha:
+            return .black
+        }
+    }
+    
+    func endColor(component: RGBAColorComponent) -> Color {
+        switch component {
+        case .red:
+            return .init(rgba: rgbaColor.reded(1.0))
+        case .green:
+            return .init(rgba: rgbaColor.greened(1.0))
+        case .blue:
+            return .init(rgba: rgbaColor.blued(1.0))
+        case .alpha:
+            return .black
+        }
+    }
+    
+    static let padding = 8.0
     static let cornerRadius = 11.0
     static let maxHeight = 75.0
 }
@@ -139,7 +254,7 @@ struct RGBFieldSelector_Previews: PreviewProvider {
         @State var color = RGBAColor(x: 1.0, y: 0.0, z: 0.0, w: 1.0)
         
         var body: some View {
-            RGBColorFieldSelector(rgbaColor: $color, component: .red)
+            RGBColorSelector(rgbaColor: $color, component: .red)
                 .tint(.primarySelectionColor)
         }
     }

@@ -13,6 +13,10 @@ extension Color {
         self.init(hue: Double(hsba.x), saturation: Double(hsba.y), brightness: Double(hsba.z), opacity: Double(hsba.w))
     }
     
+    init(rgba: RGBAColor) {
+        self.init(red: Double(rgba.x), green: Double(rgba.y), blue: Double(rgba.z), opacity: Double(rgba.w))
+    }
+    
     static let defaultShadowColor = Color("DefaultShadowColor")
     static let primarySelectionColor = Color(uiColor: .primarySelectionColor)
     static let primaryLightSelectionColor = Color(uiColor: .primaryLightSelectionColor)

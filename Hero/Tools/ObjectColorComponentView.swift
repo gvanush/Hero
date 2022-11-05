@@ -46,11 +46,11 @@ struct ObjectColorComponentView<C>: View where C: SPTObservableComponent {
         Group {
             switch component.selectedProperty {
             case .red:
-                RGBColorFieldSelector(rgbaColor: $component.color, component: .red)
+                RGBColorSelector(rgbaColor: $component.color, component: .red)
             case .green:
-                RGBColorFieldSelector(rgbaColor: $component.color, component: .green)
+                RGBColorSelector(rgbaColor: $component.color, component: .green)
             case .blue:
-                RGBColorFieldSelector(rgbaColor: $component.color, component: .blue)
+                RGBColorSelector(rgbaColor: $component.color, component: .blue)
             case .none:
                 EmptyView()
             }
