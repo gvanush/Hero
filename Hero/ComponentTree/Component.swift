@@ -21,15 +21,16 @@ struct ComponentPath {
 
 class Component: Identifiable, ObservableObject, Equatable {
     
-    let title: String
     private(set) weak var parent: Component?
     
-    init(title: String, parent: Component?) {
-        self.title = title
+    init(parent: Component?) {
         self.parent = parent
     }
     
     var id: ObjectIdentifier { ObjectIdentifier(self) }
+    var title: String {
+        fatalError("This property must be overriden by subcalsses")
+    }
     var properties: [String]? { nil }
     var selectedPropertyIndex: Int? {
         set { }
@@ -101,17 +102,17 @@ class Component: Identifiable, ObservableObject, Equatable {
     
 }
 
-class BasicComponent<PT>: Component where PT: RawRepresentable & CaseIterable & Displayable, PT.RawValue == Int {
+class BasicComponent<P>: Component where P: RawRepresentable & CaseIterable & Displayable, P.RawValue == Int {
     
-    @Published var selectedProperty: PT?
+    @Published var selectedProperty: P?
     
-    init(title: String, selectedProperty: PT?, parent: Component?) {
+    init(selectedProperty: P?, parent: Component?) {
         self.selectedProperty = selectedProperty
-        super.init(title: title, parent: parent)
+        super.init(parent: parent)
     }
     
     override var properties: [String]? {
-        PT.allCaseDisplayNames
+        P.allCaseDisplayNames
     }
     
     override var selectedPropertyIndex: Int? {

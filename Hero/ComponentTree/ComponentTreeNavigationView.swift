@@ -21,13 +21,9 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
     var body: some View {
         VStack(spacing: 8.0) {
             
-            if rootComponent === activeComponent {
-                viewProvider.viewForRoot(rootComponent)
-            } else {
-                activeComponent.accept(viewProvider)
-            }
+            ActiveComponentViewContainer(component: activeComponent, rootComponent: rootComponent, viewProvider: viewProvider)
             
-            ComponentView(component: rootComponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
+            ComponentSelectionView(component: rootComponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                 .padding(3.0)
                 .frame(height: componentViewHeight)
                 .background(Material.thin)
@@ -58,8 +54,23 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
 
 }
 
+fileprivate struct ActiveComponentViewContainer<RC>: View where RC: Component {
+    
+    @ObservedObject var component: Component
+    let rootComponent: RC
+    let viewProvider: ComponentViewProvider<RC>
+    
+    var body: some View {
+        if rootComponent === component {
+            viewProvider.viewForRoot(rootComponent)
+        } else {
+            component.accept(viewProvider)
+        }
+    }
+}
 
-fileprivate struct ComponentView: View {
+
+fileprivate struct ComponentSelectionView: View {
     
     @ObservedObject var component: Component
     @Binding var activeComponent: Component
@@ -102,7 +113,7 @@ fileprivate struct ComponentView: View {
                 
                 if let subcomponents = component.subcomponents {
                     ForEach(subcomponents) { subcomponent in
-                        ComponentView(component: subcomponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
+                        ComponentSelectionView(component: subcomponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                     }
                 }
                 
@@ -205,14 +216,34 @@ fileprivate struct ComponentView: View {
 
 struct PropertyTreeNavigationVIew_Previews: PreviewProvider {
     
+    class NamedComponent<P>: BasicComponent<P>
+    where P: RawRepresentable & CaseIterable & Displayable, P.RawValue == Int {
+    
+        let name: String
+        
+        init(name: String, selectedProperty: P?, parent: Component?) {
+            self.name = name
+            super.init(selectedProperty: selectedProperty, parent: parent)
+        }
+        
+        override var title: String {
+            name
+        }
+        
+    }
+    
     class Root: Component {
         
-        lazy var child1 = BasicComponent(title: "Child1", selectedProperty: Axis.x, parent: self)
-        lazy var child2 = BasicComponent(title: "Child2", selectedProperty: Axis.x, parent: self)
-        lazy var child3 = BasicComponent(title: "Child3", selectedProperty: Axis.x, parent: self)
+        lazy var child1 = NamedComponent(name: "Child1", selectedProperty: Axis.x, parent: self)
+        lazy var child2 = NamedComponent(name: "Child2", selectedProperty: Axis.x, parent: self)
+        lazy var child3 = NamedComponent(name: "Child3", selectedProperty: Axis.x, parent: self)
         
         init() {
-            super.init(title: "Root", parent: nil)
+            super.init(parent: nil)
+        }
+        
+        override var title: String {
+            "Root"
         }
         
         override var subcomponents: [Component]? {

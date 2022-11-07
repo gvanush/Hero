@@ -20,9 +20,13 @@ class RandomAnimatorComponent: BasicComponent<RandomAnimatorProperty> {
     init(animatorId: SPTAnimatorId) {
         _animator = .init(id: animatorId)
         
-        super.init(title: "Random", selectedProperty: .seed, parent: nil)
+        super.init(selectedProperty: .seed, parent: nil)
         
         _animator.publisher = self.objectWillChange
+    }
+    
+    override var title: String {
+        "Random"
     }
     
     var seed: UInt32 {

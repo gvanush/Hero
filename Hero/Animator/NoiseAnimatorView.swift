@@ -21,9 +21,13 @@ class NoiseAnimatorComponent: BasicComponent<NoiseAnimatorProperty> {
     init(animatorId: SPTAnimatorId) {
         _animator = .init(id: animatorId)
         
-        super.init(title: "Noise", selectedProperty: .seed, parent: nil)
+        super.init(selectedProperty: .seed, parent: nil)
         
         _animator.publisher = self.objectWillChange
+    }
+    
+    override var title: String {
+        "Noise"
     }
     
     var seed: UInt32 {

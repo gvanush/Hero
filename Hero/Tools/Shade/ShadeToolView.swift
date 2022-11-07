@@ -9,16 +9,16 @@ import SwiftUI
 import Combine
 
 
-class ShadeToolComponentViewProvider: MeshObjectComponentViewProvider<ShadeComponent> {
+class ShadeToolComponentViewProvider: MeshObjectComponentViewProvider<ShadingComponent> {
     
-    override func viewForRoot(_ root: ShadeComponent) -> AnyView? {
-        AnyView(ShadeComponentView(component: root))
+    override func viewForRoot(_ root: ShadingComponent) -> AnyView? {
+        AnyView(ShadingComponentView(component: root))
     }
     
 }
 
 
-class ShadeToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<ShadeComponent> {
+class ShadeToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<ShadingComponent> {
 }
 
 

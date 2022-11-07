@@ -9,32 +9,23 @@ import SwiftUI
 import simd
 
 
-enum RGBAColorComponent: Int {
-    case red
-    case green
-    case blue
-    case alpha
-}
-
-typealias RGBAColor = simd_float4
-
-extension RGBAColor {
+fileprivate extension SPTRGBAColor {
     
-    func reded(_ red: Float) -> RGBAColor {
+    func reded(_ red: Float) -> SPTRGBAColor {
         var color = self
-        color.x = red
+        color.red = red
         return color
     }
     
-    func greened(_ green: Float) -> RGBAColor {
+    func greened(_ green: Float) -> SPTRGBAColor {
         var color = self
-        color.y = green
+        color.green = green
         return color
     }
     
-    func blued(_ blue: Float) -> RGBAColor {
+    func blued(_ blue: Float) -> SPTRGBAColor {
         var color = self
-        color.z = blue
+        color.blue = blue
         return color
     }
     
@@ -44,8 +35,8 @@ fileprivate let gradientColorSpace = Gradient.ColorSpace.device
 
 struct RGBColorSelector: View {
     
-    @Binding var rgbaColor: RGBAColor
-    let component: RGBAColorComponent
+    @Binding var rgbaColor: SPTRGBAColor
+    let channel: RGBColorChannel
     
     @State private var prevLocation: CGPoint?
     @State private var feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
@@ -54,16 +45,16 @@ struct RGBColorSelector: View {
         HStack {
             HStack(spacing: 12.0) {
                 HStack(spacing: 2.0) {
-                    textForSecondaryComponent(secondaryComponent1)
-                    trackForSecondaryComponent(secondaryComponent1)
+                    textForSecondaryChannel(secondaryComponent1)
+                    trackForSecondaryChannel(secondaryComponent1)
                 }
                 HStack(spacing: 2.0) {
-                    trackForSecondaryComponent(secondaryComponent2)
-                    textForSecondaryComponent(secondaryComponent2)
+                    trackForSecondaryChannel(secondaryComponent2)
+                    textForSecondaryChannel(secondaryComponent2)
                 }
             }
             VStack {
-                Text(String(format: "%.2f", componentValue))
+                Text(String(format: "%.2f", channelValue))
                     .font(.body.monospacedDigit())
                     .foregroundColor(.controlValue)
                 GeometryReader { geometry in
@@ -100,20 +91,20 @@ struct RGBColorSelector: View {
     }
     
     var trackGradient: AnyGradient {
-        Gradient(colors: [startColor(component: component), endColor(component: component)])
+        Gradient(colors: [startColorForChannel(channel), endColorForChannel(channel)])
             .colorSpace(gradientColorSpace)
     }
     
     func thumb(geometry: GeometryProxy) -> some View {
         RoundedRectangle(cornerRadius: 3.0)
-            .fill(Color(rgba: rgbaColor))
+            .fill(Color(sptRGBA: rgbaColor))
             .frame(width: 8.0)
             .shadow(radius: 1.0)
             .offset(x: thumbOffset(geometry: geometry))
     }
     
     func thumbOffset(geometry: GeometryProxy) -> CGFloat {
-        CGFloat(2.0 * componentValue - 1.0) * geometry.size.width * 0.5
+        CGFloat(2.0 * channelValue - 1.0) * geometry.size.width * 0.5
     }
     
     func dragGesture(geometry: GeometryProxy) -> some Gesture {
@@ -124,12 +115,12 @@ struct RGBColorSelector: View {
                     return
                 }
                 let delta = value.location.x - prevLocation.x
-                let newValue = simd_clamp(componentValue + Float(delta / geometry.size.width), 0.0, 1.0)
-                if (componentValue != 0.0 && newValue == 0.0) || (componentValue != 1.0 && newValue == 1.0) {
+                let newValue = simd_clamp(channelValue + Float(delta / geometry.size.width), 0.0, 1.0)
+                if (channelValue != 0.0 && newValue == 0.0) || (channelValue != 1.0 && newValue == 1.0) {
                     feedbackGenerator.impactOccurred()
                 }
                 
-                rgbaColor[component.rawValue] = newValue
+                rgbaColor.float4[channel.rawValue] = newValue
                 self.prevLocation = value.location
             }
             .onEnded { _ in
@@ -137,8 +128,8 @@ struct RGBColorSelector: View {
             }
     }
     
-    var componentValue: Float {
-        rgbaColor[component.rawValue]
+    var channelValue: Float {
+        rgbaColor.float4[channel.rawValue]
     }
     
     func dragIndicator() -> some View {
@@ -149,80 +140,70 @@ struct RGBColorSelector: View {
             .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
     }
     
-    func textForSecondaryComponent(_ component: RGBAColorComponent) -> some View {
-        Text(nameForSecondaryComponent(component))
+    func textForSecondaryChannel(_ channel: RGBColorChannel) -> some View {
+        Text(nameForSecondaryComponent(channel))
             .font(.caption.monospaced())
             .foregroundColor(.secondary)
     }
     
-    func trackForSecondaryComponent(_ component: RGBAColorComponent) -> some View {
+    func trackForSecondaryChannel(_ channel: RGBColorChannel) -> some View {
         Capsule()
-            .fill(.linearGradient(colors: [startColor(component: component), endColor(component: component)], startPoint: .bottom, endPoint: .top))
+            .fill(.linearGradient(colors: [startColorForChannel(channel), endColorForChannel(channel)], startPoint: .bottom, endPoint: .top))
             .frame(width: 4.0)
     }
     
-    func nameForSecondaryComponent(_ component: RGBAColorComponent) -> String {
-        switch component {
+    func nameForSecondaryComponent(_ channel: RGBColorChannel) -> String {
+        switch channel {
         case .red:
             return "R"
         case .green:
             return "G"
         case .blue:
             return "B"
-        case .alpha:
-            return "A"
         }
     }
     
-    var secondaryComponent1: RGBAColorComponent {
-        switch component {
+    var secondaryComponent1: RGBColorChannel {
+        switch channel {
         case .red:
             return .green
         case .green:
             return .blue
         case .blue:
             return .red
-        case .alpha:
-            return .alpha
         }
     }
     
-    var secondaryComponent2: RGBAColorComponent {
-        switch component {
+    var secondaryComponent2: RGBColorChannel {
+        switch channel {
         case .red:
             return .blue
         case .green:
             return .red
         case .blue:
             return .green
-        case .alpha:
-            return .alpha
         }
     }
     
-    func startColor(component: RGBAColorComponent) -> Color {
-        switch component {
+    func startColorForChannel(_ channel: RGBColorChannel) -> Color {
+        switch channel {
         case .red:
-            return .init(rgba: rgbaColor.reded(0.0))
+            return .init(sptRGBA: rgbaColor.reded(0.0))
         case .green:
-            return .init(rgba: rgbaColor.greened(0.0))
+            return .init(sptRGBA: rgbaColor.greened(0.0))
         case .blue:
-            return .init(rgba: rgbaColor.blued(0.0))
-        case .alpha:
-            return .black
+            return .init(sptRGBA: rgbaColor.blued(0.0))
         }
     }
     
-    func endColor(component: RGBAColorComponent) -> Color {
-        switch component {
+    func endColorForChannel(_ channel: RGBColorChannel) -> Color {
+        switch channel {
         case .red:
-            return .init(rgba: rgbaColor.reded(1.0))
+            return .init(sptRGBA: rgbaColor.reded(1.0))
         case .green:
-            return .init(rgba: rgbaColor.greened(1.0))
+            return .init(sptRGBA: rgbaColor.greened(1.0))
         case .blue:
-            return .init(rgba: rgbaColor.blued(1.0))
-        case .alpha:
-            return .black
+            return .init(sptRGBA: rgbaColor.blued(1.0))
         }
     }
     
@@ -251,10 +232,10 @@ fileprivate struct ThumbShape: Shape {
 struct RGBFieldSelector_Previews: PreviewProvider {
     struct ContanerView: View {
         
-        @State var color = RGBAColor(x: 1.0, y: 0.0, z: 0.0, w: 1.0)
+        @State var color = SPTRGBAColor(red: 1.0, green: 0.0, blue: 0.0)
         
         var body: some View {
-            RGBColorSelector(rgbaColor: $color, component: .red)
+            RGBColorSelector(rgbaColor: $color, channel: .red)
                 .tint(.primarySelectionColor)
         }
     }

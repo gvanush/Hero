@@ -9,12 +9,12 @@ import SwiftUI
 
 extension Color {
     
-    init(hsba: HSBAColor) {
-        self.init(hue: Double(hsba.x), saturation: Double(hsba.y), brightness: Double(hsba.z), opacity: Double(hsba.w))
+    init(sptHSBA hsba: SPTHSBAColor) {
+        self.init(hue: Double(hsba.hue), saturation: Double(hsba.saturation), brightness: Double(hsba.brightness), opacity: Double(hsba.alpha))
     }
     
-    init(rgba: RGBAColor) {
-        self.init(red: Double(rgba.x), green: Double(rgba.y), blue: Double(rgba.z), opacity: Double(rgba.w))
+    init(sptRGBA rgba: SPTRGBAColor) {
+        self.init(red: Double(rgba.red), green: Double(rgba.green), blue: Double(rgba.blue), opacity: Double(rgba.alpha))
     }
     
     static let defaultShadowColor = Color("DefaultShadowColor")
@@ -47,4 +47,18 @@ extension Color {
     
     static let darkGray = Color(uiColor: .darkGray)
     static let lightGray = Color(uiColor: .lightGray)
+}
+
+
+enum RGBColorChannel: Int, CaseIterable, Displayable {
+    case red
+    case green
+    case blue
+}
+
+
+enum HSBColorChannel: Int, CaseIterable, Displayable {
+    case hue
+    case saturation
+    case brightness
 }

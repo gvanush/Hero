@@ -28,7 +28,7 @@ class ObjectFactory {
         SPTPosition.make(.init(xyz: position), object: object)
         SPTScaleMake(object, .init(xyz: simd_float3(5.0, 5.0, 5.0)))
         SPTOrientation.make(.init(euler: .init(rotation: .zero, order: .XYZ)), object: object)
-        SPTMeshLook.make(.init(material: SPTPhongMaterial(color: UIColor.darkGray.rgba, specularRoughness: 128.0), meshId: meshId, categories: LookCategories.userCreated.rawValue), object: object)
+        SPTMeshLook.make(.init(material: SPTPhongMaterial(color: UIColor.darkGray.sptColor(model: .HSB), specularRoughness: 128.0), meshId: meshId, categories: LookCategories.userCreated.rawValue), object: object)
         SPTRayCastableMake(object)
         meshNumber += 1
         return object
@@ -64,7 +64,7 @@ class ObjectFactory {
             SPTOrientation.make(.init(euler: .init(rotation: simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), order: .XYZ)), object: object)
             let meshId = MeshRegistry.standard.meshRecords.randomElement()!.id
             
-            let meshLook = SPTMeshLook(material: SPTPhongMaterial(color: UIColor.random().rgba, specularRoughness: Float.random(in: 2.0...256.0)), meshId: meshId, categories: LookCategories.userCreated.rawValue)
+            let meshLook = SPTMeshLook(material: SPTPhongMaterial(color: UIColor.random().sptColor(model: .HSB), specularRoughness: Float.random(in: 2.0...256.0)), meshId: meshId, categories: LookCategories.userCreated.rawValue)
             SPTMeshLook.make(meshLook, object: object)
             
             SPTRayCastableMake(object)

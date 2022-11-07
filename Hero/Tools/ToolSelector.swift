@@ -128,9 +128,9 @@ fileprivate struct ToolComponentPathItemView: View {
                             activeComponent = component
                         }
                     } label: {
-                        Text(component.title.replacingOccurrences(of: " ", with: "\n"))
+                        Text(component.title)
                             .fixedSize()
-                            .frame(minWidth: 44.0)
+                            .frame(minWidth: 44.0, alignment: .leading)
                     }
                 }
             } else {

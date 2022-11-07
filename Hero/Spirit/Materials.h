@@ -7,18 +7,25 @@
 
 #pragma once
 
+#include "Base.h"
+#include "Color.h"
+
 #include <simd/simd.h>
 
+SPT_EXTERN_C_BEGIN
+
 typedef struct {
-    simd_float4 color;
+    SPTColor color;
 } SPTPlainColorMaterial;
 
 bool SPTPlainColorMaterialEqual(SPTPlainColorMaterial lhs, SPTPlainColorMaterial rhs);
 
 
 typedef struct {
-    simd_float4 color;
+    SPTColor color;
     float specularRoughness;
 } SPTPhongMaterial;
 
 bool SPTPhongMaterialEqual(SPTPhongMaterial lhs, SPTPhongMaterial rhs);
+
+SPT_EXTERN_C_END

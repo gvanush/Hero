@@ -1,5 +1,5 @@
 //
-//  ShadeComponentView.swift
+//  ShadingComponentView.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 31.10.22.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-class ShadeComponent: BasicComponent<ShadeComponent.Property>, BasicToolSelectedObjectRootComponent {
+class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSelectedObjectRootComponent {
 
     enum Property: Int, DistinctValueSet, Displayable {
         case specularRoughness
@@ -37,9 +37,13 @@ class ShadeComponent: BasicComponent<ShadeComponent.Property>, BasicToolSelected
         self.specularRoughnessEditingParams = editingParams.specularRoughness
         _meshLook = .init(object: object)
         
-        super.init(title: "Shading", selectedProperty: .specularRoughness, parent: parent)
+        super.init(selectedProperty: .specularRoughness, parent: parent)
         
         _meshLook.publisher = self.objectWillChange
+    }
+    
+    override var title: String {
+        "Shading"
     }
     
     override var subcomponents: [Component]? { [color] }
@@ -50,9 +54,9 @@ class ShadeComponent: BasicComponent<ShadeComponent.Property>, BasicToolSelected
     
 }
 
-struct ShadeComponentView: View {
+struct ShadingComponentView: View {
     
-    @ObservedObject var component: ShadeComponent
+    @ObservedObject var component: ShadingComponent
     
     var body: some View {
         Group {

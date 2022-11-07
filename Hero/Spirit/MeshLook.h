@@ -16,9 +16,9 @@
 SPT_EXTERN_C_BEGIN
 
 typedef enum {
-    SPTMeshShadingPlainColor,
-    SPTMeshShadingBlinnPhong
-} __attribute__((enum_extensibility(open))) SPTMeshShadingType;
+    SPTMeshShadingTypePlainColor,
+    SPTMeshShadingTypeBlinnPhong
+} __attribute__((enum_extensibility(closed))) SPTMeshShadingType;
 
 typedef struct {
     SPTMeshShadingType type;
@@ -28,6 +28,10 @@ typedef struct {
     };
 } SPTMeshShading;
 
+bool SPTMeshShadingValidate(SPTMeshShading shading);
+
+bool SPTMeshShadingEqual(SPTMeshShading lhs, SPTMeshShading rhs);
+
 typedef struct {
     SPTMeshShading shading;
     SPTMeshId meshId;
@@ -35,8 +39,6 @@ typedef struct {
 } SPTMeshLook;
 
 bool SPTMeshLookEqual(SPTMeshLook lhs, SPTMeshLook rhs);
-
-bool SPTMeshShadingEqual(SPTMeshShading lhs, SPTMeshShading rhs);
 
 void SPTMeshLookMake(SPTObject object, SPTMeshLook meshLook);
 

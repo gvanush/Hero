@@ -20,6 +20,25 @@ extension UIColor {
         return simd_float4(x: Float(red), y: Float(green), z: Float(blue), w: Float(alpha))
     }
     
+    var hsba: simd_float4 {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+
+        return simd_float4(x: Float(hue), y: Float(saturation), z: Float(brightness), w: Float(alpha))
+    }
+    
+    func sptColor(model: SPTColorModel) -> SPTColor {
+        switch model {
+        case .RGB:
+            return .init(rgba: .init(float4: self.rgba))
+        case .HSB:
+            return .init(hsba: .init(float4: self.hsba))
+        }
+    }
+    
     var mtlClearColor: MTLClearColor {
         var red: CGFloat = 0
         var green: CGFloat = 0

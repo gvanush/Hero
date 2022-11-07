@@ -32,7 +32,11 @@ class PositionFieldAnimatorBindingComponent: AnimatorBindingComponent<SPTAnimata
             animatableProperty = .positionZ
         }
         
-        super.init(animatableProperty: animatableProperty, title: "\(axis.displayName) Binding", object: object, parent: parent)
+        super.init(animatableProperty: animatableProperty, object: object, parent: parent)
+    }
+    
+    override var title: String {
+        "\(axis.displayName) Binding"
     }
     
     override func makeEditViewModel() -> EditAnimatorBindingViewModel<SPTAnimatableObjectProperty>? {
@@ -65,7 +69,11 @@ class PositionAnimatorBindingsComponent: Component, BasicToolSelectedObjectRootC
         self.object = object
         self.sceneViewModel = sceneViewModel
         self.initialEditingParams = editingParams
-        super.init(title: "Animators", parent: parent)
+        super.init(parent: parent)
+    }
+    
+    override var title: String {
+        "Animators"
     }
     
     override var subcomponents: [Component]? { [x, y, z] }

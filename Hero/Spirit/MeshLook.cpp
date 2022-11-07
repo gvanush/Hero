@@ -17,11 +17,11 @@ namespace {
 void addRenderableMaterial(SPTMeshShadingType shadingType, spt::Registry& registry, SPTEntity entity) {
     
     switch (shadingType) {
-        case SPTMeshShadingPlainColor: {
+        case SPTMeshShadingTypePlainColor: {
             registry.emplace<spt::PlainColorRenderableMaterial>(entity);
             break;
         }
-        case SPTMeshShadingBlinnPhong: {
+        case SPTMeshShadingTypeBlinnPhong: {
             registry.emplace<spt::PhongRenderableMaterial>(entity);
             break;
         }
@@ -32,11 +32,11 @@ void addRenderableMaterial(SPTMeshShadingType shadingType, spt::Registry& regist
 void removeRenderableMaterial(SPTMeshShadingType shadingType, spt::Registry& registry, SPTEntity entity) {
     
     switch (shadingType) {
-        case SPTMeshShadingPlainColor: {
+        case SPTMeshShadingTypePlainColor: {
             registry.erase<spt::PlainColorRenderableMaterial>(entity);
             break;
         }
-        case SPTMeshShadingBlinnPhong: {
+        case SPTMeshShadingTypeBlinnPhong: {
             registry.erase<spt::PhongRenderableMaterial>(entity);
             break;
         }
@@ -46,8 +46,16 @@ void removeRenderableMaterial(SPTMeshShadingType shadingType, spt::Registry& reg
 
 }
 
-bool SPTMeshLookEqual(SPTMeshLook lhs, SPTMeshLook rhs) {
-    return SPTMeshShadingEqual(lhs.shading, rhs.shading) && lhs.meshId == rhs.meshId && lhs.categories == rhs.categories;
+bool SPTMeshShadingValidate(SPTMeshShading shading) {
+    switch (shading.type) {
+        case SPTMeshShadingTypePlainColor: {
+            return SPTColorValidate(shading.plainColor.color);
+        }
+        case SPTMeshShadingTypeBlinnPhong: {
+            // TODO: Add specular roughness
+            return SPTColorValidate(shading.blinnPhong.color);
+        }
+    }
 }
 
 bool SPTMeshShadingEqual(SPTMeshShading lhs, SPTMeshShading rhs) {
@@ -55,16 +63,22 @@ bool SPTMeshShadingEqual(SPTMeshShading lhs, SPTMeshShading rhs) {
         return false;
     }
     switch (lhs.type) {
-        case SPTMeshShadingPlainColor: {
+        case SPTMeshShadingTypePlainColor: {
             return SPTPlainColorMaterialEqual(lhs.plainColor, rhs.plainColor);
         }
-        case SPTMeshShadingBlinnPhong: {
+        case SPTMeshShadingTypeBlinnPhong: {
             return SPTPhongMaterialEqual(lhs.blinnPhong, rhs.blinnPhong);
         }
     }
 }
 
+bool SPTMeshLookEqual(SPTMeshLook lhs, SPTMeshLook rhs) {
+    return SPTMeshShadingEqual(lhs.shading, rhs.shading) && lhs.meshId == rhs.meshId && lhs.categories == rhs.categories;
+}
+
 void SPTMeshLookMake(SPTObject object, SPTMeshLook meshLook) {
+    assert(SPTMeshShadingValidate(meshLook.shading));
+    
     auto& registry = spt::Scene::getRegistry(object);
     spt::notifyComponentWillEmergeObservers(registry, object.entity, meshLook);
     registry.emplace<SPTMeshLook>(object.entity, meshLook);
@@ -73,6 +87,8 @@ void SPTMeshLookMake(SPTObject object, SPTMeshLook meshLook) {
 }
 
 void SPTMeshLookUpdate(SPTObject object, SPTMeshLook updated) {
+    assert(SPTMeshShadingValidate(updated.shading));
+    
     auto& registry = spt::Scene::getRegistry(object);
     spt::notifyComponentWillChangeObservers(registry, object.entity, updated);
     auto& meshLook = registry.get<SPTMeshLook>(object.entity);
@@ -137,17 +153,17 @@ void MeshLook::update(spt::Registry& registry) {
     view.each([&registry] (const auto entity, const SPTMeshLook& meshLook) {
         
         switch (meshLook.shading.type) {
-            case SPTMeshShadingPlainColor: {
+            case SPTMeshShadingTypePlainColor: {
                 
                 auto& renderableMaterial = registry.get<PlainColorRenderableMaterial>(entity);
-                renderableMaterial.color = meshLook.shading.plainColor.color;
+                renderableMaterial.color = SPTColorToRGBA(meshLook.shading.plainColor.color).rgba.float4;
                 
                 break;
             }
-            case SPTMeshShadingBlinnPhong: {
+            case SPTMeshShadingTypeBlinnPhong: {
                 
                 auto& renderableMaterial = registry.get<PhongRenderableMaterial>(entity);
-                renderableMaterial.color = meshLook.shading.blinnPhong.color;
+                renderableMaterial.color = SPTColorToRGBA(meshLook.shading.blinnPhong.color).rgba.float4;
                 renderableMaterial.specularRoughness = meshLook.shading.blinnPhong.specularRoughness;
                 
                 break;

@@ -38,12 +38,12 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
     private var bindingWillEmergeSubscription: SPTAnySubscription?
     private var bindingWillPerishSubscription: SPTAnySubscription?
     
-    init(animatableProperty: AP, title: String, object: SPTObject, parent: Component?) {
+    init(animatableProperty: AP, object: SPTObject, parent: Component?) {
         
         self.animatableProperty = animatableProperty
         self.object = object
         
-        super.init(title: title, selectedProperty: .valueAt0, parent: parent)
+        super.init(selectedProperty: .valueAt0, parent: parent)
         
         bindingWillEmergeSubscription = animatableProperty.onAnimatorBindingWillEmergeSink(object: object) { [weak self] _ in
             self?.setupEditViewModel()

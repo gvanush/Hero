@@ -9,9 +9,9 @@
 
 
 bool SPTPlainColorMaterialEqual(SPTPlainColorMaterial lhs, SPTPlainColorMaterial rhs) {
-    return simd_equal(lhs.color, rhs.color);
+    return SPTColorEqual(lhs.color, rhs.color);
 }
 
 bool SPTPhongMaterialEqual(SPTPhongMaterial lhs, SPTPhongMaterial rhs) {
-    return simd_equal(lhs.color, rhs.color) && lhs.specularRoughness == rhs.specularRoughness;
+    return SPTColorEqual(lhs.color, rhs.color) && lhs.specularRoughness == rhs.specularRoughness;
 }

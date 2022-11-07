@@ -1,5 +1,5 @@
 //
-//  HSVColorSelector.swift
+//  HSBColorSelector.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 03.11.22.
@@ -7,32 +7,23 @@
 
 import SwiftUI
 
-enum HSBAColorComponent: Int {
-    case hue
-    case saturation
-    case brightness
-    case alpha
-}
-
-typealias HSBAColor = simd_float4
-
-extension HSBAColor {
+fileprivate extension SPTHSBAColor {
     
-    func hued(_ hue: Float) -> HSBAColor {
+    func hued(_ hue: Float) -> SPTHSBAColor {
         var color = self
-        color.x = hue
+        color.hue = hue
         return color
     }
     
-    func saturated(_ saturation: Float) -> HSBAColor {
+    func saturated(_ saturation: Float) -> SPTHSBAColor {
         var color = self
-        color.y = saturation
+        color.saturation = saturation
         return color
     }
     
-    func brighted(_ brightness: Float) -> HSBAColor {
+    func brighted(_ brightness: Float) -> SPTHSBAColor {
         var color = self
-        color.z = brightness
+        color.brightness = brightness
         return color
     }
     
@@ -40,17 +31,17 @@ extension HSBAColor {
 
 fileprivate let gradientColorSpace = Gradient.ColorSpace.device
 
-struct HSVColorSelector: View {
+struct HSBColorSelector: View {
     
-    @Binding var hsbaColor: HSBAColor
-    let component: HSBAColorComponent
+    @Binding var hsbaColor: SPTHSBAColor
+    let channel: HSBColorChannel
     
     @State private var prevLocation: CGPoint?
     @State private var feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     var body: some View {
         HStack(spacing: Self.padding) {
-            HuePlaneView(hue: hsbaColor.x)
+            HuePlaneView(hue: hsbaColor.hue)
                 .aspectRatio(contentMode: .fit)
                 .compositingGroup()
                 .shadow(radius: 1.0)
@@ -74,7 +65,7 @@ struct HSVColorSelector: View {
                     }
                 }
             VStack {
-                Text(String(format: "%.2f", componentValue))
+                Text(String(format: "%.2f", channelValue))
                     .font(.body.monospacedDigit())
                     .foregroundColor(.controlValue)
                 GeometryReader { geometry in
@@ -101,8 +92,8 @@ struct HSVColorSelector: View {
         .shadow(radius: 1.0)
     }
     
-    var componentValue: Float {
-        hsbaColor[component.rawValue]
+    var channelValue: Float {
+        hsbaColor.float4[channel.rawValue]
     }
     
     func thumb(geometry: GeometryProxy) -> some View {
@@ -115,7 +106,7 @@ struct HSVColorSelector: View {
     
     func track() -> some View {
         Group {
-            switch component {
+            switch channel {
             case .hue:
                 Capsule()
                     .fill(.linearGradient(hueTrackGradient, startPoint: .leading, endPoint: .trailing))
@@ -125,8 +116,6 @@ struct HSVColorSelector: View {
             case .brightness:
                 Capsule()
                     .fill(.linearGradient(brightnessTrackGradient, startPoint: .leading, endPoint: .trailing))
-            case .alpha:
-                EmptyView()
             }
         }
         .frame(height: 4.0)
@@ -137,37 +126,35 @@ struct HSVColorSelector: View {
     }
     
     var saturationTrackGradient: AnyGradient {
-        Gradient(colors: [.init(hsba: hsbaColor.saturated(0.0)), .init(hsba: hsbaColor.saturated(1.0))])
+        Gradient(colors: [.init(sptHSBA: hsbaColor.saturated(0.0)), .init(sptHSBA: hsbaColor.saturated(1.0))])
             .colorSpace(gradientColorSpace)
     }
     
     var brightnessTrackGradient: AnyGradient {
-        Gradient(colors: [.init(hsba: hsbaColor.brighted(0.0)), .init(hsba: hsbaColor.brighted(1.0))])
+        Gradient(colors: [.init(sptHSBA: hsbaColor.brighted(0.0)), .init(sptHSBA: hsbaColor.brighted(1.0))])
             .colorSpace(gradientColorSpace)
     }
     
     var thumbColor: Color {
-        switch component {
+        switch channel {
         case .hue:
-            return Color(hue: Double(hsbaColor.x), saturation: 1.0, brightness: 1.0)
+            return Color(hue: Double(hsbaColor.hue), saturation: 1.0, brightness: 1.0)
         case .saturation, .brightness:
             return dotColor
-        case .alpha:
-            return Color.black
         }
     }
     
     func thumbOffset(geometry: GeometryProxy) -> CGFloat {
-        CGFloat(2.0 * componentValue - 1.0) * geometry.size.width * 0.5
+        CGFloat(2.0 * channelValue - 1.0) * geometry.size.width * 0.5
     }
     
     func dotOffset(geometry: GeometryProxy) -> CGSize {
-        .init(width: CGFloat(2.0 * hsbaColor.y - 1.0) * geometry.size.width * 0.5,
-              height: CGFloat(1.0 - 2.0 * hsbaColor.z) * geometry.size.height * 0.5)
+        .init(width: CGFloat(2.0 * hsbaColor.saturation - 1.0) * geometry.size.width * 0.5,
+              height: CGFloat(1.0 - 2.0 * hsbaColor.brightness) * geometry.size.height * 0.5)
     }
     
     var dotColor: Color {
-        Color(hsba: hsbaColor)
+        Color(sptHSBA: hsbaColor)
     }
     
     func dragGesture(geometry: GeometryProxy) -> some Gesture {
@@ -179,12 +166,12 @@ struct HSVColorSelector: View {
                     return
                 }
                 let delta = value.location.x - prevLocation.x
-                let newValue = simd_clamp(componentValue + Float(delta / geometry.size.width), 0.0, 1.0)
-                if (componentValue != 0.0 && newValue == 0.0) || (componentValue != 1.0 && newValue == 1.0) {
+                let newValue = simd_clamp(channelValue + Float(delta / geometry.size.width), 0.0, 1.0)
+                if (channelValue != 0.0 && newValue == 0.0) || (channelValue != 1.0 && newValue == 1.0) {
                     feedbackGenerator.impactOccurred()
                 }
                 
-                hsbaColor[component.rawValue] = newValue
+                hsbaColor.float4[channel.rawValue] = newValue
                 self.prevLocation = value.location
             }
             .onEnded { _ in
@@ -236,17 +223,17 @@ struct HSVColorSelector_Previews: PreviewProvider {
     
     struct ContanerView: View {
         
-        @State var color = HSBAColor(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+        @State var color = SPTHSBAColor(hue: 1.0, saturation: 1.0, brightness: 1.0)
         
         var body: some View {
             VStack {
-                HSVColorSelector(hsbaColor: $color, component: .hue)
+                HSBColorSelector(hsbaColor: $color, channel: .hue)
                     .tint(.primarySelectionColor)
                 
-                HSVColorSelector(hsbaColor: $color, component: .saturation)
+                HSBColorSelector(hsbaColor: $color, channel: .saturation)
                     .tint(.primarySelectionColor)
                 
-                HSVColorSelector(hsbaColor: $color, component: .brightness)
+                HSBColorSelector(hsbaColor: $color, channel: .brightness)
                     .tint(.primarySelectionColor)
             }
         }
