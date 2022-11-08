@@ -91,8 +91,6 @@ class ToolViewModel: ObservableObject, Identifiable, Equatable {
     func onObjectDestroy(_ object: SPTObject) {
     }
     
-    @Published var actions: [ActionItem]?
-    
     static func == (lhs: ToolViewModel, rhs: ToolViewModel) -> Bool {
         lhs === rhs
     }

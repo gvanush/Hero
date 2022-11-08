@@ -109,31 +109,35 @@ class ObjectColorComponent<C>: Component where C: SPTObservableComponent {
     @Published var editingParams: EditingParams
     @Published var activeComponent: Component!
     
+    private let keyPath: WritableKeyPath<C, SPTColor>
+    private let object: SPTObject
     private var colorModelSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
     
     init(editingParams: EditingParams, keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject, parent: Component?) {
         
         self.editingParams = editingParams
+        self.keyPath = keyPath
+        self.object = object
         
         super.init(parent: parent)
         
-        let colorModel = {
-            C.get(object: object)[keyPath: keyPath].model
-        }
-        
         colorModelSubscription = C.onWillChangeSink(object: object) { [weak self] newColor in
             let newColorModel = newColor[keyPath: keyPath].model
-            if newColorModel != colorModel() {
+            if newColorModel != self!.colorModel {
                 self?.setupVariant(colorModel: newColorModel, keyPath: keyPath, object: object)
             }
         }
         
-        setupVariant(colorModel: colorModel(), keyPath: keyPath, object: object)
+        setupVariant(colorModel: colorModel, keyPath: keyPath, object: object)
         
-        // TODO
-        self.actions.append(.init(iconName: "camera.filters", action: {
-            
+    }
+    
+    var colorModel: SPTColorModel {
+        get {
+            C.get(object: object)[keyPath: keyPath].model
+        }
+        set {
             var component = C.get(object: object)
             
             let color = component[keyPath: keyPath]
@@ -145,8 +149,7 @@ class ObjectColorComponent<C>: Component where C: SPTObservableComponent {
             }
             
             C.update(component, object: object)
-        }))
-        
+        }
     }
     
     private func setupVariant(colorModel: SPTColorModel, keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject) {
@@ -183,6 +186,25 @@ class ObjectColorComponent<C>: Component where C: SPTObservableComponent {
     }
  
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
-        activeComponent.accept(provider)
+        provider.viewFor(self)
     }
+}
+
+struct ObjectColorView<C, RC>: View where C: SPTObservableComponent {
+    
+    @ObservedObject var component: ObjectColorComponent<C>
+    let viewProvider: ComponentViewProvider<RC>
+    
+    @EnvironmentObject var actionBarModel: ActionBarModel
+    
+    var body: some View {
+        component.activeComponent.accept(viewProvider)
+            .actionBarObjectSection {
+                ActionBarMenu(iconName: "camera.filters", selected: $component.colorModel)
+            }
+            .onAppear {
+                actionBarModel.scrollToObjectSection()
+            }
+    }
+    
 }

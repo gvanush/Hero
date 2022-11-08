@@ -57,9 +57,6 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
             setupEditViewModel()
         }
         
-        self.actions.append(.init(iconName: "bolt.slash", action: { [weak self] in
-            self?.unbindAnimator()
-        }))
     }
     
     private func setupEditViewModel() {
@@ -103,6 +100,7 @@ class AnimatorBindingComponent<AP>: BasicComponent<AnimatorBindingComponentPrope
 struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
     
     @ObservedObject var component: AnimatorBindingComponent<AP>
+    @EnvironmentObject var actionBarModel: ActionBarModel
     
     var body: some View {
         Group {
@@ -111,6 +109,14 @@ struct AnimatorBindingComponentView<AP>: View where AP: SPTAnimatableProperty {
             }
         }
         .id(component.id)
+        .actionBarObjectSection {
+            ActionBarButton(iconName: "bolt.slash") {
+                component.unbindAnimator()
+            }
+        }
+        .onAppear {
+            actionBarModel.scrollToObjectSection()
+        }
     }
     
 }

@@ -14,6 +14,10 @@ class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
         AnyView(AnimatorBindingComponentView(component: component))
     }
     
+    override func viewFor<C>(_ component: ObjectColorComponent<C>) -> AnyView? where C: SPTObservableComponent {
+        AnyView(ObjectColorView(component: component, viewProvider: self))
+    }
+    
     override func viewFor<C>(_ component: ObjectRGBAColorComponent<C>) -> AnyView? where C: SPTObservableComponent {
         AnyView(ObjectRGBAColorComponentView(component: component))
     }

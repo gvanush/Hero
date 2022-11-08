@@ -81,6 +81,8 @@
 		B7643B3C290FAB9000F6A05B /* ShadingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3B290FAB9000F6A05B /* ShadingComponentView.swift */; };
 		B7643B3E2910509F00F6A05B /* ObjectColorComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3D2910509F00F6A05B /* ObjectColorComponentView.swift */; };
 		B7643B402912517000F6A05B /* RGBFieldSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3F2912516F00F6A05B /* RGBFieldSelector.swift */; };
+		B769F2632918EBE400C10661 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F2622918EBE400C10661 /* ActionBar.swift */; };
+		B769F265291ADF3B00C10661 /* ActionBarContentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */; };
 		B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */; };
 		B76D4FC828AB7C990029E47B /* SPTUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC728AB7C990029E47B /* SPTUtil.swift */; };
 		B76D4FCA28AC0E1B0029E47B /* SPTObjectPropertyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC928AC0E1B0029E47B /* SPTObjectPropertyUtil.swift */; };
@@ -116,7 +118,6 @@
 		B7B711F128C722770077C7CD /* PlayableScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7B711EF28C722770077C7CD /* PlayableScene.cpp */; };
 		B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711FA28CC45A90077C7CD /* SPTSceneUtil.swift */; };
 		B7B711FE28CC525C0077C7CD /* SPTPlayableSceneUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711FD28CC525C0077C7CD /* SPTPlayableSceneUtil.swift */; };
-		B7BC3A0928EDF6250050766F /* ActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BC3A0828EDF6250050766F /* ActionsView.swift */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
@@ -270,6 +271,8 @@
 		B7643B3B290FAB9000F6A05B /* ShadingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadingComponentView.swift; sourceTree = "<group>"; };
 		B7643B3D2910509F00F6A05B /* ObjectColorComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectColorComponentView.swift; sourceTree = "<group>"; };
 		B7643B3F2912516F00F6A05B /* RGBFieldSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBFieldSelector.swift; sourceTree = "<group>"; };
+		B769F2622918EBE400C10661 /* ActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBar.swift; sourceTree = "<group>"; };
+		B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarContentBuilder.swift; sourceTree = "<group>"; };
 		B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPropertyAnimatorBinding.cpp; sourceTree = "<group>"; };
 		B76D4FC128AA25B60029E47B /* ObjectPropertyAnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBinding.hpp; sourceTree = "<group>"; };
 		B76D4FC328AA25C50029E47B /* ObjectPropertyAnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectPropertyAnimatorBinding.h; sourceTree = "<group>"; };
@@ -317,7 +320,6 @@
 		B7B711FA28CC45A90077C7CD /* SPTSceneUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTSceneUtil.swift; sourceTree = "<group>"; };
 		B7B711FC28CC4F240077C7CD /* PlayableScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayableScene.h; sourceTree = "<group>"; };
 		B7B711FD28CC525C0077C7CD /* SPTPlayableSceneUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPlayableSceneUtil.swift; sourceTree = "<group>"; };
-		B7BC3A0828EDF6250050766F /* ActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsView.swift; sourceTree = "<group>"; };
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
@@ -658,7 +660,8 @@
 				B7791DB92726821200E0C934 /* SceneView.swift */,
 				B7104BB727286B3700582DCA /* SceneViewModel.swift */,
 				B7B711E128C1E4720077C7CD /* PlayView.swift */,
-				B7BC3A0828EDF6250050766F /* ActionsView.swift */,
+				B769F2622918EBE400C10661 /* ActionBar.swift */,
+				B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */,
 				B7643B30290BD31B00F6A05B /* EditingParams.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
@@ -994,6 +997,7 @@
 				B7B711E228C1E4720077C7CD /* PlayView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
+				B769F2632918EBE400C10661 /* ActionBar.swift in Sources */,
 				B7038C5728A18D5900C14A51 /* MeshObjectInspector.swift in Sources */,
 				B757DB7D28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift in Sources */,
 				B757DB7828A8B26500BB5DB4 /* PositionAnimatorBindingsComponent.swift in Sources */,
@@ -1010,7 +1014,6 @@
 				B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
 				B7643B2C2907C8CD00F6A05B /* EasingSelector.swift in Sources */,
-				B7BC3A0928EDF6250050766F /* ActionsView.swift in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
@@ -1072,6 +1075,7 @@
 				B7643B3C290FAB9000F6A05B /* ShadingComponentView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
 				B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */,
+				B769F265291ADF3B00C10661 /* ActionBarContentBuilder.swift in Sources */,
 				B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */,
 				B7C9D6C328FD256600621BA1 /* AnimatorViewModel.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,

@@ -63,3 +63,22 @@ extension SPTHSBAColor: Equatable {
     }
     
 }
+
+extension SPTColorModel: CaseIterable, Identifiable, Displayable {
+    
+    public var id: UInt32 {
+        self.rawValue
+    }
+    
+    var displayName: String {
+        switch self {
+        case .RGB:
+            return "RGB"
+        case .HSB:
+            return "HSB"
+        }
+    }
+    
+    public static var allCases: [SPTColorModel] = [.HSB, .RGB]
+    
+}

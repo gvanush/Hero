@@ -44,8 +44,6 @@ class Component: Identifiable, ObservableObject, Equatable {
     
     func onInactive() { }
     
-    @Published var actions = [ActionItem]()
-    
     func pathIn(_ root: Component) -> ComponentPath? {
         
         if self == root {

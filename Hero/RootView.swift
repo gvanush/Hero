@@ -81,6 +81,7 @@ struct RootView: View {
     
     @StateObject private var model: RootViewModel
     @StateObject private var sceneViewModel: SceneViewModel
+    @StateObject private var actionBarModel: ActionBarModel
     
     @State private var isNavigating = false
     @State private var showsAnimatorsView = false
@@ -94,15 +95,16 @@ struct RootView: View {
         let sceneVM = SceneViewModel()
         _sceneViewModel = .init(wrappedValue: sceneVM)
         _model = .init(wrappedValue: .init(sceneViewModel: sceneVM))
+        _actionBarModel = .init(wrappedValue: .init())
     }
     
     var body: some View {
-        ZStack {
+        ActionBarItemReader(model: actionBarModel) {
             SceneView(model: sceneViewModel,
                       isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), edgeInsets: .init(top: 0.0, leading: 0.0, bottom: -Self.navigationEmptyVerticalAreaHeight, trailing: 0.0))
             .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
             .overlay(alignment: .bottomTrailing) {
-                ActionsView(defaultActions: defaultActions, activeToolViewModel: $model.activeToolViewModel)
+                ActionBar(model: actionBarModel)
                     .background(Material.thin, ignoresSafeAreaEdges: [])
                     .cornerRadius(10.0)
                     .padding(.trailing, 16.0)
@@ -140,6 +142,20 @@ struct RootView: View {
                 }
                 .visible(!isNavigating)
             }
+            .actionBarCommonSection {
+                ActionBarButton(iconName: "plus") {
+                    showsNewObjectView = true
+                }
+                
+                ActionBarButton(iconName: "plus.square.on.square", disabled: !sceneViewModel.isObjectSelected) {
+                    model.duplicateObject(sceneViewModel.selectedObject!)
+                }
+                
+                ActionBarButton(iconName: "trash", disabled: !sceneViewModel.isObjectSelected) {
+                    model.destroyObject(sceneViewModel.selectedObject!)
+                }
+            }
+            .environmentObject(actionBarModel)
             
         }
         .statusBar(hidden: isNavigating)
@@ -166,20 +182,6 @@ struct RootView: View {
                 playableScene = nil
             }
         }
-    }
-    
-    var defaultActions: [ActionItem] {
-        [
-            ActionItem(iconName: "plus") {
-                showsNewObjectView = true
-            },
-            ActionItem(iconName: "plus.square.on.square", disabled: !sceneViewModel.isObjectSelected) {
-                model.duplicateObject(sceneViewModel.selectedObject!)
-            },
-            ActionItem(iconName: "trash", disabled: !sceneViewModel.isObjectSelected) {
-                model.destroyObject(sceneViewModel.selectedObject!)
-            }
-        ]
     }
     
     func topbar() -> some View {

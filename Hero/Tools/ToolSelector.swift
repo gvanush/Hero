@@ -8,7 +8,6 @@
 import SwiftUI
 
 
-fileprivate let stateChangeAnimation: Animation = Animation.easeInOut(duration: 0.25)
 fileprivate let toolTitleFontSize = 13.0
 fileprivate let toolPathFontSize = 13.0
 
@@ -53,7 +52,7 @@ struct ToolSelector: View {
     func itemForToolViewModel(_ toolViewModel: ToolViewModel, scrollViewProxy: ScrollViewProxy) -> some View {
         HStack(spacing: 4.0) {
             Button {
-                withAnimation(stateChangeAnimation) {
+                withAnimation {
                     if activeToolViewModel == toolViewModel {
                         activeToolViewModel.activeComponent = nil
                     } else {
@@ -116,28 +115,24 @@ fileprivate struct ToolComponentPathItemView: View {
     @Binding var activeComponent: Component?
     
     var body: some View {
-        Group {
-            if let component = component, component.parent != nil {
-                HStack(spacing: 4.0) {
-                    ToolComponentPathItemView(component: component.parent, activeComponent: $activeComponent)
-                    Image(systemName: "chevron.right")
-                        .imageScale(.large)
-                        .foregroundColor(.secondary)
-                    Button {
-                        withAnimation(stateChangeAnimation) {
-                            activeComponent = component
-                        }
-                    } label: {
-                        Text(component.title)
-                            .fixedSize()
-                            .frame(minWidth: 44.0, alignment: .leading)
+        if let component = component, component.parent != nil {
+            HStack(spacing: 4.0) {
+                ToolComponentPathItemView(component: component.parent, activeComponent: $activeComponent)
+                Image(systemName: "chevron.right")
+                    .imageScale(.large)
+                    .foregroundColor(.secondary)
+                Button {
+                    withAnimation {
+                        activeComponent = component
                     }
+                } label: {
+                    Text(component.title)
+                        .fixedSize()
+                        .frame(minWidth: 44.0, alignment: .leading)
                 }
-            } else {
-                EmptyView()
             }
+            .id(component.id)
         }
-        .id(component?.id)
     }
     
 }
