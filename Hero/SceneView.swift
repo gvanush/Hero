@@ -78,7 +78,9 @@ struct SceneView: View {
                             .gesture(isNavigationEnabled ? orbitDragGesture : nil)
                             .onTapGesture { location in
                                 guard isSelectionEnabled else { return }
-                                model.selectedObject = model.pickObjectAt(location, viewportSize: viewportSize)
+                                withAnimation {
+                                    model.selectedObject = model.pickObjectAt(location, viewportSize: viewportSize)
+                                }
                             }
                             .allowsHitTesting(isNavigationEnabled && !isNavigating)
                     }
@@ -147,6 +149,8 @@ struct SceneView: View {
             }
             
         }), offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
+        .transition(.identity)
+        .id(model.selectedObject)
     }
     
     var orbitDragGesture: some Gesture {
@@ -188,6 +192,8 @@ struct SceneView: View {
                     .shadow(radius: 1.0)
             }
         }
+        .transition(.identity)
+        .id(model.selectedObject)
     }
     
     func sptViewPadding(safeArea: CGRect, fullArea: CGRect) -> EdgeInsets {

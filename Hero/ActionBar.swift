@@ -10,19 +10,56 @@ import SwiftUI
 
 class ActionBarModel: ObservableObject {
     
-    @Published fileprivate var commonSectionItems = [AnyActionBarItem]()
-    @Published fileprivate var toolSectionItems = [AnyActionBarItem]()
-    @Published fileprivate var objectSectionItems = [AnyActionBarItem]()
+    @Published fileprivate private(set) var commonSectionItems = [AnyActionBarItem]()
+    @Published fileprivate private(set) var toolSectionItems = [AnyActionBarItem]()
+    @Published fileprivate private(set) var objectSectionItems = [AnyActionBarItem]()
     
     @Published fileprivate var objectSectionScrollToggle = false
+    
+    fileprivate var animateChanges = false
     
     fileprivate var allItemsCount: Int {
         commonSectionItems.count + toolSectionItems.count + objectSectionItems.count
     }
     
+    fileprivate func updateCommonSectionItems(_ items: [AnyActionBarItem]) {
+        if animateChanges {
+            withAnimation {
+                commonSectionItems = items
+            }
+        } else {
+            commonSectionItems = items
+        }
+    }
+    
+    fileprivate func updateToolSectionItems(_ items: [AnyActionBarItem]) {
+        if animateChanges {
+            withAnimation {
+                toolSectionItems = items
+            }
+        } else {
+            toolSectionItems = items
+        }
+    }
+    
+    fileprivate func updateObjectSectionItems(_ items: [AnyActionBarItem]) {
+        if animateChanges {
+            withAnimation {
+                objectSectionItems = items
+            }
+        } else {
+            objectSectionItems = items
+        }
+    }
+    
     func scrollToObjectSection() {
         objectSectionScrollToggle.toggle()
     }
+    
+    func onAppear() {
+        animateChanges = true
+    }
+    
 }
 
 struct ActionBarItemReader<Content>: View where Content: View {
@@ -38,19 +75,13 @@ struct ActionBarItemReader<Content>: View where Content: View {
     var body: some View {
         content
             .onPreferenceChange(ActionBarPreferenceKey<ActionBar.CommonSection>.self) { items in
-                withAnimation {
-                    model.commonSectionItems = items
-                }
+                model.updateCommonSectionItems(items)
             }
             .onPreferenceChange(ActionBarPreferenceKey<ActionBar.ToolSection>.self) { items in
-                withAnimation {
-                    model.toolSectionItems = items
-                }
+                model.updateToolSectionItems(items)
             }
             .onPreferenceChange(ActionBarPreferenceKey<ActionBar.ObjectSection>.self) { items in
-                withAnimation {
-                    model.objectSectionItems = items
-                }
+                model.updateObjectSectionItems(items)
             }
     }
     
@@ -98,12 +129,16 @@ struct ActionBar: View {
                 }
             }
         }
+        .onAppear {
+            model.onAppear()
+        }
     }
     
     func sectionView(items: [AnyActionBarItem]) -> some View {
         ForEach(items.reversed()) { item in
             item.view
                 .frame(size: Self.itemSize)
+                .transition(.identity)
         }
         .imageScale(.medium)
     }
@@ -111,6 +146,7 @@ struct ActionBar: View {
     var divider: some View {
         Divider()
             .padding(.horizontal, 4.0)
+            .transition(.identity)
     }
     
     static let itemSize = CGSize(width: 44.0, height: 44.0)

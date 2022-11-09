@@ -42,9 +42,7 @@ class AnimatePositionToolViewModel: ToolViewModel {
         
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
             guard let self = self, self.selectedObjectViewModel?.object != selected else { return }
-            withAnimation {
-                self.setupSelectedObjectViewModel(object: selected)
-            }
+            self.setupSelectedObjectViewModel(object: selected)
         }
         
         setupSelectedObjectViewModel(object: sceneViewModel.selectedObject)
