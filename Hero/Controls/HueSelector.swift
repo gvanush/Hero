@@ -40,7 +40,7 @@ struct HSBColorSelector: View {
     @State private var feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     var body: some View {
-        HStack(spacing: Self.padding) {
+        HStack(spacing: 12.0) {
             HuePlaneView(hue: hsbaColor.hue)
                 .aspectRatio(contentMode: .fit)
                 .compositingGroup()
@@ -64,6 +64,7 @@ struct HSBColorSelector: View {
                         }
                     }
                 }
+            Divider()
             VStack {
                 Text(String(format: "%.2f", channelValue))
                     .font(.body.monospacedDigit())
@@ -83,7 +84,7 @@ struct HSBColorSelector: View {
                     dragIndicator()
                 }
             }
-            .padding(.horizontal, 8.0)
+            .padding(.trailing, 4.0)
         }
         .padding(Self.padding)
         .frame(maxWidth: .infinity, maxHeight: Self.maxHeight)

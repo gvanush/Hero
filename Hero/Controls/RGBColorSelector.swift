@@ -43,16 +43,23 @@ struct RGBColorSelector: View {
     
     var body: some View {
         HStack {
-            HStack(spacing: 12.0) {
-                HStack(spacing: 2.0) {
-                    textForSecondaryChannel(secondaryComponent1)
-                    trackForSecondaryChannel(secondaryComponent1)
-                }
-                HStack(spacing: 2.0) {
-                    trackForSecondaryChannel(secondaryComponent2)
-                    textForSecondaryChannel(secondaryComponent2)
+            HStack(spacing: 16.0) {
+                switch channel {
+                case .red:
+                    placeholderViewForPrimaryChannel(.red)
+                    viewForSecondaryChannel(.green)
+                    viewForSecondaryChannel(.blue)
+                case .green:
+                    viewForSecondaryChannel(.red)
+                    placeholderViewForPrimaryChannel(.green)
+                    viewForSecondaryChannel(.blue)
+                case .blue:
+                    viewForSecondaryChannel(.red)
+                    viewForSecondaryChannel(.green)
+                    placeholderViewForPrimaryChannel(.blue)
                 }
             }
+            Divider()
             VStack {
                 Text(String(format: "%.2f", channelValue))
                     .font(.body.monospacedDigit())
@@ -140,10 +147,11 @@ struct RGBColorSelector: View {
             .mask(LinearGradient(colors: [.black.opacity(0.0), .black, .black.opacity(0.0)], startPoint: .leading, endPoint: .trailing))
     }
     
-    func textForSecondaryChannel(_ channel: RGBColorChannel) -> some View {
-        Text(nameForSecondaryComponent(channel))
-            .font(.caption.monospaced())
-            .foregroundColor(.secondary)
+    func placeholderViewForPrimaryChannel(_ channel: RGBColorChannel) -> some View {
+        Capsule()
+            .fill(Color.secondary)
+            .frame(width: 4.0)
+            .padding(.top, 2.0)
     }
     
     func trackForSecondaryChannel(_ channel: RGBColorChannel) -> some View {
@@ -152,7 +160,21 @@ struct RGBColorSelector: View {
             .frame(width: 4.0)
     }
     
-    func nameForSecondaryComponent(_ channel: RGBColorChannel) -> String {
+    func viewForSecondaryChannel(_ channel: RGBColorChannel) -> some View {
+        VStack(spacing: 1.0) {
+            textForChannel(channel)
+            trackForSecondaryChannel(channel)
+        }
+        .shadow(radius: 1.0)
+    }
+    
+    func textForChannel(_ channel: RGBColorChannel) -> some View {
+        Text(nameForChannel(channel))
+            .font(.caption.monospaced())
+            .foregroundColor(.secondary)
+    }
+    
+    func nameForChannel(_ channel: RGBColorChannel) -> String {
         switch channel {
         case .red:
             return "R"
@@ -160,28 +182,6 @@ struct RGBColorSelector: View {
             return "G"
         case .blue:
             return "B"
-        }
-    }
-    
-    var secondaryComponent1: RGBColorChannel {
-        switch channel {
-        case .red:
-            return .green
-        case .green:
-            return .blue
-        case .blue:
-            return .red
-        }
-    }
-    
-    var secondaryComponent2: RGBColorChannel {
-        switch channel {
-        case .red:
-            return .blue
-        case .green:
-            return .red
-        case .blue:
-            return .green
         }
     }
     
@@ -235,8 +235,12 @@ struct RGBFieldSelector_Previews: PreviewProvider {
         @State var color = SPTRGBAColor(red: 1.0, green: 0.0, blue: 0.0)
         
         var body: some View {
-            RGBColorSelector(rgbaColor: $color, channel: .red)
-                .tint(.primarySelectionColor)
+            VStack {
+                RGBColorSelector(rgbaColor: $color, channel: .red)
+                RGBColorSelector(rgbaColor: $color, channel: .green)
+                RGBColorSelector(rgbaColor: $color, channel: .blue)
+            }
+            .tint(.primarySelectionColor)
         }
     }
     
