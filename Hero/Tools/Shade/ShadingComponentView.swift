@@ -11,21 +11,19 @@ import SwiftUI
 class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSelectedObjectRootComponent {
 
     enum Property: Int, DistinctValueSet, Displayable {
-        case specularRoughness
+        case shininess
     }
     
     typealias ColorComponent = ObjectColorComponent<SPTMeshLook>
     
     struct EditingParams {
         var color = ColorComponent.EditingParams()
-        var specularRoughness = FloatPropertyEditingParams()
     }
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     private let initialColorEditingParams: ColorComponent.EditingParams
     
-    @Published var specularRoughnessEditingParams: FloatPropertyEditingParams
     @SPTObservedComponent var meshLook: SPTMeshLook
     
     lazy private(set) var color = ColorComponent(editingParams: initialColorEditingParams, keyPath: \.shading.blinnPhong.color, object: object, parent: self)
@@ -34,10 +32,9 @@ class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSele
         self.object = object
         self.sceneViewModel = sceneViewModel
         self.initialColorEditingParams = editingParams.color
-        self.specularRoughnessEditingParams = editingParams.specularRoughness
         _meshLook = .init(object: object)
         
-        super.init(selectedProperty: .specularRoughness, parent: parent)
+        super.init(selectedProperty: .shininess, parent: parent)
         
         _meshLook.publisher = self.objectWillChange
     }
@@ -49,7 +46,7 @@ class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSele
     override var subcomponents: [Component]? { [color] }
     
     var editingParams: EditingParams {
-        .init(color: color.editingParams, specularRoughness: specularRoughnessEditingParams)
+        .init(color: color.editingParams)
     }
     
 }
@@ -61,8 +58,8 @@ struct ShadingComponentView: View {
     var body: some View {
         Group {
             switch component.selectedProperty {
-            case .specularRoughness:
-                FloatSelector(value: $component.meshLook.shading.blinnPhong.specularRoughness, scale: $component.specularRoughnessEditingParams.scale, isSnappingEnabled: $component.specularRoughnessEditingParams.isSnapping)
+            case .shininess:
+                FloatSlider(value: $component.meshLook.shading.blinnPhong.shininess)
                     .tint(.primarySelectionColor)
             case .none:
                 EmptyView()

@@ -52,8 +52,7 @@ bool SPTMeshShadingValidate(SPTMeshShading shading) {
             return SPTColorValidate(shading.plainColor.color);
         }
         case SPTMeshShadingTypeBlinnPhong: {
-            // TODO: Add specular roughness
-            return SPTColorValidate(shading.blinnPhong.color);
+            return shading.blinnPhong.shininess >= 0.f && shading.blinnPhong.shininess <= 1.f && SPTColorValidate(shading.blinnPhong.color);
         }
     }
 }
@@ -164,7 +163,7 @@ void MeshLook::update(spt::Registry& registry) {
                 
                 auto& renderableMaterial = registry.get<PhongRenderableMaterial>(entity);
                 renderableMaterial.color = SPTColorToRGBA(meshLook.shading.blinnPhong.color).rgba.float4;
-                renderableMaterial.specularRoughness = meshLook.shading.blinnPhong.specularRoughness;
+                renderableMaterial.shininess = meshLook.shading.blinnPhong.shininess;
                 
                 break;
             }

@@ -23,7 +23,7 @@ bool SPTPlainColorMaterialEqual(SPTPlainColorMaterial lhs, SPTPlainColorMaterial
 
 typedef struct {
     SPTColor color;
-    float specularRoughness;
+    float shininess;
 } SPTPhongMaterial;
 
 bool SPTPhongMaterialEqual(SPTPhongMaterial lhs, SPTPhongMaterial rhs);

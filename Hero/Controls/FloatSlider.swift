@@ -17,7 +17,6 @@ struct FloatSlider: View {
             Text(String(format: "%.2f", value))
                 .foregroundColor(.controlValue)
             Slider(value: $value, in: range)
-                .tint(.black)
                 .padding(.horizontal, 16.0)
         }
         .padding(Self.padding)

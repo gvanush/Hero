@@ -18,7 +18,7 @@ struct PlainColorRenderableMaterial {
 
 struct PhongRenderableMaterial {
     simd_float4 color;
-    float specularRoughness;
+    float shininess;
 };
 
 }

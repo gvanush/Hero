@@ -13,5 +13,5 @@ bool SPTPlainColorMaterialEqual(SPTPlainColorMaterial lhs, SPTPlainColorMaterial
 }
 
 bool SPTPhongMaterialEqual(SPTPhongMaterial lhs, SPTPhongMaterial rhs) {
-    return SPTColorEqual(lhs.color, rhs.color) && lhs.specularRoughness == rhs.specularRoughness;
+    return SPTColorEqual(lhs.color, rhs.color) && lhs.shininess == rhs.shininess;
 }
