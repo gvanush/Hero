@@ -7,6 +7,13 @@
 
 import Foundation
 
+extension SPTMeshShading: Equatable {
+    
+    public static func == (lhs: SPTMeshShading, rhs: SPTMeshShading) -> Bool {
+        SPTMeshShadingEqual(lhs, rhs)
+    }
+    
+}
 
 extension SPTMeshLook: SPTObservableComponent {
     

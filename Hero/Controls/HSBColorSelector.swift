@@ -66,7 +66,7 @@ struct HSBColorSelector: View {
                 }
             Divider()
             VStack {
-                Text(String(format: "%.2f", channelValue))
+                Text(NSNumber(value: channelValue), formatter: Formatters.colorChannel)
                     .font(.body.monospacedDigit())
                     .foregroundColor(.controlValue)
                 GeometryReader { geometry in

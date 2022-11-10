@@ -141,11 +141,11 @@ class ObjectColorComponent<C>: Component where C: SPTObservableComponent {
             var component = C.get(object: object)
             
             let color = component[keyPath: keyPath]
-            switch color.model {
+            switch newValue {
             case .RGB:
-                component[keyPath: keyPath] = color.toHSBA
-            case .HSB:
                 component[keyPath: keyPath] = color.toRGBA
+            case .HSB:
+                component[keyPath: keyPath] = color.toHSBA
             }
             
             C.update(component, object: object)

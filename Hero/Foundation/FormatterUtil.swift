@@ -7,6 +7,23 @@
 
 import Foundation
 
+enum Formatters {
+
+    static let positionField = BasicFloatFormatter()
+    
+    static let scaleField = BasicFloatFormatter()
+    
+    static let angle = AngleFormatter()
+    
+    static let shininess = BasicFloatFormatter(fractionDigits: 2)
+
+    static let colorChannel = BasicFloatFormatter(fractionDigits: 2)
+    
+    static let frequency = FrequencyFormatter()
+    
+}
+
+
 class FloatFormatter: Formatter {
     
     func updateFractionDigits(_ digits: Int) {}
@@ -34,6 +51,19 @@ class BasicFloatFormatter: FloatFormatter {
     
     let numberFormatter = NumberFormatter()
     
+    init(fractionDigits: Int? = nil, roundingMode: NumberFormatter.RoundingMode = .halfEven) {
+        super.init()
+        
+        if let fractionDigits = fractionDigits {
+            updateFractionDigits(fractionDigits)
+        }
+        self.numberFormatter.roundingMode = roundingMode
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func string(for obj: Any?) -> String? {
         numberFormatter.string(for: obj)
     }
@@ -46,32 +76,6 @@ class BasicFloatFormatter: FloatFormatter {
         numberFormatter.minimumFractionDigits = digits
         numberFormatter.maximumFractionDigits = digits
     }
-}
-
-class PositionFieldFormatter: BasicFloatFormatter {
-    
-    override init() {
-        super.init()
-        numberFormatter.roundingMode = .halfEven
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-}
-
-class ScaleFieldFormatter: BasicFloatFormatter {
-    
-    override init() {
-        super.init()
-        numberFormatter.roundingMode = .halfEven
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
 
 class AngleFormatter: MeasurementFloatFormatter {

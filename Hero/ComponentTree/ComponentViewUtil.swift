@@ -41,3 +41,39 @@ struct SceneEditableParam: View {
         }
     }
 }
+
+struct MultiVariantParam<O>: View
+where O: CaseIterable, O.AllCases: RandomAccessCollection, O: Identifiable, O: Equatable, O: Hashable, O: Displayable {
+    
+    let title: String
+    let editIconName: String
+    @Binding var selected: O
+    
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(selected.displayName)
+                .foregroundColor(.secondary)
+            Menu(content: {
+                ForEach(O.allCases) { option in
+                    Button {
+                        selected = option
+                    } label: {
+                        HStack {
+                            Text(option.displayName)
+                            Spacer()
+                            if selected == option {
+                                Image(systemName: "checkmark.circle")
+                            }
+                        }
+                    }
+                }
+            }, label: {
+                Image(systemName: editIconName)
+                    .imageScale(.large)
+            })
+        }
+    }
+    
+}

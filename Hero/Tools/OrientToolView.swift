@@ -43,7 +43,7 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    let rotationFormatter = AngleFormatter()
+    let rotationFormatter = Formatters.angle
     
     @SPTObservedComponent private var sptOrientation: SPTOrientation
     private var guideObject: SPTObject?

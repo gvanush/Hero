@@ -16,7 +16,7 @@ enum NoiseAnimatorProperty: Int, DistinctValueSet, Displayable {
 class NoiseAnimatorComponent: BasicComponent<NoiseAnimatorProperty> {
 
     @SPTObservedAnimator var animator: SPTAnimator
-    let frequencyFormatter = FrequencyFormatter()
+    let frequencyFormatter = Formatters.frequency
     
     init(animatorId: SPTAnimatorId) {
         _animator = .init(id: animatorId)

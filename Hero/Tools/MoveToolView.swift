@@ -43,6 +43,7 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
+    let positionFormatter = Formatters.positionField
     
     @Published var axis: Axis {
         didSet {
@@ -121,7 +122,7 @@ fileprivate struct SelectedObjectControlsView: View {
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.position[model.axis.rawValue], scale: $model.editingParam.scale, isSnappingEnabled: $model.editingParam.isSnapping)
+            FloatSelector(value: $model.position[model.axis.rawValue], scale: $model.editingParam.scale, isSnappingEnabled: $model.editingParam.isSnapping, formatter: model.positionFormatter)
                 .tint(Color.primarySelectionColor)
                 .transition(.identity)
                 .id(model.axis.rawValue)

@@ -43,6 +43,7 @@ class ScaleToolSelectedObjectViewModel: ObservableObject {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
+    let scaleFormatter = Formatters.scaleField
     
     @SPTObservedComponent private var sptScale: SPTScale
     private var guideObject: SPTObject?
@@ -84,7 +85,7 @@ fileprivate struct SelectedObjectControlsView: View {
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.scale[model.axis.rawValue], scale: $model.editingParam.scale, isSnappingEnabled: $model.editingParam.isSnapping)
+            FloatSelector(value: $model.scale[model.axis.rawValue], scale: $model.editingParam.scale, isSnappingEnabled: $model.editingParam.isSnapping, formatter: model.scaleFormatter)
                 .tint(Color.primarySelectionColor)
                 .transition(.identity)
                 .id(model.axis.rawValue)

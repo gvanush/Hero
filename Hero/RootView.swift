@@ -169,8 +169,7 @@ struct RootView: View {
             }
         }
         .sheet(isPresented: $showsSelectedObjectInspector) {
-            MeshObjectInspector(model: .init(object: sceneViewModel.selectedObject!))
-                .environmentObject(model)
+            MeshObjectInspector(model: .init(object: sceneViewModel.selectedObject!, rootViewModel: model))
         }
         .fullScreenCover(item: $playableScene, content: { scene in
             PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))
