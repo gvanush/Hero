@@ -13,7 +13,14 @@ extension SPTAnimatableObjectProperty: SPTAnimatableProperty, CaseIterable {
     public static var allCases: [SPTAnimatableObjectProperty] = [
         .positionX,
         .positionY,
-        .positionZ
+        .positionZ,
+        .hue,
+        .saturation,
+        .brightness,
+        .red,
+        .green,
+        .blue,
+        .shininess
     ]
     
     public var id: Self {

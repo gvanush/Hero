@@ -10,8 +10,16 @@ import SwiftUI
 
 class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
     
-    override func viewFor<AP>(_ component: AnimatorBindingComponent<AP>) -> AnyView? where AP: SPTAnimatableProperty {
-        AnyView(AnimatorBindingComponentView(component: component))
+    override func viewFor<AnimatorBindingComponent>(_ component: AnimatorBindingSetupComponent<AnimatorBindingComponent>) -> AnyView? {
+        AnyView(AnimatorBindingSetupComponentView<AnimatorBindingComponent, RC>(component: component, provider: self))
+    }
+    
+    override func viewFor(_ component: PositionFieldAnimatorBindingComponent) -> AnyView? {
+        AnyView(PositionFieldAnimatorBindingView(component: component))
+    }
+    
+    override func viewFor(_ component: ShininessAnimatorBindingComponent) -> AnyView? {
+        AnyView(ShininessAnimatorBindingView(component: component))
     }
     
     override func viewFor<C>(_ component: ObjectColorComponent<C>) -> AnyView? where C: SPTObservableComponent {

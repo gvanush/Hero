@@ -11,14 +11,14 @@ import SwiftUI
 
 protocol ComponentSetupViewProvider {
     
-    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>, onComplete: @escaping () -> Void) -> AnyView where AP: SPTAnimatableProperty
+    func viewFor<AnimatorBindingComponent>(_ component: AnimatorBindingSetupComponent<AnimatorBindingComponent>, onComplete: @escaping () -> Void) -> AnyView
     
 }
 
 
 class EmptyComponentSetupViewProvider: ComponentSetupViewProvider {
     
-    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>, onComplete: @escaping () -> Void) -> AnyView where AP: SPTAnimatableProperty {
+    func viewFor<AnimatorBindingComponent>(_ component: AnimatorBindingSetupComponent<AnimatorBindingComponent>, onComplete: @escaping () -> Void) -> AnyView {
         AnyView(EmptyView())
     }
     
@@ -27,7 +27,7 @@ class EmptyComponentSetupViewProvider: ComponentSetupViewProvider {
 
 struct CommonComponentSetupViewProvider: ComponentSetupViewProvider {
     
-    func viewFor<AP>(_ component: AnimatorBindingComponent<AP>,  onComplete: @escaping () -> Void) -> AnyView where AP : SPTAnimatableProperty {
+    func viewFor<AnimatorBindingComponent>(_ component: AnimatorBindingSetupComponent<AnimatorBindingComponent>,  onComplete: @escaping () -> Void) -> AnyView {
         AnyView(
             AnimatorSelector { animatorId in
                 if let animatorId = animatorId {

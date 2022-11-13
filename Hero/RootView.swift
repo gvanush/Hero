@@ -17,14 +17,17 @@ class RootViewModel: ObservableObject {
     let orientToolViewModel: OrientToolViewModel
     let scaleToolViewModel: ScaleToolViewModel
     let shadeToolViewModel: ShadeToolViewModel
-    let animatePositionToolView: AnimatePositionToolViewModel
+    let animatePositionToolViewModel: AnimatePositionToolViewModel
+    let animateShadeToolViewModel: AnimateShadeToolViewModel
+    
     lazy var toolViewModels: [ToolViewModel] = [
         inspectToolViewModel,
         moveToolViewModel,
         orientToolViewModel,
         scaleToolViewModel,
         shadeToolViewModel,
-        animatePositionToolView,
+        animatePositionToolViewModel,
+        animateShadeToolViewModel
     ]
     
     @Published var activeToolViewModel: ToolViewModel
@@ -34,12 +37,13 @@ class RootViewModel: ObservableObject {
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
         
-        self.inspectToolViewModel = InspectToolViewModel(sceneViewModel: sceneViewModel)
-        self.moveToolViewModel = MoveToolViewModel(sceneViewModel: sceneViewModel)
-        self.orientToolViewModel = OrientToolViewModel(sceneViewModel: sceneViewModel)
-        self.scaleToolViewModel = ScaleToolViewModel(sceneViewModel: sceneViewModel)
-        self.shadeToolViewModel = ShadeToolViewModel(sceneViewModel: sceneViewModel)
-        self.animatePositionToolView = AnimatePositionToolViewModel(sceneViewModel: sceneViewModel)
+        self.inspectToolViewModel = .init(sceneViewModel: sceneViewModel)
+        self.moveToolViewModel = .init(sceneViewModel: sceneViewModel)
+        self.orientToolViewModel = .init(sceneViewModel: sceneViewModel)
+        self.scaleToolViewModel = .init(sceneViewModel: sceneViewModel)
+        self.shadeToolViewModel = .init(sceneViewModel: sceneViewModel)
+        self.animatePositionToolViewModel = .init(sceneViewModel: sceneViewModel)
+        self.animateShadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         
         self.activeToolViewModel = inspectToolViewModel
         
@@ -248,13 +252,13 @@ struct RootView: View {
             case .shade:
                 ShadeToolView(model: model.shadeToolViewModel)
             case .animatePosition:
-                AnimatePositionToolView(model: model.animatePositionToolView)
+                AnimatePositionToolView(model: model.animatePositionToolViewModel)
             case .animateOrientation:
                 EmptyView()
             case .animateScale:
                 EmptyView()
             case .animateShade:
-                EmptyView()
+                AnimateShadeToolView(model: model.animateShadeToolViewModel)
             }
         }
     }
