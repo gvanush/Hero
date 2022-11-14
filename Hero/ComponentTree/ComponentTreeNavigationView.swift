@@ -61,7 +61,7 @@ fileprivate struct ActiveComponentViewContainer<RC>: View where RC: Component {
     let viewProvider: ComponentViewProvider<RC>
     
     var body: some View {
-        if rootComponent === component {
+        if rootComponent == component {
             viewProvider.viewForRoot(rootComponent)
         } else {
             component.accept(viewProvider)
@@ -131,15 +131,15 @@ fileprivate struct ComponentSelectionView: View {
     }
     
     private var isActive: Bool {
-        component === activeComponent
+        component == activeComponent
     }
     
     private var isChildOfActive: Bool {
-        component.parent === activeComponent
+        component.parent == activeComponent
     }
     
     private var isParentOfActive: Bool {
-        activeComponent.parent === component
+        activeComponent.parent == component
     }
     
     private var isRoot: Bool {
@@ -148,7 +148,7 @@ fileprivate struct ComponentSelectionView: View {
     
     private var isDisclosed: Bool {
         var nextAncestor: Component? = activeComponent
-        while let ancestor = nextAncestor, ancestor !== component {
+        while let ancestor = nextAncestor, ancestor != component {
             nextAncestor = ancestor.parent
         }
         return nextAncestor != nil
@@ -156,16 +156,16 @@ fileprivate struct ComponentSelectionView: View {
     
     private var isDescendantOfActive: Bool {
         var nextAncestor: Component? = self.component.parent
-        while let ancestor = nextAncestor, ancestor !== activeComponent {
+        while let ancestor = nextAncestor, ancestor != activeComponent {
             nextAncestor = ancestor.parent
         }
-        return nextAncestor === activeComponent
+        return nextAncestor == activeComponent
     }
     
     private var distanceToActiveAncestor: Int? {
         var distance = 0
         var nextAncestor: Component? = self.component
-        while let ancestor = nextAncestor, ancestor !== activeComponent {
+        while let ancestor = nextAncestor, ancestor != activeComponent {
             nextAncestor = ancestor.parent
             distance += 1
         }

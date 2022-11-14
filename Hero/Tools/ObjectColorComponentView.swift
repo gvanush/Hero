@@ -101,13 +101,12 @@ struct ObjectHSBAColorComponentView<C>: View where C: SPTObservableComponent {
     }
 }
 
-class ObjectColorComponent<C>: Component where C: SPTObservableComponent {
+class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableComponent {
     
     struct EditingParams {
     }
     
     @Published var editingParams: EditingParams
-    @Published var activeComponent: Component!
     
     private let keyPath: WritableKeyPath<C, SPTColor>
     private let object: SPTObject
@@ -122,8 +121,8 @@ class ObjectColorComponent<C>: Component where C: SPTObservableComponent {
         
         super.init(parent: parent)
         
-        colorModelSubscription = C.onWillChangeSink(object: object) { [weak self] newColor in
-            let newColorModel = newColor[keyPath: keyPath].model
+        colorModelSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
+            let newColorModel = newValue[keyPath: keyPath].model
             if newColorModel != self!.colorModel {
                 self?.setupVariant(colorModel: newColorModel, keyPath: keyPath, object: object)
             }
@@ -162,27 +161,6 @@ class ObjectColorComponent<C>: Component where C: SPTObservableComponent {
         variantCancellable = activeComponent.objectWillChange.sink { [weak self] in
             self?.objectWillChange.send()
         }
-    }
-    
-    override var title: String {
-        activeComponent.title
-    }
-    
-    override var properties: [String]? {
-        activeComponent.properties
-    }
-    
-    override var selectedPropertyIndex: Int? {
-        get {
-            activeComponent.selectedPropertyIndex
-        }
-        set {
-            activeComponent.selectedPropertyIndex = newValue
-        }
-    }
-    
-    override var subcomponents: [Component]? {
-        activeComponent.subcomponents
     }
  
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {

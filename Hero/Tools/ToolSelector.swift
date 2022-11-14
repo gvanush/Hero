@@ -68,6 +68,7 @@ struct ToolSelector: View {
                         Text(toolViewModel.tool.title.replacingOccurrences(of: " ", with: "\n"))
                             .multilineTextAlignment(.leading)
                             .font(.system(size: toolTitleFontSize, weight: .medium))
+                            .fixedSize()
                     }
                 }
             }
@@ -76,7 +77,7 @@ struct ToolSelector: View {
             }
         }
         .frame(height: Self.itemHeight)
-        .frame(minWidth: Self.itemMinWidth)
+        .frame(minWidth: Self.itemMinWidth, maxWidth: .infinity)
         .padding(.horizontal, Self.itemHorizontalPadding)
         .id(toolViewModel.id)
     }
@@ -128,9 +129,10 @@ fileprivate struct ToolComponentPathItemView: View {
                 } label: {
                     Text(component.title)
                         .fixedSize()
-                        .frame(minWidth: 44.0, alignment: .leading)
+                        .frame(minWidth: 44.0)
                 }
             }
+            .frame(maxWidth: .infinity)
             .id(component.id)
         }
     }

@@ -74,7 +74,7 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     }
     
     override var title: String {
-        "\(animatableProperty.displayName) Binding"
+        "\(animatableProperty.displayName)"
     }
     
     func bindAnimator(id: SPTAnimatorId) {

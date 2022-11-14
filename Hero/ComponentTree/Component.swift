@@ -95,7 +95,7 @@ class Component: Identifiable, ObservableObject, Equatable {
     }
     
     static func == (lhs: Component, rhs: Component) -> Bool {
-        lhs === rhs
+        lhs.id == rhs.id
     }
     
 }
@@ -120,6 +120,38 @@ class BasicComponent<P>: Component where P: RawRepresentable & CaseIterable & Di
         get {
             selectedProperty?.rawValue
         }
+    }
+    
+}
+
+
+class MultiVariantComponent: Component {
+    
+    @Published var activeComponent: Component!
+    
+    override var id: ObjectIdentifier {
+        activeComponent.id
+    }
+    
+    override var title: String {
+        activeComponent.title
+    }
+    
+    override var properties: [String]? {
+        activeComponent.properties
+    }
+    
+    override var selectedPropertyIndex: Int? {
+        get {
+            activeComponent.selectedPropertyIndex
+        }
+        set {
+            activeComponent.selectedPropertyIndex = newValue
+        }
+    }
+    
+    override var subcomponents: [Component]? {
+        activeComponent.subcomponents
     }
     
 }
