@@ -26,9 +26,9 @@ struct Transformation {
     SPTTranformationNode node { kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, 0 };
     
     struct AnimatorRecord {
-        AnimatorBindingItem positionX;
-        AnimatorBindingItem positionY;
-        AnimatorBindingItem positionZ;
+        AnimatorBindingItemBase positionX;
+        AnimatorBindingItemBase positionY;
+        AnimatorBindingItemBase positionZ;
         simd_float3 basePosition;
         
         simd_float4x4 baseOrientation;

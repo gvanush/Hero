@@ -13,7 +13,7 @@
 
 namespace spt {
 
-struct AnimatorBindingItem {
+struct AnimatorBindingItemBase {
     SPTAnimatorBinding binding;
     size_t index;
 };

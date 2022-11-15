@@ -31,6 +31,16 @@ public:
     
 private:
     
+    void cloneEntities(const Scene& scene, const SPTPlayableSceneDescriptor& descriptor);
+    void prepareTransformationAnimations(const Scene& scene, const std::unordered_map<SPTAnimatorId, size_t>& animatorIdToValueIndex);
+    void prepareMeshLookAnimations(const Scene& scene, const std::unordered_map<SPTAnimatorId, size_t>& animatorIdToValueIndex);
+    
+    template <SPTAnimatableObjectProperty P>
+    void prepareRGBChannelAnimation(const Scene& scene,  const std::unordered_map<SPTAnimatorId, size_t>& animatorIdToValueIndex);
+    
+    template <SPTAnimatableObjectProperty P>
+    void forEachHSBChannelBinding(const Scene& scene,  const std::unordered_map<SPTAnimatorId, size_t>& animatorIdToValueIndex, const std::function<void (SPTEntity, const AnimatorBindingItemBase&)>& action);
+    
     std::vector<SPTAnimatorId> _animatorIds;
     std::vector<float> _animatorValues;
     Transformation::AnimatorsGroupType _transformationGroup;

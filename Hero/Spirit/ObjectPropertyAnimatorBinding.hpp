@@ -8,6 +8,7 @@
 #pragma once
 
 #include "AnimatorBinding.h"
+#include "AnimatorBinding.hpp"
 #include "ObjectProperty.h"
 
 
@@ -16,6 +17,11 @@ namespace spt {
 template <SPTAnimatableObjectProperty P>
 struct AnimatorBinding {
     SPTAnimatorBinding base;
+};
+
+template <SPTAnimatableObjectProperty P>
+struct AnimatorBindingItem {
+    AnimatorBindingItemBase base;
 };
 
 };

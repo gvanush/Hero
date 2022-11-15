@@ -10,6 +10,7 @@
 #include "Scene.hpp"
 #include "RenderableMaterials.h"
 #include "ComponentObserverUtil.hpp"
+#include "ObjectPropertyAnimatorBinding.hpp"
 
 
 namespace {
@@ -41,6 +42,29 @@ void removeRenderableMaterial(SPTMeshShadingType shadingType, spt::Registry& reg
             break;
         }
     }
+    
+}
+
+template <SPTAnimatableObjectProperty P>
+void updateRGBAChannel(spt::Registry& registry, const std::vector<float> animatorValues, size_t channelIndex) {
+    
+    auto view = registry.view<spt::AnimatorBindingItem<P>, SPTMeshLook>();
+    view.each([&registry, &animatorValues, channelIndex] (auto entity, const auto& item, const auto& look) {
+        
+        const auto value = spt::evaluateAnimatorBinding(item.base.binding, animatorValues[item.base.index]);
+        
+        switch (look.shading.type) {
+            case SPTMeshShadingTypePlainColor: {
+                registry.get<spt::PlainColorRenderableMaterial>(entity).color[channelIndex] = value;
+                break;
+            }
+            case SPTMeshShadingTypeBlinnPhong: {
+                registry.get<spt::PhongRenderableMaterial>(entity).color[channelIndex] = value;
+                break;
+            }
+        }
+        
+    });
     
 }
 
@@ -172,6 +196,61 @@ void MeshLook::update(spt::Registry& registry) {
     });
     
     registry.clear<DirtyRenderableMaterialFlag>();
+}
+
+void MeshLook::updateWithOnlyAnimatorsChanging(spt::Registry& registry, const std::vector<float>& animatorValues) {
+    
+    auto hsbView = registry.view<spt::HSBColorAnimatorAnimatorRecord, SPTMeshLook>();
+    hsbView.each([&registry, &animatorValues] (auto entity, const auto& record, const auto& look) {
+        
+        SPTColor color;
+        
+        switch (look.shading.type) {
+            case SPTMeshShadingTypePlainColor: {
+                color = look.shading.plainColor.color;
+                break;
+            }
+            case SPTMeshShadingTypeBlinnPhong: {
+                color = look.shading.blinnPhong.color;
+                break;
+            }
+        }
+        
+        if(record.hueItem.index != 0) {
+            color.hsba.hue = evaluateAnimatorBinding(record.hueItem.binding, animatorValues[record.hueItem.index]);
+        }
+
+        if(record.saturationItem.index != 0) {
+            color.hsba.saturation = evaluateAnimatorBinding(record.saturationItem.binding, animatorValues[record.saturationItem.index]);
+        }
+
+        if(record.brightnessItem.index != 0) {
+            color.hsba.brightness = evaluateAnimatorBinding(record.brightnessItem.binding, animatorValues[record.brightnessItem.index]);
+        }
+        
+        switch (look.shading.type) {
+            case SPTMeshShadingTypePlainColor: {
+                registry.get<PlainColorRenderableMaterial>(entity).color = SPTColorToRGBA(color).rgba.float4;
+                break;
+            }
+            case SPTMeshShadingTypeBlinnPhong: {
+                registry.get<PhongRenderableMaterial>(entity).color = SPTColorToRGBA(color).rgba.float4;
+                break;
+            }
+        }
+        
+    });
+    
+    updateRGBAChannel<SPTAnimatableObjectPropertyRed>(registry, animatorValues, 0);
+    updateRGBAChannel<SPTAnimatableObjectPropertyGreen>(registry, animatorValues, 0);
+    updateRGBAChannel<SPTAnimatableObjectPropertyBlue>(registry, animatorValues, 0);
+    
+    auto shininessView = registry.view<spt::AnimatorBindingItem<SPTAnimatableObjectPropertyShininess>, SPTMeshLook>();
+    shininessView.each([&registry, &animatorValues] (auto entity, const auto& item, const auto& look) {
+        const auto value = spt::evaluateAnimatorBinding(item.base.binding, animatorValues[item.base.index]);
+        registry.get<spt::PhongRenderableMaterial>(entity).shininess = value;
+    });
+    
 }
 
 void MeshLook::onDestroy(spt::Registry& registry, SPTEntity entity) {
