@@ -11,24 +11,16 @@ import Combine
 
 class ObjectRGBAColorAnimatorBindingsComponent: Component, BasicToolSelectedObjectRootComponent {
     
-    struct EditingParams {
-        var red = ObjectRGBAColorChannelAnimatorBindingComponent.EditingParams()
-        var green = ObjectRGBAColorChannelAnimatorBindingComponent.EditingParams()
-        var blue = ObjectRGBAColorChannelAnimatorBindingComponent.EditingParams()
-    }
-    
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    private let initialEditingParams: EditingParams
     
-    lazy private(set) var red = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(initialEditingParams: initialEditingParams.red, animatableProperty: .red, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var green = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(initialEditingParams: initialEditingParams.green, animatableProperty: .green, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var blue = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(initialEditingParams: initialEditingParams.blue, animatableProperty: .blue, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var red = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .red, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var green = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .green, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var blue = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .blue, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
-    required init(editingParams: EditingParams, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
         self.sceneViewModel = sceneViewModel
-        self.initialEditingParams = editingParams
         super.init(parent: parent)
     }
     
@@ -38,32 +30,20 @@ class ObjectRGBAColorAnimatorBindingsComponent: Component, BasicToolSelectedObje
     
     override var subcomponents: [Component]? { [red, green, blue] }
     
-    var editingParams: EditingParams {
-        .init(red: red.editingParams, green: green.editingParams, blue: blue.editingParams)
-    }
-    
 }
 
 class ObjectHSBAColorAnimatorBindingsComponent: Component, BasicToolSelectedObjectRootComponent {
     
-    struct EditingParams {
-        var hue = ObjectHSBAColorChannelAnimatorBindingComponent.EditingParams()
-        var saturation = ObjectHSBAColorChannelAnimatorBindingComponent.EditingParams()
-        var brightness = ObjectHSBAColorChannelAnimatorBindingComponent.EditingParams()
-    }
-    
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    private let initialEditingParams: EditingParams
     
-    lazy private(set) var hue = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(initialEditingParams: initialEditingParams.hue, animatableProperty: .hue, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var saturation = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(initialEditingParams: initialEditingParams.saturation, animatableProperty: .saturation, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var brightness = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(initialEditingParams: initialEditingParams.brightness, animatableProperty: .brightness, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var hue = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .hue, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var saturation = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .saturation, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var brightness = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .brightness, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
-    required init(editingParams: EditingParams, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
         self.sceneViewModel = sceneViewModel
-        self.initialEditingParams = editingParams
         super.init(parent: parent)
     }
     
@@ -73,18 +53,9 @@ class ObjectHSBAColorAnimatorBindingsComponent: Component, BasicToolSelectedObje
     
     override var subcomponents: [Component]? { [hue, saturation, brightness] }
     
-    var editingParams: EditingParams {
-        .init(hue: hue.editingParams, saturation: saturation.editingParams, brightness: brightness.editingParams)
-    }
-    
 }
 
 class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPTObservableComponent {
-    
-    struct EditingParams {
-    }
-    
-    @Published var editingParams: EditingParams
     
     private let keyPath: WritableKeyPath<C, SPTColor>
     private let object: SPTObject
@@ -92,9 +63,8 @@ class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPT
     private var colorModelSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
     
-    init(editingParams: EditingParams, keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    init(keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
-        self.editingParams = editingParams
         self.keyPath = keyPath
         self.object = object
         self.sceneViewModel = sceneViewModel
@@ -119,9 +89,9 @@ class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPT
     private func setupVariant(colorModel: SPTColorModel, keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject) {
         switch colorModel {
         case .RGB:
-            activeComponent = ObjectRGBAColorAnimatorBindingsComponent(editingParams: .init(), object: object, sceneViewModel: sceneViewModel, parent: parent)
+            activeComponent = ObjectRGBAColorAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .HSB:
-            activeComponent = ObjectHSBAColorAnimatorBindingsComponent(editingParams: .init(), object: object, sceneViewModel: sceneViewModel, parent: parent)
+            activeComponent = ObjectHSBAColorAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }
         variantCancellable = activeComponent.objectWillChange.sink { [weak self] in
             self?.objectWillChange.send()

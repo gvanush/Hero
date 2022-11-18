@@ -16,22 +16,16 @@ class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSele
     
     typealias ColorComponent = ObjectColorComponent<SPTMeshLook>
     
-    struct EditingParams {
-        var color = ColorComponent.EditingParams()
-    }
-    
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    private let initialColorEditingParams: ColorComponent.EditingParams
     
     @SPTObservedComponent var meshLook: SPTMeshLook
     
-    lazy private(set) var color = ColorComponent(editingParams: initialColorEditingParams, keyPath: \.shading.blinnPhong.color, object: object, parent: self)
+    lazy private(set) var color = ColorComponent(keyPath: \.shading.blinnPhong.color, object: object, parent: self)
     
-    required init(editingParams: EditingParams, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
         self.sceneViewModel = sceneViewModel
-        self.initialColorEditingParams = editingParams.color
         _meshLook = .init(object: object)
         
         super.init(selectedProperty: .shininess, parent: parent)
@@ -44,10 +38,6 @@ class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSele
     }
     
     override var subcomponents: [Component]? { [color] }
-    
-    var editingParams: EditingParams {
-        .init(color: color.editingParams)
-    }
     
 }
 

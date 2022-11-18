@@ -8,36 +8,6 @@
 import SwiftUI
 import Combine
 
-fileprivate struct PropertyEditingParams {
-    
-    var x = FloatPropertyEditingParams()
-    var y = FloatPropertyEditingParams()
-    var z = FloatPropertyEditingParams()
-    
-    subscript(_ axis: Axis) -> FloatPropertyEditingParams {
-        set {
-            switch axis {
-            case .x:
-                x = newValue
-            case .y:
-                y = newValue
-            case .z:
-                z = newValue
-            }
-        }
-        get {
-            switch axis {
-            case .x:
-                return x
-            case .y:
-                return y
-            case .z:
-                return z
-            }
-        }
-    }
-    
-}
 
 class MoveToolSelectedObjectViewModel: ObservableObject {
     
@@ -52,14 +22,11 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
         }
     }
     
-    @Published fileprivate var propertyEditingParams: PropertyEditingParams
-    
     @SPTObservedComponent private var sptPosition: SPTPosition
     private var guideObject: SPTObject?
     
-    fileprivate init(axis: Axis, propertyEditingParams: PropertyEditingParams, object: SPTObject, sceneViewModel: SceneViewModel) {
+    fileprivate init(axis: Axis, object: SPTObject, sceneViewModel: SceneViewModel) {
         self.axis = axis
-        self.propertyEditingParams = propertyEditingParams
         self.object = object
         self.sceneViewModel = sceneViewModel
         
@@ -70,15 +37,6 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
     var position: simd_float3 {
         set { sptPosition.xyz = newValue }
         get { sptPosition.xyz }
-    }
-    
-    fileprivate var editingParam: FloatPropertyEditingParams {
-        set {
-            propertyEditingParams[axis] = newValue
-        }
-        get {
-            propertyEditingParams[axis]
-        }
     }
     
     func setupGuideObjects() {
@@ -120,9 +78,11 @@ fileprivate struct SelectedObjectControlsView: View {
     
     @ObservedObject var model: MoveToolSelectedObjectViewModel
     
+    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    
     var body: some View {
         VStack {
-            FloatSelector(value: $model.position[model.axis.rawValue], scale: $model.editingParam.scale, isSnappingEnabled: $model.editingParam.isSnapping, formatter: model.positionFormatter)
+            FloatSelector(value: $model.position[model.axis.rawValue], scale: $editingParams[positionOf: model.object, axis: model.axis].scale, isSnappingEnabled: $editingParams[positionOf: model.object, axis: model.axis].isSnapping, formatter: model.positionFormatter)
                 .tint(Color.primarySelectionColor)
                 .transition(.identity)
                 .id(model.axis.rawValue)
@@ -143,7 +103,6 @@ class MoveToolViewModel: ToolViewModel {
     @Published private(set) var selectedObjectViewModel: MoveToolSelectedObjectViewModel?
     
     private var axis = Axis.x
-    private var propertyEditingParams = [SPTObject : PropertyEditingParams]()
     private var selectedObjectSubscription: AnyCancellable?
     
     init(sceneViewModel: SceneViewModel) {
@@ -162,26 +121,13 @@ class MoveToolViewModel: ToolViewModel {
         
         if let selectedVM = selectedObjectViewModel {
             axis = selectedVM.axis
-            propertyEditingParams[selectedVM.object] = selectedVM.propertyEditingParams
         }
         
         if let object = object {
-            selectedObjectViewModel = .init(axis: axis, propertyEditingParams: propertyEditingParams[object, default: .init()], object: object, sceneViewModel: sceneViewModel)
+            selectedObjectViewModel = .init(axis: axis, object: object, sceneViewModel: sceneViewModel)
         } else {
             selectedObjectViewModel = nil
         }
-    }
-    
-    override func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
-        if let selectedObjectVM = selectedObjectViewModel, original == selectedObjectVM.object {
-            propertyEditingParams[duplicate] = selectedObjectVM.propertyEditingParams
-        } else {
-            propertyEditingParams[duplicate] = propertyEditingParams[original]
-        }
-    }
-    
-    override func onObjectDestroy(_ object: SPTObject) {
-        propertyEditingParams.removeValue(forKey: object)
     }
     
 }

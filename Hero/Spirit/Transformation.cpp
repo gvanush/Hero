@@ -39,22 +39,21 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
 
 simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEntity entity, const Transformation::AnimatorRecord& animRecord, const std::vector<float> animatorValues) {
     
-    auto matrix = animRecord.baseOrientation;
+    auto matrix = matrix_identity_float4x4;
     
     matrix.columns[0][0] = animRecord.baseScale.x;
     matrix.columns[1][1] = animRecord.baseScale.y;
     matrix.columns[2][2] = animRecord.baseScale.z;
+    
+    matrix = simd_mul(animRecord.baseOrientation, matrix);
     
     const simd_float3 animatedPos {
         evaluateAnimatorBinding(animRecord.positionX.binding, animatorValues[animRecord.positionX.index]),
         evaluateAnimatorBinding(animRecord.positionY.binding, animatorValues[animRecord.positionY.index]),
         evaluateAnimatorBinding(animRecord.positionZ.binding, animatorValues[animRecord.positionZ.index])
     };
-    const auto& pos = animRecord.basePosition + animatedPos;
     
-    matrix = simd_mul(Orientation::getMatrix(registry, entity, pos), matrix);
-    
-    matrix.columns[3].xyz = pos;
+    matrix.columns[3].xyz = animRecord.basePosition + animatedPos;
     
     return matrix;
 }

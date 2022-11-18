@@ -9,10 +9,7 @@ import SwiftUI
 import Combine
 
 
-class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty, ShininessAnimatorBindingComponent.EditingParams>, AnimatorBindingComponentProtocol {
-    
-    struct EditingParams {
-    }
+class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
     
     private var bindingWillChangeSubscription: SPTAnySubscription?
     private var selectedPropertySubscription: AnyCancellable?
@@ -20,7 +17,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     
     @SPTObservedComponentProperty<SPTMeshLook, Float> var shininess: Float
     
-    required init(editingParams: EditingParams, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         var keyPath: WritableKeyPath<SPTMeshLook, Float>!
         switch animatableProperty {
@@ -44,7 +41,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
         
         _shininess = .init(object: object, keyPath: keyPath)
         
-        super.init(editingParams: editingParams, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
         _shininess.publisher = self.objectWillChange
     }

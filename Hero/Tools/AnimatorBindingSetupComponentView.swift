@@ -31,7 +31,6 @@ enum AnimatorBindingComponentProperty: Int, DistinctValueSet, Displayable {
 
 class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where AnimatorBindingComponent: Component & AnimatorBindingComponentProtocol {
     
-    let initialEditingParams: AnimatorBindingComponent.EditingParams
     let animatableProperty: AnimatorBindingComponent.AP
     let object: SPTObject
     let sceneViewModel: SceneViewModel
@@ -42,9 +41,8 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     private var bindingWillPerishSubscription: SPTAnySubscription?
     private var editViewComponentCancellable: AnyCancellable?
     
-    init(initialEditingParams: AnimatorBindingComponent.EditingParams, animatableProperty: AnimatorBindingComponent.AP, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    init(animatableProperty: AnimatorBindingComponent.AP, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
-        self.initialEditingParams = initialEditingParams
         self.animatableProperty = animatableProperty
         self.object = object
         self.sceneViewModel = sceneViewModel
@@ -67,7 +65,7 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     }
     
     private func setupEditViewModel() {
-        animatorBindingComponent = AnimatorBindingComponent(editingParams: initialEditingParams, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: nil)
+        animatorBindingComponent = AnimatorBindingComponent(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: nil)
         editViewComponentCancellable = animatorBindingComponent!.objectWillChange.sink { [weak self] in
             self?.objectWillChange.send()
         }
@@ -83,10 +81,6 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     
     func unbindAnimator() {
         animatableProperty.unbindAnimator(object: object)
-    }
-    
-    var editingParams: AnimatorBindingComponent.EditingParams {
-        animatorBindingComponent?.editingParams ?? initialEditingParams
     }
     
     override var isSetup: Bool {

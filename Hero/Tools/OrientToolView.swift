@@ -8,36 +8,6 @@
 import SwiftUI
 import Combine
 
-fileprivate struct PropertyEditingParams {
-    
-    var x = FloatPropertyEditingParams()
-    var y = FloatPropertyEditingParams()
-    var z = FloatPropertyEditingParams()
-    
-    subscript(_ axis: Axis) -> FloatPropertyEditingParams {
-        set {
-            switch axis {
-            case .x:
-                x = newValue
-            case .y:
-                y = newValue
-            case .z:
-                z = newValue
-            }
-        }
-        get {
-            switch axis {
-            case .x:
-                return x
-            case .y:
-                return y
-            case .z:
-                return z
-            }
-        }
-    }
-    
-}
 
 class OrientToolSelectedObjectViewModel: ObservableObject {
     
@@ -50,11 +20,8 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
     
     @Published var axis: Axis
     
-    @Published fileprivate var propertyEditingParams: PropertyEditingParams
-    
-    fileprivate init(axis: Axis, propertyEditingParams: PropertyEditingParams, object: SPTObject, sceneViewModel: SceneViewModel) {
+    fileprivate init(axis: Axis, object: SPTObject, sceneViewModel: SceneViewModel) {
         self.axis = axis
-        self.propertyEditingParams = propertyEditingParams
         self.object = object
         self.sceneViewModel = sceneViewModel
         
@@ -67,15 +34,6 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
         get { SPTToDegFloat3(sptOrientation.euler.rotation) }
     }
     
-    fileprivate var editingParam: FloatPropertyEditingParams {
-        set {
-            propertyEditingParams[axis] = newValue
-        }
-        get {
-            propertyEditingParams[axis]
-        }
-    }
-    
 }
 
 
@@ -83,9 +41,11 @@ fileprivate struct SelectedObjectControlsView: View {
     
     @ObservedObject var model: OrientToolSelectedObjectViewModel
     
+    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    
     var body: some View {
         VStack {
-            FloatSelector(value: $model.eulerRotation[model.axis.rawValue], scale: $model.editingParam.scale, isSnappingEnabled: $model.editingParam.isSnapping, formatter: model.rotationFormatter)
+            FloatSelector(value: $model.eulerRotation[model.axis.rawValue], scale: $editingParams[rotationOf: model.object, axis: model.axis].scale, isSnappingEnabled: $editingParams[rotationOf: model.object, axis: model.axis].isSnapping, formatter: model.rotationFormatter)
                 .tint(Color.primarySelectionColor)
                 .transition(.identity)
                 .id(model.axis.rawValue)
@@ -100,7 +60,6 @@ class OrientToolViewModel: ToolViewModel {
     @Published private(set) var selectedObjectViewModel: OrientToolSelectedObjectViewModel?
     
     private var axis = Axis.x
-    private var propertyEditingParams = [SPTObject : PropertyEditingParams]()
     private var selectedObjectSubscription: AnyCancellable?
     
     init(sceneViewModel: SceneViewModel) {
@@ -119,26 +78,13 @@ class OrientToolViewModel: ToolViewModel {
         
         if let selectedVM = selectedObjectViewModel {
             axis = selectedVM.axis
-            propertyEditingParams[selectedVM.object] = selectedVM.propertyEditingParams
         }
         
         if let object = object {
-            selectedObjectViewModel = .init(axis: axis, propertyEditingParams: propertyEditingParams[object, default: .init()], object: object, sceneViewModel: sceneViewModel)
+            selectedObjectViewModel = .init(axis: axis, object: object, sceneViewModel: sceneViewModel)
         } else {
             selectedObjectViewModel = nil
         }
-    }
-    
-    override func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
-        if let selectedObjectVM = selectedObjectViewModel, original == selectedObjectVM.object {
-            propertyEditingParams[duplicate] = selectedObjectVM.propertyEditingParams
-        } else {
-            propertyEditingParams[duplicate] = propertyEditingParams[original]
-        }
-    }
-    
-    override func onObjectDestroy(_ object: SPTObject) {
-        propertyEditingParams.removeValue(forKey: object)
     }
     
 }

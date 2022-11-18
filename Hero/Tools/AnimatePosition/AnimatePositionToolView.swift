@@ -26,13 +26,10 @@ fileprivate struct SelectedObjectControlsView: View {
 
 class AnimatePositionToolViewModel: ToolViewModel {
     
-    typealias EditingParams = AnimatePositionToolSelectedObjectViewModel.EditingParams
-    
     @Published private(set) var selectedObjectViewModel: AnimatePositionToolSelectedObjectViewModel?
     
     private var lastActiveComponentPath = ComponentPath()
     private var lastSelectedPropertyIndex: Int?
-    private var editingParams = [SPTObject : EditingParams]()
     private var selectedObjectSubscription: AnyCancellable?
     private var activeComponentSubscription: AnyCancellable?
     
@@ -66,11 +63,10 @@ class AnimatePositionToolViewModel: ToolViewModel {
         if let selectedVM = selectedObjectViewModel {
             lastActiveComponentPath = selectedVM.activeComponent.pathIn(selectedVM.rootComponent)!
             lastSelectedPropertyIndex = selectedVM.activeComponent.selectedPropertyIndex
-            editingParams[selectedVM.object] = selectedVM.editingParams
         }
         
         if let object = object {
-            selectedObjectViewModel = .init(editingParams: editingParams[object, default: .init()], selectedPropertyIndex: lastSelectedPropertyIndex, activeComponentPath: lastActiveComponentPath, object: object, sceneViewModel: sceneViewModel)
+            selectedObjectViewModel = .init(selectedPropertyIndex: lastSelectedPropertyIndex, activeComponentPath: lastActiveComponentPath, object: object, sceneViewModel: sceneViewModel)
             activeComponentSubscription = selectedObjectViewModel!.$activeComponent.sink { [weak self] _ in
                 self?.objectWillChange.send()
             }
@@ -78,18 +74,6 @@ class AnimatePositionToolViewModel: ToolViewModel {
             selectedObjectViewModel = nil
             activeComponentSubscription = nil
         }
-    }
-    
-    override func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
-        if let selectedObjectVM = selectedObjectViewModel, original == selectedObjectVM.object {
-            editingParams[duplicate] = selectedObjectVM.editingParams
-        } else {
-            editingParams[duplicate] = editingParams[original]
-        }
-    }
-    
-    override func onObjectDestroy(_ object: SPTObject) {
-        editingParams.removeValue(forKey: object)
     }
     
 }

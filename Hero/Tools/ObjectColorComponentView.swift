@@ -103,19 +103,13 @@ struct ObjectHSBAColorComponentView<C>: View where C: SPTObservableComponent {
 
 class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableComponent {
     
-    struct EditingParams {
-    }
-    
-    @Published var editingParams: EditingParams
-    
     private let keyPath: WritableKeyPath<C, SPTColor>
     private let object: SPTObject
     private var colorModelSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
     
-    init(editingParams: EditingParams, keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject, parent: Component?) {
+    init(keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject, parent: Component?) {
         
-        self.editingParams = editingParams
         self.keyPath = keyPath
         self.object = object
         

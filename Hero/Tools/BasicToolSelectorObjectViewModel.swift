@@ -9,16 +9,11 @@ import Foundation
 
 protocol BasicToolSelectedObjectRootComponent where Self: Component {
     
-    associatedtype EditingParams
+    init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?)
     
-    init(editingParams: EditingParams, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?)
-    
-    var editingParams: EditingParams { get }
 }
 
 class BasicToolSelectedObjectViewModel<RC>: ObservableObject where RC: BasicToolSelectedObjectRootComponent {
-    
-    typealias EditingParams = RC.EditingParams
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
@@ -26,11 +21,11 @@ class BasicToolSelectedObjectViewModel<RC>: ObservableObject where RC: BasicTool
     let rootComponent: RC
     @Published var activeComponent: Component
     
-    init(editingParams: RC.EditingParams, selectedPropertyIndex: Int?, activeComponentPath: ComponentPath, object: SPTObject, sceneViewModel: SceneViewModel) {
+    init(selectedPropertyIndex: Int?, activeComponentPath: ComponentPath, object: SPTObject, sceneViewModel: SceneViewModel) {
         self.object = object
         self.sceneViewModel = sceneViewModel
         
-        self.rootComponent = RC(editingParams: editingParams, object: object, sceneViewModel: sceneViewModel, parent: nil)
+        self.rootComponent = RC(object: object, sceneViewModel: sceneViewModel, parent: nil)
         
         var activeComponent = rootComponent.componentAt(activeComponentPath)
         while let component = activeComponent, !component.isSetup {
@@ -41,10 +36,6 @@ class BasicToolSelectedObjectViewModel<RC>: ObservableObject where RC: BasicTool
         if let properties = self.activeComponent.properties, !properties.isEmpty {
             self.activeComponent.selectedPropertyIndex = selectedPropertyIndex ?? 0
         }
-    }
-    
-    var editingParams: EditingParams {
-        rootComponent.editingParams
     }
     
 }

@@ -60,7 +60,7 @@ struct RandomAnimatorComponentView: View {
     
     @ObservedObject var component: RandomAnimatorComponent
     @State private var scale = FloatSelector.Scale._1
-    @State private var isSnappingEnabled = false
+    @State private var isSnappingEnabled = true
     
     var body: some View {
         if let property = component.selectedProperty {

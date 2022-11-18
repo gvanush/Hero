@@ -9,10 +9,7 @@ import SwiftUI
 import Combine
 
 
-class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty, ObjectRGBAColorChannelAnimatorBindingComponent.EditingParams>, AnimatorBindingComponentProtocol {
-    
-    struct EditingParams {
-    }
+class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
     
     private var bindingWillChangeSubscription: SPTAnySubscription?
     private var selectedPropertySubscription: AnyCancellable?
@@ -20,7 +17,7 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
     
     @SPTObservedComponentProperty<SPTMeshLook, Float> var channelValue: Float
     
-    required init(editingParams: EditingParams, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         var keyPath: WritableKeyPath<SPTMeshLook, Float>!
         switch animatableProperty {
@@ -36,7 +33,7 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
         
         _channelValue = .init(object: object, keyPath: keyPath)
         
-        super.init(editingParams: editingParams, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
         _channelValue.publisher = self.objectWillChange
     }

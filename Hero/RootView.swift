@@ -33,6 +33,7 @@ class RootViewModel: ObservableObject {
     @Published var activeToolViewModel: ToolViewModel
     
     let objectFactory: ObjectFactory
+    let objectPropertyEditingParams = ObjectPropertyEditingParams()
     
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
@@ -61,6 +62,7 @@ class RootViewModel: ObservableObject {
         for toolVM in toolViewModels {
             toolVM.onObjectDuplicate(original: original, duplicate: duplicate)
         }
+        objectPropertyEditingParams.onObjectDuplicate(original: original, duplicate: duplicate)
         sceneViewModel.selectedObject = duplicate
         sceneViewModel.focusedObject = duplicate
     }
@@ -75,6 +77,7 @@ class RootViewModel: ObservableObject {
         for toolVM in toolViewModels {
             toolVM.onObjectDestroy(object)
         }
+        objectPropertyEditingParams.onObjectDestroy(object)
         SPTSceneProxy.destroyObject(object)
     }
     
@@ -134,6 +137,7 @@ struct RootView: View {
                             .padding(.horizontal, 8.0)
                             .transition(.identity)
                             .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
+                            .environmentObject(model.objectPropertyEditingParams)
                     }
                     .frame(height: Self.toolControlViewsAreaHeight)
                     

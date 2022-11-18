@@ -8,8 +8,8 @@
 import SwiftUI
 
 
-fileprivate let toolTitleFontSize = 13.0
-fileprivate let toolPathFontSize = 13.0
+fileprivate let toolTitleFontSize = 14.0
+fileprivate let toolPathFontSize = 14.0
 
 struct ToolSelector: View {
     
@@ -67,7 +67,7 @@ struct ToolSelector: View {
                     if activeToolViewModel == toolViewModel {
                         Text(toolViewModel.tool.title.replacingOccurrences(of: " ", with: "\n"))
                             .multilineTextAlignment(.leading)
-                            .font(.system(size: toolTitleFontSize, weight: .medium))
+                            .font(.system(size: toolTitleFontSize, weight: .semibold))
                             .fixedSize()
                     }
                 }
@@ -119,17 +119,18 @@ fileprivate struct ToolComponentPathItemView: View {
         if let component = component, component.parent != nil {
             HStack(spacing: 4.0) {
                 ToolComponentPathItemView(component: component.parent, activeComponent: $activeComponent)
-                Image(systemName: "chevron.right")
-                    .imageScale(.large)
-                    .foregroundColor(.secondary)
-                Button {
+                Group {
+                    Image(systemName: "chevron.right")
+                        .imageScale(.large)
+                        .foregroundColor(.secondary)
+                    Text(component.title)
+                        .fontWeight(activeComponent == component ? .regular : .medium)
+                        .fixedSize()
+                }
+                .onTapGesture {
                     withAnimation {
                         activeComponent = component
                     }
-                } label: {
-                    Text(component.title)
-                        .fixedSize()
-                        .frame(minWidth: 44.0)
                 }
             }
             .frame(maxWidth: .infinity)

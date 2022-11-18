@@ -11,26 +11,18 @@ import Combine
 
 class PositionAnimatorBindingsComponent: Component, BasicToolSelectedObjectRootComponent {
     
-    struct EditingParams {
-        var x = PositionFieldAnimatorBindingComponent.EditingParams()
-        var y = PositionFieldAnimatorBindingComponent.EditingParams()
-        var z = PositionFieldAnimatorBindingComponent.EditingParams()
-    }
-    
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    private let initialEditingParams: EditingParams
-    
+
     typealias FieldComponent = AnimatorBindingSetupComponent<PositionFieldAnimatorBindingComponent>
     
-    lazy private(set) var x = FieldComponent(initialEditingParams: initialEditingParams.x, animatableProperty: .positionX, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var y = FieldComponent(initialEditingParams: initialEditingParams.y, animatableProperty: .positionY, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var z = FieldComponent(initialEditingParams: initialEditingParams.z, animatableProperty: .positionZ, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var x = FieldComponent(animatableProperty: .positionX, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var y = FieldComponent(animatableProperty: .positionY, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var z = FieldComponent(animatableProperty: .positionZ, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
-    required init(editingParams: EditingParams, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
         self.sceneViewModel = sceneViewModel
-        self.initialEditingParams = editingParams
         super.init(parent: parent)
     }
     
@@ -40,26 +32,18 @@ class PositionAnimatorBindingsComponent: Component, BasicToolSelectedObjectRootC
     
     override var subcomponents: [Component]? { [x, y, z] }
     
-    var editingParams: EditingParams {
-        .init(x: x.editingParams, y: y.editingParams, z: z.editingParams)
-    }
 }
 
 
-class PositionFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty, PositionFieldAnimatorBindingComponent.EditingParams>, AnimatorBindingComponentProtocol {
-    
-    struct EditingParams {
-        var value0 = FloatPropertyEditingParams()
-        var value1 = FloatPropertyEditingParams()
-    }
+class PositionFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
     
     private var guideObjects: (point0: SPTObject, point1: SPTObject, line: SPTObject)?
     private var bindingWillChangeSubscription: SPTAnySubscription?
     private var selectedPropertySubscription: AnyCancellable?
     
-    required init(editingParams: EditingParams, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
-        super.init(editingParams: editingParams, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
     }
     
@@ -204,6 +188,8 @@ struct PositionFieldAnimatorBindingView: View {
     
     @ObservedObject var component: PositionFieldAnimatorBindingComponent
     
+    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    
     var body: some View {
         Group {
             switch component.selectedProperty {
@@ -211,10 +197,10 @@ struct PositionFieldAnimatorBindingView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                FloatSelector(value: $component.binding.valueAt0, scale: $component.editingParams.value0.scale, isSnappingEnabled: $component.editingParams.value0.isSnapping)
+                FloatSelector(value: $component.binding.valueAt0, scale: $editingParams[positionBindingOf: component.object].valueAt0.scale, isSnappingEnabled: $editingParams[positionBindingOf: component.object].valueAt0.isSnapping)
                     .tint(Color.secondaryLightSelectionColor)
             case .valueAt1:
-                FloatSelector(value: $component.binding.valueAt1, scale: $component.editingParams.value1.scale, isSnappingEnabled: $component.editingParams.value1.isSnapping)
+                FloatSelector(value: $component.binding.valueAt1, scale: $editingParams[positionBindingOf: component.object].valueAt1.scale, isSnappingEnabled: $editingParams[positionBindingOf: component.object].valueAt1.isSnapping)
                     .tint(Color.secondaryLightSelectionColor)
             case .none:
                 EmptyView()
