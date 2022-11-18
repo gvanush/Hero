@@ -131,6 +131,7 @@ struct AnimatorBindingSetupComponentView<AnimatorBindingComponent, RC>: View whe
                         ActionBarButton(iconName: "bolt.slash") {
                             component.unbindAnimator()
                         }
+                        .tag(component.id)
                     }
                     .onAppear {
                         actionBarModel.scrollToObjectSection()

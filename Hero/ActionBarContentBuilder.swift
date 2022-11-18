@@ -8,18 +8,37 @@
 import SwiftUI
 
 
-protocol ActionBarItem {
+protocol ActionBarItem: Hashable {
     
-    associatedtype ID: Hashable
     associatedtype V: View
     
-    var id: ID { get }
     var view: V { get }
     
 }
 
-struct ActionBarButton: ActionBarItem {
+struct ActionBarItemTagWrapper<T, I>: ActionBarItem where T: Hashable, I: ActionBarItem {
+    
+    typealias V = I.V
+    
+    let tag: T
+    let item: I
+    
+    var view: I.V {
+        item.view
+    }
+    
+}
 
+extension ActionBarItem {
+    
+    func tag(_ tag: some Hashable) -> some ActionBarItem {
+        ActionBarItemTagWrapper(tag: tag, item: self)
+    }
+    
+}
+
+struct ActionBarButton: ActionBarItem {
+    
     let iconName: String
     let disabled: Bool
     let action: () -> Void
@@ -30,19 +49,21 @@ struct ActionBarButton: ActionBarItem {
         self.action = action
     }
     
-    var id: some Hashable {
-        var hasher = Hasher()
-        iconName.hash(into: &hasher)
-        disabled.hash(into: &hasher)
-        return hasher.finalize()
-    }
-    
     var view: some View {
         Button(action: action) {
             Image(systemName: iconName)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .disabled(disabled)
+    }
+    
+    static func == (lhs: ActionBarButton, rhs: ActionBarButton) -> Bool {
+        lhs.iconName == rhs.iconName && lhs.disabled == rhs.disabled
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        iconName.hash(into: &hasher)
+        disabled.hash(into: &hasher)
     }
 }
 
@@ -89,6 +110,16 @@ where O: CaseIterable, O.AllCases: RandomAccessCollection, O: Identifiable, O: E
         })
         .disabled(disabled)
     }
+    
+    static func == (lhs: ActionBarMenu<O>, rhs: ActionBarMenu<O>) -> Bool {
+        lhs.iconName == rhs.iconName && lhs.disabled == rhs.disabled && lhs.selected.wrappedValue == rhs.selected.wrappedValue
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        iconName.hash(into: &hasher)
+        disabled.hash(into: &hasher)
+        selected.wrappedValue.hash(into: &hasher)
+    }
 }
 
 struct AnyActionBarItem: Equatable, Identifiable {
@@ -97,7 +128,7 @@ struct AnyActionBarItem: Equatable, Identifiable {
     let view: AnyView
     
     init<I>(item: I) where I: ActionBarItem {
-        self.id = .init(item.id)
+        self.id = .init(item)
         self.view = .init(item.view)
     }
     
