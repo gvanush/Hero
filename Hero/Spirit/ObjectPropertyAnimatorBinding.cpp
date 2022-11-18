@@ -292,72 +292,72 @@ void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTAnimatableObjec
     }
 }
 
-SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
+SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingDidEmergeObserver observer, SPTObserverUserInfo userInfo) {
     switch (property) {
         case SPTAnimatableObjectPropertyPositionX: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyPositionY: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyHue: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertySaturation: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertySaturation>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertySaturation>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyBrightness: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyBrightness>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyBrightness>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyRed: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyRed>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyRed>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyGreen: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyGreen>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyGreen>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyBlue: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyBlue>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyBlue>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyShininess: {
-            return spt::addAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyShininess>(object, observer, userInfo);
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyShininess>(object, observer, userInfo);
         }
     }
 }
 
-void SPTObjectPropertyRemoveAnimatorBindingWillEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
+void SPTObjectPropertyRemoveAnimatorBindingDidEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
         case SPTAnimatableObjectPropertyPositionX: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
         }
         case SPTAnimatableObjectPropertyPositionY: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
         }
         case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
         }
         case SPTAnimatableObjectPropertyHue: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyHue>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyHue>(object, token);
         }
         case SPTAnimatableObjectPropertySaturation: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertySaturation>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertySaturation>(object, token);
         }
         case SPTAnimatableObjectPropertyBrightness: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyBrightness>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyBrightness>(object, token);
         }
         case SPTAnimatableObjectPropertyRed: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyRed>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyRed>(object, token);
         }
         case SPTAnimatableObjectPropertyGreen: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyGreen>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyGreen>(object, token);
         }
         case SPTAnimatableObjectPropertyBlue: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyBlue>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyBlue>(object, token);
         }
         case SPTAnimatableObjectPropertyShininess: {
-            return spt::removeAnimatorBindingWillEmergeObserver<SPTAnimatableObjectPropertyShininess>(object, token);
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyShininess>(object, token);
         }
     }
 }

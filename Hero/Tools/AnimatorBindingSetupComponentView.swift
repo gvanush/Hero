@@ -37,7 +37,7 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     
     @Published var animatorBindingComponent: AnimatorBindingComponent?
     
-    private var bindingWillEmergeSubscription: SPTAnySubscription?
+    private var bindingDidEmergeSubscription: SPTAnySubscription?
     private var bindingWillPerishSubscription: SPTAnySubscription?
     private var editViewComponentCancellable: AnyCancellable?
     
@@ -49,7 +49,7 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
         
         super.init(parent: parent)
         
-        bindingWillEmergeSubscription = animatableProperty.onAnimatorBindingWillEmergeSink(object: object) { [weak self] _ in
+        bindingDidEmergeSubscription = animatableProperty.onAnimatorBindingDidEmergeSink(object: object) { [weak self] _ in
             self?.setupEditViewModel()
         }
         

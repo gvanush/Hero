@@ -56,9 +56,9 @@ typedef void (* _Nonnull SPTMeshLookWillChangeObserver) (SPTMeshLook, SPTObserve
 SPTObserverToken SPTMeshLookAddWillChangeObserver(SPTObject object, SPTMeshLookWillChangeObserver observer, SPTObserverUserInfo userInfo);
 void SPTMeshLookRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
 
-typedef void (* _Nonnull SPTMeshLookWillEmergeObserver) (SPTMeshLook, SPTObserverUserInfo);
-SPTObserverToken SPTMeshLookAddWillEmergeObserver(SPTObject object, SPTMeshLookWillEmergeObserver observer, SPTObserverUserInfo userInfo);
-void SPTMeshLookRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
+typedef void (* _Nonnull SPTMeshLookDidEmergeObserver) (SPTMeshLook, SPTObserverUserInfo);
+SPTObserverToken SPTMeshLookAddDidEmergeObserver(SPTObject object, SPTMeshLookDidEmergeObserver observer, SPTObserverUserInfo userInfo);
+void SPTMeshLookRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTMeshLookWillPerishObserver) (SPTObserverUserInfo);
 SPTObserverToken SPTMeshLookAddWillPerishObserver(SPTObject object, SPTMeshLookWillPerishObserver observer, SPTObserverUserInfo userInfo);

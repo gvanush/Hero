@@ -33,9 +33,9 @@ bool SPTPositionEqual(SPTPosition lhs, SPTPosition rhs) {
 
 void SPTPositionMake(SPTObject object, SPTPosition position) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyComponentWillEmergeObservers(registry, object.entity, position);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTPosition>(object.entity, position);
+    spt::notifyComponentDidEmergeObservers(registry, object.entity, position);
 }
 
 void SPTPositionMakeXYZ(SPTObject object, simd_float3 xyz) {
@@ -83,12 +83,12 @@ void SPTPositionRemoveWillChangeObserver(SPTObject object, SPTObserverToken toke
     spt::removeComponentWillChangeObserver<SPTPosition>(object, token);
 }
 
-SPTObserverToken SPTPositionAddWillEmergeObserver(SPTObject object, SPTPositionWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
-    return spt::addComponentWillEmergeObserver<SPTPosition>(object, observer, userInfo);
+SPTObserverToken SPTPositionAddDidEmergeObserver(SPTObject object, SPTPositionDidEmergeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentDidEmergeObserver<SPTPosition>(object, observer, userInfo);
 }
 
-void SPTPositionRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token) {
-    spt::removeComponentWillEmergeObserver<SPTPosition>(object, token);
+void SPTPositionRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentDidEmergeObserver<SPTPosition>(object, token);
 }
 
 SPTObserverToken SPTPositionAddWillPerishObserver(SPTObject object, SPTPositionWillPerishObserver observer, SPTObserverUserInfo userInfo) {

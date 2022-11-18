@@ -36,9 +36,9 @@ typedef void (* _Nonnull SPTScaleWillChangeObserver) (SPTScale, SPTObserverUserI
 SPTObserverToken SPTScaleAddWillChangeObserver(SPTObject object, SPTScaleWillChangeObserver observer, SPTObserverUserInfo userInfo);
 void SPTScaleRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
 
-typedef void (* _Nonnull SPTScaleWillEmergeObserver) (SPTScale, SPTObserverUserInfo);
-SPTObserverToken SPTScaleAddWillEmergeObserver(SPTObject object, SPTScaleWillEmergeObserver observer, SPTObserverUserInfo userInfo);
-void SPTScaleRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
+typedef void (* _Nonnull SPTScaleDidEmergeObserver) (SPTScale, SPTObserverUserInfo);
+SPTObserverToken SPTScaleAddDidEmergeObserver(SPTObject object, SPTScaleDidEmergeObserver observer, SPTObserverUserInfo userInfo);
+void SPTScaleRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTScaleWillPerishObserver) (SPTObserverUserInfo);
 SPTObserverToken SPTScaleAddWillPerishObserver(SPTObject object, SPTScaleWillPerishObserver observer, SPTObserverUserInfo userInfo);

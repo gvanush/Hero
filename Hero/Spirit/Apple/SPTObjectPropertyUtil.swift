@@ -59,21 +59,21 @@ extension SPTAnimatableObjectProperty: SPTAnimatableProperty, CaseIterable {
         SPTObjectPropertyIsAnimatorBound(self, object)
     }
     
-    func onAnimatorBindingWillEmergeSink(object: SPTObject, callback: @escaping AnimatorBindingWillEmergeCallback) -> SPTAnySubscription {
+    func onAnimatorBindingDidEmergeSink(object: SPTObject, callback: @escaping AnimatorBindingDidEmergeCallback) -> SPTAnySubscription {
         
-        let subscription = AnimatorBindingWillEmergeSubscription(observer: callback)
+        let subscription = AnimatorBindingDidEmergeSubscription(observer: callback)
         
-        let token = SPTObjectPropertyAddAnimatorBindingWillEmergeObserver(self, object, { newValue, userInfo in
-            let subscription = Unmanaged<AnimatorBindingWillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+        let token = SPTObjectPropertyAddAnimatorBindingDidEmergeObserver(self, object, { newValue, userInfo in
+            let subscription = Unmanaged<AnimatorBindingDidEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
             subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
         
-        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillEmergeObserver(self, object, token) }
+        subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingDidEmergeObserver(self, object, token) }
         
         return subscription
     }
     
-    func onAnimatorBindingWillChangeSink(object: SPTObject, callback: @escaping AnimatorBindingWillEmergeCallback) -> SPTAnySubscription {
+    func onAnimatorBindingWillChangeSink(object: SPTObject, callback: @escaping AnimatorBindingDidEmergeCallback) -> SPTAnySubscription {
         
         let subscription = AnimatorBindingWillChangeSubscription(observer: callback)
         

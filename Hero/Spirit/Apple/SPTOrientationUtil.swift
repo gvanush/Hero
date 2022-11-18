@@ -50,16 +50,16 @@ extension SPTOrientation: SPTObservableComponent {
         SPTOrientationTryGet(object)?.pointee
     }
     
-    static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription {
+    static func onDidEmergeSink(object: SPTObject, callback: @escaping DidEmergeCallback) -> SPTAnySubscription {
         
-        let subscription = WillEmergeSubscription(observer: callback)
+        let subscription = DidEmergeSubscription(observer: callback)
         
-        let token = SPTOrientationAddWillEmergeObserver(object, { newValue, userInfo in
-            let subscription = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+        let token = SPTOrientationAddDidEmergeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<DidEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
             subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
         
-        subscription.canceller = { SPTOrientationRemoveWillEmergeObserver(object, token) }
+        subscription.canceller = { SPTOrientationRemoveDidEmergeObserver(object, token) }
         
         return subscription
     }

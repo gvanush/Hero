@@ -103,10 +103,10 @@ void SPTMeshLookMake(SPTObject object, SPTMeshLook meshLook) {
     assert(SPTMeshShadingValidate(meshLook.shading));
     
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyComponentWillEmergeObservers(registry, object.entity, meshLook);
     registry.emplace<SPTMeshLook>(object.entity, meshLook);
     addRenderableMaterial(meshLook.shading.type, registry, object.entity);
     spt::emplaceIfMissing<spt::DirtyRenderableMaterialFlag>(registry, object.entity);
+    spt::notifyComponentDidEmergeObservers(registry, object.entity, meshLook);
 }
 
 void SPTMeshLookUpdate(SPTObject object, SPTMeshLook updated) {
@@ -152,12 +152,12 @@ void SPTMeshLookRemoveWillChangeObserver(SPTObject object, SPTObserverToken toke
     spt::removeComponentWillChangeObserver<SPTMeshLook>(object, token);
 }
 
-SPTObserverToken SPTMeshLookAddWillEmergeObserver(SPTObject object, SPTMeshLookWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
-    return spt::addComponentWillEmergeObserver<SPTMeshLook>(object, observer, userInfo);
+SPTObserverToken SPTMeshLookAddDidEmergeObserver(SPTObject object, SPTMeshLookDidEmergeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentDidEmergeObserver<SPTMeshLook>(object, observer, userInfo);
 }
 
-void SPTMeshLookRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token) {
-    spt::removeComponentWillEmergeObserver<SPTMeshLook>(object, token);
+void SPTMeshLookRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentDidEmergeObserver<SPTMeshLook>(object, token);
 }
 
 SPTObserverToken SPTMeshLookAddWillPerishObserver(SPTObject object, SPTMeshLookWillPerishObserver observer, SPTObserverUserInfo userInfo) {

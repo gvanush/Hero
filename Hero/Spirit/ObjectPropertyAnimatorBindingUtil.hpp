@@ -19,11 +19,12 @@ void bindAnimator(SPTObject object, const SPTAnimatorBinding& animatorBinding) {
     auto& registry = Scene::getRegistry(object);
     
     AnimatorBinding<P> comp {animatorBinding};
-    notifyAnimatorBindingWillEmergeObservers<P>(registry, object.entity, comp);
     
     registry.emplace<AnimatorBinding<P>>(object.entity, comp);
     
     spt::AnimatorManager::active().onObjectPropertyBind(animatorBinding.animatorId, object, P);
+    
+    notifyAnimatorBindingDidEmergeObservers<P>(registry, object.entity, comp);
 }
 
 template <SPTAnimatableObjectProperty P>

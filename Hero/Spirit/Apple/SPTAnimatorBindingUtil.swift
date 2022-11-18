@@ -23,23 +23,26 @@ class SPTObservedAnimatorBinding<P> where P: SPTAnimatableProperty {
     
     let property: P
     let object: SPTObject
-    var willChangeSubscription: SPTAnySubscription?
+    private var willChangeSubscription: SPTAnySubscription?
+    private var cachedValue: SPTAnimatorBinding
 
     weak var publisher: ObservableObjectPublisher?
     
     init(property: P, object: SPTObject) {
         self.property = property
         self.object = object
+        self.cachedValue = property.getAnimatorBinding(object: object)
         
-        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] _ in
-            self?.publisher?.send()
+        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] newValue in
+            self!.publisher?.send()
+            self!.cachedValue = newValue
         }
 
     }
     
     var wrappedValue: SPTAnimatorBinding {
         set { property.updateAnimatorBinding(newValue, object: object) }
-        get { property.getAnimatorBinding(object: object) }
+        get { cachedValue }
     }
     
 }
@@ -50,26 +53,30 @@ class SPTObservedOptionalAnimatorBinding<P> where P: SPTAnimatableProperty {
     
     let property: P
     let object: SPTObject
-    var willEmergeSubscription: SPTAnySubscription?
-    var willChangeSubscription: SPTAnySubscription?
-    var willPerishSubscription: SPTAnySubscription?
-
+    private var didEmergeSubscription: SPTAnySubscription?
+    private var willChangeSubscription: SPTAnySubscription?
+    private var willPerishSubscription: SPTAnySubscription?
+    private var cachedValue: SPTAnimatorBinding?
+    
     weak var publisher: ObservableObjectPublisher?
     
     init(property: P, object: SPTObject) {
         self.property = property
         self.object = object
-        
-        willEmergeSubscription = property.onAnimatorBindingWillEmergeSink(object: object) { [weak self] newValue in
-            self?.publisher?.send()
+        self.cachedValue = property.tryGetAnimatorBinding(object: object)
+        didEmergeSubscription = property.onAnimatorBindingDidEmergeSink(object: object) { [weak self] newValue in
+            self!.cachedValue = newValue
+            self!.publisher?.send()
         }
         
         willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] newValue in
-            self?.publisher?.send()
+            self!.publisher?.send()
+            self!.cachedValue = newValue
         }
 
         willPerishSubscription = property.onAnimatorBindingWillPerishSink(object: object) { [weak self] in
-            self?.publisher?.send()
+            self!.publisher?.send()
+            self!.cachedValue = nil
         }
     }
     
@@ -81,7 +88,7 @@ class SPTObservedOptionalAnimatorBinding<P> where P: SPTAnimatableProperty {
                 property.unbindAnimator(object: object)
             }
         }
-        get { property.tryGetAnimatorBinding(object: object) }
+        get { cachedValue }
     }
     
 }

@@ -13,22 +13,25 @@ import Combine
 class SPTObservedComponent<C> where C: SPTObservableComponent {
     
     let object: SPTObject
-    var willChangeSubscription: SPTAnySubscription?
+    private var willChangeSubscription: SPTAnySubscription?
+    private var cachedValue: C
 
     weak var publisher: ObservableObjectPublisher?
     
     init(object: SPTObject) {
         self.object = object
+        self.cachedValue = C.get(object: object)
         
         willChangeSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
-            self?.publisher?.send()
+            self!.publisher?.send()
+            self!.cachedValue = newValue
         }
 
     }
     
     var wrappedValue: C {
         set { C.update(newValue, object: object) }
-        get { C.get(object: object) }
+        get { cachedValue }
     }
     
 }
@@ -38,17 +41,20 @@ class SPTObservedComponentProperty<C, V> where C: SPTObservableComponent, V: Equ
     
     let object: SPTObject
     let keyPath: WritableKeyPath<C, V>
-    var willChangeSubscription: SPTAnySubscription?
-
+    private var willChangeSubscription: SPTAnySubscription?
+    private var cachedValue: V
+    
     weak var publisher: ObservableObjectPublisher?
     
     init(object: SPTObject, keyPath: WritableKeyPath<C, V>) {
         self.object = object
         self.keyPath = keyPath
+        self.cachedValue = C.get(object: object)[keyPath: keyPath]
         
         willChangeSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
-            if C.get(object: object)[keyPath: keyPath] != newValue[keyPath: keyPath] {
-                self?.publisher?.send()
+            if self!.cachedValue != newValue[keyPath: keyPath] {
+                self!.publisher?.send()
+                self!.cachedValue = newValue[keyPath: keyPath]
             }
         }
 
@@ -60,7 +66,7 @@ class SPTObservedComponentProperty<C, V> where C: SPTObservableComponent, V: Equ
             component[keyPath: keyPath] = newValue
             C.update(component, object: object)
         }
-        get { C.get(object: object)[keyPath: keyPath] }
+        get { cachedValue }
     }
     
 }
@@ -70,25 +76,30 @@ class SPTObservedComponentProperty<C, V> where C: SPTObservableComponent, V: Equ
 class SPTObservedOptionalComponent<C> where C: SPTObservableComponent {
     
     let object: SPTObject
-    var willEmergeSubscription: SPTAnySubscription?
-    var willChangeSubscription: SPTAnySubscription?
-    var willPerishSubscription: SPTAnySubscription?
-
+    private var didEmergeSubscription: SPTAnySubscription?
+    private var willChangeSubscription: SPTAnySubscription?
+    private var willPerishSubscription: SPTAnySubscription?
+    private var cachedValue: C?
+    
     weak var publisher: ObservableObjectPublisher?
     
     init(object: SPTObject) {
         self.object = object
+        self.cachedValue = C.tryGet(object: object)
         
-        willEmergeSubscription = C.onWillEmergeSink(object: object) { [weak self] newValue in
-            self?.publisher?.send()
+        didEmergeSubscription = C.onDidEmergeSink(object: object) { [weak self] newValue in
+            self!.cachedValue = newValue
+            self!.publisher?.send()
         }
         
         willChangeSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
-            self?.publisher?.send()
+            self!.publisher?.send()
+            self!.cachedValue = newValue
         }
 
         willPerishSubscription = C.onWillPerishSink(object: object) { [weak self] in
-            self?.publisher?.send()
+            self!.publisher?.send()
+            self!.cachedValue = nil
         }
     }
     
@@ -101,7 +112,7 @@ class SPTObservedOptionalComponent<C> where C: SPTObservableComponent {
             }
         }
         get {
-            C.tryGet(object: object)
+            cachedValue
         }
     }
     

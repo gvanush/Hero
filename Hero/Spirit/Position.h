@@ -58,9 +58,9 @@ typedef void (* _Nonnull SPTPositionWillChangeObserver) (SPTPosition, SPTObserve
 SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTObserverUserInfo userInfo);
 void SPTPositionRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
 
-typedef void (* _Nonnull SPTPositionWillEmergeObserver) (SPTPosition, SPTObserverUserInfo);
-SPTObserverToken SPTPositionAddWillEmergeObserver(SPTObject object, SPTPositionWillEmergeObserver observer, SPTObserverUserInfo userInfo);
-void SPTPositionRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
+typedef void (* _Nonnull SPTPositionDidEmergeObserver) (SPTPosition, SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddDidEmergeObserver(SPTObject object, SPTPositionDidEmergeObserver observer, SPTObserverUserInfo userInfo);
+void SPTPositionRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTPositionWillPerishObserver) (SPTObserverUserInfo);
 SPTObserverToken SPTPositionAddWillPerishObserver(SPTObject object, SPTPositionWillPerishObserver observer, SPTObserverUserInfo userInfo);

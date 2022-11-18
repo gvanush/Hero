@@ -8,7 +8,7 @@
 import Foundation
 
 
-typealias ObjectWillEmergeCallback<O> = (O) -> Void
+typealias ObjectDidEmergeCallback<O> = (O) -> Void
 typealias ObjectWillChangeCallback<O> = (O) -> Void
 typealias ObjectWillPerishCallback = () -> Void
 
@@ -30,8 +30,8 @@ protocol SPTComponent: Equatable {
 
 protocol SPTObservableComponent: SPTComponent {
     
-    typealias WillEmergeCallback = ObjectWillEmergeCallback<Self>
-    typealias WillEmergeSubscription = SPTSubscription<WillEmergeCallback>
+    typealias DidEmergeCallback = ObjectDidEmergeCallback<Self>
+    typealias DidEmergeSubscription = SPTSubscription<DidEmergeCallback>
     
     typealias WillChangeCallback = ObjectWillChangeCallback<Self>
     typealias WillChangeSubscription = SPTSubscription<WillChangeCallback>
@@ -39,7 +39,7 @@ protocol SPTObservableComponent: SPTComponent {
     typealias WillPerishCallback = ObjectWillPerishCallback
     typealias WillPerishSubscription = SPTSubscription<WillPerishCallback>
     
-    static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription
+    static func onDidEmergeSink(object: SPTObject, callback: @escaping DidEmergeCallback) -> SPTAnySubscription
     
     static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription
     
@@ -50,8 +50,8 @@ protocol SPTObservableComponent: SPTComponent {
 
 protocol SPTAnimatableProperty: Identifiable {
     
-    typealias AnimatorBindingWillEmergeCallback = ObjectWillEmergeCallback<SPTAnimatorBinding>
-    typealias AnimatorBindingWillEmergeSubscription = SPTSubscription<AnimatorBindingWillEmergeCallback>
+    typealias AnimatorBindingDidEmergeCallback = ObjectDidEmergeCallback<SPTAnimatorBinding>
+    typealias AnimatorBindingDidEmergeSubscription = SPTSubscription<AnimatorBindingDidEmergeCallback>
     
     typealias AnimatorBindingWillChangeCallback = ObjectWillChangeCallback<SPTAnimatorBinding>
     typealias AnimatorBindingWillChangeSubscription = SPTSubscription<AnimatorBindingWillChangeCallback>
@@ -73,9 +73,9 @@ protocol SPTAnimatableProperty: Identifiable {
     
     func isAnimatorBound(object: SPTObject) -> Bool
     
-    func onAnimatorBindingWillEmergeSink(object: SPTObject, callback: @escaping AnimatorBindingWillEmergeCallback) -> SPTAnySubscription
+    func onAnimatorBindingDidEmergeSink(object: SPTObject, callback: @escaping AnimatorBindingDidEmergeCallback) -> SPTAnySubscription
     
-    func onAnimatorBindingWillChangeSink(object: SPTObject, callback: @escaping AnimatorBindingWillEmergeCallback) -> SPTAnySubscription
+    func onAnimatorBindingWillChangeSink(object: SPTObject, callback: @escaping AnimatorBindingDidEmergeCallback) -> SPTAnySubscription
  
     func onAnimatorBindingWillPerishSink(object: SPTObject, callback: @escaping AnimatorBindingWillPerishCallback) -> SPTAnySubscription
 }

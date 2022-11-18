@@ -46,16 +46,16 @@ extension SPTScale: SPTObservableComponent {
         SPTScaleTryGet(object)?.pointee
     }
     
-    static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription {
+    static func onDidEmergeSink(object: SPTObject, callback: @escaping DidEmergeCallback) -> SPTAnySubscription {
         
-        let subscription = WillEmergeSubscription(observer: callback)
+        let subscription = DidEmergeSubscription(observer: callback)
         
-        let token = SPTScaleAddWillEmergeObserver(object, { newValue, userInfo in
-            let subscription = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+        let token = SPTScaleAddDidEmergeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<DidEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
             subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
 
-        subscription.canceller = { SPTScaleRemoveWillEmergeObserver(object, token) }
+        subscription.canceller = { SPTScaleRemoveDidEmergeObserver(object, token) }
         
         return subscription
     }

@@ -57,15 +57,15 @@ extension SPTMeshLook: SPTObservableComponent {
         SPTMeshLookTryGet(object)?.pointee
     }
     
-    static func onWillEmergeSink(object: SPTObject, callback: @escaping WillEmergeCallback) -> SPTAnySubscription {
-        let subscription = WillEmergeSubscription(observer: callback)
+    static func onDidEmergeSink(object: SPTObject, callback: @escaping DidEmergeCallback) -> SPTAnySubscription {
+        let subscription = DidEmergeSubscription(observer: callback)
         
-        let token = SPTMeshLookAddWillEmergeObserver(object, { newValue, userInfo in
-            let subscription = Unmanaged<WillEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+        let token = SPTMeshLookAddDidEmergeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<DidEmergeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
             subscription.observer(newValue)
         }, Unmanaged.passUnretained(subscription).toOpaque())
         
-        subscription.canceller = { SPTMeshLookRemoveWillEmergeObserver(object, token) }
+        subscription.canceller = { SPTMeshLookRemoveDidEmergeObserver(object, token) }
         
         return subscription
     }

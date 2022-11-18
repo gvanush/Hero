@@ -36,6 +36,11 @@ struct ToolSelector: View {
                                     .visible(activeToolViewModel == toolViewModel)
                                     .matchedGeometryEffect(id: "Selected", in: matchedGeometryEffectNamespace, isSource: self.activeToolViewModel == toolViewModel)
                             }
+                            .padding(.horizontal, 8.0)
+                        if toolViewModel != toolViewModels.last {
+                            Divider()
+                                .frame(height: Self.itemHeight - 16.0)
+                        }
                     }
                 }
                 .padding(.horizontal, horizontalPadding)

@@ -28,9 +28,9 @@ bool SPTScaleEqual(SPTScale lhs, SPTScale rhs) {
 
 void SPTScaleMake(SPTObject object, SPTScale scale) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyComponentWillEmergeObservers(registry, object.entity, scale);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTScale>(object.entity, scale);
+    spt::notifyComponentDidEmergeObservers(registry, object.entity, scale);
 }
 
 void SPTScaleUpdate(SPTObject object, SPTScale newScale) {
@@ -68,12 +68,12 @@ void SPTScaleRemoveWillChangeObserver(SPTObject object, SPTObserverToken token) 
     spt::removeComponentWillChangeObserver<SPTScale>(object, token);
 }
 
-SPTObserverToken SPTScaleAddWillEmergeObserver(SPTObject object, SPTScaleWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
-    return spt::addComponentWillEmergeObserver<SPTScale>(object, observer, userInfo);
+SPTObserverToken SPTScaleAddDidEmergeObserver(SPTObject object, SPTScaleDidEmergeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentDidEmergeObserver<SPTScale>(object, observer, userInfo);
 }
 
-void SPTScaleRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token) {
-    spt::removeComponentWillEmergeObserver<SPTScale>(object, token);
+void SPTScaleRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentDidEmergeObserver<SPTScale>(object, token);
 }
 
 SPTObserverToken SPTScaleAddWillPerishObserver(SPTObject object, SPTScaleWillPerishObserver observer, SPTObserverUserInfo userInfo) {

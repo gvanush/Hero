@@ -152,9 +152,9 @@ bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
 
 void SPTOrientationMake(SPTObject object, SPTOrientation orientation) {
     auto& registry = spt::Scene::getRegistry(object);
-    spt::notifyComponentWillEmergeObservers(registry, object.entity, orientation);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
     registry.emplace<SPTOrientation>(object.entity, orientation);
+    spt::notifyComponentDidEmergeObservers(registry, object.entity, orientation);
 }
 
 void SPTOrientationUpdate(SPTObject object, SPTOrientation newOrientation) {
@@ -192,12 +192,12 @@ void SPTOrientationRemoveWillChangeObserver(SPTObject object, SPTObserverToken t
     spt::removeComponentWillChangeObserver<SPTOrientation>(object, token);
 }
 
-SPTObserverToken SPTOrientationAddWillEmergeObserver(SPTObject object, SPTOrientationWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
-    return spt::addComponentWillEmergeObserver<SPTOrientation>(object, observer, userInfo);
+SPTObserverToken SPTOrientationAddDidEmergeObserver(SPTObject object, SPTOrientationDidEmergeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentDidEmergeObserver<SPTOrientation>(object, observer, userInfo);
 }
 
-void SPTOrientationRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token) {
-    spt::removeComponentWillEmergeObserver<SPTOrientation>(object, token);
+void SPTOrientationRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentDidEmergeObserver<SPTOrientation>(object, token);
 }
 
 SPTObserverToken SPTOrientationAddWillPerishObserver(SPTObject object, SPTOrientationWillPerishObserver observer, SPTObserverUserInfo userInfo) {

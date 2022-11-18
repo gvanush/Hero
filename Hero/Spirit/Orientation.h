@@ -74,9 +74,9 @@ typedef void (* _Nonnull SPTOrientationWillChangeObserver) (SPTOrientation, SPTO
 SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTObserverUserInfo userInfo);
 void SPTOrientationRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
 
-typedef void (* _Nonnull SPTOrientationWillEmergeObserver) (SPTOrientation, SPTObserverUserInfo);
-SPTObserverToken SPTOrientationAddWillEmergeObserver(SPTObject object, SPTOrientationWillEmergeObserver observer, SPTObserverUserInfo userInfo);
-void SPTOrientationRemoveWillEmergeObserver(SPTObject object, SPTObserverToken token);
+typedef void (* _Nonnull SPTOrientationDidEmergeObserver) (SPTOrientation, SPTObserverUserInfo);
+SPTObserverToken SPTOrientationAddDidEmergeObserver(SPTObject object, SPTOrientationDidEmergeObserver observer, SPTObserverUserInfo userInfo);
+void SPTOrientationRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTOrientationWillPerishObserver) (SPTObserverUserInfo);
 SPTObserverToken SPTOrientationAddWillPerishObserver(SPTObject object, SPTOrientationWillPerishObserver observer, SPTObserverUserInfo userInfo);

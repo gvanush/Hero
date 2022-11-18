@@ -111,26 +111,26 @@ void notifyComponentWillChangeObservers(const R& registry, E entity, const C& ne
 }
 
 
-// MARK: WillEmergeObservable
+// MARK: DidEmergeObservable
 template <typename C, typename U>
-struct WillEmergeObservable {
+struct DidEmergeObservable {
     using Observer = void (*)(C, U);
     std::array<ComponentObserverItem<Observer, U>, kMaxObserverCount> observerItems {};
 };
 
 template <typename C>
-SPTObserverToken addComponentWillEmergeObserver(SPTObject object, typename WillEmergeObservable<C, SPTObserverUserInfo>::Observer observer, SPTObserverUserInfo userInfo) {
-    return addComponentObserver<WillEmergeObservable<C, SPTObserverUserInfo>>(observer, userInfo, object);
+SPTObserverToken addComponentDidEmergeObserver(SPTObject object, typename DidEmergeObservable<C, SPTObserverUserInfo>::Observer observer, SPTObserverUserInfo userInfo) {
+    return addComponentObserver<DidEmergeObservable<C, SPTObserverUserInfo>>(observer, userInfo, object);
 }
 
 template <typename C>
-void removeComponentWillEmergeObserver(SPTObject object, SPTObserverToken token) {
-    removeComponentObserver<WillEmergeObservable<C, SPTObserverUserInfo>>(token, object);
+void removeComponentDidEmergeObserver(SPTObject object, SPTObserverToken token) {
+    removeComponentObserver<DidEmergeObservable<C, SPTObserverUserInfo>>(token, object);
 }
 
 template <typename C>
-void notifyComponentWillEmergeObservers(const spt::Registry& registry, SPTEntity entity, const C& newValue) {
-    notifyComponentObservers<WillEmergeObservable<C, SPTObserverUserInfo>>(registry, entity, newValue);
+void notifyComponentDidEmergeObservers(const spt::Registry& registry, SPTEntity entity, const C& newValue) {
+    notifyComponentObservers<DidEmergeObservable<C, SPTObserverUserInfo>>(registry, entity, newValue);
 }
 
 

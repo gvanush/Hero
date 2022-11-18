@@ -37,28 +37,28 @@ void notifyAnimatorBindingWillChangeObservers(const spt::Registry& registry, SPT
     spt::notifyComponentObservers<AnimatorBindingWillChangeObservable<P>>(registry, entity, newValue);
 }
 
-// MARK: AnimatorBindingWillEmergeObservable
+// MARK: AnimatorBindingDidEmergeObservable
 template <SPTAnimatableObjectProperty P>
-using AnimatorBindingWillEmergeObservable = spt::WillEmergeObservable<
+using AnimatorBindingDidEmergeObservable = spt::DidEmergeObservable<
     spt::AnimatorBinding<P>,
-    std::pair<SPTObjectPropertyAnimatorBindingWillEmergeObserver, SPTObserverUserInfo>>;
+    std::pair<SPTObjectPropertyAnimatorBindingDidEmergeObserver, SPTObserverUserInfo>>;
 
 template <SPTAnimatableObjectProperty P>
-SPTObserverToken addAnimatorBindingWillEmergeObserver(SPTObject object, SPTObjectPropertyAnimatorBindingWillEmergeObserver observer, SPTObserverUserInfo userInfo) {
+SPTObserverToken addAnimatorBindingDidEmergeObserver(SPTObject object, SPTObjectPropertyAnimatorBindingDidEmergeObserver observer, SPTObserverUserInfo userInfo) {
     
-    return spt::addComponentObserver<AnimatorBindingWillEmergeObservable<P>>([] (auto comp, auto userInfo) {
+    return spt::addComponentObserver<AnimatorBindingDidEmergeObservable<P>>([] (auto comp, auto userInfo) {
         userInfo.first(comp.base, userInfo.second);
     }, std::make_pair(observer, userInfo), object);
 }
 
 template <SPTAnimatableObjectProperty P>
-void removeAnimatorBindingWillEmergeObserver(SPTObject object, SPTObserverToken token) {
-    spt::removeComponentObserver<AnimatorBindingWillEmergeObservable<P>>(token, object);
+void removeAnimatorBindingDidEmergeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentObserver<AnimatorBindingDidEmergeObservable<P>>(token, object);
 }
 
 template <SPTAnimatableObjectProperty P>
-void notifyAnimatorBindingWillEmergeObservers(const spt::Registry& registry, SPTEntity entity, const spt::AnimatorBinding<P>& newValue) {
-    spt::notifyComponentObservers<AnimatorBindingWillEmergeObservable<P>>(registry, entity, newValue);
+void notifyAnimatorBindingDidEmergeObservers(const spt::Registry& registry, SPTEntity entity, const spt::AnimatorBinding<P>& newValue) {
+    spt::notifyComponentObservers<AnimatorBindingDidEmergeObservable<P>>(registry, entity, newValue);
 }
 
 // MARK: WillPerishObservable

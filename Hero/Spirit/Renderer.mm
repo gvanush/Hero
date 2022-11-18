@@ -252,7 +252,7 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     // Render outlines
     [renderEncoder setRenderPipelineState: __outlinePipelineState];
     [renderEncoder setCullMode: MTLCullModeFront];
-    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
+    [renderEncoder setDepthBias: 10.0f slopeScale: 10.f clamp: 0.f];
 
     const auto outlineLookView = registry.view<SPTOutlineLook>();
     outlineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& outlineLook) {
