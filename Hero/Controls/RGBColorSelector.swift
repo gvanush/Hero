@@ -37,6 +37,13 @@ struct RGBColorSelector: View {
     
     @Binding var rgbaColor: SPTRGBAColor
     let channel: RGBColorChannel
+    let onStateChange: (Bool) -> Void
+    
+    init(rgbaColor: Binding<SPTRGBAColor>, channel: RGBColorChannel, onStateChange: @escaping (Bool) -> Void = { _ in }) {
+        _rgbaColor = rgbaColor
+        self.channel = channel
+        self.onStateChange = onStateChange
+    }
     
     @State private var prevLocation: CGPoint?
     @State private var feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
@@ -89,6 +96,18 @@ struct RGBColorSelector: View {
         .onAppear {
             feedbackGenerator.prepare()
         }
+        .onDisappear {
+            if isEditing {
+                onStateChange(false)
+            }
+        }
+        .onChange(of: isEditing) { newValue in
+            onStateChange(isEditing)
+        }
+    }
+    
+    var isEditing: Bool {
+        prevLocation != nil
     }
     
     var track: some View {
@@ -117,10 +136,16 @@ struct RGBColorSelector: View {
     func dragGesture(geometry: GeometryProxy) -> some Gesture {
         DragGesture(minimumDistance: 0.0)
             .onChanged { value in
+                
                 guard let prevLocation = prevLocation else {
-                    prevLocation = value.location
+                    // NOTE: Typically the first non-zero drag translation is big which results to
+                    // aggresive jerk on the start, hence first non-zero translation is ignored
+                    if value.translation.width != 0.0 {
+                        prevLocation = value.location
+                    }
                     return
                 }
+                
                 let delta = value.location.x - prevLocation.x
                 let newValue = simd_clamp(channelValue + Float(delta / geometry.size.width), 0.0, 1.0)
                 if (channelValue != 0.0 && newValue == 0.0) || (channelValue != 1.0 && newValue == 1.0) {
@@ -241,6 +266,7 @@ struct RGBFieldSelector_Previews: PreviewProvider {
                 RGBColorSelector(rgbaColor: $color, channel: .blue)
             }
             .tint(.primarySelectionColor)
+            .environmentObject(UserInteractionState())
         }
     }
     

@@ -154,6 +154,7 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
 struct ObjectRGBAColorChannelAnimatorBindingComponentView: View {
     
     @ObservedObject var component: ObjectRGBAColorChannelAnimatorBindingComponent
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         Group {
@@ -162,11 +163,15 @@ struct ObjectRGBAColorChannelAnimatorBindingComponentView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                RGBColorSelector(rgbaColor: $component.value0RGBAColor, channel: component.rgbColorChannel)
-                    .tint(Color.primarySelectionColor)
+                RGBColorSelector(rgbaColor: $component.value0RGBAColor, channel: component.rgbColorChannel) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
+                .tint(Color.primarySelectionColor)
             case .valueAt1:
-                RGBColorSelector(rgbaColor: $component.value1RGBAColor, channel: component.rgbColorChannel)
-                    .tint(Color.primarySelectionColor)
+                RGBColorSelector(rgbaColor: $component.value1RGBAColor, channel: component.rgbColorChannel) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
+                .tint(Color.primarySelectionColor)
             case .none:
                 EmptyView()
             }

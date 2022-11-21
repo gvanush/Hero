@@ -42,13 +42,16 @@ fileprivate struct SelectedObjectControlsView: View {
     @ObservedObject var model: ScaleToolSelectedObjectViewModel
     
     @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.scale[model.axis.rawValue], scale: $editingParams[scaleOf: model.object, axis: model.axis].scale, isSnappingEnabled: $editingParams[scaleOf: model.object, axis: model.axis].isSnapping, formatter: model.scaleFormatter)
-                .tint(Color.primarySelectionColor)
-                .transition(.identity)
-                .id(model.axis.rawValue)
+            FloatSelector(value: $model.scale[model.axis.rawValue], scale: $editingParams[scaleOf: model.object, axis: model.axis].scale, isSnappingEnabled: $editingParams[scaleOf: model.object, axis: model.axis].isSnapping, formatter: model.scaleFormatter) { editingState in
+                userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
+            }
+            .tint(Color.primarySelectionColor)
+            .transition(.identity)
+            .id(model.axis.rawValue)
             PropertySelector(selected: $model.axis)
         }
     }

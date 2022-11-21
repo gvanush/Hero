@@ -189,6 +189,7 @@ struct PositionFieldAnimatorBindingView: View {
     @ObservedObject var component: PositionFieldAnimatorBindingComponent
     
     @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         Group {
@@ -197,11 +198,15 @@ struct PositionFieldAnimatorBindingView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                FloatSelector(value: $component.binding.valueAt0, scale: $editingParams[positionBindingOf: component.object].valueAt0.scale, isSnappingEnabled: $editingParams[positionBindingOf: component.object].valueAt0.isSnapping)
-                    .tint(Color.secondaryLightSelectionColor)
+                FloatSelector(value: $component.binding.valueAt0, scale: $editingParams[positionBindingOf: component.object].valueAt0.scale, isSnappingEnabled: $editingParams[positionBindingOf: component.object].valueAt0.isSnapping) { editingState in
+                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
+                }
+                .tint(Color.secondaryLightSelectionColor)
             case .valueAt1:
-                FloatSelector(value: $component.binding.valueAt1, scale: $editingParams[positionBindingOf: component.object].valueAt1.scale, isSnappingEnabled: $editingParams[positionBindingOf: component.object].valueAt1.isSnapping)
-                    .tint(Color.secondaryLightSelectionColor)
+                FloatSelector(value: $component.binding.valueAt1, scale: $editingParams[positionBindingOf: component.object].valueAt1.scale, isSnappingEnabled: $editingParams[positionBindingOf: component.object].valueAt1.isSnapping) { editingState in
+                   userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
+                }
+                .tint(Color.secondaryLightSelectionColor)
             case .none:
                 EmptyView()
             }

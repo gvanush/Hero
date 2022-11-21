@@ -44,13 +44,16 @@ class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSele
 struct ShadingComponentView: View {
     
     @ObservedObject var component: ShadingComponent
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         Group {
             switch component.selectedProperty {
             case .shininess:
-                FloatSlider(value: $component.meshLook.shading.blinnPhong.shininess)
-                    .tint(.primarySelectionColor)
+                FloatSlider(value: $component.meshLook.shading.blinnPhong.shininess) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
+                .tint(.primarySelectionColor)
             case .none:
                 EmptyView()
             }

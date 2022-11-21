@@ -19,27 +19,11 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     
     required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
-        var keyPath: WritableKeyPath<SPTMeshLook, Float>!
-        switch animatableProperty {
-        case .red:
-            keyPath = \.shading.blinnPhong.color.rgba.red
-        case .green:
-            keyPath = \.shading.blinnPhong.color.rgba.green
-        case .blue:
-            keyPath = \.shading.blinnPhong.color.rgba.blue
-        case .hue:
-            keyPath = \.shading.blinnPhong.color.hsba.hue
-        case .saturation:
-            keyPath = \.shading.blinnPhong.color.hsba.saturation
-        case .brightness:
-            keyPath = \.shading.blinnPhong.color.hsba.brightness
-        case .shininess:
-            keyPath = \.shading.blinnPhong.shininess
-        default:
+        guard animatableProperty == .shininess else {
             fatalError()
         }
         
-        _shininess = .init(object: object, keyPath: keyPath)
+        _shininess = .init(object: object, keyPath: \.shading.blinnPhong.shininess)
         
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
@@ -91,6 +75,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
 struct ShininessAnimatorBindingComponentView: View {
     
     @ObservedObject var component: ShininessAnimatorBindingComponent
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         Group {
@@ -99,11 +84,15 @@ struct ShininessAnimatorBindingComponentView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                FloatSlider(value: $component.binding.valueAt0)
-                    .tint(Color.primarySelectionColor)
+                FloatSlider(value: $component.binding.valueAt0) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
+                .tint(Color.primarySelectionColor)
             case .valueAt1:
-                FloatSlider(value: $component.binding.valueAt1)
-                    .tint(Color.primarySelectionColor)
+                FloatSlider(value: $component.binding.valueAt1) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
+                .tint(Color.primarySelectionColor)
             case .none:
                 EmptyView()
             }

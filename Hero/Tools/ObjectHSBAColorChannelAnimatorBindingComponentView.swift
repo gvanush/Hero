@@ -154,6 +154,7 @@ class ObjectHSBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
 struct ObjectHSBAColorChannelAnimatorBindingComponentView: View {
     
     @ObservedObject var component: ObjectHSBAColorChannelAnimatorBindingComponent
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         Group {
@@ -162,11 +163,15 @@ struct ObjectHSBAColorChannelAnimatorBindingComponentView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                HSBColorSelector(hsbaColor: $component.value0HSBAColor, channel: component.hsbColorChannel)
-                    .tint(Color.primarySelectionColor)
+                HSBColorSelector(hsbaColor: $component.value0HSBAColor, channel: component.hsbColorChannel) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
+                .tint(Color.primarySelectionColor)
             case .valueAt1:
-                HSBColorSelector(hsbaColor: $component.value1HSBAColor, channel: component.hsbColorChannel)
-                    .tint(Color.primarySelectionColor)
+                HSBColorSelector(hsbaColor: $component.value1HSBAColor, channel: component.hsbColorChannel) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
+                .tint(Color.primarySelectionColor)
             case .none:
                 EmptyView()
             }

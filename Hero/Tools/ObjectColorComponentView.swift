@@ -36,16 +36,23 @@ class ObjectRGBAColorComponent<C>: BasicComponent<RGBColorChannel> where C: SPTO
 struct ObjectRGBAColorComponentView<C>: View where C: SPTObservableComponent {
     
     @ObservedObject var component: ObjectRGBAColorComponent<C>
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         Group {
             switch component.selectedProperty {
             case .red:
-                RGBColorSelector(rgbaColor: $component.color, channel: .red)
+                RGBColorSelector(rgbaColor: $component.color, channel: .red) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
             case .green:
-                RGBColorSelector(rgbaColor: $component.color, channel: .green)
+                RGBColorSelector(rgbaColor: $component.color, channel: .green) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
             case .blue:
-                RGBColorSelector(rgbaColor: $component.color, channel: .blue)
+                RGBColorSelector(rgbaColor: $component.color, channel: .blue) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
             case .none:
                 EmptyView()
             }
@@ -82,16 +89,23 @@ class ObjectHSBAColorComponent<C>: BasicComponent<HSBColorChannel> where C: SPTO
 struct ObjectHSBAColorComponentView<C>: View where C: SPTObservableComponent {
     
     @ObservedObject var component: ObjectHSBAColorComponent<C>
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         Group {
             switch component.selectedProperty {
             case .hue:
-                HSBColorSelector(hsbaColor: $component.color, channel: .hue)
+                HSBColorSelector(hsbaColor: $component.color, channel: .hue) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
             case .saturation:
-                HSBColorSelector(hsbaColor: $component.color, channel: .saturation)
+                HSBColorSelector(hsbaColor: $component.color, channel: .saturation) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
             case .brightness:
-                HSBColorSelector(hsbaColor: $component.color, channel: .brightness)
+                HSBColorSelector(hsbaColor: $component.color, channel: .brightness) { isEditing in
+                    userInteractionState.isEditing = isEditing
+                }
             case .none:
                 EmptyView()
             }

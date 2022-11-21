@@ -67,10 +67,11 @@ struct FloatSelector: View {
         
     }
     
-    private enum EditingState {
+    enum EditingState {
         case idle
         case dragging
         case scrolling
+        case holding // State right after manually stopping scrolling but not yet dragging
         case snapping
     }
     
@@ -79,6 +80,7 @@ struct FloatSelector: View {
     @Binding var scale: Scale
     @Binding var isSnappingEnabled: Bool
     @State private var state = EditingState.idle
+    let onStateChange: (EditingState) -> Void
     
     @State private var dragBaseValue: Float = 0.0
     @State private var dragInitialTranslation: CGFloat = 0.0
@@ -99,13 +101,14 @@ struct FloatSelector: View {
         }
     }
         
-    init(value: Binding<Float>, valueTransformer: ValueTransformer = .identity, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>, formatter: FloatFormatter = BasicFloatFormatter()) {
+    init(value: Binding<Float>, valueTransformer: ValueTransformer = .identity, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>, formatter: FloatFormatter = BasicFloatFormatter(), onStateChange: @escaping (EditingState) -> Void = { _ in }) {
         _value = value
         self.valueTransformer = valueTransformer
         _scale = scale
         _isSnappingEnabled = isSnappingEnabled
         self.rawValue = valueTransformer.inverse(value.wrappedValue)
         self.formatter = formatter
+        self.onStateChange = onStateChange
         
         self.formatter.updateFractionDigits(self.isSnappingEnabled ? self.scale.snappedFractionDigits : self.scale.fractionDigits)
     }
@@ -124,7 +127,7 @@ struct FloatSelector: View {
                         Spacer()
                         SnappingToggle(isOn: $isSnappingEnabled)
                     }
-                    .visible(!(state == .dragging || state == .scrolling))
+                    .visible(state == .idle || state == .snapping)
                     valueView
                         .id(scale)
                         .id(isSnappingEnabled)
@@ -143,15 +146,24 @@ struct FloatSelector: View {
         .onAppear {
             feedbackGenerator.prepare()
         }
+        .onDisappear {
+            if state != .idle {
+                onStateChange(.idle)
+            }
+        }
         .onChange(of: scale) { newScale in
-            stopScrolling()
+            withAnimation {
+                state = .idle
+            }
             formatter.updateFractionDigits(isSnappingEnabled ? newScale.snappedFractionDigits : newScale.fractionDigits)
             if isSnappingEnabled {
                 startSnapping()
             }
         }
         .onChange(of: isSnappingEnabled) { newValue in
-            stopScrolling()
+            withAnimation {
+                state = .idle
+            }
             if newValue {
                 startSnapping()
                 formatter.updateFractionDigits(scale.snappedFractionDigits)
@@ -179,6 +191,9 @@ struct FloatSelector: View {
                 }
             }
         }
+        .onChange(of: state, perform: { newValue in
+            onStateChange(newValue)
+        })
         .onFrame { frame in
             
             switch state {
@@ -202,9 +217,7 @@ struct FloatSelector: View {
                 }
                 rawValue = snapInitialValue + snapDeltaValue * Float((passeedTime / scrollDuration))
                 
-            case .dragging:
-                break
-            case .idle:
+            case .idle, .dragging, .holding:
                 break
             }
             
@@ -235,12 +248,14 @@ struct FloatSelector: View {
             .onChanged { dragValue in
                 
                 if state == .scrolling || state == .snapping {
-                    stopScrolling()
+                    withAnimation {
+                        state = .holding
+                    }
                 }
                 
                 // NOTE: Typically the first non-zero drag translation is big which results to
                 // aggresive jerk on the start, hence first non-zero translation is ignored
-                if state == .idle && dragValue.translation.width != 0.0 {
+                if (state == .idle || state == .holding) && dragValue.translation.width != 0.0 {
                     withAnimation {
                         state = .dragging
                         dragBaseValue = rawValue
@@ -255,6 +270,13 @@ struct FloatSelector: View {
                 
             }
             .onEnded { dragValue in
+                
+                if state == .holding {
+                    withAnimation {
+                        state = .idle
+                    }
+                    return
+                }
                 
                 guard state == .dragging || state == .idle else { return }
                 
@@ -316,12 +338,6 @@ struct FloatSelector: View {
     
     private var rulerOffsetX: CGFloat {
         -fmod(CGFloat(rawValue / scale.rawValue), CGFloat(Self.rulerAdditionalUnitCount)) * Self.rulerUnitSize
-    }
-    
-    private func stopScrolling() {
-        withAnimation {
-            state = .idle
-        }
     }
     
     private func roundedValue(_ value: Float) -> Float {

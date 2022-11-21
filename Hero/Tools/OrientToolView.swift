@@ -42,13 +42,16 @@ fileprivate struct SelectedObjectControlsView: View {
     @ObservedObject var model: OrientToolSelectedObjectViewModel
     
     @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.eulerRotation[model.axis.rawValue], scale: $editingParams[rotationOf: model.object, axis: model.axis].scale, isSnappingEnabled: $editingParams[rotationOf: model.object, axis: model.axis].isSnapping, formatter: model.rotationFormatter)
-                .tint(Color.primarySelectionColor)
-                .transition(.identity)
-                .id(model.axis.rawValue)
+            FloatSelector(value: $model.eulerRotation[model.axis.rawValue], scale: $editingParams[rotationOf: model.object, axis: model.axis].scale, isSnappingEnabled: $editingParams[rotationOf: model.object, axis: model.axis].isSnapping, formatter: model.rotationFormatter) { editingState in
+                userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
+            }
+            .tint(Color.primarySelectionColor)
+            .transition(.identity)
+            .id(model.axis.rawValue)
             PropertySelector(selected: $model.axis)
         }
     }

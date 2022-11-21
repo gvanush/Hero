@@ -35,6 +35,13 @@ struct HSBColorSelector: View {
     
     @Binding var hsbaColor: SPTHSBAColor
     let channel: HSBColorChannel
+    let onStateChange: (Bool) -> Void
+    
+    init(hsbaColor: Binding<SPTHSBAColor>, channel: HSBColorChannel, onStateChange: @escaping (Bool) -> Void = { _ in }) {
+        _hsbaColor = hsbaColor
+        self.channel = channel
+        self.onStateChange = onStateChange
+    }
     
     @State private var prevLocation: CGPoint?
     @State private var feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
@@ -91,6 +98,21 @@ struct HSBColorSelector: View {
         .background(Material.thin)
         .cornerRadius(Self.cornerRadius)
         .shadow(radius: 1.0)
+        .onAppear {
+            feedbackGenerator.prepare()
+        }
+        .onDisappear {
+            if isEditing {
+                onStateChange(false)
+            }
+        }
+        .onChange(of: isEditing) { newValue in
+            onStateChange(isEditing)
+        }
+    }
+    
+    var isEditing: Bool {
+        prevLocation != nil
     }
     
     var channelValue: Float {
@@ -163,7 +185,11 @@ struct HSBColorSelector: View {
         DragGesture(minimumDistance: 0.0)
             .onChanged { value in
                 guard let prevLocation = prevLocation else {
-                    prevLocation = value.location
+                    // NOTE: Typically the first non-zero drag translation is big which results to
+                    // aggresive jerk on the start, hence first non-zero translation is ignored
+                    if value.translation.width != 0.0 {
+                        prevLocation = value.location
+                    }
                     return
                 }
                 let delta = value.location.x - prevLocation.x
@@ -237,6 +263,7 @@ struct HSVColorSelector_Previews: PreviewProvider {
                 HSBColorSelector(hsbaColor: $color, channel: .brightness)
                     .tint(.primarySelectionColor)
             }
+            .environmentObject(UserInteractionState())
         }
     }
     

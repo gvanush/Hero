@@ -17,7 +17,6 @@ struct SceneViewConst {
 struct SceneView: View {
     
     @ObservedObject var model: SceneViewModel
-    @Binding var isNavigating: Bool
     @State private var viewportSize = CGSize.zero
     let edgeInsets: EdgeInsets
     
@@ -31,9 +30,10 @@ struct SceneView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
-    init(model: SceneViewModel, isNavigating: Binding<Bool>, edgeInsets: EdgeInsets = EdgeInsets()) {
+    @EnvironmentObject var userInteractionState: UserInteractionState
+    
+    init(model: SceneViewModel, edgeInsets: EdgeInsets = EdgeInsets()) {
         self.model = model
-        self._isNavigating = isNavigating
         self.edgeInsets = edgeInsets
     }
     
@@ -82,7 +82,7 @@ struct SceneView: View {
                                     model.selectedObject = model.pickObjectAt(location, viewportSize: viewportSize)
                                 }
                             }
-                            .allowsHitTesting(isNavigationEnabled && !isNavigating)
+                            .allowsHitTesting(isNavigationEnabled && !userInteractionState.isNavigating)
                     }
                     .modifier(SizeModifier())
                     // Adjust SPTView size so that its center (hence where the camera points) matches with safe area center
@@ -110,17 +110,17 @@ struct SceneView: View {
                             .padding(.bottom, edgeInsets.bottom)
                     }
                 }
-                .visible(isNavigationEnabled && !isNavigating)
+                .visible(isNavigationEnabled && userInteractionState.isIdle)
             }
         }
         .onChange(of: isOrbitDragGestureActive) { newValue in
-            isNavigating = newValue
+            userInteractionState.isNavigating = newValue
             if !newValue {
                 model.cancelOrbit()
             }
         }
         .onChange(of: isZoomDragGestureActive) { newValue in
-            isNavigating = newValue
+            userInteractionState.isNavigating = newValue
             if !newValue {
                 model.cancelZoom()
             }
@@ -240,7 +240,8 @@ struct SceneView_Previews: PreviewProvider {
         @StateObject var model = SceneViewModel()
         
         var body: some View {
-            SceneView(model: model, isNavigating: .constant(false))
+            SceneView(model: model)
+                .environmentObject(UserInteractionState())
         }
     }
     

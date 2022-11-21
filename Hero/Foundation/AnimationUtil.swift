@@ -9,6 +9,6 @@ import SwiftUI
 
 extension Animation {
     
-    static let sceneNavigationStateChangeAnimation = Animation.easeInOut(duration: 0.15)
+    static let userInteractionStateChangeAnimation = Animation.easeInOut(duration: 0.15)
     
 }

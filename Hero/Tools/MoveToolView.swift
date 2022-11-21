@@ -79,13 +79,16 @@ fileprivate struct SelectedObjectControlsView: View {
     @ObservedObject var model: MoveToolSelectedObjectViewModel
     
     @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
         VStack {
-            FloatSelector(value: $model.position[model.axis.rawValue], scale: $editingParams[positionOf: model.object, axis: model.axis].scale, isSnappingEnabled: $editingParams[positionOf: model.object, axis: model.axis].isSnapping, formatter: model.positionFormatter)
-                .tint(Color.primarySelectionColor)
-                .transition(.identity)
-                .id(model.axis.rawValue)
+            FloatSelector(value: $model.position[model.axis.rawValue], scale: $editingParams[positionOf: model.object, axis: model.axis].scale, isSnappingEnabled: $editingParams[positionOf: model.object, axis: model.axis].isSnapping, formatter: model.positionFormatter) { editingState in
+                userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
+            }
+            .tint(Color.primarySelectionColor)
+            .transition(.identity)
+            .id(model.axis.rawValue)
             PropertySelector(selected: $model.axis)
         }
         .onAppear {

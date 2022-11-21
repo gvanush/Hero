@@ -7,6 +7,52 @@
 
 import SwiftUI
 
+struct UserInteractionFlags: OptionSet {
+    let rawValue: UInt
+    
+    static let navigation    = UserInteractionFlags(rawValue: 1 << 0)
+    static let editing       = UserInteractionFlags(rawValue: 1 << 1)
+}
+
+class UserInteractionState: ObservableObject {
+    
+    @Published private var interactionFlags: UserInteractionFlags = []
+    
+    var isNavigating: Bool {
+        set {
+            withAnimation(.userInteractionStateChangeAnimation) {
+                if newValue {
+                    interactionFlags.insert(.navigation)
+                } else {
+                    interactionFlags.remove(.navigation)
+                }
+            }
+        }
+        get {
+            interactionFlags.contains(.navigation)
+        }
+    }
+    
+    var isEditing: Bool {
+        set {
+            withAnimation(.userInteractionStateChangeAnimation) {
+                if newValue {
+                    interactionFlags.insert(.editing)
+                } else {
+                    interactionFlags.remove(.editing)
+                }
+            }
+        }
+        get {
+            interactionFlags.contains(.editing)
+        }
+    }
+    
+    var isIdle: Bool {
+        interactionFlags.isEmpty
+    }
+    
+}
 
 class RootViewModel: ObservableObject {
     
@@ -89,8 +135,8 @@ struct RootView: View {
     @StateObject private var model: RootViewModel
     @StateObject private var sceneViewModel: SceneViewModel
     @StateObject private var actionBarModel: ActionBarModel
+    @StateObject private var userInteractionState: UserInteractionState
     
-    @State private var isNavigating = false
     @State private var showsAnimatorsView = false
     @State private var showsNewObjectView = false
     @State private var showsSelectedObjectInspector = false
@@ -103,20 +149,21 @@ struct RootView: View {
         _sceneViewModel = .init(wrappedValue: sceneVM)
         _model = .init(wrappedValue: .init(sceneViewModel: sceneVM))
         _actionBarModel = .init(wrappedValue: .init())
+        _userInteractionState = .init(wrappedValue: .init())
     }
     
     var body: some View {
         ActionBarItemReader(model: actionBarModel) {
-            SceneView(model: sceneViewModel,
-                      isNavigating: $isNavigating.animation(.sceneNavigationStateChangeAnimation), edgeInsets: .init(top: 0.0, leading: 0.0, bottom: -Self.navigationEmptyVerticalAreaHeight, trailing: 0.0))
+            SceneView(model: sceneViewModel, edgeInsets: .init(top: 0.0, leading: 0.0, bottom: -Self.navigationEmptyVerticalAreaHeight, trailing: 0.0))
             .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
+            .environmentObject(userInteractionState)
             .overlay(alignment: .bottomTrailing) {
                 ActionBar(model: actionBarModel)
                     .background(Material.thin, ignoresSafeAreaEdges: [])
                     .cornerRadius(10.0)
                     .padding(.trailing, 16.0)
                     .shadow(radius: 1.0)
-                    .visible(!isNavigating)
+                    .visible(userInteractionState.isIdle)
             }
             .safeAreaInset(edge: .top) {
                 VStack(spacing: 0.0) {
@@ -127,7 +174,7 @@ struct RootView: View {
                 .background(Material.bar)
                 .compositingGroup()
                 .shadow(radius: 0.5)
-                .visible(!isNavigating)
+                .visible(userInteractionState.isIdle)
             }
             .safeAreaInset(edge: .bottom, spacing: Self.navigationEmptyVerticalAreaHeight) {
                 VStack(spacing: 8.0) {
@@ -138,6 +185,7 @@ struct RootView: View {
                             .transition(.identity)
                             .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
                             .environmentObject(model.objectPropertyEditingParams)
+                            .environmentObject(userInteractionState)
                     }
                     .frame(height: Self.toolControlViewsAreaHeight)
                     
@@ -148,7 +196,7 @@ struct RootView: View {
                         .compositingGroup()
                         .shadow(radius: 0.5)
                 }
-                .visible(!isNavigating)
+                .visible(!userInteractionState.isNavigating)
             }
             .actionBarCommonSection {
                 ActionBarButton(iconName: "plus") {
@@ -166,8 +214,8 @@ struct RootView: View {
             .environmentObject(actionBarModel)
             
         }
-        .statusBar(hidden: isNavigating)
-        .persistentSystemOverlays(isNavigating ? .hidden : .automatic)
+        .statusBar(hidden: !userInteractionState.isIdle)
+        .persistentSystemOverlays(userInteractionState.isIdle ? .automatic : .hidden)
         .sheet(isPresented: $showsAnimatorsView) {
             AnimatorsView()
         }
