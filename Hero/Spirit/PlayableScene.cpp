@@ -142,7 +142,7 @@ void PlayableScene::prepareTransformationAnimations(const Scene& scene, const st
     });
     
     for(auto& item: transformAnimatedEntityRecord) {
-        item.second.basePosition = Position::getXYZ(registry, item.first);
+        item.second.basePosition = Position::getCartesianCoordinates(registry, item.first);
         item.second.baseScale = Scale::getXYZ(registry, item.first);
         item.second.baseOrientation = Orientation::getMatrix(registry, item.first, item.second.basePosition);
         registry.emplace<spt::Transformation::AnimatorRecord>(item.first, item.second);

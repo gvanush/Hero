@@ -195,9 +195,9 @@ struct MeshObjectInspector: View {
     
     func positionView() -> some View {
         Section("Position") {
-            SceneEditableParam(title: "X", valueText: textFor(model.position.xyz.x, formatter: model.positionFormatter), editAction: { model.editPosition(axis: .x, dismiss: dismiss) })
-            SceneEditableParam(title: "Y", valueText: textFor(model.position.xyz.y, formatter: model.positionFormatter), editAction: { model.editPosition(axis: .y, dismiss: dismiss) })
-            SceneEditableParam(title: "Z", valueText: textFor(model.position.xyz.z, formatter: model.positionFormatter), editAction: { model.editPosition(axis: .z, dismiss: dismiss) })
+            SceneEditableParam(title: "X", valueText: textFor(model.position.cartesian.x, formatter: model.positionFormatter), editAction: { model.editPosition(axis: .x, dismiss: dismiss) })
+            SceneEditableParam(title: "Y", valueText: textFor(model.position.cartesian.y, formatter: model.positionFormatter), editAction: { model.editPosition(axis: .y, dismiss: dismiss) })
+            SceneEditableParam(title: "Z", valueText: textFor(model.position.cartesian.z, formatter: model.positionFormatter), editAction: { model.editPosition(axis: .z, dismiss: dismiss) })
         }
     }
     

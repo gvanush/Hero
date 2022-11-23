@@ -18,6 +18,7 @@ typedef enum {
     SPTColorModelHSB
 } __attribute__((enum_extensibility(closed))) SPTColorModel;
 
+// MARK: RGBAColor
 typedef union {
     simd_float4 float4;
     struct {
@@ -32,6 +33,7 @@ bool SPTRGBAColorValidate(SPTRGBAColor color);
 
 bool SPTRGBAColorEqual(SPTRGBAColor lhs, SPTRGBAColor rhs);
 
+// MARK: HSBAColor
 typedef union {
     simd_float4 float4;
     struct {
@@ -50,6 +52,7 @@ SPTHSBAColor SPTRGBAColorToHSBA(SPTRGBAColor rgba);
 SPTRGBAColor SPTHSBAColorToRGBA(SPTHSBAColor hsba);
 
 
+// MARK: Color
 typedef struct {
     SPTColorModel model;
     union {

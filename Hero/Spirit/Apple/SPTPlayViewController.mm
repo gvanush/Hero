@@ -70,7 +70,7 @@
     _animatorEvaluationContext.time = CACurrentMediaTime() - _startTime;
     scene->evaluateAnimators(_animatorEvaluationContext);
     
-    self.renderingContext.cameraPosition = spt::Position::getXYZ(scene->registry, self.viewCameraEntity);
+    self.renderingContext.cameraPosition = spt::Position::getCartesianCoordinates(scene->registry, self.viewCameraEntity);
     self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(scene->registry, self.viewCameraEntity);
     
     if(self.renderingContext.renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;

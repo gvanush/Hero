@@ -11,12 +11,44 @@ import simd
 
 extension SPTPosition: SPTObservableComponent {
     
-    init(xyz: simd_float3) {
-        self.init(variantTag: .XYZ, .init(xyz: xyz))
+    init(cartesian: simd_float3) {
+        self.init(coordinateSystem: .cartesian, .init(cartesian: cartesian))
     }
     
     init(x: Float, y: Float, z: Float) {
-        self.init(xyz: .init(x: x, y: y, z: z))
+        self.init(cartesian: .init(x: x, y: y, z: z))
+    }
+    
+    init(linear: SPTLinearCoordinates) {
+        self.init(coordinateSystem: .linear, .init(linear: linear))
+    }
+    
+    init(origin: simd_float3, target: simd_float3, factor: Float) {
+        self.init(linear: .init(origin: origin, target: target, factor: factor))
+    }
+    
+    init(spherical: SPTSphericalCoordinates) {
+        self.init(coordinateSystem: .spherical, .init(spherical: spherical))
+    }
+    
+    init(origin: simd_float3, radius: Float, longitude: Float, latitude: Float) {
+        self.init(spherical: .init(origin: origin, radius: radius, longitude: longitude, latitude: latitude))
+    }
+    
+    var toCartesian: SPTPosition {
+        SPTPositionToCartesian(self)
+    }
+    
+    func toLinear(origin: simd_float3) -> SPTPosition {
+        SPTPositionToLinear(self, origin)
+    }
+    
+    func toSpherical(origin: simd_float3) -> SPTPosition {
+        SPTPositionToSpherical(self, origin)
+    }
+    
+    func toCylindrical(origin: simd_float3) -> SPTPosition {
+        SPTPositionToCylindrical(self, origin)
     }
     
     public static func == (lhs: SPTPosition, rhs: SPTPosition) -> Bool {

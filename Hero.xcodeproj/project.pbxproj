@@ -159,6 +159,8 @@
 		B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */; };
 		B7EDBDC028F3558F0048EF93 /* InspectToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */; };
 		B7EDBDC228F6826F0048EF93 /* AnimatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */; };
+		B7FD159B292BFF9800B6E7DC /* CoordinateSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */; };
+		B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD159C292E067900B6E7DC /* SPTCoordinateSystemUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -378,6 +380,9 @@
 		B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolViewModel.swift; sourceTree = "<group>"; };
 		B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectToolView.swift; sourceTree = "<group>"; };
 		B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorControl.swift; sourceTree = "<group>"; };
+		B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoordinateSystem.cpp; sourceTree = "<group>"; };
+		B7FD159A292BFF9800B6E7DC /* CoordinateSystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoordinateSystem.h; sourceTree = "<group>"; };
+		B7FD159C292E067900B6E7DC /* SPTCoordinateSystemUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTCoordinateSystemUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -583,6 +588,7 @@
 				B7B711DF28C1D8100077C7CD /* SPTPolylineLookUtil.swift */,
 				B7643B2E29084DAF00F6A05B /* SPTEasingUtil.swift */,
 				B7E625822916DF6500343B67 /* SPTColorUtil.swift */,
+				B7FD159C292E067900B6E7DC /* SPTCoordinateSystemUtil.swift */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -803,6 +809,8 @@
 				B7643B2D2907D41D00F6A05B /* Easing.h */,
 				B7E6257F2916D4A200343B67 /* Color.h */,
 				B7E625802916DB1800343B67 /* Color.cpp */,
+				B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */,
+				B7FD159A292BFF9800B6E7DC /* CoordinateSystem.h */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -1082,6 +1090,7 @@
 				B73E47C927C5590800CB0AFC /* Orientation.cpp in Sources */,
 				B73A700528841C2E0043F9FF /* PanAnimatorView.swift in Sources */,
 				B7C7489B28D1A3EE00E270FB /* NewObjectView.swift in Sources */,
+				B7FD159B292BFF9800B6E7DC /* CoordinateSystem.cpp in Sources */,
 				B7EDBDC028F3558F0048EF93 /* InspectToolView.swift in Sources */,
 				B70ABF2C291D767700919F50 /* AnimateShadeToolView.swift in Sources */,
 				B7A78A71292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift in Sources */,
@@ -1107,6 +1116,7 @@
 				B73A700328840DB70043F9FF /* AnimatorsView.swift in Sources */,
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */,
+				B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
 				B7643B3C290FAB9000F6A05B /* ShadingComponentView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,

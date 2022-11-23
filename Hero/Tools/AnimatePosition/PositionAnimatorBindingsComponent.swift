@@ -118,19 +118,19 @@ class PositionFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
     private var guideLinePosition: SPTPosition {
         var xyz = objectPositionXYZ
         xyz[fieldIndex] += 0.5 * (binding.valueAt0 + binding.valueAt1)
-        return .init(xyz: xyz)
+        return .init(cartesian: xyz)
     }
     
     private var guidePoint0Position: SPTPosition {
         var xyz = objectPositionXYZ
         xyz[fieldIndex] += binding.valueAt0
-        return .init(xyz: xyz)
+        return .init(cartesian: xyz)
     }
     
     private var guidePoint1Position: SPTPosition {
         var xyz = objectPositionXYZ
         xyz[fieldIndex] += binding.valueAt1
-        return .init(xyz: xyz)
+        return .init(cartesian: xyz)
     }
     
     static private func guidePoint0Color(selectedProperty: AnimatorBindingComponentProperty?) -> UIColor {
@@ -170,7 +170,7 @@ class PositionFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
     }
     
     private var objectPositionXYZ: simd_float3 {
-        SPTPosition.get(object: object).xyz
+        SPTPosition.get(object: object).cartesian
     }
     
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {

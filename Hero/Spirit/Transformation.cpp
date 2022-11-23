@@ -28,7 +28,7 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     matrix.columns[1][1] = scale.y;
     matrix.columns[2][2] = scale.z;
     
-    const auto& pos = Position::getXYZ(registry, entity);
+    const auto& pos = Position::getCartesianCoordinates(registry, entity);
     
     matrix = simd_mul(Orientation::getMatrix(registry, entity, pos), matrix);
     

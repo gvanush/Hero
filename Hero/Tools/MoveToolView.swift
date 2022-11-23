@@ -35,8 +35,8 @@ class MoveToolSelectedObjectViewModel: ObservableObject {
     }
     
     var position: simd_float3 {
-        set { sptPosition.xyz = newValue }
-        get { sptPosition.xyz }
+        set { sptPosition.cartesian = newValue }
+        get { sptPosition.cartesian }
     }
     
     func setupGuideObjects() {
