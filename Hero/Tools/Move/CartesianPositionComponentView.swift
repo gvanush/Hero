@@ -16,7 +16,7 @@ class CartesianPositionComponent: BasicComponent<Axis> {
     let sceneViewModel: SceneViewModel
     let positionFormatter = Formatters.positionField
 
-    @SPTObservedComponent private var position: SPTPosition
+    @SPTObservedComponent private(set) var position: SPTPosition
     private var guideObject: SPTObject?
     
     init(title: String, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, ObjectPropertyCartesianPositionEditingParams>, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {

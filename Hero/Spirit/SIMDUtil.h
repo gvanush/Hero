@@ -37,3 +37,7 @@ inline static int SPTMinComponentIndex(simd_float3 vec) {
         return (vec.y < vec.z ? 1 : 2);
     }
 }
+
+inline static bool SPTCollinear(simd_float3 vec1, simd_float3 vec2, float tolerance) {
+    return simd_length(simd_cross(vec1, vec2)) < tolerance;
+}

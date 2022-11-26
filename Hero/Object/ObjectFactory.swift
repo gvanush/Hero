@@ -22,11 +22,11 @@ class ObjectFactory {
         self.scene = scene
     }
     
-    func makeMesh(meshId: SPTMeshId, position: simd_float3) -> SPTObject {
+    func makeMesh(meshId: SPTMeshId, position: simd_float3, scale: Float = 1.0) -> SPTObject {
         let object = scene.makeObject()
         SPTMetadataMake(object, .init(tag: ObjectType.mesh.rawValue, name: "Mesh.\(meshNumber)"))
         SPTPosition.make(.init(cartesian: position), object: object)
-        SPTScaleMake(object, .init(xyz: simd_float3(5.0, 5.0, 5.0)))
+        SPTScaleMake(object, .init(xyz: simd_float3(scale, scale, scale)))
         SPTOrientation.make(.init(euler: .init(rotation: .zero, order: .XYZ)), object: object)
         SPTMeshLook.make(.init(material: SPTPhongMaterial(color: UIColor.darkGray.sptColor(model: .HSB), shininess: 0.5), meshId: meshId, categories: LookCategories.userCreated.rawValue), object: object)
         SPTRayCastableMake(object)

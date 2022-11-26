@@ -98,7 +98,10 @@ class RootViewModel: ObservableObject {
     }
     
     func createObject(meshId: SPTMeshId) {
-        let object = objectFactory.makeMesh(meshId: meshId, position: SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin)
+        let scale: Float = 5.0
+        var position = SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin
+        position.y += scale
+        let object = objectFactory.makeMesh(meshId: meshId, position: position, scale: scale)
         sceneViewModel.selectedObject = object
         sceneViewModel.focusedObject = object
     }
