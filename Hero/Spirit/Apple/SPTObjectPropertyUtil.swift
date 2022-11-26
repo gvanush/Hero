@@ -70,10 +70,10 @@ extension SPTAnimatableObjectProperty: SPTAnimatableProperty, CaseIterable {
         
         subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingDidEmergeObserver(self, object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
-    func onAnimatorBindingWillChangeSink(object: SPTObject, callback: @escaping AnimatorBindingDidEmergeCallback) -> SPTAnySubscription {
+    func onAnimatorBindingWillChangeSink(object: SPTObject, callback: @escaping AnimatorBindingWillChangeCallback) -> SPTAnySubscription {
         
         let subscription = AnimatorBindingWillChangeSubscription(observer: callback)
         
@@ -86,7 +86,23 @@ extension SPTAnimatableObjectProperty: SPTAnimatableProperty, CaseIterable {
             SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(self, object, token)
         }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
+    }
+    
+    func onAnimatorBindingDidChangeSink(object: SPTObject, callback: @escaping AnimatorBindingDidChangeCallback) -> SPTAnySubscription {
+        
+        let subscription = AnimatorBindingDidChangeSubscription(observer: callback)
+        
+        let token = SPTObjectPropertyAddAnimatorBindingDidChangeObserver(self, object, { newValue, userInfo in
+            let subscription = Unmanaged<AnimatorBindingDidChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = {
+            SPTObjectPropertyRemoveAnimatorBindingDidChangeObserver(self, object, token)
+        }
+        
+        return subscription.eraseToAnySubscription()
     }
     
     func onAnimatorBindingWillPerishSink(object: SPTObject, callback: @escaping AnimatorBindingWillPerishCallback) -> SPTAnySubscription {
@@ -100,7 +116,7 @@ extension SPTAnimatableObjectProperty: SPTAnimatableProperty, CaseIterable {
         
         subscription.canceller = { SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(self, object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
 }

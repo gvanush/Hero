@@ -25,11 +25,19 @@ bool checkValid(const Registry& registry, EIt first, EIt last) {
     return std::all_of(first, last, [&registry] (const auto entity) { return registry.valid(entity); });
 }
 
-template <typename CT, typename... Args>
-void emplaceIfMissing(Registry& registry, SPTEntity entity, Args &&...args) {
-    if(!registry.all_of<CT>(entity)) {
-        registry.emplace<CT>(entity, std::forward<Args>(args)...);
+template <typename CT, typename R, typename E, typename... Args>
+void emplaceIfMissing(R& registry, E entity, Args &&...args) {
+    if(!registry.template all_of<CT>(entity)) {
+        registry.template emplace<CT>(entity, std::forward<Args>(args)...);
     }
+}
+
+template <typename CT, typename R,  typename E>
+CT update(R& registry, E entity, const CT& newValue) {
+    auto& component = registry.template get<CT>(entity);
+    auto old = component;
+    component = newValue;
+    return old;;
 }
 
 }

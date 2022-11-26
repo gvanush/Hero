@@ -61,7 +61,7 @@ extension SPTOrientation: SPTObservableComponent {
         
         subscription.canceller = { SPTOrientationRemoveDidEmergeObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
     static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
@@ -75,7 +75,21 @@ extension SPTOrientation: SPTObservableComponent {
         
         subscription.canceller = { SPTOrientationRemoveWillChangeObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
+    }
+    
+    static func onDidChangeSink(object: SPTObject, callback: @escaping DidChangeCallback) -> SPTAnySubscription {
+        
+        let subscription = DidChangeSubscription(observer: callback)
+        
+        let token = SPTOrientationAddDidChangeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<DidChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTOrientationRemoveDidChangeObserver(object, token) }
+        
+        return subscription.eraseToAnySubscription()
     }
     
     static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
@@ -89,7 +103,7 @@ extension SPTOrientation: SPTObservableComponent {
         
         subscription.canceller = { SPTOrientationRemoveWillPerishObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
 }

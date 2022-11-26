@@ -38,6 +38,8 @@ const SPTPosition* _Nullable SPTPositionTryGet(SPTObject object);
 
 bool SPTPositionExists(SPTObject object);
 
+simd_float3 SPTPositionGetOrigin(SPTPosition position);
+
 SPTPosition SPTPositionToCartesian(SPTPosition position);
 SPTPosition SPTPositionToLinear(SPTPosition position, simd_float3 origin);
 SPTPosition SPTPositionToSpherical(SPTPosition position, simd_float3 origin);
@@ -46,6 +48,10 @@ SPTPosition SPTPositionToCylindrical(SPTPosition position, simd_float3 origin);
 typedef void (* _Nonnull SPTPositionWillChangeObserver) (SPTPosition, SPTObserverUserInfo);
 SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTObserverUserInfo userInfo);
 void SPTPositionRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTPositionDidChangeObserver) (SPTPosition, SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddDidChangeObserver(SPTObject object, SPTPositionDidChangeObserver observer, SPTObserverUserInfo userInfo);
+void SPTPositionRemoveDidChangeObserver(SPTObject object, SPTObserverToken token);
 
 typedef void (* _Nonnull SPTPositionDidEmergeObserver) (SPTPosition, SPTObserverUserInfo);
 SPTObserverToken SPTPositionAddDidEmergeObserver(SPTObject object, SPTPositionDidEmergeObserver observer, SPTObserverUserInfo userInfo);

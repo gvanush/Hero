@@ -24,7 +24,7 @@ class SceneViewModel: ObservableObject {
         willSet {
             if let newObject = newValue {
                 focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: newObject) { newPos in
-                    self.focusOn(newPos.cartesian)
+                    self.focusOn(newPos.toCartesian.cartesian)
                 }
                 
                 focusOn(newObject)
@@ -102,7 +102,7 @@ class SceneViewModel: ObservableObject {
     }
     
     private func focusOn(_ object: SPTObject) {
-        focusOn(SPTPositionGet(object).cartesian)
+        focusOn(SPTPositionGet(object).toCartesian.cartesian)
     }
     
     private func focusOn(_ point: simd_float3) {

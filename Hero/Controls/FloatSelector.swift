@@ -271,14 +271,7 @@ struct FloatSelector: View {
             }
             .onEnded { dragValue in
                 
-                if state == .holding {
-                    withAnimation {
-                        state = .idle
-                    }
-                    return
-                }
-                
-                guard state == .dragging || state == .idle else { return }
+                guard state == .dragging || state == .idle || state == .holding else { return }
                 
                 var initialSpeed = dragValue.scrollInitialSpeedX(decelerationRate: scrollAnimationUtil.decelerationRate) * Self.scrollInitialSpeedFactor
                 if abs(initialSpeed) < Self.scrollMinInitialSpeed {
@@ -467,7 +460,7 @@ struct SnappingToggle: View {
 }
 
 
-struct FloatField_Previews: PreviewProvider {
+struct FloatSelector_Previews: PreviewProvider {
     static var previews: some View {
         FloatSelector(value: .constant(0.0), scale: .constant(._1), isSnappingEnabled: .constant(false))
             .padding(8.0)

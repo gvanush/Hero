@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 fileprivate let componentViewHeight = 38.0
 fileprivate let defaultNavigationAnimation = Animation.easeOut(duration: 0.25)
 
@@ -26,7 +27,7 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
             ComponentSelectionView(component: rootComponent, activeComponent: $activeComponent, inSetupComponent: $inSetupComponent)
                 .padding(3.0)
                 .frame(height: componentViewHeight)
-                .background(Material.thin)
+                .background(Material.regular)
                 .cornerRadius(SelectorConst.cornerRadius)
                 .compositingGroup()
                 .shadow(radius: 1.0)
@@ -40,14 +41,31 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
             }
         }
         .onChange(of: activeComponent) { [activeComponent] newValue in
-            activeComponent.onInactive()
-            newValue.onActive()
+            activeComponent.deactivate()
+            newValue.activate()
         }
         .onAppear {
-            activeComponent.onActive()
+            var components = [Component]()
+            var component: Component? = activeComponent
+            while let next = component {
+                components.append(next)
+                component = next.parent
+            }
+            
+            for component in components.reversed() {
+                component.disclose()
+            }
+            
+            activeComponent.activate()
         }
         .onDisappear {
-            activeComponent.onInactive()
+            activeComponent.deactivate()
+            
+            var component: Component? = activeComponent
+            while let next = component {
+                next.close()
+                component = next.parent
+            }
         }
         
     }
@@ -128,6 +146,13 @@ fileprivate struct ComponentSelectionView: View {
                 }
             }
         })
+        .onChange(of: isDisclosed) { newValue in
+            if newValue {
+                component.disclose()
+            } else {
+                component.close()
+            }
+        }
     }
     
     private var isActive: Bool {

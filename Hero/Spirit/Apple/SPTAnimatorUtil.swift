@@ -108,7 +108,7 @@ extension SPTAnimator: Equatable {
         
         subscription.canceller = { SPTAnimatorRemoveWillChangeObserver(id, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
     static func getCount() -> Int {
@@ -129,7 +129,7 @@ extension SPTAnimator: Equatable {
         
         subscription.canceller = { SPTAnimatorRemoveCountWillChangeObserver(token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
     static func evaluateValue(id: SPTAnimatorId, context: SPTAnimatorEvaluationContext) -> Float {

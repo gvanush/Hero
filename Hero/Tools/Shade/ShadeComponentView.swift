@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSelectedObjectRootComponent {
+class ShadeComponent: BasicComponent<ShadeComponent.Property>, BasicToolSelectedObjectRootComponent {
 
     enum Property: Int, DistinctValueSet, Displayable {
         case shininess
@@ -34,16 +34,16 @@ class ShadingComponent: BasicComponent<ShadingComponent.Property>, BasicToolSele
     }
     
     override var title: String {
-        "Shading"
+        "Shade"
     }
     
     override var subcomponents: [Component]? { [color] }
     
 }
 
-struct ShadingComponentView: View {
+struct ShadeComponentView: View {
     
-    @ObservedObject var component: ShadingComponent
+    @ObservedObject var component: ShadeComponent
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

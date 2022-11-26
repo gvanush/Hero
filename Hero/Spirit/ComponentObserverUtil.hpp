@@ -110,6 +110,38 @@ void notifyComponentWillChangeObservers(const R& registry, E entity, const C& ne
     notifyComponentObservers<WillChangeObservable<C, SPTObserverUserInfo>>(registry, entity, newValue);
 }
 
+// MARK: DidChangeObservable
+template <typename C, typename U>
+struct DidChangeObservable {
+    using Observer = void (*)(C, U);
+    std::array<ComponentObserverItem<Observer, U>, kMaxObserverCount> observerItems {};
+};
+
+template <typename C, typename R, typename E>
+SPTObserverToken addComponentDidChangeObserver(typename DidChangeObservable<C, SPTObserverUserInfo>::Observer observer, SPTObserverUserInfo userInfo, R& registry, E entity) {
+    return addComponentObserver<DidChangeObservable<C, SPTObserverUserInfo>>(observer, userInfo, registry, entity);
+}
+
+template <typename C>
+SPTObserverToken addComponentDidChangeObserver(SPTObject object, typename DidChangeObservable<C, SPTObserverUserInfo>::Observer observer, SPTObserverUserInfo userInfo) {
+    return addComponentObserver<DidChangeObservable<C, SPTObserverUserInfo>>(observer, userInfo, object);
+}
+
+template <typename C, typename R, typename E>
+void removeComponentDidChangeObserver(SPTObserverToken token, R& registry, E entity) {
+    removeComponentObserver<DidChangeObservable<C, SPTObserverUserInfo>>(token, registry, entity);
+}
+
+template <typename C>
+void removeComponentDidChangeObserver(SPTObject object, SPTObserverToken token) {
+    removeComponentObserver<DidChangeObservable<C, SPTObserverUserInfo>>(token, object);
+}
+
+template <typename C, typename R, typename E>
+void notifyComponentDidChangeObservers(const R& registry, E entity, const C& newValue) {
+    notifyComponentObservers<DidChangeObservable<C, SPTObserverUserInfo>>(registry, entity, newValue);
+}
+
 
 // MARK: DidEmergeObservable
 template <typename C, typename U>

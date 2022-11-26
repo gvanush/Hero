@@ -35,7 +35,20 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    @Published var animatorBindingComponent: AnimatorBindingComponent?
+    @Published var animatorBindingComponent: AnimatorBindingComponent? {
+        willSet {
+            if isActive {
+                animatorBindingComponent?.deactivate()
+            }
+            if isDisclosed {
+                animatorBindingComponent?.close()
+                newValue?.disclose()
+            }
+            if isActive {
+                newValue?.activate()
+            }
+        }
+    }
     
     private var bindingDidEmergeSubscription: SPTAnySubscription?
     private var bindingWillPerishSubscription: SPTAnySubscription?
@@ -50,7 +63,7 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
         super.init(parent: parent)
         
         bindingDidEmergeSubscription = animatableProperty.onAnimatorBindingDidEmergeSink(object: object) { [weak self] _ in
-            self?.setupEditViewModel()
+            self?.setupAnimatorBindingComponent()
         }
         
         bindingWillPerishSubscription = animatableProperty.onAnimatorBindingWillPerishSink(object: object, callback: { [weak self] in
@@ -59,12 +72,32 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
         })
         
         if animatableProperty.isAnimatorBound(object: object) {
-            setupEditViewModel()
+            setupAnimatorBindingComponent()
         }
         
     }
     
-    private func setupEditViewModel() {
+    override var isActive: Bool {
+        didSet {
+            if isActive {
+                animatorBindingComponent?.activate()
+            } else {
+                animatorBindingComponent?.deactivate()
+            }
+        }
+    }
+    
+    override var isDisclosed: Bool {
+        didSet {
+            if isDisclosed {
+                animatorBindingComponent?.disclose()
+            } else {
+                animatorBindingComponent?.close()
+            }
+        }
+    }
+    
+    private func setupAnimatorBindingComponent() {
         animatorBindingComponent = AnimatorBindingComponent(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: nil)
         editViewComponentCancellable = animatorBindingComponent!.objectWillChange.sink { [weak self] in
             self?.objectWillChange.send()

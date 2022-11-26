@@ -8,14 +8,14 @@
 import Foundation
 
 
-protocol SPTAnySubscription {
+protocol SPTSubscriptionProtocol {
     func cancel()
 }
 
-class SPTSubscription<O>: SPTAnySubscription {
+class SPTSubscription<O>: SPTSubscriptionProtocol {
     
     let observer: O
-    var canceller: (() -> Void)! = nil
+    var canceller: (() -> Void)!
     
     init(observer: O) {
         self.observer = observer
@@ -27,6 +27,33 @@ class SPTSubscription<O>: SPTAnySubscription {
     
     func cancel() {
         canceller()
+    }
+    
+    func eraseToAnySubscription() -> SPTAnySubscription {
+        .init(subscription: self)
+    }
+    
+}
+
+
+class SPTAnySubscription: Hashable {
+    
+    let subscription: SPTSubscriptionProtocol
+    
+    init(subscription: SPTSubscriptionProtocol) {
+        self.subscription = subscription
+    }
+    
+    func cancel() {
+        subscription.cancel()
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+    
+    static func == (lhs: SPTAnySubscription, rhs: SPTAnySubscription) -> Bool {
+        lhs === rhs
     }
     
 }

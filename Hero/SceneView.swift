@@ -22,7 +22,6 @@ struct SceneView: View {
     
     private(set) var isRenderingPaused = false
     private(set) var lookCategories = LookCategories.all
-    private(set) var isNavigationEnabled = true
     private(set) var isSelectionEnabled = true
     @GestureState private var isOrbitDragGestureActive = false
     @GestureState private var isZoomDragGestureActive = false
@@ -35,12 +34,6 @@ struct SceneView: View {
     init(model: SceneViewModel, edgeInsets: EdgeInsets = EdgeInsets()) {
         self.model = model
         self.edgeInsets = edgeInsets
-    }
-    
-    func navigationEnabled(_ enabled: Bool) -> SceneView {
-        var view = self
-        view.isNavigationEnabled = enabled
-        return view
     }
     
     func renderingPaused(_ paused: Bool) -> SceneView {
@@ -75,14 +68,14 @@ struct SceneView: View {
                         // hence creating a separate view on top
                         Color.clear
                             .contentShape(Rectangle())
-                            .gesture(isNavigationEnabled ? orbitDragGesture : nil)
+                            .gesture(orbitDragGesture)
                             .onTapGesture { location in
                                 guard isSelectionEnabled else { return }
                                 withAnimation {
                                     model.selectedObject = model.pickObjectAt(location, viewportSize: viewportSize)
                                 }
                             }
-                            .allowsHitTesting(isNavigationEnabled && !userInteractionState.isNavigating)
+                            .allowsHitTesting(!userInteractionState.isNavigating)
                     }
                     .modifier(SizeModifier())
                     // Adjust SPTView size so that its center (hence where the camera points) matches with safe area center
@@ -95,6 +88,7 @@ struct SceneView: View {
                         objectInfoView()
                         Spacer()
                     }
+                    .visible(userInteractionState.isIdle)
                     
                     HStack(spacing: 0.0) {
                         VStack {
@@ -102,15 +96,16 @@ struct SceneView: View {
                             focusToggle()
                         }
                         .padding(.leading, 8.0)
+                        .visible(userInteractionState.isIdle)
                         Spacer()
                         ZoomView()
                             .frame(width: 16.0, alignment: .trailing)
                             .contentShape(Rectangle())
                             .gesture(zoomDragGesture(viewportSize: viewportSize))
                             .padding(.bottom, edgeInsets.bottom)
+                            .visible(!userInteractionState.isNavigating)
                     }
                 }
-                .visible(isNavigationEnabled && userInteractionState.isIdle)
             }
         }
         .onChange(of: isOrbitDragGestureActive) { newValue in

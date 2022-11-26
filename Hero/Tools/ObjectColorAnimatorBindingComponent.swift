@@ -71,14 +71,14 @@ class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPT
         
         super.init(parent: parent)
         
-        colorModelSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
-            let newColorModel = newValue[keyPath: keyPath].model
-            if newColorModel != self!.colorModel {
-                self?.setupVariant(colorModel: newColorModel, keyPath: keyPath, object: object)
+        colorModelSubscription = C.onDidChangeSink(object: object) { [unowned self] oldValue in
+            let oldColorModel = oldValue[keyPath: keyPath].model
+            if oldColorModel != self.colorModel {
+                self.setupVariant()
             }
         }
         
-        setupVariant(colorModel: colorModel, keyPath: keyPath, object: object)
+        setupVariant()
         
     }
     
@@ -86,15 +86,15 @@ class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPT
         C.get(object: object)[keyPath: keyPath].model
     }
     
-    private func setupVariant(colorModel: SPTColorModel, keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject) {
+    private func setupVariant() {
         switch colorModel {
         case .RGB:
             activeComponent = ObjectRGBAColorAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .HSB:
             activeComponent = ObjectHSBAColorAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }
-        variantCancellable = activeComponent.objectWillChange.sink { [weak self] in
-            self?.objectWillChange.send()
+        variantCancellable = activeComponent.objectWillChange.sink { [unowned self] in
+            self.objectWillChange.send()
         }
     }
     

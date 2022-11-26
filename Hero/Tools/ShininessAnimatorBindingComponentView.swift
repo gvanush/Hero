@@ -6,13 +6,11 @@
 //
 
 import SwiftUI
-import Combine
 
 
 class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
     
     private var bindingWillChangeSubscription: SPTAnySubscription?
-    private var selectedPropertySubscription: AnyCancellable?
     private var shininessInitialValue: Float!
     
     @SPTObservedComponentProperty<SPTMeshLook, Float> var shininess: Float
@@ -30,23 +28,25 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
         _shininess.publisher = self.objectWillChange
     }
     
-    func onAppear() {
-        shininessInitialValue = shininess
-        
-        selectedPropertySubscription = self.$selectedProperty.sink { [weak self] newValue in
-            guard let property = newValue, let self = self else { return }
-            self.updateLookPropertyValue(property: property)
+    override var selectedProperty: AnimatorBindingComponentProperty? {
+        didSet {
+            if isActive {
+                updateLookPropertyValue()
+            }
         }
-        
-        bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [weak self] newValue in
-            guard let self = self, let property = self.selectedProperty else { return }
-
-            self.updateLookPropertyValue(property: property)
-
-        })
     }
     
-    func onDisappear() {
+    override func onActive() {
+        shininessInitialValue = shininess
+        
+        bindingWillChangeSubscription = animatableProperty.onAnimatorBindingDidChangeSink(object: object, callback: { [unowned self] _ in
+            self.updateLookPropertyValue()
+        })
+        
+        updateLookPropertyValue()
+    }
+    
+    override func onInactive() {
         shininess = shininessInitialValue
     }
     
@@ -54,8 +54,8 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
         provider.viewFor(self)
     }
 
-    private func updateLookPropertyValue(property: AnimatorBindingComponentProperty) {
-        switch property {
+    private func updateLookPropertyValue() {
+        switch selectedProperty! {
         case .valueAt0:
             self.shininess = self.binding.valueAt0
         case .valueAt1:
@@ -98,12 +98,6 @@ struct ShininessAnimatorBindingComponentView: View {
             }
         }
         .transition(.identity)
-        .onAppear {
-            component.onAppear()
-        }
-        .onDisappear {
-            component.onDisappear()
-        }
     }
     
 }

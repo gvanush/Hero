@@ -37,6 +37,30 @@ void notifyAnimatorBindingWillChangeObservers(const spt::Registry& registry, SPT
     spt::notifyComponentObservers<AnimatorBindingWillChangeObservable<P>>(registry, entity, newValue);
 }
 
+// MARK: DidChangeObservable
+template <SPTAnimatableObjectProperty P>
+using AnimatorBindingDidChangeObservable = spt::DidChangeObservable<
+    spt::AnimatorBinding<P>,
+    std::pair<SPTObjectPropertyAnimatorBindingDidChangeObserver, SPTObserverUserInfo>>;
+
+template <SPTAnimatableObjectProperty P>
+SPTObserverToken addAnimatorBindingDidChangeObserver(SPTObject object, SPTObjectPropertyAnimatorBindingDidChangeObserver observer, SPTObserverUserInfo userInfo) {
+    
+    return spt::addComponentObserver<AnimatorBindingDidChangeObservable<P>>([] (auto comp, auto userInfo) {
+        userInfo.first(comp.base, userInfo.second);
+    }, std::make_pair(observer, userInfo), object);
+}
+
+template <SPTAnimatableObjectProperty P>
+void removeAnimatorBindingDidChangeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentObserver<AnimatorBindingDidChangeObservable<P>>(token, object);
+}
+
+template <SPTAnimatableObjectProperty P>
+void notifyAnimatorBindingDidChangeObservers(const spt::Registry& registry, SPTEntity entity, const spt::AnimatorBinding<P>& oldValue) {
+    spt::notifyComponentObservers<AnimatorBindingDidChangeObservable<P>>(registry, entity, oldValue);
+}
+
 // MARK: AnimatorBindingDidEmergeObservable
 template <SPTAnimatableObjectProperty P>
 using AnimatorBindingDidEmergeObservable = spt::DidEmergeObservable<

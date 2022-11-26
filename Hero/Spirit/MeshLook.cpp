@@ -122,7 +122,9 @@ void SPTMeshLookUpdate(SPTObject object, SPTMeshLook updated) {
             addRenderableMaterial(updated.shading.type, registry, object.entity);
         }
     }
+    auto old = meshLook;
     meshLook = updated;
+    spt::notifyComponentDidChangeObservers(registry, object.entity, old);
 }
 
 void SPTMeshLookDestroy(SPTObject object) {
@@ -150,6 +152,14 @@ SPTObserverToken SPTMeshLookAddWillChangeObserver(SPTObject object, SPTMeshLookW
 
 void SPTMeshLookRemoveWillChangeObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillChangeObserver<SPTMeshLook>(object, token);
+}
+
+SPTObserverToken SPTMeshLookAddDidChangeObserver(SPTObject object, SPTMeshLookDidChangeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentDidChangeObserver<SPTMeshLook>(object, observer, userInfo);
+}
+
+void SPTMeshLookRemoveDidChangeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentDidChangeObserver<SPTMeshLook>(object, token);
 }
 
 SPTObserverToken SPTMeshLookAddDidEmergeObserver(SPTObject object, SPTMeshLookDidEmergeObserver observer, SPTObserverUserInfo userInfo) {
@@ -230,11 +240,11 @@ void MeshLook::updateWithOnlyAnimatorsChanging(spt::Registry& registry, const st
         
         switch (look.shading.type) {
             case SPTMeshShadingTypePlainColor: {
-                registry.get<PlainColorRenderableMaterial>(entity).color = SPTColorToRGBA(color).rgba.float4;
+                registry.get<PlainColorRenderableMaterial>(entity).color = SPTHSBAColorToRGBA(color.hsba).float4;
                 break;
             }
             case SPTMeshShadingTypeBlinnPhong: {
-                registry.get<PhongRenderableMaterial>(entity).color = SPTColorToRGBA(color).rgba.float4;
+                registry.get<PhongRenderableMaterial>(entity).color = SPTHSBAColorToRGBA(color.hsba).float4;
                 break;
             }
         }
@@ -242,8 +252,8 @@ void MeshLook::updateWithOnlyAnimatorsChanging(spt::Registry& registry, const st
     });
     
     updateRGBAChannel<SPTAnimatableObjectPropertyRed>(registry, animatorValues, 0);
-    updateRGBAChannel<SPTAnimatableObjectPropertyGreen>(registry, animatorValues, 0);
-    updateRGBAChannel<SPTAnimatableObjectPropertyBlue>(registry, animatorValues, 0);
+    updateRGBAChannel<SPTAnimatableObjectPropertyGreen>(registry, animatorValues, 1);
+    updateRGBAChannel<SPTAnimatableObjectPropertyBlue>(registry, animatorValues, 2);
     
     auto shininessView = registry.view<spt::AnimatorBindingItem<SPTAnimatableObjectPropertyShininess>, SPTMeshLook>();
     shininessView.each([&registry, &animatorValues] (auto entity, const auto& item, const auto& look) {

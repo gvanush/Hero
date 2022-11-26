@@ -23,8 +23,8 @@ extension SPTPosition: SPTObservableComponent {
         self.init(coordinateSystem: .linear, .init(linear: linear))
     }
     
-    init(origin: simd_float3, target: simd_float3, factor: Float) {
-        self.init(linear: .init(origin: origin, target: target, factor: factor))
+    init(origin: simd_float3, directionPoint: simd_float3, offset: Float) {
+        self.init(linear: .init(origin: origin, directionPoint: directionPoint, offset: offset))
     }
     
     init(spherical: SPTSphericalCoordinates) {
@@ -33,6 +33,10 @@ extension SPTPosition: SPTObservableComponent {
     
     init(origin: simd_float3, radius: Float, longitude: Float, latitude: Float) {
         self.init(spherical: .init(origin: origin, radius: radius, longitude: longitude, latitude: latitude))
+    }
+    
+    var origin: simd_float3 {
+        SPTPositionGetOrigin(self)
     }
     
     var toCartesian: SPTPosition {
@@ -83,6 +87,10 @@ extension SPTPosition: SPTObservableComponent {
         SPTPositionTryGet(object)?.pointee
     }
     
+    static func exists(object: SPTObject) -> Bool {
+        SPTPositionExists(object)
+    }
+    
     static func onDidEmergeSink(object: SPTObject, callback: @escaping DidEmergeCallback) -> SPTAnySubscription {
         
         let subscription = DidEmergeSubscription(observer: callback)
@@ -94,7 +102,7 @@ extension SPTPosition: SPTObservableComponent {
         
         subscription.canceller = { SPTPositionRemoveDidEmergeObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
     static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
@@ -108,7 +116,21 @@ extension SPTPosition: SPTObservableComponent {
         
         subscription.canceller = { SPTPositionRemoveWillChangeObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
+    }
+    
+    static func onDidChangeSink(object: SPTObject, callback: @escaping DidChangeCallback) -> SPTAnySubscription {
+        
+        let subscription = DidChangeSubscription(observer: callback)
+        
+        let token = SPTPositionAddDidChangeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<DidChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTPositionRemoveDidChangeObserver(object, token) }
+        
+        return subscription.eraseToAnySubscription()
     }
     
     static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
@@ -122,7 +144,7 @@ extension SPTPosition: SPTObservableComponent {
         
         subscription.canceller = { SPTPositionRemoveWillPerishObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
 }

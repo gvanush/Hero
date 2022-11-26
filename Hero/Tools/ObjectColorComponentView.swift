@@ -119,7 +119,7 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
     
     private let keyPath: WritableKeyPath<C, SPTColor>
     private let object: SPTObject
-    private var colorModelSubscription: SPTAnySubscription?
+    private var componentSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
     
     init(keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject, parent: Component?) {
@@ -129,14 +129,14 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
         
         super.init(parent: parent)
         
-        colorModelSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
-            let newColorModel = newValue[keyPath: keyPath].model
-            if newColorModel != self!.colorModel {
-                self?.setupVariant(colorModel: newColorModel, keyPath: keyPath, object: object)
+        componentSubscription = C.onDidChangeSink(object: object) { [unowned self] oldValue in
+            let oldColorModel = oldValue[keyPath: keyPath].model
+            if oldColorModel != self.colorModel {
+                self.setupVariant()
             }
         }
         
-        setupVariant(colorModel: colorModel, keyPath: keyPath, object: object)
+        setupVariant()
         
     }
     
@@ -159,7 +159,7 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
         }
     }
     
-    private func setupVariant(colorModel: SPTColorModel, keyPath: WritableKeyPath<C, SPTColor>, object: SPTObject) {
+    private func setupVariant() {
         switch colorModel {
         case .RGB:
             activeComponent = ObjectRGBAColorComponent(keyPath: keyPath.appending(path: \.rgba), object: object, parent: parent)
@@ -176,7 +176,7 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
     }
 }
 
-struct ObjectColorView<C, RC>: View where C: SPTObservableComponent {
+struct ObjectColorComponentView<C, RC>: View where C: SPTObservableComponent {
     
     @ObservedObject var component: ObjectColorComponent<C>
     let viewProvider: ComponentViewProvider<RC>
@@ -186,7 +186,8 @@ struct ObjectColorView<C, RC>: View where C: SPTObservableComponent {
     var body: some View {
         component.activeComponent.accept(viewProvider)
             .actionBarObjectSection {
-                ActionBarMenu(iconName: "camera.filters", selected: $component.colorModel)
+                ActionBarMenu(iconName: "slider.vertical.3", selected: $component.colorModel)
+                    .tag(component.id)
             }
             .onAppear {
                 actionBarModel.scrollToObjectSection()

@@ -81,7 +81,7 @@
 		B7643B31290BD31B00F6A05B /* EditingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B30290BD31B00F6A05B /* EditingParams.swift */; };
 		B7643B37290F9DD800F6A05B /* ShadeToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B36290F9DD800F6A05B /* ShadeToolView.swift */; };
 		B7643B39290FA53400F6A05B /* BasicToolSelectorObjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B38290FA53400F6A05B /* BasicToolSelectorObjectViewModel.swift */; };
-		B7643B3C290FAB9000F6A05B /* ShadingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3B290FAB9000F6A05B /* ShadingComponentView.swift */; };
+		B7643B3C290FAB9000F6A05B /* ShadeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3B290FAB9000F6A05B /* ShadeComponentView.swift */; };
 		B7643B3E2910509F00F6A05B /* ObjectColorComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3D2910509F00F6A05B /* ObjectColorComponentView.swift */; };
 		B7643B402912517000F6A05B /* RGBColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3F2912516F00F6A05B /* RGBColorSelector.swift */; };
 		B769F2632918EBE400C10661 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F2622918EBE400C10661 /* ActionBar.swift */; };
@@ -161,6 +161,9 @@
 		B7EDBDC228F6826F0048EF93 /* AnimatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */; };
 		B7FD159B292BFF9800B6E7DC /* CoordinateSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */; };
 		B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD159C292E067900B6E7DC /* SPTCoordinateSystemUtil.swift */; };
+		B7FD15A0292E483100B6E7DC /* PositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD159F292E483100B6E7DC /* PositionComponentView.swift */; };
+		B7FD15A2292E61EC00B6E7DC /* CartesianPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A1292E61EC00B6E7DC /* CartesianPositionComponentView.swift */; };
+		B7FD15A4292E7ECF00B6E7DC /* LinearPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -280,7 +283,7 @@
 		B7643B35290F075200F6A05B /* RenderableMaterials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderableMaterials.h; sourceTree = "<group>"; };
 		B7643B36290F9DD800F6A05B /* ShadeToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadeToolView.swift; sourceTree = "<group>"; };
 		B7643B38290FA53400F6A05B /* BasicToolSelectorObjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicToolSelectorObjectViewModel.swift; sourceTree = "<group>"; };
-		B7643B3B290FAB9000F6A05B /* ShadingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadingComponentView.swift; sourceTree = "<group>"; };
+		B7643B3B290FAB9000F6A05B /* ShadeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadeComponentView.swift; sourceTree = "<group>"; };
 		B7643B3D2910509F00F6A05B /* ObjectColorComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectColorComponentView.swift; sourceTree = "<group>"; };
 		B7643B3F2912516F00F6A05B /* RGBColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColorSelector.swift; sourceTree = "<group>"; };
 		B769F2622918EBE400C10661 /* ActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBar.swift; sourceTree = "<group>"; };
@@ -383,6 +386,9 @@
 		B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoordinateSystem.cpp; sourceTree = "<group>"; };
 		B7FD159A292BFF9800B6E7DC /* CoordinateSystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoordinateSystem.h; sourceTree = "<group>"; };
 		B7FD159C292E067900B6E7DC /* SPTCoordinateSystemUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTCoordinateSystemUtil.swift; sourceTree = "<group>"; };
+		B7FD159F292E483100B6E7DC /* PositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionComponentView.swift; sourceTree = "<group>"; };
+		B7FD15A1292E61EC00B6E7DC /* CartesianPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartesianPositionComponentView.swift; sourceTree = "<group>"; };
+		B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPositionComponentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -655,7 +661,7 @@
 			isa = PBXGroup;
 			children = (
 				B7643B36290F9DD800F6A05B /* ShadeToolView.swift */,
-				B7643B3B290FAB9000F6A05B /* ShadingComponentView.swift */,
+				B7643B3B290FAB9000F6A05B /* ShadeComponentView.swift */,
 			);
 			path = Shade;
 			sourceTree = "<group>";
@@ -872,12 +878,12 @@
 				B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */,
 				B7A78A6E2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift */,
 				B7A78A70292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift */,
+				B7FD159E292E47D200B6E7DC /* Move */,
 				B7643B32290BE85700F6A05B /* AnimatePosition */,
 				B7643B3A290FAAAA00F6A05B /* Shade */,
 				B70ABF2A291D75F500919F50 /* AnimateShade */,
 				B7EDBDBA28EE97D70048EF93 /* ToolSelector.swift */,
 				B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */,
-				B7C7489E28E2D7D100E270FB /* MoveToolView.swift */,
 				B7C748A028E377F600E270FB /* ScaleToolView.swift */,
 				B7C748A228E37C0D00E270FB /* OrientToolView.swift */,
 				B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */,
@@ -901,6 +907,17 @@
 				B7E6257D29142CA600343B67 /* HSBColorSelector.swift */,
 			);
 			path = Controls;
+			sourceTree = "<group>";
+		};
+		B7FD159E292E47D200B6E7DC /* Move */ = {
+			isa = PBXGroup;
+			children = (
+				B7C7489E28E2D7D100E270FB /* MoveToolView.swift */,
+				B7FD159F292E483100B6E7DC /* PositionComponentView.swift */,
+				B7FD15A1292E61EC00B6E7DC /* CartesianPositionComponentView.swift */,
+				B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */,
+			);
+			path = Move;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -991,6 +1008,8 @@
 				B7E625812916DB1800343B67 /* Color.cpp in Sources */,
 				B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */,
 				B7C7489D28D2FFC700E270FB /* SceneUIToggle.swift in Sources */,
+				B7FD15A4292E7ECF00B6E7DC /* LinearPositionComponentView.swift in Sources */,
+				B7FD15A0292E483100B6E7DC /* PositionComponentView.swift in Sources */,
 				B721760A2750AD990047016B /* Buffer_metal.mm in Sources */,
 				B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */,
 				B73245B6274124C100708909 /* Renderer.mm in Sources */,
@@ -1047,6 +1066,7 @@
 				B717635727ABF25600CE5195 /* Component.swift in Sources */,
 				B7643B37290F9DD800F6A05B /* ShadeToolView.swift in Sources */,
 				B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */,
+				B7FD15A2292E61EC00B6E7DC /* CartesianPositionComponentView.swift in Sources */,
 				B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */,
 				B7C748A728E5647800E270FB /* ComponentTreeNavigationView.swift in Sources */,
 				B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */,
@@ -1118,7 +1138,7 @@
 				B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */,
 				B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
-				B7643B3C290FAB9000F6A05B /* ShadingComponentView.swift in Sources */,
+				B7643B3C290FAB9000F6A05B /* ShadeComponentView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
 				B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */,
 				B769F265291ADF3B00C10661 /* ActionBarContentBuilder.swift in Sources */,

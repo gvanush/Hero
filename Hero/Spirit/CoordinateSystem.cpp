@@ -10,11 +10,11 @@
 #include <cmath>
 
 bool SPTLinearCoordinatesEqual(SPTLinearCoordinates lhs, SPTLinearCoordinates rhs) {
-    return simd_equal(lhs.origin, rhs.origin) && simd_equal(lhs.target, rhs.target) && lhs.factor == rhs.factor;
+    return simd_equal(lhs.origin, rhs.origin) && simd_equal(lhs.directionPoint, rhs.directionPoint) && lhs.offset == rhs.offset;
 }
 
 SPTLinearCoordinates SPTLinearCoordinatesCreate(simd_float3 origin, simd_float3 cartesian) {
-    return {origin, cartesian, 1.f};
+    return {origin, cartesian, simd_length(cartesian - origin)};
 }
 
 bool SPTSphericalCoordinatesEqual(SPTSphericalCoordinates lhs, SPTSphericalCoordinates rhs) {
@@ -59,7 +59,13 @@ SPTCylindricalCoordinates SPTCylindricalCoordinatesCreate(simd_float3 origin, si
 
 // MARK: Conversions
 simd_float3 SPTLinearCoordinatesToCartesian(SPTLinearCoordinates linear) {
-    return (1.f - linear.factor) * linear.origin + linear.factor * linear.target;
+    const auto& vec = linear.directionPoint - linear.origin;
+    auto length = simd_length(vec);
+    if(length < 0.0001f) {
+        return linear.origin;
+    } else {
+        return linear.origin + linear.offset * vec / length;
+    }
 }
 
 simd_float3 SPTSphericalCoordinatesToCartesian(SPTSphericalCoordinates spherical) {

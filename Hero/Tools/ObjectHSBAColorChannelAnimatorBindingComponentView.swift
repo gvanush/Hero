@@ -6,13 +6,11 @@
 //
 
 import SwiftUI
-import Combine
 
 
 class ObjectHSBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
     
     private var bindingWillChangeSubscription: SPTAnySubscription?
-    private var selectedPropertySubscription: AnyCancellable?
     private var channelInitialValue: Float!
     
     @SPTObservedComponentProperty<SPTMeshLook, Float> var channelValue: Float
@@ -38,23 +36,25 @@ class ObjectHSBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
         _channelValue.publisher = self.objectWillChange
     }
     
-    func onAppear() {
-        channelInitialValue = channelValue
-        
-        selectedPropertySubscription = self.$selectedProperty.sink { [weak self] newValue in
-            guard let property = newValue, let self = self else { return }
-            self.updateChannelValue(property: property)
+    override var selectedProperty: AnimatorBindingComponentProperty? {
+        didSet {
+            if isActive {
+                updateChannelValue()
+            }
         }
-        
-        bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [weak self] newValue in
-            guard let self = self, let property = self.selectedProperty else { return }
-
-            self.updateChannelValue(property: property)
-
-        })
     }
     
-    func onDisappear() {
+    override func onActive() {
+        channelInitialValue = channelValue
+        
+        bindingWillChangeSubscription = animatableProperty.onAnimatorBindingDidChangeSink(object: object, callback: { [unowned self] newValue in
+            self.updateChannelValue()
+        })
+        
+        updateChannelValue()
+    }
+    
+    override func onInactive() {
         channelValue = channelInitialValue
     }
     
@@ -133,8 +133,8 @@ class ObjectHSBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
         }
     }
 
-    private func updateChannelValue(property: AnimatorBindingComponentProperty) {
-        switch property {
+    private func updateChannelValue() {
+        switch selectedProperty! {
         case .valueAt0:
             self.channelValue = self.binding.valueAt0
         case .valueAt1:
@@ -177,12 +177,6 @@ struct ObjectHSBAColorChannelAnimatorBindingComponentView: View {
             }
         }
         .transition(.identity)
-        .onAppear {
-            component.onAppear()
-        }
-        .onDisappear {
-            component.onDisappear()
-        }
     }
     
 }

@@ -5,6 +5,7 @@
 //  Created by Vanush Grigoryan on 20.07.22.
 //
 
+#include "Base.hpp"
 #include "AnimatorManager.hpp"
 #include "ComponentObserverUtil.hpp"
 #include "ObjectPropertyAnimatorBinding.h"
@@ -94,7 +95,7 @@ void AnimatorManager::updateAnimator(SPTAnimatorId id, const SPTAnimator& update
     assert(validateAnimator(updated));
     
     spt::notifyComponentWillChangeObservers(_registry, id, updated);
-    _registry.get<SPTAnimator>(id) = updated;
+    spt::notifyComponentDidChangeObservers(_registry, id, spt::update(_registry, id, updated));
 
 }
 

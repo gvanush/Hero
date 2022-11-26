@@ -1,41 +1,38 @@
 //
-//  ShadeToolView.swift
+//  MoveToolView.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 31.10.22.
+//  Created by Vanush Grigoryan on 27.09.22.
 //
 
 import SwiftUI
 import Combine
 
 
-class ShadeToolComponentViewProvider: MeshObjectComponentViewProvider<ShadeComponent> {
+class MoveToolComponentViewProvider: MeshObjectComponentViewProvider<PositionComponent> {
     
-    override func viewForRoot(_ root: ShadeComponent) -> AnyView? {
-        AnyView(ShadeComponentView(component: root))
+    override func viewForRoot(_ root: PositionComponent) -> AnyView? {
+        AnyView(PositionComponentView(component: root, viewProvider: self))
     }
     
 }
 
-
-class ShadeToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<ShadeComponent> {
+class MoveToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<PositionComponent> {
 }
-
 
 fileprivate struct SelectedObjectControlsView: View {
     
-    @ObservedObject var model: ShadeToolSelectedObjectViewModel
+    @ObservedObject var model: MoveToolSelectedObjectViewModel
     
     var body: some View {
-        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: ShadeToolComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
+        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: MoveToolComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
     }
     
 }
 
-
-class ShadeToolViewModel: ToolViewModel {
+class MoveToolViewModel: ToolViewModel {
     
-    @Published private(set) var selectedObjectViewModel: ShadeToolSelectedObjectViewModel?
+    @Published private(set) var selectedObjectViewModel: MoveToolSelectedObjectViewModel?
     
     private var lastActiveComponentPath = ComponentPath()
     private var lastSelectedPropertyIndex: Int?
@@ -43,8 +40,7 @@ class ShadeToolViewModel: ToolViewModel {
     private var activeComponentSubscription: AnyCancellable?
     
     init(sceneViewModel: SceneViewModel) {
-        
-        super.init(tool: .shade, sceneViewModel: sceneViewModel)
+        super.init(tool: .move, sceneViewModel: sceneViewModel)
         
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
             guard let self = self, self.selectedObjectViewModel?.object != selected else { return }
@@ -88,9 +84,9 @@ class ShadeToolViewModel: ToolViewModel {
 }
 
 
-struct ShadeToolView: View {
+struct MoveToolView: View {
     
-    @ObservedObject var model: ShadeToolViewModel
+    @ObservedObject var model: MoveToolViewModel
     
     var body: some View {
         if let selectedObjectVM = model.selectedObjectViewModel {

@@ -67,7 +67,7 @@ extension SPTMeshLook: SPTObservableComponent {
         
         subscription.canceller = { SPTMeshLookRemoveDidEmergeObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
     static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
@@ -80,7 +80,20 @@ extension SPTMeshLook: SPTObservableComponent {
         
         subscription.canceller = { SPTMeshLookRemoveWillChangeObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
+    }
+    
+    static func onDidChangeSink(object: SPTObject, callback: @escaping DidChangeCallback) -> SPTAnySubscription {
+        let subscription = WillChangeSubscription(observer: callback)
+        
+        let token = SPTMeshLookAddDidChangeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<DidChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTMeshLookRemoveDidChangeObserver(object, token) }
+        
+        return subscription.eraseToAnySubscription()
     }
     
     static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
@@ -93,7 +106,7 @@ extension SPTMeshLook: SPTObservableComponent {
         
         subscription.canceller = { SPTMeshLookRemoveWillPerishObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
 }

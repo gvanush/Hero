@@ -39,7 +39,6 @@ class PositionFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
     
     private var guideObjects: (point0: SPTObject, point1: SPTObject, line: SPTObject)?
     private var bindingWillChangeSubscription: SPTAnySubscription?
-    private var selectedPropertySubscription: AnyCancellable?
     
     required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
@@ -47,25 +46,27 @@ class PositionFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         
     }
     
-    func onAppear() {
-        selectedPropertySubscription = self.$selectedProperty.sink { [weak self] newValue in
-            guard let property = newValue, let self = self, let guideObjects = self.guideObjects else {
-                return
+    override var selectedProperty: AnimatorBindingComponentProperty? {
+        didSet {
+            if isActive {
+                
+                var point0Look = SPTPointLook.get(object: guideObjects!.point0)
+                point0Look.color = Self.guidePoint0Color(selectedProperty: selectedProperty!).rgba
+                SPTPointLook.update(point0Look, object: guideObjects!.point0)
+                
+                var point1Look = SPTPointLook.get(object: guideObjects!.point1)
+                point1Look.color = Self.guidePoint1Color(selectedProperty: selectedProperty!).rgba
+                SPTPointLook.update(point1Look, object: guideObjects!.point1)
+                
             }
-            
-            var point0Look = SPTPointLook.get(object: guideObjects.point0)
-            point0Look.color = Self.guidePoint0Color(selectedProperty: property).rgba
-            SPTPointLook.update(point0Look, object: guideObjects.point0)
-            
-            var point1Look = SPTPointLook.get(object: guideObjects.point1)
-            point1Look.color = Self.guidePoint1Color(selectedProperty: property).rgba
-            SPTPointLook.update(point1Look, object: guideObjects.point1)
         }
-        
+    }
+    
+    override func onActive() {
         setupGuideObjects()
     }
     
-    func onDisappear() {
+    override func onInactive() {
         removeGuideObjects()
     }
     
@@ -212,12 +213,6 @@ struct PositionFieldAnimatorBindingView: View {
             }
         }
         .transition(.identity)
-        .onAppear {
-            component.onAppear()
-        }
-        .onDisappear {
-            component.onDisappear()
-        }
     }
     
 }

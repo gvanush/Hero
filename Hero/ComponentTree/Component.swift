@@ -22,6 +22,8 @@ struct ComponentPath {
 class Component: Identifiable, ObservableObject, Equatable {
     
     private(set) weak var parent: Component?
+    @Published var isActive = false
+    @Published var isDisclosed = false
     
     init(parent: Component?) {
         self.parent = parent
@@ -43,6 +45,30 @@ class Component: Identifiable, ObservableObject, Equatable {
     func onActive() { }
     
     func onInactive() { }
+    
+    func onDisclose() { }
+    
+    func onClose() { }
+    
+    func activate() {
+        isActive = true
+        onActive()
+    }
+    
+    func deactivate() {
+        isActive = false
+        onInactive()
+    }
+    
+    func disclose() {
+        isDisclosed = true
+        onDisclose()
+    }
+    
+    func close() {
+        isDisclosed = false
+        onClose()
+    }
     
     func pathIn(_ root: Component) -> ComponentPath? {
         
@@ -127,7 +153,40 @@ class BasicComponent<P>: Component where P: RawRepresentable & CaseIterable & Di
 
 class MultiVariantComponent: Component {
     
-    @Published var activeComponent: Component!
+    @Published var activeComponent: Component! {
+        willSet {
+            if isActive {
+                activeComponent.deactivate()
+            }
+            if isDisclosed {
+                activeComponent.close()
+                newValue.disclose()
+            }
+            if isActive {
+                newValue.activate()
+            }
+        }
+    }
+    
+    override var isActive: Bool {
+        didSet {
+            if isActive {
+                activeComponent.activate()
+            } else {
+                activeComponent.deactivate()
+            }
+        }
+    }
+    
+    override var isDisclosed: Bool {
+        didSet {
+            if isDisclosed {
+                activeComponent.disclose()
+            } else {
+                activeComponent.close()
+            }
+        }
+    }
     
     override var id: ObjectIdentifier {
         activeComponent.id
@@ -154,4 +213,15 @@ class MultiVariantComponent: Component {
         activeComponent.subcomponents
     }
     
+    override func onActive() {
+    }
+    
+    override func onInactive() {
+    }
+    
+    override func onDisclose() {
+    }
+    
+    override func onClose() {
+    }
 }

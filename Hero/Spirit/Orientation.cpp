@@ -160,9 +160,8 @@ void SPTOrientationMake(SPTObject object, SPTOrientation orientation) {
 void SPTOrientationUpdate(SPTObject object, SPTOrientation newOrientation) {
     auto& registry = spt::Scene::getRegistry(object);
     spt::notifyComponentWillChangeObservers(registry, object.entity, newOrientation);
-    
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
-    registry.get<SPTOrientation>(object.entity) = newOrientation;
+    spt::notifyComponentDidChangeObservers(registry, object.entity, spt::update(registry, object.entity, newOrientation));
 }
 
 void SPTOrientationDestroy(SPTObject object) {
@@ -190,6 +189,14 @@ SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrient
 
 void SPTOrientationRemoveWillChangeObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillChangeObserver<SPTOrientation>(object, token);
+}
+
+SPTObserverToken SPTOrientationAddDidChangeObserver(SPTObject object, SPTOrientationDidChangeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentDidChangeObserver<SPTOrientation>(object, observer, userInfo);
+}
+
+void SPTOrientationRemoveDidChangeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentDidChangeObserver<SPTOrientation>(object, token);
 }
 
 SPTObserverToken SPTOrientationAddDidEmergeObserver(SPTObject object, SPTOrientationDidEmergeObserver observer, SPTObserverUserInfo userInfo) {

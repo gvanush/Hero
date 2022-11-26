@@ -46,10 +46,16 @@ extension ObjectPropertyVectorEditingParams {
     
 }
 
-struct ObjectPropertyPositionEditingParams: ObjectPropertyVectorEditingParams {
+struct ObjectPropertyCartesianPositionEditingParams: ObjectPropertyVectorEditingParams {
     var x = ObjectPropertyFloatEditingParams()
     var y = ObjectPropertyFloatEditingParams()
     var z = ObjectPropertyFloatEditingParams()
+}
+
+struct ObjectPropertyLinearPositionEditingParams {
+    var origin = ObjectPropertyCartesianPositionEditingParams()
+    var target = ObjectPropertyCartesianPositionEditingParams()
+    var factor = ObjectPropertyFloatEditingParams()
 }
 
 struct ObjectPropertyScaleEditingParams: ObjectPropertyVectorEditingParams {
@@ -72,16 +78,25 @@ struct ObjectPropertyPositionBindingEditingParams {
 class ObjectPropertyEditingParams: ObservableObject {
 
     // MARK: Position
-    @Published private var positionParams = [SPTObject : ObjectPropertyPositionEditingParams]()
+    @Published private var cartesianPositionParams = [SPTObject : ObjectPropertyCartesianPositionEditingParams]()
     
-    subscript(positionOf object: SPTObject, axis axis: Axis) -> ObjectPropertyFloatEditingParams {
+    subscript(cartesianPositionOf object: SPTObject) -> ObjectPropertyCartesianPositionEditingParams {
         get {
-            positionParams[object, default: .init()][axis]
+            cartesianPositionParams[object, default: .init()]
         }
         set {
-            var params = positionParams[object, default: .init()]
-            params[axis] = newValue
-            positionParams[object] = params
+            cartesianPositionParams[object] = newValue
+        }
+    }
+    
+    @Published private var linearPositionParams = [SPTObject : ObjectPropertyLinearPositionEditingParams]()
+    
+    subscript(linearPositionOf object: SPTObject) -> ObjectPropertyLinearPositionEditingParams {
+        get {
+            linearPositionParams[object, default: .init()]
+        }
+        set {
+            linearPositionParams[object] = newValue
         }
     }
     
@@ -127,14 +142,18 @@ class ObjectPropertyEditingParams: ObservableObject {
     
     // MARK: Object lifecycle
     func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
-        positionParams[duplicate] = positionParams[original]
+        cartesianPositionParams[duplicate] = cartesianPositionParams[original]
+        linearPositionParams[duplicate] = linearPositionParams[original]
+        
         scaleParams[duplicate] = scaleParams[original]
         rotationParams[duplicate] = rotationParams[original]
         positionBindingParams[duplicate] = positionBindingParams[original]
     }
     
     func onObjectDestroy(_ object: SPTObject) {
-        positionParams.removeValue(forKey: object)
+        cartesianPositionParams.removeValue(forKey: object)
+        linearPositionParams.removeValue(forKey: object)
+        
         scaleParams.removeValue(forKey: object)
         rotationParams.removeValue(forKey: object)
         positionBindingParams.removeValue(forKey: object)

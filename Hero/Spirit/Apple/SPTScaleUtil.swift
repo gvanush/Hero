@@ -57,7 +57,7 @@ extension SPTScale: SPTObservableComponent {
 
         subscription.canceller = { SPTScaleRemoveDidEmergeObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
     static func onWillChangeSink(object: SPTObject, callback: @escaping WillChangeCallback) -> SPTAnySubscription {
@@ -71,7 +71,21 @@ extension SPTScale: SPTObservableComponent {
         
         subscription.canceller = { SPTScaleRemoveWillChangeObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
+    }
+    
+    static func onDidChangeSink(object: SPTObject, callback: @escaping DidChangeCallback) -> SPTAnySubscription {
+        
+        let subscription = DidChangeSubscription(observer: callback)
+        
+        let token = SPTScaleAddDidChangeObserver(object, { newValue, userInfo in
+            let subscription = Unmanaged<DidChangeSubscription>.fromOpaque(userInfo!).takeUnretainedValue()
+            subscription.observer(newValue)
+        }, Unmanaged.passUnretained(subscription).toOpaque())
+        
+        subscription.canceller = { SPTScaleRemoveDidChangeObserver(object, token) }
+        
+        return subscription.eraseToAnySubscription()
     }
     
     static func onWillPerishSink(object: SPTObject, callback: @escaping WillPerishCallback) -> SPTAnySubscription {
@@ -85,7 +99,7 @@ extension SPTScale: SPTObservableComponent {
         
         subscription.canceller = { SPTScaleRemoveWillPerishObserver(object, token) }
         
-        return subscription
+        return subscription.eraseToAnySubscription()
     }
     
 }

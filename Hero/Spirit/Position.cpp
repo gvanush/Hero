@@ -39,7 +39,7 @@ void SPTPositionUpdate(SPTObject object, SPTPosition newPosition) {
     auto& registry = spt::Scene::getRegistry(object);
     spt::notifyComponentWillChangeObservers(registry, object.entity, newPosition);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
-    registry.get<SPTPosition>(object.entity) = newPosition;
+    spt::notifyComponentDidChangeObservers(registry, object.entity, spt::update(registry, object.entity, newPosition));
 }
 
 void SPTPositionDestroy(SPTObject object) {
@@ -58,6 +58,19 @@ const SPTPosition* _Nullable SPTPositionTryGet(SPTObject object) {
 
 bool SPTPositionExists(SPTObject object) {
     return spt::Scene::getRegistry(object).all_of<SPTPosition>(object.entity);
+}
+
+simd_float3 SPTPositionGetOrigin(SPTPosition position) {
+    switch (position.coordinateSystem) {
+        case SPTCoordinateSystemCartesian:
+            return {};
+        case SPTCoordinateSystemLinear:
+            return position.linear.origin;
+        case SPTCoordinateSystemSpherical:
+            return position.spherical.origin;
+        case SPTCoordinateSystemCylindrical:
+            return position.cylindrical.origin;
+    }
 }
 
 SPTPosition SPTPositionToCartesian(SPTPosition position) {
@@ -138,6 +151,14 @@ SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionW
 
 void SPTPositionRemoveWillChangeObserver(SPTObject object, SPTObserverToken token) {
     spt::removeComponentWillChangeObserver<SPTPosition>(object, token);
+}
+
+SPTObserverToken SPTPositionAddDidChangeObserver(SPTObject object, SPTPositionDidChangeObserver observer, SPTObserverUserInfo userInfo) {
+    return spt::addComponentDidChangeObserver<SPTPosition>(object, observer, userInfo);
+}
+
+void SPTPositionRemoveDidChangeObserver(SPTObject object, SPTObserverToken token) {
+    spt::removeComponentDidChangeObserver<SPTPosition>(object, token);
 }
 
 SPTObserverToken SPTPositionAddDidEmergeObserver(SPTObject object, SPTPositionDidEmergeObserver observer, SPTObserverUserInfo userInfo) {

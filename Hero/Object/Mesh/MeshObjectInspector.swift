@@ -46,7 +46,8 @@ class MeshObjectInspectorModel: ObservableObject {
     
     func editPosition(axis: Axis, dismiss: DismissAction) {
         rootViewModel.activeToolViewModel = rootViewModel.moveToolViewModel
-        rootViewModel.moveToolViewModel.selectedObjectViewModel!.axis = axis
+        // TODO
+//        rootViewModel.moveToolViewModel.selectedObjectViewModel!.axis = axis
         dismiss()
     }
     
@@ -122,7 +123,7 @@ class MeshObjectInspectorModel: ObservableObject {
         }
     }
     
-    func editShading(property: ShadingComponent.Property, dismiss: DismissAction) {
+    func editShading(property: ShadeComponent.Property, dismiss: DismissAction) {
         rootViewModel.activeToolViewModel = rootViewModel.shadeToolViewModel
         let selectedObjectVM = rootViewModel.shadeToolViewModel.selectedObjectViewModel!
         selectedObjectVM.activeComponent = selectedObjectVM.rootComponent

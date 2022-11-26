@@ -41,11 +41,14 @@ void updateAnimatorBinding(SPTObject object, const SPTAnimatorBinding& animatorB
         spt::AnimatorManager::active().onObjectPropertyUnbind(binding.base.animatorId, object, P);
     }
     
+    auto oldBinding = binding;
     binding = newBinding;
     
     if(animatorChanged) {
         spt::AnimatorManager::active().onObjectPropertyBind(animatorBinding.animatorId, object, P);
     }
+    
+    notifyAnimatorBindingDidChangeObservers(registry, object.entity, oldBinding);
 }
 
 template <SPTAnimatableObjectProperty P>
