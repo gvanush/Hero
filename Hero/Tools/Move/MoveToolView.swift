@@ -42,8 +42,8 @@ class MoveToolViewModel: ToolViewModel {
     init(sceneViewModel: SceneViewModel) {
         super.init(tool: .move, sceneViewModel: sceneViewModel)
         
-        selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
-            guard let self = self, self.selectedObjectViewModel?.object != selected else { return }
+        selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [unowned self] selected in
+            guard self.selectedObjectViewModel?.object != selected else { return }
             self.setupSelectedObjectViewModel(object: selected)
         }
         

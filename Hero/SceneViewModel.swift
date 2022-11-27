@@ -23,11 +23,9 @@ class SceneViewModel: ObservableObject {
     @Published var focusedObject: SPTObject? {
         willSet {
             if let newObject = newValue {
-                focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: newObject) { newPos in
-                    self.focusOn(newPos.toCartesian.cartesian)
+                if isFocusEnabled {
+                    updateFocusedObject(newObject)
                 }
-                
-                focusOn(newObject)
             } else {
                 focusedObjectPositionWillChangeSubscription = nil
             }
@@ -35,12 +33,24 @@ class SceneViewModel: ObservableObject {
         }
     }
     
+    @Published var isFocusEnabled = false {
+        willSet {
+            if newValue {
+                if let object = focusedObject {
+                    updateFocusedObject(object)
+                }
+            } else {
+                focusedObjectPositionWillChangeSubscription = nil
+            }
+        }
+    }
+    
     @Published var selectedObject: SPTObject? {
         willSet {
-            if let newObject = newValue, selectedObject == newObject {
-                focusedObject = newObject
+            guard selectedObject != newValue else {
                 return
             }
+            focusedObject = newValue
             objectSelector = ObjectSelector(object: newValue)
         }
     }
@@ -192,6 +202,13 @@ class SceneViewModel: ObservableObject {
     
     func cancelZoom() {
         prevDragValue = nil
+    }
+    
+    private func updateFocusedObject(_ object: SPTObject) {
+        focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: object) { [unowned self] newPos in
+            self.focusOn(newPos.toCartesian.cartesian)
+        }
+        focusOn(object)
     }
     
     static let zoomFactor: Float = 3.0

@@ -54,6 +54,7 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
     deinit {
         SPTSceneProxy.destroyObject(origin.object)
         SPTSceneProxy.destroyObject(directionPoint.object)
+        SPTSceneProxy.destroyObject(lineGuideObject)
     }
     
     var linear: SPTLinearCoordinates {
@@ -68,14 +69,19 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         
         let subcomponent = CartesianPositionComponent(title: title, editingParamsKeyPath: \.[cartesianPositionOf: guidePointObject], object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
         
-        let cancellable = subcomponent.$isDisclosed.dropFirst().sink { isDisclosed in
+        let cancellable = subcomponent.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
             var pointLook = SPTPointLook.get(object: guidePointObject)
             if isDisclosed {
                 pointLook.color = UIColor.secondaryLightSelectionColor.rgba
-//                self.sceneViewModel.focusedObject = guidePointObject
+                self.sceneViewModel.focusedObject = guidePointObject
             } else {
                 pointLook.color = UIColor.secondarySelectionColor.rgba
-//                self.sceneViewModel.focusedObject = self.object
+                // If this component still 'owns' focused object then revert to the source object otherwise
+                // leave as it is. This is relevant when component is closed when entire component tree is removed
+                // from the screen
+                if self.sceneViewModel.focusedObject == guidePointObject {
+                    self.sceneViewModel.focusedObject = self.object
+                }
             }
             SPTPointLook.update(pointLook, object: guidePointObject)
         }

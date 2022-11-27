@@ -129,21 +129,7 @@ struct SceneView: View {
     }
     
     func focusToggle() -> some View {
-        SceneUIToggle(isOn: .init(get: {
-            guard let selected = model.selectedObject else {
-                return nil
-            }
-            return selected == model.focusedObject
-            
-        }, set: { newValue in
-            
-            if newValue! {
-                model.focusedObject = model.selectedObject
-            } else {
-                model.focusedObject = nil
-            }
-            
-        }), offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
+        SceneUIToggle(isOn: $model.isFocusEnabled, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
         .transition(.identity)
         .id(model.selectedObject)
     }
