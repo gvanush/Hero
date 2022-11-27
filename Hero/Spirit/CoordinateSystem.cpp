@@ -59,13 +59,7 @@ SPTCylindricalCoordinates SPTCylindricalCoordinatesCreate(simd_float3 origin, si
 
 // MARK: Conversions
 simd_float3 SPTLinearCoordinatesToCartesian(SPTLinearCoordinates linear) {
-    const auto& vec = linear.directionPoint - linear.origin;
-    auto length = simd_length(vec);
-    if(length < 0.0001f) {
-        return linear.origin;
-    } else {
-        return linear.origin + linear.offset * vec / length;
-    }
+    return linear.origin + linear.offset * simd_normalize(linear.directionPoint - linear.origin);
 }
 
 simd_float3 SPTSphericalCoordinatesToCartesian(SPTSphericalCoordinates spherical) {
