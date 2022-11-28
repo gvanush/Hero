@@ -166,6 +166,7 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
         case .HSB:
             activeComponent = ObjectHSBAColorComponent(keyPath: keyPath.appending(path: \.hsba), object: object, parent: parent)
         }
+        activeComponent.variantTag = colorModel.rawValue
         variantCancellable = activeComponent.objectWillChange.sink { [weak self] in
             self?.objectWillChange.send()
         }

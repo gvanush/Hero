@@ -30,57 +30,11 @@ fileprivate struct SelectedObjectControlsView: View {
     
 }
 
-class MoveToolViewModel: ToolViewModel {
-    
-    @Published private(set) var selectedObjectViewModel: MoveToolSelectedObjectViewModel?
-    
-    private var lastActiveComponentPath = ComponentPath()
-    private var lastSelectedPropertyIndex: Int?
-    private var selectedObjectSubscription: AnyCancellable?
-    private var activeComponentSubscription: AnyCancellable?
+class MoveToolViewModel: BasicToolViewModel<MoveToolSelectedObjectViewModel, PositionComponent> {
     
     init(sceneViewModel: SceneViewModel) {
         super.init(tool: .move, sceneViewModel: sceneViewModel)
-        
-        selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [unowned self] selected in
-            guard self.selectedObjectViewModel?.object != selected else { return }
-            self.setupSelectedObjectViewModel(object: selected)
-        }
-        
-        setupSelectedObjectViewModel(object: sceneViewModel.selectedObject)
-        
     }
-    
-    override var activeComponent: Component? {
-        set {
-            guard let selectedObjectViewModel = selectedObjectViewModel else {
-                return
-            }
-            selectedObjectViewModel.activeComponent = newValue ?? selectedObjectViewModel.rootComponent
-        }
-        get {
-            selectedObjectViewModel?.activeComponent
-        }
-    }
-    
-    private func setupSelectedObjectViewModel(object: SPTObject?) {
-        
-        if let selectedVM = selectedObjectViewModel {
-            lastActiveComponentPath = selectedVM.activeComponent.pathIn(selectedVM.rootComponent)!
-            lastSelectedPropertyIndex = selectedVM.activeComponent.selectedPropertyIndex
-        }
-        
-        if let object = object {
-            selectedObjectViewModel = .init(selectedPropertyIndex: lastSelectedPropertyIndex, activeComponentPath: lastActiveComponentPath, object: object, sceneViewModel: sceneViewModel)
-            activeComponentSubscription = selectedObjectViewModel!.$activeComponent.sink { [weak self] _ in
-                self?.objectWillChange.send()
-            }
-        } else {
-            selectedObjectViewModel = nil
-            activeComponentSubscription = nil
-        }
-    }
-    
 }
 
 

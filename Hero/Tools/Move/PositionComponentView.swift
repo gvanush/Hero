@@ -72,6 +72,7 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
             // TODO
             break
         }
+        activeComponent.variantTag = coordinateSystem.rawValue
         variantCancellable = activeComponent.objectWillChange.sink { [weak self] in
             self?.objectWillChange.send()
         }

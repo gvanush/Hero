@@ -93,6 +93,7 @@ class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPT
         case .HSB:
             activeComponent = ObjectHSBAColorAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }
+        activeComponent.variantTag = colorModel.rawValue
         variantCancellable = activeComponent.objectWillChange.sink { [unowned self] in
             self.objectWillChange.send()
         }
