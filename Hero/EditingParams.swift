@@ -58,6 +58,13 @@ struct ObjectPropertyLinearPositionEditingParams {
     var factor = ObjectPropertyFloatEditingParams()
 }
 
+struct ObjectPropertyCylindricalPositionEditingParams {
+    var origin = ObjectPropertyCartesianPositionEditingParams()
+    var longitude = ObjectPropertyFloatEditingParams()
+    var radius = ObjectPropertyFloatEditingParams()
+    var height = ObjectPropertyFloatEditingParams()
+}
+
 struct ObjectPropertyScaleEditingParams: ObjectPropertyVectorEditingParams {
     var x = ObjectPropertyFloatEditingParams()
     var y = ObjectPropertyFloatEditingParams()
@@ -97,6 +104,17 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
         set {
             linearPositionParams[object] = newValue
+        }
+    }
+    
+    @Published private var cylindricalPositionParams = [SPTObject : ObjectPropertyCylindricalPositionEditingParams]()
+    
+    subscript(cylindricalPositionOf object: SPTObject) -> ObjectPropertyCylindricalPositionEditingParams {
+        get {
+            cylindricalPositionParams[object, default: .init()]
+        }
+        set {
+            cylindricalPositionParams[object] = newValue
         }
     }
     

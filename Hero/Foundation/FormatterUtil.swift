@@ -9,7 +9,7 @@ import Foundation
 
 enum Formatters {
 
-    static let positionField = BasicFloatFormatter()
+    static let length = BasicFloatFormatter()
     
     static let scaleField = BasicFloatFormatter()
     

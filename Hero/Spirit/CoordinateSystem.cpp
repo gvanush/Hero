@@ -30,11 +30,11 @@ SPTSphericalCoordinates SPTSphericalCoordinatesCreate(simd_float3 origin, simd_f
     const auto t = point.x * point.x + point.z * point.z;
     const auto r = sqrtf(t + point.y * point.y);
     const auto k = point.y / r;
-    if(k < -1.f || k > 1.f) {
+    if(k < -1.f || k > 1.f || isnan(k)) {
         return {origin, 0.f, 0.f, 0.f};
     }
     const auto m = point.x / sqrtf(t);
-    if(m < -1.f || m > 1.f) {
+    if(m < -1.f || m > 1.f || isnan(m)) {
         return {origin, r, 0.f, acosf(k)};
     }
     return {origin, r, copysignf(1, point.z) * acosf(m), acosf(k)};
@@ -51,7 +51,7 @@ SPTCylindricalCoordinates SPTCylindricalCoordinatesCreate(simd_float3 origin, si
     const auto& point = cartesian - origin;
     const auto radius = sqrtf(point.z * point.z + point.x * point.x);
     const auto k = point.x / radius;
-    if(k < -1.f || k > 1.f) {
+    if(k < -1.f || k > 1.f || isnan(k)) {
         return {origin, 0.f, 0.f, point.y};
     }
     return {origin, radius, (point.z >= 0.f ? asinf(k) : static_cast<float>(M_PI) - asinf(k)), point.y};

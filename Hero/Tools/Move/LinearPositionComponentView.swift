@@ -16,9 +16,9 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    let positionFormatter = Formatters.positionField
+    let lengthFormatter = Formatters.length
 
-    @SPTObservedComponent private var position: SPTPosition
+    @SPTObservedComponentProperty<SPTPosition, SPTLinearCoordinates> var linearPosition: SPTLinearCoordinates
     
     var origin: CartesianPositionComponent!
     var directionPoint: CartesianPositionComponent!
@@ -31,19 +31,19 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         self.object = object
         self.sceneViewModel = sceneViewModel
         
-        _position = SPTObservedComponent(object: object)
+        _linearPosition = .init(object: object, keyPath: \.linear)
         
         super.init(selectedProperty: .offset, parent: parent)
         
-        _position.publisher = self.objectWillChange
+        _linearPosition.publisher = self.objectWillChange
         
-        origin = makeSubcomponent(title: "Origin", position: linear.origin) { [unowned self] position in
-            linear.origin = position.cartesian
+        origin = makeSubcomponent(title: "Origin", position: linearPosition.origin) { [unowned self] position in
+            linearPosition.origin = position.cartesian
             updateLine(originPosition: position, targetPosition: directionPoint.position)
         }
         
-        directionPoint = makeSubcomponent(title: "Direction", position: linear.directionPoint) { [unowned self] position in
-            linear.directionPoint = position.cartesian
+        directionPoint = makeSubcomponent(title: "Direction", position: linearPosition.directionPoint) { [unowned self] position in
+            linearPosition.directionPoint = position.cartesian
             updateLine(originPosition: origin.position, targetPosition: position)
         }
         
@@ -55,11 +55,6 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         SPTSceneProxy.destroyObject(origin.object)
         SPTSceneProxy.destroyObject(directionPoint.object)
         SPTSceneProxy.destroyObject(lineGuideObject)
-    }
-    
-    var linear: SPTLinearCoordinates {
-        set { position.linear = newValue }
-        get { position.linear }
     }
     
     private func makeSubcomponent(title: String, position: simd_float3, onPositionChange: @escaping (SPTPosition) -> Void) -> CartesianPositionComponent {
@@ -106,10 +101,10 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         let targetPosition = directionPoint.position
         
         lineGuideObject = sceneViewModel.scene.makeObject()
-        SPTScaleMake(lineGuideObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
-        SPTPolylineLookDepthBiasMake(lineGuideObject, 5.0, 3.0, 0.0)
         SPTPosition.make(originPosition, object: lineGuideObject)
+        SPTScale.make(.init(x: 500.0), object: lineGuideObject)
         SPTOrientation.make(.init(lookAt: .init(target: targetPosition.cartesian, up: lineUpVector(origin: originPosition.cartesian, target: targetPosition.cartesian), axis: .X, positive: true)), object: lineGuideObject)
+        SPTPolylineLookDepthBiasMake(lineGuideObject, 5.0, 3.0, 0.0)
     }
     
     private func lineUpVector(origin: simd_float3, target: simd_float3) -> simd_float3 {
@@ -152,11 +147,16 @@ struct LinearPositionComponentView: View {
     
     var body: some View {
         Group {
-            FloatSelector(value: $component.linear.offset, scale: $editingParams[linearPositionOf: component.object].factor.scale, isSnappingEnabled: $editingParams[linearPositionOf: component.object].factor.isSnapping) { editingState in
-                userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
+            switch component.selectedProperty {
+            case .offset:
+                FloatSelector(value: $component.linearPosition.offset, scale: $editingParams[linearPositionOf: component.object].factor.scale, isSnappingEnabled: $editingParams[linearPositionOf: component.object].factor.isSnapping, formatter: component.lengthFormatter) { editingState in
+                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
+                }
+            case .none:
+                fatalError()
             }
-            .tint(Color.primarySelectionColor)
-            .transition(.identity)
         }
+        .tint(Color.primarySelectionColor)
+        .transition(.identity)
     }
 }

@@ -12,6 +12,8 @@ class SceneViewModel: ObservableObject {
     
     let scene = SPTSceneProxy()
     let lineMeshId: SPTMeshId
+    let halfLineMeshId: SPTMeshId
+    let circleOutlineMeshId: SPTMeshId
     
     private var prevDragValue: DragGesture.Value?
 
@@ -29,7 +31,6 @@ class SceneViewModel: ObservableObject {
             } else {
                 focusedObjectPositionWillChangeSubscription = nil
             }
-            
         }
     }
     
@@ -66,6 +67,16 @@ class SceneViewModel: ObservableObject {
 
     init() {
 
+        // Setup meshes
+        let linePath = Bundle.main.path(forResource: "line", ofType: "obj")!
+        lineMeshId = SPTCreatePolylineFromFile(linePath)
+        
+        let halfLinePath = Bundle.main.path(forResource: "half_line", ofType: "obj")!
+        halfLineMeshId = SPTCreatePolylineFromFile(halfLinePath)
+        
+        let circleOutlinePath = Bundle.main.path(forResource: "circle_outline", ofType: "obj")!
+        circleOutlineMeshId = SPTCreatePolylineFromFile(circleOutlinePath)
+        
         // Setup view camera
         viewCameraObject = scene.makeObject()
         SPTPosition.make(.init(origin: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi), object: viewCameraObject)
@@ -80,9 +91,6 @@ class SceneViewModel: ObservableObject {
         SPTPolylineLook.make(.init(color: UIColor.systemGray.rgba, polylineId: gridPolylineId, thickness: 2.0, categories: LookCategories.sceneGuide.rawValue), object: gridObject)
         
         // Setup coordinate axis
-        let linePath = Bundle.main.path(forResource: "line", ofType: "obj")!
-        lineMeshId = SPTCreatePolylineFromFile(linePath)
-        
         let xAxisObject = scene.makeObject()
         SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: lineMeshId, thickness: 3.0, categories: LookCategories.sceneGuide.rawValue), object: xAxisObject)
         

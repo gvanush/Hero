@@ -69,8 +69,7 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
             // TODO
             break
         case .cylindrical:
-            // TODO
-            break
+            activeComponent = CylindricalPositionComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }
         activeComponent.variantTag = coordinateSystem.rawValue
         variantCancellable = activeComponent.objectWillChange.sink { [weak self] in

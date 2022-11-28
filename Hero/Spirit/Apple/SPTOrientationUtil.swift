@@ -10,6 +10,10 @@ import Foundation
 
 extension SPTOrientation: SPTObservableComponent {
     
+    init(x: Float = 0.0, y: Float = 0.0, z: Float = 0.0, order: SPTEulerOrder = .XYZ) {
+        self.init(euler: .init(rotation: .init(x: x, y: y, z: z), order: order))
+    }
+    
     init(euler: SPTEulerOrientation) {
         self.init(type: .euler, .init(euler: euler))
     }

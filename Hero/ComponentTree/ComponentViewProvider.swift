@@ -34,6 +34,8 @@ class ComponentViewProvider<RC> {
     func viewFor(_ component: CartesianPositionComponent) -> AnyView? { nil }
     
     func viewFor(_ component: LinearPositionComponent) -> AnyView? { nil }
+    
+    func viewFor(_ component: CylindricalPositionComponent) -> AnyView? { nil }
 }
 
 final class EmptyComponentViewProvider<RC>: ComponentViewProvider<RC> {

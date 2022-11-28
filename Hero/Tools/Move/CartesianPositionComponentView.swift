@@ -14,7 +14,7 @@ class CartesianPositionComponent: BasicComponent<Axis> {
     let editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, ObjectPropertyCartesianPositionEditingParams>
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    let positionFormatter = Formatters.positionField
+    let lengthFormatter = Formatters.length
 
     @SPTObservedComponent private(set) var position: SPTPosition
     private var guideObject: SPTObject?
@@ -57,7 +57,7 @@ class CartesianPositionComponent: BasicComponent<Axis> {
     func setupGuideObjects() {
 
         let object = sceneViewModel.scene.makeObject()
-        SPTScaleMake(object, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
+        SPTScale.make(.init(x: 500.0), object: object)
         SPTPolylineLookDepthBiasMake(object, 5.0, 3.0, 0.0)
 
         switch selectedProperty {
@@ -109,15 +109,15 @@ struct CartesianPositionComponentView: View {
         Group {
             switch component.selectedProperty {
             case .x:
-                FloatSelector(value: $component.cartesian.x, scale: scaleBinding(keyPath: \.x.scale), isSnappingEnabled: isSnappingBinding(keyPath: \.x.isSnapping), formatter: component.positionFormatter) { editingState in
+                FloatSelector(value: $component.cartesian.x, scale: scaleBinding(keyPath: \.x.scale), isSnappingEnabled: isSnappingBinding(keyPath: \.x.isSnapping), formatter: component.lengthFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .y:
-                FloatSelector(value: $component.cartesian.y, scale: scaleBinding(keyPath: \.y.scale), isSnappingEnabled: isSnappingBinding(keyPath: \.y.isSnapping), formatter: component.positionFormatter) { editingState in
+                FloatSelector(value: $component.cartesian.y, scale: scaleBinding(keyPath: \.y.scale), isSnappingEnabled: isSnappingBinding(keyPath: \.y.isSnapping), formatter: component.lengthFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .z:
-                FloatSelector(value: $component.cartesian.z, scale: scaleBinding(keyPath: \.z.scale), isSnappingEnabled: isSnappingBinding(keyPath: \.z.isSnapping), formatter: component.positionFormatter) { editingState in
+                FloatSelector(value: $component.cartesian.z, scale: scaleBinding(keyPath: \.z.scale), isSnappingEnabled: isSnappingBinding(keyPath: \.z.isSnapping), formatter: component.lengthFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .none:

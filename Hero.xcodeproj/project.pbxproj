@@ -164,6 +164,10 @@
 		B7FD15A0292E483100B6E7DC /* PositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD159F292E483100B6E7DC /* PositionComponentView.swift */; };
 		B7FD15A2292E61EC00B6E7DC /* CartesianPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A1292E61EC00B6E7DC /* CartesianPositionComponentView.swift */; };
 		B7FD15A4292E7ECF00B6E7DC /* LinearPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */; };
+		B7FD15A6293505C700B6E7DC /* CylindricalPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A5293505C700B6E7DC /* CylindricalPositionComponentView.swift */; };
+		B7FD15A829351CB200B6E7DC /* PositionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A729351CB200B6E7DC /* PositionUtil.swift */; };
+		B7FD15AA29352AE300B6E7DC /* half_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7FD15A929352AE300B6E7DC /* half_line.obj */; };
+		B7FD15AC29354CF100B6E7DC /* circle_outline.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7FD15AB29354CF100B6E7DC /* circle_outline.obj */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -389,6 +393,10 @@
 		B7FD159F292E483100B6E7DC /* PositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionComponentView.swift; sourceTree = "<group>"; };
 		B7FD15A1292E61EC00B6E7DC /* CartesianPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartesianPositionComponentView.swift; sourceTree = "<group>"; };
 		B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPositionComponentView.swift; sourceTree = "<group>"; };
+		B7FD15A5293505C700B6E7DC /* CylindricalPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylindricalPositionComponentView.swift; sourceTree = "<group>"; };
+		B7FD15A729351CB200B6E7DC /* PositionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionUtil.swift; sourceTree = "<group>"; };
+		B7FD15A929352AE300B6E7DC /* half_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = half_line.obj; sourceTree = "<group>"; };
+		B7FD15AB29354CF100B6E7DC /* circle_outline.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = circle_outline.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -493,6 +501,8 @@
 				B72358472756928F00337547 /* sphere.obj */,
 				B7235859275F4EE500337547 /* coordinate_grid.obj */,
 				B723585B2761173800337547 /* line.obj */,
+				B7FD15A929352AE300B6E7DC /* half_line.obj */,
+				B7FD15AB29354CF100B6E7DC /* circle_outline.obj */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -763,6 +773,7 @@
 				B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */,
 				B7B711D428C108D70077C7CD /* LookCategories.swift */,
 				B70ABF2F291D9F6200919F50 /* AnimatablePropertyUtil.swift */,
+				B7FD15A729351CB200B6E7DC /* PositionUtil.swift */,
 			);
 			path = Spirit;
 			sourceTree = "<group>";
@@ -916,6 +927,7 @@
 				B7FD159F292E483100B6E7DC /* PositionComponentView.swift */,
 				B7FD15A1292E61EC00B6E7DC /* CartesianPositionComponentView.swift */,
 				B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */,
+				B7FD15A5293505C700B6E7DC /* CylindricalPositionComponentView.swift */,
 			);
 			path = Move;
 			sourceTree = "<group>";
@@ -985,9 +997,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7FD15AC29354CF100B6E7DC /* circle_outline.obj in Resources */,
 				B723585C2761189E00337547 /* line.obj in Resources */,
 				B723585A275F51F700337547 /* coordinate_grid.obj in Resources */,
 				B723583E2756147200337547 /* plane.obj in Resources */,
+				B7FD15AA29352AE300B6E7DC /* half_line.obj in Resources */,
 				B72358422756902F00337547 /* cylinder.obj in Resources */,
 				B72358482756928F00337547 /* sphere.obj in Resources */,
 				B723584027568C6300337547 /* cube.obj in Resources */,
@@ -1093,6 +1107,7 @@
 				B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */,
 				B7E30F5628906D4800224E09 /* SignalGraphView.swift in Sources */,
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
+				B7FD15A6293505C700B6E7DC /* CylindricalPositionComponentView.swift in Sources */,
 				B7C9D6C528FD30BA00621BA1 /* IntegerUtil.swift in Sources */,
 				B7A78A6D292238650041C812 /* ObjectColorAnimatorBindingComponent.swift in Sources */,
 				B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */,
@@ -1122,6 +1137,7 @@
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
 				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
 				B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */,
+				B7FD15A829351CB200B6E7DC /* PositionUtil.swift in Sources */,
 				B742447C2899366200A09808 /* AnimatorSource.cpp in Sources */,
 				B7643B2629027C7900F6A05B /* RandomSeedSelector.swift in Sources */,
 				B7C7489F28E2D7D200E270FB /* MoveToolView.swift in Sources */,
