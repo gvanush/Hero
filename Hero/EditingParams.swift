@@ -162,6 +162,7 @@ class ObjectPropertyEditingParams: ObservableObject {
     func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
         cartesianPositionParams[duplicate] = cartesianPositionParams[original]
         linearPositionParams[duplicate] = linearPositionParams[original]
+        cylindricalPositionParams[duplicate] = cylindricalPositionParams[original]
         
         scaleParams[duplicate] = scaleParams[original]
         rotationParams[duplicate] = rotationParams[original]
@@ -171,6 +172,7 @@ class ObjectPropertyEditingParams: ObservableObject {
     func onObjectDestroy(_ object: SPTObject) {
         cartesianPositionParams.removeValue(forKey: object)
         linearPositionParams.removeValue(forKey: object)
+        cylindricalPositionParams.removeValue(forKey: object)
         
         scaleParams.removeValue(forKey: object)
         rotationParams.removeValue(forKey: object)
