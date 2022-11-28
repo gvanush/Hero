@@ -119,6 +119,8 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
     
     private let keyPath: WritableKeyPath<C, SPTColor>
     private let object: SPTObject
+    @SPTObservedComponent private var component: C
+    
     private var componentSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
     
@@ -126,6 +128,8 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
         
         self.keyPath = keyPath
         self.object = object
+        
+        _component = .init(object: object)
         
         super.init(parent: parent)
         
@@ -142,11 +146,9 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
     
     var colorModel: SPTColorModel {
         get {
-            C.get(object: object)[keyPath: keyPath].model
+            component[keyPath: keyPath].model
         }
         set {
-            var component = C.get(object: object)
-            
             let color = component[keyPath: keyPath]
             switch newValue {
             case .RGB:
@@ -154,8 +156,6 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
             case .HSB:
                 component[keyPath: keyPath] = color.toHSBA
             }
-            
-            C.update(component, object: object)
         }
     }
     

@@ -17,9 +17,13 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
     private var coordinateSystemSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
     
+    @SPTObservedComponent private var position: SPTPosition
+    
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
         self.sceneViewModel = sceneViewModel
+        
+        _position = .init(object: object)
         
         super.init(parent: parent)
         
@@ -35,11 +39,9 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
     
     var coordinateSystem: SPTCoordinateSystem {
         get {
-            SPTPosition.get(object: object).coordinateSystem
+            position.coordinateSystem
         }
         set {
-            var position = SPTPosition.get(object: object)
-            
             switch newValue {
             case .cartesian:
                 position = position.toCartesian
@@ -50,8 +52,6 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
             case .cylindrical:
                 position = position.toCylindrical(origin: position.origin)
             }
-            
-            SPTPosition.update(position, object: object)
         }
     }
     
