@@ -168,6 +168,7 @@
 		B7FD15A829351CB200B6E7DC /* PositionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A729351CB200B6E7DC /* PositionUtil.swift */; };
 		B7FD15AA29352AE300B6E7DC /* half_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7FD15A929352AE300B6E7DC /* half_line.obj */; };
 		B7FD15AC29354CF100B6E7DC /* circle_outline.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7FD15AB29354CF100B6E7DC /* circle_outline.obj */; };
+		B7FD15AE2935D67700B6E7DC /* SphericalPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15AD2935D67700B6E7DC /* SphericalPositionComponentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -397,6 +398,7 @@
 		B7FD15A729351CB200B6E7DC /* PositionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionUtil.swift; sourceTree = "<group>"; };
 		B7FD15A929352AE300B6E7DC /* half_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = half_line.obj; sourceTree = "<group>"; };
 		B7FD15AB29354CF100B6E7DC /* circle_outline.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = circle_outline.obj; sourceTree = "<group>"; };
+		B7FD15AD2935D67700B6E7DC /* SphericalPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphericalPositionComponentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -928,6 +930,7 @@
 				B7FD15A1292E61EC00B6E7DC /* CartesianPositionComponentView.swift */,
 				B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */,
 				B7FD15A5293505C700B6E7DC /* CylindricalPositionComponentView.swift */,
+				B7FD15AD2935D67700B6E7DC /* SphericalPositionComponentView.swift */,
 			);
 			path = Move;
 			sourceTree = "<group>";
@@ -1136,6 +1139,7 @@
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
 				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
+				B7FD15AE2935D67700B6E7DC /* SphericalPositionComponentView.swift in Sources */,
 				B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */,
 				B7FD15A829351CB200B6E7DC /* PositionUtil.swift in Sources */,
 				B742447C2899366200A09808 /* AnimatorSource.cpp in Sources */,

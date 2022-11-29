@@ -66,8 +66,7 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
         case .linear:
             activeComponent = LinearPositionComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .spherical:
-            // TODO
-            break
+            activeComponent = SphericalPositionComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .cylindrical:
             activeComponent = CylindricalPositionComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }

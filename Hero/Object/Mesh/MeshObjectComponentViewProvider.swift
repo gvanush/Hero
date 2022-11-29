@@ -57,5 +57,9 @@ class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
     override func viewFor(_ component: CylindricalPositionComponent) -> AnyView? {
         AnyView(CylindricalPositionComponentView(component: component))
     }
+    
+    override func viewFor(_ component: SphericalPositionComponent) -> AnyView? {
+        AnyView(SphericalPositionComponentView(component: component))
+    }
 }
 

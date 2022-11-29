@@ -65,6 +65,13 @@ struct ObjectPropertyCylindricalPositionEditingParams {
     var height = ObjectPropertyFloatEditingParams()
 }
 
+struct ObjectPropertySphericalPositionEditingParams {
+    var origin = ObjectPropertyCartesianPositionEditingParams()
+    var longitude = ObjectPropertyFloatEditingParams()
+    var latitude = ObjectPropertyFloatEditingParams()
+    var radius = ObjectPropertyFloatEditingParams()
+}
+
 struct ObjectPropertyScaleEditingParams: ObjectPropertyVectorEditingParams {
     var x = ObjectPropertyFloatEditingParams()
     var y = ObjectPropertyFloatEditingParams()
@@ -118,6 +125,17 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
     }
     
+    @Published private var sphericalPositionParams = [SPTObject : ObjectPropertySphericalPositionEditingParams]()
+    
+    subscript(sphericalPositionOf object: SPTObject) -> ObjectPropertySphericalPositionEditingParams {
+        get {
+            sphericalPositionParams[object, default: .init()]
+        }
+        set {
+            sphericalPositionParams[object] = newValue
+        }
+    }
+    
     // MARK: Scale
     @Published private var scaleParams = [SPTObject : ObjectPropertyScaleEditingParams]()
     
@@ -163,6 +181,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         cartesianPositionParams[duplicate] = cartesianPositionParams[original]
         linearPositionParams[duplicate] = linearPositionParams[original]
         cylindricalPositionParams[duplicate] = cylindricalPositionParams[original]
+        sphericalPositionParams[duplicate] = sphericalPositionParams[original]
         
         scaleParams[duplicate] = scaleParams[original]
         rotationParams[duplicate] = rotationParams[original]
@@ -173,6 +192,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         cartesianPositionParams.removeValue(forKey: object)
         linearPositionParams.removeValue(forKey: object)
         cylindricalPositionParams.removeValue(forKey: object)
+        sphericalPositionParams.removeValue(forKey: object)
         
         scaleParams.removeValue(forKey: object)
         rotationParams.removeValue(forKey: object)
