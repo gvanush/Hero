@@ -276,7 +276,7 @@ struct RootView: View {
             Button {
                 showsSelectedObjectInspector = true
             } label: {
-                Image(systemName: "slider.horizontal.3")
+                Image(systemName: "list.bullet")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .disabled(!sceneViewModel.isObjectSelected)

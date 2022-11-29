@@ -93,7 +93,7 @@ struct PositionComponentView<RC>: View {
     var body: some View {
         component.activeComponent.accept(viewProvider)
             .actionBarObjectSection {
-                ActionBarMenu(iconName: "slider.vertical.3", selected: $component.coordinateSystem)
+                ActionBarMenu(iconName: "slider.horizontal.3", selected: $component.coordinateSystem)
                     .tag(component.id)
             }
             .onAppear {
