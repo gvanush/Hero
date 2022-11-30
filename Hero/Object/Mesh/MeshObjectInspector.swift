@@ -20,9 +20,9 @@ class MeshObjectInspectorModel: ObservableObject {
         self.object = object
         self.rootViewModel = rootViewModel
         
-        _positionXAnimatorBinding = .init(property: .positionX, object: object)
-        _positionYAnimatorBinding = .init(property: .positionY, object: object)
-        _positionZAnimatorBinding = .init(property: .positionZ, object: object)
+        _positionXAnimatorBinding = .init(property: .cartesianPositionX, object: object)
+        _positionYAnimatorBinding = .init(property: .cartesianPositionY, object: object)
+        _positionZAnimatorBinding = .init(property: .cartesianPositionZ, object: object)
         
         _shading = .init(object: object, keyPath: \.shading)
         
@@ -91,11 +91,11 @@ class MeshObjectInspectorModel: ObservableObject {
         rootViewModel.activeToolViewModel = rootViewModel.animatePositionToolViewModel
         let selectedObjectVM = rootViewModel.animatePositionToolViewModel.selectedObjectViewModel!
         switch property {
-        case .positionX:
+        case .cartesianPositionX:
             selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.x
-        case .positionY:
+        case .cartesianPositionY:
             selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.y
-        case .positionZ:
+        case .cartesianPositionZ:
             selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.z
         default:
             fatalError()
@@ -204,9 +204,9 @@ struct MeshObjectInspector: View {
     
     func positionAnimationView() -> some View {
         Section("Position Animation") {
-            itemViewFor(model.positionXAnimatorBinding, title: "X Binding", property: .positionX) { model.editPositionAnimatorBinding(property: .positionX, dismiss: dismiss) }
-            itemViewFor(model.positionYAnimatorBinding, title: "Y Binding", property: .positionY) { model.editPositionAnimatorBinding(property: .positionY, dismiss: dismiss) }
-            itemViewFor(model.positionZAnimatorBinding, title: "Z Binding", property: .positionZ) { model.editPositionAnimatorBinding(property: .positionZ, dismiss: dismiss) }
+            itemViewFor(model.positionXAnimatorBinding, title: "X Binding", property: .cartesianPositionX) { model.editPositionAnimatorBinding(property: .cartesianPositionX, dismiss: dismiss) }
+            itemViewFor(model.positionYAnimatorBinding, title: "Y Binding", property: .cartesianPositionY) { model.editPositionAnimatorBinding(property: .cartesianPositionY, dismiss: dismiss) }
+            itemViewFor(model.positionZAnimatorBinding, title: "Z Binding", property: .cartesianPositionZ) { model.editPositionAnimatorBinding(property: .cartesianPositionZ, dismiss: dismiss) }
         }
     }
     

@@ -10,6 +10,7 @@
 #include "Base.hpp"
 #include "Base.h"
 #include "Transformation.h"
+#include "Position.h"
 #include "AnimatorBinding.hpp"
 
 #include <simd/simd.h>
@@ -26,10 +27,32 @@ struct Transformation {
     SPTTranformationNode node { kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, 0 };
     
     struct AnimatorRecord {
-        AnimatorBindingItemBase positionX;
-        AnimatorBindingItemBase positionY;
-        AnimatorBindingItemBase positionZ;
-        simd_float3 basePosition;
+        
+        struct PositionRecord {
+            union {
+                struct {
+                    AnimatorBindingItemBase x;
+                    AnimatorBindingItemBase y;
+                    AnimatorBindingItemBase z;
+                } cartesian;
+                struct {
+                    AnimatorBindingItemBase offset;
+                } linear;
+                struct {
+                    AnimatorBindingItemBase radius;
+                    AnimatorBindingItemBase longitude;
+                    AnimatorBindingItemBase latitude;
+                } spherical;
+                struct {
+                    AnimatorBindingItemBase radius;
+                    AnimatorBindingItemBase longitude;
+                    AnimatorBindingItemBase height;
+                } cylindrical;
+            };
+        };
+        
+        PositionRecord positionRecord;
+        SPTPosition basePosition;
         
         simd_float4x4 baseOrientation;
         

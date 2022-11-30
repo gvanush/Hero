@@ -88,7 +88,7 @@
 		B769F265291ADF3B00C10661 /* ActionBarContentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */; };
 		B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */; };
 		B76D4FC828AB7C990029E47B /* SPTUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC728AB7C990029E47B /* SPTUtil.swift */; };
-		B76D4FCA28AC0E1B0029E47B /* SPTObjectPropertyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC928AC0E1B0029E47B /* SPTObjectPropertyUtil.swift */; };
+		B76D4FCA28AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC928AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift */; };
 		B7718F4229200A17001107D5 /* ShininessAnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
@@ -300,7 +300,7 @@
 		B76D4FC528AAE06D0029E47B /* ObjectPropertyAnimatorBindingUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBindingUtil.hpp; sourceTree = "<group>"; };
 		B76D4FC628AB6E340029E47B /* ObjectProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectProperty.h; sourceTree = "<group>"; };
 		B76D4FC728AB7C990029E47B /* SPTUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTUtil.swift; sourceTree = "<group>"; };
-		B76D4FC928AC0E1B0029E47B /* SPTObjectPropertyUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObjectPropertyUtil.swift; sourceTree = "<group>"; };
+		B76D4FC928AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAnimatableObjectPropertyUtil.swift; sourceTree = "<group>"; };
 		B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShininessAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
@@ -598,7 +598,7 @@
 				B73A7013288736370043F9FF /* SPTAnimatorUtil.swift */,
 				B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */,
 				B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */,
-				B76D4FC928AC0E1B0029E47B /* SPTObjectPropertyUtil.swift */,
+				B76D4FC928AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift */,
 				B76D4FC728AB7C990029E47B /* SPTUtil.swift */,
 				B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */,
 				B7B711D628C130740077C7CD /* SPTOutlineLookUtil.swift */,
@@ -1030,7 +1030,7 @@
 				B721760A2750AD990047016B /* Buffer_metal.mm in Sources */,
 				B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */,
 				B73245B6274124C100708909 /* Renderer.mm in Sources */,
-				B76D4FCA28AC0E1B0029E47B /* SPTObjectPropertyUtil.swift in Sources */,
+				B76D4FCA28AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift in Sources */,
 				B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */,
 				B7643B402912517000F6A05B /* RGBColorSelector.swift in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,

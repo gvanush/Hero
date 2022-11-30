@@ -12,12 +12,26 @@ extension SPTAnimatableObjectProperty: Displayable {
     
     var displayName: String {
         switch self {
-        case .positionX:
+        case .cartesianPositionX:
             return "X"
-        case .positionY:
+        case .cartesianPositionY:
             return "Y"
-        case .positionZ:
+        case .cartesianPositionZ:
             return "Z"
+        case .linearPositionOffset:
+            return "Offset"
+        case .sphericalPositionRadius:
+            return "Radius"
+        case .sphericalPositionLongitude:
+            return "Longitude"
+        case .sphericalPositionLatitude:
+            return "Latitude"
+        case .cylindricalPositionRadius:
+            return "Radius"
+        case .cylindricalPositionLongitude:
+            return "Longitude"
+        case .cylindricalPositionHeight:
+            return "Height"
         case .hue:
             return "Hue"
         case .saturation:

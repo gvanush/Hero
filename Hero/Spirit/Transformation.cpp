@@ -47,13 +47,40 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     
     matrix = simd_mul(animRecord.baseOrientation, matrix);
     
-    const simd_float3 animatedPos {
-        evaluateAnimatorBinding(animRecord.positionX.binding, animatorValues[animRecord.positionX.index]),
-        evaluateAnimatorBinding(animRecord.positionY.binding, animatorValues[animRecord.positionY.index]),
-        evaluateAnimatorBinding(animRecord.positionZ.binding, animatorValues[animRecord.positionZ.index])
-    };
+    auto position = animRecord.basePosition;
     
-    matrix.columns[3].xyz = animRecord.basePosition + animatedPos;
+    switch (position.coordinateSystem) {
+        case SPTCoordinateSystemCartesian:
+            
+            position.cartesian.x += evaluateAnimatorBinding(animRecord.positionRecord.cartesian.x.binding, animatorValues[animRecord.positionRecord.cartesian.x.index]);
+            position.cartesian.y += evaluateAnimatorBinding(animRecord.positionRecord.cartesian.y.binding, animatorValues[animRecord.positionRecord.cartesian.y.index]);
+            position.cartesian.z += evaluateAnimatorBinding(animRecord.positionRecord.cartesian.z.binding, animatorValues[animRecord.positionRecord.cartesian.z.index]);
+            matrix.columns[3].xyz = position.cartesian;
+            
+            break;
+        case SPTCoordinateSystemLinear:
+            
+            position.linear.offset += evaluateAnimatorBinding(animRecord.positionRecord.linear.offset.binding, animatorValues[animRecord.positionRecord.linear.offset.index]);
+            matrix.columns[3].xyz = SPTLinearCoordinatesToCartesian(position.linear);
+            
+            break;
+        case SPTCoordinateSystemSpherical:
+            
+            position.spherical.radius += evaluateAnimatorBinding(animRecord.positionRecord.spherical.radius.binding, animatorValues[animRecord.positionRecord.spherical.radius.index]);
+            position.spherical.longitude += evaluateAnimatorBinding(animRecord.positionRecord.spherical.longitude.binding, animatorValues[animRecord.positionRecord.spherical.longitude.index]);
+            position.spherical.latitude += evaluateAnimatorBinding(animRecord.positionRecord.spherical.latitude.binding, animatorValues[animRecord.positionRecord.spherical.latitude.index]);
+            matrix.columns[3].xyz = SPTSphericalCoordinatesToCartesian(position.spherical);
+            
+            break;
+        case SPTCoordinateSystemCylindrical:
+            
+            position.cylindrical.radius += evaluateAnimatorBinding(animRecord.positionRecord.cylindrical.radius.binding, animatorValues[animRecord.positionRecord.cylindrical.radius.index]);
+            position.cylindrical.longitude += evaluateAnimatorBinding(animRecord.positionRecord.cylindrical.longitude.binding, animatorValues[animRecord.positionRecord.cylindrical.longitude.index]);
+            position.cylindrical.height += evaluateAnimatorBinding(animRecord.positionRecord.cylindrical.height.binding, animatorValues[animRecord.positionRecord.cylindrical.height.index]);
+            matrix.columns[3].xyz = SPTCylindricalCoordinatesToCartesian(position.cylindrical);
+            
+            break;
+    }
     
     return matrix;
 }

@@ -16,9 +16,9 @@ class PositionAnimatorBindingsComponent: Component, BasicToolSelectedObjectRootC
 
     typealias FieldComponent = AnimatorBindingSetupComponent<PositionFieldAnimatorBindingComponent>
     
-    lazy private(set) var x = FieldComponent(animatableProperty: .positionX, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var y = FieldComponent(animatableProperty: .positionY, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var z = FieldComponent(animatableProperty: .positionZ, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var x = FieldComponent(animatableProperty: .cartesianPositionX, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var y = FieldComponent(animatableProperty: .cartesianPositionY, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var z = FieldComponent(animatableProperty: .cartesianPositionZ, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
@@ -87,11 +87,11 @@ class PositionFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         SPTPosition.make(guideLinePosition, object: guideObjects!.line)
         SPTPolylineLookDepthBiasMake(guideObjects!.line, 5.0, 3.0, 0.0)
         switch animatableProperty {
-        case .positionX:
+        case .cartesianPositionX:
             break
-        case .positionY:
+        case .cartesianPositionY:
             SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ)), object: guideObjects!.line)
-        case .positionZ:
+        case .cartesianPositionZ:
             SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: guideObjects!.line)
         default:
             fatalError()
@@ -150,11 +150,11 @@ class PositionFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
     
     var fieldIndex: Int {
         switch animatableProperty {
-        case .positionX:
+        case .cartesianPositionX:
             return 0
-        case .positionY:
+        case .cartesianPositionY:
             return 1
-        case .positionZ:
+        case .cartesianPositionZ:
             return 2
         default:
             fatalError()

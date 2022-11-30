@@ -119,32 +119,86 @@ void PlayableScene::prepareTransformationAnimations(const Scene& scene, const st
     // Prepare transformation animators
     std::unordered_map<SPTEntity, spt::Transformation::AnimatorRecord> transformAnimatedEntityRecord;
     
-    // Prepare position animators
-    auto positionXAnimatorBindingView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyPositionX>>();
-    positionXAnimatorBindingView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+    // Position
+    
+    // Cartesian
+    auto cartesianXView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionX>>();
+    cartesianXView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
         if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
-            transformAnimatedEntityRecord[entity].positionX = AnimatorBindingItemBase{ comp.base, it->second };
+            transformAnimatedEntityRecord[entity].positionRecord.cartesian.x = AnimatorBindingItemBase{ comp.base, it->second };
         }
     });
     
-    auto positionYAnimatorBindingView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyPositionY>>();
-    positionYAnimatorBindingView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+    auto cartesianYView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionY>>();
+    cartesianYView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
         if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
-            transformAnimatedEntityRecord[entity].positionY = AnimatorBindingItemBase{ comp.base, it->second };
+            transformAnimatedEntityRecord[entity].positionRecord.cartesian.y = AnimatorBindingItemBase{ comp.base, it->second };
         }
     });
     
-    auto positionZAnimatorBindingView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyPositionZ>>();
-    positionZAnimatorBindingView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+    auto cartesianZView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionZ>>();
+    cartesianZView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
         if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
-            transformAnimatedEntityRecord[entity].positionZ = AnimatorBindingItemBase{ comp.base, it->second };
+            transformAnimatedEntityRecord[entity].positionRecord.cartesian.z = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    // Linear
+    auto linearOffsetView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyLinearPositionOffset>>();
+    linearOffsetView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].positionRecord.linear.offset = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    // Spherical
+    auto sphericalRadiusView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertySphericalPositionRadius>>();
+    sphericalRadiusView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].positionRecord.spherical.radius = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    auto sphericalLongitudeView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertySphericalPositionLongitude>>();
+    sphericalLongitudeView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].positionRecord.spherical.longitude = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    auto sphericalLatitudeView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertySphericalPositionLatitude>>();
+    sphericalLatitudeView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].positionRecord.spherical.latitude = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    // Cylindrical
+    auto cylindricalRadiusView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionRadius>>();
+    cylindricalRadiusView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].positionRecord.cylindrical.radius = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    auto cylindricalLongitudeView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionLongitude>>();
+    cylindricalLongitudeView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].positionRecord.cylindrical.longitude = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    auto sphericalHeightView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>>();
+    sphericalHeightView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].positionRecord.cylindrical.height = AnimatorBindingItemBase{ comp.base, it->second };
         }
     });
     
     for(auto& item: transformAnimatedEntityRecord) {
-        item.second.basePosition = Position::getCartesianCoordinates(registry, item.first);
+        item.second.basePosition = registry.get<SPTPosition>(item.first);
         item.second.baseScale = Scale::getXYZ(registry, item.first);
-        item.second.baseOrientation = Orientation::getMatrix(registry, item.first, item.second.basePosition);
+        item.second.baseOrientation = Orientation::getMatrix(registry, item.first, SPTPositionToCartesian(item.second.basePosition).cartesian);
         registry.emplace<spt::Transformation::AnimatorRecord>(item.first, item.second);
     }
     

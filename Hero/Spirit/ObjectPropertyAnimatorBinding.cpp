@@ -14,14 +14,35 @@
 
 void SPTObjectPropertyBindAnimator(SPTAnimatableObjectProperty property, SPTObject object, SPTAnimatorBinding animatorBinding) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::bindAnimator<SPTAnimatableObjectPropertyPositionX>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyCartesianPositionX>(object, animatorBinding);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::bindAnimator<SPTAnimatableObjectPropertyPositionY>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyCartesianPositionY>(object, animatorBinding);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::bindAnimator<SPTAnimatableObjectPropertyPositionZ>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyCartesianPositionZ>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyLinearPositionOffset>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertySphericalPositionRadius>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, animatorBinding);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::bindAnimator<SPTAnimatableObjectPropertyHue>(object, animatorBinding);
@@ -49,14 +70,35 @@ void SPTObjectPropertyBindAnimator(SPTAnimatableObjectProperty property, SPTObje
 
 void SPTObjectPropertyUpdateAnimatorBinding(SPTAnimatableObjectProperty property, SPTObject object, SPTAnimatorBinding animatorBinding) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyPositionX>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionX>(object, animatorBinding);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyPositionY>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionY>(object, animatorBinding);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyPositionZ>(object, animatorBinding);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionZ>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyLinearPositionOffset>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionRadius>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, animatorBinding);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyHue>(object, animatorBinding);
@@ -84,14 +126,35 @@ void SPTObjectPropertyUpdateAnimatorBinding(SPTAnimatableObjectProperty property
 
 void SPTObjectPropertyUnbindAnimator(SPTAnimatableObjectProperty property, SPTObject object) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::unbindAnimator<SPTAnimatableObjectPropertyPositionX>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyCartesianPositionX>(object);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::unbindAnimator<SPTAnimatableObjectPropertyPositionY>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyCartesianPositionY>(object);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::unbindAnimator<SPTAnimatableObjectPropertyPositionZ>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyCartesianPositionZ>(object);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyLinearPositionOffset>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertySphericalPositionRadius>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertySphericalPositionLongitude>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertySphericalPositionLatitude>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::unbindAnimator<SPTAnimatableObjectPropertyHue>(object);
@@ -119,14 +182,35 @@ void SPTObjectPropertyUnbindAnimator(SPTAnimatableObjectProperty property, SPTOb
 
 SPTAnimatorBinding SPTObjectPropertyGetAnimatorBinding(SPTAnimatableObjectProperty property, SPTObject object) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyPositionX>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionX>(object);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyPositionY>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionY>(object);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyPositionZ>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionZ>(object);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyLinearPositionOffset>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionRadius>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionLongitude>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionLatitude>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::getAnimatorBinding<SPTAnimatableObjectPropertyHue>(object);
@@ -154,14 +238,35 @@ SPTAnimatorBinding SPTObjectPropertyGetAnimatorBinding(SPTAnimatableObjectProper
 
 const SPTAnimatorBinding* _Nullable SPTObjectPropertyTryGetAnimatorBinding(SPTAnimatableObjectProperty property, SPTObject object) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyPositionX>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionX>(object);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyPositionY>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionY>(object);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyPositionZ>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyCartesianPositionZ>(object);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyLinearPositionOffset>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionRadius>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionLongitude>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertySphericalPositionLatitude>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyHue>(object);
@@ -189,14 +294,35 @@ const SPTAnimatorBinding* _Nullable SPTObjectPropertyTryGetAnimatorBinding(SPTAn
 
 bool SPTObjectPropertyIsAnimatorBound(SPTAnimatableObjectProperty property, SPTObject object) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::isAnimatorBound<SPTAnimatableObjectPropertyPositionX>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyCartesianPositionX>(object);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::isAnimatorBound<SPTAnimatableObjectPropertyPositionY>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyCartesianPositionY>(object);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::isAnimatorBound<SPTAnimatableObjectPropertyPositionZ>(object);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyCartesianPositionZ>(object);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyLinearPositionOffset>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertySphericalPositionRadius>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertySphericalPositionLongitude>(object);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertySphericalPositionLatitude>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::isAnimatorBound<SPTAnimatableObjectPropertyHue>(object);
@@ -224,14 +350,35 @@ bool SPTObjectPropertyIsAnimatorBound(SPTAnimatableObjectProperty property, SPTO
 
 SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillChangeObserver observer, SPTObserverUserInfo userInfo) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCartesianPositionX>(object, observer, userInfo);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCartesianPositionY>(object, observer, userInfo);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCartesianPositionZ>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyLinearPositionOffset>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertySphericalPositionRadius>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
@@ -259,14 +406,35 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTAnimat
 
 void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCartesianPositionX>(object, token);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCartesianPositionY>(object, token);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCartesianPositionZ>(object, token);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyLinearPositionOffset>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertySphericalPositionRadius>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyHue>(object, token);
@@ -294,14 +462,35 @@ void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTAnimatableObjec
 
 SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidChangeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingDidChangeObserver observer, SPTObserverUserInfo userInfo) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCartesianPositionX>(object, observer, userInfo);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCartesianPositionY>(object, observer, userInfo);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCartesianPositionZ>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyLinearPositionOffset>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertySphericalPositionRadius>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
@@ -329,14 +518,35 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidChangeObserver(SPTAnimata
 
 void SPTObjectPropertyRemoveAnimatorBindingDidChangeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCartesianPositionX>(object, token);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCartesianPositionY>(object, token);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCartesianPositionZ>(object, token);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyLinearPositionOffset>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertySphericalPositionRadius>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyHue>(object, token);
@@ -364,14 +574,35 @@ void SPTObjectPropertyRemoveAnimatorBindingDidChangeObserver(SPTAnimatableObject
 
 SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingDidEmergeObserver observer, SPTObserverUserInfo userInfo) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCartesianPositionX>(object, observer, userInfo);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCartesianPositionY>(object, observer, userInfo);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCartesianPositionZ>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyLinearPositionOffset>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertySphericalPositionRadius>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
@@ -399,14 +630,35 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidEmergeObserver(SPTAnimata
 
 void SPTObjectPropertyRemoveAnimatorBindingDidEmergeObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCartesianPositionX>(object, token);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCartesianPositionY>(object, token);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCartesianPositionZ>(object, token);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyLinearPositionOffset>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertySphericalPositionRadius>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyHue>(object, token);
@@ -434,14 +686,35 @@ void SPTObjectPropertyRemoveAnimatorBindingDidEmergeObserver(SPTAnimatableObject
 
 SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObjectPropertyAnimatorBindingWillPerishObserver observer, SPTObserverUserInfo userInfo) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionX>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCartesianPositionX>(object, observer, userInfo);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionY>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCartesianPositionY>(object, observer, userInfo);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionZ>(object, observer, userInfo);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCartesianPositionZ>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyLinearPositionOffset>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertySphericalPositionRadius>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
@@ -469,14 +742,35 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTAnimat
 
 void SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(SPTAnimatableObjectProperty property, SPTObject object, SPTObserverToken token) {
     switch (property) {
-        case SPTAnimatableObjectPropertyPositionX: {
-            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionX>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionX: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCartesianPositionX>(object, token);
         }
-        case SPTAnimatableObjectPropertyPositionY: {
-            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionY>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionY: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCartesianPositionY>(object, token);
         }
-        case SPTAnimatableObjectPropertyPositionZ: {
-            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyPositionZ>(object, token);
+        case SPTAnimatableObjectPropertyCartesianPositionZ: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCartesianPositionZ>(object, token);
+        }
+        case SPTAnimatableObjectPropertyLinearPositionOffset: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyLinearPositionOffset>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionRadius: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertySphericalPositionRadius>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLongitude: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertySphericalPositionLongitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertySphericalPositionLatitude: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertySphericalPositionLatitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionRadius: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionRadius>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionLongitude: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionLongitude>(object, token);
+        }
+        case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyHue>(object, token);

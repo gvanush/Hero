@@ -12,9 +12,19 @@
 SPT_EXTERN_C_BEGIN
 
 typedef enum {
-    SPTAnimatableObjectPropertyPositionX,
-    SPTAnimatableObjectPropertyPositionY,
-    SPTAnimatableObjectPropertyPositionZ,
+    SPTAnimatableObjectPropertyCartesianPositionX,
+    SPTAnimatableObjectPropertyCartesianPositionY,
+    SPTAnimatableObjectPropertyCartesianPositionZ,
+    
+    SPTAnimatableObjectPropertyLinearPositionOffset,
+    
+    SPTAnimatableObjectPropertySphericalPositionRadius,
+    SPTAnimatableObjectPropertySphericalPositionLongitude,
+    SPTAnimatableObjectPropertySphericalPositionLatitude,
+    
+    SPTAnimatableObjectPropertyCylindricalPositionRadius,
+    SPTAnimatableObjectPropertyCylindricalPositionLongitude,
+    SPTAnimatableObjectPropertyCylindricalPositionHeight,
     
     SPTAnimatableObjectPropertyHue,
     SPTAnimatableObjectPropertySaturation,

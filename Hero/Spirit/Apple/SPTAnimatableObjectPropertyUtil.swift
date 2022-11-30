@@ -1,5 +1,5 @@
 //
-//  SPTObjectPropertyUtil.swift
+//  SPTAnimatableObjectPropertyUtil.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 16.08.22.
@@ -11,9 +11,16 @@ import Foundation
 extension SPTAnimatableObjectProperty: SPTAnimatableProperty, CaseIterable {
     
     public static var allCases: [SPTAnimatableObjectProperty] = [
-        .positionX,
-        .positionY,
-        .positionZ,
+        .cartesianPositionX,
+        .cartesianPositionY,
+        .cartesianPositionZ,
+        .linearPositionOffset,
+        .sphericalPositionRadius,
+        .sphericalPositionLongitude,
+        .sphericalPositionLatitude,
+        .cylindricalPositionRadius,
+        .cylindricalPositionLongitude,
+        .cylindricalPositionHeight,
         .hue,
         .saturation,
         .brightness,
