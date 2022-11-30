@@ -23,8 +23,8 @@ extension SPTPosition: SPTObservableComponent {
         self.init(coordinateSystem: .linear, .init(linear: linear))
     }
     
-    init(origin: simd_float3, directionPoint: simd_float3, offset: Float) {
-        self.init(linear: .init(origin: origin, directionPoint: directionPoint, offset: offset))
+    init(origin: simd_float3, direction: simd_float3, offset: Float) {
+        self.init(linear: .init(origin: origin, direction: direction, offset: offset))
     }
     
     init(spherical: SPTSphericalCoordinates) {

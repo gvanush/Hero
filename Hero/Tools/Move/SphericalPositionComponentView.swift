@@ -144,7 +144,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         SPTScale.update(.init(x: sphericalPosition.radius, y: sphericalPosition.radius), object: latitudeCircleObject)
         SPTOrientation.update(.init(y: 0.5 * Float.pi + position.spherical.longitude), object: latitudeCircleObject)
         
-        SPTPosition.update(.init(x: 0.0, y: cartesian.y, z: 0.0), object: longitudeCircleObject)
+        SPTPosition.update(.init(x: origin.cartesian.x, y: cartesian.y, z: origin.cartesian.z), object: longitudeCircleObject)
         let vec = cartesian - position.spherical.origin
         let scale = simd_length(.init(x: vec.x, y: vec.z))
         SPTScale.update(.init(x: scale, y: scale), object: longitudeCircleObject)
@@ -172,7 +172,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         longitudeCircleObject = sceneViewModel.scene.makeObject()
         
         let cartesian = sphericalPosition.toCartesian
-        SPTPosition.make(.init(x: 0.0, y: cartesian.y, z: 0.0), object: longitudeCircleObject)
+        SPTPosition.make(.init(x: origin.cartesian.x, y: cartesian.y, z: origin.cartesian.z), object: longitudeCircleObject)
         
         let vec = cartesian - origin.cartesian
         let scale = simd_length(.init(x: vec.x, y: vec.z))

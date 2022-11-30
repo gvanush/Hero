@@ -23,7 +23,7 @@ typedef enum {
 // MARK: Linear
 typedef struct {
     simd_float3 origin;
-    simd_float3 directionPoint;
+    simd_float3 direction;
     float offset;
 } SPTLinearCoordinates;
 

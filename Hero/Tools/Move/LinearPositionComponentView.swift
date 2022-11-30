@@ -39,11 +39,12 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         
         origin = makeSubcomponent(title: "Origin", position: linearPosition.origin) { [unowned self] position in
             linearPosition.origin = position.cartesian
+            directionPoint.cartesian = linearPosition.origin + linearPosition.direction
             updateLine(originPosition: position, targetPosition: directionPoint.position)
         }
         
-        directionPoint = makeSubcomponent(title: "Direction", position: linearPosition.directionPoint) { [unowned self] position in
-            linearPosition.directionPoint = position.cartesian
+        directionPoint = makeSubcomponent(title: "Direction", position: linearPosition.origin + linearPosition.direction) { [unowned self] position in
+            linearPosition.direction = position.cartesian - linearPosition.origin
             updateLine(originPosition: origin.position, targetPosition: position)
         }
         

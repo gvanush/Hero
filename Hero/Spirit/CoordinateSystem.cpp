@@ -10,11 +10,12 @@
 #include <cmath>
 
 bool SPTLinearCoordinatesEqual(SPTLinearCoordinates lhs, SPTLinearCoordinates rhs) {
-    return simd_equal(lhs.origin, rhs.origin) && simd_equal(lhs.directionPoint, rhs.directionPoint) && lhs.offset == rhs.offset;
+    return simd_equal(lhs.origin, rhs.origin) && simd_equal(lhs.direction, rhs.direction) && lhs.offset == rhs.offset;
 }
 
 SPTLinearCoordinates SPTLinearCoordinatesCreate(simd_float3 origin, simd_float3 cartesian) {
-    return {origin, cartesian, simd_length(cartesian - origin)};
+    const auto& direction = cartesian - origin;
+    return {origin, direction, simd_length(direction)};
 }
 
 bool SPTSphericalCoordinatesEqual(SPTSphericalCoordinates lhs, SPTSphericalCoordinates rhs) {
@@ -33,11 +34,11 @@ SPTSphericalCoordinates SPTSphericalCoordinatesCreate(simd_float3 origin, simd_f
     if(k < -1.f || k > 1.f || isnan(k)) {
         return {origin, 0.f, 0.f, 0.f};
     }
-    const auto m = point.x / sqrtf(t);
+    const auto m = point.z / sqrtf(t);
     if(m < -1.f || m > 1.f || isnan(m)) {
         return {origin, r, 0.f, acosf(k)};
     }
-    return {origin, r, copysignf(1, point.z) * acosf(m), acosf(k)};
+    return {origin, r, copysignf(1, point.x) * acosf(m), acosf(k)};
 }
 
 bool SPTCylindricalCoordinatesEqual(SPTCylindricalCoordinates lhs, SPTCylindricalCoordinates rhs) {
@@ -59,7 +60,7 @@ SPTCylindricalCoordinates SPTCylindricalCoordinatesCreate(simd_float3 origin, si
 
 // MARK: Conversions
 simd_float3 SPTLinearCoordinatesToCartesian(SPTLinearCoordinates linear) {
-    return linear.origin + linear.offset * simd_normalize(linear.directionPoint - linear.origin);
+    return linear.origin + linear.offset * simd_normalize(linear.direction);
 }
 
 simd_float3 SPTSphericalCoordinatesToCartesian(SPTSphericalCoordinates spherical) {
