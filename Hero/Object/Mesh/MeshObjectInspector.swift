@@ -89,17 +89,18 @@ class MeshObjectInspectorModel: ObservableObject {
     
     func editPositionAnimatorBinding(property: SPTAnimatableObjectProperty, dismiss: DismissAction) {
         rootViewModel.activeToolViewModel = rootViewModel.animatePositionToolViewModel
-        let selectedObjectVM = rootViewModel.animatePositionToolViewModel.selectedObjectViewModel!
-        switch property {
-        case .cartesianPositionX:
-            selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.x
-        case .cartesianPositionY:
-            selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.y
-        case .cartesianPositionZ:
-            selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.z
-        default:
-            fatalError()
-        }
+        // TODO
+//        let selectedObjectVM = rootViewModel.animatePositionToolViewModel.selectedObjectViewModel!
+//        switch property {
+//        case .cartesianPositionX:
+//            selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.x
+//        case .cartesianPositionY:
+//            selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.y
+//        case .cartesianPositionZ:
+//            selectedObjectVM.activeComponent = selectedObjectVM.rootComponent.z
+//        default:
+//            fatalError()
+//        }
         dismiss()
     }
     

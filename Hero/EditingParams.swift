@@ -13,15 +13,18 @@ struct ObjectPropertyFloatEditingParams {
     var isSnapping = true
 }
 
-fileprivate protocol ObjectPropertyVectorEditingParams {
-    var x: ObjectPropertyFloatEditingParams { get set }
-    var y: ObjectPropertyFloatEditingParams { get set }
-    var z: ObjectPropertyFloatEditingParams { get set }
+protocol ObjectPropertyVectorEditingParams {
+    
+    associatedtype P
+    
+    var x: P { get set }
+    var y: P { get set }
+    var z: P { get set }
 }
 
 extension ObjectPropertyVectorEditingParams {
     
-    subscript(axis: Axis) -> ObjectPropertyFloatEditingParams {
+    subscript(axis: Axis) -> P {
         set {
             switch axis {
             case .x:
@@ -45,6 +48,12 @@ extension ObjectPropertyVectorEditingParams {
     }
     
 }
+
+struct AnimatorBindingEditingParams {
+    var valueAt0 = ObjectPropertyFloatEditingParams()
+    var valueAt1 = ObjectPropertyFloatEditingParams()
+}
+
 
 struct ObjectPropertyCartesianPositionEditingParams: ObjectPropertyVectorEditingParams {
     var x = ObjectPropertyFloatEditingParams()
@@ -84,9 +93,14 @@ struct ObjectPropertyRotationEditingParams: ObjectPropertyVectorEditingParams {
     var z = ObjectPropertyFloatEditingParams()
 }
 
-struct ObjectPropertyPositionBindingEditingParams {
-    var valueAt0 = ObjectPropertyFloatEditingParams()
-    var valueAt1 = ObjectPropertyFloatEditingParams()
+struct ObjectPropertyCartesianPositionAnimatorBindingEditingParams: ObjectPropertyVectorEditingParams {
+    var x = AnimatorBindingEditingParams()
+    var y = AnimatorBindingEditingParams()
+    var z = AnimatorBindingEditingParams()
+}
+
+struct ObjectPropertyLinearPositionAnimatorBindingEditingParams {
+    var offset = AnimatorBindingEditingParams()
 }
 
 class ObjectPropertyEditingParams: ObservableObject {
@@ -165,14 +179,25 @@ class ObjectPropertyEditingParams: ObservableObject {
     }
     
     // MARK: Position binding
-    @Published private var positionBindingParams = [SPTObject : ObjectPropertyPositionBindingEditingParams]()
+    @Published private var cartesianPositionBindingParams = [SPTObject : ObjectPropertyCartesianPositionAnimatorBindingEditingParams]()
     
-    subscript(positionBindingOf object: SPTObject) -> ObjectPropertyPositionBindingEditingParams {
+    subscript(cartesianPositionBindingOf object: SPTObject) -> ObjectPropertyCartesianPositionAnimatorBindingEditingParams {
         get {
-            positionBindingParams[object, default: .init()]
+            cartesianPositionBindingParams[object, default: .init()]
         }
         set {
-            positionBindingParams[object] = newValue
+            cartesianPositionBindingParams[object] = newValue
+        }
+    }
+    
+    @Published private var linearPositionBindingParams = [SPTObject : ObjectPropertyLinearPositionAnimatorBindingEditingParams]()
+
+    subscript(linearPositionBindingOf object: SPTObject) -> ObjectPropertyLinearPositionAnimatorBindingEditingParams {
+        get {
+            linearPositionBindingParams[object, default: .init()]
+        }
+        set {
+            linearPositionBindingParams[object] = newValue
         }
     }
     
@@ -185,7 +210,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         
         scaleParams[duplicate] = scaleParams[original]
         rotationParams[duplicate] = rotationParams[original]
-        positionBindingParams[duplicate] = positionBindingParams[original]
+        cartesianPositionBindingParams[duplicate] = cartesianPositionBindingParams[original]
     }
     
     func onObjectDestroy(_ object: SPTObject) {
@@ -196,6 +221,6 @@ class ObjectPropertyEditingParams: ObservableObject {
         
         scaleParams.removeValue(forKey: object)
         rotationParams.removeValue(forKey: object)
-        positionBindingParams.removeValue(forKey: object)
+        cartesianPositionBindingParams.removeValue(forKey: object)
     }
 }
