@@ -19,7 +19,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    let lengthFormatter = Formatters.length
+    let distanceFormatter = Formatters.distance
     let angleFormatter = Formatters.angle
 
     @SPTObservedComponentProperty<SPTPosition, SPTCylindricalCoordinates> var cylindricalPosition: SPTCylindricalCoordinates
@@ -230,11 +230,11 @@ struct CylindricalPositionComponentView: View {
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .radius:
-                FloatSelector(value: $component.cylindricalPosition.radius, scale: $editingParams[cylindricalPositionOf: component.object].radius.scale, isSnappingEnabled: $editingParams[cylindricalPositionOf: component.object].radius.isSnapping, formatter: component.lengthFormatter) { editingState in
+                FloatSelector(value: $component.cylindricalPosition.radius, scale: $editingParams[cylindricalPositionOf: component.object].radius.scale, isSnappingEnabled: $editingParams[cylindricalPositionOf: component.object].radius.isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .height:
-                FloatSelector(value: $component.cylindricalPosition.height, scale: $editingParams[cylindricalPositionOf: component.object].height.scale, isSnappingEnabled: $editingParams[cylindricalPositionOf: component.object].height.isSnapping, formatter: component.lengthFormatter) { editingState in
+                FloatSelector(value: $component.cylindricalPosition.height, scale: $editingParams[cylindricalPositionOf: component.object].height.scale, isSnappingEnabled: $editingParams[cylindricalPositionOf: component.object].height.isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .none:

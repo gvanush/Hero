@@ -19,7 +19,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    let lengthFormatter = Formatters.length
+    let distanceFormatter = Formatters.distance
     let angleFormatter = Formatters.angle
 
     @SPTObservedComponentProperty<SPTPosition, SPTSphericalCoordinates> var sphericalPosition: SPTSphericalCoordinates
@@ -232,7 +232,7 @@ struct SphericalPositionComponentView: View {
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .radius:
-                FloatSelector(value: $component.sphericalPosition.radius, scale: $editingParams[sphericalPositionOf: component.object].radius.scale, isSnappingEnabled: $editingParams[sphericalPositionOf: component.object].radius.isSnapping, formatter: component.lengthFormatter) { editingState in
+                FloatSelector(value: $component.sphericalPosition.radius, scale: $editingParams[sphericalPositionOf: component.object].radius.scale, isSnappingEnabled: $editingParams[sphericalPositionOf: component.object].radius.isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .none:

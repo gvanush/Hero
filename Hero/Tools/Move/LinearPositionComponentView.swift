@@ -16,7 +16,7 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
     
     let object: SPTObject
     let sceneViewModel: SceneViewModel
-    let lengthFormatter = Formatters.length
+    let distanceFormatter = Formatters.distance
 
     @SPTObservedComponentProperty<SPTPosition, SPTLinearCoordinates> var linearPosition: SPTLinearCoordinates
     
@@ -150,7 +150,7 @@ struct LinearPositionComponentView: View {
         Group {
             switch component.selectedProperty {
             case .offset:
-                FloatSelector(value: $component.linearPosition.offset, scale: $editingParams[linearPositionOf: component.object].factor.scale, isSnappingEnabled: $editingParams[linearPositionOf: component.object].factor.isSnapping, formatter: component.lengthFormatter) { editingState in
+                FloatSelector(value: $component.linearPosition.offset, scale: $editingParams[linearPositionOf: component.object].factor.scale, isSnappingEnabled: $editingParams[linearPositionOf: component.object].factor.isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .none:

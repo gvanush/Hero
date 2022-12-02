@@ -15,7 +15,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     
     @SPTObservedComponentProperty<SPTMeshLook, Float> var shininess: Float
     
-    required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required override init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         guard animatableProperty == .shininess else {
             fatalError()

@@ -171,6 +171,7 @@
 		B7FD15AE2935D67700B6E7DC /* SphericalPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15AD2935D67700B6E7DC /* SphericalPositionComponentView.swift */; };
 		B7FD15B029388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15AF29388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift */; };
 		B7FD15B22938958400B6E7DC /* LinearPositionAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15B12938958400B6E7DC /* LinearPositionAnimatorBindingsComponent.swift */; };
+		B7FD15B72939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15B62939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -403,6 +404,7 @@
 		B7FD15AD2935D67700B6E7DC /* SphericalPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphericalPositionComponentView.swift; sourceTree = "<group>"; };
 		B7FD15AF29388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
 		B7FD15B12938958400B6E7DC /* LinearPositionAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPositionAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
+		B7FD15B62939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDistanceAnimatorBindingComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -897,6 +899,7 @@
 				B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */,
 				B7A78A6E2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift */,
 				B7A78A70292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift */,
+				B7FD15B62939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift */,
 				B7FD159E292E47D200B6E7DC /* Move */,
 				B7643B32290BE85700F6A05B /* AnimatePosition */,
 				B7643B3A290FAAAA00F6A05B /* Shade */,
@@ -1145,6 +1148,7 @@
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
+				B7FD15B72939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift in Sources */,
 				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
 				B7FD15AE2935D67700B6E7DC /* SphericalPositionComponentView.swift in Sources */,
 				B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */,

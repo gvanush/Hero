@@ -21,9 +21,7 @@ class ComponentViewProvider<RC> {
     
     func viewFor<AnimatorBindingComponent>(_ component: AnimatorBindingSetupComponent<AnimatorBindingComponent>) -> AnyView? { nil }
     
-    func viewFor(_ component: CartesianPositionFieldAnimatorBindingComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: LinearPositionOffsetAnimatorBindingComponent) -> AnyView? { nil }
+    func viewFor(_ component: ObjectDistanceAnimatorBindingComponent) -> AnyView? { nil }
     
     func viewFor(_ component: ShininessAnimatorBindingComponent) -> AnyView? { nil }
     

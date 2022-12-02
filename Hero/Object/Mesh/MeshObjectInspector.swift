@@ -38,7 +38,7 @@ class MeshObjectInspectorModel: ObservableObject {
     }
     
     // MARK: Position
-    let lengthFormatter = Formatters.length
+    let distanceFormatter = Formatters.distance
     
     var position: SPTPosition {
         SPTPosition.get(object: object)
@@ -197,9 +197,9 @@ struct MeshObjectInspector: View {
     
     func positionView() -> some View {
         Section("Position") {
-            SceneEditableParam(title: "X", valueText: textFor(model.position.cartesian.x, formatter: model.lengthFormatter), editAction: { model.editPosition(axis: .x, dismiss: dismiss) })
-            SceneEditableParam(title: "Y", valueText: textFor(model.position.cartesian.y, formatter: model.lengthFormatter), editAction: { model.editPosition(axis: .y, dismiss: dismiss) })
-            SceneEditableParam(title: "Z", valueText: textFor(model.position.cartesian.z, formatter: model.lengthFormatter), editAction: { model.editPosition(axis: .z, dismiss: dismiss) })
+            SceneEditableParam(title: "X", valueText: textFor(model.position.cartesian.x, formatter: model.distanceFormatter), editAction: { model.editPosition(axis: .x, dismiss: dismiss) })
+            SceneEditableParam(title: "Y", valueText: textFor(model.position.cartesian.y, formatter: model.distanceFormatter), editAction: { model.editPosition(axis: .y, dismiss: dismiss) })
+            SceneEditableParam(title: "Z", valueText: textFor(model.position.cartesian.z, formatter: model.distanceFormatter), editAction: { model.editPosition(axis: .z, dismiss: dismiss) })
         }
     }
     

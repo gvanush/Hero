@@ -15,7 +15,7 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
     
     @SPTObservedComponentProperty<SPTMeshLook, Float> var channelValue: Float
     
-    required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    required override init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         var keyPath: WritableKeyPath<SPTMeshLook, Float>!
         switch animatableProperty {

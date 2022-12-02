@@ -30,7 +30,7 @@ class AnimatorBindingComponentBase<AnimatableProperty>: BasicComponent<AnimatorB
     
     @SPTObservedAnimatorBinding<AnimatableProperty> var binding: SPTAnimatorBinding
     
-    required init(animatableProperty: AnimatableProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    init(animatableProperty: AnimatableProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         self.animatableProperty = animatableProperty
         self.object = object
