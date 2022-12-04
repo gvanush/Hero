@@ -55,6 +55,7 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
     }
     
     override func onInactive() {
+        bindingWillChangeSubscription = nil
         channelValue = channelInitialValue
     }
     

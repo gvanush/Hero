@@ -41,6 +41,10 @@ class Component: Identifiable, ObservableObject, Equatable {
     
     func onClose() { }
     
+    func onVisible() {}
+    
+    func onInvisible() {}
+    
     func activate() {
         isActive = true
         onActive()
@@ -54,11 +58,29 @@ class Component: Identifiable, ObservableObject, Equatable {
     func disclose() {
         isDisclosed = true
         onDisclose()
+        if let subcomponents = subcomponents {
+            for subcomponent in subcomponents {
+                subcomponent.appear()
+            }
+        }
     }
     
     func close() {
         isDisclosed = false
+        if let subcomponents = subcomponents {
+            for subcomponent in subcomponents {
+                subcomponent.disappear()
+            }
+        }
         onClose()
+    }
+    
+    func appear() {
+        onVisible()
+    }
+    
+    func disappear() {
+        onInvisible()
     }
     
     func indexPathIn(_ root: Component) -> IndexPath? {
@@ -143,34 +165,64 @@ class MultiVariantComponent: Component {
             if isActive {
                 activeComponent.deactivate()
             }
+            
+            if let parent = parent {
+                if parent.isDisclosed {
+                    newValue.appear()
+                }
+            } else {
+                newValue.appear()
+            }
+            
             if isDisclosed {
                 activeComponent.close()
                 newValue.disclose()
             }
+            
+            if let parent = parent {
+                if parent.isDisclosed {
+                    activeComponent.disappear()
+                }
+            } else {
+                activeComponent?.disappear()
+            }
+            
             if isActive {
                 newValue.activate()
             }
         }
     }
     
-    override var isActive: Bool {
-        didSet {
-            if isActive {
-                activeComponent.activate()
-            } else {
-                activeComponent.deactivate()
-            }
-        }
+    override func activate() {
+        super.activate()
+        activeComponent.activate()
     }
     
-    override var isDisclosed: Bool {
-        didSet {
-            if isDisclosed {
-                activeComponent.disclose()
-            } else {
-                activeComponent.close()
-            }
-        }
+    override func deactivate() {
+        activeComponent.deactivate()
+        super.deactivate()
+    }
+    
+    override func disclose() {
+        isDisclosed = true
+        onDisclose()
+        activeComponent.disclose()
+    }
+    
+    override func close() {
+        activeComponent.close()
+        onClose()
+        isDisclosed = false
+    }
+        
+    override func appear() {
+        super.appear()
+        activeComponent.appear()
+    }
+
+    override func disappear() {
+        activeComponent.disappear()
+        super.disappear()
     }
     
     override var id: ObjectIdentifier {

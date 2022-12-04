@@ -25,8 +25,7 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
         
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
-        setupLine()
-        setupPoints()
+        setupGuides()
     }
     
     deinit {
@@ -44,16 +43,16 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
                 
                 switch selectedProperty {
                 case .valueAt0:
-                    point0Look.color = UIColor.secondaryLightSelectionColor.rgba
-                    point1Look.color = UIColor.secondarySelectionColor.rgba
+                    point0Look.color = UIColor.selectedGuideColor.rgba
+                    point1Look.color = UIColor.guideColor.rgba
                     sceneViewModel.focusedObject = point0Object
                 case .valueAt1:
-                    point0Look.color = UIColor.secondarySelectionColor.rgba
-                    point1Look.color = UIColor.secondaryLightSelectionColor.rgba
+                    point0Look.color = UIColor.guideColor.rgba
+                    point1Look.color = UIColor.selectedGuideColor.rgba
                     sceneViewModel.focusedObject = point1Object
                 case .animator:
-                    point0Look.color = UIColor.secondarySelectionColor.rgba
-                    point1Look.color = UIColor.secondarySelectionColor.rgba
+                    point0Look.color = UIColor.guideColor.rgba
+                    point1Look.color = UIColor.guideColor.rgba
                     sceneViewModel.focusedObject = object
                 case .none:
                     fatalError()
@@ -66,13 +65,12 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     }
     
     override func onDisclose() {
-        SPTPolylineLook.make(.init(color: UIColor.secondarySelectionColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: lineObject)
 
-        let point0Color = (selectedProperty == .valueAt0 ? UIColor.secondaryLightSelectionColor : UIColor.secondarySelectionColor).rgba
-        SPTPointLook.make(.init(color: point0Color, size: 6.0, categories: LookCategories.toolGuide.rawValue), object: point0Object)
+        let point0Color = (selectedProperty == .valueAt0 ? UIColor.selectedGuideColor : UIColor.guideColor).rgba
+        SPTPointLook.make(.init(color: point0Color, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: point0Object)
         
-        let point1Color = (selectedProperty == .valueAt1 ? UIColor.secondaryLightSelectionColor : UIColor.secondarySelectionColor).rgba
-        SPTPointLook.make(.init(color: point1Color, size: 6.0, categories: LookCategories.toolGuide.rawValue), object: point1Object)
+        let point1Color = (selectedProperty == .valueAt1 ? UIColor.selectedGuideColor : UIColor.guideColor).rgba
+        SPTPointLook.make(.init(color: point1Color, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: point1Object)
         
         switch selectedProperty {
         case .valueAt0:
@@ -87,7 +85,6 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     }
     
     override func onClose() {
-        SPTPolylineLook.destroy(object: lineObject)
         SPTPointLook.destroy(object: point0Object)
         SPTPointLook.destroy(object: point1Object)
         // If this component still 'owns' focused object then revert to the source object otherwise
@@ -96,22 +93,21 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
         if sceneViewModel.focusedObject == point0Object || sceneViewModel.focusedObject == point1Object {
             sceneViewModel.focusedObject = self.object
         }
-        bindingWillChangeSubscription = nil
     }
     
-    private func setupLine() {
-        
-        lineObject = sceneViewModel.scene.makeObject()
-        SPTPosition.make(.init(cartesian: origin), object: lineObject)
-        SPTScale.make(.init(x: 500.0), object: lineObject)
-        
-        // Make sure up and direction vectors are not collinear for correct line orientation
-        let up: simd_float3 = SPTCollinear(normAxisDirection, .up, 0.0001) ? .left : .up
-        SPTOrientation.make(.init(lookAt: .init(target: origin + normAxisDirection, up: up, axis: .X, positive: true)), object: lineObject)
-        SPTPolylineLookDepthBiasMake(lineObject, 5.0, 3.0, 0.0)
+    override func onVisible() {
+        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
     }
     
-    private func setupPoints() {
+    override func onInvisible() {
+        SPTPolylineLook.destroy(object: lineObject)
+    }
+    
+    private func setupGuides() {
+        
+        let origin = SPTPosition.get(object: object).toCartesian.cartesian
+        let point0Position = SPTPosition(cartesian: origin + binding.valueAt0 * normAxisDirection)
+        let point1Position = SPTPosition(cartesian: origin + binding.valueAt1 * normAxisDirection)
         
         point0Object = sceneViewModel.scene.makeObject()
         SPTPosition.make(point0Position, object: point0Object)
@@ -119,23 +115,27 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
         point1Object = sceneViewModel.scene.makeObject()
         SPTPosition.make(point1Position, object: point1Object)
         
+        lineObject = sceneViewModel.scene.makeObject()
+        SPTPosition.make(.init(cartesian: 0.5 * (point0Position.cartesian + point1Position.cartesian)), object: lineObject)
+        SPTScale.make(.init(x: 0.5 * (binding.valueAt1 - binding.valueAt0)), object: lineObject)
+        
+        // Make sure up and direction vectors are not collinear for correct line orientation
+        let up: simd_float3 = SPTCollinear(normAxisDirection, .up, 0.0001) ? .left : .up
+        SPTOrientation.make(.init(lookAt: .init(target: origin + normAxisDirection, up: up, axis: .X, positive: true)), object: lineObject)
+        SPTPolylineLookDepthBias.make(.guideLineLayer3, object: lineObject)
+        
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [unowned self] newValue in
+            
+            let point0Position = SPTPosition(cartesian: origin + binding.valueAt0 * normAxisDirection)
+            let point1Position = SPTPosition(cartesian: origin + binding.valueAt1 * normAxisDirection)
+            
             SPTPosition.update(point0Position, object: point0Object)
             SPTPosition.update(point1Position, object: point1Object)
+            
+            SPTPosition.update(.init(cartesian: 0.5 * (point0Position.cartesian + point1Position.cartesian)), object: lineObject)
+            SPTScale.update(.init(x: 0.5 * (binding.valueAt1 - binding.valueAt0)), object: lineObject)
         })
         
-    }
-    
-    var point0Position: SPTPosition {
-        .init(cartesian: origin + binding.valueAt0 * normAxisDirection)
-    }
-    
-    var point1Position: SPTPosition {
-        .init(cartesian: origin + binding.valueAt1 * normAxisDirection)
-    }
-    
-    private var origin: simd_float3 {
-        SPTPosition.get(object: object).toCartesian.cartesian
     }
  
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
@@ -166,12 +166,12 @@ struct DistanceAnimatorBindingComponentView: View {
                 FloatSelector(value: $component.binding.valueAt0, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping)) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-                .tint(Color.secondaryLightSelectionColor)
+                .tint(Color.selectedGuideColor)
             case .valueAt1:
                 FloatSelector(value: $component.binding.valueAt1, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping)) { editingState in
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-                .tint(Color.secondaryLightSelectionColor)
+                .tint(Color.selectedGuideColor)
             case .none:
                 EmptyView()
             }

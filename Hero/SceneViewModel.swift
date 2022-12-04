@@ -88,21 +88,20 @@ class SceneViewModel: ObservableObject {
         let gridPath = Bundle.main.path(forResource: "coordinate_grid", ofType: "obj")!
         let gridPolylineId = SPTCreatePolylineFromFile(gridPath)
         let gridObject = scene.makeObject()
-        SPTPolylineLook.make(.init(color: UIColor.systemGray.rgba, polylineId: gridPolylineId, thickness: 2.0, categories: LookCategories.sceneGuide.rawValue), object: gridObject)
+        SPTPolylineLook.make(.init(color: UIColor.coordinateGridColor.rgba, polylineId: gridPolylineId, thickness: .guideLineThinThickness, categories: LookCategories.guide.rawValue), object: gridObject)
         
         // Setup coordinate axis
         let xAxisObject = scene.makeObject()
-        SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: lineMeshId, thickness: 3.0, categories: LookCategories.sceneGuide.rawValue), object: xAxisObject)
-        
-        SPTScaleMake(xAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
-        SPTPolylineLookDepthBiasMake(xAxisObject, 5.0, 3.0, 0.0)
+        SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: xAxisObject)
+        SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: xAxisObject)
+        SPTPolylineLookDepthBias.make(.guideLineLayer1, object: xAxisObject)
         
         let zAxisObject = scene.makeObject()
-        SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: lineMeshId, thickness: 3.0, categories: LookCategories.sceneGuide.rawValue), object: zAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: zAxisObject)
         
-        SPTScaleMake(zAxisObject, .init(xyz: simd_float3(500.0, 1.0, 1.0)))
+        SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: zAxisObject)
         SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: zAxisObject)
-        SPTPolylineLookDepthBiasMake(zAxisObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBias.make(.guideLineLayer1, object: zAxisObject)
         
     }
     

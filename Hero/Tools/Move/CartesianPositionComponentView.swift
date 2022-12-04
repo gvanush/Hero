@@ -58,22 +58,22 @@ class CartesianPositionComponent: BasicComponent<Axis> {
 
         let object = sceneViewModel.scene.makeObject()
         SPTScale.make(.init(x: 500.0), object: object)
-        SPTPolylineLookDepthBiasMake(object, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBias.make(.guideLineLayer3, object: object)
 
         switch selectedProperty {
         case .x:
             SPTPosition.make(.init(x: 0.0, y: cartesian.y, z: cartesian.z), object: object)
-            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: object)
+            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: object)
             
         case .y:
             SPTPosition.make(.init(x: cartesian.x, y: 0.0, z: cartesian.z), object: object)
             SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ)), object: object)
-            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: object)
+            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: object)
             
         case .z:
             SPTPosition.make(.init(x: cartesian.x, y: cartesian.y, z: 0.0), object: object)
             SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: object)
-            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: object)
+            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: object)
         case .none:
             fatalError()
         }

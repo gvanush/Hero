@@ -20,8 +20,8 @@ extension Color {
     static let defaultShadowColor = Color("DefaultShadowColor")
     static let primarySelectionColor = Color(uiColor: .primarySelectionColor)
     static let primaryLightSelectionColor = Color(uiColor: .primaryLightSelectionColor)
-    static let secondarySelectionColor = Color(uiColor: .secondarySelectionColor)
-    static let secondaryLightSelectionColor = Color(uiColor: .secondaryLightSelectionColor)
+    static let guideColor = Color(uiColor: .guideColor)
+    static let selectedGuideColor = Color(uiColor: .selectedGuideColor)
     
     static let label = Color(uiColor: .label)
     static let secondaryLabel = Color(uiColor: .secondaryLabel)

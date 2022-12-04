@@ -16,7 +16,7 @@ extension UIColor {
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-
+        
         return simd_float4(x: Float(red), y: Float(green), z: Float(blue), w: Float(alpha))
     }
     
@@ -26,7 +26,7 @@ extension UIColor {
         var brightness: CGFloat = 0
         var alpha: CGFloat = 0
         getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-
+        
         return simd_float4(x: Float(hue), y: Float(saturation), z: Float(brightness), w: Float(alpha))
     }
     
@@ -49,9 +49,9 @@ extension UIColor {
         return MTLClearColor(red: Double(red), green: Double(green), blue: Double(blue), alpha: Double(alpha))
     }
     
-    static var sceneBgrColor: UIColor {
-        Self.systemGray2
-    }
+    static let sceneBgrColor = UIColor.systemGray2
+    
+    static let coordinateGridColor = UIColor.systemGray
     
     static func random(alpha: CGFloat = 1.0) -> UIColor {
         UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: alpha)
@@ -59,8 +59,9 @@ extension UIColor {
     
     static let primarySelectionColor = UIColor.orange
     static let primaryLightSelectionColor = UIColor.yellow
-    static let secondarySelectionColor = UIColor(named: "secondarySelectionColor")!
-    static let secondaryLightSelectionColor = UIColor(named: "secondaryLightSelectionColor")!
+    static let guideColor = UIColor(named: "guideColor")!
+    static let selectedGuideColor = UIColor(named: "selectedGuideColor")!
+    static let inactiveGuideColor = UIColor(named: "inactiveGuideColor")!
     
     static let xAxis = UIColor(named: "XAxisColor")!
     static let xAxisLight = UIColor(named: "XAxisLightColor")!

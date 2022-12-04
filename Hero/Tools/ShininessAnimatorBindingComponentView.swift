@@ -47,6 +47,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     }
     
     override func onInactive() {
+        bindingWillChangeSubscription = nil
         shininess = shininessInitialValue
     }
     

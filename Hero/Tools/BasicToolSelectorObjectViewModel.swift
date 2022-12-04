@@ -104,14 +104,18 @@ class BasicToolViewModel<SVM, RC>: ToolViewModel where SVM: BasicToolSelectedObj
     
     override init(tool: Tool, sceneViewModel: SceneViewModel) {
         super.init(tool: tool, sceneViewModel: sceneViewModel)
-        
+    }
+    
+    override func onActive() {
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [unowned self] selected in
             guard self.selectedObjectViewModel?.object != selected else { return }
             self.setupSelectedObjectViewModel(object: selected)
         }
-        
-        setupSelectedObjectViewModel(object: sceneViewModel.selectedObject)
-        
+    }
+    
+    override func onInactive() {
+        selectedObjectSubscription = nil
+        setupSelectedObjectViewModel(object: nil)
     }
     
     override var activeComponent: Component? {

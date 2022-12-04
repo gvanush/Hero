@@ -68,10 +68,10 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         let cancellable = subcomponent.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
             var pointLook = SPTPointLook.get(object: guidePointObject)
             if isDisclosed {
-                pointLook.color = UIColor.secondaryLightSelectionColor.rgba
+                pointLook.color = UIColor.selectedGuideColor.rgba
                 self.sceneViewModel.focusedObject = guidePointObject
             } else {
-                pointLook.color = UIColor.secondarySelectionColor.rgba
+                pointLook.color = UIColor.guideColor.rgba
                 // If this component still 'owns' focused object then revert to the source object otherwise
                 // leave as it is. This is relevant when component is closed when entire component tree is removed
                 // from the screen
@@ -105,7 +105,7 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         SPTPosition.make(originPosition, object: lineGuideObject)
         SPTScale.make(.init(x: 500.0), object: lineGuideObject)
         SPTOrientation.make(.init(lookAt: .init(target: targetPosition.cartesian, up: lineUpVector(origin: originPosition.cartesian, target: targetPosition.cartesian), axis: .X, positive: true)), object: lineGuideObject)
-        SPTPolylineLookDepthBiasMake(lineGuideObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: lineGuideObject)
     }
     
     private func lineUpVector(origin: simd_float3, target: simd_float3) -> simd_float3 {
@@ -114,9 +114,9 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
     }
     
     override func onDisclose() {
-        SPTPointLook.make(.init(color: UIColor.secondarySelectionColor.rgba, size: 7.0, categories: LookCategories.toolGuide.rawValue), object: origin.object)
-        SPTPointLook.make(.init(color: UIColor.secondarySelectionColor.rgba, size: 5.0, categories: LookCategories.toolGuide.rawValue), object: directionPoint.object)
-        SPTPolylineLook.make(.init(color: UIColor.secondarySelectionColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: lineGuideObject)
+        SPTPointLook.make(.init(color: UIColor.guideColor.rgba, size: .guidePointLargeSize, categories: LookCategories.guide.rawValue), object: origin.object)
+        SPTPointLook.make(.init(color: UIColor.guideColor.rgba, size: .guidePointSmallSize, categories: LookCategories.guide.rawValue), object: directionPoint.object)
+        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: lineGuideObject)
     }
     
     override func onClose() {

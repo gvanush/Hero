@@ -103,6 +103,18 @@ struct ObjectPropertyLinearPositionAnimatorBindingEditingParams {
     var offset = AnimatorBindingEditingParams()
 }
 
+struct ObjectPropertyCylindricalPositionAnimatorBindingEditingParams {
+    var radius = AnimatorBindingEditingParams()
+    var longitude = AnimatorBindingEditingParams()
+    var height = AnimatorBindingEditingParams()
+}
+
+struct ObjectPropertySphericalPositionAnimatorBindingEditingParams {
+    var radius = AnimatorBindingEditingParams()
+    var longitude = AnimatorBindingEditingParams()
+    var latitude = AnimatorBindingEditingParams()
+}
+
 class ObjectPropertyEditingParams: ObservableObject {
 
     // MARK: Position
@@ -201,6 +213,28 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
     }
     
+    @Published private var cylindricalPositionBindingParams = [SPTObject : ObjectPropertyCylindricalPositionAnimatorBindingEditingParams]()
+
+    subscript(cylindricalPositionBindingOf object: SPTObject) -> ObjectPropertyCylindricalPositionAnimatorBindingEditingParams {
+        get {
+            cylindricalPositionBindingParams[object, default: .init()]
+        }
+        set {
+            cylindricalPositionBindingParams[object] = newValue
+        }
+    }
+    
+    @Published private var sphericalPositionBindingParams = [SPTObject : ObjectPropertySphericalPositionAnimatorBindingEditingParams]()
+
+    subscript(sphericalPositionBindingOf object: SPTObject) -> ObjectPropertySphericalPositionAnimatorBindingEditingParams {
+        get {
+            sphericalPositionBindingParams[object, default: .init()]
+        }
+        set {
+            sphericalPositionBindingParams[object] = newValue
+        }
+    }
+    
     // MARK: Object lifecycle
     func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
         cartesianPositionParams[duplicate] = cartesianPositionParams[original]
@@ -211,6 +245,9 @@ class ObjectPropertyEditingParams: ObservableObject {
         scaleParams[duplicate] = scaleParams[original]
         rotationParams[duplicate] = rotationParams[original]
         cartesianPositionBindingParams[duplicate] = cartesianPositionBindingParams[original]
+        linearPositionBindingParams[duplicate] = linearPositionBindingParams[original]
+        cylindricalPositionBindingParams[duplicate] = cylindricalPositionBindingParams[original]
+        sphericalPositionBindingParams[duplicate] = sphericalPositionBindingParams[original]
     }
     
     func onObjectDestroy(_ object: SPTObject) {
@@ -222,5 +259,8 @@ class ObjectPropertyEditingParams: ObservableObject {
         scaleParams.removeValue(forKey: object)
         rotationParams.removeValue(forKey: object)
         cartesianPositionBindingParams.removeValue(forKey: object)
+        linearPositionBindingParams.removeValue(forKey: object)
+        cylindricalPositionBindingParams.removeValue(forKey: object)
+        sphericalPositionBindingParams.removeValue(forKey: object)
     }
 }

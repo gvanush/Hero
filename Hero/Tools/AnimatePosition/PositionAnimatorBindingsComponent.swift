@@ -44,11 +44,9 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
         case .linear:
             activeComponent = LinearPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .spherical:
-            // TODO
-            break
+            activeComponent = SphericalPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .cylindrical:
-            // TODO
-            break
+            activeComponent = CylindricalPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }
         activeComponent.variantTag = coordinateSystem.rawValue
         variantCancellable = activeComponent.objectWillChange.sink { [unowned self] in

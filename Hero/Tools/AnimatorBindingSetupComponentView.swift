@@ -40,10 +40,28 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
             if isActive {
                 animatorBindingComponent?.deactivate()
             }
+            
+            if let parent = parent {
+                if parent.isDisclosed {
+                    newValue?.appear()
+                }
+            } else {
+                newValue?.appear()
+            }
+            
             if isDisclosed {
                 animatorBindingComponent?.close()
                 newValue?.disclose()
             }
+            
+            if let parent = parent {
+                if parent.isDisclosed {
+                    animatorBindingComponent?.disappear()
+                }
+            } else {
+                animatorBindingComponent?.disappear()
+            }
+            
             if isActive {
                 newValue?.activate()
             }
@@ -77,24 +95,36 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
         
     }
     
-    override var isActive: Bool {
-        didSet {
-            if isActive {
-                animatorBindingComponent?.activate()
-            } else {
-                animatorBindingComponent?.deactivate()
-            }
-        }
+    override func activate() {
+        super.activate()
+        animatorBindingComponent?.activate()
     }
     
-    override var isDisclosed: Bool {
-        didSet {
-            if isDisclosed {
-                animatorBindingComponent?.disclose()
-            } else {
-                animatorBindingComponent?.close()
-            }
-        }
+    override func deactivate() {
+        animatorBindingComponent?.deactivate()
+        super.deactivate()
+    }
+    
+    override func disclose() {
+        isDisclosed = true
+        onDisclose()
+        animatorBindingComponent?.disclose()
+    }
+    
+    override func close() {
+        animatorBindingComponent?.close()
+        onClose()
+        isDisclosed = false
+    }
+    
+    override func appear() {
+        super.appear()
+        animatorBindingComponent?.appear()
+    }
+
+    override func disappear() {
+        animatorBindingComponent?.disappear()
+        super.disappear()
     }
     
     private func setupAnimatorBindingComponent() {

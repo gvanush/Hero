@@ -76,7 +76,14 @@ class RootViewModel: ObservableObject {
         animateShadeToolViewModel
     ]
     
-    @Published var activeToolViewModel: ToolViewModel
+    @Published var activeToolViewModel: ToolViewModel {
+        willSet {
+            activeToolViewModel.onInactive()
+        }
+        didSet {
+            activeToolViewModel.onActive()
+        }
+    }
     
     let objectFactory: ObjectFactory
     let objectPropertyEditingParams = ObjectPropertyEditingParams()
@@ -239,6 +246,12 @@ struct RootView: View {
             if scenePhase == .active && newScenePhase == .inactive {
                 playableScene = nil
             }
+        }
+        .onAppear {
+            model.activeToolViewModel.onActive()
+        }
+        .onDisappear {
+            model.activeToolViewModel.onInactive()
         }
     }
     

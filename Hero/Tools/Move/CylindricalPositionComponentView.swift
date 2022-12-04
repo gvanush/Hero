@@ -80,10 +80,10 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         let cancellable = origin.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
             var pointLook = SPTPointLook.get(object: guidePointObject)
             if isDisclosed {
-                pointLook.color = UIColor.secondaryLightSelectionColor.rgba
+                pointLook.color = UIColor.selectedGuideColor.rgba
                 self.sceneViewModel.focusedObject = guidePointObject
             } else {
-                pointLook.color = UIColor.secondarySelectionColor.rgba
+                pointLook.color = UIColor.guideColor.rgba
                 // If this component still 'owns' focused object then revert to the source object otherwise
                 // leave as it is. This is relevant when component is closed when entire component tree is removed
                 // from the screen
@@ -101,11 +101,11 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     }
     
     override func onDisclose() {
-        SPTPointLook.make(.init(color: UIColor.secondarySelectionColor.rgba, size: 7.0, categories: LookCategories.toolGuide.rawValue), object: origin.object)
-        SPTPolylineLook.make(.init(color: UIColor.secondarySelectionColor.rgba, polylineId: sceneViewModel.halfLineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: radiusLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.secondarySelectionColor.rgba, polylineId: sceneViewModel.halfLineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: heightLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.secondarySelectionColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: circleObject)
-        SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: 3.0, categories: LookCategories.toolGuide.rawValue), object: yAxisObject)
+        SPTPointLook.make(.init(color: UIColor.guideColor.rgba, size: .guidePointLargeSize, categories: LookCategories.guide.rawValue), object: origin.object)
+        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
+        SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
         
         updateSelectedGuideObject(selectedProperty: selectedProperty!)
     }
@@ -140,13 +140,11 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     
     private func updateGuideObjects(position: SPTPosition) {
         SPTPosition.update(.init(cartesian: position.cylindrical.origin + .init(x: 0.0, y: position.cylindrical.height, z: 0.0)), object: radiusLineObject)
-        SPTScale.update(.init(x: position.cylindrical.radius), object: radiusLineObject)
         SPTOrientation.update(.init(y: position.cylindrical.longitude - 0.5 * Float.pi), object: radiusLineObject)
         
         var heightLinePosition = position
         heightLinePosition.cylindrical.height = 0.0
         SPTPosition.update(heightLinePosition, object: heightLineObject)
-        SPTScale.update(.init(x: cylindricalPosition.height), object: heightLineObject)
         
         SPTPosition.update(origin.position, object: yAxisObject)
         
@@ -157,9 +155,9 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     private func setupRadiusLine() {
         radiusLineObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: cylindricalPosition.origin + .init(x: 0.0, y: cylindricalPosition.height, z: 0.0)), object: radiusLineObject)
-        SPTScale.make(.init(x: cylindricalPosition.radius), object: radiusLineObject)
+        SPTScale.make(.init(x: 500.0), object: radiusLineObject)
         SPTOrientation.make(.init(y: cylindricalPosition.longitude - 0.5 * Float.pi), object: radiusLineObject)
-        SPTPolylineLookDepthBiasMake(radiusLineObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: radiusLineObject)
     }
     
     private func setupHeightLine() {
@@ -167,9 +165,9 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         var heightLinePosition = SPTPosition.get(object: object)
         heightLinePosition.cylindrical.height = 0.0
         SPTPosition.make(heightLinePosition, object: heightLineObject)
-        SPTScale.make(.init(x: cylindricalPosition.height), object: heightLineObject)
+        SPTScale.make(.init(x: 500.0), object: heightLineObject)
         SPTOrientation.make(.init(z: 0.5 * Float.pi), object: heightLineObject)
-        SPTPolylineLookDepthBiasMake(heightLineObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: heightLineObject)
     }
     
     private func setupCircle() {
@@ -177,7 +175,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPosition.make(origin.position, object: circleObject)
         SPTScale.make(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
         SPTOrientation.make(.init(x: 0.5 * Float.pi), object: circleObject)
-        SPTPolylineLookDepthBiasMake(circleObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: circleObject)
     }
     
     private func setupYAxis() {
@@ -185,7 +183,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPosition.make(origin.position, object: yAxisObject)
         SPTScale.make(.init(x: 500.0), object: yAxisObject)
         SPTOrientation.make(.init(z: Float.pi * 0.5), object: yAxisObject)
-        SPTPolylineLookDepthBiasMake(yAxisObject, 5.0, 3.0, 0.0)
+        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: yAxisObject)
     }
     
     private func updateSelectedGuideObject(selectedProperty: CylindricalPositionComponentProperty) {
@@ -195,17 +193,17 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         
         switch selectedProperty {
         case .longitude:
-            radiusLineLook.color = UIColor.secondarySelectionColor.rgba
-            heightLineLook.color = UIColor.secondarySelectionColor.rgba
-            circleLook.color = isActive ? UIColor.secondaryLightSelectionColor.rgba : UIColor.secondarySelectionColor.rgba
+            radiusLineLook.color = UIColor.guideColor.rgba
+            heightLineLook.color = UIColor.guideColor.rgba
+            circleLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
         case .radius:
-            radiusLineLook.color = isActive ? UIColor.secondaryLightSelectionColor.rgba : UIColor.secondarySelectionColor.rgba
-            heightLineLook.color = UIColor.secondarySelectionColor.rgba
-            circleLook.color = UIColor.secondarySelectionColor.rgba
+            radiusLineLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
+            heightLineLook.color = UIColor.guideColor.rgba
+            circleLook.color = UIColor.guideColor.rgba
         case .height:
-            radiusLineLook.color = UIColor.secondarySelectionColor.rgba
-            heightLineLook.color = isActive ? UIColor.secondaryLightSelectionColor.rgba : UIColor.secondarySelectionColor.rgba
-            circleLook.color = UIColor.secondarySelectionColor.rgba
+            radiusLineLook.color = UIColor.guideColor.rgba
+            heightLineLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
+            circleLook.color = UIColor.guideColor.rgba
         }
         
         SPTPolylineLook.update(radiusLineLook, object: self.radiusLineObject)

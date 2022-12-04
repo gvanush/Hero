@@ -67,14 +67,18 @@ class ScaleToolViewModel: ToolViewModel {
     
     init(sceneViewModel: SceneViewModel) {
         super.init(tool: .scale, sceneViewModel: sceneViewModel)
+    }
     
+    override func onActive() {
         selectedObjectSubscription = sceneViewModel.$selectedObject.sink { [weak self] selected in
             guard let self = self, self.selectedObjectViewModel?.object != selected else { return }
             self.setupSelectedObjectViewModel(object: selected)
         }
-        
-        setupSelectedObjectViewModel(object: sceneViewModel.selectedObject)
-        
+    }
+    
+    override func onInactive() {
+        selectedObjectSubscription = nil
+        setupSelectedObjectViewModel(object: nil)
     }
     
     private func setupSelectedObjectViewModel(object: SPTObject?) {

@@ -55,6 +55,7 @@ class ObjectHSBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
     }
     
     override func onInactive() {
+        bindingWillChangeSubscription = nil
         channelValue = channelInitialValue
     }
     

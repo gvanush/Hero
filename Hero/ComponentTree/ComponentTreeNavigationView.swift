@@ -52,6 +52,7 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
                 component = next.parent
             }
             
+            rootComponent.appear()
             for component in components.reversed() {
                 component.disclose()
             }
@@ -66,6 +67,7 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
                 next.close()
                 component = next.parent
             }
+            rootComponent.disappear()
         }
         
     }
@@ -147,6 +149,9 @@ fileprivate struct ComponentSelectionView: View {
             }
         })
         .onChange(of: isDisclosed) { newValue in
+            // TODO: When active component is changed without to parent/children from the
+            // current one onVisible is not called for root top node.
+            // Perhaps the following logic must be moved to on active component changed callback
             if newValue {
                 component.disclose()
             } else {
@@ -177,14 +182,6 @@ fileprivate struct ComponentSelectionView: View {
             nextAncestor = ancestor.parent
         }
         return nextAncestor != nil
-    }
-    
-    private var isDescendantOfActive: Bool {
-        var nextAncestor: Component? = self.component.parent
-        while let ancestor = nextAncestor, ancestor != activeComponent {
-            nextAncestor = ancestor.parent
-        }
-        return nextAncestor == activeComponent
     }
     
     private var distanceToActiveAncestor: Int? {

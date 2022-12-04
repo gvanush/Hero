@@ -80,6 +80,10 @@ class ToolViewModel: ObservableObject, Identifiable, Equatable {
         self.sceneViewModel = sceneViewModel
     }
     
+    func onActive() {}
+    
+    func onInactive() {}
+    
     var activeComponent: Component? {
         set { }
         get { nil }

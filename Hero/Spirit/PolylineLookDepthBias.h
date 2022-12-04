@@ -17,6 +17,6 @@ typedef struct {
     float clamp;
 } SPTPolylineLookDepthBias;
 
-SPTPolylineLookDepthBias SPTPolylineLookDepthBiasMake(SPTObject object, float bias, float slopeScale, float clamp);
+void SPTPolylineLookDepthBiasMake(SPTObject object, SPTPolylineLookDepthBias depthBias);
 
 SPT_EXTERN_C_END

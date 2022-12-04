@@ -8,6 +8,6 @@
 #include "PolylineLookDepthBias.h"
 #include "Scene.hpp"
 
-SPTPolylineLookDepthBias SPTPolylineLookDepthBiasMake(SPTObject object, float bias, float slopeScale, float clamp) {
-    return spt::Scene::getRegistry(object).emplace<SPTPolylineLookDepthBias>(object.entity, bias, slopeScale, clamp);
+void SPTPolylineLookDepthBiasMake(SPTObject object, SPTPolylineLookDepthBias depthBias) {
+    spt::Scene::getRegistry(object).emplace<SPTPolylineLookDepthBias>(object.entity, depthBias);
 }
