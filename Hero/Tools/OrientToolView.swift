@@ -30,8 +30,8 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
     }
     
     var eulerRotation: simd_float3 {
-        set { sptOrientation.euler.rotation = SPTToRadFloat3(newValue) }
-        get { SPTToDegFloat3(sptOrientation.euler.rotation) }
+        set { sptOrientation.euler.rotation = SPTVector.degreesToRadians(newValue) }
+        get { SPTVector.radiansToDegrees(sptOrientation.euler.rotation) }
     }
     
 }

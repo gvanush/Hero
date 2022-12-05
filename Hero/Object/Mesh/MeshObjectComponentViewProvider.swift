@@ -18,6 +18,10 @@ class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
         AnyView(DistanceAnimatorBindingComponentView(component: component))
     }
     
+    override func viewFor(_ component: ObjectAngleAnimatorBindingComponent) -> AnyView? {
+        AnyView(AngleAnimatorBindingComponentView(component: component))
+    }
+    
     override func viewFor(_ component: ShininessAnimatorBindingComponent) -> AnyView? {
         AnyView(ShininessAnimatorBindingComponentView(component: component))
     }

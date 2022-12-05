@@ -9,50 +9,18 @@
 #include "Scene.hpp"
 #include "Transformation.hpp"
 #include "ComponentObserverUtil.hpp"
+#include "Matrix.h"
 
 #include <simd/simd.h>
 
 
 namespace spt::Orientation {
 
-simd_float4x4 computeRotationXMatrix(float rx) {
-    const auto c = cosf(rx);
-    const auto s = sinf(rx);
-    return simd_float4x4 {
-        simd_float4 {1.f, 0.f, 0.f, 0.f},
-        simd_float4 {0.f, c, s, 0.f},
-        simd_float4 {0.f, -s, c, 0.f},
-        simd_float4 {0.f, 0.f, 0.f, 1.f}
-    };
-}
-
-simd_float4x4 computeRotationYMatrix(float ry) {
-    const auto c = cosf(ry);
-    const auto s = sinf(ry);
-    return simd_float4x4 {
-        simd_float4 {c, 0.f, -s, 0.f},
-        simd_float4 {0.f, 1.f, 0.f, 0.f},
-        simd_float4 {s, 0.f, c, 0.f},
-        simd_float4 {0.f, 0.f, 0.f, 1.f}
-    };
-}
-
-simd_float4x4 computeRotationZMatrix(float rz) {
-    const auto c = cosf(rz);
-    const auto s = sinf(rz);
-    return simd_float4x4 {
-        simd_float4 {c, s, 0.f, 0.f},
-        simd_float4 {-s, c, 0.f, 0.f},
-        simd_float4 {0.f, 0.f, 1.f, 0.f},
-        simd_float4 {0.f, 0.f, 0.f, 1.f}
-    };
-}
-
-simd_float4x4 computeEulerOrientationMatrix(const SPTEulerOrientation& eulerOrientation) {
+simd_float3x3 computeEulerOrientationMatrix(const SPTEulerOrientation& eulerOrientation) {
     
-    const auto& xMat = computeRotationXMatrix(eulerOrientation.rotation.x);
-    const auto& yMat = computeRotationYMatrix(eulerOrientation.rotation.y);
-    const auto& zMat = computeRotationZMatrix(eulerOrientation.rotation.z);
+    const auto& xMat = SPTMatrix3x3CreateEulerRotationX(eulerOrientation.rotation.x);
+    const auto& yMat = SPTMatrix3x3CreateEulerRotationY(eulerOrientation.rotation.y);
+    const auto& zMat = SPTMatrix3x3CreateEulerRotationZ(eulerOrientation.rotation.z);
     
     switch (eulerOrientation.order) {
         case SPTEulerOrderXYZ:
@@ -70,75 +38,69 @@ simd_float4x4 computeEulerOrientationMatrix(const SPTEulerOrientation& eulerOrie
     }
 }
 
-simd_float4x4 computeLookAtMatrix(simd_float3 pos, const SPTLookAtPointOrientation& orientation) {
+simd_float3x3 computeLookAtMatrix(simd_float3 pos, const SPTLookAtPointOrientation& orientation) {
     const auto sign = (orientation.positive ? 1 : -1);
     switch(orientation.axis) {
         case SPTAxisX: {
             const auto xAxis = sign * simd_normalize(orientation.target - pos);
             const auto yAxis = simd_normalize(simd_cross(orientation.up, xAxis));
             
-            return simd_float4x4 {
-                simd_make_float4(xAxis, 0.f),
-                simd_make_float4(yAxis, 0.f),
-                simd_make_float4(simd_normalize(simd_cross(xAxis, yAxis)), 0.f),
-                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            return simd_float3x3 {
+                xAxis,
+                yAxis,
+                simd_normalize(simd_cross(xAxis, yAxis))
             };
         }
         case SPTAxisY: {
             const auto yAxis = sign * simd_normalize(orientation.target - pos);
             const auto zAxis = simd_normalize(simd_cross(orientation.up, yAxis));
-            return simd_float4x4 {
-                simd_make_float4(simd_normalize(simd_cross(yAxis, zAxis)), 0.f),
-                simd_make_float4(yAxis, 0.f),
-                simd_make_float4(zAxis, 0.f),
-                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            return simd_float3x3 {
+                simd_normalize(simd_cross(yAxis, zAxis)),
+                yAxis,
+                zAxis
             };
         }
         case SPTAxisZ: {
             const auto zAxis = sign * simd_normalize(orientation.target - pos);
             const auto xAxis = simd_normalize(simd_cross(orientation.up, zAxis));
-            return simd_float4x4 {
-                simd_make_float4(xAxis, 0.f),
-                simd_make_float4(simd_normalize(simd_cross(zAxis, xAxis)), 0.f),
-                simd_make_float4(zAxis, 0.f),
-                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            return simd_float3x3 {
+                xAxis,
+                simd_normalize(simd_cross(zAxis, xAxis)),
+                zAxis
             };
         }
     }
 }
 
-simd_float4x4 computeLookAtDirectionMatrix(const SPTLookAtDirectionOrientation& orientation) {
+simd_float3x3 computeLookAtDirectionMatrix(const SPTLookAtDirectionOrientation& orientation) {
     const auto sign = (orientation.positive ? 1 : -1);
     switch(orientation.axis) {
         case SPTAxisX: {
             const auto xAxis = sign * orientation.normDirection;
             const auto yAxis = simd_normalize(simd_cross(orientation.up, xAxis));
             
-            return simd_float4x4 {
-                simd_make_float4(xAxis, 0.f),
-                simd_make_float4(yAxis, 0.f),
-                simd_make_float4(simd_normalize(simd_cross(xAxis, yAxis)), 0.f),
-                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            return simd_float3x3 {
+                xAxis,
+                yAxis,
+                simd_normalize(simd_cross(xAxis, yAxis))
             };
         }
         case SPTAxisY: {
             const auto yAxis = sign * orientation.normDirection;
             const auto zAxis = simd_normalize(simd_cross(orientation.up, yAxis));
-            return simd_float4x4 {
-                simd_make_float4(simd_normalize(simd_cross(yAxis, zAxis)), 0.f),
-                simd_make_float4(yAxis, 0.f),
-                simd_make_float4(zAxis, 0.f),
-                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            return simd_float3x3 {
+                simd_normalize(simd_cross(yAxis, zAxis)),
+                yAxis,
+                zAxis
             };
         }
         case SPTAxisZ: {
             const auto zAxis = sign * orientation.normDirection;
             const auto xAxis = simd_normalize(simd_cross(orientation.up, zAxis));
-            return simd_float4x4 {
-                simd_make_float4(xAxis, 0.f),
-                simd_make_float4(simd_normalize(simd_cross(zAxis, xAxis)), 0.f),
-                simd_make_float4(zAxis, 0.f),
-                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            return simd_float3x3 {
+                xAxis,
+                simd_normalize(simd_cross(zAxis, xAxis)),
+                zAxis
             };
         }
     }
@@ -149,13 +111,13 @@ simd_float4x4 getMatrix(const spt::Registry& registry, SPTEntity entity, const s
     if(const auto orientation = registry.try_get<SPTOrientation>(entity)) {
         switch (orientation->type) {
             case SPTOrientationTypeEuler: {
-                return computeEulerOrientationMatrix(orientation->euler);
+                return SPTMatrix4x4CreateUpperLeft(computeEulerOrientationMatrix(orientation->euler));
             }
             case SPTOrientationTypeLookAtPoint: {
-                return computeLookAtMatrix(position, orientation->lookAtPoint);
+                return SPTMatrix4x4CreateUpperLeft(computeLookAtMatrix(position, orientation->lookAtPoint));
             }
             case SPTOrientationTypeLookAtDirection: {
-                return computeLookAtDirectionMatrix(orientation->lookAtDirection);
+                return SPTMatrix4x4CreateUpperLeft(computeLookAtDirectionMatrix(orientation->lookAtDirection));
             }
         }
     }

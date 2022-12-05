@@ -23,6 +23,8 @@ class ComponentViewProvider<RC> {
     
     func viewFor(_ component: ObjectDistanceAnimatorBindingComponent) -> AnyView? { nil }
     
+    func viewFor(_ component: ObjectAngleAnimatorBindingComponent) -> AnyView? { nil }
+    
     func viewFor(_ component: ShininessAnimatorBindingComponent) -> AnyView? { nil }
     
     func viewFor(_ component: ObjectRGBAColorChannelAnimatorBindingComponent) -> AnyView? { nil }

@@ -18,6 +18,11 @@ class SphericalPositionAnimatorBindingsComponent: Component {
     private var longitudeCircleObject: SPTObject!
     private var originObject: SPTObject!
     
+
+    lazy private(set) var latitude = AnimatorBindingSetupComponent<SphericalPositionLatitudeAnimatorBindingComponent>(animatableProperty: .sphericalPositionLatitude, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    
+    lazy private(set) var longitude = AnimatorBindingSetupComponent<SphericalPositionLongitudeAnimatorBindingComponent>(animatableProperty: .sphericalPositionLongitude, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    
     lazy private(set) var radius = AnimatorBindingSetupComponent<SphericalPositionRadiusAnimatorBindingComponent>(animatableProperty: .sphericalPositionRadius, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
@@ -61,7 +66,7 @@ class SphericalPositionAnimatorBindingsComponent: Component {
         SPTScale.make(.init(x: 500.0), object: radiusLineObject)
 
         // Make sure up and direction vectors are not collinear for correct line orientation
-        let radiusUpVector: simd_float3 = SPTCollinear(radiusNormDirection, .up, 0.0001) ? .left : .up
+        let radiusUpVector: simd_float3 = SPTVector.collinear(radiusNormDirection, .up, tolerance: 0.0001) ? .left : .up
         SPTOrientation.make(.init(normDirection: radiusNormDirection, up: radiusUpVector, axis: .X), object: radiusLineObject)
         
         latitudeCircleObject = sceneViewModel.scene.makeObject()
@@ -84,10 +89,40 @@ class SphericalPositionAnimatorBindingsComponent: Component {
         "Animators"
     }
     
-    override var subcomponents: [Component]? { [radius] }
+    override var subcomponents: [Component]? { [latitude, longitude, radius] }
     
 }
 
+class SphericalPositionLatitudeAnimatorBindingComponent: ObjectAngleAnimatorBindingComponent, AnimatorBindingComponentProtocol {
+    
+    required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+        
+        let position = SPTPosition.get(object: object)
+        
+        guard animatableProperty == .sphericalPositionLatitude && position.coordinateSystem == .spherical else {
+            fatalError()
+        }
+
+        let angle = 0.5 * Float.pi + position.spherical.longitude
+        super.init(origin: position.spherical.origin, normRotationAxis: .init(x: sinf(angle), y: 0.0, z: cosf(angle)), editingParamsKeyPath: \.[sphericalPositionBindingOf: object].latitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+    }
+    
+}
+
+class SphericalPositionLongitudeAnimatorBindingComponent: ObjectAngleAnimatorBindingComponent, AnimatorBindingComponentProtocol {
+    
+    required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+        
+        let position = SPTPosition.get(object: object)
+        
+        guard animatableProperty == .sphericalPositionLongitude && position.coordinateSystem == .spherical else {
+            fatalError()
+        }
+
+        super.init(origin: position.spherical.origin, normRotationAxis: .up, editingParamsKeyPath: \.[sphericalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+    }
+    
+}
 
 class SphericalPositionRadiusAnimatorBindingComponent: ObjectDistanceAnimatorBindingComponent, AnimatorBindingComponentProtocol {
     
@@ -105,3 +140,4 @@ class SphericalPositionRadiusAnimatorBindingComponent: ObjectDistanceAnimatorBin
     }
     
 }
+

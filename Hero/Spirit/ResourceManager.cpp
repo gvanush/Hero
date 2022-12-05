@@ -9,7 +9,7 @@
 #include "ResourceManager.hpp"
 #include "Geometry.h"
 #include "ShaderTypes.h"
-#include "SIMDUtil.h"
+#include "Vector.h"
 
 #include "GHI/Device.hpp"
 

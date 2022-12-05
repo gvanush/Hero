@@ -113,7 +113,7 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
     
     private func lineUpVector(direction: simd_float3) -> simd_float3 {
         // Make sure up and direction vectors are not collinear for correct line orientation
-        SPTCollinear(direction, .up, 0.0001) ? .left : .up
+        SPTVector.collinear(direction, .up, tolerance: 0.0001) ? .left : .up
     }
     
     override func onDisclose() {

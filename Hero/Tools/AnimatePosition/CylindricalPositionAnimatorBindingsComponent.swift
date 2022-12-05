@@ -18,6 +18,8 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
     private var circleObject: SPTObject!
     private var circleCenterObject: SPTObject!
     
+    lazy private(set) var longitude = AnimatorBindingSetupComponent<CylindricalPositionLongitudetAnimatorBindingComponent>(animatableProperty: .cylindricalPositionLongitude, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    
     lazy private(set) var radius = AnimatorBindingSetupComponent<CylindricalPositionRadiusAnimatorBindingComponent>(animatableProperty: .cylindricalPositionRadius, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     lazy private(set) var height = AnimatorBindingSetupComponent<CylindricalPositionHeightAnimatorBindingComponent>(animatableProperty: .cylindricalPositionHeight, object: self.object, sceneViewModel: sceneViewModel, parent: self)
@@ -81,7 +83,7 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
         "Animators"
     }
     
-    override var subcomponents: [Component]? { [radius, height] }
+    override var subcomponents: [Component]? { [longitude, radius, height] }
     
 }
 
@@ -115,6 +117,21 @@ class CylindricalPositionHeightAnimatorBindingComponent: ObjectDistanceAnimatorB
         }
 
         super.init(axisDirection: .up, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].height, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+    }
+    
+}
+
+class CylindricalPositionLongitudetAnimatorBindingComponent: ObjectAngleAnimatorBindingComponent, AnimatorBindingComponentProtocol {
+    
+    required init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+        
+        let position = SPTPosition.get(object: object)
+        
+        guard animatableProperty == .cylindricalPositionLongitude && position.coordinateSystem == .cylindrical else {
+            fatalError()
+        }
+
+        super.init(origin: position.cylindrical.origin, normRotationAxis: .up, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
     
 }

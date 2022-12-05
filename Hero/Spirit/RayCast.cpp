@@ -10,7 +10,7 @@
 #include "Scene.hpp"
 #include "Transformation.hpp"
 #include "ResourceManager.hpp"
-#include "SIMDUtil.h"
+#include "Vector.h"
 
 #include <entt/entt.hpp>
 
@@ -18,12 +18,6 @@
 namespace spt {
 
 namespace  {
-
-// Assumes that the 'point' is on the 'ray' line
-float computeRayDirectionFactor(const SPTRay& ray, const simd_float3& point) {
-    auto i = SPTMaxComponentIndex(ray.direction);
-    return (point[i] - ray.origin[i]) / ray.direction[i];
-}
 
 struct RayCastResult {
     float rayDirectionFactor;
@@ -46,7 +40,7 @@ RayCastResult rayCastMesh(const Mesh& mesh, const SPTRay& ray, float tolerance) 
     return result;
 }
 
-RayCastResult tryRayCastMeshLook(Registry& registry, SPTEntity entity, const SPTRay& ray, float tolerance) {
+RayCastResult tryRayCastMeshLook(Registry& registry, SPTEntity entity, const SPTRay& ray, int rayDirectionMaxComponentIndex, float tolerance) {
     
     RayCastResult result {INFINITY, false};
     const auto meshLook = registry.try_get<SPTMeshLook>(entity);
@@ -66,7 +60,7 @@ RayCastResult tryRayCastMeshLook(Registry& registry, SPTEntity entity, const SPT
         const auto& point = SPTRayGetPoint(localRay, meshRayCastResult.rayDirectionFactor);
         auto globalPoint = simd_mul(globalMat, simd_make_float4(point, 1.f)).xyz;
         
-        auto rayFactor = computeRayDirectionFactor(ray, globalPoint);;
+        const auto rayFactor = (globalPoint[rayDirectionMaxComponentIndex] - ray.origin[rayDirectionMaxComponentIndex]) / ray.direction[rayDirectionMaxComponentIndex];
         
         if(result.rayDirectionFactor > rayFactor) {
             result.rayDirectionFactor = rayFactor;
@@ -101,9 +95,12 @@ SPTRayCastResult SPTRayCastScene(SPTHandle sceneHandle, SPTRay ray, float tolera
     scene->update();
     
     SPTRayCastResult result {kSPTNullObject, INFINITY};
-    registry.view<SPTRayCastable>().each([&registry, &result, ray, tolerance, sceneHandle] (auto entity, auto& rayCastableMesh) {
+    
+    const auto rayDirectionMaxComponentIndex = SPTVectorMaxComponentIndex(ray.direction);
+    
+    registry.view<SPTRayCastable>().each([&registry, &result, ray, tolerance, sceneHandle, rayDirectionMaxComponentIndex] (auto entity, auto& rayCastableMesh) {
         
-        if(const auto& subResult = spt::tryRayCastMeshLook(registry, entity, ray, tolerance);
+        if(const auto& subResult = spt::tryRayCastMeshLook(registry, entity, ray, rayDirectionMaxComponentIndex, tolerance);
            subResult.intersected && result.rayDirectionFactor > subResult.rayDirectionFactor) {
             result.object = SPTObject {entity, sceneHandle};
             result.rayDirectionFactor = subResult.rayDirectionFactor;
