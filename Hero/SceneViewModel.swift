@@ -80,7 +80,7 @@ class SceneViewModel: ObservableObject {
         // Setup view camera
         viewCameraObject = scene.makeObject()
         SPTPosition.make(.init(origin: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi), object: viewCameraObject)
-        SPTOrientation.make(.init(lookAt: .init(target: .zero, up: .up, axis: .Z, positive: false)), object: viewCameraObject)
+        SPTOrientation.make(.init(target: .zero, up: .up, axis: .Z, positive: false), object: viewCameraObject)
         SPTCameraMakePerspective(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
 //        SPTCameraMakeOrthographic(viewCameraObject, 100.0, 1.0, 0.1, 2000.0)
         
@@ -129,7 +129,7 @@ class SceneViewModel: ObservableObject {
         SPTPositionUpdate(viewCameraObject, cameraPos)
         
         var cameraOrientation = SPTOrientationGet(viewCameraObject)
-        cameraOrientation.lookAt.target = cameraPos.spherical.origin
+        cameraOrientation.lookAtPoint.target = cameraPos.spherical.origin
         SPTOrientationUpdate(viewCameraObject, cameraOrientation)
     }
     
@@ -155,7 +155,7 @@ class SceneViewModel: ObservableObject {
         SPTPositionUpdate(viewCameraObject, cameraPos)
         
         var orientation = SPTOrientationGet(viewCameraObject)
-        orientation.lookAt.up = (isInFrontOfSphere ? simd_float3.up : simd_float3.down)
+        orientation.lookAtPoint.up = (isInFrontOfSphere ? simd_float3.up : simd_float3.down)
         
         SPTOrientationUpdate(viewCameraObject, orientation)
         

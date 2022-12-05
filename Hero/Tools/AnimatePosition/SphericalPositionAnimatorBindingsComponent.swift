@@ -54,14 +54,15 @@ class SphericalPositionAnimatorBindingsComponent: Component {
         let sphericalPosition = SPTPosition.get(object: object).spherical
         let objectCartesian = sphericalPosition.toCartesian
         let radiusDirection = objectCartesian - sphericalPosition.origin
+        let radiusNormDirection = simd_normalize(radiusDirection)
         
         radiusLineObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: sphericalPosition.origin), object: radiusLineObject)
         SPTScale.make(.init(x: 500.0), object: radiusLineObject)
 
         // Make sure up and direction vectors are not collinear for correct line orientation
-        let radiusUpVector: simd_float3 = SPTCollinear(radiusDirection, .up, 0.0001) ? .left : .up
-        SPTOrientation.make(.init(lookAt: .init(target: objectCartesian, up: radiusUpVector, axis: .X, positive: true)), object: radiusLineObject)
+        let radiusUpVector: simd_float3 = SPTCollinear(radiusNormDirection, .up, 0.0001) ? .left : .up
+        SPTOrientation.make(.init(normDirection: radiusNormDirection, up: radiusUpVector, axis: .X), object: radiusLineObject)
         
         latitudeCircleObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: sphericalPosition.origin), object: latitudeCircleObject)

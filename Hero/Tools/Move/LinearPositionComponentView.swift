@@ -91,26 +91,29 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
     private func updateLine(originPosition: SPTPosition, targetPosition: SPTPosition) {
         SPTPosition.update(originPosition, object: lineGuideObject)
         
+        let direction = simd_normalize(targetPosition.cartesian - originPosition.cartesian)
+        
         var orientation = SPTOrientation.get(object: lineGuideObject)
-        orientation.lookAt.target = targetPosition.cartesian
-        orientation.lookAt.up = lineUpVector(origin: originPosition.cartesian, target: targetPosition.cartesian)
+        orientation.lookAtDirection.normDirection = direction
+        orientation.lookAtDirection.up = lineUpVector(direction: direction)
         SPTOrientation.update(orientation, object: lineGuideObject)
     }
     
     private func setupLine() {
         let originPosition = origin.position
-        let targetPosition = directionPoint.position
+        let direction = simd_normalize(directionPoint.position.cartesian - originPosition.cartesian)
         
         lineGuideObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(originPosition, object: lineGuideObject)
         SPTScale.make(.init(x: 500.0), object: lineGuideObject)
-        SPTOrientation.make(.init(lookAt: .init(target: targetPosition.cartesian, up: lineUpVector(origin: originPosition.cartesian, target: targetPosition.cartesian), axis: .X, positive: true)), object: lineGuideObject)
+        SPTOrientation.make(.init(normDirection: direction, up: lineUpVector(direction: direction), axis: .X), object: lineGuideObject)
+        
         SPTPolylineLookDepthBias.make(.guideLineLayer2, object: lineGuideObject)
     }
     
-    private func lineUpVector(origin: simd_float3, target: simd_float3) -> simd_float3 {
+    private func lineUpVector(direction: simd_float3) -> simd_float3 {
         // Make sure up and direction vectors are not collinear for correct line orientation
-        SPTCollinear(target - origin, .up, 0.0001) ? .left : .up
+        SPTCollinear(direction, .up, 0.0001) ? .left : .up
     }
     
     override func onDisclose() {

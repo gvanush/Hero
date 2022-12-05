@@ -50,7 +50,8 @@ class LinearPositionAnimatorBindingsComponent: Component {
         SPTScale.make(.init(x: 500.0), object: lineGuideObject)
         
         let lineUpVector: simd_float3 = SPTCollinear(position.linear.direction, .up, 0.0001) ? .left : .up
-        SPTOrientation.make(.init(lookAt: .init(target: position.linear.toCartesian, up: lineUpVector, axis: .X, positive: true)), object: lineGuideObject)
+        SPTOrientation.make(.init(normDirection: simd_normalize(position.linear.direction), up: lineUpVector, axis: .X), object: lineGuideObject)
+        
         SPTPolylineLookDepthBias.make(.guideLineLayer2, object: lineGuideObject)
         
         originGuideObject = sceneViewModel.scene.makeObject()

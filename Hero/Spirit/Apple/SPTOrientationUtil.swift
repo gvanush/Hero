@@ -18,8 +18,20 @@ extension SPTOrientation: SPTObservableComponent {
         self.init(type: .euler, .init(euler: euler))
     }
     
-    init(lookAt: SPTLookAtOrientation) {
-        self.init(type: .lookAt, .init(lookAt: lookAt))
+    init(target: simd_float3, up: simd_float3, axis: SPTAxis, positive: Bool = true) {
+        self.init(lookAtPoint: .init(target: target, up: up, axis: axis, positive: positive))
+    }
+    
+    init(lookAtPoint: SPTLookAtPointOrientation) {
+        self.init(type: .lookAtPoint, .init(lookAtPoint: lookAtPoint))
+    }
+    
+    init(normDirection: simd_float3, up: simd_float3, axis: SPTAxis, positive: Bool = true) {
+        self.init(lookAtDirection: .init(normDirection: normDirection, up: up, axis: axis, positive: positive))
+    }
+    
+    init(lookAtDirection: SPTLookAtDirectionOrientation) {
+        self.init(type: .lookAtDirection, .init(lookAtDirection: lookAtDirection))
     }
     
     public static func == (lhs: SPTOrientation, rhs: SPTOrientation) -> Bool {

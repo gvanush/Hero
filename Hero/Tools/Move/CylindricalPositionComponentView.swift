@@ -29,6 +29,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     private var radiusLineObject: SPTObject!
     private var heightLineObject: SPTObject!
     private var circleObject: SPTObject!
+    private var circleCenterObject: SPTObject!
     private var yAxisObject: SPTObject!
     private var cancellables = Set<AnyCancellable>()
     private var subscriptions = Set<SPTAnySubscription>()
@@ -67,6 +68,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTSceneProxy.destroyObject(radiusLineObject)
         SPTSceneProxy.destroyObject(heightLineObject)
         SPTSceneProxy.destroyObject(circleObject)
+        SPTSceneProxy.destroyObject(circleCenterObject)
         SPTSceneProxy.destroyObject(yAxisObject)
     }
     
@@ -106,6 +108,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
         SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
         SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
+        SPTPointLook.make(.init(color: UIColor.inactiveGuideColor.rgba, size: .guidePointSmallSize), object: circleCenterObject)
         
         updateSelectedGuideObject(selectedProperty: selectedProperty!)
     }
@@ -115,6 +118,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPolylineLook.destroy(object: radiusLineObject)
         SPTPolylineLook.destroy(object: heightLineObject)
         SPTPolylineLook.destroy(object: circleObject)
+        SPTPointLook.destroy(object: circleCenterObject)
         SPTPolylineLook.destroy(object: yAxisObject)
     }
     
@@ -148,8 +152,12 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         
         SPTPosition.update(origin.position, object: yAxisObject)
         
-        SPTPosition.update(origin.position, object: circleObject)
+        let circleCenterPosition = SPTPosition(x: origin.cartesian.x, y: cylindricalPosition.height, z: origin.cartesian.z)
+        
+        SPTPosition.update(circleCenterPosition, object: circleObject)
         SPTScale.update(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
+        
+        SPTPosition.update(circleCenterPosition, object: circleCenterObject)
     }
     
     private func setupRadiusLine() {
@@ -172,10 +180,15 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     
     private func setupCircle() {
         circleObject = sceneViewModel.scene.makeObject()
-        SPTPosition.make(origin.position, object: circleObject)
+        
+        let circleCenterPosition = SPTPosition(x: origin.cartesian.x, y: cylindricalPosition.height, z: origin.cartesian.z)
+        SPTPosition.make(circleCenterPosition, object: circleObject)
         SPTScale.make(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
         SPTOrientation.make(.init(x: 0.5 * Float.pi), object: circleObject)
         SPTPolylineLookDepthBias.make(.guideLineLayer2, object: circleObject)
+        
+        circleCenterObject = sceneViewModel.scene.makeObject()
+        SPTPosition.make(circleCenterPosition, object: circleCenterObject)
     }
     
     private func setupYAxis() {

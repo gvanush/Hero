@@ -121,7 +121,7 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
         
         // Make sure up and direction vectors are not collinear for correct line orientation
         let up: simd_float3 = SPTCollinear(normAxisDirection, .up, 0.0001) ? .left : .up
-        SPTOrientation.make(.init(lookAt: .init(target: origin + normAxisDirection, up: up, axis: .X, positive: true)), object: lineObject)
+        SPTOrientation.make(.init(normDirection: normAxisDirection, up: up, axis: .X), object: lineObject)
         SPTPolylineLookDepthBias.make(.guideLineLayer3, object: lineObject)
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [unowned self] newValue in

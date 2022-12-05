@@ -70,12 +70,12 @@ simd_float4x4 computeEulerOrientationMatrix(const SPTEulerOrientation& eulerOrie
     }
 }
 
-simd_float4x4 computeLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& lookAtOrientation) {
-    const auto sign = (lookAtOrientation.positive ? 1 : -1);
-    switch(lookAtOrientation.axis) {
+simd_float4x4 computeLookAtMatrix(simd_float3 pos, const SPTLookAtPointOrientation& orientation) {
+    const auto sign = (orientation.positive ? 1 : -1);
+    switch(orientation.axis) {
         case SPTAxisX: {
-            const auto xAxis = sign * simd_normalize(lookAtOrientation.target - pos);
-            const auto yAxis = simd_normalize(simd_cross(lookAtOrientation.up, xAxis));
+            const auto xAxis = sign * simd_normalize(orientation.target - pos);
+            const auto yAxis = simd_normalize(simd_cross(orientation.up, xAxis));
             
             return simd_float4x4 {
                 simd_make_float4(xAxis, 0.f),
@@ -85,8 +85,8 @@ simd_float4x4 computeLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& l
             };
         }
         case SPTAxisY: {
-            const auto yAxis = sign * simd_normalize(lookAtOrientation.target - pos);
-            const auto zAxis = simd_normalize(simd_cross(lookAtOrientation.up, yAxis));
+            const auto yAxis = sign * simd_normalize(orientation.target - pos);
+            const auto zAxis = simd_normalize(simd_cross(orientation.up, yAxis));
             return simd_float4x4 {
                 simd_make_float4(simd_normalize(simd_cross(yAxis, zAxis)), 0.f),
                 simd_make_float4(yAxis, 0.f),
@@ -95,8 +95,8 @@ simd_float4x4 computeLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& l
             };
         }
         case SPTAxisZ: {
-            const auto zAxis = sign * simd_normalize(lookAtOrientation.target - pos);
-            const auto xAxis = simd_normalize(simd_cross(lookAtOrientation.up, zAxis));
+            const auto zAxis = sign * simd_normalize(orientation.target - pos);
+            const auto xAxis = simd_normalize(simd_cross(orientation.up, zAxis));
             return simd_float4x4 {
                 simd_make_float4(xAxis, 0.f),
                 simd_make_float4(simd_normalize(simd_cross(zAxis, xAxis)), 0.f),
@@ -105,7 +105,43 @@ simd_float4x4 computeLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& l
             };
         }
     }
-    
+}
+
+simd_float4x4 computeLookAtDirectionMatrix(const SPTLookAtDirectionOrientation& orientation) {
+    const auto sign = (orientation.positive ? 1 : -1);
+    switch(orientation.axis) {
+        case SPTAxisX: {
+            const auto xAxis = sign * orientation.normDirection;
+            const auto yAxis = simd_normalize(simd_cross(orientation.up, xAxis));
+            
+            return simd_float4x4 {
+                simd_make_float4(xAxis, 0.f),
+                simd_make_float4(yAxis, 0.f),
+                simd_make_float4(simd_normalize(simd_cross(xAxis, yAxis)), 0.f),
+                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            };
+        }
+        case SPTAxisY: {
+            const auto yAxis = sign * orientation.normDirection;
+            const auto zAxis = simd_normalize(simd_cross(orientation.up, yAxis));
+            return simd_float4x4 {
+                simd_make_float4(simd_normalize(simd_cross(yAxis, zAxis)), 0.f),
+                simd_make_float4(yAxis, 0.f),
+                simd_make_float4(zAxis, 0.f),
+                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            };
+        }
+        case SPTAxisZ: {
+            const auto zAxis = sign * orientation.normDirection;
+            const auto xAxis = simd_normalize(simd_cross(orientation.up, zAxis));
+            return simd_float4x4 {
+                simd_make_float4(xAxis, 0.f),
+                simd_make_float4(simd_normalize(simd_cross(zAxis, xAxis)), 0.f),
+                simd_make_float4(zAxis, 0.f),
+                simd_float4 {0.f, 0.f, 0.f, 1.f}
+            };
+        }
+    }
 }
 
 simd_float4x4 getMatrix(const spt::Registry& registry, SPTEntity entity, const simd_float3& position) {
@@ -115,8 +151,11 @@ simd_float4x4 getMatrix(const spt::Registry& registry, SPTEntity entity, const s
             case SPTOrientationTypeEuler: {
                 return computeEulerOrientationMatrix(orientation->euler);
             }
-            case SPTOrientationTypeLookAt: {
-                return computeLookAtMatrix(position, orientation->lookAt);
+            case SPTOrientationTypeLookAtPoint: {
+                return computeLookAtMatrix(position, orientation->lookAtPoint);
+            }
+            case SPTOrientationTypeLookAtDirection: {
+                return computeLookAtDirectionMatrix(orientation->lookAtDirection);
             }
         }
     }
@@ -130,8 +169,15 @@ bool SPTEulerOrientationEqual(SPTEulerOrientation lhs, SPTEulerOrientation rhs) 
     return simd_equal(lhs.rotation, rhs.rotation) && lhs.order == rhs.order;
 }
 
-bool SPTLookAtOrientationEqual(SPTLookAtOrientation lhs, SPTLookAtOrientation rhs) {
+bool SPTLookAtPointOrientationEqual(SPTLookAtPointOrientation lhs, SPTLookAtPointOrientation rhs) {
     return simd_equal(lhs.target, rhs.target) &&
+    simd_equal(lhs.up, rhs.up) &&
+    lhs.axis == rhs.axis &&
+    lhs.positive == rhs.positive;
+}
+
+bool SPTLookAtDirectionOrientationEqual(SPTLookAtDirectionOrientation lhs, SPTLookAtDirectionOrientation rhs) {
+    return simd_equal(lhs.normDirection, rhs.normDirection) &&
     simd_equal(lhs.up, rhs.up) &&
     lhs.axis == rhs.axis &&
     lhs.positive == rhs.positive;
@@ -145,8 +191,10 @@ bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
     switch (lhs.type) {
         case SPTOrientationTypeEuler:
             return SPTEulerOrientationEqual(lhs.euler, rhs.euler);
-        case SPTOrientationTypeLookAt:
-            return SPTLookAtOrientationEqual(lhs.lookAt, rhs.lookAt);
+        case SPTOrientationTypeLookAtPoint:
+            return SPTLookAtPointOrientationEqual(lhs.lookAtPoint, rhs.lookAtPoint);
+        case SPTOrientationTypeLookAtDirection:
+            return SPTLookAtDirectionOrientationEqual(lhs.lookAtDirection, rhs.lookAtDirection);
     }
 }
 

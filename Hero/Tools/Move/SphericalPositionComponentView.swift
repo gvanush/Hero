@@ -135,9 +135,10 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
     
     private func updateGuideObjects(position: SPTPosition) {
         let cartesian = position.spherical.toCartesian
+        let lineDirection = simd_normalize(cartesian - position.spherical.origin)
         
         SPTPosition.update(.init(cartesian: position.spherical.origin), object: radiusLineObject)
-        SPTOrientation.update(.init(lookAt: .init(target: cartesian, up: radiusUpVector(origin: position.spherical.origin, target: cartesian), axis: .X, positive: true)), object: radiusLineObject)
+        SPTOrientation.update(.init(normDirection: lineDirection, up: radiusUpVector(direction: lineDirection), axis: .X), object: radiusLineObject)
 
         SPTPosition.update(origin.position, object: latitudeCircleObject)
         SPTScale.update(.init(x: sphericalPosition.radius, y: sphericalPosition.radius), object: latitudeCircleObject)
@@ -155,7 +156,9 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         SPTPosition.make(origin.position, object: radiusLineObject)
         SPTScale.make(.init(x: 500.0), object: radiusLineObject)
         let cartesian = sphericalPosition.toCartesian
-        SPTOrientation.make(.init(lookAt: .init(target: cartesian, up: radiusUpVector(origin: origin.cartesian, target: cartesian), axis: .X, positive: true)), object: radiusLineObject)
+        let direction = simd_normalize(cartesian - origin.cartesian)
+        SPTOrientation.make(.init(normDirection: direction, up: radiusUpVector(direction: direction), axis: .X), object: radiusLineObject)
+        
         SPTPolylineLookDepthBias.make(.guideLineLayer2, object: radiusLineObject)
     }
 
@@ -206,9 +209,9 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         SPTPolylineLook.update(longitudeCircleLook, object: self.longitudeCircleObject)
     }
     
-    private func radiusUpVector(origin: simd_float3, target: simd_float3) -> simd_float3 {
+    private func radiusUpVector(direction: simd_float3) -> simd_float3 {
         // Make sure up and direction vectors are not collinear for correct line orientation
-        SPTCollinear(target - origin, .up, 0.0001) ? .left : .up
+        SPTCollinear(direction, .up, 0.0001) ? .left : .up
     }
 }
 

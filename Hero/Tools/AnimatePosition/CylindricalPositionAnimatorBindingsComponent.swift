@@ -16,7 +16,7 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
     private var radiusLineObject: SPTObject!
     private var heightLineObject: SPTObject!
     private var circleObject: SPTObject!
-    private var originObject: SPTObject!
+    private var circleCenterObject: SPTObject!
     
     lazy private(set) var radius = AnimatorBindingSetupComponent<CylindricalPositionRadiusAnimatorBindingComponent>(animatableProperty: .cylindricalPositionRadius, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
@@ -34,21 +34,21 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
         SPTSceneProxy.destroyObject(radiusLineObject)
         SPTSceneProxy.destroyObject(heightLineObject)
         SPTSceneProxy.destroyObject(circleObject)
-        SPTSceneProxy.destroyObject(originObject)
+        SPTSceneProxy.destroyObject(circleCenterObject)
     }
     
     override func onDisclose() {
         SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
         SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
         SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
-        SPTPointLook.make(.init(color: UIColor.inactiveGuideColor.rgba, size: .guidePointLargeSize), object: originObject)
+        SPTPointLook.make(.init(color: UIColor.inactiveGuideColor.rgba, size: .guidePointSmallSize), object: circleCenterObject)
     }
     
     override func onClose() {
         SPTPolylineLook.destroy(object: radiusLineObject)
         SPTPolylineLook.destroy(object: heightLineObject)
         SPTPolylineLook.destroy(object: circleObject)
-        SPTPointLook.destroy(object: originObject)
+        SPTPointLook.destroy(object: circleCenterObject)
     }
     
     private func setupGuides() {
@@ -67,14 +67,14 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
         SPTScale.make(.init(x: 500.0), object: heightLineObject)
         SPTOrientation.make(.init(z: 0.5 * Float.pi), object: heightLineObject)
         
-        let circleOriginPosition = SPTPosition(cartesian: .init(x: cylindricalPosition.origin.x, y: cylindricalPosition.height, z: cylindricalPosition.origin.z))
+        let circleCenterPosition = SPTPosition(cartesian: .init(x: cylindricalPosition.origin.x, y: cylindricalPosition.height, z: cylindricalPosition.origin.z))
         circleObject = sceneViewModel.scene.makeObject()
-        SPTPosition.make(circleOriginPosition, object: circleObject)
+        SPTPosition.make(circleCenterPosition, object: circleObject)
         SPTScale.make(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
         SPTOrientation.make(.init(x: 0.5 * Float.pi), object: circleObject)
         
-        originObject = sceneViewModel.scene.makeObject()
-        SPTPosition.make(circleOriginPosition, object: originObject)
+        circleCenterObject = sceneViewModel.scene.makeObject()
+        SPTPosition.make(circleCenterPosition, object: circleCenterObject)
     }
     
     override var title: String {
