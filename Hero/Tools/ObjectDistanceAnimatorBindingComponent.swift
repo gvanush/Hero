@@ -118,11 +118,10 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
         lineObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: 0.5 * (point0Position.cartesian + point1Position.cartesian)), object: lineObject)
         SPTScale.make(.init(x: 0.5 * (binding.valueAt1 - binding.valueAt0)), object: lineObject)
-        
         // Make sure up and direction vectors are not collinear for correct line orientation
         let up: simd_float3 = SPTVector.collinear(normAxisDirection, .up, tolerance: 0.0001) ? .left : .up
         SPTOrientation.make(.init(normDirection: normAxisDirection, up: up, axis: .X), object: lineObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer3, object: lineObject)
+        SPTLineLookDepthBias.make(.guideLineLayer3, object: lineObject)
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [unowned self] newValue in
             
@@ -163,12 +162,12 @@ struct DistanceAnimatorBindingComponentView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                FloatSelector(value: $component.binding.valueAt0, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping)) { editingState in
+                FloatSelector(value: $component.binding.valueAt0, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping), formatter: Formatters.distance) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color.selectedGuideColor)
             case .valueAt1:
-                FloatSelector(value: $component.binding.valueAt1, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping)) { editingState in
+                FloatSelector(value: $component.binding.valueAt1, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping), formatter: Formatters.distance) { editingState in
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color.selectedGuideColor)

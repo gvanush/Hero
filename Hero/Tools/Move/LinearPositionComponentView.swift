@@ -108,7 +108,7 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         SPTScale.make(.init(x: 500.0), object: lineGuideObject)
         SPTOrientation.make(.init(normDirection: direction, up: lineUpVector(direction: direction), axis: .X), object: lineGuideObject)
         
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: lineGuideObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: lineGuideObject)
     }
     
     private func lineUpVector(direction: simd_float3) -> simd_float3 {

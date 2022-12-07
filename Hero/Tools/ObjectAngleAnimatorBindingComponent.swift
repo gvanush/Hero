@@ -17,6 +17,7 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
     
     private var point0Object: SPTObject!
     private var point1Object: SPTObject!
+    private var arcObject: SPTObject!
     private var bindingWillChangeSubscription: SPTAnySubscription?
     
     init(origin: simd_float3, normRotationAxis: simd_float3, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
@@ -33,6 +34,7 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
     deinit {
         SPTSceneProxy.destroyObject(point0Object)
         SPTSceneProxy.destroyObject(point1Object)
+        SPTSceneProxy.destroyObject(arcObject)
     }
     
     override var selectedProperty: AnimatorBindingComponentProperty? {
@@ -97,38 +99,54 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
     }
  
     override func onVisible() {
-//        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
+        
+        let objectPosVec = SPTPosition.get(object: object).toCartesian.cartesian - origin
+        let arcRadius = simd_length(objectPosVec)
+        
+        SPTArcLook.make(.init(color: UIColor.guideColor.rgba, radius: arcRadius, startAngle: binding.valueAt0, endAngle: binding.valueAt1, thickness: .guideLineBoldThickness), object: arcObject)
+        
+        let orthoNormal = SPTMatrix3x3.createOrthonormal(normDirection: normRotationAxis, axis: .X)
+        let orthoNormalTranspose = simd_transpose(orthoNormal)
+        
+        bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [unowned self] newValue in
+
+            let p0 = orthoNormal * SPTMatrix3x3.createEulerRotationX(newValue.valueAt0) * orthoNormalTranspose * objectPosVec
+            SPTPosition.update(.init(cartesian: origin + p0), object: point0Object)
+            
+            let p1 = orthoNormal * SPTMatrix3x3.createEulerRotationX(newValue.valueAt1) * orthoNormalTranspose * objectPosVec
+            SPTPosition.update(.init(cartesian: origin + p1), object: point1Object)
+
+            SPTArcLook.update(.init(color: UIColor.guideColor.rgba, radius: arcRadius, startAngle: newValue.valueAt0, endAngle: newValue.valueAt1, thickness: .guideLineBoldThickness), object: arcObject)
+        })
+        
     }
     
     override func onInvisible() {
-//        SPTPolylineLook.destroy(object: lineObject)
+        SPTArcLook.destroy(object: arcObject)
+        bindingWillChangeSubscription = nil
     }
     
     private func setupGuides() {
         
-        let objectPosPoint = SPTPosition.get(object: object).toCartesian.cartesian - origin
+        let objectPosVec = SPTPosition.get(object: object).toCartesian.cartesian - origin
         let orthoNormal = SPTMatrix3x3.createOrthonormal(normDirection: normRotationAxis, axis: .X)
         let orthoNormalTranspose = simd_transpose(orthoNormal)
         
-        let p0 = orthoNormal * SPTMatrix3x3.createEulerRotationX(binding.valueAt0) * orthoNormalTranspose * objectPosPoint
+        let p0 = orthoNormal * SPTMatrix3x3.createEulerRotationX(binding.valueAt0) * orthoNormalTranspose * objectPosVec
         
         point0Object = sceneViewModel.scene.makeObject()
-        SPTPosition.make(.init(x: p0.x, y: p0.y, z: p0.z), object: point0Object)
+        SPTPosition.make(.init(cartesian: origin + p0), object: point0Object)
 
-        let p1 = orthoNormal * SPTMatrix3x3.createEulerRotationX(binding.valueAt1) * orthoNormalTranspose * objectPosPoint
+        let p1 = orthoNormal * SPTMatrix3x3.createEulerRotationX(binding.valueAt1) * orthoNormalTranspose * objectPosVec
         
         point1Object = sceneViewModel.scene.makeObject()
-        SPTPosition.make(.init(x: p1.x, y: p1.y, z: p1.z), object: point1Object)
+        SPTPosition.make(.init(cartesian: origin + p1), object: point1Object)
 
-        bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [unowned self] newValue in
-
-            let p0 = orthoNormal * SPTMatrix3x3.createEulerRotationX(newValue.valueAt0) * orthoNormalTranspose * objectPosPoint
-            SPTPosition.update(.init(cartesian: origin + p0), object: point0Object)
-            
-            let p1 = orthoNormal * SPTMatrix3x3.createEulerRotationX(newValue.valueAt1) * orthoNormalTranspose * objectPosPoint
-            SPTPosition.update(.init(cartesian: origin + p1), object: point1Object)
-
-        })
+        arcObject = sceneViewModel.scene.makeObject()
+        SPTPosition.make(.init(cartesian: origin), object: arcObject)
+        SPTOrientation.make(.init(orthoNormZ: normRotationAxis, orthoNormX: simd_normalize(objectPosVec)), object: arcObject)
+        
+        SPTLineLookDepthBias.make(.guideLineLayer3, object: arcObject)
         
     }
     
@@ -157,12 +175,12 @@ struct AngleAnimatorBindingComponentView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                FloatSelector(value: $component.binding.valueAt0InDegrees, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping)) { editingState in
+                FloatSelector(value: $component.binding.valueAt0InDegrees, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping), formatter: Formatters.angle) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color.selectedGuideColor)
             case .valueAt1:
-                FloatSelector(value: $component.binding.valueAt1InDegrees, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping)) { editingState in
+                FloatSelector(value: $component.binding.valueAt1InDegrees, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping), formatter: Formatters.angle) { editingState in
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color.selectedGuideColor)

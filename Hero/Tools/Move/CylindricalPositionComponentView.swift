@@ -152,7 +152,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         
         SPTPosition.update(origin.position, object: yAxisObject)
         
-        let circleCenterPosition = SPTPosition(x: origin.cartesian.x, y: cylindricalPosition.height, z: origin.cartesian.z)
+        let circleCenterPosition = SPTPosition(x: origin.cartesian.x, y: origin.cartesian.y + cylindricalPosition.height, z: origin.cartesian.z)
         
         SPTPosition.update(circleCenterPosition, object: circleObject)
         SPTScale.update(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
@@ -165,7 +165,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPosition.make(.init(cartesian: cylindricalPosition.origin + .init(x: 0.0, y: cylindricalPosition.height, z: 0.0)), object: radiusLineObject)
         SPTScale.make(.init(x: 500.0), object: radiusLineObject)
         SPTOrientation.make(.init(y: cylindricalPosition.longitude - 0.5 * Float.pi), object: radiusLineObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: radiusLineObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: radiusLineObject)
     }
     
     private func setupHeightLine() {
@@ -175,17 +175,17 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPosition.make(heightLinePosition, object: heightLineObject)
         SPTScale.make(.init(x: 500.0), object: heightLineObject)
         SPTOrientation.make(.init(z: 0.5 * Float.pi), object: heightLineObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: heightLineObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: heightLineObject)
     }
     
     private func setupCircle() {
         circleObject = sceneViewModel.scene.makeObject()
         
-        let circleCenterPosition = SPTPosition(x: origin.cartesian.x, y: cylindricalPosition.height, z: origin.cartesian.z)
+        let circleCenterPosition = SPTPosition(x: origin.cartesian.x, y: origin.cartesian.y + cylindricalPosition.height, z: origin.cartesian.z)
         SPTPosition.make(circleCenterPosition, object: circleObject)
         SPTScale.make(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
         SPTOrientation.make(.init(x: 0.5 * Float.pi), object: circleObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: circleObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: circleObject)
         
         circleCenterObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(circleCenterPosition, object: circleCenterObject)
@@ -196,7 +196,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPosition.make(origin.position, object: yAxisObject)
         SPTScale.make(.init(x: 500.0), object: yAxisObject)
         SPTOrientation.make(.init(z: Float.pi * 0.5), object: yAxisObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: yAxisObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: yAxisObject)
     }
     
     private func updateSelectedGuideObject(selectedProperty: CylindricalPositionComponentProperty) {

@@ -69,7 +69,7 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
         SPTScale.make(.init(x: 500.0), object: heightLineObject)
         SPTOrientation.make(.init(z: 0.5 * Float.pi), object: heightLineObject)
         
-        let circleCenterPosition = SPTPosition(cartesian: .init(x: cylindricalPosition.origin.x, y: cylindricalPosition.height, z: cylindricalPosition.origin.z))
+        let circleCenterPosition = SPTPosition(cartesian: .init(x: cylindricalPosition.origin.x, y: cylindricalPosition.origin.y + cylindricalPosition.height, z: cylindricalPosition.origin.z))
         circleObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(circleCenterPosition, object: circleObject)
         SPTScale.make(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
@@ -131,7 +131,7 @@ class CylindricalPositionLongitudetAnimatorBindingComponent: ObjectAngleAnimator
             fatalError()
         }
 
-        super.init(origin: position.cylindrical.origin, normRotationAxis: .up, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(origin: .init(x: position.cylindrical.origin.x, y: position.cylindrical.origin.y + position.cylindrical.height, z: position.cylindrical.origin.z), normRotationAxis: .up, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
     
 }

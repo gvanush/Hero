@@ -94,14 +94,14 @@ class SceneViewModel: ObservableObject {
         let xAxisObject = scene.makeObject()
         SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: xAxisObject)
         SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: xAxisObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer1, object: xAxisObject)
+        SPTLineLookDepthBias.make(.guideLineLayer1, object: xAxisObject)
         
         let zAxisObject = scene.makeObject()
         SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: zAxisObject)
         
         SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: zAxisObject)
         SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: zAxisObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer1, object: zAxisObject)
+        SPTLineLookDepthBias.make(.guideLineLayer1, object: zAxisObject)
         
     }
     

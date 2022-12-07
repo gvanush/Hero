@@ -35,3 +35,11 @@ enum SPTVector {
     }
     
 }
+
+extension simd_float4 {
+    
+    var xyz: simd_float3 {
+        .init(x: x, y: y, z: z)
+    }
+    
+}

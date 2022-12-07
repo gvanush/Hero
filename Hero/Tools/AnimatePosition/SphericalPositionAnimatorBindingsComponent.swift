@@ -119,7 +119,8 @@ class SphericalPositionLongitudeAnimatorBindingComponent: ObjectAngleAnimatorBin
             fatalError()
         }
 
-        super.init(origin: position.spherical.origin, normRotationAxis: .up, editingParamsKeyPath: \.[sphericalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        let origin = simd_float3(x: position.spherical.origin.x, y: position.spherical.toCartesian.y, z: position.spherical.origin.z)
+        super.init(origin: origin, normRotationAxis: .up, editingParamsKeyPath: \.[sphericalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
     
 }

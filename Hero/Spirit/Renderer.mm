@@ -8,11 +8,12 @@
 #include "Renderer.hpp"
 #include "MeshLook.h"
 #include "PolylineLook.h"
+#include "ArcLook.h"
 #include "PointLook.h"
 #include "OutlineLook.h"
 #include "ResourceManager.hpp"
 #include "Transformation.hpp"
-#include "PolylineLookDepthBias.h"
+#include "LineLookDepthBias.h"
 #include "RenderableMaterials.h"
 #import "SPTRenderingContext.h"
 #import "ShaderTypes.h"
@@ -28,6 +29,7 @@ id<MTLRenderPipelineState> __plainColorMeshPipelineState;
 id<MTLRenderPipelineState> __blinnPhongMeshPipelineState;
 id<MTLRenderPipelineState> __depthOnlyMeshPipelineState;
 id<MTLRenderPipelineState> __polylinePipelineState;
+id<MTLRenderPipelineState> __arcPipelineState;
 id<MTLRenderPipelineState> __pointPipelineState;
 id<MTLRenderPipelineState> __outlinePipelineState;
 
@@ -163,6 +165,26 @@ void renderPolyline(id<MTLRenderCommandEncoder> renderEncoder, const Registry& r
     
 }
 
+void renderArc(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, const SPTArcLook& arcLook) {
+    
+    const auto& worldMatrix = registry.get<Transformation>(entity).global;
+    [renderEncoder setVertexBytes: &worldMatrix
+                           length: sizeof(simd_float4x4)
+                          atIndex: kVertexInputIndexWorldMatrix];
+    
+    constexpr unsigned int totalPointCount = 120;
+    const float deltaAngle = 2.f * M_PI / totalPointCount * (arcLook.endAngle >= arcLook.startAngle ? 1.f : -1.f);
+    const unsigned int pointCount = std::min(static_cast<unsigned int>(ceil((arcLook.endAngle - arcLook.startAngle) / deltaAngle)), totalPointCount) + 1;
+    
+    ArcUniforms arcUniforms {arcLook.radius, arcLook.startAngle, arcLook.endAngle + deltaAngle, arcLook.thickness, pointCount};
+    [renderEncoder setVertexBytes: &arcUniforms length: sizeof(ArcUniforms) atIndex: kVertexInputIndexArcUniforms];
+    
+    [renderEncoder setFragmentBytes: &arcLook.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
+    
+    [renderEncoder drawPrimitives: MTLPrimitiveTypeTriangleStrip vertexStart: 0 vertexCount: 2 * pointCount];
+    
+}
+
 void renderPoint(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, const SPTPointLook& pointLook) {
     
     const auto& worldMatrix = registry.get<Transformation>(entity).global;
@@ -261,21 +283,40 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
         }
     });
     
-    // Render polylines
+    
     [renderEncoder setCullMode: MTLCullModeBack];
+    
+    // Render polylines
     [renderEncoder setRenderPipelineState: __polylinePipelineState];
-    const auto polylineLookView = registry.view<SPTPolylineLook>(entt::exclude<SPTPolylineLookDepthBias>);
+    const auto polylineLookView = registry.view<SPTPolylineLook>(entt::exclude<SPTLineLookDepthBias>);
     polylineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& polylineLook) {
         if(rc.lookCategories & polylineLook.categories) {
             renderPolyline(renderEncoder, registry, entity, polylineLook);
         }
     });
     
-    const auto depthBiasedPolylineLookView = registry.view<SPTPolylineLook, SPTPolylineLookDepthBias>();
+    const auto depthBiasedPolylineLookView = registry.view<SPTPolylineLook, SPTLineLookDepthBias>();
     depthBiasedPolylineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& polylineLook, auto& depthBias) {
         [renderEncoder setDepthBias: -depthBias.bias slopeScale: -depthBias.slopeScale clamp: depthBias.clamp];
         if(rc.lookCategories & polylineLook.categories) {
             renderPolyline(renderEncoder, registry, entity, polylineLook);
+        }
+    });
+    
+    // Render arcs
+    [renderEncoder setRenderPipelineState: __arcPipelineState];
+    const auto arcLookView = registry.view<SPTArcLook>(entt::exclude<SPTLineLookDepthBias>);
+    arcLookView.each([&registry, renderEncoder, rc] (auto entity, auto& arcLook) {
+        if(rc.lookCategories & arcLook.categories) {
+            renderArc(renderEncoder, registry, entity, arcLook);
+        }
+    });
+    
+    const auto depthBiasedArcLookView = registry.view<SPTArcLook, SPTLineLookDepthBias>();
+    depthBiasedArcLookView.each([&registry, renderEncoder, rc] (auto entity, auto& arcLook, auto& depthBias) {
+        [renderEncoder setDepthBias: -depthBias.bias slopeScale: -depthBias.slopeScale clamp: depthBias.clamp];
+        if(rc.lookCategories & arcLook.categories) {
+            renderArc(renderEncoder, registry, entity, arcLook);
         }
     });
     
@@ -331,7 +372,8 @@ void Renderer::init() {
     __blinnPhongMeshPipelineState = createPipelineState(@"Blinn-Phong mesh render pipeline", @"meshVS", @"blinnPhongFS");
     __depthOnlyMeshPipelineState = createDepthOnlyPipelineState(@"Depth only mesh render pipe;ime", @"basicVS");
     __polylinePipelineState = createPipelineState(@"Polyline render pipeline", @"polylineVS", @"basicFS");
-    __pointPipelineState = createPipelineState(@"Polyline render pipeline", @"pointVS", @"pointFS");
+    __arcPipelineState = createPipelineState(@"Arc render pipeline", @"arcVS", @"basicFS");
+    __pointPipelineState = createPipelineState(@"Point render pipeline", @"pointVS", @"pointFS");
     __outlinePipelineState = createPipelineState(@"Outline render pipeline", @"outlineVS", @"basicFS");
 }
 

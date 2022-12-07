@@ -13,6 +13,7 @@
 #include "Scene.hpp"
 #include "ComponentObserverUtil.hpp"
 #include "Base.hpp"
+#include "Matrix.h"
 
 #include <queue>
 
@@ -30,7 +31,7 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     
     const auto& pos = Position::getCartesianCoordinates(registry, entity);
     
-    matrix = simd_mul(Orientation::getMatrix(registry, entity, pos), matrix);
+    matrix = simd_mul(SPTMatrix4x4CreateUpperLeft(Orientation::getMatrix(registry, entity, pos)), matrix);
     
     matrix.columns[3].xyz = pos;
     
@@ -265,4 +266,9 @@ bool SPTTransformationIsDescendant(SPTObject object, SPTObject ancestor) {
         }
     }
     return false;
+}
+
+simd_float4x4 SPTTransformationGetLocal(SPTObject object) {
+    auto& registry = spt::Scene::getRegistry(object);
+    return registry.get<spt::Transformation>(object.entity).local;
 }

@@ -17,6 +17,7 @@
 #include "Camera.hpp"
 #include "AnimatorManager.hpp"
 #include "ObjectPropertyAnimatorBinding.hpp"
+#include "Matrix.h"
 
 #include <entt/entt.hpp>
 
@@ -198,7 +199,7 @@ void PlayableScene::prepareTransformationAnimations(const Scene& scene, const st
     for(auto& item: transformAnimatedEntityRecord) {
         item.second.basePosition = registry.get<SPTPosition>(item.first);
         item.second.baseScale = Scale::getXYZ(registry, item.first);
-        item.second.baseOrientation = Orientation::getMatrix(registry, item.first, SPTPositionToCartesian(item.second.basePosition).cartesian);
+        item.second.baseOrientation = SPTMatrix4x4CreateUpperLeft(Orientation::getMatrix(registry, item.first, SPTPositionToCartesian(item.second.basePosition).cartesian));
         registry.emplace<spt::Transformation::AnimatorRecord>(item.first, item.second);
     }
     

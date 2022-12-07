@@ -13,6 +13,7 @@ enum VertexInputIndex: unsigned int {
     kVertexInputIndexTexturePreferredTransform = 7,
     kVertexInputIndexWorldMatrix = 8,
     kVertexInputIndexTransposedInverseWorldMatrix = 9,
+    kVertexInputIndexArcUniforms = 10,
 };
 
 enum FragmentInputIndex: unsigned int {
@@ -51,4 +52,13 @@ struct PolylineVertex {
 struct PointVertex {
     simd_float3 position;
     simd_float2 fragCoord;
+};
+
+
+struct ArcUniforms {
+    float radius;
+    float startAngle;
+    float endAngle;
+    float thickness;
+    unsigned int pointCount;
 };

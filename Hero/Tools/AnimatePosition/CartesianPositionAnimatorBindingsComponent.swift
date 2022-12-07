@@ -63,19 +63,19 @@ class CartesianPositionAnimatorBindingsComponent: Component {
         xAxisObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(origin, object: xAxisObject)
         SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: xAxisObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: xAxisObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: xAxisObject)
         
         yAxisObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(origin, object: yAxisObject)
         SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: yAxisObject)
         SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ)), object: yAxisObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: yAxisObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: yAxisObject)
         
         zAxisObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(origin, object: zAxisObject)
         SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: zAxisObject)
         SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: zAxisObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: zAxisObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: zAxisObject)
     }
     
 }

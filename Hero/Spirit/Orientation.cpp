@@ -106,23 +106,56 @@ simd_float3x3 computeLookAtDirectionMatrix(const SPTLookAtDirectionOrientation& 
     }
 }
 
-simd_float4x4 getMatrix(const spt::Registry& registry, SPTEntity entity, const simd_float3& position) {
+simd_float3x3 computeXYAxesMatrix(const SPTXYAxesOrientation& orientation) {
+    return {
+        orientation.orthoNormX,
+        orientation.orthoNormY,
+        simd_cross(orientation.orthoNormX, orientation.orthoNormY)
+    };
+}
+
+simd_float3x3 computeYZAxesMatrix(const SPTYZAxesOrientation& orientation) {
+    return {
+        simd_cross(orientation.orthoNormY, orientation.orthoNormZ),
+        orientation.orthoNormY,
+        orientation.orthoNormZ
+    };
+}
+
+simd_float3x3 computeZXAxesMatrix(const SPTZXAxesOrientation& orientation) {
+    return {
+        orientation.orthoNormX,
+        simd_cross(orientation.orthoNormZ, orientation.orthoNormX),
+        orientation.orthoNormZ
+    };
+}
+
+simd_float3x3 getMatrix(const spt::Registry& registry, SPTEntity entity, const simd_float3& position) {
     
     if(const auto orientation = registry.try_get<SPTOrientation>(entity)) {
         switch (orientation->type) {
             case SPTOrientationTypeEuler: {
-                return SPTMatrix4x4CreateUpperLeft(computeEulerOrientationMatrix(orientation->euler));
+                return computeEulerOrientationMatrix(orientation->euler);
             }
             case SPTOrientationTypeLookAtPoint: {
-                return SPTMatrix4x4CreateUpperLeft(computeLookAtMatrix(position, orientation->lookAtPoint));
+                return computeLookAtMatrix(position, orientation->lookAtPoint);
             }
             case SPTOrientationTypeLookAtDirection: {
-                return SPTMatrix4x4CreateUpperLeft(computeLookAtDirectionMatrix(orientation->lookAtDirection));
+                return computeLookAtDirectionMatrix(orientation->lookAtDirection);
+            }
+            case SPTOrientationTypeXYAxis: {
+                return computeXYAxesMatrix(orientation->xyAxes);
+            }
+            case SPTOrientationTypeYZAxis: {
+                return computeYZAxesMatrix(orientation->yzAxes);
+            }
+            case SPTOrientationTypeZXAxis: {
+                return computeZXAxesMatrix(orientation->zxAxes);
             }
         }
     }
     
-    return matrix_identity_float4x4;
+    return matrix_identity_float3x3;
 }
 
 }
@@ -145,6 +178,18 @@ bool SPTLookAtDirectionOrientationEqual(SPTLookAtDirectionOrientation lhs, SPTLo
     lhs.positive == rhs.positive;
 }
 
+bool SPTXYAxesOrientationEqual(SPTXYAxesOrientation lhs, SPTXYAxesOrientation rhs) {
+    return simd_equal(lhs.orthoNormX, rhs.orthoNormX) && simd_equal(lhs.orthoNormY, rhs.orthoNormY);
+}
+
+bool SPTYZAxesOrientationEqual(SPTYZAxesOrientation lhs, SPTYZAxesOrientation rhs) {
+    return simd_equal(lhs.orthoNormY, rhs.orthoNormY) && simd_equal(lhs.orthoNormZ, rhs.orthoNormZ);
+}
+
+bool SPTZXAxesOrientationEqual(SPTZXAxesOrientation lhs, SPTZXAxesOrientation rhs) {
+    return simd_equal(lhs.orthoNormZ, rhs.orthoNormZ) && simd_equal(lhs.orthoNormX, rhs.orthoNormX);
+}
+
 bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
     if(lhs.type != rhs.type) {
         return false;
@@ -157,6 +202,12 @@ bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
             return SPTLookAtPointOrientationEqual(lhs.lookAtPoint, rhs.lookAtPoint);
         case SPTOrientationTypeLookAtDirection:
             return SPTLookAtDirectionOrientationEqual(lhs.lookAtDirection, rhs.lookAtDirection);
+        case SPTOrientationTypeXYAxis:
+            return SPTXYAxesOrientationEqual(lhs.xyAxes, rhs.xyAxes);
+        case SPTOrientationTypeYZAxis:
+            return SPTYZAxesOrientationEqual(lhs.yzAxes, rhs.yzAxes);
+        case SPTOrientationTypeZXAxis:
+            return SPTZXAxesOrientationEqual(lhs.zxAxes, rhs.zxAxes);
     }
 }
 

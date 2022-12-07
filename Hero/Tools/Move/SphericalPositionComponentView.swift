@@ -159,7 +159,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         let direction = simd_normalize(cartesian - origin.cartesian)
         SPTOrientation.make(.init(normDirection: direction, up: radiusUpVector(direction: direction), axis: .X), object: radiusLineObject)
         
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: radiusLineObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: radiusLineObject)
     }
 
     private func setupLatitudeCircle() {
@@ -167,7 +167,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         SPTPosition.make(origin.position, object: latitudeCircleObject)
         SPTScale.make(.init(x: sphericalPosition.radius, y: sphericalPosition.radius), object: latitudeCircleObject)
         SPTOrientation.make(.init(y: 0.5 * Float.pi + sphericalPosition.longitude), object: latitudeCircleObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: latitudeCircleObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: latitudeCircleObject)
     }
 
     private func setupLongitudeCircle() {
@@ -181,7 +181,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         
         SPTScale.make(.init(x: scale, y: scale), object: longitudeCircleObject)
         SPTOrientation.make(.init(x: 0.5 * Float.pi), object: longitudeCircleObject)
-        SPTPolylineLookDepthBias.make(.guideLineLayer2, object: longitudeCircleObject)
+        SPTLineLookDepthBias.make(.guideLineLayer2, object: longitudeCircleObject)
     }
     
     private func updateSelectedGuideObject(selectedProperty: SphericalPositionComponentProperty) {

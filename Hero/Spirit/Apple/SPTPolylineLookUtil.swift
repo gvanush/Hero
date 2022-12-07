@@ -45,4 +45,5 @@ extension SPTPolylineLook: SPTComponent {
     static func tryGet(object: SPTObject) -> SPTPolylineLook? {
         SPTPolylineLookTryGet(object)?.pointee
     }
+    
 }

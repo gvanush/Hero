@@ -203,6 +203,50 @@ vertex BasicRasterizerData polylineVS(uint vertexID [[vertex_id]],
     return BasicRasterizerData {point};
 }
 
+// MARK: Arc rendering
+vertex BasicRasterizerData arcVS(uint vertexID [[vertex_id]],
+                                      constant ArcUniforms& arc [[buffer(kVertexInputIndexArcUniforms)]],
+                                      constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+                                      constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+    
+    const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
+    const auto projectionViewModelMatrix = uniforms.projectionViewMatrix * worldMatrix;
+    
+    const auto pointIndex = vertexID / 2;
+    const auto pointAngle = mix(arc.startAngle, arc.endAngle, static_cast<float>(pointIndex) / arc.pointCount);
+    
+    auto point = projectionViewModelMatrix * float4(arc.radius * cos(pointAngle), arc.radius * sin(pointAngle), 0.f, 1.f);
+    point.x *= aspect;
+    
+    const auto adjacentPointAngle = mix(arc.startAngle, arc.endAngle, static_cast<float>(pointIndex + 1) / arc.pointCount);
+    auto adjacentPoint = projectionViewModelMatrix * float4(arc.radius * cos(adjacentPointAngle), arc.radius * sin(adjacentPointAngle), 0.f, 1.f);
+    adjacentPoint.x *= aspect;
+    
+    // When 'w' is negative the resulting ndc z becomes more than 1.
+    // Therefore points are projected to the near plane
+    if (adjacentPoint.w < 0.f) {
+        adjacentPoint = adjacentPoint + (adjacentPoint.z / (adjacentPoint.z - point.z)) * (point - adjacentPoint);
+    }
+    
+    if (point.w < 0.f) {
+        point = point + (point.z / (point.z - adjacentPoint.z)) * (adjacentPoint - point);
+    }
+    
+    // Bring to NDC space
+    point /= point.w;
+    adjacentPoint /= adjacentPoint.w;
+
+    // Calculate segment normal
+    const auto normDir = 1 - 2 * static_cast<int>(vertexID % 2);
+    const auto norm = normDir * normalize(float2 {point.y - adjacentPoint.y, adjacentPoint.x - point.x});
+    
+    const auto thicknessNDCFactor = uniforms.screenScale / max(uniforms.viewportSize.x, uniforms.viewportSize.y);
+    point.xy += (0.5 * arc.thickness * thicknessNDCFactor) * norm;
+    
+    point.x /= aspect;
+    return BasicRasterizerData {point};
+}
+
 // MARK: Point rendering
 typedef struct {
     float4 position [[position]];

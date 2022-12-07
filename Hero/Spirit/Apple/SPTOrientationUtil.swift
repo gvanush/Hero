@@ -34,6 +34,30 @@ extension SPTOrientation: SPTObservableComponent {
         self.init(type: .lookAtDirection, .init(lookAtDirection: lookAtDirection))
     }
     
+    init(orthoNormX: simd_float3, orthoNormY: simd_float3) {
+        self.init(xyAxes: .init(orthoNormX: orthoNormX, orthoNormY: orthoNormY))
+    }
+    
+    init(xyAxes: SPTXYAxesOrientation) {
+        self.init(type: .xyAxis, .init(xyAxes: xyAxes))
+    }
+    
+    init(orthoNormY: simd_float3, orthoNormZ: simd_float3) {
+        self.init(yzAxes: .init(orthoNormY: orthoNormY, orthoNormZ: orthoNormZ))
+    }
+    
+    init(yzAxes: SPTYZAxesOrientation) {
+        self.init(type: .yzAxis, .init(yzAxes: yzAxes))
+    }
+    
+    init(orthoNormZ: simd_float3, orthoNormX: simd_float3) {
+        self.init(zxAxes: .init(orthoNormZ: orthoNormZ, orthoNormX: orthoNormX))
+    }
+    
+    init(zxAxes: SPTZXAxesOrientation) {
+        self.init(type: .zxAxis, .init(zxAxes: zxAxes))
+    }
+    
     public static func == (lhs: SPTOrientation, rhs: SPTOrientation) -> Bool {
         SPTOrientationEqual(lhs, rhs)
     }

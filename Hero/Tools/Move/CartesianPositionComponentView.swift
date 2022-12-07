@@ -58,7 +58,7 @@ class CartesianPositionComponent: BasicComponent<Axis> {
 
         let object = sceneViewModel.scene.makeObject()
         SPTScale.make(.init(x: 500.0), object: object)
-        SPTPolylineLookDepthBias.make(.guideLineLayer3, object: object)
+        SPTLineLookDepthBias.make(.guideLineLayer3, object: object)
 
         switch selectedProperty {
         case .x:

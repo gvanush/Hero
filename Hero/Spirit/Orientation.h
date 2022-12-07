@@ -19,6 +19,9 @@ typedef enum {
     SPTOrientationTypeEuler,
     SPTOrientationTypeLookAtPoint,
     SPTOrientationTypeLookAtDirection,
+    SPTOrientationTypeXYAxis,
+    SPTOrientationTypeYZAxis,
+    SPTOrientationTypeZXAxis,
 } __attribute__((enum_extensibility(closed))) SPTOrientationType;
 
 typedef enum {
@@ -59,11 +62,35 @@ typedef struct {
 bool SPTLookAtDirectionOrientationEqual(SPTLookAtDirectionOrientation lhs, SPTLookAtDirectionOrientation rhs);
 
 typedef struct {
+    simd_float3 orthoNormX;
+    simd_float3 orthoNormY;
+} SPTXYAxesOrientation;
+
+bool SPTXYAxesOrientationEqual(SPTXYAxesOrientation lhs, SPTXYAxesOrientation rhs);
+
+typedef struct {
+    simd_float3 orthoNormY;
+    simd_float3 orthoNormZ;
+} SPTYZAxesOrientation;
+
+bool SPTYZAxesOrientationEqual(SPTYZAxesOrientation lhs, SPTYZAxesOrientation rhs);
+
+typedef struct {
+    simd_float3 orthoNormZ;
+    simd_float3 orthoNormX;
+} SPTZXAxesOrientation;
+
+bool SPTZXAxesOrientationEqual(SPTZXAxesOrientation lhs, SPTZXAxesOrientation rhs);
+
+typedef struct {
     SPTOrientationType type;
     union {
         SPTEulerOrientation euler;
         SPTLookAtPointOrientation lookAtPoint;
         SPTLookAtDirectionOrientation lookAtDirection;
+        SPTXYAxesOrientation xyAxes;
+        SPTYZAxesOrientation yzAxes;
+        SPTZXAxesOrientation zxAxes;
     };
 } SPTOrientation;
 
