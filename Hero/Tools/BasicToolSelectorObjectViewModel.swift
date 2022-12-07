@@ -27,7 +27,6 @@ struct BasicToolComponentRecord: Hashable {
 }
 
 struct BasicToolObjectEditingParams {
-    
     var activeComponentRecord = BasicToolComponentRecord()
     var selectedPropertyIndices = [BasicToolComponentRecord : Int?]()
 }
@@ -52,26 +51,26 @@ class BasicToolSelectedObjectViewModel<RC>: ObservableObject where RC: BasicTool
         
         self.rootComponent = RC(object: object, sceneViewModel: sceneViewModel, parent: nil)
         if let editingParams = editingParams {
-            self.activeComponent = determineActiveComponent(root: rootComponent, record: editingParams.activeComponentRecord, index: 0)
+            self.activeComponent = determineActiveComponent(component: rootComponent, record: editingParams.activeComponentRecord, index: 0)
             applySelectedPropertyIndices(editingParams: editingParams, component: rootComponent, indexPath: .init(), variantTags: [])
         } else {
             self.activeComponent = rootComponent
         }
     }
     
-    func determineActiveComponent(root: Component, record: BasicToolComponentRecord, index: Int) -> Component {
+    func determineActiveComponent(component: Component, record: BasicToolComponentRecord, index: Int) -> Component {
         
-        if root.variantTag != record.variantTags[index] {
-            return root
-        }
-        
-        guard index < record.indexPath.count else {
-            return root
+        if component.variantTag != record.variantTags[index] || index >= record.indexPath.count {
+            var firstSetup = component
+            while !firstSetup.isSetup {
+                firstSetup = firstSetup.parent!
+            }
+            return firstSetup
         }
         
         let subIndex = record.indexPath[index]
         
-        return determineActiveComponent(root: root.subcomponents![subIndex], record: record, index: index + 1)
+        return determineActiveComponent(component: component.subcomponents![subIndex], record: record, index: index + 1)
         
     }
     
