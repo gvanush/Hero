@@ -82,6 +82,7 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
     }
     
     private func setupVariant() {
+        self.variantTag = coordinateSystem.rawValue
         switch coordinateSystem {
         case .cartesian:
             activeComponent = CartesianPositionComponent(title: "Position", editingParamsKeyPath: \.[cartesianPositionOf: object], object: object, sceneViewModel: sceneViewModel, parent: parent)
@@ -92,7 +93,6 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
         case .cylindrical:
             activeComponent = CylindricalPositionComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }
-        activeComponent.variantTag = coordinateSystem.rawValue
         variantCancellable = activeComponent.objectWillChange.sink { [weak self] in
             self?.objectWillChange.send()
         }

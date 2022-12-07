@@ -38,6 +38,7 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
     }
  
     private func setupVariant() {
+        self.variantTag = coordinateSystem.rawValue
         switch coordinateSystem {
         case .cartesian:
             activeComponent = CartesianPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
@@ -48,7 +49,6 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
         case .cylindrical:
             activeComponent = CylindricalPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }
-        activeComponent.variantTag = coordinateSystem.rawValue
         variantCancellable = activeComponent.objectWillChange.sink { [unowned self] in
             self.objectWillChange.send()
         }

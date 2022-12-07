@@ -87,13 +87,13 @@ class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPT
     }
     
     private func setupVariant() {
+        self.variantTag = colorModel.rawValue
         switch colorModel {
         case .RGB:
             activeComponent = ObjectRGBAColorAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .HSB:
             activeComponent = ObjectHSBAColorAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         }
-        activeComponent.variantTag = colorModel.rawValue
         variantCancellable = activeComponent.objectWillChange.sink { [unowned self] in
             self.objectWillChange.send()
         }

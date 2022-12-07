@@ -148,8 +148,14 @@ class BasicToolViewModel<SVM, RC>: ToolViewModel where SVM: BasicToolSelectedObj
     
     private func saveEditingParams(selectedObjectViewModel: SVM) {
         let activeIndexPath = selectedObjectViewModel.activeComponent.indexPathIn(selectedObjectViewModel.rootComponent)!
-        var variantTags = [UInt32]()
-        getVariantTags(component: selectedObjectViewModel.activeComponent, &variantTags)
+        
+        var variantTags: [UInt32] = [selectedObjectViewModel.rootComponent.variantTag]
+        var component: Component = selectedObjectViewModel.rootComponent
+        for index in activeIndexPath {
+            let sub = component.subcomponents![index]
+            variantTags.append(sub.variantTag)
+            component = sub
+        }
         
         editingParams[selectedObjectViewModel.object, default: .init()].activeComponentRecord = .init(indexPath: activeIndexPath, variantTags: variantTags)
         saveSelectedPropertyIndices(object: selectedObjectViewModel.object, component: selectedObjectViewModel.rootComponent, indexPath: .init(), variantTags: [])
@@ -169,16 +175,6 @@ class BasicToolViewModel<SVM, RC>: ToolViewModel where SVM: BasicToolSelectedObj
                 saveSelectedPropertyIndices(object: object, component: sub, indexPath: indexPath.appending(index), variantTags: variantTags)
             }
         }
-    }
-    
-    private func getVariantTags(component: Component, _ variantTags: inout [UInt32]) {
-        
-        variantTags.append(component.variantTag)
-        
-        if let parent = component.parent {
-            getVariantTags(component: parent, &variantTags)
-        }
-        
     }
     
     override func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
