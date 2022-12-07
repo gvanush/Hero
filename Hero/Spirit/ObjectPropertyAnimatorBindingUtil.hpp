@@ -62,6 +62,20 @@ void unbindAnimator(SPTObject object) {
 }
 
 template <SPTAnimatableObjectProperty P>
+void unbindAnimatorIfBound(SPTObject object) {
+    auto& registry = Scene::getRegistry(object);
+    if(!registry.all_of<AnimatorBinding<P>>(object.entity)) {
+        return;
+    }
+    
+    notifyAnimatorBindingWillPerishObservers<P>(registry, object.entity);
+    
+    const auto& animatorBinding = registry.get<AnimatorBinding<P>>(object.entity);
+    spt::AnimatorManager::active().onObjectPropertyUnbind(animatorBinding.base.animatorId, object, P);
+    registry.erase<AnimatorBinding<P>>(object.entity);
+}
+
+template <SPTAnimatableObjectProperty P>
 SPTAnimatorBinding getAnimatorBinding(SPTObject object) {
     return Scene::getRegistry(object).get<AnimatorBinding<P>>(object.entity).base;
 }

@@ -76,6 +76,8 @@ protocol SPTAnimatableProperty: Identifiable {
     
     func unbindAnimator(object: SPTObject)
     
+    func unbindAnimatorIfBound(object: SPTObject)
+    
     func getAnimatorBinding(object: SPTObject) -> SPTAnimatorBinding
     
     func tryGetAnimatorBinding(object: SPTObject) -> SPTAnimatorBinding?

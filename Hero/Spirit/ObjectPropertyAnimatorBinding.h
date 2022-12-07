@@ -20,6 +20,8 @@ void SPTObjectPropertyUpdateAnimatorBinding(SPTAnimatableObjectProperty property
 
 void SPTObjectPropertyUnbindAnimator(SPTAnimatableObjectProperty property, SPTObject object);
 
+void SPTObjectPropertyUnbindAnimatorIfBound(SPTAnimatableObjectProperty property, SPTObject object);
+
 SPTAnimatorBinding SPTObjectPropertyGetAnimatorBinding(SPTAnimatableObjectProperty property, SPTObject object);
 
 const SPTAnimatorBinding* _Nullable SPTObjectPropertyTryGetAnimatorBinding(SPTAnimatableObjectProperty property, SPTObject object);

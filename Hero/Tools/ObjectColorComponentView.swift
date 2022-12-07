@@ -149,6 +149,22 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
             component[keyPath: keyPath].model
         }
         set {
+            
+            guard colorModel != newValue else {
+                return
+            }
+            
+            switch colorModel {
+            case .RGB:
+                SPTAnimatableObjectProperty.red.unbindAnimatorIfBound(object: object)
+                SPTAnimatableObjectProperty.green.unbindAnimatorIfBound(object: object)
+                SPTAnimatableObjectProperty.blue.unbindAnimatorIfBound(object: object)
+            case .HSB:
+                SPTAnimatableObjectProperty.hue.unbindAnimatorIfBound(object: object)
+                SPTAnimatableObjectProperty.saturation.unbindAnimatorIfBound(object: object)
+                SPTAnimatableObjectProperty.brightness.unbindAnimatorIfBound(object: object)
+            }
+            
             let color = component[keyPath: keyPath]
             switch newValue {
             case .RGB:

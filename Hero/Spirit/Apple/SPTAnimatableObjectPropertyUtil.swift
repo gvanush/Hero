@@ -54,6 +54,10 @@ extension SPTAnimatableObjectProperty: SPTAnimatableProperty, CaseIterable {
         SPTObjectPropertyUnbindAnimator(self, object)
     }
     
+    func unbindAnimatorIfBound(object: SPTObject) {
+        SPTObjectPropertyUnbindAnimatorIfBound(self, object)
+    }
+    
     func getAnimatorBinding(object: SPTObject) -> SPTAnimatorBinding {
         SPTObjectPropertyGetAnimatorBinding(self, object)
     }
