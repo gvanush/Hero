@@ -10,30 +10,25 @@ import SwiftUI
 
 class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
     
+    private let channelKeyPath: WritableKeyPath<SPTMeshLook, Float>
     private var bindingWillChangeSubscription: SPTAnySubscription?
-    private var channelInitialValue: Float!
+    private var guideObject: SPTObject!
     
-    @SPTObservedComponentProperty<SPTMeshLook, Float> var channelValue: Float
     
     required override init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
-        var keyPath: WritableKeyPath<SPTMeshLook, Float>!
         switch animatableProperty {
         case .red:
-            keyPath = \.shading.blinnPhong.color.rgba.red
+            channelKeyPath = \.shading.blinnPhong.color.rgba.red
         case .green:
-            keyPath = \.shading.blinnPhong.color.rgba.green
+            channelKeyPath = \.shading.blinnPhong.color.rgba.green
         case .blue:
-            keyPath = \.shading.blinnPhong.color.rgba.blue
+            channelKeyPath = \.shading.blinnPhong.color.rgba.blue
         default:
             fatalError()
         }
         
-        _channelValue = .init(object: object, keyPath: keyPath)
-        
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
-        
-        _channelValue.publisher = self.objectWillChange
     }
     
     override var selectedProperty: AnimatorBindingComponentProperty? {
@@ -45,7 +40,13 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
     }
     
     override func onActive() {
-        channelInitialValue = channelValue
+        
+        // Clone source object to display resulting color
+        guideObject = sceneViewModel.scene.makeObject()
+        SPTPosition.make(SPTPosition.get(object: object), object: guideObject)
+        SPTScale.make(SPTScale.get(object: object), object: guideObject)
+        SPTOrientation.make(SPTOrientation.get(object: object), object: guideObject)
+        SPTMeshLook.make(SPTMeshLook.get(object: object), object: guideObject)
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingDidChangeSink(object: object, callback: { [unowned self] _ in
             self.updateChannelValue()
@@ -56,7 +57,7 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
     
     override func onInactive() {
         bindingWillChangeSubscription = nil
-        channelValue = channelInitialValue
+        SPTSceneProxy.destroyObject(guideObject)
     }
     
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
@@ -137,12 +138,18 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
     private func updateChannelValue() {
         switch selectedProperty! {
         case .valueAt0:
-            self.channelValue = self.binding.valueAt0
+            updateGuideChannel(self.binding.valueAt0)
         case .valueAt1:
-            self.channelValue = self.binding.valueAt1
+            updateGuideChannel(self.binding.valueAt1)
         case .animator:
-            self.channelValue = self.channelInitialValue
+            updateGuideChannel(SPTMeshLook.get(object: object)[keyPath: channelKeyPath])
         }
+    }
+    
+    private func updateGuideChannel(_ value: Float) {
+        var meshLook = SPTMeshLook.get(object: guideObject)
+        meshLook[keyPath: channelKeyPath] = value
+        SPTMeshLook.update(meshLook, object: guideObject)
     }
     
     static var defaultValueAt0: Float { 0 }

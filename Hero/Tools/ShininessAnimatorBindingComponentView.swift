@@ -11,9 +11,7 @@ import SwiftUI
 class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
     
     private var bindingWillChangeSubscription: SPTAnySubscription?
-    private var shininessInitialValue: Float!
-    
-    @SPTObservedComponentProperty<SPTMeshLook, Float> var shininess: Float
+    private var guideObject: SPTObject!
     
     required override init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
@@ -21,11 +19,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
             fatalError()
         }
         
-        _shininess = .init(object: object, keyPath: \.shading.blinnPhong.shininess)
-        
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
-        
-        _shininess.publisher = self.objectWillChange
     }
     
     override var selectedProperty: AnimatorBindingComponentProperty? {
@@ -37,7 +31,13 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     }
     
     override func onActive() {
-        shininessInitialValue = shininess
+        
+        // Clone source object to display resulting shininess
+        guideObject = sceneViewModel.scene.makeObject()
+        SPTPosition.make(SPTPosition.get(object: object), object: guideObject)
+        SPTScale.make(SPTScale.get(object: object), object: guideObject)
+        SPTOrientation.make(SPTOrientation.get(object: object), object: guideObject)
+        SPTMeshLook.make(SPTMeshLook.get(object: object), object: guideObject)
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingDidChangeSink(object: object, callback: { [unowned self] _ in
             self.updateLookPropertyValue()
@@ -48,7 +48,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     
     override func onInactive() {
         bindingWillChangeSubscription = nil
-        shininess = shininessInitialValue
+        SPTSceneProxy.destroyObject(guideObject)
     }
     
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
@@ -58,12 +58,18 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     private func updateLookPropertyValue() {
         switch selectedProperty! {
         case .valueAt0:
-            self.shininess = self.binding.valueAt0
+            updateGuideShininess(self.binding.valueAt0)
         case .valueAt1:
-            self.shininess = self.binding.valueAt1
+            updateGuideShininess(self.binding.valueAt1)
         case .animator:
-            self.shininess = self.shininessInitialValue
+            updateGuideShininess(SPTMeshLook.get(object: object).shading.blinnPhong.shininess)
         }
+    }
+    
+    private func updateGuideShininess(_ shininess: Float) {
+        var meshLook = SPTMeshLook.get(object: guideObject)
+        meshLook.shading.blinnPhong.shininess = shininess
+        SPTMeshLook.update(meshLook, object: guideObject)
     }
     
     static var defaultValueAt0: Float { 0 }
