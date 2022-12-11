@@ -137,7 +137,8 @@ class SphericalPositionRadiusAnimatorBindingComponent: ObjectDistanceAnimatorBin
         
         let cartesian = position.spherical.toCartesian
 
-        super.init(axisDirection: cartesian - position.spherical.origin, editingParamsKeyPath: \.[sphericalPositionBindingOf: object].radius, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        let axisDirection = (position.spherical.radius.sign == .plus ? 1.0 : -1.0) * simd_normalize(cartesian - position.spherical.origin)
+        super.init(normAxisDirection: axisDirection, editingParamsKeyPath: \.[sphericalPositionBindingOf: object].radius, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
     
 }

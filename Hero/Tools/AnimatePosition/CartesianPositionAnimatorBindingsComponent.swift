@@ -108,7 +108,7 @@ class CartesianPositionFieldAnimatorBindingComponent: ObjectDistanceAnimatorBind
             fatalError()
         }
         
-        super.init(axisDirection: axisDirection, editingParamsKeyPath: editingParamsKeyPath, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(normAxisDirection: axisDirection, editingParamsKeyPath: editingParamsKeyPath, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
     }
     

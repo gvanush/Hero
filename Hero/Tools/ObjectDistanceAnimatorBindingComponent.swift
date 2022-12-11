@@ -18,9 +18,9 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     private var point1Object: SPTObject!
     private var bindingWillChangeSubscription: SPTAnySubscription?
     
-    init(axisDirection: simd_float3, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    init(normAxisDirection: simd_float3, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
-        self.normAxisDirection = simd_normalize(axisDirection)
+        self.normAxisDirection = normAxisDirection
         self.editingParamsKeyPath = editingParamsKeyPath
         
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
