@@ -176,15 +176,11 @@ struct RootView: View {
                     .visible(userInteractionState.isIdle)
             }
             .safeAreaInset(edge: .top) {
-                VStack(spacing: 0.0) {
-                    topbar()
-                    Divider()
-                    editorsView()
-                }
-                .background(Material.bar)
-                .compositingGroup()
-                .shadow(radius: 0.5)
-                .visible(userInteractionState.isIdle)
+                topbar()
+                    .background(Material.bar)
+                    .compositingGroup()
+                    .shadow(radius: 0.5)
+                    .visible(userInteractionState.isIdle)
             }
             .safeAreaInset(edge: .bottom, spacing: Self.navigationEmptyVerticalAreaHeight) {
                 VStack(spacing: 8.0) {
@@ -259,11 +255,11 @@ struct RootView: View {
         ZStack {
             HStack {
                 Button {
+                    showsAnimatorsView = true
                 } label: {
-                    Image(systemName: "square.stack.3d.down.right")
+                    Image(systemName: "bolt")
                         .imageScale(.large)
                 }
-                .hidden()
                 Spacer()
                 Button {
                     playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCameraObject.entity)
@@ -282,28 +278,6 @@ struct RootView: View {
         }
         .frame(height: 44.0)
         .padding(.horizontal)
-    }
-    
-    func editorsView() -> some View {
-        HStack(spacing: 0.0) {
-            Button {
-                showsSelectedObjectInspector = true
-            } label: {
-                Image(systemName: "list.bullet")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            .disabled(!sceneViewModel.isObjectSelected)
-            Divider()
-                .padding(.vertical, 4.0)
-            Button {
-                showsAnimatorsView = true
-            } label: {
-                Image(systemName: "bolt")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-        }
-        .tint(.primary)
-        .frame(height: 33.0)
     }
     
     func activeToolView() -> some View {
