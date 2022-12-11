@@ -272,19 +272,18 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     
     
     // Render outlines
-    [renderEncoder setRenderPipelineState: __outlinePipelineState];
-    [renderEncoder setCullMode: MTLCullModeFront];
-    [renderEncoder setDepthBias: 10.0f slopeScale: 10.f clamp: 0.f];
-
-    const auto outlineLookView = registry.view<SPTOutlineLook>();
-    outlineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& outlineLook) {
-        if(rc.lookCategories & outlineLook.categories) {
-            renderOutline(renderEncoder, registry, entity, outlineLook);
-        }
-    });
+//    [renderEncoder setRenderPipelineState: __outlinePipelineState];
+//    [renderEncoder setCullMode: MTLCullModeFront];
+//    [renderEncoder setDepthBias: 10.0f slopeScale: 10.f clamp: 0.f];
+//
+//    const auto outlineLookView = registry.view<SPTOutlineLook>();
+//    outlineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& outlineLook) {
+//        if(rc.lookCategories & outlineLook.categories) {
+//            renderOutline(renderEncoder, registry, entity, outlineLook);
+//        }
+//    });
     
-    
-    [renderEncoder setCullMode: MTLCullModeBack];
+//    [renderEncoder setCullMode: MTLCullModeBack];
     
     // Render polylines
     [renderEncoder setRenderPipelineState: __polylinePipelineState];
@@ -344,24 +343,21 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
         }
     });
     
-//    const auto outlineView = _registry.view<SPTOutlineView>();
-//    if(!outlineView.empty()) {
-//
-//        // Render meshes in depth buffer
-//        [layer1RenderEncoder setRenderPipelineState: __depthOnlyMeshPipelineState];
-//        outlineView.each([this, layer1RenderEncoder] (auto entity, auto& outlineView) {
-//            renderMeshDepthOnly(layer1RenderEncoder, _registry, entity, outlineView.meshId);
-//        });
-//
-//        // Render outlines
-//        [layer1RenderEncoder setRenderPipelineState: __outlinePipelineState];
-//        [layer1RenderEncoder setCullMode: MTLCullModeFront];
-//    //    [renderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
-//
-//        outlineView.each([this, layer1RenderEncoder] (auto entity, auto& outlineView) {
-//            renderOutline(layer1RenderEncoder, _registry, entity, OutlineLook);
-//        });
-//    }
+    const auto outlineView = registry.view<SPTOutlineLook, SPTMeshLook>();
+    // Render meshes in depth buffer
+    [layer1RenderEncoder setRenderPipelineState: __depthOnlyMeshPipelineState];
+    outlineView.each([layer1RenderEncoder, &registry] (auto entity, auto&, auto& meshLook) {
+        renderMeshDepthOnly(layer1RenderEncoder, registry, entity, meshLook.meshId);
+    });
+
+    // Render outlines
+    [layer1RenderEncoder setRenderPipelineState: __outlinePipelineState];
+    [layer1RenderEncoder setCullMode: MTLCullModeFront];
+    [layer1RenderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
+
+    outlineView.each([layer1RenderEncoder, &registry] (auto entity, auto& outlineLook, auto&) {
+        renderOutline(layer1RenderEncoder, registry, entity, outlineLook);
+    });
     
     [layer1RenderEncoder endEncoding];
     
