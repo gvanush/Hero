@@ -346,8 +346,10 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     const auto outlineView = registry.view<SPTOutlineLook, SPTMeshLook>();
     // Render meshes in depth buffer
     [layer1RenderEncoder setRenderPipelineState: __depthOnlyMeshPipelineState];
-    outlineView.each([layer1RenderEncoder, &registry] (auto entity, auto&, auto& meshLook) {
-        renderMeshDepthOnly(layer1RenderEncoder, registry, entity, meshLook.meshId);
+    outlineView.each([layer1RenderEncoder, &registry, rc] (auto entity, auto&, auto& meshLook) {
+        if(rc.lookCategories & meshLook.categories) {
+            renderMeshDepthOnly(layer1RenderEncoder, registry, entity, meshLook.meshId);
+        }
     });
 
     // Render outlines
@@ -355,8 +357,10 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     [layer1RenderEncoder setCullMode: MTLCullModeFront];
     [layer1RenderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
 
-    outlineView.each([layer1RenderEncoder, &registry] (auto entity, auto& outlineLook, auto&) {
-        renderOutline(layer1RenderEncoder, registry, entity, outlineLook);
+    outlineView.each([layer1RenderEncoder, &registry, rc] (auto entity, auto& outlineLook, auto&) {
+        if(rc.lookCategories & outlineLook.categories) {
+            renderOutline(layer1RenderEncoder, registry, entity, outlineLook);
+        }
     });
     
     [layer1RenderEncoder endEncoding];
