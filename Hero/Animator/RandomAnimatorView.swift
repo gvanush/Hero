@@ -79,21 +79,38 @@ struct RandomAnimatorComponentView: View {
     
 }
 
-class RandomAnimatorViewModel: AnimatorViewModel {
+struct RandomAnimatorOutlineView: View {
     
-    fileprivate let rootComponent: RandomAnimatorComponent
-    @Published fileprivate var activeComponent: Component
-    @Published var resetGraph = false
+    @ObservedObject var component: RandomAnimatorComponent
+    var onEnterEditMode: () -> Void
+    
+    var body: some View {
+        Form {
+            SceneEditableParam(title: "Seed", valueText: Text(component.seed, format: .number)) {
+                withAnimation {
+                    component.selectedProperty = .seed
+                    onEnterEditMode()
+                }
+            }
+            SceneEditableParam(title: "Frequency", valueText: Text(NSNumber(value: component.frequency), formatter: component.frequencyFormatter)) {
+                withAnimation {
+                    component.selectedProperty = .frequency
+                    onEnterEditMode()
+                }
+            }
+        }
+    }
+    
+}
+
+class RandomAnimatorViewModel: BasicAnimatorViewModel<RandomAnimatorComponent> {
     
     private var animatorLastValue: Float?
     private var willChangeSubscription: SPTAnySubscription?
     
-    override init(animatorId: SPTAnimatorId) {
+    init(animatorId: SPTAnimatorId) {
         
-        self.rootComponent = RandomAnimatorComponent(animatorId: animatorId)
-        self.activeComponent = self.rootComponent
-        
-        super.init(animatorId: animatorId)
+        super.init(rootComponent: .init(animatorId: animatorId), animatorId: animatorId)
         
         willChangeSubscription = SPTAnimator.onWillChangeSink(id: animatorId) { [weak self] newValue in
             guard let self = self else { return }
@@ -103,7 +120,7 @@ class RandomAnimatorViewModel: AnimatorViewModel {
         }
     }
     
-    func getValueItem(samplingRate: Int, time: TimeInterval) -> SignalValueItem? {
+    override func getValueItem(samplingRate: Int, time: TimeInterval) -> SignalValueItem? {
         
         var context = SPTAnimatorEvaluationContext()
         context.samplingRate = samplingRate
@@ -135,86 +152,13 @@ struct RandomAnimatorView: View {
     static let componentViewProvider = RandomAnimatorComponentViewProvider()
     
     var body: some View {
-        ZStack {
-            Color.systemBackground
-            VStack(spacing: 0.0) {
-                SignalGraphView(restartFlag: $model.restartFlag) { samplingRate, time in
-                    model.getValueItem(samplingRate: samplingRate, time: time)
-                } onStart: {
-                    model.resetAnimator()
-                }
-                .padding()
-                .layoutPriority(1)
-                if isEditing {
-                    componentNavigationView()
-                } else {
-                    Form {
-                        SceneEditableParam(title: "Seed", valueText: Text(model.rootComponent.seed, format: .number)) {
-                            withAnimation {
-                                model.rootComponent.selectedProperty = .seed
-                                isEditing = true
-                            }
-                        }
-                        SceneEditableParam(title: "Frequency", valueText: Text(NSNumber(value: model.rootComponent.frequency), formatter: model.rootComponent.frequencyFormatter)) {
-                            withAnimation {
-                                model.rootComponent.selectedProperty = .frequency
-                                isEditing = true
-                            }
-                        }
-                    }
-                    // NOTE: This is necessary for unknown reason to prevent 'Form' row
-                    // from being selectable when there is a button inside.
-                    .buttonStyle(BorderlessButtonStyle())
-                }
-            }
-        }
-        .navigationTitle(model.name)
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Spacer()
-                Button {
-                    model.destroy()
-                } label: {
-                    Image(systemName: "trash")
-                }
+        BasicAnimatorView(model: model, componentViewProvider: Self.componentViewProvider, isEditing: $isEditing) {
+            RandomAnimatorOutlineView(component: model.rootComponent) {
+                isEditing = true
             }
         }
     }
     
-    func componentNavigationView() -> some View {
-        VStack {
-            Spacer()
-            ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: Self.componentViewProvider, setupViewProvider: EmptyComponentSetupViewProvider())
-                .padding(.horizontal, 8.0)
-            bottomBar()
-        }
-        .transition(.move(edge: .bottom))
-    }
-    
-    func bottomBar() -> some View {
-        HStack {
-            ScrollView(.horizontal) {
-                
-            }
-            .tint(.primary)
-            Button {
-                withAnimation {
-                    isEditing = false
-                }
-            } label: {
-                Image(systemName: "xmark")
-                    .imageScale(.large)
-                    .frame(width: 44.0, height: 44.0)
-            }
-
-        }
-        .padding(.horizontal, 8.0)
-        .padding(.vertical, 4.0)
-        .frame(height: 56.0)
-        .background(Material.bar)
-        .compositingGroup()
-        .shadow(radius: 0.5)
-    }
 }
 
 struct RandomAnimatorView_Previews: PreviewProvider {

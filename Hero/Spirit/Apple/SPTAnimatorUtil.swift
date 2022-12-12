@@ -35,6 +35,10 @@ extension SPTAnimatorSource {
     init(noiseWithSeed seed: UInt32, frequency: Float, interpolation: SPTEasingType) {
         self.init(type: .noise, .init(noise: .init(seed: seed, frequency: frequency, interpolation: interpolation)))
     }
+    
+    init(oscillatorWithFrequency frequency: Float, interpolation: SPTEasingType) {
+        self.init(type: .oscillator, .init(oscillator: .init(frequency: frequency, interpolation: interpolation)))
+    }
 }
 
 extension SPTAnimator: Equatable {

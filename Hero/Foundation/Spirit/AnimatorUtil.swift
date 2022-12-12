@@ -30,7 +30,7 @@ extension SPTPanAnimatorSourceAxis: Identifiable, CaseIterable, Displayable {
 }
 
 
-extension SPTAnimatorSourcePan {
+extension SPTPanAnimatorSource {
     
     func boundsOffsetOnScreenSize(_ screenSize: CGSize) -> CGSize {
         let midX = (bottomLeft.x + topRight.x) * 0.5

@@ -18,6 +18,7 @@ typedef enum {
     SPTAnimatorSourceTypePan,
     SPTAnimatorSourceTypeRandom,
     SPTAnimatorSourceTypeNoise,
+    SPTAnimatorSourceTypeOscillator,
 } __attribute__((enum_extensibility(open))) SPTAnimatorSourceType;
 
 typedef enum {
@@ -29,25 +30,39 @@ typedef struct {
     simd_float2 bottomLeft;
     simd_float2 topRight;
     SPTPanAnimatorSourceAxis axis;
-} SPTAnimatorSourcePan;
+} SPTPanAnimatorSource;
+
+bool SPTPanAnimatorSourceEqual(SPTPanAnimatorSource lhs, SPTPanAnimatorSource rhs);
 
 typedef struct {
     uint32_t seed;
     float frequency;
-} SPTAnimatorSourceRandom;
+} SPTRandomAnimatorSource;
+
+bool SPTRandomAnimatorSourceEqual(SPTRandomAnimatorSource lhs, SPTRandomAnimatorSource rhs);
 
 typedef struct {
     uint32_t seed;
     float frequency;
     SPTEasingType interpolation;
-} SPTAnimatorSourceNoise;
+} SPTNoiseAnimatorSource;
+
+bool SPTNoiseAnimatorSourceEqual(SPTNoiseAnimatorSource lhs, SPTNoiseAnimatorSource rhs);
+
+typedef struct {
+    float frequency;
+    SPTEasingType interpolation;
+} SPTOscillatorAnimatorSource;
+
+bool SPTOscillatorAnimatorSourceEqual(SPTOscillatorAnimatorSource lhs, SPTOscillatorAnimatorSource rhs);
 
 typedef struct {
     SPTAnimatorSourceType type;
     union {
-        SPTAnimatorSourcePan pan;
-        SPTAnimatorSourceRandom random;
-        SPTAnimatorSourceNoise noise;
+        SPTPanAnimatorSource pan;
+        SPTRandomAnimatorSource random;
+        SPTNoiseAnimatorSource noise;
+        SPTOscillatorAnimatorSource oscillator;
     };
 } SPTAnimatorSource;
 

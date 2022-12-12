@@ -1,19 +1,18 @@
 //
-//  NoiseAnimatorView.swift
+//  OscillatorAnimatorView.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 24.10.22.
+//  Created by Vanush Grigoryan on 12.12.22.
 //
 
 import SwiftUI
 
-enum NoiseAnimatorProperty: Int, DistinctValueSet, Displayable {
-    case seed
+enum OscillatorAnimatorProperty: Int, DistinctValueSet, Displayable {
     case frequency
     case interpolation
 }
 
-class NoiseAnimatorComponent: BasicComponent<NoiseAnimatorProperty> {
+class OscillatorAnimatorComponent: BasicComponent<OscillatorAnimatorProperty> {
 
     @SPTObservedAnimator var animator: SPTAnimator
     let frequencyFormatter = Formatters.frequency
@@ -21,54 +20,45 @@ class NoiseAnimatorComponent: BasicComponent<NoiseAnimatorProperty> {
     init(animatorId: SPTAnimatorId) {
         _animator = .init(id: animatorId)
         
-        super.init(selectedProperty: .seed, parent: nil)
+        super.init(selectedProperty: .frequency, parent: nil)
         
         _animator.publisher = self.objectWillChange
     }
     
     override var title: String {
-        "Noise"
-    }
-    
-    var seed: UInt32 {
-        get {
-            animator.source.noise.seed
-        }
-        set {
-            animator.source.noise.seed = newValue
-        }
+        "Oscillator"
     }
     
     var frequency: Float {
         get {
-            animator.source.noise.frequency
+            animator.source.oscillator.frequency
         }
         set {
-            animator.source.noise.frequency = newValue
+            animator.source.oscillator.frequency = newValue
         }
     }
     
     var interpolation: SPTEasingType {
         get {
-            animator.source.noise.interpolation
+            animator.source.oscillator.interpolation
         }
         set {
-            animator.source.noise.interpolation = newValue
+            animator.source.oscillator.interpolation = newValue
         }
     }
     
 }
 
-class NoiseAnimatorComponentViewProvider: ComponentViewProvider<NoiseAnimatorComponent> {
+class OscillatorAnimatorComponentViewProvider: ComponentViewProvider<OscillatorAnimatorComponent> {
     
-    override func viewForRoot(_ root: NoiseAnimatorComponent) -> AnyView? {
-        AnyView(NoiseAnimatorComponentView(component: root))
+    override func viewForRoot(_ root: OscillatorAnimatorComponent) -> AnyView? {
+        AnyView(OscillatorAnimatorComponentView(component: root))
     }
 }
 
-struct NoiseAnimatorComponentView: View {
+struct OscillatorAnimatorComponentView: View {
     
-    @ObservedObject var component: NoiseAnimatorComponent
+    @ObservedObject var component: OscillatorAnimatorComponent
     @State private var scale = FloatSelector.Scale._1
     @State private var isSnappingEnabled = true
     
@@ -76,8 +66,6 @@ struct NoiseAnimatorComponentView: View {
         if let property = component.selectedProperty {
             Group {
                 switch property {
-                case .seed:
-                    RandomSeedSelector(seed: $component.seed)
                 case .frequency:
                     FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
                 case .interpolation:
@@ -91,19 +79,13 @@ struct NoiseAnimatorComponentView: View {
     
 }
 
-struct NoiseAnimatorOutlineView: View {
+struct OscillatorAnimatorOutlineView: View {
     
-    @ObservedObject var component: NoiseAnimatorComponent
+    @ObservedObject var component: OscillatorAnimatorComponent
     var onEnterEditMode: () -> Void
     
     var body: some View {
         Form {
-            SceneEditableParam(title: "Seed", valueText: Text(component.seed, format: .number)) {
-                withAnimation {
-                    component.selectedProperty = .seed
-                    onEnterEditMode()
-                }
-            }
             SceneEditableParam(title: "Frequency", valueText: Text(NSNumber(value: component.frequency), formatter: component.frequencyFormatter)) {
                 withAnimation {
                     component.selectedProperty = .frequency
@@ -123,7 +105,7 @@ struct NoiseAnimatorOutlineView: View {
     }
 }
 
-class NoiseAnimatorViewModel: BasicAnimatorViewModel<NoiseAnimatorComponent> {
+class OscillatorAnimatorViewModel: BasicAnimatorViewModel<OscillatorAnimatorComponent> {
     
     private var willChangeSubscription: SPTAnySubscription?
     
@@ -133,7 +115,7 @@ class NoiseAnimatorViewModel: BasicAnimatorViewModel<NoiseAnimatorComponent> {
         
         willChangeSubscription = SPTAnimator.onWillChangeSink(id: animatorId) { [weak self] newValue in
             guard let self = self else { return }
-            if newValue.source.noise.seed != self.animator.source.noise.seed || newValue.source.noise.interpolation != self.animator.source.noise.interpolation {
+            if newValue.source.oscillator.interpolation != self.animator.source.oscillator.interpolation {
                 self.restartFlag = true
             }
         }
@@ -141,16 +123,16 @@ class NoiseAnimatorViewModel: BasicAnimatorViewModel<NoiseAnimatorComponent> {
     
 }
 
-struct NoiseAnimatorView: View {
+struct OscillatorAnimatorView: View {
     
-    @StateObject var model: NoiseAnimatorViewModel
+    @StateObject var model: OscillatorAnimatorViewModel
     @State private var isEditing = false
     
-    static let componentViewProvider = NoiseAnimatorComponentViewProvider()
+    static let componentViewProvider = OscillatorAnimatorComponentViewProvider()
     
     var body: some View {
         BasicAnimatorView(model: model, componentViewProvider: Self.componentViewProvider, isEditing: $isEditing) {
-            NoiseAnimatorOutlineView(component: model.rootComponent) {
+            OscillatorAnimatorOutlineView(component: model.rootComponent) {
                 isEditing = true
             }
         }
@@ -158,7 +140,7 @@ struct NoiseAnimatorView: View {
     
 }
 
-struct NoiseAnimatorView_Previews: PreviewProvider {
+struct OscillatorAnimatorView_Previews: PreviewProvider {
     
     struct ContentView: View {
         
@@ -166,15 +148,16 @@ struct NoiseAnimatorView_Previews: PreviewProvider {
         
         var body: some View {
             NavigationStack {
-                NoiseAnimatorView(model: .init(animatorId: animatorId))
+                OscillatorAnimatorView(model: .init(animatorId: animatorId))
                     .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
     
     static var previews: some View {
-        let id = SPTAnimator.make(.init(name: "Noise.1", source: .init(noiseWithSeed: 1, frequency: 1.0, interpolation: .smoothStep)))
+        let id = SPTAnimator.make(.init(name: "Oscillator.1", source: .init(oscillatorWithFrequency: 1.0, interpolation: .smoothStep)))
         SPTAnimator.reset(id: id)
         return ContentView(animatorId: id)
     }
+    
 }

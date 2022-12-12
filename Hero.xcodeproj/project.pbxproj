@@ -122,6 +122,8 @@
 		B7AD7D10293E6A3D00129A07 /* SPTVectorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD7D0F293E6A3D00129A07 /* SPTVectorUtil.swift */; };
 		B7AD7D14293F294D00129A07 /* ArcLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7AD7D12293F294D00129A07 /* ArcLook.cpp */; };
 		B7AD7D16293F9B9700129A07 /* SPTArcLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD7D15293F9B9700129A07 /* SPTArcLookUtil.swift */; };
+		B7AD7D1C294730F300129A07 /* BasicAnimatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD7D1B294730F300129A07 /* BasicAnimatorView.swift */; };
+		B7AD7D1E294737C700129A07 /* OscillatorAnimatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD7D1D294737C700129A07 /* OscillatorAnimatorView.swift */; };
 		B7B711D128BC96430077C7CD /* ComponentSetupViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */; };
 		B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */; };
 		B7B711D528C108D70077C7CD /* LookCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D428C108D70077C7CD /* LookCategories.swift */; };
@@ -353,6 +355,8 @@
 		B7AD7D12293F294D00129A07 /* ArcLook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ArcLook.cpp; sourceTree = "<group>"; };
 		B7AD7D13293F294D00129A07 /* ArcLook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArcLook.h; sourceTree = "<group>"; };
 		B7AD7D15293F9B9700129A07 /* SPTArcLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTArcLookUtil.swift; sourceTree = "<group>"; };
+		B7AD7D1B294730F300129A07 /* BasicAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAnimatorView.swift; sourceTree = "<group>"; };
+		B7AD7D1D294737C700129A07 /* OscillatorAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OscillatorAnimatorView.swift; sourceTree = "<group>"; };
 		B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentSetupViewProvider.swift; sourceTree = "<group>"; };
 		B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPointLookUtil.swift; sourceTree = "<group>"; };
 		B7B711D428C108D70077C7CD /* LookCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookCategories.swift; sourceTree = "<group>"; };
@@ -585,13 +589,15 @@
 		B73A700128840CBE0043F9FF /* Animator */ = {
 			isa = PBXGroup;
 			children = (
-				B787799328FC36C600E3CDA7 /* Pan */,
-				B787799428FC36E500E3CDA7 /* RandomAnimatorView.swift */,
-				B73A700228840DB70043F9FF /* AnimatorsView.swift */,
+				B7C9D6C228FD256600621BA1 /* AnimatorViewModel.swift */,
+				B7AD7D1B294730F300129A07 /* BasicAnimatorView.swift */,
 				B7E30F5528906D4800224E09 /* SignalGraphView.swift */,
 				B757DB7528A80F0B00BB5DB4 /* AnimatorSelector.swift */,
-				B7C9D6C228FD256600621BA1 /* AnimatorViewModel.swift */,
+				B787799328FC36C600E3CDA7 /* Pan */,
+				B787799428FC36E500E3CDA7 /* RandomAnimatorView.swift */,
 				B7643B292906700300F6A05B /* NoiseAnimatorView.swift */,
+				B73A700228840DB70043F9FF /* AnimatorsView.swift */,
+				B7AD7D1D294737C700129A07 /* OscillatorAnimatorView.swift */,
 			);
 			path = Animator;
 			sourceTree = "<group>";
@@ -1130,6 +1136,7 @@
 				B7BCB11E27D75A6A00F5AFB1 /* SPTSubscription.swift in Sources */,
 				B7B711E228C1E4720077C7CD /* PlayView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
+				B7AD7D1C294730F300129A07 /* BasicAnimatorView.swift in Sources */,
 				B7A78A6F2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
 				B769F2632918EBE400C10661 /* ActionBar.swift in Sources */,
@@ -1160,6 +1167,7 @@
 				B73E47CC27C5762500CB0AFC /* Position.cpp in Sources */,
 				B7B711D528C108D70077C7CD /* LookCategories.swift in Sources */,
 				B710DB8A27BD8E4000C57BDF /* DiscreteValueSelector.swift in Sources */,
+				B7AD7D1E294737C700129A07 /* OscillatorAnimatorView.swift in Sources */,
 				B73E47CF27C5827700CB0AFC /* Scale.cpp in Sources */,
 				B70ABF32291E8D2900919F50 /* AnimatorBindingComponent.swift in Sources */,
 				B7235855275E984500337547 /* PolylineLook.cpp in Sources */,

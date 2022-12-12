@@ -55,6 +55,7 @@ private:
     float evaluatePan(const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
     float evaluateRandom(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
     float evaluateNoise(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
+    float evaluateOscillator(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context);
     
     void notifyCountListeners(size_t newValue);
     

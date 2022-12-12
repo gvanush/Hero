@@ -7,6 +7,21 @@
 
 #include "AnimatorSource.h"
 
+bool SPTPanAnimatorSourcePanEqual(SPTPanAnimatorSource lhs, SPTPanAnimatorSource rhs) {
+    return lhs.axis == rhs.axis && simd_equal(lhs.bottomLeft, rhs.bottomLeft) && simd_equal(lhs.topRight, rhs.topRight);
+}
+
+bool SPTRandomAnimatorSourceEqual(SPTRandomAnimatorSource lhs, SPTRandomAnimatorSource rhs) {
+    return lhs.seed == rhs.seed && lhs.frequency == rhs.frequency;
+}
+
+bool SPTNoiseAnimatorSourceEqual(SPTNoiseAnimatorSource lhs, SPTNoiseAnimatorSource rhs) {
+    return lhs.seed == rhs.seed && lhs.frequency == rhs.frequency && lhs.interpolation == rhs.interpolation;
+}
+
+bool SPTOscillatorAnimatorSourceEqual(SPTOscillatorAnimatorSource lhs, SPTOscillatorAnimatorSource rhs) {
+    return lhs.frequency == rhs.frequency && lhs.interpolation == rhs.interpolation;
+}
 
 bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs) {
     if(lhs.type != rhs.type) {
@@ -15,13 +30,16 @@ bool SPTAnimatorSourceEqual(SPTAnimatorSource lhs, SPTAnimatorSource rhs) {
     
     switch (lhs.type) {
         case SPTAnimatorSourceTypePan: {
-            return lhs.pan.axis == rhs.pan.axis && simd_equal(lhs.pan.bottomLeft, rhs.pan.bottomLeft) && simd_equal(lhs.pan.topRight, rhs.pan.topRight);
+            return SPTPanAnimatorSourcePanEqual(lhs.pan, rhs.pan);
         }
         case SPTAnimatorSourceTypeRandom: {
-            return lhs.random.seed == rhs.random.seed && lhs.random.frequency == rhs.random.frequency;
+            return SPTRandomAnimatorSourceEqual(lhs.random, rhs.random);
         }
         case SPTAnimatorSourceTypeNoise: {
-            return lhs.noise.seed == rhs.noise.seed && lhs.noise.frequency == rhs.noise.frequency && lhs.noise.interpolation == rhs.noise.interpolation;
+            return SPTNoiseAnimatorSourceEqual(lhs.noise, rhs.noise);
+        }
+        case SPTAnimatorSourceTypeOscillator: {
+            return SPTOscillatorAnimatorSourceEqual(lhs.oscillator, rhs.oscillator);
         }
     }
 }

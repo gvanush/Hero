@@ -56,6 +56,8 @@ struct AnimatorsView: View {
                         RandomAnimatorView(model: .init(animatorId: animatorId))
                     case .noise:
                         NoiseAnimatorView(model: .init(animatorId: animatorId))
+                    case .oscillator:
+                        OscillatorAnimatorView(model: .init(animatorId: animatorId))
                     @unknown default:
                         fatalError()
                     }
@@ -73,6 +75,10 @@ struct AnimatorsView: View {
                     Menu {
                         Button("Noise") {
                             let animatorId = model.makeAnimator(.init(name: "Noise.\(SPTAnimator.getCount())", source: .init(noiseWithSeed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
+                            model.discloseAnimator(id: animatorId)
+                        }
+                        Button("Oscillator") {
+                            let animatorId = model.makeAnimator(.init(name: "Oscillator.\(SPTAnimator.getCount())", source: .init(oscillatorWithFrequency: 1.0, interpolation: .smoothStep)))
                             model.discloseAnimator(id: animatorId)
                         }
                         Button("Random") {

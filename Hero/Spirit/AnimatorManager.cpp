@@ -59,6 +59,19 @@ struct NoiseAnimatorState {
     float targetValue;
 };
 
+struct OscillatorAnimatorState {
+    
+    void reset() {
+        startTime = 0.0;
+        interpolationDuration = 0.0;
+        targetValue = 1.f;
+    }
+    
+    double startTime;
+    double interpolationDuration;
+    float targetValue;
+};
+
 }
 
 AnimatorManager& AnimatorManager::active() {
@@ -84,6 +97,10 @@ SPTAnimatorId AnimatorManager::makeAnimator(const SPTAnimator& animator) {
         }
         case SPTAnimatorSourceTypeNoise: {
             _registry.emplace<NoiseAnimatorState>(id);
+            break;
+        }
+        case SPTAnimatorSourceTypeOscillator: {
+            _registry.emplace<OscillatorAnimatorState>(id);
             break;
         }
     }
@@ -162,6 +179,9 @@ bool AnimatorManager::validateAnimator(const SPTAnimator& animator) {
         case SPTAnimatorSourceTypeNoise: {
             return animator.source.noise.frequency >= 0.f;
         }
+        case SPTAnimatorSourceTypeOscillator: {
+            return animator.source.oscillator.frequency >= 0.f;
+        }
     }
 }
 
@@ -178,6 +198,9 @@ float AnimatorManager::evaluate(SPTAnimatorId id, const SPTAnimatorEvaluationCon
         }
         case SPTAnimatorSourceTypeNoise: {
             return evaluateNoise(id, animator, context);
+        }
+        case SPTAnimatorSourceTypeOscillator: {
+            return evaluateOscillator(id, animator, context);
         }
     }
 }
@@ -213,10 +236,23 @@ float AnimatorManager::evaluateNoise(SPTAnimatorId id, const SPTAnimator& animat
         state.startValue = state.targetValue;
         state.targetValue = uniformDistribution(state.randomEngine);
         state.startTime += state.interpolationDuration;
-        state.interpolationDuration = 1.f / std::min(animator.source.random.frequency, static_cast<float>(context.samplingRate));
+        state.interpolationDuration = 1.f / std::min(animator.source.noise.frequency, static_cast<float>(context.samplingRate));
     }
     const auto t = SPTEasingEvaluate(animator.source.noise.interpolation, static_cast<float>((context.time - state.startTime) / state.interpolationDuration));
     return simd_mix(state.startValue, state.targetValue, t);
+}
+
+float AnimatorManager::evaluateOscillator(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
+    
+    auto& state = _registry.get<OscillatorAnimatorState>(id);
+    while(context.time - state.startTime >= state.interpolationDuration) {
+        state.targetValue = 1.f - state.targetValue;
+        state.startTime += state.interpolationDuration;
+        state.interpolationDuration = 1.f / std::min(animator.source.oscillator.frequency, static_cast<float>(context.samplingRate));
+    }
+    const auto t = SPTEasingEvaluate(animator.source.oscillator.interpolation, static_cast<float>((context.time - state.startTime) / state.interpolationDuration));
+    return simd_mix(1.f - state.targetValue, state.targetValue, t);
+    
 }
 
 void AnimatorManager::resetAnimator(SPTAnimatorId id) {
@@ -233,6 +269,10 @@ void AnimatorManager::resetAnimator(SPTAnimatorId id) {
             _registry.get<NoiseAnimatorState>(id).reset(animator.source.noise.seed);
             break;
         }
+        case SPTAnimatorSourceTypeOscillator: {
+            _registry.get<OscillatorAnimatorState>(id).reset();
+            break;
+        }
     }
 }
 
@@ -245,6 +285,11 @@ void AnimatorManager::resetAllAnimators() {
     _registry.view<SPTAnimator, NoiseAnimatorState>().each([](auto entity, const auto& animator, auto& state) {
         assert(animator.source.type == SPTAnimatorSourceTypeNoise);
         state.reset(animator.source.noise.seed);
+    });
+    
+    _registry.view<SPTAnimator, OscillatorAnimatorState>().each([](auto entity, const auto& animator, auto& state) {
+        assert(animator.source.type == SPTAnimatorSourceTypeOscillator);
+        state.reset();
     });
 }
 
