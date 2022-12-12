@@ -46,7 +46,9 @@ class ObjectRGBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
         SPTPosition.make(SPTPosition.get(object: object), object: guideObject)
         SPTScale.make(SPTScale.get(object: object), object: guideObject)
         SPTOrientation.make(SPTOrientation.get(object: object), object: guideObject)
-        SPTMeshLook.make(SPTMeshLook.get(object: object), object: guideObject)
+        var meshLook = SPTMeshLook.get(object: object)
+        meshLook.categories = LookCategories.guide.rawValue
+        SPTMeshLook.make(meshLook, object: guideObject)
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingDidChangeSink(object: object, callback: { [unowned self] _ in
             self.updateChannelValue()
