@@ -20,7 +20,8 @@ namespace spt {
 
 namespace {
 
-std::uniform_real_distribution<float> uniformDistribution;
+std::uniform_real_distribution<float> uniformDistribution0_1;
+std::uniform_real_distribution<float> uniformDistribution1_1 {-1.f, 1.f};
 
 struct AnimatorBindingMetadata {
     
@@ -42,14 +43,14 @@ struct RandomAnimatorState {
     float lastValue;
 };
 
-struct NoiseAnimatorState {
+struct ValueNoiseAnimatorState {
     
     void reset(uint32_t seed) {
         randomEngine.seed(seed);
         startTime = 0.0;
         interpolationDuration = 0.0;
         startValue = 0.f;
-        targetValue = uniformDistribution(randomEngine);
+        targetValue = uniformDistribution0_1(randomEngine);
     }
     
     std::minstd_rand randomEngine;
@@ -57,6 +58,23 @@ struct NoiseAnimatorState {
     double interpolationDuration;
     float startValue;
     float targetValue;
+};
+
+struct PerlinNoiseAnimatorState {
+    
+    void reset(uint32_t seed) {
+        randomEngine.seed(seed);
+        startTime = 0.0;
+        interpolationDuration = 0.0;
+        startGradient = 0.f;
+        targetGradient = uniformDistribution1_1(randomEngine);
+    }
+    
+    std::minstd_rand randomEngine;
+    double startTime;
+    double interpolationDuration;
+    float startGradient;
+    float targetGradient;
 };
 
 struct OscillatorAnimatorState {
@@ -96,7 +114,15 @@ SPTAnimatorId AnimatorManager::makeAnimator(const SPTAnimator& animator) {
             break;
         }
         case SPTAnimatorSourceTypeNoise: {
-            _registry.emplace<NoiseAnimatorState>(id);
+            switch (animator.source.noise.type) {
+                case SPTNoiseTypeValue:
+                    _registry.emplace<ValueNoiseAnimatorState>(id);
+                    break;
+                case SPTNoiseTypePerlin:
+                    _registry.emplace<PerlinNoiseAnimatorState>(id);
+                    break;
+            }
+            
             break;
         }
         case SPTAnimatorSourceTypeOscillator: {
@@ -197,7 +223,12 @@ float AnimatorManager::evaluate(SPTAnimatorId id, const SPTAnimatorEvaluationCon
             return evaluateRandom(id, animator, context);
         }
         case SPTAnimatorSourceTypeNoise: {
-            return evaluateNoise(id, animator, context);
+            switch (animator.source.noise.type) {
+                case SPTNoiseTypeValue:
+                    return evaluateValueNoise(id, animator, context);
+                case SPTNoiseTypePerlin:
+                    return evaluatePerlinNoise(id, animator, context);
+            }
         }
         case SPTAnimatorSourceTypeOscillator: {
             return evaluateOscillator(id, animator, context);
@@ -222,24 +253,38 @@ float AnimatorManager::evaluateRandom(SPTAnimatorId id, const SPTAnimator& anima
     
     auto& state = _registry.get<RandomAnimatorState>(id);
     while(context.time - state.lastValueGenerationTime >= state.period) {
-        state.lastValue = uniformDistribution(state.randomEngine);
+        state.lastValue = uniformDistribution0_1(state.randomEngine);
         state.lastValueGenerationTime += state.period;
         state.period = 1.f / std::min(animator.source.random.frequency, static_cast<float>(context.samplingRate));
     }
     return state.lastValue;
 }
 
-float AnimatorManager::evaluateNoise(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
+float AnimatorManager::evaluateValueNoise(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
     
-    auto& state = _registry.get<NoiseAnimatorState>(id);
+    auto& state = _registry.get<ValueNoiseAnimatorState>(id);
     while(context.time - state.startTime >= state.interpolationDuration) {
         state.startValue = state.targetValue;
-        state.targetValue = uniformDistribution(state.randomEngine);
+        state.targetValue = uniformDistribution0_1(state.randomEngine);
         state.startTime += state.interpolationDuration;
         state.interpolationDuration = 1.f / std::min(animator.source.noise.frequency, static_cast<float>(context.samplingRate));
     }
     const auto t = SPTEasingEvaluate(animator.source.noise.interpolation, static_cast<float>((context.time - state.startTime) / state.interpolationDuration));
     return simd_mix(state.startValue, state.targetValue, t);
+}
+
+float AnimatorManager::evaluatePerlinNoise(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
+    
+    auto& state = _registry.get<PerlinNoiseAnimatorState>(id);
+    while(context.time - state.startTime >= state.interpolationDuration) {
+        state.startGradient = state.targetGradient;
+        state.targetGradient = uniformDistribution1_1(state.randomEngine);
+        state.startTime += state.interpolationDuration;
+        state.interpolationDuration = 1.f / std::min(animator.source.noise.frequency, static_cast<float>(context.samplingRate));
+    }
+    const auto t = static_cast<float>((context.time - state.startTime) / state.interpolationDuration);
+    // The interpolation result is in [-0.5, 0.5] range, therefore bringing to [0, 1] range
+    return 0.5f + simd_mix(state.startGradient * t, state.targetGradient * (t - 1.f), SPTEasingEvaluate(animator.source.noise.interpolation, t));
 }
 
 float AnimatorManager::evaluateOscillator(SPTAnimatorId id, const SPTAnimator& animator, const SPTAnimatorEvaluationContext& context) {
@@ -266,7 +311,14 @@ void AnimatorManager::resetAnimator(SPTAnimatorId id) {
             break;
         }
         case SPTAnimatorSourceTypeNoise: {
-            _registry.get<NoiseAnimatorState>(id).reset(animator.source.noise.seed);
+            switch (animator.source.noise.type) {
+                case SPTNoiseTypeValue:
+                    _registry.get<ValueNoiseAnimatorState>(id).reset(animator.source.noise.seed);
+                    break;
+                case SPTNoiseTypePerlin:
+                    _registry.get<PerlinNoiseAnimatorState>(id).reset(animator.source.noise.seed);
+                    break;
+            }
             break;
         }
         case SPTAnimatorSourceTypeOscillator: {
@@ -282,8 +334,13 @@ void AnimatorManager::resetAllAnimators() {
         state.reset(animator.source.random.seed);
     });
     
-    _registry.view<SPTAnimator, NoiseAnimatorState>().each([](auto entity, const auto& animator, auto& state) {
-        assert(animator.source.type == SPTAnimatorSourceTypeNoise);
+    _registry.view<SPTAnimator, ValueNoiseAnimatorState>().each([](auto entity, const auto& animator, auto& state) {
+        assert(animator.source.type == SPTAnimatorSourceTypeNoise && animator.source.noise.type == SPTNoiseTypeValue);
+        state.reset(animator.source.noise.seed);
+    });
+    
+    _registry.view<SPTAnimator, PerlinNoiseAnimatorState>().each([](auto entity, const auto& animator, auto& state) {
+        assert(animator.source.type == SPTAnimatorSourceTypeNoise && animator.source.noise.type == SPTNoiseTypePerlin);
         state.reset(animator.source.noise.seed);
     });
     

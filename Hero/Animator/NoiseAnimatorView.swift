@@ -173,7 +173,7 @@ struct NoiseAnimatorView_Previews: PreviewProvider {
     }
     
     static var previews: some View {
-        let id = SPTAnimator.make(.init(name: "Noise.1", source: .init(noiseWithSeed: 1, frequency: 1.0, interpolation: .smoothStep)))
+        let id = SPTAnimator.make(.init(name: "Noise.1", source: .init(noiseWithType: .value, seed: 1, frequency: 1.0, interpolation: .smoothStep)))
         SPTAnimator.reset(id: id)
         return ContentView(animatorId: id)
     }

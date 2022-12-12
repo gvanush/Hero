@@ -41,7 +41,13 @@ typedef struct {
 
 bool SPTRandomAnimatorSourceEqual(SPTRandomAnimatorSource lhs, SPTRandomAnimatorSource rhs);
 
+typedef enum {
+    SPTNoiseTypeValue,
+    SPTNoiseTypePerlin
+} __attribute__((enum_extensibility(closed))) SPTNoiseType;
+
 typedef struct {
+    SPTNoiseType type;
     uint32_t seed;
     float frequency;
     SPTEasingType interpolation;

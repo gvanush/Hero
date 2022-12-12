@@ -29,7 +29,7 @@ struct HeroApp: App {
         
         _ = SPTAnimator.make(.init(name: "Pan.0", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
         _ = SPTAnimator.make(.init(name: "Random.0", source: .init(randomWithSeed: 1, frequency: 3.0)))
-        _ = SPTAnimator.make(.init(name: "Noise.0", source: .init(noiseWithSeed: 1, frequency: 1.0, interpolation: .smoothStep)))
+        _ = SPTAnimator.make(.init(name: "Noise.0", source: .init(noiseWithType: .value, seed: 1, frequency: 1.0, interpolation: .smoothStep)))
     }
     
     var body: some SwiftUI.Scene {

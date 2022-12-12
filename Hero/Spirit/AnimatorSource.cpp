@@ -16,7 +16,7 @@ bool SPTRandomAnimatorSourceEqual(SPTRandomAnimatorSource lhs, SPTRandomAnimator
 }
 
 bool SPTNoiseAnimatorSourceEqual(SPTNoiseAnimatorSource lhs, SPTNoiseAnimatorSource rhs) {
-    return lhs.seed == rhs.seed && lhs.frequency == rhs.frequency && lhs.interpolation == rhs.interpolation;
+    return lhs.type == rhs.type && lhs.seed == rhs.seed && lhs.frequency == rhs.frequency && lhs.interpolation == rhs.interpolation;
 }
 
 bool SPTOscillatorAnimatorSourceEqual(SPTOscillatorAnimatorSource lhs, SPTOscillatorAnimatorSource rhs) {

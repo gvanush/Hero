@@ -73,9 +73,15 @@ struct AnimatorsView: View {
                 }
                 ToolbarItem(placement: .bottomBar) {
                     Menu {
-                        Button("Noise") {
-                            let animatorId = model.makeAnimator(.init(name: "Noise.\(SPTAnimator.getCount())", source: .init(noiseWithSeed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
-                            model.discloseAnimator(id: animatorId)
+                        Menu("Noise") {
+                            Button("Value") {
+                                let animatorId = model.makeAnimator(.init(name: "Value.Noise.\(SPTAnimator.getCount())", source: .init(noiseWithType: .value, seed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
+                                model.discloseAnimator(id: animatorId)
+                            }
+                            Button("Perlin") {
+                                let animatorId = model.makeAnimator(.init(name: "Perlin.Noise.\(SPTAnimator.getCount())", source: .init(noiseWithType: .perlin, seed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
+                                model.discloseAnimator(id: animatorId)
+                            }
                         }
                         Button("Oscillator") {
                             let animatorId = model.makeAnimator(.init(name: "Oscillator.\(SPTAnimator.getCount())", source: .init(oscillatorWithFrequency: 1.0, interpolation: .smoothStep)))
