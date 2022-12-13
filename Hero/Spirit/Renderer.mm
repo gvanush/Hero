@@ -40,6 +40,7 @@ id<MTLRenderPipelineState> createDepthOnlyPipelineState(NSString* name, NSString
     id<MTLFunction> vertexFunction = [[SPTRenderingContext defaultLibrary] newFunctionWithName: vertexShaderName];
     MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
     pipelineStateDescriptor.label = name;
+    pipelineStateDescriptor.rasterSampleCount = kMultisamplingSampleCount;
     pipelineStateDescriptor.vertexFunction = vertexFunction;
     pipelineStateDescriptor.fragmentFunction = nil;
     pipelineStateDescriptor.colorAttachments[0].pixelFormat = [SPTRenderingContext colorPixelFormat];
@@ -62,6 +63,7 @@ id<MTLRenderPipelineState> createPipelineState(NSString* name, NSString* vertexS
     // Configure a pipeline descriptor that is used to create a pipeline state.
     MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
     pipelineStateDescriptor.label = name;
+    pipelineStateDescriptor.rasterSampleCount = kMultisamplingSampleCount;
     pipelineStateDescriptor.vertexFunction = vertexFunction;
     pipelineStateDescriptor.fragmentFunction = fragmentFunction;
     pipelineStateDescriptor.colorAttachments[0].pixelFormat = [SPTRenderingContext colorPixelFormat];
@@ -322,11 +324,11 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     [renderEncoder endEncoding];
     
     // Render layer 1
-    MTLRenderPassDescriptor* layer1Descriptor = [rc.renderPassDescriptor copy];
-    layer1Descriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
-    layer1Descriptor.depthAttachment.loadAction = MTLLoadActionClear;
+    rc.renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
+    rc.renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionMultisampleResolve;
+    rc.renderPassDescriptor.depthAttachment.loadAction = MTLLoadActionClear;
     
-    id<MTLRenderCommandEncoder> layer1RenderEncoder = [rc.commandBuffer renderCommandEncoderWithDescriptor: layer1Descriptor];
+    id<MTLRenderCommandEncoder> layer1RenderEncoder = [rc.commandBuffer renderCommandEncoderWithDescriptor: rc.renderPassDescriptor];
     layer1RenderEncoder.label = @"Layer1 renderer encoder";
     [layer1RenderEncoder setViewport: MTLViewport {0.0, 0.0, rc.viewportSize.x, rc.viewportSize.y, 0.0, 1.0 }];
     [layer1RenderEncoder setDepthStencilState: SPTRenderingContext.defaultDepthStencilState];

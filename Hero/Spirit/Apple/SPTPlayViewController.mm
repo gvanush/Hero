@@ -41,6 +41,7 @@
     self.mtkView.colorPixelFormat = [SPTRenderingContext colorPixelFormat];
     self.mtkView.depthStencilPixelFormat = [SPTRenderingContext depthPixelFormat];
     self.mtkView.presentsWithTransaction = YES;
+    self.mtkView.sampleCount = kMultisamplingSampleCount;
     self.mtkView.delegate = self;
     [self.view addSubview: self.mtkView];
     [self updateViewportSize: self.mtkView.drawableSize];
@@ -76,6 +77,7 @@
     if(self.renderingContext.renderPassDescriptor = self.mtkView.currentRenderPassDescriptor;
        self.renderingContext.renderPassDescriptor != nil) {
         
+        self.renderingContext.renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStoreAndMultisampleResolve;
         _renderer.render(scene->registry, (__bridge void*) self.renderingContext);
         
         [commandBuffer commit];

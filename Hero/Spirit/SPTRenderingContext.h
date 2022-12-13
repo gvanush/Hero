@@ -16,6 +16,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+const NSUInteger kMultisamplingSampleCount = 4;
+
 @interface SPTRenderingContext: NSObject
 
 @property (nonatomic) SPTLookCategories lookCategories;
