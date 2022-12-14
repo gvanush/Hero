@@ -85,7 +85,7 @@ struct FloatSelector: View {
     @State private var dragBaseValue: Float = 0.0
     @State private var dragInitialTranslation: CGFloat = 0.0
     
-    @State private var scrollAnimationUtil = ScrollAnimationUtil()
+    @State private var scrollAnimationUtil = ScrollAnimationUtil(decelerationRate: 0.995)
     @State private var scrollDuration: TimeInterval = 0.0
     @State private var scrollStartTimestamp: TimeInterval = 0.0
     @State private var snapInitialValue: Float = 0.0
@@ -93,7 +93,7 @@ struct FloatSelector: View {
     
     private let formatter: FloatFormatter
     
-    @State private var feedbackGenerator = UISelectionFeedbackGenerator()
+    @State private var feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     @State private var rawValue: Float {
         willSet {
@@ -178,7 +178,7 @@ struct FloatSelector: View {
             guard state == .dragging || state == .scrolling else { return }
             
             let playFeedback = {
-                feedbackGenerator.selectionChanged()
+                feedbackGenerator.impactOccurred(intensity: 0.65)
                 feedbackGenerator.prepare()
             }
             
@@ -358,7 +358,7 @@ struct FloatSelector: View {
     // NOTE: This speed factor is tweaked such that a soft scrolling results
     // to around 25 units of change while a hard one around 100
     static let scrollInitialSpeedFactor = 2.8
-    static let scrollMinInitialSpeed = 100.0 * scrollInitialSpeedFactor
+    static let scrollMinInitialSpeed = 250.0 * scrollInitialSpeedFactor
 }
 
 
