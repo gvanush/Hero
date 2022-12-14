@@ -13,9 +13,9 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
     
     private let object: SPTObject
     private let sceneViewModel: SceneViewModel
-    private var colorModelSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
     private var originPointObject: SPTObject
+    private var positionSubscription: SPTAnySubscription?
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
@@ -23,17 +23,21 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
         self.sceneViewModel = sceneViewModel
         
         originPointObject = sceneViewModel.scene.makeObject()
-        SPTTransformationSetParent(originPointObject, object.entity)
         
         super.init(parent: parent)
         
-        colorModelSubscription = SPTPosition.onDidChangeSink(object: object) { [unowned self] oldValue in
-            if oldValue.coordinateSystem != self.coordinateSystem {
-                self.setupVariant()
+        let position = SPTPosition.get(object: object)
+        SPTPosition.make(position, object: originPointObject)
+        
+        positionSubscription = SPTPosition.onDidChangeSink(object: object) { [unowned self] oldValue in
+            let newValue = SPTPosition.get(object: object)
+            SPTPosition.update(newValue, object: self.originPointObject)
+            if oldValue.coordinateSystem != newValue.coordinateSystem {
+                self.setupVariant(coordinateSystem: newValue.coordinateSystem)
             }
         }
         
-        setupVariant()
+        setupVariant(coordinateSystem: position.coordinateSystem)
         
     }
     
@@ -48,12 +52,8 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
     override func onClose() {
         SPTPointLook.destroy(object: originPointObject)
     }
-    
-    var coordinateSystem: SPTCoordinateSystem {
-        SPTPosition.get(object: object).coordinateSystem
-    }
  
-    private func setupVariant() {
+    private func setupVariant(coordinateSystem: SPTCoordinateSystem) {
         self.variantTag = coordinateSystem.rawValue
         switch coordinateSystem {
         case .cartesian:

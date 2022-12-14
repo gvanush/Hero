@@ -14,9 +14,9 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    private var coordinateSystemSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
     private var originPointObject: SPTObject
+    private var positionSubscription: SPTAnySubscription?
     
     @SPTObservedComponent private var position: SPTPosition
     
@@ -25,13 +25,14 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
         self.sceneViewModel = sceneViewModel
         
         originPointObject = sceneViewModel.scene.makeObject()
-        SPTTransformationSetParent(originPointObject, object.entity)
         
         _position = .init(object: object)
         
         super.init(parent: parent)
         
-        coordinateSystemSubscription = SPTPosition.onDidChangeSink(object: object) { [unowned self] oldValue in
+        SPTPosition.make(position, object: originPointObject)
+        positionSubscription = SPTPosition.onDidChangeSink(object: object) { [unowned self] oldValue in
+            SPTPosition.update(position, object: self.originPointObject)
             if oldValue.coordinateSystem != coordinateSystem {
                 self.setupVariant()
             }

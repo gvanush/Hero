@@ -26,7 +26,7 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
         self.sceneViewModel = sceneViewModel
         
         originPointObject = sceneViewModel.scene.makeObject()
-        SPTTransformationSetParent(originPointObject, object.entity)
+        SPTPosition.make(SPTPosition.get(object: object), object: originPointObject)
         SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
         
         _sptOrientation = SPTObservedComponent(object: object)
