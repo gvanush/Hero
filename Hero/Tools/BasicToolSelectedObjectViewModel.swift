@@ -1,5 +1,5 @@
 //
-//  BasicToolSelectorObjectViewModel.swift
+//  BasicToolSelectedObjectViewModel.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 31.10.22.

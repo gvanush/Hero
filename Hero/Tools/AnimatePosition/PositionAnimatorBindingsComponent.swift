@@ -15,11 +15,15 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
     private let sceneViewModel: SceneViewModel
     private var colorModelSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?
+    private var originPointObject: SPTObject
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         self.object = object
         self.sceneViewModel = sceneViewModel
+        
+        originPointObject = sceneViewModel.scene.makeObject()
+        SPTTransformationSetParent(originPointObject, object.entity)
         
         super.init(parent: parent)
         
@@ -31,6 +35,18 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
         
         setupVariant()
         
+    }
+    
+    deinit {
+        SPTSceneProxy.destroyObject(originPointObject)
+    }
+    
+    override func onDisclose() {
+        SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+    }
+    
+    override func onClose() {
+        SPTPointLook.destroy(object: originPointObject)
     }
     
     var coordinateSystem: SPTCoordinateSystem {

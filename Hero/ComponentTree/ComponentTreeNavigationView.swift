@@ -45,28 +45,25 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
             newValue.activate()
         }
         .onAppear {
-            var components = [Component]()
-            var component: Component? = activeComponent
-            while let next = component {
-                components.append(next)
-                component = next.parent
-            }
             
             rootComponent.appear()
-            for component in components.reversed() {
-                component.disclose()
+            
+            let activeIndexPath = activeComponent.indexPathIn(rootComponent)!
+            for i in 0...activeIndexPath.count {
+                rootComponent.componentAt(activeIndexPath.prefix(i))!.disclose()
             }
             
             activeComponent.activate()
+            
         }
         .onDisappear {
             activeComponent.deactivate()
             
-            var component: Component? = activeComponent
-            while let next = component {
-                next.close()
-                component = next.parent
+            let activeIndexPath = activeComponent.indexPathIn(rootComponent)!
+            for i in (0...activeIndexPath.count).reversed() {
+                rootComponent.componentAt(activeIndexPath.prefix(i))!.close()
             }
+            
             rootComponent.disappear()
         }
         

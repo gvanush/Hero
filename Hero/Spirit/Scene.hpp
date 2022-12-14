@@ -14,6 +14,7 @@
 
 #include <entt/entt.hpp>
 #include <tuple>
+#include <vector>
 
 namespace spt {
 
@@ -24,6 +25,8 @@ public:
     
     void update();
     
+    void onPostRender();
+    
     static Registry& getRegistry(SPTHandle sceneHandle) {
         return static_cast<spt::Scene*>(sceneHandle)->registry;
     }
@@ -32,10 +35,16 @@ public:
         return getRegistry(object.sceneHandle);
     }
     
+    static void destroyObject(SPTObject object);
+    
+    static void destroyObjectDeferred(SPTObject object);
+    
     Registry registry;
     
 private:
     Transformation::GroupType _transformationGroup;
+    std::vector<SPTEntity> _entitiesScheduledToDestroy;
+    std::vector<SPTEntity> _entitiesToDestroy;
 };
 
 }

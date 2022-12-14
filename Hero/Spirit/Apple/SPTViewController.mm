@@ -76,6 +76,7 @@
         _renderer.render(scene->registry, (__bridge void*) self.renderingContext);
         
         [commandBuffer commit];
+        
         [commandBuffer waitUntilScheduled];
         
         [view.currentDrawable present];
@@ -86,7 +87,7 @@
         [commandBuffer commit];
     }
     
-    
+    scene->onPostRender();
 }
 
 -(void) mtkView: (nonnull MTKView*) view drawableSizeWillChange: (CGSize) size {

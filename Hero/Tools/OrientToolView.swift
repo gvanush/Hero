@@ -16,7 +16,7 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
     let rotationFormatter = Formatters.angle
     
     @SPTObservedComponent private var sptOrientation: SPTOrientation
-    private var guideObject: SPTObject?
+    private var originPointObject: SPTObject
     
     @Published var axis: Axis
     
@@ -25,8 +25,16 @@ class OrientToolSelectedObjectViewModel: ObservableObject {
         self.object = object
         self.sceneViewModel = sceneViewModel
         
+        originPointObject = sceneViewModel.scene.makeObject()
+        SPTTransformationSetParent(originPointObject, object.entity)
+        SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+        
         _sptOrientation = SPTObservedComponent(object: object)
         _sptOrientation.publisher = self.objectWillChange
+    }
+    
+    deinit {
+        SPTSceneProxy.destroyObject(originPointObject)
     }
     
     var eulerRotation: simd_float3 {

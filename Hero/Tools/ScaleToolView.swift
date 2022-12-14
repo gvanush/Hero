@@ -16,7 +16,7 @@ class ScaleToolSelectedObjectViewModel: ObservableObject {
     let scaleFormatter = Formatters.scaleField
     
     @SPTObservedComponent private var sptScale: SPTScale
-    private var guideObject: SPTObject?
+    private var originPointObject: SPTObject
     
     @Published var axis: Axis
     
@@ -25,8 +25,17 @@ class ScaleToolSelectedObjectViewModel: ObservableObject {
         self.object = object
         self.sceneViewModel = sceneViewModel
         
+        originPointObject = sceneViewModel.scene.makeObject()
+        SPTTransformationSetParent(originPointObject, object.entity)
+        SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+        
         _sptScale = SPTObservedComponent(object: object)
         _sptScale.publisher = self.objectWillChange
+        
+    }
+    
+    deinit {
+        SPTSceneProxy.destroyObject(originPointObject)
     }
     
     var scale: simd_float3 {

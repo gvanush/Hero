@@ -134,7 +134,8 @@ class RootViewModel: ObservableObject {
             toolVM.onObjectDestroy(object)
         }
         objectPropertyEditingParams.onObjectDestroy(object)
-        SPTSceneProxy.destroyObject(object)
+        
+        SPTSceneProxy.destroyObjectDeferred(object)
     }
     
 }

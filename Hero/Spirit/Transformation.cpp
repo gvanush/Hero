@@ -240,8 +240,10 @@ void SPTTransformationSetParent(SPTObject object, SPTEntity parentEntity) {
         auto& parentTran = registry.get<spt::Transformation>(parentEntity);
         tran.node.nextSibling = parentTran.node.firstChild;
         
-        auto& firstChildTran = registry.get<spt::Transformation>(parentTran.node.firstChild);
-        firstChildTran.node.prevSibling = object.entity;
+        if(parentTran.node.firstChild != kSPTNullEntity) {
+            auto& firstChildTran = registry.get<spt::Transformation>(parentTran.node.firstChild);
+            firstChildTran.node.prevSibling = object.entity;
+        }
         
         parentTran.node.firstChild = object.entity;
         ++parentTran.node.childrenCount;
