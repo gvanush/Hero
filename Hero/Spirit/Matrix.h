@@ -25,4 +25,6 @@ simd_float3x3 SPTMatrix3x3CreateOrthonormal(simd_float3 normDirection, SPTAxis a
 
 simd_float4x4 SPTMatrix4x4CreateUpperLeft(simd_float3x3 upperLeft);
 
+simd_float3x3 SPTMatrix4x4GetUpperLeft(simd_float4x4 matrix);
+
 SPT_EXTERN_C_END

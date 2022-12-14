@@ -86,6 +86,22 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     return matrix;
 }
 
+void updateGlobalMatrix(Registry& registry, Transformation& tran) {
+    
+    if(tran.node.parent == kSPTNullEntity) {
+        tran.global = tran.local;
+    } else {
+        tran.global = simd_mul(registry.get<Transformation>(tran.node.parent).global, tran.local);
+    }
+    
+    tran.isGlobalMirroring = (simd_determinant(SPTMatrix4x4GetUpperLeft(tran.global)) < 0.f);
+}
+
+void updateGlobalMatrix(Transformation& tran, const Transformation& parentTran) {
+    tran.global = simd_mul(parentTran.global, tran.local);
+    tran.isGlobalMirroring = (simd_determinant(SPTMatrix4x4GetUpperLeft(tran.global)) < 0.f);
+}
+
 void removeFromParent(Registry& registry, SPTEntity entity, const Transformation& tran) {
     if(tran.node.parent == kSPTNullEntity) {
         return;
@@ -135,11 +151,7 @@ void Transformation::updateWithoutAnimators(Registry& registry, GroupType& group
     group.each([&registry, &group] (const auto entity, Transformation& tran) {
         
         tran.local = computeTransformationMatrix(registry, entity);
-        if(tran.node.parent == kSPTNullEntity) {
-            tran.global = tran.local;
-        } else {
-            tran.global = simd_mul(registry.get<Transformation>(tran.node.parent).global, tran.local);
-        }
+        updateGlobalMatrix(registry, tran);
         
         // Update subtree
         // Prefering iterative over recursive algorithm to avoid stack overflow
@@ -151,7 +163,7 @@ void Transformation::updateWithoutAnimators(Registry& registry, GroupType& group
             forEachChild(registry, entityQueue.front(), [&registry, &entityQueue, &parentTran, &group] (auto childEntity, Transformation& childTran) {
                 // If child is dirty it will be updated as part of outer loop
                 if(!group.contains(childEntity)) {
-                    childTran.global = simd_mul(parentTran.global, childTran.local);
+                    updateGlobalMatrix(childTran, parentTran);
                     entityQueue.push(childEntity);
                 }
             });
@@ -169,11 +181,7 @@ void Transformation::updateWithOnlyAnimatorsChanging(Registry& registry, Animato
     group.each([&registry, &group, &animatorValues] (const auto entity, AnimatorRecord& animRecord, Transformation& tran) {
         
         tran.local = computeTransformationMatrix(registry, entity, animRecord, animatorValues);
-        if(tran.node.parent == kSPTNullEntity) {
-            tran.global = tran.local;
-        } else {
-            tran.global = simd_mul(registry.get<Transformation>(tran.node.parent).global, tran.local);
-        }
+        updateGlobalMatrix(registry, tran);
         
         // Update subtree
         // Prefering iterative over recursive algorithm to avoid stack overflow
@@ -185,7 +193,7 @@ void Transformation::updateWithOnlyAnimatorsChanging(Registry& registry, Animato
             forEachChild(registry, entityQueue.front(), [&registry, &entityQueue, &parentTran, &group] (auto childEntity, Transformation& childTran) {
                 // If child has animators bound it will be updated as part of outer loop
                 if(!group.contains(childEntity)) {
-                    childTran.global = simd_mul(parentTran.global, childTran.local);
+                    updateGlobalMatrix(childTran, parentTran);
                     entityQueue.push(childEntity);
                 }
             });

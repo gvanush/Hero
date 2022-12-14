@@ -15,6 +15,7 @@
 #include "Transformation.hpp"
 #include "LineLookDepthBias.h"
 #include "RenderableMaterials.h"
+#include "Matrix.h"
 #import "SPTRenderingContext.h"
 #import "ShaderTypes.h"
 
@@ -81,11 +82,13 @@ id<MTLRenderPipelineState> createPipelineState(NSString* name, NSString* vertexS
 
 void renderPlainColorMesh(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, SPTMeshId meshId, const spt::PlainColorRenderableMaterial& material) {
     
-    const auto& worldMatrix = registry.get<Transformation>(entity).global;
+    const auto& tran = registry.get<Transformation>(entity);
+    
+    [renderEncoder setCullMode: tran.isGlobalMirroring ? MTLCullModeFront : MTLCullModeBack];
     
     [renderEncoder setFragmentBytes: &material.color length: sizeof(simd_float4) atIndex: kFragmentInputIndexColor];
     
-    [renderEncoder setVertexBytes: &worldMatrix
+    [renderEncoder setVertexBytes: &tran.global
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexWorldMatrix];
     
@@ -102,16 +105,18 @@ void renderPlainColorMesh(id<MTLRenderCommandEncoder> renderEncoder, const Regis
 
 void renderPhongMesh(id<MTLRenderCommandEncoder> renderEncoder, const Registry& registry, SPTEntity entity, SPTMeshId meshId, const spt::PhongRenderableMaterial& material) {
     
-    const auto& worldMatrix = registry.get<Transformation>(entity).global;
+    const auto& tran = registry.get<Transformation>(entity);
+    
+    [renderEncoder setCullMode: tran.isGlobalMirroring ? MTLCullModeFront : MTLCullModeBack];
     
     // TODO: Optimize this computation to not happen each frame (perhaps as part of instancing optimization)
-    const auto& transposedInverseWorldMatrix = (simd_transpose(simd_inverse(worldMatrix)));
+    const auto& transposedInverseWorldMatrix = (simd_transpose(simd_inverse(tran.global)));
     [renderEncoder setVertexBytes: &transposedInverseWorldMatrix
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexTransposedInverseWorldMatrix];
     [renderEncoder setFragmentBytes: &material length: sizeof(spt::PhongRenderableMaterial) atIndex: kFragmentInputIndexMaterial];
     
-    [renderEncoder setVertexBytes: &worldMatrix
+    [renderEncoder setVertexBytes: &tran.global
                            length: sizeof(simd_float4x4)
                           atIndex: kVertexInputIndexWorldMatrix];
     
@@ -231,7 +236,9 @@ void renderOutline(id<MTLRenderCommandEncoder> renderEncoder, const Registry& re
     
     if(const auto meshLook = registry.try_get<SPTMeshLook>(entity)) {
         const auto& mesh = ResourceManager::active().getMesh(meshLook->meshId);
-        renderMeshOutline(renderEncoder, mesh, outlineLook, registry.get<Transformation>(entity).global);
+        const auto& tran = registry.get<Transformation>(entity);
+        [renderEncoder setCullMode: tran.isGlobalMirroring ? MTLCullModeBack : MTLCullModeFront];
+        renderMeshOutline(renderEncoder, mesh, outlineLook, tran.global);
     }
     
 }
@@ -250,7 +257,6 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     renderEncoder.label = @"Renderer encoder";
     [renderEncoder setViewport: MTLViewport {0.0, 0.0, rc.viewportSize.x, rc.viewportSize.y, 0.0, 1.0}];
     [renderEncoder setDepthStencilState: SPTRenderingContext.defaultDepthStencilState];
-    [renderEncoder setCullMode: MTLCullModeBack];
     [renderEncoder setFrontFacingWinding: MTLWindingCounterClockwise];
     [renderEncoder setVertexBytes: &_uniforms length: sizeof(_uniforms) atIndex: kVertexInputIndexUniforms];
     [renderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
@@ -288,6 +294,7 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
 //    [renderEncoder setCullMode: MTLCullModeBack];
     
     // Render polylines
+    [renderEncoder setCullMode: MTLCullModeBack];
     [renderEncoder setRenderPipelineState: __polylinePipelineState];
     const auto polylineLookView = registry.view<SPTPolylineLook>(entt::exclude<SPTLineLookDepthBias>);
     polylineLookView.each([&registry, renderEncoder, rc] (auto entity, auto& polylineLook) {
@@ -337,6 +344,7 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     [layer1RenderEncoder setVertexBytes: &_uniforms length: sizeof(_uniforms) atIndex: kVertexInputIndexUniforms];
     [layer1RenderEncoder setFragmentBytes: &_uniforms length: sizeof(_uniforms) atIndex: kFragmentInputIndexUniforms];
     
+    // Render points
     [layer1RenderEncoder setRenderPipelineState: __pointPipelineState];
     const auto pointLookView = registry.view<SPTPointLook>();
     pointLookView.each([&registry, layer1RenderEncoder, rc] (auto entity, auto& pointLook) {
@@ -356,7 +364,6 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
 
     // Render outlines
     [layer1RenderEncoder setRenderPipelineState: __outlinePipelineState];
-    [layer1RenderEncoder setCullMode: MTLCullModeFront];
     [layer1RenderEncoder setDepthBias: 100.0f slopeScale: 10.f clamp: 0.f];
 
     outlineView.each([layer1RenderEncoder, &registry, rc] (auto entity, auto& outlineLook, auto&) {

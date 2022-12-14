@@ -25,6 +25,7 @@ struct Transformation {
     simd_float4x4 local { matrix_identity_float4x4 };
     simd_float4x4 global { matrix_identity_float4x4 };
     SPTTranformationNode node { kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, 0 };
+    bool isGlobalMirroring { false };
     
     struct AnimatorRecord {
         
