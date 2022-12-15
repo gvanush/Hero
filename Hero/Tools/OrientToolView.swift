@@ -62,6 +62,12 @@ fileprivate struct SelectedObjectControlsView: View {
             .id(model.axis.rawValue)
             PropertySelector(selected: $model.axis)
         }
+        .padding(.horizontal, 8.0)
+        .padding(.bottom, 8.0)
+        .background {
+            Color.clear
+                .contentShape(Rectangle())
+        }
     }
     
 }

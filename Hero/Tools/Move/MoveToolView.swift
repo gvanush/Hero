@@ -26,6 +26,12 @@ fileprivate struct SelectedObjectControlsView: View {
     
     var body: some View {
         ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: MoveToolComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
+            .padding(.horizontal, 8.0)
+            .padding(.bottom, 8.0)
+            .background {
+                Color.clear
+                    .contentShape(Rectangle())
+            }
     }
     
 }

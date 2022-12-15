@@ -166,37 +166,35 @@ struct RootView: View {
     
     var body: some View {
         ActionBarItemReader(model: actionBarModel) {
-            SceneView(model: sceneViewModel, edgeInsets: .init(top: 0.0, leading: 0.0, bottom: -Self.navigationEmptyVerticalAreaHeight, trailing: 0.0))
+            SceneView(model: sceneViewModel, uiEdgeInsets: Self.sceneUIInsets)
             .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
             .environmentObject(userInteractionState)
             .overlay(alignment: .bottomTrailing) {
                 ActionBar(model: actionBarModel)
                     .background(Material.thin, ignoresSafeAreaEdges: [])
                     .cornerRadius(10.0)
-                    .padding(.trailing, 16.0)
                     .shadow(radius: 1.0)
+                    .padding(Self.sceneUIInsets)
                     .visible(userInteractionState.isIdle)
             }
-            .safeAreaInset(edge: .top) {
+            .safeAreaInset(edge: .top, spacing: 0.0) {
                 topbar()
                     .background(Material.bar)
                     .compositingGroup()
                     .shadow(radius: 0.5)
                     .visible(userInteractionState.isIdle)
             }
-            .safeAreaInset(edge: .bottom, spacing: Self.navigationEmptyVerticalAreaHeight) {
-                VStack(spacing: 8.0) {
-                    ZStack {
+            .safeAreaInset(edge: .bottom, spacing: 0.0) {
+                VStack(spacing: 0.0) {
+                    ZStack(alignment: .bottom) {
                         Color.clear
                         activeToolView()
-                            .padding(.horizontal, 8.0)
                             .transition(.identity)
-                            .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
                             .environmentObject(model.objectPropertyEditingParams)
                             .environmentObject(userInteractionState)
                     }
                     .frame(height: Self.toolControlViewsAreaHeight)
-                    
+                                        
                     ToolSelector(activeToolViewModel: $model.activeToolViewModel, toolViewModels: model.toolViewModels)
                         .contentHorizontalPadding(32.0)
                         .padding(.vertical, 4.0)
@@ -324,8 +322,8 @@ struct RootView: View {
         }
     }
     
-    static let navigationEmptyVerticalAreaHeight: CGFloat = 80.0
-    static let toolControlViewsAreaHeight: CGFloat = 121.0
+    static let sceneUIInsets = EdgeInsets(top: 0.0, leading: 0.0, bottom: 80.0, trailing: 16.0)
+    static let toolControlViewsAreaHeight: CGFloat = 129.0
 }
 
 struct RootView_Previews: PreviewProvider {

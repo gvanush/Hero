@@ -18,22 +18,23 @@ struct SceneView: View {
     
     @ObservedObject var model: SceneViewModel
     @State private var viewportSize = CGSize.zero
-    let edgeInsets: EdgeInsets
+    let uiEdgeInsets: EdgeInsets
     
     private(set) var isRenderingPaused = false
     private(set) var lookCategories = LookCategories.all
     private(set) var isSelectionEnabled = true
     @GestureState private var isOrbitDragGestureActive = false
     @GestureState private var isZoomDragGestureActive = false
+    @GestureState private var isPanDragGestureActive = false
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
     
     @EnvironmentObject var userInteractionState: UserInteractionState
     
-    init(model: SceneViewModel, edgeInsets: EdgeInsets = EdgeInsets()) {
+    init(model: SceneViewModel, uiEdgeInsets: EdgeInsets = EdgeInsets()) {
         self.model = model
-        self.edgeInsets = edgeInsets
+        self.uiEdgeInsets = uiEdgeInsets
     }
     
     func renderingPaused(_ paused: Bool) -> SceneView {
@@ -83,20 +84,27 @@ struct SceneView: View {
                 }
                 .ignoresSafeArea()
                 
-                HStack(spacing: 0.0) {
-                    VStack {
+                VStack(spacing: 0.0) {
+                    HStack(spacing: 0.0) {
+                        VStack {
+                            Spacer()
+                            focusToggle()
+                        }
+                        .padding(.leading, 8.0)
+                        .visible(userInteractionState.isIdle)
                         Spacer()
-                        focusToggle()
+                        ZoomView()
+                            .frame(width: 16.0, alignment: .trailing)
+                            .contentShape(Rectangle())
+                            .gesture(zoomDragGesture(viewportSize: viewportSize))
+                            .visible(!userInteractionState.isNavigating)
                     }
-                    .padding(.leading, 8.0)
-                    .visible(userInteractionState.isIdle)
-                    Spacer()
-                    ZoomView()
-                        .frame(width: 16.0, alignment: .trailing)
-                        .contentShape(Rectangle())
-                        .gesture(zoomDragGesture(viewportSize: viewportSize))
-                        .padding(.bottom, edgeInsets.bottom)
-                        .visible(!userInteractionState.isNavigating)
+                    HStack {
+                        panAreaView(viewportSize: viewportSize)
+                        Spacer()
+                        panAreaView(viewportSize: viewportSize)
+                    }
+                    .frame(height: uiEdgeInsets.bottom)
                 }
             }
         }
@@ -112,6 +120,14 @@ struct SceneView: View {
                 model.cancelZoom()
             }
         }
+        .onChange(of: isPanDragGestureActive) { newValue in
+            userInteractionState.isNavigating = newValue
+            if newValue {
+                model.isFocusEnabled = false
+            } else {
+                model.cancelPan()
+            }
+        }
         .onChange(of: colorScheme) { _ in
             clearColor = UIColor.sceneBgrColor.mtlClearColor
         }
@@ -121,7 +137,7 @@ struct SceneView: View {
     }
     
     func focusToggle() -> some View {
-        SceneUIToggle(isOn: $model.isFocusEnabled, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.partial")
+        SceneUIToggle(isOn: $model.isFocusEnabled, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.spot")
         .transition(.identity)
         .id(model.selectedObject)
     }
@@ -149,6 +165,27 @@ struct SceneView: View {
             }
             .onEnded { value in
                 model.finishZoom(dragValue: value, viewportSize: viewportSize)
+            }
+    }
+    
+    func panAreaView(viewportSize: CGSize) -> some View {
+        Color.clear
+            .frame(width: 44.0)
+            .contentShape(Rectangle())
+            .gesture(panDragGesture(viewportSize: viewportSize))
+            .ignoresSafeArea(edges: .bottom)
+    }
+    
+    func panDragGesture(viewportSize: CGSize) -> some Gesture {
+        DragGesture(minimumDistance: 0.0)
+            .updating($isPanDragGestureActive, body: { _, state, _ in
+                state = true
+            })
+            .onChanged { value in
+                model.pan(dragValue: value, viewportSize: viewportSize)
+            }
+            .onEnded { value in
+                model.finishPan(dragValue: value, viewportSize: viewportSize)
             }
     }
     

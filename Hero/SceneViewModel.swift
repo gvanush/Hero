@@ -211,6 +211,46 @@ class SceneViewModel: ObservableObject {
         prevDragValue = nil
     }
     
+    // MARK: Pan
+    func pan(dragValue: DragGesture.Value, viewportSize: CGSize) {
+        
+        // NOTE: Typically the first non-zero drag translation is big which results to
+        // aggresive jerk on the start, hence first non-zero translation is ignored
+        guard let prevDragValue = self.prevDragValue else {
+            if dragValue.translation == .zero {
+                return
+            }
+            self.prevDragValue = dragValue
+            return
+        }
+        self.prevDragValue = dragValue
+        
+        let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
+        
+        var cameraPos = SPTPosition.get(object: viewCameraObject)
+        var centerViewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, cameraPos.spherical.origin, viewportSize.float2);
+        
+        centerViewportPos.x -= deltaTranslation.x
+        centerViewportPos.y -= deltaTranslation.y
+        
+        cameraPos.spherical.origin = SPTCameraConvertViewportToWorld(viewCameraObject, centerViewportPos, viewportSize.float2)
+        
+        SPTPosition.update(cameraPos, object: viewCameraObject)
+        
+        var cameraOrientation = SPTOrientation.get(object: viewCameraObject)
+        cameraOrientation.lookAtPoint.target = cameraPos.spherical.origin
+        SPTOrientation.update(cameraOrientation, object: viewCameraObject)
+    }
+    
+    func finishPan(dragValue: DragGesture.Value, viewportSize: CGSize) {
+        // Deliberately ignoring last drag value to avoid pan nudge
+        prevDragValue = nil
+    }
+    
+    func cancelPan() {
+        prevDragValue = nil
+    }
+    
     private func updateFocusedObject(_ object: SPTObject) {
         focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: object) { [unowned self] newPos in
             self.focusOn(newPos.toCartesian.cartesian)
