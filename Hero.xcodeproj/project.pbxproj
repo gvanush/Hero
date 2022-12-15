@@ -10,8 +10,8 @@
 		B7038C5728A18D5900C14A51 /* MeshObjectInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7038C5628A18D5900C14A51 /* MeshObjectInspector.swift */; };
 		B70A310A272F1502003432C4 /* AnimationCompletionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3109272F1502003432C4 /* AnimationCompletionObserver.swift */; };
 		B70A6B1F293CCFE10092FDE1 /* SphericalPositionAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B1E293CCFE10092FDE1 /* SphericalPositionAnimatorBindingsComponent.swift */; };
-		B70A6B21293CEDA00092FDE1 /* SPTPolylineLookDepthBiasUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B20293CEDA00092FDE1 /* SPTPolylineLookDepthBiasUtil.swift */; };
-		B70A6B23293CEEF40092FDE1 /* PolylineLookDepthBias.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B22293CEEF40092FDE1 /* PolylineLookDepthBias.swift */; };
+		B70A6B21293CEDA00092FDE1 /* SPTLineLookDepthBiasUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B20293CEDA00092FDE1 /* SPTLineLookDepthBiasUtil.swift */; };
+		B70A6B23293CEEF40092FDE1 /* LineLookDepthBias.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B22293CEEF40092FDE1 /* LineLookDepthBias.swift */; };
 		B70A6B25293E1C910092FDE1 /* ObjectAngleAnimatorBindingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B24293E1C910092FDE1 /* ObjectAngleAnimatorBindingComponent.swift */; };
 		B70A6B28293E2E750092FDE1 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B26293E2E750092FDE1 /* Matrix.cpp */; };
 		B70A6B2A293E39060092FDE1 /* SPTMatrixUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B29293E39060092FDE1 /* SPTMatrixUtil.swift */; };
@@ -191,8 +191,8 @@
 		B7038C5628A18D5900C14A51 /* MeshObjectInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshObjectInspector.swift; sourceTree = "<group>"; };
 		B70A3109272F1502003432C4 /* AnimationCompletionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationCompletionObserver.swift; sourceTree = "<group>"; };
 		B70A6B1E293CCFE10092FDE1 /* SphericalPositionAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphericalPositionAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
-		B70A6B20293CEDA00092FDE1 /* SPTPolylineLookDepthBiasUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPolylineLookDepthBiasUtil.swift; sourceTree = "<group>"; };
-		B70A6B22293CEEF40092FDE1 /* PolylineLookDepthBias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolylineLookDepthBias.swift; sourceTree = "<group>"; };
+		B70A6B20293CEDA00092FDE1 /* SPTLineLookDepthBiasUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTLineLookDepthBiasUtil.swift; sourceTree = "<group>"; };
+		B70A6B22293CEEF40092FDE1 /* LineLookDepthBias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineLookDepthBias.swift; sourceTree = "<group>"; };
 		B70A6B24293E1C910092FDE1 /* ObjectAngleAnimatorBindingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectAngleAnimatorBindingComponent.swift; sourceTree = "<group>"; };
 		B70A6B26293E2E750092FDE1 /* Matrix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
 		B70A6B27293E2E750092FDE1 /* Matrix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
@@ -644,7 +644,7 @@
 				B7643B2E29084DAF00F6A05B /* SPTEasingUtil.swift */,
 				B7E625822916DF6500343B67 /* SPTColorUtil.swift */,
 				B7FD159C292E067900B6E7DC /* SPTCoordinateSystemUtil.swift */,
-				B70A6B20293CEDA00092FDE1 /* SPTPolylineLookDepthBiasUtil.swift */,
+				B70A6B20293CEDA00092FDE1 /* SPTLineLookDepthBiasUtil.swift */,
 				B70A6B29293E39060092FDE1 /* SPTMatrixUtil.swift */,
 				B7AD7D0F293E6A3D00129A07 /* SPTVectorUtil.swift */,
 			);
@@ -827,7 +827,7 @@
 				B7B711D428C108D70077C7CD /* LookCategories.swift */,
 				B70ABF2F291D9F6200919F50 /* AnimatablePropertyUtil.swift */,
 				B7FD15A729351CB200B6E7DC /* PositionUtil.swift */,
-				B70A6B22293CEEF40092FDE1 /* PolylineLookDepthBias.swift */,
+				B70A6B22293CEEF40092FDE1 /* LineLookDepthBias.swift */,
 				B70A6B2B293E56D50092FDE1 /* AnimatorBindingUtil.swift */,
 			);
 			path = Spirit;
@@ -1093,7 +1093,7 @@
 				B76D4FCA28AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift in Sources */,
 				B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */,
 				B7643B402912517000F6A05B /* RGBColorSelector.swift in Sources */,
-				B70A6B23293CEEF40092FDE1 /* PolylineLookDepthBias.swift in Sources */,
+				B70A6B23293CEEF40092FDE1 /* LineLookDepthBias.swift in Sources */,
 				B70A6B2A293E39060092FDE1 /* SPTMatrixUtil.swift in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
 				B70ABF2E291D7A0900919F50 /* MeshLookAnimatorBindingsComponent.swift in Sources */,
@@ -1235,7 +1235,7 @@
 				B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */,
 				B70A6B2C293E56D50092FDE1 /* AnimatorBindingUtil.swift in Sources */,
 				B70A6B28293E2E750092FDE1 /* Matrix.cpp in Sources */,
-				B70A6B21293CEDA00092FDE1 /* SPTPolylineLookDepthBiasUtil.swift in Sources */,
+				B70A6B21293CEDA00092FDE1 /* SPTLineLookDepthBiasUtil.swift in Sources */,
 				B769F265291ADF3B00C10661 /* ActionBarContentBuilder.swift in Sources */,
 				B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */,
 				B7C9D6C328FD256600621BA1 /* AnimatorViewModel.swift in Sources */,

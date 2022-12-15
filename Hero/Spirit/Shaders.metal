@@ -336,7 +336,7 @@ fragment float4 blinnPhongFS(MeshRasterizerData in [[stage_in]],
                              constant spt::PhongRenderableMaterial& material [[buffer(kFragmentInputIndexMaterial)]]) {
     constexpr float3 ambientLightColor = {0.3f, 0.3f, 0.3f};
     constexpr float3 lightColor = {0.7f, 0.7f, 0.7f};
-    const float3 lightDirection = normalize(-float3 {1.f, 1.f, 1.f});
+    const float3 lightDirection = normalize(-float3 {0.8f, 1.2f, 1.f});
     
     const auto fragNormal = normalize(in.normal);
     const auto diffuseFactor = max(0.f, dot(-lightDirection, fragNormal));
