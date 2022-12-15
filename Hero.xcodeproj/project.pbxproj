@@ -81,6 +81,7 @@
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA572278D5001001EC7C5 /* StringUtil.swift */; };
 		B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */; };
+		B760C5C1294B394F0026B785 /* BundleUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B760C5C0294B394F0026B785 /* BundleUtil.swift */; };
 		B7643B2629027C7900F6A05B /* RandomSeedSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B2529027C7900F6A05B /* RandomSeedSelector.swift */; };
 		B7643B2A2906700400F6A05B /* NoiseAnimatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B292906700300F6A05B /* NoiseAnimatorView.swift */; };
 		B7643B2C2907C8CD00F6A05B /* EasingSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B2B2907C8CC00F6A05B /* EasingSelector.swift */; };
@@ -303,6 +304,7 @@
 		B75FA572278D5001001EC7C5 /* StringUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtil.swift; sourceTree = "<group>"; };
 		B75FA57F2791A1D1001EC7C5 /* MeshLook.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MeshLook.hpp; sourceTree = "<group>"; };
 		B75FA5802791EDD6001EC7C5 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
+		B760C5C0294B394F0026B785 /* BundleUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleUtil.swift; sourceTree = "<group>"; };
 		B7643B2529027C7900F6A05B /* RandomSeedSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomSeedSelector.swift; sourceTree = "<group>"; };
 		B7643B292906700300F6A05B /* NoiseAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseAnimatorView.swift; sourceTree = "<group>"; };
 		B7643B2B2907C8CC00F6A05B /* EasingSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasingSelector.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				B7AA99EE27B8488B0033B459 /* GeometryUtil.swift */,
 				B73E47DA27CC01C600CB0AFC /* FormatterUtil.swift */,
 				B77CBD4F289C54EC0040B5EC /* EdgeInsetsUtil.swift */,
+				B760C5C0294B394F0026B785 /* BundleUtil.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -1213,6 +1216,7 @@
 				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
 				B7FD15AE2935D67700B6E7DC /* SphericalPositionComponentView.swift in Sources */,
 				B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */,
+				B760C5C1294B394F0026B785 /* BundleUtil.swift in Sources */,
 				B7FD15A829351CB200B6E7DC /* PositionUtil.swift in Sources */,
 				B742447C2899366200A09808 /* AnimatorSource.cpp in Sources */,
 				B7643B2629027C7900F6A05B /* RandomSeedSelector.swift in Sources */,
@@ -1397,7 +1401,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1439,7 +1443,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = co.herospirit.Hero;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -152,6 +152,7 @@ struct RootView: View {
     @State private var showsNewObjectView = false
     @State private var showsSelectedObjectInspector = false
     @State private var playableScene: SPTPlayableSceneProxy?
+    @State private var showsBuildMetadata = false
 
     @Environment(\.scenePhase) private var scenePhase
     
@@ -271,10 +272,27 @@ struct RootView: View {
             }
             HStack {
                 Spacer()
-                Text("Generative")
-                    .font(.headline)
-                    .foregroundColor(.primary)
+                if showsBuildMetadata {
+                    Text("v\(Bundle.main.releaseVersionString)")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                } else {
+                    VStack {
+                        Text("Generative")
+                            .font(sceneViewModel.isObjectSelected ? .caption2 : .headline)
+                            .foregroundColor(.primary)
+                        if let selectedMetadata = sceneViewModel.selectedObjectMetadata {
+                            Text(selectedMetadata.name)
+                                .font(.subheadline)
+                                .foregroundColor(.primarySelectionColor)
+                                .transition(AnyTransition.opacity.combined(with: .scale))
+                        }
+                    }
+                }
                 Spacer()
+            }
+            .onTapGesture {
+                showsBuildMetadata.toggle()
             }
         }
         .frame(height: 44.0)

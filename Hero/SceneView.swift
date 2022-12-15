@@ -83,28 +83,20 @@ struct SceneView: View {
                 }
                 .ignoresSafeArea()
                 
-                Group {
+                HStack(spacing: 0.0) {
                     VStack {
-                        objectInfoView()
                         Spacer()
+                        focusToggle()
                     }
+                    .padding(.leading, 8.0)
                     .visible(userInteractionState.isIdle)
-                    
-                    HStack(spacing: 0.0) {
-                        VStack {
-                            Spacer()
-                            focusToggle()
-                        }
-                        .padding(.leading, 8.0)
-                        .visible(userInteractionState.isIdle)
-                        Spacer()
-                        ZoomView()
-                            .frame(width: 16.0, alignment: .trailing)
-                            .contentShape(Rectangle())
-                            .gesture(zoomDragGesture(viewportSize: viewportSize))
-                            .padding(.bottom, edgeInsets.bottom)
-                            .visible(!userInteractionState.isNavigating)
-                    }
+                    Spacer()
+                    ZoomView()
+                        .frame(width: 16.0, alignment: .trailing)
+                        .contentShape(Rectangle())
+                        .gesture(zoomDragGesture(viewportSize: viewportSize))
+                        .padding(.bottom, edgeInsets.bottom)
+                        .visible(!userInteractionState.isNavigating)
                 }
             }
         }
@@ -158,23 +150,6 @@ struct SceneView: View {
             .onEnded { value in
                 model.finishZoom(dragValue: value, viewportSize: viewportSize)
             }
-    }
-    
-    func objectInfoView() -> some View {
-        Group {
-            if let name = model.selectedObjectMetadata?.name {
-                Text(name)
-                    .font(.subheadline)
-                    .foregroundColor(.primarySelectionColor)
-                    .frame(height: 30)
-                    .padding(.horizontal, 8.0)
-                    .background(SceneViewConst.uiBgrMaterial)
-                    .cornerRadius(9.0)
-                    .shadow(radius: 1.0)
-            }
-        }
-        .transition(.identity)
-        .id(model.selectedObject)
     }
     
     func sptViewPadding(safeArea: CGRect, fullArea: CGRect) -> EdgeInsets {
