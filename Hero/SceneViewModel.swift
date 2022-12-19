@@ -16,6 +16,7 @@ class SceneViewModel: ObservableObject {
     let circleOutlineMeshId: SPTMeshId
     
     private var prevDragValue: DragGesture.Value?
+    private var orbitDirection: Float = 1.0
 
     private(set) var viewCameraObject: SPTObject
     
@@ -138,6 +139,9 @@ class SceneViewModel: ObservableObject {
         
         guard let prevDragValue = self.prevDragValue else {
             self.prevDragValue = dragValue
+            
+            let cameraPos = SPTPositionGet(viewCameraObject)
+            orbitDirection = (simd_dot(.up, cameraPos.toCartesian.cartesian - cameraPos.origin) >= 0.0 ? -1.0 : 1.0)
             return
         }
         self.prevDragValue = dragValue
@@ -149,12 +153,12 @@ class SceneViewModel: ObservableObject {
         
         cameraPos.spherical.latitude -= deltaAngle.y
         
-        let isInFrontOfSphere = sinf(cameraPos.spherical.latitude) >= 0.0
-        cameraPos.spherical.longitude += (isInFrontOfSphere ? -deltaAngle.x : deltaAngle.x)
+        cameraPos.spherical.longitude += orbitDirection * deltaAngle.x
         
         SPTPositionUpdate(viewCameraObject, cameraPos)
         
         var orientation = SPTOrientationGet(viewCameraObject)
+        let isInFrontOfSphere = sinf(cameraPos.spherical.latitude) >= 0.0
         orientation.lookAtPoint.up = (isInFrontOfSphere ? simd_float3.up : simd_float3.down)
         
         SPTOrientationUpdate(viewCameraObject, orientation)
@@ -185,14 +189,10 @@ class SceneViewModel: ObservableObject {
         
         var cameraPos = SPTPositionGet(viewCameraObject)
         
-        let centerViewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, cameraPos.spherical.origin, viewportSize.float2);
+        var viewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, cameraPos.spherical.origin, viewportSize.float2);
+        viewportPos.y += deltaYTranslation
         
-        var scenePos = SPTCameraConvertViewportToWorld(viewCameraObject, centerViewportPos + simd_float3.up * deltaYTranslation, viewportSize.float2)
-        
-        // NOTE: This is needed, because coverting from world to viewport and back gives low precision z value.
-        // It is becasue of uneven distribution of world z into ndc z, especially far objects.
-        // Alternative could be to make near plane larger but that limits zooming since object will be clipped
-        scenePos.z = cameraPos.spherical.origin.z
+        let scenePos = SPTCameraConvertViewportToWorld(viewCameraObject, viewportPos, viewportSize.float2)
         
         let deltaRadius = length(scenePos - cameraPos.spherical.origin)
         
