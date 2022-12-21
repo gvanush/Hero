@@ -306,7 +306,8 @@ void PlayableScene::forEachHSBChannelBinding(const Scene& scene,  const std::uno
 SPTHandle SPTPlayableSceneMake(SPTHandle sceneHandle, SPTPlayableSceneDescriptor descriptor) {
     
     auto scene = static_cast<spt::Scene*>(sceneHandle);
-    scene->update();
+    scene->updateTransformations();
+    scene->updateLooks();
     
     return new spt::PlayableScene(*scene, descriptor);
 }

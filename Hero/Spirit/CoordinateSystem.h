@@ -31,6 +31,12 @@ bool SPTLinearCoordinatesEqual(SPTLinearCoordinates lhs, SPTLinearCoordinates rh
 
 SPTLinearCoordinates SPTLinearCoordinatesCreate(simd_float3 origin, simd_float3 cartesian);
 
+SPTLinearCoordinates SPTLinearCoordinatesAdd(SPTLinearCoordinates lhs, SPTLinearCoordinates rhs);
+
+SPTLinearCoordinates SPTLinearCoordinatesSubtract(SPTLinearCoordinates lhs, SPTLinearCoordinates rhs);
+
+SPTLinearCoordinates SPTLinearCoordinatesMultiplyScalar(SPTLinearCoordinates coord, float scalar);
+
 // MARK: Spherical
 typedef struct {
     simd_float3 origin;
@@ -43,6 +49,12 @@ bool SPTSphericalCoordinatesEqual(SPTSphericalCoordinates lhs, SPTSphericalCoord
 
 SPTSphericalCoordinates SPTSphericalCoordinatesCreate(simd_float3 origin, simd_float3 cartesian);
 
+SPTSphericalCoordinates SPTSphericalCoordinatesAdd(SPTSphericalCoordinates lhs, SPTSphericalCoordinates rhs);
+
+SPTSphericalCoordinates SPTSphericalCoordinatesSubtract(SPTSphericalCoordinates lhs, SPTSphericalCoordinates rhs);
+
+SPTSphericalCoordinates SPTSphericalCoordinatesMultiplyScalar(SPTSphericalCoordinates coord, float scalar);
+
 // MARK: Cylindrical
 typedef struct {
     simd_float3 origin;
@@ -54,6 +66,12 @@ typedef struct {
 bool SPTCylindricalCoordinatesEqual(SPTCylindricalCoordinates lhs, SPTCylindricalCoordinates rhs);
 
 SPTCylindricalCoordinates SPTCylindricalCoordinatesCreate(simd_float3 origin, simd_float3 cartesian);
+
+SPTCylindricalCoordinates SPTCylindricalCoordinatesAdd(SPTCylindricalCoordinates lhs, SPTCylindricalCoordinates rhs);
+
+SPTCylindricalCoordinates SPTCylindricalCoordinatesSubtract(SPTCylindricalCoordinates lhs, SPTCylindricalCoordinates rhs);
+
+SPTCylindricalCoordinates SPTCylindricalCoordinatesMultiplyScalar(SPTCylindricalCoordinates coord, float scalar);
 
 // MARK: Conversions
 simd_float3 SPTLinearCoordinatesToCartesian(SPTLinearCoordinates linear);

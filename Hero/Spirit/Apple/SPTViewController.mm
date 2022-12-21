@@ -16,6 +16,7 @@
 
 @interface SPTViewController () <MTKViewDelegate> {
     spt::Renderer _renderer;
+    CFTimeInterval _startTime;
 }
 
 @end
@@ -56,6 +57,12 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear: animated];
+    
+    _startTime = CACurrentMediaTime();
+}
+
 // MARK: MTKViewDelegate
 -(void) drawInMTKView: (nonnull MTKView*) view {
     
@@ -64,7 +71,7 @@
     self.renderingContext.commandBuffer = commandBuffer;
     
     auto scene = static_cast<spt::Scene*>(self.sceneHandle);
-    scene->update();
+    scene->update(CACurrentMediaTime() - _startTime);
     
     self.renderingContext.cameraPosition = spt::Position::getCartesianCoordinates(scene->registry, self.viewCameraEntity);
     self.renderingContext.projectionViewMatrix = spt::Camera::getProjectionViewMatrix(scene->registry, self.viewCameraEntity);

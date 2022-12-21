@@ -26,6 +26,12 @@ typedef struct {
 
 bool SPTPositionEqual(SPTPosition lhs, SPTPosition rhs);
 
+SPTPosition SPTPositionAdd(SPTPosition lhs, SPTPosition rhs);
+
+SPTPosition SPTPositionSubtract(SPTPosition lhs, SPTPosition rhs);
+
+SPTPosition SPTPositionMultiplyScalar(SPTPosition position, float scalar);
+
 void SPTPositionMake(SPTObject object, SPTPosition position);
 
 void SPTPositionUpdate(SPTObject object, SPTPosition position);

@@ -9,6 +9,7 @@
 
 #include <cmath>
 
+// MARK: Linear
 bool SPTLinearCoordinatesEqual(SPTLinearCoordinates lhs, SPTLinearCoordinates rhs) {
     return simd_equal(lhs.origin, rhs.origin) && simd_equal(lhs.direction, rhs.direction) && lhs.offset == rhs.offset;
 }
@@ -18,6 +19,19 @@ SPTLinearCoordinates SPTLinearCoordinatesCreate(simd_float3 origin, simd_float3 
     return {origin, direction, simd_length(direction)};
 }
 
+SPTLinearCoordinates SPTLinearCoordinatesAdd(SPTLinearCoordinates lhs, SPTLinearCoordinates rhs) {
+    return {lhs.origin + rhs.origin, lhs.direction + rhs.direction, lhs.offset + rhs.offset};
+}
+
+SPTLinearCoordinates SPTLinearCoordinatesSubtract(SPTLinearCoordinates lhs, SPTLinearCoordinates rhs) {
+    return {lhs.origin - rhs.origin, lhs.direction - rhs.direction, lhs.offset - rhs.offset};
+}
+
+SPTLinearCoordinates SPTLinearCoordinatesMultiplyScalar(SPTLinearCoordinates coord, float scalar) {
+    return {scalar * coord.origin, scalar * coord.direction, scalar * coord.offset};
+}
+
+// MARK: Spherical
 bool SPTSphericalCoordinatesEqual(SPTSphericalCoordinates lhs, SPTSphericalCoordinates rhs) {
     return simd_equal(lhs.origin, rhs.origin) &&
     lhs.radius == rhs.radius &&
@@ -41,6 +55,19 @@ SPTSphericalCoordinates SPTSphericalCoordinatesCreate(simd_float3 origin, simd_f
     return {origin, r, copysignf(1, point.x) * acosf(m), acosf(k)};
 }
 
+SPTSphericalCoordinates SPTSphericalCoordinatesAdd(SPTSphericalCoordinates lhs, SPTSphericalCoordinates rhs) {
+    return {lhs.origin + rhs.origin, lhs.radius + rhs.radius, lhs.longitude + rhs.longitude, lhs.latitude + rhs.latitude};
+}
+
+SPTSphericalCoordinates SPTSphericalCoordinatesSubtract(SPTSphericalCoordinates lhs, SPTSphericalCoordinates rhs) {
+    return {lhs.origin - rhs.origin, lhs.radius - rhs.radius, lhs.longitude - rhs.longitude, lhs.latitude - rhs.latitude};
+}
+
+SPTSphericalCoordinates SPTSphericalCoordinatesMultiplyScalar(SPTSphericalCoordinates coord, float scalar) {
+    return {scalar * coord.origin, scalar * coord.radius, scalar * coord.longitude, scalar * coord.latitude};
+}
+
+// MARK: Cylindrical
 bool SPTCylindricalCoordinatesEqual(SPTCylindricalCoordinates lhs, SPTCylindricalCoordinates rhs) {
     return simd_equal(lhs.origin, rhs.origin) &&
     lhs.radius == rhs.radius &&
@@ -56,6 +83,18 @@ SPTCylindricalCoordinates SPTCylindricalCoordinatesCreate(simd_float3 origin, si
         return {origin, 0.f, 0.f, point.y};
     }
     return {origin, radius, (point.z >= 0.f ? asinf(k) : static_cast<float>(M_PI) - asinf(k)), point.y};
+}
+
+SPTCylindricalCoordinates SPTCylindricalCoordinatesAdd(SPTCylindricalCoordinates lhs, SPTCylindricalCoordinates rhs) {
+    return {lhs.origin + rhs.origin, lhs.radius + rhs.radius, lhs.longitude + rhs.longitude, lhs.height + rhs.height};
+}
+
+SPTCylindricalCoordinates SPTCylindricalCoordinatesSubtract(SPTCylindricalCoordinates lhs, SPTCylindricalCoordinates rhs) {
+    return {lhs.origin - rhs.origin, lhs.radius - rhs.radius, lhs.longitude - rhs.longitude, lhs.height - rhs.height};
+}
+
+SPTCylindricalCoordinates SPTCylindricalCoordinatesMultiplyScalar(SPTCylindricalCoordinates coord, float scalar) {
+    return {scalar * coord.origin, scalar * coord.radius, scalar * coord.longitude, scalar * coord.height};
 }
 
 // MARK: Conversions

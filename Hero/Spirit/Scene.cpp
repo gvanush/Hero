@@ -8,6 +8,7 @@
 #include "Scene.hpp"
 #include "Scene.h"
 #include "MeshLook.hpp"
+#include "Action.hpp"
 
 #include <vector>
 
@@ -39,7 +40,8 @@ void destroyEntity(Registry& registry, SPTEntity entity) {
 }
 
 Scene::Scene()
-: _transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()} {
+: _transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()}
+, _time{0.0} {
     registry.on_destroy<Transformation>().connect<&Transformation::onDestroy>();
     registry.on_destroy<SPTMeshLook>().connect<&MeshLook::onDestroy>();
 }
@@ -49,8 +51,18 @@ Scene::~Scene() {
     registry.on_destroy<SPTMeshLook>().disconnect<&MeshLook::onDestroy>();
 }
 
-void Scene::update() {
+void Scene::update(double time) {
+    _time = time;
+    updateActions(registry, time);
+    updateTransformations();
+    updateLooks();
+}
+
+void Scene::updateTransformations() {
     Transformation::updateWithoutAnimators(registry, _transformationGroup);
+}
+
+void Scene::updateLooks() {
     MeshLook::update(registry);
 }
 

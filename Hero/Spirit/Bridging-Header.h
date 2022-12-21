@@ -24,6 +24,7 @@
 #import "AnimatorBinding.h"
 #import "ObjectProperty.h"
 #import "ObjectPropertyAnimatorBinding.h"
+#import "Action.h"
 #import "RayCast.h"
 #import "Metadata.h"
 #import "Base.h"

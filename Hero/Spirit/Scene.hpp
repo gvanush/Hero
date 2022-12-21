@@ -23,9 +23,15 @@ public:
     Scene();
     ~Scene();
     
-    void update();
+    void update(double time);
+    
+    void updateTransformations();
+    
+    void updateLooks();
     
     void onPostRender();
+    
+    double time() const { return _time; }
     
     static Registry& getRegistry(SPTHandle sceneHandle) {
         return static_cast<spt::Scene*>(sceneHandle)->registry;
@@ -45,6 +51,7 @@ private:
     Transformation::GroupType _transformationGroup;
     std::vector<SPTEntity> _entitiesScheduledToDestroy;
     std::vector<SPTEntity> _entitiesToDestroy;
+    double _time;
 };
 
 }

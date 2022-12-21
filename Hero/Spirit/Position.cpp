@@ -28,6 +28,48 @@ bool SPTPositionEqual(SPTPosition lhs, SPTPosition rhs) {
     }
 }
 
+SPTPosition SPTPositionAdd(SPTPosition lhs, SPTPosition rhs) {
+    assert(lhs.coordinateSystem == rhs.coordinateSystem);
+    switch (lhs.coordinateSystem) {
+        case SPTCoordinateSystemCartesian:
+            return {SPTCoordinateSystemCartesian, lhs.cartesian + rhs.cartesian};
+        case SPTCoordinateSystemLinear:
+            return {SPTCoordinateSystemLinear, .linear = SPTLinearCoordinatesAdd(lhs.linear, rhs.linear)};
+        case SPTCoordinateSystemSpherical:
+            return {SPTCoordinateSystemSpherical, .spherical = SPTSphericalCoordinatesAdd(lhs.spherical, rhs.spherical)};
+        case SPTCoordinateSystemCylindrical:
+            return {SPTCoordinateSystemCylindrical, .cylindrical = SPTCylindricalCoordinatesAdd(lhs.cylindrical, rhs.cylindrical)};
+    }
+}
+
+SPTPosition SPTPositionSubtract(SPTPosition lhs, SPTPosition rhs) {
+    assert(lhs.coordinateSystem == rhs.coordinateSystem);
+    switch (lhs.coordinateSystem) {
+        case SPTCoordinateSystemCartesian:
+            return {SPTCoordinateSystemCartesian, lhs.cartesian + rhs.cartesian};
+        case SPTCoordinateSystemLinear:
+            return {SPTCoordinateSystemLinear, .linear = SPTLinearCoordinatesSubtract(lhs.linear, rhs.linear)};
+        case SPTCoordinateSystemSpherical:
+            return {SPTCoordinateSystemSpherical, .spherical = SPTSphericalCoordinatesSubtract(lhs.spherical, rhs.spherical)};
+        case SPTCoordinateSystemCylindrical:
+            return {SPTCoordinateSystemCylindrical, .cylindrical = SPTCylindricalCoordinatesSubtract(lhs.cylindrical, rhs.cylindrical)};
+    }
+}
+
+SPTPosition SPTPositionMultiplyScalar(SPTPosition position, float scalar) {
+    switch (position.coordinateSystem) {
+        case SPTCoordinateSystemCartesian:
+            position.cartesian *= scalar;
+        case SPTCoordinateSystemLinear:
+            position.linear = SPTLinearCoordinatesMultiplyScalar(position.linear, scalar);
+        case SPTCoordinateSystemSpherical:
+            position.spherical = SPTSphericalCoordinatesMultiplyScalar(position.spherical, scalar);
+        case SPTCoordinateSystemCylindrical:
+            position.cylindrical = SPTCylindricalCoordinatesMultiplyScalar(position.cylindrical, scalar);
+    }
+    return position;
+}
+
 void SPTPositionMake(SPTObject object, SPTPosition position) {
     auto& registry = spt::Scene::getRegistry(object);
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
@@ -98,7 +140,8 @@ SPTPosition SPTPositionToLinear(SPTPosition position, simd_float3 origin) {
             linear = SPTLinearCoordinatesCreate(origin, position.cartesian);
             break;
         case SPTCoordinateSystemLinear:
-            return position;
+            linear = SPTLinearCoordinatesCreate(origin, SPTLinearCoordinatesToCartesian(position.linear));
+            break;
         case SPTCoordinateSystemSpherical:
             linear = SPTLinearCoordinatesCreate(origin, SPTSphericalCoordinatesToCartesian(position.spherical));
             break;
@@ -119,7 +162,8 @@ SPTPosition SPTPositionToSpherical(SPTPosition position, simd_float3 origin) {
             spherical = SPTSphericalCoordinatesCreate(origin, SPTLinearCoordinatesToCartesian(position.linear));
             break;
         case SPTCoordinateSystemSpherical:
-            return position;
+            spherical = SPTSphericalCoordinatesCreate(origin, SPTSphericalCoordinatesToCartesian(position.spherical));
+            break;
         case SPTCoordinateSystemCylindrical:
             spherical = SPTSphericalCoordinatesCreate(origin, SPTCylindricalCoordinatesToCartesian(position.cylindrical));
             break;
@@ -140,7 +184,8 @@ SPTPosition SPTPositionToCylindrical(SPTPosition position, simd_float3 origin) {
             cylindrical = SPTCylindricalCoordinatesCreate(origin, SPTSphericalCoordinatesToCartesian(position.spherical));
             break;
         case SPTCoordinateSystemCylindrical:
-            return position;
+            cylindrical = SPTCylindricalCoordinatesCreate(origin, SPTCylindricalCoordinatesToCartesian(position.cylindrical));
+            break;
     }
     return {SPTCoordinateSystemCylindrical, .cylindrical = cylindrical};
 }

@@ -92,7 +92,7 @@ SPTRayCastResult SPTRayCastScene(SPTHandle sceneHandle, SPTRay ray, float tolera
     auto scene = static_cast<spt::Scene*>(sceneHandle);
     auto& registry = scene->registry;
     
-    scene->update();
+    scene->updateTransformations();
     
     SPTRayCastResult result {kSPTNullObject, INFINITY};
     

@@ -148,6 +148,8 @@
 		B7C748A128E377F600E270FB /* ScaleToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C748A028E377F600E270FB /* ScaleToolView.swift */; };
 		B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C748A228E37C0D00E270FB /* OrientToolView.swift */; };
 		B7C748A728E5647800E270FB /* ComponentTreeNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C748A628E5647800E270FB /* ComponentTreeNavigationView.swift */; };
+		B7C90C712950F95200A2850E /* Action.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7C90C6F2950F95200A2850E /* Action.cpp */; };
+		B7C90C742951911D00A2850E /* ActionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C90C732951911D00A2850E /* ActionUtil.swift */; };
 		B7C9D6C328FD256600621BA1 /* AnimatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C9D6C228FD256600621BA1 /* AnimatorViewModel.swift */; };
 		B7C9D6C528FD30BA00621BA1 /* IntegerUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C9D6C428FD30BA00621BA1 /* IntegerUtil.swift */; };
 		B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D19EB327310DFC005C9F82 /* BindingUtil.swift */; };
@@ -389,6 +391,10 @@
 		B7C748A028E377F600E270FB /* ScaleToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleToolView.swift; sourceTree = "<group>"; };
 		B7C748A228E37C0D00E270FB /* OrientToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientToolView.swift; sourceTree = "<group>"; };
 		B7C748A628E5647800E270FB /* ComponentTreeNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentTreeNavigationView.swift; sourceTree = "<group>"; };
+		B7C90C6F2950F95200A2850E /* Action.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Action.cpp; sourceTree = "<group>"; };
+		B7C90C702950F95200A2850E /* Action.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
+		B7C90C722951033D00A2850E /* Action.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Action.hpp; sourceTree = "<group>"; };
+		B7C90C732951911D00A2850E /* ActionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionUtil.swift; sourceTree = "<group>"; };
 		B7C9D6C228FD256600621BA1 /* AnimatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorViewModel.swift; sourceTree = "<group>"; };
 		B7C9D6C428FD30BA00621BA1 /* IntegerUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerUtil.swift; sourceTree = "<group>"; };
 		B7D19EB327310DFC005C9F82 /* BindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingUtil.swift; sourceTree = "<group>"; };
@@ -466,6 +472,7 @@
 				B7E481CC2742306A003DA5B1 /* Camera */,
 				B76D4FBF28AA24AF0029E47B /* Object Property */,
 				B73A70062885256A0043F9FF /* Animator */,
+				B7C90C6E2950F93700A2850E /* Action */,
 				B7E481C227414867003DA5B1 /* Scene */,
 				B7E481C42741498F003DA5B1 /* Rendering */,
 				B723584A2757745A00337547 /* Ray Casting */,
@@ -650,6 +657,7 @@
 				B70A6B20293CEDA00092FDE1 /* SPTLineLookDepthBiasUtil.swift */,
 				B70A6B29293E39060092FDE1 /* SPTMatrixUtil.swift */,
 				B7AD7D0F293E6A3D00129A07 /* SPTVectorUtil.swift */,
+				B7C90C732951911D00A2850E /* ActionUtil.swift */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -821,6 +829,16 @@
 				B7BCB11727D4D3C500F5AFB1 /* Metadata.h */,
 			);
 			name = Metadata;
+			sourceTree = "<group>";
+		};
+		B7C90C6E2950F93700A2850E /* Action */ = {
+			isa = PBXGroup;
+			children = (
+				B7C90C6F2950F95200A2850E /* Action.cpp */,
+				B7C90C702950F95200A2850E /* Action.h */,
+				B7C90C722951033D00A2850E /* Action.hpp */,
+			);
+			name = Action;
 			sourceTree = "<group>";
 		};
 		B7E30F50288E7F5000224E09 /* Spirit */ = {
@@ -1108,6 +1126,7 @@
 				B77CBD50289C54EC0040B5EC /* EdgeInsetsUtil.swift in Sources */,
 				B7AA99ED27B81FB70033B459 /* DistinctValueSet.swift in Sources */,
 				B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */,
+				B7C90C712950F95200A2850E /* Action.cpp in Sources */,
 				B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */,
 				B70A6B25293E1C910092FDE1 /* ObjectAngleAnimatorBindingComponent.swift in Sources */,
 				B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */,
@@ -1167,6 +1186,7 @@
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B7643B3E2910509F00F6A05B /* ObjectColorComponentView.swift in Sources */,
+				B7C90C742951911D00A2850E /* ActionUtil.swift in Sources */,
 				B73E47CC27C5762500CB0AFC /* Position.cpp in Sources */,
 				B7B711D528C108D70077C7CD /* LookCategories.swift in Sources */,
 				B710DB8A27BD8E4000C57BDF /* DiscreteValueSelector.swift in Sources */,

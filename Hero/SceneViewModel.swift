@@ -83,7 +83,6 @@ class SceneViewModel: ObservableObject {
         SPTPosition.make(.init(origin: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi), object: viewCameraObject)
         SPTOrientation.make(.init(target: .zero, up: .up, axis: .Z, positive: false), object: viewCameraObject)
         SPTCameraMakePerspective(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
-//        SPTCameraMakeOrthographic(viewCameraObject, 100.0, 1.0, 0.1, 2000.0)
         
         // Setup coordinate grid
         let gridPath = Bundle.main.path(forResource: "coordinate_grid", ofType: "obj")!
@@ -119,19 +118,41 @@ class SceneViewModel: ObservableObject {
         return object
     }
     
-    private func focusOn(_ object: SPTObject) {
-        focusOn(SPTPositionGet(object).toCartesian.cartesian)
+    private func focusOn(_ object: SPTObject, animated: Bool) {
+        focusOn(SPTPositionGet(object).toCartesian.cartesian, animated: animated)
     }
     
-    private func focusOn(_ point: simd_float3) {
+    private func focusOn(_ point: simd_float3, animated: Bool) {
         
-        var cameraPos = SPTPositionGet(viewCameraObject)
-        cameraPos.spherical.origin = point
-        SPTPositionUpdate(viewCameraObject, cameraPos)
+        var cameraPos = SPTPosition.get(object: viewCameraObject)
         
-        var cameraOrientation = SPTOrientationGet(viewCameraObject)
-        cameraOrientation.lookAtPoint.target = cameraPos.spherical.origin
-        SPTOrientationUpdate(viewCameraObject, cameraOrientation)
+        let initialSin = sign(sinf(cameraPos.spherical.latitude))
+        
+        cameraPos = cameraPos.toSpherical(origin: point)
+        
+        if initialSin != sign(sinf(cameraPos.spherical.latitude)) {
+            // Maintaining same position but with original latitude sign to match with old camera orientation along z axis
+            cameraPos.spherical.latitude = -cameraPos.spherical.latitude
+            cameraPos.spherical.longitude += Float.pi
+        }
+        
+        SPTPosition.update(cameraPos, object: viewCameraObject)
+        
+        var cameraOrientation = SPTOrientation.get(object: viewCameraObject)
+        cameraOrientation.lookAtPoint.up = cameraUp(latitude: cameraPos.spherical.latitude)
+        
+        if animated {
+            SPTOrientation.update(cameraOrientation, object: viewCameraObject)
+            SPTOrientationAction.make(lookAtTarget: point, duration: 0.3, easing: .smoothStep, object: viewCameraObject)
+        } else {
+            cameraOrientation.lookAtPoint.target = point
+            SPTOrientation.update(cameraOrientation, object: viewCameraObject)
+        }
+        
+    }
+    
+    func cameraUp(latitude: Float) -> simd_float3 {
+        sinf(latitude) >= 0.0 ? .up : .down
     }
     
     // MARK: Orbit
@@ -140,8 +161,9 @@ class SceneViewModel: ObservableObject {
         guard let prevDragValue = self.prevDragValue else {
             self.prevDragValue = dragValue
             
-            let cameraPos = SPTPositionGet(viewCameraObject)
+            let cameraPos = SPTPosition.get(object: viewCameraObject)
             orbitDirection = (simd_dot(.up, cameraPos.toCartesian.cartesian - cameraPos.origin) >= 0.0 ? -1.0 : 1.0)
+            
             return
         }
         self.prevDragValue = dragValue
@@ -149,19 +171,16 @@ class SceneViewModel: ObservableObject {
         let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
         let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
         
-        var cameraPos = SPTPositionGet(viewCameraObject)
+        var cameraPos = SPTPosition.get(object: viewCameraObject)
         
         cameraPos.spherical.latitude -= deltaAngle.y
-        
         cameraPos.spherical.longitude += orbitDirection * deltaAngle.x
         
-        SPTPositionUpdate(viewCameraObject, cameraPos)
+        SPTPosition.update(cameraPos, object: viewCameraObject)
         
-        var orientation = SPTOrientationGet(viewCameraObject)
-        let isInFrontOfSphere = sinf(cameraPos.spherical.latitude) >= 0.0
-        orientation.lookAtPoint.up = (isInFrontOfSphere ? simd_float3.up : simd_float3.down)
-        
-        SPTOrientationUpdate(viewCameraObject, orientation)
+        var orientation = SPTOrientation.get(object: viewCameraObject)
+        orientation.lookAtPoint.up = cameraUp(latitude: cameraPos.spherical.latitude)
+        SPTOrientation.update(orientation, object: viewCameraObject)
         
     }
     
@@ -253,9 +272,9 @@ class SceneViewModel: ObservableObject {
     
     private func updateFocusedObject(_ object: SPTObject) {
         focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: object) { [unowned self] newPos in
-            self.focusOn(newPos.toCartesian.cartesian)
+            self.focusOn(newPos.toCartesian.cartesian, animated: false)
         }
-        focusOn(object)
+        focusOn(object, animated: true)
     }
     
     static let zoomFactor: Float = 3.0
