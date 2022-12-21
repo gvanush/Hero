@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+fileprivate let cameraInitialPosition = SPTPosition(origin: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi)
+fileprivate let cameraInitialOreintation = SPTOrientation(target: .zero, up: .up, axis: .Z, positive: false)
+
 
 class SceneViewModel: ObservableObject {
     
@@ -16,7 +19,6 @@ class SceneViewModel: ObservableObject {
     let circleOutlineMeshId: SPTMeshId
     
     private var prevDragValue: DragGesture.Value?
-    private var orbitDirection: Float = 1.0
 
     private(set) var viewCameraObject: SPTObject
     
@@ -80,8 +82,8 @@ class SceneViewModel: ObservableObject {
         
         // Setup view camera
         viewCameraObject = scene.makeObject()
-        SPTPosition.make(.init(origin: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi), object: viewCameraObject)
-        SPTOrientation.make(.init(target: .zero, up: .up, axis: .Z, positive: false), object: viewCameraObject)
+        SPTPosition.make(cameraInitialPosition, object: viewCameraObject)
+        SPTOrientation.make(cameraInitialOreintation, object: viewCameraObject)
         SPTCameraMakePerspective(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
         
         // Setup coordinate grid
@@ -116,6 +118,12 @@ class SceneViewModel: ObservableObject {
         }
         
         return object
+    }
+    
+    func resetCamera() {
+        isFocusEnabled = false
+        SPTPosition.update(cameraInitialPosition, object: viewCameraObject)
+        SPTOrientation.update(cameraInitialOreintation, object: viewCameraObject)
     }
     
     private func focusOn(_ object: SPTObject, animated: Bool) {
@@ -160,10 +168,6 @@ class SceneViewModel: ObservableObject {
         
         guard let prevDragValue = self.prevDragValue else {
             self.prevDragValue = dragValue
-            
-            let cameraPos = SPTPosition.get(object: viewCameraObject)
-            orbitDirection = (simd_dot(.up, cameraPos.toCartesian.cartesian - cameraPos.origin) >= 0.0 ? -1.0 : 1.0)
-            
             return
         }
         self.prevDragValue = dragValue
@@ -174,7 +178,7 @@ class SceneViewModel: ObservableObject {
         var cameraPos = SPTPosition.get(object: viewCameraObject)
         
         cameraPos.spherical.latitude -= deltaAngle.y
-        cameraPos.spherical.longitude += orbitDirection * deltaAngle.x
+        cameraPos.spherical.longitude -= deltaAngle.x
         
         SPTPosition.update(cameraPos, object: viewCameraObject)
         

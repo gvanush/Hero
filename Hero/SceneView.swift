@@ -88,6 +88,18 @@ struct SceneView: View {
                     HStack(spacing: 0.0) {
                         VStack {
                             Spacer()
+                            Button {
+                                model.resetCamera()
+                            } label: {
+                                Image(systemName: "arrow.rectanglepath")
+                                    .imageScale(.medium)
+                                    .tint(.primary)
+                            }
+                            .frame(width: SceneViewConst.uiButtonSize, height: SceneViewConst.uiButtonSize, alignment: .center)
+                            .background(SceneViewConst.uiBgrMaterial, ignoresSafeAreaEdges: [])
+                            .cornerRadius(12.0)
+                            .shadow(radius: 1.0)
+                            
                             focusToggle()
                         }
                         .padding(.leading, 8.0)
@@ -138,8 +150,7 @@ struct SceneView: View {
     
     func focusToggle() -> some View {
         SceneUIToggle(isOn: $model.isFocusEnabled, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.spot")
-        .transition(.identity)
-        .id(model.selectedObject)
+            .transition(.identity)
     }
     
     var orbitDragGesture: some Gesture {
