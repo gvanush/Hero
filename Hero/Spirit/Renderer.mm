@@ -221,6 +221,12 @@ void renderMeshOutline(id<MTLRenderCommandEncoder> renderEncoder, const Mesh& me
     
     [renderEncoder setVertexBytes: &outlineLook.thickness length: sizeof(float) atIndex: kVertexInputIndexThickness];
     
+    // TODO: Optimize this computation to not happen each frame (perhaps as part of instancing optimization)
+    const auto& transposedInverseWorldMatrix = (simd_transpose(simd_inverse(globalMatrix)));
+    [renderEncoder setVertexBytes: &transposedInverseWorldMatrix
+                           length: sizeof(simd_float4x4)
+                          atIndex: kVertexInputIndexTransposedInverseWorldMatrix];
+    
     id<MTLBuffer> vertexBuffer = (__bridge id<MTLBuffer>) mesh.vertexBuffer()->apiObject();
     [renderEncoder setVertexBuffer: vertexBuffer offset: 0 atIndex: kVertexInputIndexVertices];
     

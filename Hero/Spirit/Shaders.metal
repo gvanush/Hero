@@ -287,12 +287,17 @@ fragment float4 pointFS(PointRasterizerData in [[stage_in]],
 vertex BasicRasterizerData outlineVS(uint vertexID [[vertex_id]],
                                      constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
                                      constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+                                     constant float4x4& transposedInverseWorldMatrix [[buffer(kVertexInputIndexTransposedInverseWorldMatrix)]],
                                      constant float& thickness [[buffer(kVertexInputIndexThickness)]],
                                      constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     
-    const auto projectionViewModelMatrix = uniforms.projectionViewMatrix * worldMatrix;
-    auto point = projectionViewModelMatrix * float4(vertices[vertexID].position, 1.0);
-    auto nPoint = projectionViewModelMatrix * float4(vertices[vertexID].position + vertices[vertexID].adjacentSurfaceNormalAverage, 1.0);
+
+    auto point = worldMatrix * float4(vertices[vertexID].position, 1.0);
+    auto normal = transposedInverseWorldMatrix * float4(vertices[vertexID].adjacentSurfaceNormalAverage, 0.0);
+    normal.w = 0.0;
+    
+    auto nPoint = uniforms.projectionViewMatrix * (point + normal);
+    point = uniforms.projectionViewMatrix * point;
     
     // Bring to NDC
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
