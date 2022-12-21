@@ -19,7 +19,7 @@ struct MeshRegistry {
     static let standard = MeshRegistry()
     
     private init() {
-        for item in ["cube", "cylinder", "cone", "sphere"] {
+        for item in ["cube", "cylinder", "cone", "sphere", "torus"] {
             let meshPath = Bundle.main.path(forResource: item, ofType: "obj")!
             meshRecords.append(MeshRecord(name: item, iconName: item, id: SPTCreate3DMeshFromFile(meshPath)))
         }

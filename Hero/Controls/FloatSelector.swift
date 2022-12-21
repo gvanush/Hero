@@ -178,7 +178,7 @@ struct FloatSelector: View {
             guard state == .dragging || state == .scrolling else { return }
             
             let playFeedback = {
-                feedbackGenerator.impactOccurred(intensity: 0.65)
+                feedbackGenerator.impactOccurred(intensity: 0.55)
                 feedbackGenerator.prepare()
             }
             

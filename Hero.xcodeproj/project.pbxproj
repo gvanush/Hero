@@ -31,6 +31,7 @@
 		B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635827AE836E00CE5195 /* EnumUtil.swift */; };
 		B717636027B00CCF00CE5195 /* MeshRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717635F27B00CCF00CE5195 /* MeshRegistry.swift */; };
 		B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B717636327B1A7F500CE5195 /* IntegerField.swift */; };
+		B718419B29535420002AD7D1 /* torus.obj in Resources */ = {isa = PBXBuildFile; fileRef = B718419A29535420002AD7D1 /* torus.obj */; };
 		B72175FA274BC0A60047016B /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B72175F8274BC0A60047016B /* Mesh.cpp */; };
 		B72175FF274CF1DE0047016B /* circle.obj in Resources */ = {isa = PBXBuildFile; fileRef = B72175FE274CF1DE0047016B /* circle.obj */; };
 		B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7217601274FF2800047016B /* APIObjectWrapper.cpp */; };
@@ -220,6 +221,7 @@
 		B717635827AE836E00CE5195 /* EnumUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumUtil.swift; sourceTree = "<group>"; };
 		B717635F27B00CCF00CE5195 /* MeshRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshRegistry.swift; sourceTree = "<group>"; };
 		B717636327B1A7F500CE5195 /* IntegerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerField.swift; sourceTree = "<group>"; };
+		B718419A29535420002AD7D1 /* torus.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = torus.obj; sourceTree = "<group>"; };
 		B72175F8274BC0A60047016B /* Mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
 		B72175F9274BC0A60047016B /* Mesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh.hpp; sourceTree = "<group>"; };
 		B72175FB274BC28B0047016B /* ResourceManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
@@ -549,6 +551,7 @@
 				B723585B2761173800337547 /* line.obj */,
 				B7FD15A929352AE300B6E7DC /* half_line.obj */,
 				B7FD15AB29354CF100B6E7DC /* circle_outline.obj */,
+				B718419A29535420002AD7D1 /* torus.obj */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1089,6 +1092,7 @@
 				B72358422756902F00337547 /* cylinder.obj in Resources */,
 				B72358482756928F00337547 /* sphere.obj in Resources */,
 				B723584027568C6300337547 /* cube.obj in Resources */,
+				B718419B29535420002AD7D1 /* torus.obj in Resources */,
 				B7235844275691C000337547 /* cone.obj in Resources */,
 				B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */,
 				B72175FF274CF1DE0047016B /* circle.obj in Resources */,
