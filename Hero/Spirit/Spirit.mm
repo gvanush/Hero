@@ -12,7 +12,7 @@
 #import "SPTRenderingContext.h"
 
 
-void spt_init() {
+void SPTInit() {
     [SPTRenderingContext setup];
     spt::Renderer::init();
 }

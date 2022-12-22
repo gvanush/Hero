@@ -9,13 +9,25 @@
 
 #include <simd/simd.h>
 
+#include "Base.hpp"
+#include "Camera.h"
+
+
 namespace spt {
+
+struct ProjectionMatrix {
+    simd_float4x4 float4x4;
+    bool isDirty;
+};
 
 namespace Camera {
 
-simd_float4x4 getViewMatrix(SPTObject object);
-simd_float4x4 getProjectionMatrix(SPTObject object);
+simd_float4x4 getViewMatrix(Registry& registry, SPTEntity entity);
+simd_float4x4 getProjectionMatrix(Registry& registry, SPTEntity entity);
+simd_float4x4 getProjectionViewMatrix(Registry& registry, SPTEntity entity);
 simd_float4x4 getProjectionViewMatrix(SPTObject object);
+
+void updatePerspectiveAspectRatio(Registry& registry, SPTEntity entity, float aspectRatio);
 
 }
 

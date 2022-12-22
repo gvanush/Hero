@@ -8,11 +8,12 @@
 #include "Transformation.hpp"
 #include "Position.h"
 #include "Position.hpp"
-#include "Orientation.h"
+#include "Orientation.hpp"
 #include "Scale.hpp"
 #include "Scene.hpp"
-#include "ComponentListenerUtil.hpp"
+#include "ComponentObserverUtil.hpp"
 #include "Base.hpp"
+#include "Matrix.h"
 
 #include <queue>
 
@@ -20,143 +21,102 @@ namespace spt {
 
 namespace {
 
-simd_float3x3 computeRotationXMatrix(float rx) {
-    const auto c = cosf(rx);
-    const auto s = sinf(rx);
-    return simd_float3x3 {
-        simd_float3 {1.f, 0.f, 0.f},
-        simd_float3 {0.f, c, s},
-        simd_float3 {0.f, -s, c}
-    };
-}
-
-simd_float3x3 computeRotationYMatrix(float ry) {
-    const auto c = cosf(ry);
-    const auto s = sinf(ry);
-    return simd_float3x3 {
-        simd_float3 {c, 0.f, -s},
-        simd_float3 {0.f, 1.f, 0.f},
-        simd_float3 {s, 0.f, c}
-    };
-}
-
-simd_float3x3 computeRotationZMatrix(float rz) {
-    const auto c = cosf(rz);
-    const auto s = sinf(rz);
-    return simd_float3x3 {
-        simd_float3 {c, s, 0.f},
-        simd_float3 {-s, c, 0.f},
-        simd_float3 {0.f, 0.f, 1.f}
-    };
-}
-
-void applyEulerOrientationMatrix(const SPTEulerOrientation& eulerOrientation, simd_float4x4& matrix) {
-    
-    auto xMat = computeRotationXMatrix(eulerOrientation.rotation.x);
-    auto yMat = computeRotationYMatrix(eulerOrientation.rotation.y);
-    auto zMat = computeRotationZMatrix(eulerOrientation.rotation.z);
-    
-    auto rotMat = matrix_identity_float3x3;
-    
-    switch (eulerOrientation.order) {
-        case SPTEulerOrderXYZ:
-            rotMat = simd_mul(zMat, simd_mul(yMat, xMat));
-            break;
-        case SPTEulerOrderXZY:
-            rotMat = simd_mul(yMat, simd_mul(zMat, xMat));
-            break;
-        case SPTEulerOrderYXZ:
-            rotMat = simd_mul(zMat, simd_mul(xMat, yMat));
-            break;
-        case SPTEulerOrderYZX:
-            rotMat = simd_mul(xMat, simd_mul(zMat, yMat));
-            break;
-        case SPTEulerOrderZXY:
-            rotMat = simd_mul(yMat, simd_mul(xMat, zMat));
-            break;
-        case SPTEulerOrderZYX:
-            rotMat = simd_mul(xMat, simd_mul(yMat, zMat));
-            break;
-    }
-    
-    matrix.columns[0] = simd_make_float4(rotMat.columns[0], matrix.columns[0][3]);
-    matrix.columns[1] = simd_make_float4(rotMat.columns[1], matrix.columns[1][3]);
-    matrix.columns[2] = simd_make_float4(rotMat.columns[2], matrix.columns[2][3]);
-}
-
-void applyLookAtMatrix(simd_float3 pos, const SPTLookAtOrientation& lookAtOrientation, simd_float4x4& matrix) {
-    const auto sign = (lookAtOrientation.positive ? 1 : -1);
-    switch(lookAtOrientation.axis) {
-        case SPTAxisX: {
-            const auto xAxis = sign * simd_normalize(lookAtOrientation.target - pos);
-            const auto yAxis = simd_normalize(simd_cross(lookAtOrientation.up, xAxis));
-            matrix.columns[2] = simd_make_float4(simd_normalize(simd_cross(xAxis, yAxis)), matrix.columns[2][3]);
-            matrix.columns[0] = simd_make_float4(xAxis, matrix.columns[0][3]);
-            matrix.columns[1] = simd_make_float4(yAxis, matrix.columns[1][3]);
-            break;
-        }
-        case SPTAxisY: {
-            const auto yAxis = sign * simd_normalize(lookAtOrientation.target - pos);
-            const auto zAxis = simd_normalize(simd_cross(lookAtOrientation.up, yAxis));
-            matrix.columns[0] = simd_make_float4(simd_normalize(simd_cross(yAxis, zAxis)), matrix.columns[0][3]);
-            matrix.columns[2] = simd_make_float4(zAxis, matrix.columns[2][3]);
-            matrix.columns[1] = simd_make_float4(yAxis, matrix.columns[1][3]);
-            break;
-        }
-        case SPTAxisZ: {
-            const auto zAxis = sign * simd_normalize(lookAtOrientation.target - pos);
-            const auto xAxis = simd_normalize(simd_cross(lookAtOrientation.up, zAxis));
-            matrix.columns[1] = simd_make_float4(simd_normalize(simd_cross(zAxis, xAxis)), matrix.columns[1][3]);
-            matrix.columns[0] = simd_make_float4(xAxis, matrix.columns[0][3]);
-            matrix.columns[2] = simd_make_float4(zAxis, matrix.columns[2][3]);
-            break;
-        }
-    }
-    
-}
-
 simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEntity entity) {
     auto matrix = matrix_identity_float4x4;
     
-    matrix.columns[3].xyz = Position::getXYZ(registry, entity);
+    const auto& scale = spt::Scale::getXYZ(registry, entity);
+    matrix.columns[0][0] = scale.x;
+    matrix.columns[1][1] = scale.y;
+    matrix.columns[2][2] = scale.z;
     
-    if(const auto orientation = registry.try_get<SPTOrientation>(entity)) {
-        switch (orientation->variantTag) {
-            case SPTOrientationVariantTagEuler: {
-                applyEulerOrientationMatrix(orientation->euler, matrix);
-                break;
-            }
-            case SPTOrientationVariantTagLookAt: {
-                applyLookAtMatrix(matrix.columns[3].xyz, orientation->lookAt, matrix);
-                break;
-            }
-        }
-    }
+    const auto& pos = Position::getCartesianCoordinates(registry, entity);
     
-    if(const auto scale = registry.try_get<SPTScale>(entity)) {
-        matrix.columns[0] *= scale->xyz.x;
-        matrix.columns[1] *= scale->xyz.y;
-        matrix.columns[2] *= scale->xyz.z;
+    matrix = simd_mul(SPTMatrix4x4CreateUpperLeft(Orientation::getMatrix(registry, entity, pos)), matrix);
+    
+    matrix.columns[3].xyz = pos;
+    
+    return matrix;
+}
+
+simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEntity entity, const Transformation::AnimatorRecord& animRecord, const std::vector<float> animatorValues) {
+    
+    auto matrix = matrix_identity_float4x4;
+    
+    matrix.columns[0][0] = animRecord.baseScale.x;
+    matrix.columns[1][1] = animRecord.baseScale.y;
+    matrix.columns[2][2] = animRecord.baseScale.z;
+    
+    matrix = simd_mul(animRecord.baseOrientation, matrix);
+    
+    auto position = animRecord.basePosition;
+    
+    switch (position.coordinateSystem) {
+        case SPTCoordinateSystemCartesian:
+            
+            position.cartesian.x += evaluateAnimatorBinding(animRecord.positionRecord.cartesian.x.binding, animatorValues[animRecord.positionRecord.cartesian.x.index]);
+            position.cartesian.y += evaluateAnimatorBinding(animRecord.positionRecord.cartesian.y.binding, animatorValues[animRecord.positionRecord.cartesian.y.index]);
+            position.cartesian.z += evaluateAnimatorBinding(animRecord.positionRecord.cartesian.z.binding, animatorValues[animRecord.positionRecord.cartesian.z.index]);
+            matrix.columns[3].xyz = position.cartesian;
+            
+            break;
+        case SPTCoordinateSystemLinear:
+            
+            position.linear.offset += evaluateAnimatorBinding(animRecord.positionRecord.linear.offset.binding, animatorValues[animRecord.positionRecord.linear.offset.index]);
+            matrix.columns[3].xyz = SPTLinearCoordinatesToCartesian(position.linear);
+            
+            break;
+        case SPTCoordinateSystemSpherical:
+            
+            position.spherical.radius += evaluateAnimatorBinding(animRecord.positionRecord.spherical.radius.binding, animatorValues[animRecord.positionRecord.spherical.radius.index]);
+            position.spherical.longitude += evaluateAnimatorBinding(animRecord.positionRecord.spherical.longitude.binding, animatorValues[animRecord.positionRecord.spherical.longitude.index]);
+            position.spherical.latitude += evaluateAnimatorBinding(animRecord.positionRecord.spherical.latitude.binding, animatorValues[animRecord.positionRecord.spherical.latitude.index]);
+            matrix.columns[3].xyz = SPTSphericalCoordinatesToCartesian(position.spherical);
+            
+            break;
+        case SPTCoordinateSystemCylindrical:
+            
+            position.cylindrical.radius += evaluateAnimatorBinding(animRecord.positionRecord.cylindrical.radius.binding, animatorValues[animRecord.positionRecord.cylindrical.radius.index]);
+            position.cylindrical.longitude += evaluateAnimatorBinding(animRecord.positionRecord.cylindrical.longitude.binding, animatorValues[animRecord.positionRecord.cylindrical.longitude.index]);
+            position.cylindrical.height += evaluateAnimatorBinding(animRecord.positionRecord.cylindrical.height.binding, animatorValues[animRecord.positionRecord.cylindrical.height.index]);
+            matrix.columns[3].xyz = SPTCylindricalCoordinatesToCartesian(position.cylindrical);
+            
+            break;
     }
     
     return matrix;
 }
 
+void updateGlobalMatrix(Registry& registry, Transformation& tran) {
+    
+    if(tran.node.parent == kSPTNullEntity) {
+        tran.global = tran.local;
+    } else {
+        tran.global = simd_mul(registry.get<Transformation>(tran.node.parent).global, tran.local);
+    }
+    
+    tran.isGlobalMirroring = (simd_determinant(SPTMatrix4x4GetUpperLeft(tran.global)) < 0.f);
+}
+
+void updateGlobalMatrix(Transformation& tran, const Transformation& parentTran) {
+    tran.global = simd_mul(parentTran.global, tran.local);
+    tran.isGlobalMirroring = (simd_determinant(SPTMatrix4x4GetUpperLeft(tran.global)) < 0.f);
+}
+
 void removeFromParent(Registry& registry, SPTEntity entity, const Transformation& tran) {
-    if(SPTIsNull(tran.node.parent)) {
+    if(tran.node.parent == kSPTNullEntity) {
         return;
     }
     
-    auto& oldParentTran = registry.get<spt::Transformation>(tran.node.parent.entity);
-    if(oldParentTran.node.firstChild.entity == entity) {
+    auto& oldParentTran = registry.get<spt::Transformation>(tran.node.parent);
+    if(oldParentTran.node.firstChild == entity) {
         oldParentTran.node.firstChild = tran.node.nextSibling;
     }
-    if(!SPTIsNull(tran.node.nextSibling)) {
-        auto& nexSiblingTran = registry.get<spt::Transformation>(tran.node.nextSibling.entity);
-        nexSiblingTran.node.prevSibling = tran.node.prevSibling;
+    if(tran.node.nextSibling != kSPTNullEntity) {
+        auto& nextSiblingTran = registry.get<spt::Transformation>(tran.node.nextSibling);
+        nextSiblingTran.node.prevSibling = tran.node.prevSibling;
     }
-    if(!SPTIsNull(tran.node.prevSibling)) {
-        auto& prevSiblingTran = registry.get<spt::Transformation>(tran.node.prevSibling.entity);
+    if(tran.node.prevSibling != kSPTNullEntity) {
+        auto& prevSiblingTran = registry.get<spt::Transformation>(tran.node.prevSibling);
         prevSiblingTran.node.nextSibling = tran.node.nextSibling;
     }
     --oldParentTran.node.childrenCount;
@@ -174,13 +134,13 @@ simd_float4x4 Transformation::getGlobal(Registry& registry, SPTEntity entity) {
                              computeTransformationMatrix(registry, nextEntity) :
                              registry.get<spt::Transformation>(nextEntity).local);
         result = simd_mul(local, result);
-        nextEntity = registry.get<spt::Transformation>(nextEntity).node.parent.entity;
+        nextEntity = registry.get<spt::Transformation>(nextEntity).node.parent;
     }
     
     return result;
 }
 
-void Transformation::update(Registry& registry, GroupType& group) {
+void Transformation::updateWithoutAnimators(Registry& registry, GroupType& group) {
     
     // Sort so that parents are updated before their children
     group.sort<Transformation>([] (const auto& lhs, const auto& rhs) {
@@ -188,27 +148,22 @@ void Transformation::update(Registry& registry, GroupType& group) {
     });
     
     // Recalculate matrices
-    group.each([&registry] (const auto entity, Transformation& tran) {
+    group.each([&registry, &group] (const auto entity, Transformation& tran) {
         
         tran.local = computeTransformationMatrix(registry, entity);
-        if(tran.node.parent.entity == kSPTNullEntity) {
-            tran.global = tran.local;
-        } else {
-            tran.global = simd_mul(registry.get<Transformation>(tran.node.parent.entity).global, tran.local);
-        }
+        updateGlobalMatrix(registry, tran);
         
-        // Update substree
+        // Update subtree
         // Prefering iterative over recursive algorithm to avoid stack overflow
-        // Possibly this can be optimized using vector reserve
         std::queue<SPTEntity> entityQueue;
         entityQueue.push(entity);
         while (!entityQueue.empty()) {
 
             const auto& parentTran = registry.get<Transformation>(entityQueue.front());
-            forEachChild(registry, entityQueue.front(), [&registry, &entityQueue, &parentTran] (auto childEntity, Transformation& childTran) {
-                // If child is dirty it will be updated as part of outer lopp
-                if(!registry.all_of<DirtyTransformationFlag>(childEntity)) {
-                    childTran.global = simd_mul(parentTran.global, childTran.local);
+            forEachChild(registry, entityQueue.front(), [&registry, &entityQueue, &parentTran, &group] (auto childEntity, Transformation& childTran) {
+                // If child is dirty it will be updated as part of outer loop
+                if(!group.contains(childEntity)) {
+                    updateGlobalMatrix(childTran, parentTran);
                     entityQueue.push(childEntity);
                 }
             });
@@ -219,6 +174,35 @@ void Transformation::update(Registry& registry, GroupType& group) {
     });
     
     registry.clear<DirtyTransformationFlag>();
+}
+
+void Transformation::updateWithOnlyAnimatorsChanging(Registry& registry, AnimatorsGroupType& group, const std::vector<float> animatorValues) {
+    
+    group.each([&registry, &group, &animatorValues] (const auto entity, AnimatorRecord& animRecord, Transformation& tran) {
+        
+        tran.local = computeTransformationMatrix(registry, entity, animRecord, animatorValues);
+        updateGlobalMatrix(registry, tran);
+        
+        // Update subtree
+        // Prefering iterative over recursive algorithm to avoid stack overflow
+        std::queue<SPTEntity> entityQueue;
+        entityQueue.push(entity);
+        while (!entityQueue.empty()) {
+
+            const auto& parentTran = registry.get<Transformation>(entityQueue.front());
+            forEachChild(registry, entityQueue.front(), [&registry, &entityQueue, &parentTran, &group] (auto childEntity, Transformation& childTran) {
+                // If child has animators bound it will be updated as part of outer loop
+                if(!group.contains(childEntity)) {
+                    updateGlobalMatrix(childTran, parentTran);
+                    entityQueue.push(childEntity);
+                }
+            });
+            
+            entityQueue.pop();
+        }
+        
+    });
+    
 }
 
 void Transformation::onDestroy(spt::Registry& registry, SPTEntity entity) {
@@ -235,19 +219,20 @@ SPTTranformationNode SPTTransformationGetNode(SPTObject object) {
     if(const auto transformation = spt::Scene::getRegistry(object).try_get<spt::Transformation>(object.entity)) {
         return transformation->node;
     }
-    return SPTTranformationNode {kSPTNullObject, kSPTNullObject, kSPTNullObject, kSPTNullObject};
+    return SPTTranformationNode {kSPTNullEntity, kSPTNullEntity, kSPTNullEntity, kSPTNullEntity};
 }
 
-void SPTTransformationSetParent(SPTObject object, SPTObject parent) {
-    assert(object.sceneHandle == parent.sceneHandle);
-    assert(object.entity != parent.entity);
+void SPTTransformationSetParent(SPTObject object, SPTEntity parentEntity) {
+    assert(object.entity != parentEntity);
     assert(!SPTIsNull(object));
-    assert(!SPTTransformationIsDescendant(parent, object));
+    assert(!SPTTransformationIsDescendant(SPTObject {parentEntity, object.sceneHandle}, object));
     
     auto& registry = spt::Scene::getRegistry(object);
+    assert(registry.valid(parentEntity));
+    
     auto& tran = registry.get<spt::Transformation>(object.entity);
     
-    if(SPTObjectEqual(tran.node.parent, parent)) {
+    if(tran.node.parent == parentEntity) {
         return;
     }
     
@@ -255,23 +240,25 @@ void SPTTransformationSetParent(SPTObject object, SPTObject parent) {
     spt::removeFromParent(registry, object.entity, tran);
     
     // Add to new parent
-    tran.node.prevSibling = kSPTNullObject;
-    if(SPTIsNull(parent)) {
-        tran.node.nextSibling = kSPTNullObject;
+    tran.node.prevSibling = kSPTNullEntity;
+    if(parentEntity == kSPTNullEntity) {
+        tran.node.nextSibling = kSPTNullEntity;
         tran.node.level = 0;
     } else {
-        auto& parentTran = registry.get<spt::Transformation>(parent.entity);
+        auto& parentTran = registry.get<spt::Transformation>(parentEntity);
         tran.node.nextSibling = parentTran.node.firstChild;
         
-        auto& firstChildTran = registry.get<spt::Transformation>(parentTran.node.firstChild.entity);
-        firstChildTran.node.prevSibling = object;
+        if(parentTran.node.firstChild != kSPTNullEntity) {
+            auto& firstChildTran = registry.get<spt::Transformation>(parentTran.node.firstChild);
+            firstChildTran.node.prevSibling = object.entity;
+        }
         
-        parentTran.node.firstChild = object;
+        parentTran.node.firstChild = object.entity;
         ++parentTran.node.childrenCount;
         tran.node.level = parentTran.node.level + 1;
     }
     
-    tran.node.parent = parent;
+    tran.node.parent = parentEntity;
     
     spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, object.entity);
 }
@@ -283,10 +270,15 @@ bool SPTTransformationIsDescendant(SPTObject object, SPTObject ancestor) {
     const auto& registry = spt::Scene::getRegistry(object);
     auto nextAncestorEntity = object.entity;
     while (nextAncestorEntity != kSPTNullEntity) {
-        nextAncestorEntity = registry.get<spt::Transformation>(nextAncestorEntity).node.parent.entity;
+        nextAncestorEntity = registry.get<spt::Transformation>(nextAncestorEntity).node.parent;
         if(nextAncestorEntity == ancestor.entity) {
             return true;
         }
     }
     return false;
+}
+
+simd_float4x4 SPTTransformationGetLocal(SPTObject object) {
+    auto& registry = spt::Scene::getRegistry(object);
+    return registry.get<spt::Transformation>(object.entity).local;
 }

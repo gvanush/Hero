@@ -10,6 +10,7 @@
 #include "Scene.hpp"
 
 #include <entt/entt.hpp>
+#include <limits>
 
 const SPTEntity kSPTNullEntity {entt::null};
 const SPTObject kSPTNullObject {kSPTNullEntity, nullptr};
@@ -25,3 +26,5 @@ bool SPTIsValid(SPTObject object) {
 bool SPTObjectEqual(SPTObject object1, SPTObject object2) {
     return object1.sceneHandle == object2.sceneHandle && object1.entity == object2.entity;
 }
+
+const SPTLookCategories kSPTLookCategoriesAll = std::numeric_limits<SPTLookCategories>::max();

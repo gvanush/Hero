@@ -6,7 +6,7 @@
 //
 
 #import "ShaderTypes.h"
-#import "Materials.h"
+#import "RenderableMaterials.h"
 
 #include <metal_stdlib>
 
@@ -203,6 +203,50 @@ vertex BasicRasterizerData polylineVS(uint vertexID [[vertex_id]],
     return BasicRasterizerData {point};
 }
 
+// MARK: Arc rendering
+vertex BasicRasterizerData arcVS(uint vertexID [[vertex_id]],
+                                      constant ArcUniforms& arc [[buffer(kVertexInputIndexArcUniforms)]],
+                                      constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+                                      constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
+    
+    const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
+    const auto projectionViewModelMatrix = uniforms.projectionViewMatrix * worldMatrix;
+    
+    const auto pointIndex = vertexID / 2;
+    const auto pointAngle = mix(arc.startAngle, arc.endAngle, static_cast<float>(pointIndex) / arc.pointCount);
+    
+    auto point = projectionViewModelMatrix * float4(arc.radius * cos(pointAngle), arc.radius * sin(pointAngle), 0.f, 1.f);
+    point.x *= aspect;
+    
+    const auto adjacentPointAngle = mix(arc.startAngle, arc.endAngle, static_cast<float>(pointIndex + 1) / arc.pointCount);
+    auto adjacentPoint = projectionViewModelMatrix * float4(arc.radius * cos(adjacentPointAngle), arc.radius * sin(adjacentPointAngle), 0.f, 1.f);
+    adjacentPoint.x *= aspect;
+    
+    // When 'w' is negative the resulting ndc z becomes more than 1.
+    // Therefore points are projected to the near plane
+    if (adjacentPoint.w < 0.f) {
+        adjacentPoint = adjacentPoint + (adjacentPoint.z / (adjacentPoint.z - point.z)) * (point - adjacentPoint);
+    }
+    
+    if (point.w < 0.f) {
+        point = point + (point.z / (point.z - adjacentPoint.z)) * (adjacentPoint - point);
+    }
+    
+    // Bring to NDC space
+    point /= point.w;
+    adjacentPoint /= adjacentPoint.w;
+
+    // Calculate segment normal
+    const auto normDir = 1 - 2 * static_cast<int>(vertexID % 2);
+    const auto norm = normDir * normalize(float2 {point.y - adjacentPoint.y, adjacentPoint.x - point.x});
+    
+    const auto thicknessNDCFactor = uniforms.screenScale / max(uniforms.viewportSize.x, uniforms.viewportSize.y);
+    point.xy += (0.5 * arc.thickness * thicknessNDCFactor) * norm;
+    
+    point.x /= aspect;
+    return BasicRasterizerData {point};
+}
+
 // MARK: Point rendering
 typedef struct {
     float4 position [[position]];
@@ -243,12 +287,17 @@ fragment float4 pointFS(PointRasterizerData in [[stage_in]],
 vertex BasicRasterizerData outlineVS(uint vertexID [[vertex_id]],
                                      constant MeshVertex* vertices [[buffer(kVertexInputIndexVertices)]],
                                      constant float4x4& worldMatrix [[buffer(kVertexInputIndexWorldMatrix)]],
+                                     constant float4x4& transposedInverseWorldMatrix [[buffer(kVertexInputIndexTransposedInverseWorldMatrix)]],
                                      constant float& thickness [[buffer(kVertexInputIndexThickness)]],
                                      constant Uniforms& uniforms [[buffer(kVertexInputIndexUniforms)]]) {
     
-    const auto projectionViewModelMatrix = uniforms.projectionViewMatrix * worldMatrix;
-    auto point = projectionViewModelMatrix * float4(vertices[vertexID].position, 1.0);
-    auto nPoint = projectionViewModelMatrix * float4(vertices[vertexID].position + vertices[vertexID].adjacentSurfaceNormalAverage, 1.0);
+
+    auto point = worldMatrix * float4(vertices[vertexID].position, 1.0);
+    auto normal = transposedInverseWorldMatrix * float4(vertices[vertexID].adjacentSurfaceNormalAverage, 0.0);
+    normal.w = 0.0;
+    
+    auto nPoint = uniforms.projectionViewMatrix * (point + normal);
+    point = uniforms.projectionViewMatrix * point;
     
     // Bring to NDC
     const auto aspect = uniforms.viewportSize.x / uniforms.viewportSize.y;
@@ -289,11 +338,10 @@ vertex MeshRasterizerData meshVS(uint vertexID [[vertex_id]],
 
 fragment float4 blinnPhongFS(MeshRasterizerData in [[stage_in]],
                              constant Uniforms& uniforms [[buffer(kFragmentInputIndexUniforms)]],
-                             constant PhongMaterial& material [[buffer(kFragmentInputIndexMaterial)]]) {
+                             constant spt::PhongRenderableMaterial& material [[buffer(kFragmentInputIndexMaterial)]]) {
     constexpr float3 ambientLightColor = {0.3f, 0.3f, 0.3f};
     constexpr float3 lightColor = {0.7f, 0.7f, 0.7f};
-    const float3 lightDirection = normalize(-float3 {1.f, 1.f, 1.f});
-    const auto maxSpecularRoughness = 256.f;
+    const float3 lightDirection = normalize(-float3 {0.8f, 1.2f, 1.f});
     
     const auto fragNormal = normalize(in.normal);
     const auto diffuseFactor = max(0.f, dot(-lightDirection, fragNormal));
@@ -301,8 +349,8 @@ fragment float4 blinnPhongFS(MeshRasterizerData in [[stage_in]],
     
     const auto viewDir = normalize(uniforms.cameraPosition - in.fragWorldPosition);
     const auto reflectDir = reflect(lightDirection, fragNormal);
-    const auto specularFactor = pow(max(dot(viewDir, reflectDir), 0.f), material.specularRoughness);
+    const auto specularFactor = pow(max(dot(viewDir, reflectDir), 0.f), 63.f * material.shininess + 1.f);
     const auto specular = specularFactor * lightColor;
     
-    return float4 ((ambientLightColor + diffuse) * material.color.xyz + (material.specularRoughness / maxSpecularRoughness) * specular, 1.f);
+    return float4 ((ambientLightColor + diffuse) * material.color.xyz + material.shininess * specular, 1.f);
 }

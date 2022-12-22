@@ -35,7 +35,7 @@ void update(spt::Registry& registry, It beginEntity, It endEntity, PG positionUp
     }
 }
 
-simd_float3 getXYZ(const spt::Registry& registry, SPTEntity entity);
+simd_float3 getCartesianCoordinates(const spt::Registry& registry, SPTEntity entity);
 
 }
 

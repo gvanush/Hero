@@ -24,7 +24,20 @@ protocol Displayable {
 
 extension Displayable {
     var displayName: String {
-        String(describing: self).capitalizingFirstLetter()
+        let rawStr = String(describing: self).capitalizingFirstLetter()
+        
+        guard !rawStr.isEmpty else { return "<undefined>" }
+        
+        var displayStr = rawStr.prefix(1).capitalized
+        
+        for c in rawStr[rawStr.index(after: rawStr.startIndex)..<rawStr.endIndex] {
+            if c.isNumber || c.isUppercase {
+                displayStr.append(" ")
+            }
+            displayStr.append(c)
+        }
+        
+        return displayStr
     }
 }
 
@@ -34,4 +47,22 @@ extension Displayable where Self: CaseIterable {
         Self.allCases.map { $0.displayName }
     }
     
+}
+
+struct SizePreferenceKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
+}
+
+struct SizeModifier: ViewModifier {
+    private var sizeView: some View {
+        GeometryReader { geometry in
+            Color.clear.preference(key: SizePreferenceKey.self, value: geometry.size)
+        }
+    }
+
+    func body(content: Content) -> some View {
+        content.background(sizeView)
+    }
 }

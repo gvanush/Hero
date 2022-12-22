@@ -17,18 +17,23 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 SPT_EXTERN_C_BEGIN
 
 typedef enum : uint32_t {
-    _dummy
+    _SPTEntityDummy
 } SPTEntity;
 
-typedef void* SPTSceneHandle;
+typedef void* _Nonnull SPTHandle;
+
+typedef enum : uint32_t {
+    _SPTAnimatorIdDummy
+} SPTAnimatorId;
 
 typedef struct {
     SPTEntity entity;
-    SPTSceneHandle sceneHandle;
+    SPTHandle sceneHandle;
 } SPTObject;
 
 extern const SPTEntity kSPTNullEntity;
@@ -40,7 +45,12 @@ bool SPTIsValid(SPTObject object);
 
 bool SPTObjectEqual(SPTObject object1, SPTObject object2);
 
-typedef void* SPTComponentListener;
-typedef void (*SPTComponentListenerCallback) (SPTComponentListener);
+typedef void* _Nonnull SPTListener;
+
+typedef size_t SPTObserverToken;
+typedef void* _Nullable SPTObserverUserInfo;
+
+typedef uint32_t SPTLookCategories;
+extern const SPTLookCategories kSPTLookCategoriesAll;
 
 SPT_EXTERN_C_END

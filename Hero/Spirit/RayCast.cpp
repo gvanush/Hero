@@ -6,12 +6,11 @@
 //
 
 #include "RayCast.h"
-#include "MeshView.h"
-#include "Generator.hpp"
+#include "MeshLook.h"
 #include "Scene.hpp"
 #include "Transformation.hpp"
 #include "ResourceManager.hpp"
-#include "SIMDUtil.h"
+#include "Vector.h"
 
 #include <entt/entt.hpp>
 
@@ -19,12 +18,6 @@
 namespace spt {
 
 namespace  {
-
-// Assumes that the 'point' is on the 'ray' line
-float computeRayDirectionFactor(const SPTRay& ray, const simd_float3& point) {
-    auto i = SPTMaxComponentIndex(ray.direction);
-    return (point[i] - ray.origin[i]) / ray.direction[i];
-}
 
 struct RayCastResult {
     float rayDirectionFactor;
@@ -47,18 +40,18 @@ RayCastResult rayCastMesh(const Mesh& mesh, const SPTRay& ray, float tolerance) 
     return result;
 }
 
-RayCastResult tryRayCastMeshView(Registry& registry, SPTEntity entity, const SPTRay& ray, float tolerance) {
+RayCastResult tryRayCastMeshLook(Registry& registry, SPTEntity entity, const SPTRay& ray, int rayDirectionMaxComponentIndex, float tolerance) {
     
     RayCastResult result {INFINITY, false};
-    const auto meshView = registry.try_get<SPTMeshView>(entity);
-    if(!meshView) {
+    const auto meshLook = registry.try_get<SPTMeshLook>(entity);
+    if(!meshLook) {
         return result;
     }
     
     const auto& globalMat = registry.get<spt::Transformation>(entity).global;
     SPTRay localRay = SPTRayTransform(ray, simd_inverse(globalMat));
     
-    const auto& mesh = spt::ResourceManager::active().getMesh(meshView->meshId);
+    const auto& mesh = spt::ResourceManager::active().getMesh(meshLook->meshId);
     
     const auto meshRayCastResult = rayCastMesh(mesh, localRay, tolerance);
     
@@ -67,45 +60,13 @@ RayCastResult tryRayCastMeshView(Registry& registry, SPTEntity entity, const SPT
         const auto& point = SPTRayGetPoint(localRay, meshRayCastResult.rayDirectionFactor);
         auto globalPoint = simd_mul(globalMat, simd_make_float4(point, 1.f)).xyz;
         
-        auto rayFactor = computeRayDirectionFactor(ray, globalPoint);;
+        const auto rayFactor = (globalPoint[rayDirectionMaxComponentIndex] - ray.origin[rayDirectionMaxComponentIndex]) / ray.direction[rayDirectionMaxComponentIndex];
         
         if(result.rayDirectionFactor > rayFactor) {
             result.rayDirectionFactor = rayFactor;
             result.intersected = true;
         }
     }
-    
-    return result;
-}
-
-RayCastResult tryRayCastGenerator(Registry& registry, SPTEntity entity, const SPTRay& ray, float tolerance) {
-    
-    RayCastResult result {INFINITY, false};
-    const auto generator = registry.try_get<spt::Generator>(entity);
-    if(!generator) {
-        return result;
-    }
-    const auto& mesh = spt::ResourceManager::active().getMesh(generator->base.sourceMeshId);
-    
-    // TODO: Refactor to access only generator items
-    Transformation::forEachChild(registry, entity, [&registry, &ray, &mesh, &result, tolerance] (auto childEntity, const auto& childTran) {
-        
-        SPTRay localRay = SPTRayTransform(ray, simd_inverse(childTran.global));
-        const auto meshRayCastResult = rayCastMesh(mesh, localRay, tolerance);
-        
-        if(meshRayCastResult.intersected) {
-            
-            const auto& point = SPTRayGetPoint(localRay, meshRayCastResult.rayDirectionFactor);
-            auto globalPoint = simd_mul(childTran.global, simd_make_float4(point, 1.f)).xyz;
-            
-            auto rayFactor = computeRayDirectionFactor(ray, globalPoint);;
-            
-            if(result.rayDirectionFactor > rayFactor) {
-                result.rayDirectionFactor = rayFactor;
-                result.intersected = true;
-            }
-        }
-    });
     
     return result;
 }
@@ -126,23 +87,20 @@ simd_float3 SPTRayGetPoint(SPTRay ray, float factor) {
     return ray.origin + factor * ray.direction;
 }
 
-SPTRayCastResult SPTRayCastScene(SPTSceneHandle sceneHandle, SPTRay ray, float tolerance) {
+SPTRayCastResult SPTRayCastScene(SPTHandle sceneHandle, SPTRay ray, float tolerance) {
     
     auto scene = static_cast<spt::Scene*>(sceneHandle);
     auto& registry = scene->registry;
     
-    spt::Transformation::update(registry, scene->transformationGroup);
+    scene->updateTransformations();
     
     SPTRayCastResult result {kSPTNullObject, INFINITY};
-    registry.view<SPTRayCastable>().each([&registry, &result, ray, tolerance, sceneHandle] (auto entity, auto& rayCastableMesh) {
+    
+    const auto rayDirectionMaxComponentIndex = SPTVectorMaxComponentIndex(ray.direction);
+    
+    registry.view<SPTRayCastable>().each([&registry, &result, ray, tolerance, sceneHandle, rayDirectionMaxComponentIndex] (auto entity, auto& rayCastableMesh) {
         
-        if(const auto& subResult = spt::tryRayCastMeshView(registry, entity, ray, tolerance);
-           subResult.intersected && result.rayDirectionFactor > subResult.rayDirectionFactor) {
-            result.object = SPTObject {entity, sceneHandle};
-            result.rayDirectionFactor = subResult.rayDirectionFactor;
-        }
-        
-        if(const auto& subResult = spt::tryRayCastGenerator(registry, entity, ray, tolerance);
+        if(const auto& subResult = spt::tryRayCastMeshLook(registry, entity, ray, rayDirectionMaxComponentIndex, tolerance);
            subResult.intersected && result.rayDirectionFactor > subResult.rayDirectionFactor) {
             result.object = SPTObject {entity, sceneHandle};
             result.rayDirectionFactor = subResult.rayDirectionFactor;

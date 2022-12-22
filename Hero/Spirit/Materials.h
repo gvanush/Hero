@@ -7,8 +7,25 @@
 
 #pragma once
 
-typedef struct {
-    simd_float4 color;
-    float specularRoughness;
-} PhongMaterial;
+#include "Base.h"
+#include "Color.h"
 
+#include <simd/simd.h>
+
+SPT_EXTERN_C_BEGIN
+
+typedef struct {
+    SPTColor color;
+} SPTPlainColorMaterial;
+
+bool SPTPlainColorMaterialEqual(SPTPlainColorMaterial lhs, SPTPlainColorMaterial rhs);
+
+
+typedef struct {
+    SPTColor color;
+    float shininess;
+} SPTPhongMaterial;
+
+bool SPTPhongMaterialEqual(SPTPhongMaterial lhs, SPTPhongMaterial rhs);
+
+SPT_EXTERN_C_END

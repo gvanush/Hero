@@ -15,15 +15,11 @@ namespace spt {
 class Renderer {
 public:
     
-    Renderer(Registry& registry);
-    
-    void render(void* renderingContext);
+    void render(const Registry& registry, void* renderingContext);
 
     static void init();
     
 private:
-    
-    Registry& _registry;
     Uniforms _uniforms;
 };
 

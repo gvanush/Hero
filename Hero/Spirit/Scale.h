@@ -24,11 +24,28 @@ void SPTScaleMake(SPTObject object, SPTScale scale);
 
 void SPTScaleUpdate(SPTObject object, SPTScale scale);
 
+void SPTScaleDestroy(SPTObject object);
+
 SPTScale SPTScaleGet(SPTObject object);
 
-typedef void (*SPTScaleWillChangeCallback) (SPTComponentListener, SPTScale);
-void SPTScaleAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback);
-void SPTScaleRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTScaleWillChangeCallback callback);
-void SPTScaleRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
+const SPTScale* _Nullable SPTScaleTryGet(SPTObject object);
+
+bool SPTScaleExists(SPTObject object);
+
+typedef void (* _Nonnull SPTScaleWillChangeObserver) (SPTScale, SPTObserverUserInfo);
+SPTObserverToken SPTScaleAddWillChangeObserver(SPTObject object, SPTScaleWillChangeObserver observer, SPTObserverUserInfo userInfo);
+void SPTScaleRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTScaleDidChangeObserver) (SPTScale, SPTObserverUserInfo);
+SPTObserverToken SPTScaleAddDidChangeObserver(SPTObject object, SPTScaleDidChangeObserver observer, SPTObserverUserInfo userInfo);
+void SPTScaleRemoveDidChangeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTScaleDidEmergeObserver) (SPTScale, SPTObserverUserInfo);
+SPTObserverToken SPTScaleAddDidEmergeObserver(SPTObject object, SPTScaleDidEmergeObserver observer, SPTObserverUserInfo userInfo);
+void SPTScaleRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTScaleWillPerishObserver) (SPTObserverUserInfo);
+SPTObserverToken SPTScaleAddWillPerishObserver(SPTObject object, SPTScaleWillPerishObserver observer, SPTObserverUserInfo userInfo);
+void SPTScaleRemoveWillPerishObserver(SPTObject object, SPTObserverToken token);
 
 SPT_EXTERN_C_END

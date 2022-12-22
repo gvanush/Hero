@@ -11,29 +11,47 @@
 #include "Base.hpp"
 #include "Renderer.hpp"
 #include "Transformation.hpp"
+
 #include <entt/entt.hpp>
 #include <tuple>
+#include <vector>
 
 namespace spt {
 
-struct Scene {
-    
+class Scene {
+public:
     Scene();
     ~Scene();
     
-    SPTObject makeObject();
-    static void destroyObject(SPTObject entity);
+    void update(double time);
     
-    void onPrerender();
-    void render(void* renderingContext);
+    void updateTransformations();
     
-    static Registry& getRegistry(SPTObject object) {
-        return static_cast<spt::Scene*>(object.sceneHandle)->registry;
+    void updateLooks();
+    
+    void onPostRender();
+    
+    double time() const { return _time; }
+    
+    static Registry& getRegistry(SPTHandle sceneHandle) {
+        return static_cast<spt::Scene*>(sceneHandle)->registry;
     }
     
+    static Registry& getRegistry(SPTObject object) {
+        return getRegistry(object.sceneHandle);
+    }
+    
+    static void destroyObject(SPTObject object);
+    
+    static void destroyObjectDeferred(SPTObject object);
+    
     Registry registry;
-    Renderer meshRenderer {registry};
-    Transformation::GroupType transformationGroup;
+    
+private:
+    Transformation::GroupType _transformationGroup;
+    std::vector<SPTEntity> _entitiesScheduledToDestroy;
+    std::vector<SPTEntity> _entitiesToDestroy;
+    double _time;
 };
 
 }

@@ -6,56 +6,105 @@
 //
 
 #include "Scene.hpp"
-#include "Generator.hpp"
+#include "Scene.h"
+#include "MeshLook.hpp"
+#include "Action.hpp"
 
 #include <vector>
 
+
 namespace spt {
 
-Scene::Scene()
-: transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()} {
-    registry.on_destroy<Generator>().connect<&Generator::onDestroy>();
-    registry.on_destroy<Transformation>().connect<&Transformation::onDestroy>();
-}
+namespace {
 
-Scene::~Scene() {
-    registry.on_destroy<Generator>().disconnect<&Generator::onDestroy>();
-    registry.on_destroy<Transformation>().disconnect<&Transformation::onDestroy>();
-}
-
-SPTObject Scene::makeObject() {
-    const auto entity = registry.create();
-    registry.emplace<Transformation>(entity);
-    return SPTObject { entity, this };
-}
-
-void Scene::destroyObject(SPTObject object) {
-    assert(!SPTIsNull(object));
+void destroyEntity(Registry& registry, SPTEntity entity) {
+    
     // Removing all 'Transformation' component children as well.
     // Prefering iterative over recursive algorithm to avoid stack overflow.
     // Possibly this can be optimized by vector reserve
-    auto& registry = static_cast<Scene*>(object.sceneHandle)->registry;
-    
-    std::vector<SPTEntity> entities {1, object.entity};
+    std::vector<SPTEntity> entities {1, entity};
     for (std::size_t i = 0; i < entities.size(); ++i) {
         const auto entity = entities[i];
-        Transformation::forEachChild(registry, entity, [&entities] (auto childEntity, const auto&) {
+        spt::Transformation::forEachChild(registry, entity, [&entities] (auto childEntity, const auto&) {
             entities.push_back(childEntity);
         });
     }
     
-    // Destroy children first then parents since children needs to remove itself from the parent
+    // Destroy children first then parents since children need to remove themselves from their parents
     for(auto it = entities.crbegin(); it != entities.crend(); ++it) {
         registry.destroy(*it);
     }
+    
 }
 
-void Scene::onPrerender() {
-    Transformation::update(registry, transformationGroup);
 }
 
-void Scene::render(void* renderingContext) {
-    meshRenderer.render(renderingContext);
+Scene::Scene()
+: _transformationGroup {registry.group<DirtyTransformationFlag, Transformation>()}
+, _time{0.0} {
+    registry.on_destroy<Transformation>().connect<&Transformation::onDestroy>();
+    registry.on_destroy<SPTMeshLook>().connect<&MeshLook::onDestroy>();
 }
 
+Scene::~Scene() {
+    registry.on_destroy<Transformation>().disconnect<&Transformation::onDestroy>();
+    registry.on_destroy<SPTMeshLook>().disconnect<&MeshLook::onDestroy>();
+}
+
+void Scene::update(double time) {
+    _time = time;
+    updateActions(registry, time);
+    updateTransformations();
+    updateLooks();
+}
+
+void Scene::updateTransformations() {
+    Transformation::updateWithoutAnimators(registry, _transformationGroup);
+}
+
+void Scene::updateLooks() {
+    MeshLook::update(registry);
+}
+
+void Scene::onPostRender() {
+    for (auto entity: _entitiesToDestroy) {
+        destroyEntity(registry, entity);
+    }
+    _entitiesToDestroy.clear();
+    _entitiesToDestroy = std::move(_entitiesScheduledToDestroy);
+}
+
+void Scene::destroyObject(SPTObject object) {
+    assert(!SPTIsNull(object));
+    destroyEntity(getRegistry(object), object.entity);
+}
+
+void Scene::destroyObjectDeferred(SPTObject object) {
+    assert(!SPTIsNull(object));
+    static_cast<spt::Scene*>(object.sceneHandle)->_entitiesScheduledToDestroy.push_back(object.entity);
+}
+
+}
+
+SPTHandle SPTSceneMake() {
+    return new spt::Scene();
+}
+
+void SPTSceneDestroy(SPTHandle handle) {
+    delete static_cast<spt::Scene*>(handle);
+}
+
+SPTObject SPTSceneMakeObject(SPTHandle sceneHandle) {
+    auto& registry = spt::Scene::getRegistry(sceneHandle);
+    const auto entity = registry.create();
+    registry.emplace<spt::Transformation>(entity);
+    return SPTObject { entity, sceneHandle };
+}
+
+void SPTSceneDestroyObject(SPTObject object) {
+    spt::Scene::destroyObject(object);
+}
+
+void SPTSceneDestroyObjectDeferred(SPTObject object) {
+    spt::Scene::destroyObjectDeferred(object);
 }

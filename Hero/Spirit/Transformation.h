@@ -11,11 +11,14 @@
 
 #include <simd/simd.h>
 
+
+SPT_EXTERN_C_BEGIN
+
 typedef struct {
-    SPTObject parent;
-    SPTObject prevSibling;
-    SPTObject nextSibling;
-    SPTObject firstChild;
+    SPTEntity parent;
+    SPTEntity prevSibling;
+    SPTEntity nextSibling;
+    SPTEntity firstChild;
     uint16_t childrenCount;
     uint16_t level;
 } SPTTranformationNode;
@@ -23,6 +26,10 @@ typedef struct {
 
 SPTTranformationNode SPTTransformationGetNode(SPTObject object);
 
-void SPTTransformationSetParent(SPTObject object, SPTObject parent);
+void SPTTransformationSetParent(SPTObject object, SPTEntity parentEntity);
 
 bool SPTTransformationIsDescendant(SPTObject object, SPTObject ancestor);
+
+simd_float4x4 SPTTransformationGetLocal(SPTObject object);
+
+SPT_EXTERN_C_END

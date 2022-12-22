@@ -8,50 +8,63 @@
 #pragma once
 
 #include "Base.h"
+#include "CoordinateSystem.h"
 
 #include <simd/simd.h>
 
-
 SPT_EXTERN_C_BEGIN
 
-typedef enum {
-    SPTPositionVariantTagXYZ,
-    SPTPositionVariantTagSpherical,
-} __attribute__((enum_extensibility(closed))) SPTPositionVariantTag;
-
 typedef struct {
-    simd_float3 center;
-    float radius;
-    float longitude; // relative to z
-    float latitude; // relative to y
-} SPTSphericalPosition;
-
-bool SPTSphericalPositionEqual(SPTSphericalPosition lhs, SPTSphericalPosition rhs);
-
-typedef struct {
-    SPTPositionVariantTag variantTag;
+    SPTCoordinateSystem coordinateSystem;
     union {
-        simd_float3 xyz;
-        SPTSphericalPosition spherical;
+        simd_float3 cartesian;
+        SPTLinearCoordinates linear;
+        SPTSphericalCoordinates spherical;
+        SPTCylindricalCoordinates cylindrical;
     };
 } SPTPosition;
 
 bool SPTPositionEqual(SPTPosition lhs, SPTPosition rhs);
 
+SPTPosition SPTPositionAdd(SPTPosition lhs, SPTPosition rhs);
+
+SPTPosition SPTPositionSubtract(SPTPosition lhs, SPTPosition rhs);
+
+SPTPosition SPTPositionMultiplyScalar(SPTPosition position, float scalar);
+
 void SPTPositionMake(SPTObject object, SPTPosition position);
-void SPTPositionMakeXYZ(SPTObject object, simd_float3 xyz);
-void SPTPositionMakeSpherical(SPTObject object, SPTSphericalPosition spherical);
 
 void SPTPositionUpdate(SPTObject object, SPTPosition position);
 
+void SPTPositionDestroy(SPTObject object);
+
 SPTPosition SPTPositionGet(SPTObject object);
-simd_float3 SPTPositionGetXYZ(SPTObject object);
 
-simd_float3 SPTPositionConvertSphericalToXYZ(SPTSphericalPosition sphericalPosition);
+const SPTPosition* _Nullable SPTPositionTryGet(SPTObject object);
 
-typedef void (*SPTPositionWillChangeCallback) (SPTComponentListener, SPTPosition);
-void SPTPositionAddWillChangeListener(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback);
-void SPTPositionRemoveWillChangeListenerCallback(SPTObject object, SPTComponentListener listener, SPTPositionWillChangeCallback callback);
-void SPTPositionRemoveWillChangeListener(SPTObject object, SPTComponentListener listener);
+bool SPTPositionExists(SPTObject object);
+
+simd_float3 SPTPositionGetOrigin(SPTPosition position);
+
+SPTPosition SPTPositionToCartesian(SPTPosition position);
+SPTPosition SPTPositionToLinear(SPTPosition position, simd_float3 origin);
+SPTPosition SPTPositionToSpherical(SPTPosition position, simd_float3 origin);
+SPTPosition SPTPositionToCylindrical(SPTPosition position, simd_float3 origin);
+
+typedef void (* _Nonnull SPTPositionWillChangeObserver) (SPTPosition, SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddWillChangeObserver(SPTObject object, SPTPositionWillChangeObserver observer, SPTObserverUserInfo userInfo);
+void SPTPositionRemoveWillChangeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTPositionDidChangeObserver) (SPTPosition, SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddDidChangeObserver(SPTObject object, SPTPositionDidChangeObserver observer, SPTObserverUserInfo userInfo);
+void SPTPositionRemoveDidChangeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTPositionDidEmergeObserver) (SPTPosition, SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddDidEmergeObserver(SPTObject object, SPTPositionDidEmergeObserver observer, SPTObserverUserInfo userInfo);
+void SPTPositionRemoveDidEmergeObserver(SPTObject object, SPTObserverToken token);
+
+typedef void (* _Nonnull SPTPositionWillPerishObserver) (SPTObserverUserInfo);
+SPTObserverToken SPTPositionAddWillPerishObserver(SPTObject object, SPTPositionWillPerishObserver observer, SPTObserverUserInfo userInfo);
+void SPTPositionRemoveWillPerishObserver(SPTObject object, SPTObserverToken token);
 
 SPT_EXTERN_C_END

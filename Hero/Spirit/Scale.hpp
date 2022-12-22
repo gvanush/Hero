@@ -17,7 +17,9 @@ namespace Scale {
     
     template <typename It>
     static void make(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale);
-    
+        
+    simd_float3 getXYZ(const spt::Registry& registry, SPTEntity entity);
+
 }
 
 template <typename It>
