@@ -10,9 +10,9 @@ import Combine
 
 
 enum CylindricalPositionComponentProperty: Int, CaseIterable, Displayable {
-    case longitude
     case radius
     case height
+    case longitude
 }
 
 class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentProperty> {
@@ -41,7 +41,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         
         _cylindricalPosition = .init(object: object, keyPath: \.cylindrical)
         
-        super.init(selectedProperty: .longitude, parent: parent)
+        super.init(selectedProperty: .radius, parent: parent)
         
         _cylindricalPosition.publisher = self.objectWillChange
         
@@ -78,14 +78,15 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPosition.make(.init(cartesian: cylindricalPosition.origin), object: guidePointObject)
         
         origin = CartesianPositionComponent(title: "Origin", editingParamsKeyPath: \.[cartesianPositionOf: guidePointObject], object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
+        origin.objectSelectionColor = UIColor.guide1Light
         
         let cancellable = origin.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
             var pointLook = SPTPointLook.get(object: guidePointObject)
             if isDisclosed {
-                pointLook.color = UIColor.selectedGuideColor.rgba
+                pointLook.color = UIColor.guide1Light.rgba
                 self.sceneViewModel.focusedObject = guidePointObject
             } else {
-                pointLook.color = UIColor.guideColor.rgba
+                pointLook.color = UIColor.guide1.rgba
                 // If this component still 'owns' focused object then revert to the source object otherwise
                 // leave as it is. This is relevant when component is closed when entire component tree is removed
                 // from the screen
@@ -103,12 +104,12 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     }
     
     override func onDisclose() {
-        SPTPointLook.make(.init(color: UIColor.guideColor.rgba, size: .guidePointLargeSize, categories: LookCategories.guide.rawValue), object: origin.object)
-        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
+        SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointLargeSize, categories: LookCategories.guide.rawValue), object: origin.object)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
         SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
-        SPTPointLook.make(.init(color: UIColor.inactiveGuideColor.rgba, size: .guidePointSmallSize), object: circleCenterObject)
+        SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointSmallSize), object: circleCenterObject)
         
         updateSelectedGuideObject(selectedProperty: selectedProperty!)
     }
@@ -206,17 +207,17 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         
         switch selectedProperty {
         case .longitude:
-            radiusLineLook.color = UIColor.guideColor.rgba
-            heightLineLook.color = UIColor.guideColor.rgba
-            circleLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
+            radiusLineLook.color = UIColor.guide1.rgba
+            heightLineLook.color = UIColor.guide2.rgba
+            circleLook.color = isActive ? UIColor.guide3Light.rgba : UIColor.guide3.rgba
         case .radius:
-            radiusLineLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
-            heightLineLook.color = UIColor.guideColor.rgba
-            circleLook.color = UIColor.guideColor.rgba
+            radiusLineLook.color = isActive ? UIColor.guide1Light.rgba : UIColor.guide1.rgba
+            heightLineLook.color = UIColor.guide2.rgba
+            circleLook.color = UIColor.guide3.rgba
         case .height:
-            radiusLineLook.color = UIColor.guideColor.rgba
-            heightLineLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
-            circleLook.color = UIColor.guideColor.rgba
+            radiusLineLook.color = UIColor.guide1.rgba
+            heightLineLook.color = isActive ? UIColor.guide2Light.rgba : UIColor.guide2.rgba
+            circleLook.color = UIColor.guide3.rgba
         }
         
         SPTPolylineLook.update(radiusLineLook, object: self.radiusLineObject)

@@ -32,8 +32,8 @@ class LinearPositionAnimatorBindingsComponent: Component {
     }
     
     override func onDisclose() {
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: lineGuideObject)
-        SPTPointLook.make(.init(color: UIColor.inactiveGuideColor.rgba, size: .guidePointLargeSize), object: originGuideObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: lineGuideObject)
+        SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointLargeSize), object: originGuideObject)
     }
     
     override func onClose() {

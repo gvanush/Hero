@@ -10,9 +10,9 @@ import Combine
 
 
 enum SphericalPositionComponentProperty: Int, CaseIterable, Displayable {
+    case radius
     case latitude
     case longitude
-    case radius
 }
 
 class SphericalPositionComponent: BasicComponent<SphericalPositionComponentProperty> {
@@ -39,7 +39,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         
         _sphericalPosition = .init(object: object, keyPath: \.spherical)
         
-        super.init(selectedProperty: .latitude, parent: parent)
+        super.init(selectedProperty: .radius, parent: parent)
         
         _sphericalPosition.publisher = self.objectWillChange
         
@@ -73,14 +73,15 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         SPTPosition.make(.init(cartesian: sphericalPosition.origin), object: guidePointObject)
         
         origin = CartesianPositionComponent(title: "Origin", editingParamsKeyPath: \.[cartesianPositionOf: guidePointObject], object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
+        origin.objectSelectionColor = UIColor.guide1Light
         
         let cancellable = origin.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
             var pointLook = SPTPointLook.get(object: guidePointObject)
             if isDisclosed {
-                pointLook.color = UIColor.selectedGuideColor.rgba
+                pointLook.color = UIColor.guide1Light.rgba
                 self.sceneViewModel.focusedObject = guidePointObject
             } else {
-                pointLook.color = UIColor.guideColor.rgba
+                pointLook.color = UIColor.guide1.rgba
                 // If this component still 'owns' focused object then revert to the source object otherwise
                 // leave as it is. This is relevant when component is closed when entire component tree is removed
                 // from the screen
@@ -98,10 +99,10 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
     }
     
     override func onDisclose() {
-        SPTPointLook.make(.init(color: UIColor.guideColor.rgba, size: .guidePointLargeSize, categories: LookCategories.guide.rawValue), object: origin.object)
-        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: latitudeCircleObject)
-        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: longitudeCircleObject)
-        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
+        SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointLargeSize, categories: LookCategories.guide.rawValue), object: origin.object)
+        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: latitudeCircleObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: longitudeCircleObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
         
         updateSelectedGuideObject(selectedProperty: selectedProperty!)
     }
@@ -191,17 +192,17 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
 
         switch selectedProperty {
         case .latitude:
-            radiusLineLook.color = UIColor.guideColor.rgba
-            latitudeCircleLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
-            longitudeCircleLook.color = UIColor.guideColor.rgba
+            radiusLineLook.color = UIColor.guide1.rgba
+            latitudeCircleLook.color = isActive ? UIColor.guide2Light.rgba : UIColor.guide2.rgba
+            longitudeCircleLook.color = UIColor.guide3.rgba
         case .longitude:
-            radiusLineLook.color = UIColor.guideColor.rgba
-            latitudeCircleLook.color = UIColor.guideColor.rgba
-            longitudeCircleLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
+            radiusLineLook.color = UIColor.guide1.rgba
+            latitudeCircleLook.color = UIColor.guide2.rgba
+            longitudeCircleLook.color = isActive ? UIColor.guide3Light.rgba : UIColor.guide3.rgba
         case .radius:
-            radiusLineLook.color = isActive ? UIColor.selectedGuideColor.rgba : UIColor.guideColor.rgba
-            latitudeCircleLook.color = UIColor.guideColor.rgba
-            longitudeCircleLook.color = UIColor.guideColor.rgba
+            radiusLineLook.color = isActive ? UIColor.guide1Light.rgba : UIColor.guide1.rgba
+            latitudeCircleLook.color = UIColor.guide2.rgba
+            longitudeCircleLook.color = UIColor.guide3.rgba
         }
 
         SPTPolylineLook.update(radiusLineLook, object: self.radiusLineObject)

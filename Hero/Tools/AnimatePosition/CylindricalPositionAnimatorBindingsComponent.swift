@@ -40,10 +40,10 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
     }
     
     override func onDisclose() {
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
-        SPTPointLook.make(.init(color: UIColor.inactiveGuideColor.rgba, size: .guidePointSmallSize), object: circleCenterObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
+        SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointSmallSize), object: circleCenterObject)
     }
     
     override func onClose() {
@@ -83,7 +83,7 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
         "Animators"
     }
     
-    override var subcomponents: [Component]? { [longitude, radius, height] }
+    override var subcomponents: [Component]? { [radius, height, longitude] }
     
 }
 
@@ -117,6 +117,9 @@ class CylindricalPositionHeightAnimatorBindingComponent: ObjectDistanceAnimatorB
         }
 
         super.init(normAxisDirection: .up, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].height, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        
+        guideColor = .guide2Dark
+        selectedGuideColor = .guide2Light
     }
     
 }
@@ -132,6 +135,9 @@ class CylindricalPositionLongitudetAnimatorBindingComponent: ObjectAngleAnimator
         }
 
         super.init(origin: .init(x: position.cylindrical.origin.x, y: position.cylindrical.origin.y + position.cylindrical.height, z: position.cylindrical.origin.z), normRotationAxis: .up, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        
+        guideColor = .guide3Dark
+        selectedGuideColor = .guide3Light
     }
     
 }

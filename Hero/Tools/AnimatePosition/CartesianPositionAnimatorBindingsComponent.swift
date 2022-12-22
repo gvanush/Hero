@@ -43,9 +43,9 @@ class CartesianPositionAnimatorBindingsComponent: Component {
     }
     
     override func onDisclose() {
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: xAxisObject)
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: zAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: xAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.yAxis.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: zAxisObject)
     }
     
     override func onClose() {
@@ -109,6 +109,20 @@ class CartesianPositionFieldAnimatorBindingComponent: ObjectDistanceAnimatorBind
         }
         
         super.init(normAxisDirection: axisDirection, editingParamsKeyPath: editingParamsKeyPath, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        
+        switch animatableProperty {
+        case .cartesianPositionX:
+            guideColor = .xAxisDark
+            selectedGuideColor = .xAxisLight
+        case .cartesianPositionY:
+            guideColor = .yAxisDark
+            selectedGuideColor = .yAxisLight
+        case .cartesianPositionZ:
+            guideColor = .zAxisDark
+            selectedGuideColor = .zAxisLight
+        default:
+            fatalError()
+        }
         
     }
     

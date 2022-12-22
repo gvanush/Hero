@@ -16,6 +16,8 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     private var lineObject: SPTObject!
     private var point0Object: SPTObject!
     private var point1Object: SPTObject!
+    var guideColor: UIColor = .guide1Dark
+    var selectedGuideColor: UIColor = .guide1Light
     private var bindingWillChangeSubscription: SPTAnySubscription?
     
     init(normAxisDirection: simd_float3, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
@@ -43,16 +45,16 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
                 
                 switch selectedProperty {
                 case .valueAt0:
-                    point0Look.color = UIColor.selectedGuideColor.rgba
-                    point1Look.color = UIColor.guideColor.rgba
+                    point0Look.color = selectedGuideColor.rgba
+                    point1Look.color = guideColor.rgba
                     sceneViewModel.focusedObject = point0Object
                 case .valueAt1:
-                    point0Look.color = UIColor.guideColor.rgba
-                    point1Look.color = UIColor.selectedGuideColor.rgba
+                    point0Look.color = guideColor.rgba
+                    point1Look.color = selectedGuideColor.rgba
                     sceneViewModel.focusedObject = point1Object
                 case .animator:
-                    point0Look.color = UIColor.guideColor.rgba
-                    point1Look.color = UIColor.guideColor.rgba
+                    point0Look.color = guideColor.rgba
+                    point1Look.color = guideColor.rgba
                     sceneViewModel.focusedObject = object
                 case .none:
                     fatalError()
@@ -66,10 +68,10 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     
     override func onDisclose() {
 
-        let point0Color = (selectedProperty == .valueAt0 ? UIColor.selectedGuideColor : UIColor.guideColor).rgba
+        let point0Color = (selectedProperty == .valueAt0 ? selectedGuideColor : guideColor).rgba
         SPTPointLook.make(.init(color: point0Color, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: point0Object)
         
-        let point1Color = (selectedProperty == .valueAt1 ? UIColor.selectedGuideColor : UIColor.guideColor).rgba
+        let point1Color = (selectedProperty == .valueAt1 ? selectedGuideColor : guideColor).rgba
         SPTPointLook.make(.init(color: point1Color, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: point1Object)
         
         switch selectedProperty {
@@ -96,7 +98,7 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     }
     
     override func onVisible() {
-        SPTPolylineLook.make(.init(color: UIColor.guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
+        SPTPolylineLook.make(.init(color: guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
     }
     
     override func onInvisible() {
@@ -165,12 +167,12 @@ struct DistanceAnimatorBindingComponentView: View {
                 FloatSelector(value: $component.binding.valueAt0, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping), formatter: Formatters.distance) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-                .tint(Color.selectedGuideColor)
+                .tint(Color(uiColor: component.selectedGuideColor))
             case .valueAt1:
                 FloatSelector(value: $component.binding.valueAt1, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping), formatter: Formatters.distance) { editingState in
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-                .tint(Color.selectedGuideColor)
+                .tint(Color(uiColor: component.selectedGuideColor))
             case .none:
                 EmptyView()
             }

@@ -15,6 +15,7 @@ class CartesianPositionComponent: BasicComponent<Axis> {
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     let distanceFormatter = Formatters.distance
+    var objectSelectionColor = UIColor.primarySelectionColor
 
     @SPTObservedComponent private(set) var position: SPTPosition
     private var guideObject: SPTObject?
@@ -124,7 +125,7 @@ struct CartesianPositionComponentView: View {
                 EmptyView()
             }
         }
-        .tint(Color.primarySelectionColor)
+        .tint(Color(uiColor: component.objectSelectionColor))
         .transition(.identity)
     }
     

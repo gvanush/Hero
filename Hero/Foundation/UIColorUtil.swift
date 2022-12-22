@@ -59,16 +59,28 @@ extension UIColor {
     
     static let primarySelectionColor = UIColor.orange
     static let primaryLightSelectionColor = UIColor.yellow
-    static let guideColor = UIColor(named: "guideColor")!
-    static let selectedGuideColor = UIColor(named: "selectedGuideColor")!
-    static let inactiveGuideColor = UIColor(named: "inactiveGuideColor")!
     
-    static let xAxis = UIColor(named: "XAxisColor")!
-    static let xAxisLight = UIColor(named: "XAxisLightColor")!
+    static let xAxis = UIColor(named: "xAxisColor")!
+    static let xAxisLight = UIColor(named: "xAxisLightColor")!
+    static let xAxisDark = UIColor(named: "xAxisDarkColor")!
     
-    static let yAxis = UIColor(named: "YAxisColor")!
-    static let yAxisLight = UIColor(named: "YAxisLightColor")!
+    static let yAxis = UIColor(named: "yAxisColor")!
+    static let yAxisLight = UIColor(named: "yAxisLightColor")!
+    static let yAxisDark = UIColor(named: "yAxisDarkColor")!
     
-    static let zAxis = UIColor(named: "ZAxisColor")!
-    static let zAxisLight = UIColor(named: "ZAxisLightColor")!
+    static let zAxis = UIColor(named: "zAxisColor")!
+    static let zAxisLight = UIColor(named: "zAxisLightColor")!
+    static let zAxisDark = UIColor(named: "zAxisDarkColor")!
+    
+    static let guide1 = UIColor(named: "guide1Color")!
+    static let guide1Light = UIColor(named: "guide1LightColor")!
+    static let guide1Dark = UIColor(named: "guide1DarkColor")!
+    
+    static let guide2 = UIColor(named: "guide2Color")!
+    static let guide2Light = UIColor(named: "guide2LightColor")!
+    static let guide2Dark = UIColor(named: "guide2DarkColor")!
+    
+    static let guide3 = UIColor(named: "guide3Color")!
+    static let guide3Light = UIColor(named: "guide3LightColor")!
+    static let guide3Dark = UIColor(named: "guide3DarkColor")!
 }

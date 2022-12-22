@@ -41,10 +41,10 @@ class SphericalPositionAnimatorBindingsComponent: Component {
     }
     
     override func onDisclose() {
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: latitudeCircleObject)
-        SPTPolylineLook.make(.init(color: UIColor.inactiveGuideColor.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: longitudeCircleObject)
-        SPTPointLook.make(.init(color: UIColor.inactiveGuideColor.rgba, size: .guidePointLargeSize), object: originObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: latitudeCircleObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: longitudeCircleObject)
+        SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointLargeSize), object: originObject)
     }
     
     override func onClose() {
@@ -89,7 +89,7 @@ class SphericalPositionAnimatorBindingsComponent: Component {
         "Animators"
     }
     
-    override var subcomponents: [Component]? { [latitude, longitude, radius] }
+    override var subcomponents: [Component]? { [radius, latitude, longitude] }
     
 }
 
@@ -102,9 +102,12 @@ class SphericalPositionLatitudeAnimatorBindingComponent: ObjectAngleAnimatorBind
         guard animatableProperty == .sphericalPositionLatitude && position.coordinateSystem == .spherical else {
             fatalError()
         }
-
+        
         let angle = 0.5 * Float.pi + position.spherical.longitude
         super.init(origin: position.spherical.origin, normRotationAxis: .init(x: sinf(angle), y: 0.0, z: cosf(angle)), editingParamsKeyPath: \.[sphericalPositionBindingOf: object].latitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        
+        guideColor = .guide2Dark
+        selectedGuideColor = .guide2Light
     }
     
 }
@@ -121,6 +124,9 @@ class SphericalPositionLongitudeAnimatorBindingComponent: ObjectAngleAnimatorBin
 
         let origin = simd_float3(x: position.spherical.origin.x, y: position.spherical.toCartesian.y, z: position.spherical.origin.z)
         super.init(origin: origin, normRotationAxis: .up, editingParamsKeyPath: \.[sphericalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        
+        guideColor = .guide3Dark
+        selectedGuideColor = .guide3Light
     }
     
 }

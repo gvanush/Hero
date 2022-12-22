@@ -18,6 +18,8 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
     private var point0Object: SPTObject!
     private var point1Object: SPTObject!
     private var arcObject: SPTObject!
+    var guideColor: UIColor = .guide1Dark
+    var selectedGuideColor: UIColor = .guide1Light
     private var bindingWillChangeSubscription: SPTAnySubscription?
     
     init(origin: simd_float3, normRotationAxis: simd_float3, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
@@ -46,16 +48,16 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
                 
                 switch selectedProperty {
                 case .valueAt0:
-                    point0Look.color = UIColor.selectedGuideColor.rgba
-                    point1Look.color = UIColor.guideColor.rgba
+                    point0Look.color = selectedGuideColor.rgba
+                    point1Look.color = guideColor.rgba
                     sceneViewModel.focusedObject = point0Object
                 case .valueAt1:
-                    point0Look.color = UIColor.guideColor.rgba
-                    point1Look.color = UIColor.selectedGuideColor.rgba
+                    point0Look.color = guideColor.rgba
+                    point1Look.color = selectedGuideColor.rgba
                     sceneViewModel.focusedObject = point1Object
                 case .animator:
-                    point0Look.color = UIColor.guideColor.rgba
-                    point1Look.color = UIColor.guideColor.rgba
+                    point0Look.color = guideColor.rgba
+                    point1Look.color = guideColor.rgba
                     sceneViewModel.focusedObject = object
                 case .none:
                     fatalError()
@@ -69,10 +71,10 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
     
     override func onDisclose() {
 
-        let point0Color = (selectedProperty == .valueAt0 ? UIColor.selectedGuideColor : UIColor.guideColor).rgba
+        let point0Color = (selectedProperty == .valueAt0 ? selectedGuideColor : guideColor).rgba
         SPTPointLook.make(.init(color: point0Color, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: point0Object)
         
-        let point1Color = (selectedProperty == .valueAt1 ? UIColor.selectedGuideColor : UIColor.guideColor).rgba
+        let point1Color = (selectedProperty == .valueAt1 ? selectedGuideColor : guideColor).rgba
         SPTPointLook.make(.init(color: point1Color, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: point1Object)
         
         switch selectedProperty {
@@ -103,7 +105,7 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
         let objectPosVec = SPTPosition.get(object: object).toCartesian.cartesian - origin
         let arcRadius = simd_length(objectPosVec)
         
-        SPTArcLook.make(.init(color: UIColor.guideColor.rgba, radius: arcRadius, startAngle: binding.valueAt0, endAngle: binding.valueAt1, thickness: .guideLineBoldThickness), object: arcObject)
+        SPTArcLook.make(.init(color: guideColor.rgba, radius: arcRadius, startAngle: binding.valueAt0, endAngle: binding.valueAt1, thickness: .guideLineBoldThickness), object: arcObject)
         
         let orthoNormal = SPTMatrix3x3.createOrthonormal(normDirection: normRotationAxis, axis: .X)
         let orthoNormalTranspose = simd_transpose(orthoNormal)
@@ -116,7 +118,7 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
             let p1 = orthoNormal * SPTMatrix3x3.createEulerRotationX(newValue.valueAt1) * orthoNormalTranspose * objectPosVec
             SPTPosition.update(.init(cartesian: origin + p1), object: point1Object)
 
-            SPTArcLook.update(.init(color: UIColor.guideColor.rgba, radius: arcRadius, startAngle: newValue.valueAt0, endAngle: newValue.valueAt1, thickness: .guideLineBoldThickness), object: arcObject)
+            SPTArcLook.update(.init(color: guideColor.rgba, radius: arcRadius, startAngle: newValue.valueAt0, endAngle: newValue.valueAt1, thickness: .guideLineBoldThickness), object: arcObject)
         })
         
     }
@@ -178,12 +180,12 @@ struct AngleAnimatorBindingComponentView: View {
                 FloatSelector(value: $component.binding.valueAt0InDegrees, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping), formatter: Formatters.angle) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-                .tint(Color.selectedGuideColor)
+                .tint(Color(uiColor: component.selectedGuideColor))
             case .valueAt1:
                 FloatSelector(value: $component.binding.valueAt1InDegrees, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping), formatter: Formatters.angle) { editingState in
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-                .tint(Color.selectedGuideColor)
+                .tint(Color(uiColor: component.selectedGuideColor))
             case .none:
                 EmptyView()
             }
