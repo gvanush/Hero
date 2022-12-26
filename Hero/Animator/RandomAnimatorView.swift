@@ -63,18 +63,16 @@ struct RandomAnimatorComponentView: View {
     @State private var isSnappingEnabled = true
     
     var body: some View {
-        if let property = component.selectedProperty {
-            Group {
-                switch property {
-                case .seed:
-                    RandomSeedSelector(seed: $component.seed)
-                case .frequency:
-                    FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
-                }
+        Group {
+            switch component.selectedProperty {
+            case .seed:
+                RandomSeedSelector(seed: $component.seed)
+            case .frequency:
+                FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
             }
-            .tint(.primary)
-            .transition(.identity)
         }
+        .tint(.primary)
+        .transition(.identity)
     }
     
 }

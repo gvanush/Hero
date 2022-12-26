@@ -73,20 +73,18 @@ struct NoiseAnimatorComponentView: View {
     @State private var isSnappingEnabled = true
     
     var body: some View {
-        if let property = component.selectedProperty {
-            Group {
-                switch property {
-                case .seed:
-                    RandomSeedSelector(seed: $component.seed)
-                case .frequency:
-                    FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
-                case .interpolation:
-                    EasingSelector(easing: $component.interpolation)
-                }
+        Group {
+            switch component.selectedProperty {
+            case .seed:
+                RandomSeedSelector(seed: $component.seed)
+            case .frequency:
+                FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
+            case .interpolation:
+                EasingSelector(easing: $component.interpolation)
             }
-            .tint(.primary)
-            .transition(.identity)
         }
+        .tint(.primary)
+        .transition(.identity)
     }
     
 }

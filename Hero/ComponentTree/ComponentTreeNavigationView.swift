@@ -240,7 +240,7 @@ struct PropertyTreeNavigationVIew_Previews: PreviewProvider {
     
         let name: String
         
-        init(name: String, selectedProperty: P?, parent: Component?) {
+        init(name: String, selectedProperty: P, parent: Component?) {
             self.name = name
             super.init(selectedProperty: selectedProperty, parent: parent)
         }

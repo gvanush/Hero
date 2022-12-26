@@ -22,7 +22,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
     
-    override var selectedProperty: AnimatorBindingComponentProperty? {
+    override var selectedProperty: AnimatorBindingComponentProperty {
         didSet {
             if isActive {
                 updateLookPropertyValue()
@@ -58,7 +58,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     }
 
     private func updateLookPropertyValue() {
-        switch selectedProperty! {
+        switch selectedProperty {
         case .valueAt0:
             updateGuideShininess(self.binding.valueAt0)
         case .valueAt1:
@@ -102,8 +102,6 @@ struct ShininessAnimatorBindingComponentView: View {
                     userInteractionState.isEditing = isEditing
                 }
                 .tint(Color.primarySelectionColor)
-            case .none:
-                EmptyView()
             }
         }
         .transition(.identity)

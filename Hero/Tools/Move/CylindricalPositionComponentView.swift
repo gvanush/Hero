@@ -59,7 +59,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
             guard isDisclosed else {
                 return
             }
-            updateSelectedGuideObject(selectedProperty: newValue!)
+            updateSelectedGuideObject(selectedProperty: newValue)
         })
     }
     
@@ -111,7 +111,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
         SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointSmallSize), object: circleCenterObject)
         
-        updateSelectedGuideObject(selectedProperty: selectedProperty!)
+        updateSelectedGuideObject(selectedProperty: selectedProperty)
     }
     
     override func onClose() {
@@ -124,11 +124,11 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     }
     
     override func onActive() {
-        updateSelectedGuideObject(selectedProperty: selectedProperty!)
+        updateSelectedGuideObject(selectedProperty: selectedProperty)
     }
     
     override func onInactive() {
-        updateSelectedGuideObject(selectedProperty: selectedProperty!)
+        updateSelectedGuideObject(selectedProperty: selectedProperty)
     }
     
     override var title: String {
@@ -249,8 +249,6 @@ struct CylindricalPositionComponentView: View {
                 FloatSelector(value: $component.cylindricalPosition.height, scale: $editingParams[cylindricalPositionOf: component.object].height.scale, isSnappingEnabled: $editingParams[cylindricalPositionOf: component.object].height.isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-            case .none:
-                fatalError()
             }
         }
         .tint(Color.primarySelectionColor)

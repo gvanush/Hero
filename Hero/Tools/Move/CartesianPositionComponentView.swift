@@ -38,7 +38,7 @@ class CartesianPositionComponent: BasicComponent<Axis> {
         get { position.cartesian }
     }
     
-    override var selectedProperty: Axis? {
+    override var selectedProperty: Axis {
         didSet {
             if isActive {
                 removeGuideObjects()
@@ -75,8 +75,6 @@ class CartesianPositionComponent: BasicComponent<Axis> {
             SPTPosition.make(.init(x: cartesian.x, y: cartesian.y, z: 0.0), object: object)
             SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: object)
             SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: object)
-        case .none:
-            fatalError()
         }
 
         guideObject = object
@@ -121,8 +119,6 @@ struct CartesianPositionComponentView: View {
                 FloatSelector(value: $component.cartesian.z, scale: editingParamBinding(keyPath: \.z.scale), isSnappingEnabled: editingParamBinding(keyPath: \.z.isSnapping), formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-            case .none:
-                EmptyView()
             }
         }
         .tint(Color(uiColor: component.objectSelectionColor))

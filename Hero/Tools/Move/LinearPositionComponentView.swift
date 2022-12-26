@@ -169,8 +169,6 @@ struct LinearPositionComponentView: View {
                 FloatSelector(value: $component.linearPosition.offset, scale: $editingParams[linearPositionOf: component.object].factor.scale, isSnappingEnabled: $editingParams[linearPositionOf: component.object].factor.isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-            case .none:
-                fatalError()
             }
         }
         .tint(Color.primarySelectionColor)

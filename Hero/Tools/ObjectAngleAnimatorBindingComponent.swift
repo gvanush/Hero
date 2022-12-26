@@ -39,7 +39,7 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
         SPTSceneProxy.destroyObject(arcObject)
     }
     
-    override var selectedProperty: AnimatorBindingComponentProperty? {
+    override var selectedProperty: AnimatorBindingComponentProperty {
         didSet {
             if isDisclosed {
                 
@@ -59,8 +59,6 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
                     point0Look.color = guideColor.rgba
                     point1Look.color = guideColor.rgba
                     sceneViewModel.focusedObject = object
-                case .none:
-                    fatalError()
                 }
                 
                 SPTPointLook.update(point0Look, object: point0Object)
@@ -84,8 +82,6 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
             sceneViewModel.focusedObject = point1Object
         case .animator:
             break
-        case .none:
-            fatalError()
         }
     }
     
@@ -186,8 +182,6 @@ struct AngleAnimatorBindingComponentView: View {
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color(uiColor: component.selectedGuideColor))
-            case .none:
-                EmptyView()
             }
         }
         .transition(.identity)

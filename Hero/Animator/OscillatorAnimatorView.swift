@@ -63,18 +63,16 @@ struct OscillatorAnimatorComponentView: View {
     @State private var isSnappingEnabled = true
     
     var body: some View {
-        if let property = component.selectedProperty {
-            Group {
-                switch property {
-                case .frequency:
-                    FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
-                case .interpolation:
-                    EasingSelector(easing: $component.interpolation)
-                }
+        Group {
+            switch component.selectedProperty {
+            case .frequency:
+                FloatSelector(value: $component.frequency, valueTransformer: .frequency, scale: $scale, isSnappingEnabled: $isSnappingEnabled, formatter: component.frequencyFormatter)
+            case .interpolation:
+                EasingSelector(easing: $component.interpolation)
             }
-            .tint(.primary)
-            .transition(.identity)
         }
+        .tint(.primary)
+        .transition(.identity)
     }
     
 }

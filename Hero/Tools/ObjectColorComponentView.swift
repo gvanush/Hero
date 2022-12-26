@@ -53,8 +53,6 @@ struct ObjectRGBAColorComponentView<C>: View where C: SPTObservableComponent {
                 RGBColorSelector(rgbaColor: $component.color, channel: .blue) { isEditing in
                     userInteractionState.isEditing = isEditing
                 }
-            case .none:
-                EmptyView()
             }
         }
         .tint(.primarySelectionColor)
@@ -106,8 +104,6 @@ struct ObjectHSBAColorComponentView<C>: View where C: SPTObservableComponent {
                 HSBColorSelector(hsbaColor: $component.color, channel: .brightness) { isEditing in
                     userInteractionState.isEditing = isEditing
                 }
-            case .none:
-                EmptyView()
             }
         }
         .tint(.primarySelectionColor)

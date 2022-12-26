@@ -135,9 +135,9 @@ class Component: Identifiable, ObservableObject, Equatable {
 
 class BasicComponent<P>: Component where P: RawRepresentable & CaseIterable & Displayable, P.RawValue == Int {
     
-    @Published var selectedProperty: P?
+    @Published var selectedProperty: P
     
-    init(selectedProperty: P?, parent: Component?) {
+    init(selectedProperty: P, parent: Component?) {
         self.selectedProperty = selectedProperty
         super.init(parent: parent)
     }
@@ -148,10 +148,10 @@ class BasicComponent<P>: Component where P: RawRepresentable & CaseIterable & Di
     
     override var selectedPropertyIndex: Int? {
         set {
-            selectedProperty = .init(rawValue: newValue)
+            selectedProperty = .init(rawValue: newValue)!
         }
         get {
-            selectedProperty?.rawValue
+            selectedProperty.rawValue
         }
     }
     

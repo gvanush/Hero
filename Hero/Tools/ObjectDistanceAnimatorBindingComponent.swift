@@ -36,7 +36,7 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
         SPTSceneProxy.destroyObject(point1Object)
     }
     
-    override var selectedProperty: AnimatorBindingComponentProperty? {
+    override var selectedProperty: AnimatorBindingComponentProperty {
         didSet {
             if isDisclosed {
                 
@@ -56,8 +56,6 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
                     point0Look.color = guideColor.rgba
                     point1Look.color = guideColor.rgba
                     sceneViewModel.focusedObject = object
-                case .none:
-                    fatalError()
                 }
                 
                 SPTPointLook.update(point0Look, object: point0Object)
@@ -81,8 +79,6 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
             sceneViewModel.focusedObject = point1Object
         case .animator:
             break
-        case .none:
-            fatalError()
         }
     }
     
@@ -173,8 +169,6 @@ struct DistanceAnimatorBindingComponentView: View {
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color(uiColor: component.selectedGuideColor))
-            case .none:
-                EmptyView()
             }
         }
         .transition(.identity)

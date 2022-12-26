@@ -54,8 +54,6 @@ struct ShadeComponentView: View {
                     userInteractionState.isEditing = isEditing
                 }
                 .tint(.primarySelectionColor)
-            case .none:
-                EmptyView()
             }
         }
         .transition(.identity)

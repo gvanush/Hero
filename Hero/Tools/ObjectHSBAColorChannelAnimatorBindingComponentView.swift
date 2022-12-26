@@ -30,7 +30,7 @@ class ObjectHSBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
     
-    override var selectedProperty: AnimatorBindingComponentProperty? {
+    override var selectedProperty: AnimatorBindingComponentProperty {
         didSet {
             if isActive {
                 updateChannelValue()
@@ -137,7 +137,7 @@ class ObjectHSBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
     }
 
     private func updateChannelValue() {
-        switch selectedProperty! {
+        switch selectedProperty {
         case .valueAt0:
             updateGuideChannel(self.binding.valueAt0)
         case .valueAt1:
@@ -181,8 +181,6 @@ struct ObjectHSBAColorChannelAnimatorBindingComponentView: View {
                     userInteractionState.isEditing = isEditing
                 }
                 .tint(Color.primarySelectionColor)
-            case .none:
-                EmptyView()
             }
         }
         .transition(.identity)

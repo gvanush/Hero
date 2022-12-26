@@ -56,7 +56,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
             guard isDisclosed else {
                 return
             }
-            updateSelectedGuideObject(selectedProperty: newValue!)
+            updateSelectedGuideObject(selectedProperty: newValue)
         })
     }
     
@@ -104,7 +104,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: longitudeCircleObject)
         SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
         
-        updateSelectedGuideObject(selectedProperty: selectedProperty!)
+        updateSelectedGuideObject(selectedProperty: selectedProperty)
     }
     
     override func onClose() {
@@ -115,11 +115,11 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
     }
     
     override func onActive() {
-        updateSelectedGuideObject(selectedProperty: selectedProperty!)
+        updateSelectedGuideObject(selectedProperty: selectedProperty)
     }
     
     override func onInactive() {
-        updateSelectedGuideObject(selectedProperty: selectedProperty!)
+        updateSelectedGuideObject(selectedProperty: selectedProperty)
     }
     
     override var title: String {
@@ -238,8 +238,6 @@ struct SphericalPositionComponentView: View {
                 FloatSelector(value: $component.sphericalPosition.radius, scale: $editingParams[sphericalPositionOf: component.object].radius.scale, isSnappingEnabled: $editingParams[sphericalPositionOf: component.object].radius.isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
-            case .none:
-                fatalError()
             }
         }
         .tint(Color.primarySelectionColor)
