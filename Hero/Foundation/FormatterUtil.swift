@@ -11,7 +11,7 @@ enum Formatters {
 
     static let distance = BasicFloatFormatter()
     
-    static let scaleField = BasicFloatFormatter()
+    static let scale = BasicFloatFormatter()
     
     static let angle = AngleFormatter()
     

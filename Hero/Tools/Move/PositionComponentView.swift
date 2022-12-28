@@ -115,10 +115,6 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
         }
     }
     
-    override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
-        provider.viewFor(self)
-    }
-    
 }
 
 

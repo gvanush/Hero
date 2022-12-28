@@ -45,10 +45,6 @@ class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
     override func viewFor(_ component: ObjectHSBAColorChannelAnimatorBindingComponent) -> AnyView? {
         AnyView(ObjectHSBAColorChannelAnimatorBindingComponentView(component: component))
     }
-    
-    override func viewFor(_ component: PositionComponent) -> AnyView? {
-        AnyView(PositionComponentView(component: component, viewProvider: self))
-    }
 
     override func viewFor(_ component: CartesianPositionComponent) -> AnyView? {
         AnyView(CartesianPositionComponentView(component: component))

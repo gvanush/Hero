@@ -41,46 +41,44 @@ class CartesianPositionComponent: BasicComponent<Axis> {
     override var selectedProperty: Axis {
         didSet {
             if isActive {
-                removeGuideObjects()
-                setupGuideObjects()
+                removeGuideObject()
+                setupGuideObject()
             }
         }
     }
     
     override func onActive() {
-        setupGuideObjects()
+        setupGuideObject()
     }
     
     override func onInactive() {
-        removeGuideObjects()
+        removeGuideObject()
     }
     
-    func setupGuideObjects() {
+    func setupGuideObject() {
 
-        let object = sceneViewModel.scene.makeObject()
-        SPTScale.make(.init(x: 500.0), object: object)
-        SPTLineLookDepthBias.make(.guideLineLayer3, object: object)
+        let guide = sceneViewModel.scene.makeObject()
+        SPTPosition.make(SPTPosition.get(object: object), object: guide)
+        SPTLineLookDepthBias.make(.guideLineLayer3, object: guide)
 
         switch selectedProperty {
         case .x:
-            SPTPosition.make(.init(x: 0.0, y: cartesian.y, z: cartesian.z), object: object)
-            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: object)
+            SPTScale.make(.init(x: 500.0), object: guide)
+            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
             
         case .y:
-            SPTPosition.make(.init(x: cartesian.x, y: 0.0, z: cartesian.z), object: object)
-            SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, 0.0, Float.pi * 0.5), order: .XYZ)), object: object)
-            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: object)
+            SPTScale.make(.init(y: 500.0), object: guide)
+            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
             
         case .z:
-            SPTPosition.make(.init(x: cartesian.x, y: cartesian.y, z: 0.0), object: object)
-            SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: object)
-            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: object)
+            SPTScale.make(.init(z: 500.0), object: guide)
+            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.zAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
         }
 
-        guideObject = object
+        guideObject = guide
     }
     
-    func removeGuideObjects() {
+    func removeGuideObject() {
         guard let object = guideObject else { return }
         SPTSceneProxy.destroyObject(object)
         guideObject = nil

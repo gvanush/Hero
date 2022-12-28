@@ -46,7 +46,7 @@
 		B7235851275D34D000337547 /* Polyline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723584F275D34D000337547 /* Polyline.cpp */; };
 		B7235855275E984500337547 /* PolylineLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7235853275E984500337547 /* PolylineLook.cpp */; };
 		B723585A275F51F700337547 /* coordinate_grid.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7235859275F4EE500337547 /* coordinate_grid.obj */; };
-		B723585C2761189E00337547 /* line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723585B2761173800337547 /* line.obj */; };
+		B723585C2761189E00337547 /* x_axis_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B723585B2761173800337547 /* x_axis_line.obj */; };
 		B723585F2762844700337547 /* LineLookDepthBias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B723585D2762844700337547 /* LineLookDepthBias.cpp */; };
 		B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7235860276F2BEC00337547 /* OutlineLook.cpp */; };
 		B73245B027410CA400708909 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73245AE27410CA400708909 /* Scene.cpp */; };
@@ -143,6 +143,9 @@
 		B7BCB11A27D4D58D00F5AFB1 /* ObjectSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
 		B7BCB11E27D75A6A00F5AFB1 /* SPTSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11D27D75A6A00F5AFB1 /* SPTSubscription.swift */; };
+		B7BECC3D295C76600091A96F /* ScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC3C295C76600091A96F /* ScaleComponentView.swift */; };
+		B7BECC40295C83CC0091A96F /* y_axis_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7BECC3E295C83CC0091A96F /* y_axis_line.obj */; };
+		B7BECC41295C83CC0091A96F /* z_axis_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7BECC3F295C83CC0091A96F /* z_axis_line.obj */; };
 		B7C7489B28D1A3EE00E270FB /* NewObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489A28D1A3EE00E270FB /* NewObjectView.swift */; };
 		B7C7489D28D2FFC700E270FB /* SceneUIToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489C28D2FFC700E270FB /* SceneUIToggle.swift */; };
 		B7C7489F28E2D7D200E270FB /* MoveToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489E28E2D7D100E270FB /* MoveToolView.swift */; };
@@ -182,7 +185,7 @@
 		B7FD15A4292E7ECF00B6E7DC /* LinearPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */; };
 		B7FD15A6293505C700B6E7DC /* CylindricalPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A5293505C700B6E7DC /* CylindricalPositionComponentView.swift */; };
 		B7FD15A829351CB200B6E7DC /* PositionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15A729351CB200B6E7DC /* PositionUtil.swift */; };
-		B7FD15AA29352AE300B6E7DC /* half_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7FD15A929352AE300B6E7DC /* half_line.obj */; };
+		B7FD15AA29352AE300B6E7DC /* x_axis_half_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7FD15A929352AE300B6E7DC /* x_axis_half_line.obj */; };
 		B7FD15AC29354CF100B6E7DC /* circle_outline.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7FD15AB29354CF100B6E7DC /* circle_outline.obj */; };
 		B7FD15AE2935D67700B6E7DC /* SphericalPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15AD2935D67700B6E7DC /* SphericalPositionComponentView.swift */; };
 		B7FD15B029388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15AF29388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift */; };
@@ -250,7 +253,7 @@
 		B7235853275E984500337547 /* PolylineLook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PolylineLook.cpp; sourceTree = "<group>"; };
 		B7235854275E984500337547 /* PolylineLook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PolylineLook.h; sourceTree = "<group>"; };
 		B7235859275F4EE500337547 /* coordinate_grid.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = coordinate_grid.obj; sourceTree = "<group>"; };
-		B723585B2761173800337547 /* line.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = line.obj; sourceTree = "<group>"; };
+		B723585B2761173800337547 /* x_axis_line.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = x_axis_line.obj; sourceTree = "<group>"; };
 		B723585D2762844700337547 /* LineLookDepthBias.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LineLookDepthBias.cpp; sourceTree = "<group>"; };
 		B723585E2762844700337547 /* LineLookDepthBias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineLookDepthBias.h; sourceTree = "<group>"; };
 		B7235860276F2BEC00337547 /* OutlineLook.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OutlineLook.cpp; sourceTree = "<group>"; };
@@ -385,6 +388,9 @@
 		B7BCB11927D4D58C00F5AFB1 /* ObjectSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSelector.swift; sourceTree = "<group>"; };
 		B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObjectUtil.swift; sourceTree = "<group>"; };
 		B7BCB11D27D75A6A00F5AFB1 /* SPTSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTSubscription.swift; sourceTree = "<group>"; };
+		B7BECC3C295C76600091A96F /* ScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleComponentView.swift; sourceTree = "<group>"; };
+		B7BECC3E295C83CC0091A96F /* y_axis_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = y_axis_line.obj; sourceTree = "<group>"; };
+		B7BECC3F295C83CC0091A96F /* z_axis_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = z_axis_line.obj; sourceTree = "<group>"; };
 		B7C7489828D0427900E270FB /* AnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBinding.hpp; sourceTree = "<group>"; };
 		B7C7489928D0EF9C00E270FB /* Orientation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Orientation.hpp; sourceTree = "<group>"; };
 		B7C7489A28D1A3EE00E270FB /* NewObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewObjectView.swift; sourceTree = "<group>"; };
@@ -436,7 +442,7 @@
 		B7FD15A3292E7ECF00B6E7DC /* LinearPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPositionComponentView.swift; sourceTree = "<group>"; };
 		B7FD15A5293505C700B6E7DC /* CylindricalPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylindricalPositionComponentView.swift; sourceTree = "<group>"; };
 		B7FD15A729351CB200B6E7DC /* PositionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionUtil.swift; sourceTree = "<group>"; };
-		B7FD15A929352AE300B6E7DC /* half_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = half_line.obj; sourceTree = "<group>"; };
+		B7FD15A929352AE300B6E7DC /* x_axis_half_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = x_axis_half_line.obj; sourceTree = "<group>"; };
 		B7FD15AB29354CF100B6E7DC /* circle_outline.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = circle_outline.obj; sourceTree = "<group>"; };
 		B7FD15AD2935D67700B6E7DC /* SphericalPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphericalPositionComponentView.swift; sourceTree = "<group>"; };
 		B7FD15AF29388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
@@ -548,8 +554,10 @@
 				B7235843275691C000337547 /* cone.obj */,
 				B72358472756928F00337547 /* sphere.obj */,
 				B7235859275F4EE500337547 /* coordinate_grid.obj */,
-				B723585B2761173800337547 /* line.obj */,
-				B7FD15A929352AE300B6E7DC /* half_line.obj */,
+				B723585B2761173800337547 /* x_axis_line.obj */,
+				B7BECC3E295C83CC0091A96F /* y_axis_line.obj */,
+				B7BECC3F295C83CC0091A96F /* z_axis_line.obj */,
+				B7FD15A929352AE300B6E7DC /* x_axis_half_line.obj */,
 				B7FD15AB29354CF100B6E7DC /* circle_outline.obj */,
 				B718419A29535420002AD7D1 /* torus.obj */,
 			);
@@ -834,6 +842,15 @@
 			name = Metadata;
 			sourceTree = "<group>";
 		};
+		B7BECC3B295C76280091A96F /* Scale */ = {
+			isa = PBXGroup;
+			children = (
+				B7C748A028E377F600E270FB /* ScaleToolView.swift */,
+				B7BECC3C295C76600091A96F /* ScaleComponentView.swift */,
+			);
+			path = Scale;
+			sourceTree = "<group>";
+		};
 		B7C90C6E2950F93700A2850E /* Action */ = {
 			isa = PBXGroup;
 			children = (
@@ -976,12 +993,12 @@
 				B7FD15B62939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift */,
 				B70A6B24293E1C910092FDE1 /* ObjectAngleAnimatorBindingComponent.swift */,
 				B7FD159E292E47D200B6E7DC /* Move */,
+				B7BECC3B295C76280091A96F /* Scale */,
 				B7643B32290BE85700F6A05B /* AnimatePosition */,
 				B7643B3A290FAAAA00F6A05B /* Shade */,
 				B70ABF2A291D75F500919F50 /* AnimateShade */,
 				B7EDBDBA28EE97D70048EF93 /* ToolSelector.swift */,
 				B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */,
-				B7C748A028E377F600E270FB /* ScaleToolView.swift */,
 				B7C748A228E37C0D00E270FB /* OrientToolView.swift */,
 				B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */,
 			);
@@ -1085,11 +1102,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7FD15AC29354CF100B6E7DC /* circle_outline.obj in Resources */,
-				B723585C2761189E00337547 /* line.obj in Resources */,
+				B723585C2761189E00337547 /* x_axis_line.obj in Resources */,
+				B7BECC40295C83CC0091A96F /* y_axis_line.obj in Resources */,
 				B723585A275F51F700337547 /* coordinate_grid.obj in Resources */,
 				B723583E2756147200337547 /* plane.obj in Resources */,
-				B7FD15AA29352AE300B6E7DC /* half_line.obj in Resources */,
+				B7FD15AA29352AE300B6E7DC /* x_axis_half_line.obj in Resources */,
 				B72358422756902F00337547 /* cylinder.obj in Resources */,
+				B7BECC41295C83CC0091A96F /* z_axis_line.obj in Resources */,
 				B72358482756928F00337547 /* sphere.obj in Resources */,
 				B723584027568C6300337547 /* cube.obj in Resources */,
 				B718419B29535420002AD7D1 /* torus.obj in Resources */,
@@ -1188,6 +1207,7 @@
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
+				B7BECC3D295C76600091A96F /* ScaleComponentView.swift in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B7643B3E2910509F00F6A05B /* ObjectColorComponentView.swift in Sources */,
 				B7C90C742951911D00A2850E /* ActionUtil.swift in Sources */,

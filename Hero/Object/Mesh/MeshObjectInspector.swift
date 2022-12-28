@@ -52,7 +52,7 @@ class MeshObjectInspectorModel: ObservableObject {
     }
     
     // MARK: Scale
-    let scaleFormatter = Formatters.scaleField
+    let scaleFormatter = Formatters.scale
     
     var scale: SPTScale {
         SPTScale.get(object: object)
@@ -60,7 +60,8 @@ class MeshObjectInspectorModel: ObservableObject {
     
     func editScale(axis: Axis, dismiss: DismissAction) {
         rootViewModel.activeToolViewModel = rootViewModel.scaleToolViewModel
-        rootViewModel.scaleToolViewModel.selectedObjectViewModel!.axis = axis
+        // TODO
+//        rootViewModel.scaleToolViewModel.selectedObjectViewModel!.axis = axis
         dismiss()
     }
     

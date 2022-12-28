@@ -40,8 +40,8 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
     }
     
     override func onDisclose() {
-        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
         SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
         SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointSmallSize), object: circleCenterObject)
     }
@@ -66,8 +66,7 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
         var heightLinePosition = SPTPosition.get(object: object)
         heightLinePosition.cylindrical.height = 0.0
         SPTPosition.make(heightLinePosition, object: heightLineObject)
-        SPTScale.make(.init(x: 500.0), object: heightLineObject)
-        SPTOrientation.make(.init(z: 0.5 * Float.pi), object: heightLineObject)
+        SPTScale.make(.init(y: 500.0), object: heightLineObject)
         
         let circleCenterPosition = SPTPosition(cartesian: .init(x: cylindricalPosition.origin.x, y: cylindricalPosition.origin.y + cylindricalPosition.height, z: cylindricalPosition.origin.z))
         circleObject = sceneViewModel.scene.makeObject()

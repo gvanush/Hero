@@ -31,8 +31,6 @@ class ComponentViewProvider<RC> {
 
     func viewFor(_ component: ObjectHSBAColorChannelAnimatorBindingComponent) -> AnyView? { nil }
     
-    func viewFor(_ component: PositionComponent) -> AnyView? { nil }
-    
     func viewFor(_ component: CartesianPositionComponent) -> AnyView? { nil }
     
     func viewFor(_ component: LinearPositionComponent) -> AnyView? { nil }

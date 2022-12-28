@@ -94,7 +94,7 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     }
     
     override func onVisible() {
-        SPTPolylineLook.make(.init(color: guideColor.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
+        SPTPolylineLook.make(.init(color: guideColor.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
     }
     
     override func onInvisible() {

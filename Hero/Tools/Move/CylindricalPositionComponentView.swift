@@ -105,10 +105,10 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     
     override func onDisclose() {
         SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointLargeSize, categories: LookCategories.guide.rawValue), object: origin.object)
-        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: heightLineObject)
         SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: circleObject)
-        SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
         SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointSmallSize), object: circleCenterObject)
         
         updateSelectedGuideObject(selectedProperty: selectedProperty)
@@ -174,8 +174,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         var heightLinePosition = SPTPosition.get(object: object)
         heightLinePosition.cylindrical.height = 0.0
         SPTPosition.make(heightLinePosition, object: heightLineObject)
-        SPTScale.make(.init(x: 500.0), object: heightLineObject)
-        SPTOrientation.make(.init(z: 0.5 * Float.pi), object: heightLineObject)
+        SPTScale.make(.init(y: 500.0), object: heightLineObject)
         SPTLineLookDepthBias.make(.guideLineLayer2, object: heightLineObject)
     }
     
@@ -195,8 +194,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     private func setupYAxis() {
         yAxisObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(origin.position, object: yAxisObject)
-        SPTScale.make(.init(x: 500.0), object: yAxisObject)
-        SPTOrientation.make(.init(z: Float.pi * 0.5), object: yAxisObject)
+        SPTScale.make(.init(y: 500.0), object: yAxisObject)
         SPTLineLookDepthBias.make(.guideLineLayer2, object: yAxisObject)
     }
     

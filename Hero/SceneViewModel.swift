@@ -14,8 +14,10 @@ fileprivate let cameraInitialOreintation = SPTOrientation(target: .zero, up: .up
 class SceneViewModel: ObservableObject {
     
     let scene = SPTSceneProxy()
-    let lineMeshId: SPTMeshId
-    let halfLineMeshId: SPTMeshId
+    let xAxisLineMeshId: SPTMeshId
+    let yAxisLineMeshId: SPTMeshId
+    let zAxisLineMeshId: SPTMeshId
+    let xAxisHalfLineMeshId: SPTMeshId
     let circleOutlineMeshId: SPTMeshId
     
     private var prevDragValue: DragGesture.Value?
@@ -71,11 +73,11 @@ class SceneViewModel: ObservableObject {
     init() {
 
         // Setup meshes
-        let linePath = Bundle.main.path(forResource: "line", ofType: "obj")!
-        lineMeshId = SPTCreatePolylineFromFile(linePath)
+        xAxisLineMeshId = SPTCreatePolylineFromFile(Bundle.main.path(forResource: "x_axis_line", ofType: "obj")!)
+        yAxisLineMeshId = SPTCreatePolylineFromFile(Bundle.main.path(forResource: "y_axis_line", ofType: "obj")!)
+        zAxisLineMeshId = SPTCreatePolylineFromFile(Bundle.main.path(forResource: "z_axis_line", ofType: "obj")!)
         
-        let halfLinePath = Bundle.main.path(forResource: "half_line", ofType: "obj")!
-        halfLineMeshId = SPTCreatePolylineFromFile(halfLinePath)
+        xAxisHalfLineMeshId = SPTCreatePolylineFromFile(Bundle.main.path(forResource: "x_axis_half_line", ofType: "obj")!)
         
         let circleOutlinePath = Bundle.main.path(forResource: "circle_outline", ofType: "obj")!
         circleOutlineMeshId = SPTCreatePolylineFromFile(circleOutlinePath)
@@ -94,15 +96,13 @@ class SceneViewModel: ObservableObject {
         
         // Setup coordinate axis
         let xAxisObject = scene.makeObject()
-        SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: xAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: xAxisObject)
         SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: xAxisObject)
         SPTLineLookDepthBias.make(.guideLineLayer1, object: xAxisObject)
         
         let zAxisObject = scene.makeObject()
-        SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: lineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: zAxisObject)
-        
-        SPTScale.make(.init(xyz: simd_float3(500.0, 1.0, 1.0)), object: zAxisObject)
-        SPTOrientation.make(.init(euler: .init(rotation: .init(0.0, Float.pi * 0.5, 0.0), order: .XYZ)), object: zAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: zAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: zAxisObject)
+        SPTScale.make(.init(xyz: simd_float3(1.0, 1.0, 500.0)), object: zAxisObject)
         SPTLineLookDepthBias.make(.guideLineLayer1, object: zAxisObject)
         
     }
