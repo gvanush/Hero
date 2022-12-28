@@ -30,6 +30,8 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
         
         super.init(parent: parent)
         
+        _position.publisher = self.objectWillChange
+        
         SPTPosition.make(position, object: originPointObject)
         positionSubscription = SPTPosition.onDidChangeSink(object: object) { [unowned self] oldValue in
             SPTPosition.update(position, object: self.originPointObject)
@@ -128,7 +130,7 @@ struct PositionComponentView<RC>: View {
     var body: some View {
         component.activeComponent.accept(viewProvider)
             .actionBarObjectSection {
-                ActionBarMenu(iconName: "slider.horizontal.3", selected: $component.coordinateSystem)
+                ActionBarMenu(title: "Coordinate System", iconName: "slider.horizontal.3", selected: $component.coordinateSystem)
                     .tag(component.id)
             }
             .onAppear {

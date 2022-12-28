@@ -24,7 +24,7 @@ namespace Scale {
 
 template <typename It>
 void Scale::make(spt::Registry& registry, It beginEntity, It endEntity, simd_float3 scale) {
-    registry.insert(beginEntity, endEntity, SPTScale{scale});
+    registry.insert(beginEntity, endEntity, SPTScale{SPTScaleModelXYZ, .xyz = scale});
     for(auto it = beginEntity; it != endEntity; ++it) {
         spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, *it);
     }

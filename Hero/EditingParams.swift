@@ -81,10 +81,14 @@ struct ObjectPropertySphericalPositionEditingParams {
     var radius = ObjectPropertyFloatEditingParams()
 }
 
-struct ObjectPropertyScaleEditingParams: ObjectPropertyVectorEditingParams {
+struct ObjectPropertyXYZScaleEditingParams: ObjectPropertyVectorEditingParams {
     var x = ObjectPropertyFloatEditingParams()
     var y = ObjectPropertyFloatEditingParams()
     var z = ObjectPropertyFloatEditingParams()
+}
+
+struct ObjectPropertyUniformScaleEditingParams {
+    var uniform = ObjectPropertyFloatEditingParams()
 }
 
 struct ObjectPropertyRotationEditingParams: ObjectPropertyVectorEditingParams {
@@ -163,21 +167,30 @@ class ObjectPropertyEditingParams: ObservableObject {
     }
     
     // MARK: Scale
-    @Published private var scaleParams = [SPTObject : ObjectPropertyScaleEditingParams]()
+    @Published private var xyzScaleParams = [SPTObject : ObjectPropertyXYZScaleEditingParams]()
     
-    subscript(scaleOf object: SPTObject, axis axis: Axis) -> ObjectPropertyFloatEditingParams {
+    subscript(xyzScaleOf object: SPTObject) -> ObjectPropertyXYZScaleEditingParams {
         get {
-            scaleParams[object, default: .init()][axis]
+            xyzScaleParams[object, default: .init()]
         }
         set {
-            var params = scaleParams[object, default: .init()]
-            params[axis] = newValue
-            scaleParams[object] = params
+            xyzScaleParams[object] = newValue
+        }
+    }
+    
+    @Published private var uniformScaleParams = [SPTObject : ObjectPropertyUniformScaleEditingParams]()
+
+    subscript(uniformScaleOf object: SPTObject) -> ObjectPropertyUniformScaleEditingParams {
+        get {
+            uniformScaleParams[object, default: .init()]
+        }
+        set {
+            uniformScaleParams[object] = newValue
         }
     }
     
     // MARK: Rotation
-    @Published private var rotationParams = [SPTObject : ObjectPropertyScaleEditingParams]()
+    @Published private var rotationParams = [SPTObject : ObjectPropertyRotationEditingParams]()
     
     subscript(rotationOf object: SPTObject, axis axis: Axis) -> ObjectPropertyFloatEditingParams {
         get {
@@ -242,7 +255,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         cylindricalPositionParams[duplicate] = cylindricalPositionParams[original]
         sphericalPositionParams[duplicate] = sphericalPositionParams[original]
         
-        scaleParams[duplicate] = scaleParams[original]
+        xyzScaleParams[duplicate] = xyzScaleParams[original]
         rotationParams[duplicate] = rotationParams[original]
         cartesianPositionBindingParams[duplicate] = cartesianPositionBindingParams[original]
         linearPositionBindingParams[duplicate] = linearPositionBindingParams[original]
@@ -256,7 +269,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         cylindricalPositionParams.removeValue(forKey: object)
         sphericalPositionParams.removeValue(forKey: object)
         
-        scaleParams.removeValue(forKey: object)
+        xyzScaleParams.removeValue(forKey: object)
         rotationParams.removeValue(forKey: object)
         cartesianPositionBindingParams.removeValue(forKey: object)
         linearPositionBindingParams.removeValue(forKey: object)

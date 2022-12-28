@@ -11,7 +11,7 @@ import Combine
 class ScaleToolComponentViewProvider: MeshObjectComponentViewProvider<ScaleComponent> {
     
     override func viewForRoot(_ root: ScaleComponent) -> AnyView? {
-        AnyView(ScaleComponentView(component: root))
+        AnyView(ScaleComponentView(component: root, viewProvider: self))
     }
     
 }

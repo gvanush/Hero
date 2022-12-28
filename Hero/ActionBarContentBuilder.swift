@@ -70,11 +70,13 @@ struct ActionBarButton: ActionBarItem {
 struct ActionBarMenu<O>: ActionBarItem
 where O: CaseIterable, O.AllCases: RandomAccessCollection, O: Identifiable, O: Equatable, O: Hashable, O: Displayable {
 
+    let title: String
     let iconName: String
     let disabled: Bool
     let selected: Binding<O>
     
-    init(iconName: String, disabled: Bool = false, selected: Binding<O>) {
+    init(title: String, iconName: String, disabled: Bool = false, selected: Binding<O>) {
+        self.title = title
         self.iconName = iconName
         self.disabled = disabled
         self.selected = selected
@@ -90,16 +92,18 @@ where O: CaseIterable, O.AllCases: RandomAccessCollection, O: Identifiable, O: E
     
     var view: some View {
         Menu(content: {
-            ForEach(O.allCases) { option in
-                Button {
-                    selected.wrappedValue = option
-                } label: {
-                    HStack {
-                        Text(option.displayName)
-                        Spacer()
-                        if selected.wrappedValue == option {
-                            Image(systemName: "checkmark.circle")
-                                .imageScale(.small)
+            Section(title) {
+                ForEach(O.allCases) { option in
+                    Button {
+                        selected.wrappedValue = option
+                    } label: {
+                        HStack {
+                            Text(option.displayName)
+                            Spacer()
+                            if selected.wrappedValue == option {
+                                Image(systemName: "checkmark.circle")
+                                    .imageScale(.small)
+                            }
                         }
                     }
                 }

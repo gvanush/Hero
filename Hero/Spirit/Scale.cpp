@@ -14,7 +14,12 @@ namespace spt::Scale {
 
 simd_float3 getXYZ(const spt::Registry& registry, SPTEntity entity) {
     if(const auto scale = registry.try_get<SPTScale>(entity); scale) {
-        return scale->xyz;
+        switch (scale->model) {
+            case SPTScaleModelXYZ:
+                return scale->xyz;
+            case SPTScaleModelUniform:
+                return {scale->uniform, scale->uniform, scale->uniform};
+        }
     }
     return {1.f, 1.f, 1.f};
 }
@@ -23,7 +28,17 @@ simd_float3 getXYZ(const spt::Registry& registry, SPTEntity entity) {
 
 
 bool SPTScaleEqual(SPTScale lhs, SPTScale rhs) {
-    return simd_equal(lhs.xyz, rhs.xyz);
+    if(lhs.model != rhs.model) {
+        return false;
+    }
+    
+    switch (lhs.model) {
+        case SPTScaleModelXYZ:
+            return simd_equal(lhs.xyz, rhs.xyz);
+        case SPTScaleModelUniform: {
+            return lhs.uniform == rhs.uniform;
+        }
+    }
 }
 
 void SPTScaleMake(SPTObject object, SPTScale scale) {

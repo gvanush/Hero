@@ -194,7 +194,7 @@ struct ActionBar_Previews: PreviewProvider {
                             ActionBarButton(iconName: "plus") {
                                 
                             }
-                            ActionBarMenu(iconName: "circle", selected: $axis)
+                            ActionBarMenu(title: "Model", iconName: "circle", selected: $axis)
                         }
                     
                     ActionBar(model: actionBarModel)

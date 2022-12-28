@@ -199,7 +199,7 @@ struct ObjectColorComponentView<C, RC>: View where C: SPTObservableComponent {
     var body: some View {
         component.activeComponent.accept(viewProvider)
             .actionBarObjectSection {
-                ActionBarMenu(iconName: "slider.horizontal.3", selected: $component.colorModel)
+                ActionBarMenu(title: "Color Model", iconName: "slider.horizontal.3", selected: $component.colorModel)
                     .tag(component.id)
             }
             .onAppear {

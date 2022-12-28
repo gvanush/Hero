@@ -22,6 +22,22 @@ inline static simd_float3 SPTVectorDegreesToRadians(simd_float3 deg) {
     return deg * M_PI / 180.f;
 }
 
+inline static float SPTVectorMaxComponent(simd_float3 vec) {
+    if(vec.x < vec.y) {
+        return (vec.y < vec.z ? vec.z : vec.y);
+    } else {
+        return (vec.x < vec.z ? vec.z : vec.x);
+    }
+}
+
+inline static float SPTVectorMinComponent(simd_float3 vec) {
+    if(vec.x < vec.y) {
+        return (vec.x < vec.z ? vec.x : vec.z);
+    } else {
+        return (vec.y < vec.z ? vec.y : vec.z);
+    }
+}
+
 inline static int SPTVectorMaxComponentIndex(simd_float3 vec) {
     if(vec.x < vec.y) {
         return (vec.y < vec.z ? 2 : 1);

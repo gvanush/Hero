@@ -36,6 +36,18 @@ enum SPTVector {
     
 }
 
+extension simd_float3 {
+    
+    var minComponent: Float {
+        SPTVectorMinComponent(self)
+    }
+    
+    var maxComponent: Float {
+        SPTVectorMaxComponent(self)
+    }
+    
+}
+
 extension simd_float4 {
     
     var xyz: simd_float3 {

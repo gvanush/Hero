@@ -146,6 +146,9 @@
 		B7BECC3D295C76600091A96F /* ScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC3C295C76600091A96F /* ScaleComponentView.swift */; };
 		B7BECC40295C83CC0091A96F /* y_axis_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7BECC3E295C83CC0091A96F /* y_axis_line.obj */; };
 		B7BECC41295C83CC0091A96F /* z_axis_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7BECC3F295C83CC0091A96F /* z_axis_line.obj */; };
+		B7BECC43295C9E6D0091A96F /* XYZScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC42295C9E6D0091A96F /* XYZScaleComponentView.swift */; };
+		B7BECC45295C9F9D0091A96F /* UniformScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC44295C9F9D0091A96F /* UniformScaleComponentView.swift */; };
+		B7BECC47295CAA600091A96F /* ScaleUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC46295CAA600091A96F /* ScaleUtil.swift */; };
 		B7C7489B28D1A3EE00E270FB /* NewObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489A28D1A3EE00E270FB /* NewObjectView.swift */; };
 		B7C7489D28D2FFC700E270FB /* SceneUIToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489C28D2FFC700E270FB /* SceneUIToggle.swift */; };
 		B7C7489F28E2D7D200E270FB /* MoveToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489E28E2D7D100E270FB /* MoveToolView.swift */; };
@@ -391,6 +394,9 @@
 		B7BECC3C295C76600091A96F /* ScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleComponentView.swift; sourceTree = "<group>"; };
 		B7BECC3E295C83CC0091A96F /* y_axis_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = y_axis_line.obj; sourceTree = "<group>"; };
 		B7BECC3F295C83CC0091A96F /* z_axis_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = z_axis_line.obj; sourceTree = "<group>"; };
+		B7BECC42295C9E6D0091A96F /* XYZScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYZScaleComponentView.swift; sourceTree = "<group>"; };
+		B7BECC44295C9F9D0091A96F /* UniformScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformScaleComponentView.swift; sourceTree = "<group>"; };
+		B7BECC46295CAA600091A96F /* ScaleUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleUtil.swift; sourceTree = "<group>"; };
 		B7C7489828D0427900E270FB /* AnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBinding.hpp; sourceTree = "<group>"; };
 		B7C7489928D0EF9C00E270FB /* Orientation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Orientation.hpp; sourceTree = "<group>"; };
 		B7C7489A28D1A3EE00E270FB /* NewObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewObjectView.swift; sourceTree = "<group>"; };
@@ -847,6 +853,8 @@
 			children = (
 				B7C748A028E377F600E270FB /* ScaleToolView.swift */,
 				B7BECC3C295C76600091A96F /* ScaleComponentView.swift */,
+				B7BECC42295C9E6D0091A96F /* XYZScaleComponentView.swift */,
+				B7BECC44295C9F9D0091A96F /* UniformScaleComponentView.swift */,
 			);
 			path = Scale;
 			sourceTree = "<group>";
@@ -870,6 +878,7 @@
 				B7FD15A729351CB200B6E7DC /* PositionUtil.swift */,
 				B70A6B22293CEEF40092FDE1 /* LineLookDepthBias.swift */,
 				B70A6B2B293E56D50092FDE1 /* AnimatorBindingUtil.swift */,
+				B7BECC46295CAA600091A96F /* ScaleUtil.swift */,
 			);
 			path = Spirit;
 			sourceTree = "<group>";
@@ -1201,6 +1210,7 @@
 				B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */,
 				B757DB7628A80F0B00BB5DB4 /* AnimatorSelector.swift in Sources */,
 				B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */,
+				B7BECC47295CAA600091A96F /* ScaleUtil.swift in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
 				B7718F4229200A17001107D5 /* ShininessAnimatorBindingComponentView.swift in Sources */,
 				B7643B2C2907C8CD00F6A05B /* EasingSelector.swift in Sources */,
@@ -1250,12 +1260,14 @@
 				B7EDBDC028F3558F0048EF93 /* InspectToolView.swift in Sources */,
 				B70ABF2C291D767700919F50 /* AnimateShadeToolView.swift in Sources */,
 				B7A78A71292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift in Sources */,
+				B7BECC45295C9F9D0091A96F /* UniformScaleComponentView.swift in Sources */,
 				B7643B2F29084DAF00F6A05B /* SPTEasingUtil.swift in Sources */,
 				B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */,
 				B757DB6C28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
+				B7BECC43295C9E6D0091A96F /* XYZScaleComponentView.swift in Sources */,
 				B7FD15B72939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift in Sources */,
 				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
 				B7FD15AE2935D67700B6E7DC /* SphericalPositionComponentView.swift in Sources */,

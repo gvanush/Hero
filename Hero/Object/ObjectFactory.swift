@@ -26,7 +26,7 @@ class ObjectFactory {
         let object = scene.makeObject()
         SPTMetadataMake(object, .init(tag: ObjectType.mesh.rawValue, name: "Mesh.\(meshNumber)"))
         SPTPosition.make(.init(cartesian: position), object: object)
-        SPTScaleMake(object, .init(xyz: simd_float3(scale, scale, scale)))
+        SPTScaleMake(object, .init(uniform: scale))
         SPTOrientation.make(.init(euler: .init(rotation: .zero, order: .XYZ)), object: object)
         SPTMeshLook.make(.init(material: SPTPhongMaterial(color: UIColor.darkGray.sptColor(model: .HSB), shininess: 0.5), meshId: meshId, categories: LookCategories.userCreated.rawValue), object: object)
         SPTRayCastableMake(object)

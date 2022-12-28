@@ -14,6 +14,14 @@ extension SPTScale: SPTObservableComponent {
         self.init(xyz: .init(x: x, y: y, z: z))
     }
     
+    init(xyz: simd_float3) {
+        self.init(model: .XYZ, .init(xyz: xyz))
+    }
+    
+    init(uniform: Float) {
+        self.init(model: .uniform, .init(uniform: uniform))
+    }
+    
     public static func == (lhs: SPTScale, rhs: SPTScale) -> Bool {
         SPTScaleEqual(lhs, rhs)
     }

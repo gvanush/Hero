@@ -14,8 +14,17 @@
 
 SPT_EXTERN_C_BEGIN
 
+typedef enum {
+    SPTScaleModelXYZ,
+    SPTScaleModelUniform,
+} __attribute__((enum_extensibility(closed))) SPTScaleModel;
+
 typedef struct {
-    simd_float3 xyz;
+    SPTScaleModel model;
+    union {
+        simd_float3 xyz;
+        float uniform;
+    };
 } SPTScale;
 
 bool SPTScaleEqual(SPTScale lhs, SPTScale rhs);
