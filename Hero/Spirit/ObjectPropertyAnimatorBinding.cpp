@@ -44,6 +44,18 @@ void SPTObjectPropertyBindAnimator(SPTAnimatableObjectProperty property, SPTObje
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::bindAnimator<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, animatorBinding);
         }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyXYZScaleX>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyXYZScaleY>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyXYZScaleZ>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyUniformScale>(object, animatorBinding);
+        }
         case SPTAnimatableObjectPropertyHue: {
             return spt::bindAnimator<SPTAnimatableObjectPropertyHue>(object, animatorBinding);
         }
@@ -99,6 +111,18 @@ void SPTObjectPropertyUpdateAnimatorBinding(SPTAnimatableObjectProperty property
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleX>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleY>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleZ>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyUniformScale>(object, animatorBinding);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyHue>(object, animatorBinding);
@@ -156,6 +180,18 @@ void SPTObjectPropertyUnbindAnimator(SPTAnimatableObjectProperty property, SPTOb
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::unbindAnimator<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyXYZScaleX>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyXYZScaleY>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyXYZScaleZ>(object);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyUniformScale>(object);
+        }
         case SPTAnimatableObjectPropertyHue: {
             return spt::unbindAnimator<SPTAnimatableObjectPropertyHue>(object);
         }
@@ -211,6 +247,18 @@ void SPTObjectPropertyUnbindAnimatorIfBound(SPTAnimatableObjectProperty property
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyXYZScaleX>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyXYZScaleY>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyXYZScaleZ>(object);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyUniformScale>(object);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyHue>(object);
@@ -268,6 +316,18 @@ SPTAnimatorBinding SPTObjectPropertyGetAnimatorBinding(SPTAnimatableObjectProper
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::getAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleX>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleY>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleZ>(object);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyUniformScale>(object);
+        }
         case SPTAnimatableObjectPropertyHue: {
             return spt::getAnimatorBinding<SPTAnimatableObjectPropertyHue>(object);
         }
@@ -323,6 +383,18 @@ const SPTAnimatorBinding* _Nullable SPTObjectPropertyTryGetAnimatorBinding(SPTAn
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleX>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleY>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleZ>(object);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyUniformScale>(object);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyHue>(object);
@@ -380,6 +452,18 @@ bool SPTObjectPropertyIsAnimatorBound(SPTAnimatableObjectProperty property, SPTO
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::isAnimatorBound<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyXYZScaleX>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyXYZScaleY>(object);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyXYZScaleZ>(object);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyUniformScale>(object);
+        }
         case SPTAnimatableObjectPropertyHue: {
             return spt::isAnimatorBound<SPTAnimatableObjectPropertyHue>(object);
         }
@@ -435,6 +519,18 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTAnimat
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyXYZScaleY>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyXYZScaleZ>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyUniformScale>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
@@ -492,6 +588,18 @@ void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTAnimatableObjec
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyXYZScaleY>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyXYZScaleZ>(object, token);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyUniformScale>(object, token);
+        }
         case SPTAnimatableObjectPropertyHue: {
             return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyHue>(object, token);
         }
@@ -547,6 +655,18 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidChangeObserver(SPTAnimata
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyXYZScaleY>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyXYZScaleZ>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyUniformScale>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
@@ -604,6 +724,18 @@ void SPTObjectPropertyRemoveAnimatorBindingDidChangeObserver(SPTAnimatableObject
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyXYZScaleY>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyXYZScaleZ>(object, token);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyUniformScale>(object, token);
+        }
         case SPTAnimatableObjectPropertyHue: {
             return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyHue>(object, token);
         }
@@ -659,6 +791,18 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidEmergeObserver(SPTAnimata
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyXYZScaleY>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyXYZScaleZ>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyUniformScale>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
@@ -716,6 +860,18 @@ void SPTObjectPropertyRemoveAnimatorBindingDidEmergeObserver(SPTAnimatableObject
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyXYZScaleY>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyXYZScaleZ>(object, token);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyUniformScale>(object, token);
+        }
         case SPTAnimatableObjectPropertyHue: {
             return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyHue>(object, token);
         }
@@ -772,6 +928,18 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTAnimat
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
         }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyXYZScaleY>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyXYZScaleZ>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyUniformScale>(object, observer, userInfo);
+        }
         case SPTAnimatableObjectPropertyHue: {
             return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyHue>(object, observer, userInfo);
         }
@@ -827,6 +995,18 @@ void SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(SPTAnimatableObjec
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleX: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleY: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyXYZScaleY>(object, token);
+        }
+        case SPTAnimatableObjectPropertyXYZScaleZ: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyXYZScaleZ>(object, token);
+        }
+        case SPTAnimatableObjectPropertyUniformScale: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyUniformScale>(object, token);
         }
         case SPTAnimatableObjectPropertyHue: {
             return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyHue>(object, token);

@@ -1,5 +1,5 @@
 //
-//  ObjectProperty.h
+//  AnimatableObjectProperty.h
 //  Hero
 //
 //  Created by Vanush Grigoryan on 16.08.22.
@@ -25,6 +25,12 @@ typedef enum {
     SPTAnimatableObjectPropertyCylindricalPositionRadius,
     SPTAnimatableObjectPropertyCylindricalPositionLongitude,
     SPTAnimatableObjectPropertyCylindricalPositionHeight,
+    
+    SPTAnimatableObjectPropertyXYZScaleX,
+    SPTAnimatableObjectPropertyXYZScaleY,
+    SPTAnimatableObjectPropertyXYZScaleZ,
+    
+    SPTAnimatableObjectPropertyUniformScale,
     
     SPTAnimatableObjectPropertyHue,
     SPTAnimatableObjectPropertySaturation,

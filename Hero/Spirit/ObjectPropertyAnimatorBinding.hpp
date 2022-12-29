@@ -9,7 +9,7 @@
 
 #include "AnimatorBinding.h"
 #include "AnimatorBinding.hpp"
-#include "ObjectProperty.h"
+#include "AnimatableObjectProperty.h"
 
 
 namespace spt {

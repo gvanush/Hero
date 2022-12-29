@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Base.h"
-#include "ObjectProperty.h"
+#include "AnimatableObjectProperty.h"
 #include "AnimatorBinding.h"
 
 

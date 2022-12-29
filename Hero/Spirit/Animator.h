@@ -9,7 +9,7 @@
 
 #include "Base.h"
 #include "AnimatorSource.h"
-#include "ObjectProperty.h"
+#include "AnimatableObjectProperty.h"
 
 #include <simd/simd.h>
 #include <limits.h>

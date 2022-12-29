@@ -196,9 +196,40 @@ void PlayableScene::prepareTransformationAnimations(const Scene& scene, const st
         }
     });
     
+    // Scale
+    
+    // XYZ
+    auto xyzScaleXView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyXYZScaleX>>();
+    xyzScaleXView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].scaleRecord.xyz.x = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    auto xyzScaleYView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyXYZScaleY>>();
+    xyzScaleYView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].scaleRecord.xyz.y = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    auto xyzScaleZView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyXYZScaleZ>>();
+    xyzScaleZView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].scaleRecord.xyz.z = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+   
+    auto uniformScaleXView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyUniformScale>>();
+    uniformScaleXView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].scaleRecord.uniform = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
     for(auto& item: transformAnimatedEntityRecord) {
         item.second.basePosition = registry.get<SPTPosition>(item.first);
-        item.second.baseScale = Scale::getXYZ(registry, item.first);
+        item.second.baseScale = registry.get<SPTScale>(item.first);
         item.second.baseOrientation = SPTMatrix4x4CreateUpperLeft(Orientation::getMatrix(registry, item.first, SPTPositionToCartesian(item.second.basePosition).cartesian));
         registry.emplace<spt::Transformation::AnimatorRecord>(item.first, item.second);
     }

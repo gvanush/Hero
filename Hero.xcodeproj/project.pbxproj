@@ -334,7 +334,7 @@
 		B76D4FC328AA25C50029E47B /* ObjectPropertyAnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectPropertyAnimatorBinding.h; sourceTree = "<group>"; };
 		B76D4FC428AADEE30029E47B /* ObjectPropertyAnimatorBindingObserverUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBindingObserverUtil.hpp; sourceTree = "<group>"; };
 		B76D4FC528AAE06D0029E47B /* ObjectPropertyAnimatorBindingUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBindingUtil.hpp; sourceTree = "<group>"; };
-		B76D4FC628AB6E340029E47B /* ObjectProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectProperty.h; sourceTree = "<group>"; };
+		B76D4FC628AB6E340029E47B /* AnimatableObjectProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatableObjectProperty.h; sourceTree = "<group>"; };
 		B76D4FC728AB7C990029E47B /* SPTUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTUtil.swift; sourceTree = "<group>"; };
 		B76D4FC928AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAnimatableObjectPropertyUtil.swift; sourceTree = "<group>"; };
 		B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShininessAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
@@ -751,7 +751,7 @@
 		B76D4FBF28AA24AF0029E47B /* Object Property */ = {
 			isa = PBXGroup;
 			children = (
-				B76D4FC628AB6E340029E47B /* ObjectProperty.h */,
+				B76D4FC628AB6E340029E47B /* AnimatableObjectProperty.h */,
 				B76D4FC328AA25C50029E47B /* ObjectPropertyAnimatorBinding.h */,
 				B76D4FC128AA25B60029E47B /* ObjectPropertyAnimatorBinding.hpp */,
 				B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */,

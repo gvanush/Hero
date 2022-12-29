@@ -22,7 +22,7 @@
 #import "PointLook.h"
 #import "Animator.h"
 #import "AnimatorBinding.h"
-#import "ObjectProperty.h"
+#import "AnimatableObjectProperty.h"
 #import "ObjectPropertyAnimatorBinding.h"
 #import "Action.h"
 #import "RayCast.h"

@@ -11,6 +11,7 @@
 #include "Base.h"
 #include "Transformation.h"
 #include "Position.h"
+#include "Scale.h"
 #include "AnimatorBinding.hpp"
 
 #include <simd/simd.h>
@@ -52,12 +53,24 @@ struct Transformation {
             };
         };
         
+        struct ScaleRecord {
+            union {
+                struct {
+                    AnimatorBindingItemBase x;
+                    AnimatorBindingItemBase y;
+                    AnimatorBindingItemBase z;
+                } xyz;
+                AnimatorBindingItemBase uniform;
+            };
+        };
+        
         PositionRecord positionRecord;
         SPTPosition basePosition;
         
         simd_float4x4 baseOrientation;
         
-        simd_float3 baseScale;
+        ScaleRecord scaleRecord;
+        SPTScale baseScale;
     };
     
     static simd_float4x4 getGlobal(Registry& registry, SPTEntity entity);
