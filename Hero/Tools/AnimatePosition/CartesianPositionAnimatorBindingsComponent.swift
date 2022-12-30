@@ -20,9 +20,9 @@ class CartesianPositionAnimatorBindingsComponent: Component {
 
     typealias FieldComponent = AnimatorBindingSetupComponent<CartesianPositionFieldAnimatorBindingComponent>
     
-    lazy private(set) var x = FieldComponent(animatableProperty: .cartesianPositionX, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var y = FieldComponent(animatableProperty: .cartesianPositionY, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var z = FieldComponent(animatableProperty: .cartesianPositionZ, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var x = FieldComponent(animatableProperty: .cartesianPositionX, defaultValueAt0: -5.0, defaultValueAt1: 5.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var y = FieldComponent(animatableProperty: .cartesianPositionY, defaultValueAt0: -5.0, defaultValueAt1: 5.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var z = FieldComponent(animatableProperty: .cartesianPositionZ, defaultValueAt0: -5.0, defaultValueAt1: 5.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
@@ -121,7 +121,6 @@ class CartesianPositionFieldAnimatorBindingComponent: ObjectDistanceAnimatorBind
         default:
             fatalError()
         }
-        
     }
     
 }

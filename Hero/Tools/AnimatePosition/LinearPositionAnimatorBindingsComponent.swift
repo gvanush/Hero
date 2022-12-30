@@ -13,7 +13,7 @@ class LinearPositionAnimatorBindingsComponent: Component {
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    lazy private(set) var offset = AnimatorBindingSetupComponent<LinearPositionOffsetAnimatorBindingComponent>(animatableProperty: .linearPositionOffset, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var offset = AnimatorBindingSetupComponent<LinearPositionOffsetAnimatorBindingComponent>(animatableProperty: .linearPositionOffset, defaultValueAt0: -5.0, defaultValueAt1: 5.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     private var originGuideObject: SPTObject!
     private var lineGuideObject: SPTObject!

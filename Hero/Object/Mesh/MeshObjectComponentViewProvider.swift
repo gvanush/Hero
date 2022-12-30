@@ -69,5 +69,13 @@ class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
     override func viewFor(_ component: UniformScaleComponent) -> AnyView? {
         AnyView(UniformScaleComponentView(component: component))
     }
+    
+    override func viewFor(_ component: XYZScaleFieldAnimatorBindingComponent) -> AnyView? {
+        AnyView(XYZScaleFieldAnimatorBindingComponentView(component: component))
+    }
+    
+    override func viewFor(_ component: UniformScaleFieldAnimatorBindingComponent) -> AnyView? {
+        AnyView(UniformScaleFieldAnimatorBindingComponentView(component: component))
+    }
 }
 

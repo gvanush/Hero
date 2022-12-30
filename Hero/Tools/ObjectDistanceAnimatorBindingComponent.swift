@@ -85,9 +85,7 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     override func onClose() {
         SPTPointLook.destroy(object: point0Object)
         SPTPointLook.destroy(object: point1Object)
-        // If this component still 'owns' focused object then revert to the source object otherwise
-        // leave as it is. This is relevant when component is closed when entire component tree is removed
-        // from the screen
+        // If this component still 'owns' focused object then revert to the source object otherwise leave as it is. This is relevant when component is closed when entire component tree is removed from the screen
         if sceneViewModel.focusedObject == point0Object || sceneViewModel.focusedObject == point1Object {
             sceneViewModel.focusedObject = self.object
         }
@@ -138,10 +136,6 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
         provider.viewFor(self)
     }
-    
-    static var defaultValueAt0: Float { -5 }
-    
-    static var defaultValueAt1: Float { 5 }
     
 }
 

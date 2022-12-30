@@ -13,7 +13,7 @@ class MeshLookAnimatorBindingsComponent: Component, BasicToolSelectedObjectRootC
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    lazy private(set) var shininess = AnimatorBindingSetupComponent<ShininessAnimatorBindingComponent>(animatableProperty: .shininess, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var shininess = AnimatorBindingSetupComponent<ShininessAnimatorBindingComponent>(animatableProperty: .shininess, defaultValueAt0: 0.0, defaultValueAt1: 1.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     lazy private(set) var color = ObjectColorAnimatorBindingComponent<SPTMeshLook>(keyPath: \.shading.blinnPhong.color, object: object, sceneViewModel: sceneViewModel, parent: self)
     

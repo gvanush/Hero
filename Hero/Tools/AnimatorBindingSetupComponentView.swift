@@ -34,6 +34,8 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     let animatableProperty: AnimatorBindingComponent.AP
     let object: SPTObject
     let sceneViewModel: SceneViewModel
+    let defaultValueAt0: Float
+    let defaultValueAt1: Float
     
     @Published var animatorBindingComponent: AnimatorBindingComponent? {
         willSet {
@@ -72,9 +74,11 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     private var bindingWillPerishSubscription: SPTAnySubscription?
     private var editViewComponentCancellable: AnyCancellable?
     
-    init(animatableProperty: AnimatorBindingComponent.AP, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    init(animatableProperty: AnimatorBindingComponent.AP, defaultValueAt0: Float, defaultValueAt1: Float, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         self.animatableProperty = animatableProperty
+        self.defaultValueAt0 = defaultValueAt0
+        self.defaultValueAt1 = defaultValueAt1
         self.object = object
         self.sceneViewModel = sceneViewModel
         
@@ -139,7 +143,7 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     }
     
     func bindAnimator(id: SPTAnimatorId) {
-        animatableProperty.bindOrUpdate(.init(animatorId: id, valueAt0: AnimatorBindingComponent.defaultValueAt0, valueAt1: AnimatorBindingComponent.defaultValueAt1), object: object)
+        animatableProperty.bindOrUpdate(.init(animatorId: id, valueAt0: defaultValueAt0, valueAt1: defaultValueAt1), object: object)
     }
     
     func unbindAnimator() {

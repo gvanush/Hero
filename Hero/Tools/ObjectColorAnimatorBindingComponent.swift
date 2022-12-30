@@ -14,9 +14,9 @@ class ObjectRGBAColorAnimatorBindingsComponent: Component, BasicToolSelectedObje
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    lazy private(set) var red = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .red, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var green = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .green, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var blue = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .blue, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var red = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .red, defaultValueAt0: 0.0, defaultValueAt1: 1.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var green = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .green, defaultValueAt0: 0.0, defaultValueAt1: 1.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var blue = AnimatorBindingSetupComponent<ObjectRGBAColorChannelAnimatorBindingComponent>(animatableProperty: .blue, defaultValueAt0: 0.0, defaultValueAt1: 1.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
@@ -37,9 +37,9 @@ class ObjectHSBAColorAnimatorBindingsComponent: Component, BasicToolSelectedObje
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    lazy private(set) var hue = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .hue, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var saturation = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .saturation, object: self.object, sceneViewModel: sceneViewModel, parent: self)
-    lazy private(set) var brightness = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .brightness, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var hue = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .hue, defaultValueAt0: 0.0, defaultValueAt1: 1.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var saturation = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .saturation, defaultValueAt0: 0.0, defaultValueAt1: 1.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var brightness = AnimatorBindingSetupComponent<ObjectHSBAColorChannelAnimatorBindingComponent>(animatableProperty: .brightness, defaultValueAt0: 0.0, defaultValueAt1: 1.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object

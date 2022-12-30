@@ -18,11 +18,11 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
     private var circleObject: SPTObject!
     private var circleCenterObject: SPTObject!
     
-    lazy private(set) var longitude = AnimatorBindingSetupComponent<CylindricalPositionLongitudetAnimatorBindingComponent>(animatableProperty: .cylindricalPositionLongitude, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var longitude = AnimatorBindingSetupComponent<CylindricalPositionLongitudetAnimatorBindingComponent>(animatableProperty: .cylindricalPositionLongitude, defaultValueAt0: -0.25 * .pi, defaultValueAt1: 0.25 * .pi, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
-    lazy private(set) var radius = AnimatorBindingSetupComponent<CylindricalPositionRadiusAnimatorBindingComponent>(animatableProperty: .cylindricalPositionRadius, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var radius = AnimatorBindingSetupComponent<CylindricalPositionRadiusAnimatorBindingComponent>(animatableProperty: .cylindricalPositionRadius, defaultValueAt0: -5.0, defaultValueAt1: 5.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
-    lazy private(set) var height = AnimatorBindingSetupComponent<CylindricalPositionHeightAnimatorBindingComponent>(animatableProperty: .cylindricalPositionHeight, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var height = AnimatorBindingSetupComponent<CylindricalPositionHeightAnimatorBindingComponent>(animatableProperty: .cylindricalPositionHeight, defaultValueAt0: -5.0, defaultValueAt1: 5.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
         
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object
@@ -102,7 +102,7 @@ class CylindricalPositionRadiusAnimatorBindingComponent: ObjectDistanceAnimatorB
         let axisDirection = (position.cylindrical.radius.sign == .plus ? 1.0 : -1.0) * simd_normalize(simd_float3(x: cartesian.x - position.cylindrical.origin.x, y: 0.0, z: cartesian.z - position.cylindrical.origin.z))
         super.init(normAxisDirection: axisDirection, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].radius, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
-    
+
 }
 
 class CylindricalPositionHeightAnimatorBindingComponent: ObjectDistanceAnimatorBindingComponent, AnimatorBindingComponentProtocol {

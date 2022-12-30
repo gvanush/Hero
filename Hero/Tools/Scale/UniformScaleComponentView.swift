@@ -53,7 +53,7 @@ struct UniformScaleComponentView: View {
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
-        FloatSelector(value: $component.scale.uniform, scale: $editingParams[uniformScaleOf: component.object].uniform.scale, isSnappingEnabled: $editingParams[uniformScaleOf: component.object].uniform.isSnapping, formatter: component.scaleFormatter) { editingState in
+        FloatSelector(value: $component.scale.uniform, scale: $editingParams[uniformScaleOf: component.object].scale, isSnappingEnabled: $editingParams[uniformScaleOf: component.object].isSnapping, formatter: component.scaleFormatter) { editingState in
             userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
         }
         .tint(Color.primarySelectionColor)

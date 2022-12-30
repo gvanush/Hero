@@ -15,10 +15,7 @@ protocol AnimatorBindingComponentProtocol: ObservableObject {
     init(animatableProperty: AP, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?)
     
     var selectedProperty: AnimatorBindingComponentProperty { set get }
-    
-    static var defaultValueAt0: Float { get }
-    
-    static var defaultValueAt1: Float { get }
+
 }
 
 

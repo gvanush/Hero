@@ -57,6 +57,16 @@ class ScaleComponent: MultiVariantComponent, BasicToolSelectedObjectRootComponen
                 return
             }
             
+            switch scaleModel {
+            case .XYZ:
+                SPTAnimatableObjectProperty.xyzScaleX.unbindAnimatorIfBound(object: object)
+                SPTAnimatableObjectProperty.xyzScaleY.unbindAnimatorIfBound(object: object)
+                SPTAnimatableObjectProperty.xyzScaleZ.unbindAnimatorIfBound(object: object)
+                
+            case .uniform:
+                SPTAnimatableObjectProperty.uniformScale.unbindAnimatorIfBound(object: object)
+            }
+            
             switch newValue {
             case .XYZ:
                 scale = .init(x: scale.uniform, y: scale.uniform, z: scale.uniform)

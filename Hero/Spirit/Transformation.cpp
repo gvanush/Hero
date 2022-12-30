@@ -42,9 +42,38 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
     
     auto matrix = matrix_identity_float4x4;
     
-    matrix.columns[0][0] = animRecord.baseScale.x;
-    matrix.columns[1][1] = animRecord.baseScale.y;
-    matrix.columns[2][2] = animRecord.baseScale.z;
+    auto scale = animRecord.baseScale;
+    switch (scale.model) {
+        case SPTScaleModelXYZ:
+            if(animRecord.scaleRecord.xyz.x.index != 0) {
+                scale.xyz.x = evaluateAnimatorBinding(animRecord.scaleRecord.xyz.x.binding, animatorValues[animRecord.scaleRecord.xyz.x.index]);
+            }
+            
+            if(animRecord.scaleRecord.xyz.y.index != 0) {
+                scale.xyz.y = evaluateAnimatorBinding(animRecord.scaleRecord.xyz.y.binding, animatorValues[animRecord.scaleRecord.xyz.y.index]);
+            }
+            
+            if(animRecord.scaleRecord.xyz.z.index != 0) {
+                scale.xyz.z = evaluateAnimatorBinding(animRecord.scaleRecord.xyz.z.binding, animatorValues[animRecord.scaleRecord.xyz.z.index]);
+            }
+            
+            matrix.columns[0][0] = scale.xyz.x;
+            matrix.columns[1][1] = scale.xyz.y;
+            matrix.columns[2][2] = scale.xyz.z;
+            
+            break;
+        case SPTScaleModelUniform:
+            
+            if(animRecord.scaleRecord.uniform.index != 0) {
+                scale.uniform = evaluateAnimatorBinding(animRecord.scaleRecord.uniform.binding, animatorValues[animRecord.scaleRecord.uniform.index]);
+            }
+            
+            matrix.columns[0][0] = scale.uniform;
+            matrix.columns[1][1] = scale.uniform;
+            matrix.columns[2][2] = scale.uniform;
+            
+            break;
+    }
     
     matrix = simd_mul(animRecord.baseOrientation, matrix);
     

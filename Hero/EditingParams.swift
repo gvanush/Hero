@@ -87,10 +87,6 @@ struct ObjectPropertyXYZScaleEditingParams: ObjectPropertyVectorEditingParams {
     var z = ObjectPropertyFloatEditingParams()
 }
 
-struct ObjectPropertyUniformScaleEditingParams {
-    var uniform = ObjectPropertyFloatEditingParams()
-}
-
 struct ObjectPropertyRotationEditingParams: ObjectPropertyVectorEditingParams {
     var x = ObjectPropertyFloatEditingParams()
     var y = ObjectPropertyFloatEditingParams()
@@ -117,6 +113,12 @@ struct ObjectPropertySphericalPositionAnimatorBindingEditingParams {
     var radius = AnimatorBindingEditingParams()
     var longitude = AnimatorBindingEditingParams()
     var latitude = AnimatorBindingEditingParams()
+}
+
+struct ObjectPropertyXYZScaleAnimatorBindingEditingParams: ObjectPropertyVectorEditingParams {
+    var x = AnimatorBindingEditingParams()
+    var y = AnimatorBindingEditingParams()
+    var z = AnimatorBindingEditingParams()
 }
 
 class ObjectPropertyEditingParams: ObservableObject {
@@ -178,9 +180,9 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
     }
     
-    @Published private var uniformScaleParams = [SPTObject : ObjectPropertyUniformScaleEditingParams]()
+    @Published private var uniformScaleParams = [SPTObject : ObjectPropertyFloatEditingParams]()
 
-    subscript(uniformScaleOf object: SPTObject) -> ObjectPropertyUniformScaleEditingParams {
+    subscript(uniformScaleOf object: SPTObject) -> ObjectPropertyFloatEditingParams {
         get {
             uniformScaleParams[object, default: .init()]
         }
@@ -203,7 +205,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
     }
     
-    // MARK: Position binding
+    // MARK: Position animator binding
     @Published private var cartesianPositionBindingParams = [SPTObject : ObjectPropertyCartesianPositionAnimatorBindingEditingParams]()
     
     subscript(cartesianPositionBindingOf object: SPTObject) -> ObjectPropertyCartesianPositionAnimatorBindingEditingParams {
@@ -248,6 +250,29 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
     }
     
+    // MARK: Scale animator binding
+    @Published private var xyzScaleBindingParams = [SPTObject : ObjectPropertyXYZScaleAnimatorBindingEditingParams]()
+    
+    subscript(xyzScaleBindingOf object: SPTObject) -> ObjectPropertyXYZScaleAnimatorBindingEditingParams {
+        get {
+            xyzScaleBindingParams[object, default: .init()]
+        }
+        set {
+            xyzScaleBindingParams[object] = newValue
+        }
+    }
+    
+    @Published private var uniformScaleBindingParams = [SPTObject : AnimatorBindingEditingParams]()
+    
+    subscript(uniformScaleBindingOf object: SPTObject) -> AnimatorBindingEditingParams {
+        get {
+            uniformScaleBindingParams[object, default: .init()]
+        }
+        set {
+            uniformScaleBindingParams[object] = newValue
+        }
+    }
+    
     // MARK: Object lifecycle
     func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
         cartesianPositionParams[duplicate] = cartesianPositionParams[original]
@@ -256,11 +281,17 @@ class ObjectPropertyEditingParams: ObservableObject {
         sphericalPositionParams[duplicate] = sphericalPositionParams[original]
         
         xyzScaleParams[duplicate] = xyzScaleParams[original]
+        uniformScaleParams[duplicate] = uniformScaleParams[original]
+        
         rotationParams[duplicate] = rotationParams[original]
+        
         cartesianPositionBindingParams[duplicate] = cartesianPositionBindingParams[original]
         linearPositionBindingParams[duplicate] = linearPositionBindingParams[original]
         cylindricalPositionBindingParams[duplicate] = cylindricalPositionBindingParams[original]
         sphericalPositionBindingParams[duplicate] = sphericalPositionBindingParams[original]
+        
+        xyzScaleBindingParams[duplicate] = xyzScaleBindingParams[original]
+        uniformScaleParams[duplicate] = uniformScaleParams[original]
     }
     
     func onObjectDestroy(_ object: SPTObject) {
@@ -270,10 +301,16 @@ class ObjectPropertyEditingParams: ObservableObject {
         sphericalPositionParams.removeValue(forKey: object)
         
         xyzScaleParams.removeValue(forKey: object)
+        uniformScaleParams.removeValue(forKey: object)
+        
         rotationParams.removeValue(forKey: object)
+        
         cartesianPositionBindingParams.removeValue(forKey: object)
         linearPositionBindingParams.removeValue(forKey: object)
         cylindricalPositionBindingParams.removeValue(forKey: object)
         sphericalPositionBindingParams.removeValue(forKey: object)
+        
+        xyzScaleBindingParams.removeValue(forKey: object)
+        uniformScaleParams.removeValue(forKey: object)
     }
 }

@@ -151,11 +151,6 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
         provider.viewFor(self)
     }
-    
-    static var defaultValueAt0: Float { -0.25 * .pi }
-    
-    static var defaultValueAt1: Float { 0.25 * .pi }
-    
 }
 
 

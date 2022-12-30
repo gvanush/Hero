@@ -56,7 +56,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
         provider.viewFor(self)
     }
-
+    
     private func updateLookPropertyValue() {
         switch selectedProperty {
         case .valueAt0:
@@ -73,11 +73,7 @@ class ShininessAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimata
         meshLook.shading.blinnPhong.shininess = shininess
         SPTMeshLook.update(meshLook, object: guideObject)
     }
-    
-    static var defaultValueAt0: Float { 0 }
-    
-    static var defaultValueAt1: Float { 1 }
-    
+
 }
 
 

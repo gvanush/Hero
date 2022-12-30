@@ -19,11 +19,11 @@ class SphericalPositionAnimatorBindingsComponent: Component {
     private var originObject: SPTObject!
     
 
-    lazy private(set) var latitude = AnimatorBindingSetupComponent<SphericalPositionLatitudeAnimatorBindingComponent>(animatableProperty: .sphericalPositionLatitude, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var latitude = AnimatorBindingSetupComponent<SphericalPositionLatitudeAnimatorBindingComponent>(animatableProperty: .sphericalPositionLatitude, defaultValueAt0:  -0.25 * .pi, defaultValueAt1: 0.25 * .pi, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
-    lazy private(set) var longitude = AnimatorBindingSetupComponent<SphericalPositionLongitudeAnimatorBindingComponent>(animatableProperty: .sphericalPositionLongitude, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var longitude = AnimatorBindingSetupComponent<SphericalPositionLongitudeAnimatorBindingComponent>(animatableProperty: .sphericalPositionLongitude, defaultValueAt0:  -0.25 * .pi, defaultValueAt1: 0.25 * .pi, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
-    lazy private(set) var radius = AnimatorBindingSetupComponent<SphericalPositionRadiusAnimatorBindingComponent>(animatableProperty: .sphericalPositionRadius, object: self.object, sceneViewModel: sceneViewModel, parent: self)
+    lazy private(set) var radius = AnimatorBindingSetupComponent<SphericalPositionRadiusAnimatorBindingComponent>(animatableProperty: .sphericalPositionRadius, defaultValueAt0: -5.0, defaultValueAt1: 5.0, object: self.object, sceneViewModel: sceneViewModel, parent: self)
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object

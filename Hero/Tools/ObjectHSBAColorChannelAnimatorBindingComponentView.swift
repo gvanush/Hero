@@ -153,10 +153,6 @@ class ObjectHSBAColorChannelAnimatorBindingComponent: AnimatorBindingComponentBa
         SPTMeshLook.update(meshLook, object: guideObject)
     }
     
-    static var defaultValueAt0: Float { 0 }
-    
-    static var defaultValueAt1: Float { 1 }
-    
 }
 
 
