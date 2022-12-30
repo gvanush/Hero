@@ -362,9 +362,9 @@ void Renderer::render(const Registry& registry, void* renderingContext) {
     const auto outlineView = registry.view<SPTOutlineLook, SPTMeshLook>();
     // Render meshes in depth buffer
     [layer1RenderEncoder setRenderPipelineState: __depthOnlyMeshPipelineState];
-    outlineView.each([layer1RenderEncoder, &registry, rc] (auto entity, auto&, auto& meshLook) {
-        if(rc.lookCategories & meshLook.categories) {
-            renderMeshDepthOnly(layer1RenderEncoder, registry, entity, meshLook.meshId);
+    outlineView.each([layer1RenderEncoder, &registry, rc] (auto entity, auto&, auto& outlineLook) {
+        if(rc.lookCategories & outlineLook.categories) {
+            renderMeshDepthOnly(layer1RenderEncoder, registry, entity, outlineLook.meshId);
         }
     });
 

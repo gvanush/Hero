@@ -111,7 +111,7 @@ class RootViewModel: ObservableObject {
         let scale: Float = 5.0
         var position = SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin
         position.y += scale
-        let object = objectFactory.makeMesh(meshId: meshId, position: position, scale: scale)
+        let object = objectFactory.makeMesh(meshId: meshId, lookCategories: [.renderable, .renderableModel], position: position, scale: scale)
         sceneViewModel.selectedObject = object
         sceneViewModel.focusedObject = object
     }
@@ -170,6 +170,7 @@ struct RootView: View {
     var body: some View {
         ActionBarItemReader(model: actionBarModel) {
             SceneView(model: sceneViewModel, uiEdgeInsets: Self.sceneUIInsets)
+                .lookCategories([.renderableModel, .guide])
             .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
             .environmentObject(userInteractionState)
             .overlay(alignment: .bottomTrailing) {

@@ -88,10 +88,19 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         SPTPosition.make(SPTPosition.get(object: object), object: guideObject)
         SPTScale.make(SPTScale.get(object: object), object: guideObject)
         SPTOrientation.make(SPTOrientation.get(object: object), object: guideObject)
-        SPTOutlineLook.make(.init(color: UIColor.primarySelectionColor.rgba, thickness: 5.0, categories: LookCategories.guide.rawValue), object: guideObject)
+        
         var meshLook = SPTMeshLook.get(object: object)
+        meshLook.categories &= ~LookCategories.renderableModel.rawValue
+        SPTMeshLook.update(meshLook, object: object)
+        
         meshLook.categories = LookCategories.guide.rawValue
         SPTMeshLook.make(meshLook, object: guideObject)
+        
+        var outlineLook = SPTOutlineLook.get(object: object)
+        SPTOutlineLook.make(outlineLook, object: guideObject)
+        
+        outlineLook.categories &= ~LookCategories.guide.rawValue
+        SPTOutlineLook.update(outlineLook, object: object)
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingDidChangeSink(object: object, callback: { [unowned self] newValue in
             self.updateFieldValue()
@@ -101,6 +110,14 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
     }
     
     override func onInactive() {
+        var meshLook = SPTMeshLook.get(object: object)
+        meshLook.categories |= LookCategories.renderableModel.rawValue
+        SPTMeshLook.update(meshLook, object: object)
+        
+        var outlineLook = SPTOutlineLook.get(object: object)
+        outlineLook.categories |= LookCategories.guide.rawValue
+        SPTOutlineLook.update(outlineLook, object: object)
+        
         bindingWillChangeSubscription = nil
         SPTSceneProxy.destroyObject(guideObject)
     }

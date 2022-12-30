@@ -289,7 +289,7 @@ struct MeshObjectInspector_Previews: PreviewProvider {
     static var previews: some View {
         
         let factory = ObjectFactory(scene: sceneViewModel.scene)
-        let object = factory.makeMesh(meshId: MeshRegistry.standard.meshRecords.first!.id, position: .zero)
+        let object = factory.makeMesh(meshId: MeshRegistry.standard.meshRecords.first!.id, lookCategories: [.renderableModel, .renderable], position: .zero)
         sceneViewModel.selectedObject = object
         
         return MeshObjectInspector(model: .init(object: object, rootViewModel: RootViewModel(sceneViewModel: Self.sceneViewModel)))

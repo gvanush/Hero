@@ -38,7 +38,7 @@ struct PlayView: View {
         GeometryReader { geometry in
             GeometryReader { dargViewGeometry in
                 SPTPlayView(scene: model.scene, clearColor: UIColor.lightGray.mtlClearColor, viewCameraEntity: model.viewCameraEntity)
-                    .lookCategories(LookCategories.userCreated.rawValue)
+                    .lookCategories(LookCategories.renderable.rawValue)
                     .panLocation(dragValue?.location)
                     .gesture(dragGesture(geometry: dargViewGeometry, bottomSafeAreaInset: geometry.safeAreaInsets.bottom))
                     .defersSystemGestures(on: .all)

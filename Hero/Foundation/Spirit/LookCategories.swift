@@ -11,8 +11,9 @@ import Foundation
 struct LookCategories: OptionSet {
     let rawValue: SPTLookCategories
 
-    static let userCreated          = LookCategories(rawValue: 1 << 0)
-    static let guide                = LookCategories(rawValue: 1 << 1)
+    static let renderable           = LookCategories(rawValue: 1 << 0)
+    static let renderableModel      = LookCategories(rawValue: 1 << 1)
+    static let guide                = LookCategories(rawValue: 1 << 2)
 
     static let all                  = LookCategories(rawValue: kSPTLookCategoriesAll)
 }
