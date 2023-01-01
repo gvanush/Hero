@@ -114,9 +114,11 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         meshLook.categories |= LookCategories.renderableModel.rawValue
         SPTMeshLook.update(meshLook, object: object)
         
-        var outlineLook = SPTOutlineLook.get(object: object)
-        outlineLook.categories |= LookCategories.guide.rawValue
-        SPTOutlineLook.update(outlineLook, object: object)
+        // TODO
+        if var outlineLook = SPTOutlineLook.tryGet(object: object) {
+            outlineLook.categories |= LookCategories.guide.rawValue
+            SPTOutlineLook.update(outlineLook, object: object)
+        }
         
         bindingWillChangeSubscription = nil
         SPTSceneProxy.destroyObject(guideObject)

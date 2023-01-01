@@ -57,6 +57,7 @@ class UserInteractionState: ObservableObject {
 class RootViewModel: ObservableObject {
     
     let sceneViewModel: SceneViewModel
+    let animatorsViewModel: AnimatorsViewModel
     
     let inspectToolViewModel: InspectToolViewModel
     let moveToolViewModel: MoveToolViewModel
@@ -92,6 +93,7 @@ class RootViewModel: ObservableObject {
     
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
+        self.animatorsViewModel = .init()
         
         self.inspectToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.moveToolViewModel = .init(sceneViewModel: sceneViewModel)
@@ -105,6 +107,16 @@ class RootViewModel: ObservableObject {
         self.activeToolViewModel = inspectToolViewModel
         
         objectFactory = ObjectFactory(scene: sceneViewModel.scene)
+        
+        // Create default object
+        createObject(meshId: MeshRegistry.standard.recordNamed("sphere")!.id)
+        
+        // Create default animators
+        _ = animatorsViewModel.makePanAnimator()
+        _ = animatorsViewModel.makeRandomAnimator()
+        _ = animatorsViewModel.makeOscillatorAnimator()
+        _ = animatorsViewModel.makeValueNoise()
+        _ = animatorsViewModel.makePerlinNoise()
     }
     
     func createObject(meshId: SPTMeshId) {
@@ -227,7 +239,7 @@ struct RootView: View {
         .statusBar(hidden: !userInteractionState.isIdle)
         .persistentSystemOverlays(userInteractionState.isIdle ? .automatic : .hidden)
         .sheet(isPresented: $showsAnimatorsView) {
-            AnimatorsView()
+            AnimatorsView(model: model.animatorsViewModel)
         }
         .sheet(isPresented: $showsNewObjectView) {
             NewObjectView() { meshId in

@@ -17,11 +17,28 @@ class AnimatorsViewModel: ObservableObject {
             self?.disclosedAnimatorIds.removeAll()
             self?.objectWillChange.send()
         }
+        
+        
     }
     
- 
-    func makeAnimator(_ animator: SPTAnimator) -> SPTAnimatorId {
-        SPTAnimator.make(animator)
+    func makePanAnimator() -> SPTAnimatorId {
+        SPTAnimator.make(SPTAnimator(name: "Pan.\(SPTAnimator.getCount())", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
+    }
+    
+    func makeRandomAnimator() -> SPTAnimatorId {
+        SPTAnimator.make(.init(name: "Random.\(SPTAnimator.getCount())", source: .init(randomWithSeed: .randomInFullRange(), frequency: 1.0)))
+    }
+    
+    func makeOscillatorAnimator() -> SPTAnimatorId {
+        SPTAnimator.make(.init(name: "Oscillator.\(SPTAnimator.getCount())", source: .init(oscillatorWithFrequency: 1.0, interpolation: .smoothStep)))
+    }
+    
+    func makeValueNoise() -> SPTAnimatorId {
+        SPTAnimator.make(.init(name: "Value.Noise.\(SPTAnimator.getCount())", source: .init(noiseWithType: .value, seed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
+    }
+    
+    func makePerlinNoise() -> SPTAnimatorId {
+        SPTAnimator.make(.init(name: "Perlin.Noise.\(SPTAnimator.getCount())", source: .init(noiseWithType: .perlin, seed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
     }
     
     func discloseAnimator(id: SPTAnimatorId) {
@@ -36,7 +53,7 @@ class AnimatorsViewModel: ObservableObject {
 
 struct AnimatorsView: View {
     
-    @StateObject var model = AnimatorsViewModel()
+    @ObservedObject var model: AnimatorsViewModel
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
@@ -75,25 +92,20 @@ struct AnimatorsView: View {
                     Menu {
                         Menu("Noise") {
                             Button("Value") {
-                                let animatorId = model.makeAnimator(.init(name: "Value.Noise.\(SPTAnimator.getCount())", source: .init(noiseWithType: .value, seed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
-                                model.discloseAnimator(id: animatorId)
+                                model.discloseAnimator(id: model.makeValueNoise())
                             }
                             Button("Perlin") {
-                                let animatorId = model.makeAnimator(.init(name: "Perlin.Noise.\(SPTAnimator.getCount())", source: .init(noiseWithType: .perlin, seed: .randomInFullRange(), frequency: 1.0, interpolation: .smoothStep)))
-                                model.discloseAnimator(id: animatorId)
+                                model.discloseAnimator(id: model.makePerlinNoise())
                             }
                         }
                         Button("Oscillator") {
-                            let animatorId = model.makeAnimator(.init(name: "Oscillator.\(SPTAnimator.getCount())", source: .init(oscillatorWithFrequency: 1.0, interpolation: .smoothStep)))
-                            model.discloseAnimator(id: animatorId)
+                            model.discloseAnimator(id: model.makeOscillatorAnimator())
                         }
                         Button("Random") {
-                            let animatorId = model.makeAnimator(.init(name: "Random.\(SPTAnimator.getCount())", source: .init(randomWithSeed: .randomInFullRange(), frequency: 1.0)))
-                            model.discloseAnimator(id: animatorId)
+                            model.discloseAnimator(id: model.makeRandomAnimator())
                         }
                         Button("Pan") {
-                            let animatorId = model.makeAnimator(SPTAnimator(name: "Pan.\(SPTAnimator.getCount())", source: .init(panWithAxis: .horizontal, bottomLeft: .zero, topRight: .one)))
-                            model.discloseAnimator(id: animatorId)
+                            model.discloseAnimator(id: model.makePanAnimator())
                         }
                     } label: {
                         Text("New From Source")
@@ -106,6 +118,6 @@ struct AnimatorsView: View {
 
 struct AnimatorsView_Previews: PreviewProvider {
     static var previews: some View {
-        AnimatorsView()
+        AnimatorsView(model: .init())
     }
 }
