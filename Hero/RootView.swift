@@ -109,7 +109,9 @@ class RootViewModel: ObservableObject {
         objectFactory = ObjectFactory(scene: sceneViewModel.scene)
         
         // Create default object
-        createObject(meshId: MeshRegistry.standard.recordNamed("sphere")!.id)
+        var defaultObjectPosition = SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin
+        defaultObjectPosition.y += 5.0
+        createObject(meshId: MeshRegistry.standard.recordNamed("sphere")!.id, position: defaultObjectPosition, scale: 5.0)
         
         // Create default animators
         _ = animatorsViewModel.makePanAnimator()
@@ -119,10 +121,7 @@ class RootViewModel: ObservableObject {
         _ = animatorsViewModel.makePerlinNoise()
     }
     
-    func createObject(meshId: SPTMeshId) {
-        let scale: Float = 5.0
-        var position = SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin
-        position.y += scale
+    func createObject(meshId: SPTMeshId, position: simd_float3, scale: Float) {
         let object = objectFactory.makeMesh(meshId: meshId, lookCategories: [.renderable, .renderableModel], position: position, scale: scale)
         sceneViewModel.selectedObject = object
         sceneViewModel.focusedObject = object
@@ -243,7 +242,7 @@ struct RootView: View {
         }
         .sheet(isPresented: $showsNewObjectView) {
             NewObjectView() { meshId in
-                model.createObject(meshId: meshId)
+                model.createObject(meshId: meshId, position: SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin, scale: 5.0)
             }
         }
         .sheet(isPresented: $showsSelectedObjectInspector) {
