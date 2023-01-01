@@ -145,7 +145,7 @@ struct FloatSelector: View {
         .shadow(radius: 1.0)
         .onAppear {
             feedbackGenerator.prepare()
-            if isSnappingEnabled && roundedValue(rawValue) != rawValue {
+            if isSnappingEnabled && abs(roundedValue(rawValue) - rawValue) > 0.00001 {
                 isSnappingEnabled = false
             }
         }
