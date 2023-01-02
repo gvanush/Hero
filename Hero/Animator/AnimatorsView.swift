@@ -17,8 +17,6 @@ class AnimatorsViewModel: ObservableObject {
             self?.disclosedAnimatorIds.removeAll()
             self?.objectWillChange.send()
         }
-        
-        
     }
     
     func makePanAnimator() -> SPTAnimatorId {
