@@ -96,11 +96,12 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         meshLook.categories = LookCategories.guide.rawValue
         SPTMeshLook.make(meshLook, object: guideObject)
         
-        var outlineLook = SPTOutlineLook.get(object: object)
-        SPTOutlineLook.make(outlineLook, object: guideObject)
-        
-        outlineLook.categories &= ~LookCategories.guide.rawValue
-        SPTOutlineLook.update(outlineLook, object: object)
+        if var outlineLook = SPTOutlineLook.tryGet(object: object) {
+            SPTOutlineLook.make(outlineLook, object: guideObject)
+            
+            outlineLook.categories &= ~LookCategories.guide.rawValue
+            SPTOutlineLook.update(outlineLook, object: object)
+        }
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingDidChangeSink(object: object, callback: { [unowned self] newValue in
             self.updateFieldValue()
@@ -114,7 +115,6 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         meshLook.categories |= LookCategories.renderableModel.rawValue
         SPTMeshLook.update(meshLook, object: object)
         
-        // TODO
         if var outlineLook = SPTOutlineLook.tryGet(object: object) {
             outlineLook.categories |= LookCategories.guide.rawValue
             SPTOutlineLook.update(outlineLook, object: object)
