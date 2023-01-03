@@ -88,25 +88,28 @@ struct AnimatorsView: View {
                 }
                 ToolbarItem(placement: .bottomBar) {
                     Menu {
-                        Menu("Noise") {
-                            Button("Value") {
-                                model.discloseAnimator(id: model.makeValueNoise())
+                        Section("Source") {
+                            Menu("Noise") {
+                                Button("Value") {
+                                    model.discloseAnimator(id: model.makeValueNoise())
+                                }
+                                Button("Perlin") {
+                                    model.discloseAnimator(id: model.makePerlinNoise())
+                                }
                             }
-                            Button("Perlin") {
-                                model.discloseAnimator(id: model.makePerlinNoise())
+                            Button("Oscillator") {
+                                model.discloseAnimator(id: model.makeOscillatorAnimator())
                             }
-                        }
-                        Button("Oscillator") {
-                            model.discloseAnimator(id: model.makeOscillatorAnimator())
-                        }
-                        Button("Random") {
-                            model.discloseAnimator(id: model.makeRandomAnimator())
-                        }
-                        Button("Pan") {
-                            model.discloseAnimator(id: model.makePanAnimator())
+                            Button("Random") {
+                                model.discloseAnimator(id: model.makeRandomAnimator())
+                            }
+                            Button("Pan") {
+                                model.discloseAnimator(id: model.makePanAnimator())
+                            }
                         }
                     } label: {
-                        Text("New From Source")
+                        Image(systemName: "plus")
+                            .imageScale(.large)
                     }
                 }
             }
