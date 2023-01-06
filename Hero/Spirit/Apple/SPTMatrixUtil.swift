@@ -9,18 +9,6 @@ import Foundation
 
 
 enum SPTMatrix3x3 {
-    
-    static func createEulerRotationX(_ rx: Float) -> simd_float3x3 {
-        SPTMatrix3x3CreateEulerRotationX(rx)
-    }
-    
-    static func createEulerRotationY(_ ry: Float) -> simd_float3x3 {
-        SPTMatrix3x3CreateEulerRotationY(ry)
-    }
-    
-    static func createEulerRotationZ(_ rz: Float) -> simd_float3x3 {
-        SPTMatrix3x3CreateEulerRotationZ(rz)
-    }
 
     static func createOrthonormal(normDirection: simd_float3, axis: SPTAxis) -> simd_float3x3 {
         SPTMatrix3x3CreateOrthonormal(normDirection, axis)

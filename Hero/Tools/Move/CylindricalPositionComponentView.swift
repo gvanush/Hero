@@ -145,7 +145,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     
     private func updateGuideObjects(position: SPTPosition) {
         SPTPosition.update(.init(cartesian: position.cylindrical.origin + .init(x: 0.0, y: position.cylindrical.height, z: 0.0)), object: radiusLineObject)
-        SPTOrientation.update(.init(y: position.cylindrical.longitude - 0.5 * Float.pi), object: radiusLineObject)
+        SPTOrientation.update(.init(eulerY: position.cylindrical.longitude - 0.5 * Float.pi, x: 0.0, z: 0.0), object: radiusLineObject)
         
         var heightLinePosition = position
         heightLinePosition.cylindrical.height = 0.0
@@ -165,7 +165,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         radiusLineObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: cylindricalPosition.origin + .init(x: 0.0, y: cylindricalPosition.height, z: 0.0)), object: radiusLineObject)
         SPTScale.make(.init(x: 500.0), object: radiusLineObject)
-        SPTOrientation.make(.init(y: cylindricalPosition.longitude - 0.5 * Float.pi), object: radiusLineObject)
+        SPTOrientation.make(.init(eulerY: cylindricalPosition.longitude - 0.5 * Float.pi, x: 0.0, z: 0.0), object: radiusLineObject)
         SPTLineLookDepthBias.make(.guideLineLayer2, object: radiusLineObject)
     }
     
@@ -184,7 +184,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         let circleCenterPosition = SPTPosition(x: origin.cartesian.x, y: origin.cartesian.y + cylindricalPosition.height, z: origin.cartesian.z)
         SPTPosition.make(circleCenterPosition, object: circleObject)
         SPTScale.make(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
-        SPTOrientation.make(.init(x: 0.5 * Float.pi), object: circleObject)
+        SPTOrientation.make(.init(eulerX: 0.5 * Float.pi, y: 0.0, z: 0.0), object: circleObject)
         SPTLineLookDepthBias.make(.guideLineLayer2, object: circleObject)
         
         circleCenterObject = sceneViewModel.scene.makeObject()

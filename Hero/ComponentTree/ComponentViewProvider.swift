@@ -46,6 +46,10 @@ class ComponentViewProvider<RC> {
     func viewFor(_ component: XYZScaleFieldAnimatorBindingComponent) -> AnyView? { nil }
     
     func viewFor(_ component: UniformScaleFieldAnimatorBindingComponent) -> AnyView? { nil }
+    
+    func viewFor(_ component: EulerOrientationComponent) -> AnyView? {
+        nil
+    }
 }
 
 final class EmptyComponentViewProvider<RC>: ComponentViewProvider<RC> {

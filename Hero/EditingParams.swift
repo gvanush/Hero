@@ -87,7 +87,7 @@ struct ObjectPropertyXYZScaleEditingParams: ObjectPropertyVectorEditingParams {
     var z = ObjectPropertyFloatEditingParams()
 }
 
-struct ObjectPropertyRotationEditingParams: ObjectPropertyVectorEditingParams {
+struct ObjectPropertyEulerOrientationEditingParams: ObjectPropertyVectorEditingParams {
     var x = ObjectPropertyFloatEditingParams()
     var y = ObjectPropertyFloatEditingParams()
     var z = ObjectPropertyFloatEditingParams()
@@ -191,17 +191,15 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
     }
     
-    // MARK: Rotation
-    @Published private var rotationParams = [SPTObject : ObjectPropertyRotationEditingParams]()
+    // MARK: Orientation
+    @Published private var eulerOrientationParams = [SPTObject : ObjectPropertyEulerOrientationEditingParams]()
     
-    subscript(rotationOf object: SPTObject, axis axis: Axis) -> ObjectPropertyFloatEditingParams {
+    subscript(eulerOrientationOf object: SPTObject) -> ObjectPropertyEulerOrientationEditingParams {
         get {
-            rotationParams[object, default: .init()][axis]
+            eulerOrientationParams[object, default: .init()]
         }
         set {
-            var params = rotationParams[object, default: .init()]
-            params[axis] = newValue
-            rotationParams[object] = params
+            eulerOrientationParams[object] = newValue
         }
     }
     
@@ -283,7 +281,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         xyzScaleParams[duplicate] = xyzScaleParams[original]
         uniformScaleParams[duplicate] = uniformScaleParams[original]
         
-        rotationParams[duplicate] = rotationParams[original]
+        eulerOrientationParams[duplicate] = eulerOrientationParams[original]
         
         cartesianPositionBindingParams[duplicate] = cartesianPositionBindingParams[original]
         linearPositionBindingParams[duplicate] = linearPositionBindingParams[original]
@@ -303,7 +301,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         xyzScaleParams.removeValue(forKey: object)
         uniformScaleParams.removeValue(forKey: object)
         
-        rotationParams.removeValue(forKey: object)
+        eulerOrientationParams.removeValue(forKey: object)
         
         cartesianPositionBindingParams.removeValue(forKey: object)
         linearPositionBindingParams.removeValue(forKey: object)

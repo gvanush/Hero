@@ -116,10 +116,11 @@ where O: CaseIterable, O.AllCases: RandomAccessCollection, O: Identifiable, O: E
     }
     
     static func == (lhs: ActionBarMenu<O>, rhs: ActionBarMenu<O>) -> Bool {
-        lhs.iconName == rhs.iconName && lhs.disabled == rhs.disabled && lhs.selected.wrappedValue == rhs.selected.wrappedValue
+        lhs.title == rhs.title && lhs.iconName == rhs.iconName && lhs.disabled == rhs.disabled && lhs.selected.wrappedValue == rhs.selected.wrappedValue
     }
     
     func hash(into hasher: inout Hasher) {
+        title.hash(into: &hasher)
         iconName.hash(into: &hasher)
         disabled.hash(into: &hasher)
         selected.wrappedValue.hash(into: &hasher)

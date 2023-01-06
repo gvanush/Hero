@@ -78,11 +78,14 @@ fileprivate struct ActiveComponentViewContainer<RC>: View where RC: Component {
     let viewProvider: ComponentViewProvider<RC>
     
     var body: some View {
-        if rootComponent == component {
-            viewProvider.viewForRoot(rootComponent)
-        } else {
-            component.accept(viewProvider)
+        Group {
+            if rootComponent == component {
+                viewProvider.viewForRoot(rootComponent)
+            } else {
+                component.accept(viewProvider)
+            }
         }
+        .id(component.id)
     }
 }
 

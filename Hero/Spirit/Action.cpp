@@ -42,7 +42,7 @@ void updateActions(Registry& registry, double time) {
         spt::emplaceIfMissing<spt::DirtyTransformationFlag>(registry, entity);
         
         auto& orientation = registry.get<SPTOrientation>(entity);
-        assert(orientation.type == SPTOrientationTypeLookAtPoint);
+        assert(orientation.model == SPTOrientationModelLookAtPoint);
         
         const auto passed = time - action.startTime;
         if (passed >= action.duration) {
@@ -81,7 +81,7 @@ void SPTPositionActionDestroy(SPTObject object) {
 void SPTOrientationActionMakeLookAtTarget(SPTObject object, simd_float3 target, double duration, SPTEasingType easing) {
     auto& scene = *static_cast<spt::Scene*>(object.sceneHandle);
     const auto& startOrientation = scene.registry.get<SPTOrientation>(object.entity);
-    assert(startOrientation.type == SPTOrientationTypeLookAtPoint);
+    assert(startOrientation.model == SPTOrientationModelLookAtPoint);
     
     auto delta = startOrientation;
     delta.lookAtPoint.target = target - startOrientation.lookAtPoint.target;

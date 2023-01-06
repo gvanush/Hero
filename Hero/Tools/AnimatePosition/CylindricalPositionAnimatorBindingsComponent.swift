@@ -60,7 +60,7 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
         radiusLineObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: cylindricalPosition.origin + .init(x: 0.0, y: cylindricalPosition.height, z: 0.0)), object: radiusLineObject)
         SPTScale.make(.init(x: 500.0), object: radiusLineObject)
-        SPTOrientation.make(.init(y: cylindricalPosition.longitude - 0.5 * Float.pi), object: radiusLineObject)
+        SPTOrientation.make(.init(eulerY: cylindricalPosition.longitude - 0.5 * Float.pi, x: 0.0, z: 0.0), object: radiusLineObject)
         
         heightLineObject = sceneViewModel.scene.makeObject()
         var heightLinePosition = SPTPosition.get(object: object)
@@ -72,7 +72,7 @@ class CylindricalPositionAnimatorBindingsComponent: Component {
         circleObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(circleCenterPosition, object: circleObject)
         SPTScale.make(.init(x: cylindricalPosition.radius, y: cylindricalPosition.radius), object: circleObject)
-        SPTOrientation.make(.init(x: 0.5 * Float.pi), object: circleObject)
+        SPTOrientation.make(.init(eulerX: 0.5 * Float.pi, y: 0.0, z: 0.0), object: circleObject)
         
         circleCenterObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(circleCenterPosition, object: circleCenterObject)

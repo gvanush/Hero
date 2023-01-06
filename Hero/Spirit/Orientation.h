@@ -16,29 +16,19 @@
 SPT_EXTERN_C_BEGIN
 
 typedef enum {
-    SPTOrientationTypeEuler,
-    SPTOrientationTypeLookAtPoint,
-    SPTOrientationTypeLookAtDirection,
-    SPTOrientationTypeXYAxis,
-    SPTOrientationTypeYZAxis,
-    SPTOrientationTypeZXAxis,
-} __attribute__((enum_extensibility(closed))) SPTOrientationType;
+    SPTOrientationModelEulerXYZ,
+    SPTOrientationModelEulerXZY,
+    SPTOrientationModelEulerYXZ,
+    SPTOrientationModelEulerYZX,
+    SPTOrientationModelEulerZXY,
+    SPTOrientationModelEulerZYX,
+    SPTOrientationModelLookAtPoint,
+    SPTOrientationModelLookAtDirection,
+    SPTOrientationModelXYAxis,
+    SPTOrientationModelYZAxis,
+    SPTOrientationModelZXAxis,
+} __attribute__((enum_extensibility(closed))) SPTOrientationModel;
 
-typedef enum {
-    SPTEulerOrderXYZ,
-    SPTEulerOrderXZY,
-    SPTEulerOrderYXZ,
-    SPTEulerOrderYZX,
-    SPTEulerOrderZXY,
-    SPTEulerOrderZYX
-} __attribute__((enum_extensibility(closed))) SPTEulerOrder;
-
-typedef struct {
-    simd_float3 rotation;
-    SPTEulerOrder order;
-} SPTEulerOrientation;
-
-bool SPTEulerOrientationEqual(SPTEulerOrientation lhs, SPTEulerOrientation rhs);
 
 // When 'axis' is x, 'up' is used to compute y axis
 // When 'axis' is y, 'up' is used to compute z axis
@@ -83,9 +73,9 @@ typedef struct {
 bool SPTZXAxesOrientationEqual(SPTZXAxesOrientation lhs, SPTZXAxesOrientation rhs);
 
 typedef struct {
-    SPTOrientationType type;
+    SPTOrientationModel model;
     union {
-        SPTEulerOrientation euler;
+        simd_float3 euler;
         SPTLookAtPointOrientation lookAtPoint;
         SPTLookAtDirectionOrientation lookAtDirection;
         SPTXYAxesOrientation xyAxes;
@@ -107,6 +97,15 @@ SPTOrientation SPTOrientationGet(SPTObject object);
 const SPTOrientation* _Nullable SPTOrientationTryGet(SPTObject object);
 
 bool SPTOrientationExists(SPTObject object);
+
+simd_float3x3 SPTOrientationGetMatrix(SPTOrientation orientation);
+
+SPTOrientation SPTOrientationToEulerXYZ(SPTOrientation orientation);
+SPTOrientation SPTOrientationToEulerXZY(SPTOrientation orientation);
+SPTOrientation SPTOrientationToEulerYXZ(SPTOrientation orientation);
+SPTOrientation SPTOrientationToEulerYZX(SPTOrientation orientation);
+SPTOrientation SPTOrientationToEulerZXY(SPTOrientation orientation);
+SPTOrientation SPTOrientationToEulerZYX(SPTOrientation orientation);
 
 typedef void (* _Nonnull SPTOrientationWillChangeObserver) (SPTOrientation, SPTObserverUserInfo);
 SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTObserverUserInfo userInfo);

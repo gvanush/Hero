@@ -10,12 +10,52 @@ import Foundation
 
 extension SPTOrientation: SPTObservableComponent {
     
-    init(x: Float = 0.0, y: Float = 0.0, z: Float = 0.0, order: SPTEulerOrder = .XYZ) {
-        self.init(euler: .init(rotation: .init(x: x, y: y, z: z), order: order))
+    init(eulerX x: Float, y: Float, z: Float) {
+        self.init(eulerXYZ: .init(x: x, y: y, z: z))
     }
     
-    init(euler: SPTEulerOrientation) {
-        self.init(type: .euler, .init(euler: euler))
+    init(eulerXYZ euler: simd_float3) {
+        self.init(model: .eulerXYZ, .init(euler: euler))
+    }
+    
+    init(eulerX x: Float, z: Float, y: Float) {
+        self.init(eulerXZY: .init(x: x, y: y, z: z))
+    }
+    
+    init(eulerXZY euler: simd_float3) {
+        self.init(model: .eulerXZY, .init(euler: euler))
+    }
+    
+    init(eulerY y: Float, x: Float, z: Float) {
+        self.init(eulerYXZ: .init(x: x, y: y, z: z))
+    }
+    
+    init(eulerYXZ euler: simd_float3) {
+        self.init(model: .eulerYXZ, .init(euler: euler))
+    }
+    
+    init(eulerY y: Float, z: Float, x: Float) {
+        self.init(eulerYZX: .init(x: x, y: y, z: z))
+    }
+    
+    init(eulerYZX euler: simd_float3) {
+        self.init(model: .eulerYZX, .init(euler: euler))
+    }
+    
+    init(eulerZ z: Float, x: Float, y: Float) {
+        self.init(eulerZXY: .init(x: x, y: y, z: z))
+    }
+    
+    init(eulerZXY euler: simd_float3) {
+        self.init(model: .eulerZXY, .init(euler: euler))
+    }
+    
+    init(eulerZ z: Float, y: Float, x: Float) {
+        self.init(eulerZYX: .init(x: x, y: y, z: z))
+    }
+    
+    init(eulerZYX euler: simd_float3) {
+        self.init(model: .eulerZYX, .init(euler: euler))
     }
     
     init(target: simd_float3, up: simd_float3, axis: SPTAxis, positive: Bool = true) {
@@ -23,7 +63,7 @@ extension SPTOrientation: SPTObservableComponent {
     }
     
     init(lookAtPoint: SPTLookAtPointOrientation) {
-        self.init(type: .lookAtPoint, .init(lookAtPoint: lookAtPoint))
+        self.init(model: .lookAtPoint, .init(lookAtPoint: lookAtPoint))
     }
     
     init(normDirection: simd_float3, up: simd_float3, axis: SPTAxis, positive: Bool = true) {
@@ -31,7 +71,7 @@ extension SPTOrientation: SPTObservableComponent {
     }
     
     init(lookAtDirection: SPTLookAtDirectionOrientation) {
-        self.init(type: .lookAtDirection, .init(lookAtDirection: lookAtDirection))
+        self.init(model: .lookAtDirection, .init(lookAtDirection: lookAtDirection))
     }
     
     init(orthoNormX: simd_float3, orthoNormY: simd_float3) {
@@ -39,7 +79,7 @@ extension SPTOrientation: SPTObservableComponent {
     }
     
     init(xyAxes: SPTXYAxesOrientation) {
-        self.init(type: .xyAxis, .init(xyAxes: xyAxes))
+        self.init(model: .xyAxis, .init(xyAxes: xyAxes))
     }
     
     init(orthoNormY: simd_float3, orthoNormZ: simd_float3) {
@@ -47,7 +87,7 @@ extension SPTOrientation: SPTObservableComponent {
     }
     
     init(yzAxes: SPTYZAxesOrientation) {
-        self.init(type: .yzAxis, .init(yzAxes: yzAxes))
+        self.init(model: .yzAxis, .init(yzAxes: yzAxes))
     }
     
     init(orthoNormZ: simd_float3, orthoNormX: simd_float3) {
@@ -55,7 +95,7 @@ extension SPTOrientation: SPTObservableComponent {
     }
     
     init(zxAxes: SPTZXAxesOrientation) {
-        self.init(type: .zxAxis, .init(zxAxes: zxAxes))
+        self.init(model: .zxAxis, .init(zxAxes: zxAxes))
     }
     
     public static func == (lhs: SPTOrientation, rhs: SPTOrientation) -> Bool {
@@ -88,6 +128,30 @@ extension SPTOrientation: SPTObservableComponent {
     
     static func tryGet(object: SPTObject) -> SPTOrientation? {
         SPTOrientationTryGet(object)?.pointee
+    }
+    
+    var toEulerXYZ: SPTOrientation {
+        SPTOrientationToEulerXYZ(self)
+    }
+    
+    var toEulerXZY: SPTOrientation {
+        SPTOrientationToEulerXZY(self)
+    }
+    
+    var toEulerYXZ: SPTOrientation {
+        SPTOrientationToEulerYXZ(self)
+    }
+    
+    var toEulerYZX: SPTOrientation {
+        SPTOrientationToEulerYZX(self)
+    }
+    
+    var toEulerZXY: SPTOrientation {
+        SPTOrientationToEulerZXY(self)
+    }
+    
+    var toEulerZYX: SPTOrientation {
+        SPTOrientationToEulerZYX(self)
     }
     
     static func onDidEmergeSink(object: SPTObject, callback: @escaping DidEmergeCallback) -> SPTAnySubscription {

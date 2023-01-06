@@ -27,7 +27,7 @@ class ObjectFactory {
         SPTMetadataMake(object, .init(tag: ObjectType.mesh.rawValue, name: "Mesh.\(meshNumber)"))
         SPTPosition.make(.init(cartesian: position), object: object)
         SPTScaleMake(object, .init(uniform: scale))
-        SPTOrientation.make(.init(euler: .init(rotation: .zero, order: .XYZ)), object: object)
+        SPTOrientation.make(.init(eulerXYZ: .zero), object: object)
         SPTMeshLook.make(.init(material: SPTPhongMaterial(color: UIColor.darkGray.sptColor(model: .HSB), shininess: 0.5), meshId: meshId, categories: lookCategories.rawValue), object: object)
         SPTRayCastableMake(object)
         meshNumber += 1
@@ -61,7 +61,7 @@ class ObjectFactory {
             SPTMetadataMake(object, .init(tag: ObjectType.mesh.rawValue, name: "Mesh.\(meshNumber)"))
             SPTPosition.make(.init(x: Float.random(in: positionRange), y: Float.random(in: positionRange), z: Float.random(in: positionRange)), object: object)
             SPTScaleMake(object, .init(xyz: .init(Float.random(in: scaleRange), Float.random(in: scaleRange), Float.random(in: scaleRange))))
-            SPTOrientation.make(.init(euler: .init(rotation: simd_float3(0.0, 0.0, Float.random(in: -Float.pi...Float.pi)), order: .XYZ)), object: object)
+            SPTOrientation.make(.init(eulerX: Float.random(in: -Float.pi...Float.pi), y: Float.random(in: -Float.pi...Float.pi), z: Float.random(in: -Float.pi...Float.pi)), object: object)
             let meshId = MeshRegistry.standard.meshRecords.randomElement()!.id
             
             let meshLook = SPTMeshLook(material: SPTPhongMaterial(color: UIColor.random().sptColor(model: .HSB), shininess: Float.random(in: 0.0...1.0)), meshId: meshId, categories: lookCategories.rawValue)

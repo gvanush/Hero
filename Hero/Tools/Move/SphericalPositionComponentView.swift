@@ -143,7 +143,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
 
         SPTPosition.update(origin.position, object: latitudeCircleObject)
         SPTScale.update(.init(x: sphericalPosition.radius, y: sphericalPosition.radius), object: latitudeCircleObject)
-        SPTOrientation.update(.init(y: 0.5 * Float.pi + position.spherical.longitude), object: latitudeCircleObject)
+        SPTOrientation.update(.init(eulerY: 0.5 * Float.pi + position.spherical.longitude, x: 0.0, z: 0.0), object: latitudeCircleObject)
         
         SPTPosition.update(.init(x: origin.cartesian.x, y: cartesian.y, z: origin.cartesian.z), object: longitudeCircleObject)
         let vec = cartesian - position.spherical.origin
@@ -167,7 +167,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         latitudeCircleObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(origin.position, object: latitudeCircleObject)
         SPTScale.make(.init(x: sphericalPosition.radius, y: sphericalPosition.radius), object: latitudeCircleObject)
-        SPTOrientation.make(.init(y: 0.5 * Float.pi + sphericalPosition.longitude), object: latitudeCircleObject)
+        SPTOrientation.make(.init(eulerY: 0.5 * Float.pi + sphericalPosition.longitude, x: 0.0, z: 0.0), object: latitudeCircleObject)
         SPTLineLookDepthBias.make(.guideLineLayer2, object: latitudeCircleObject)
     }
 
@@ -181,7 +181,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         let scale = simd_length(.init(x: vec.x, y: vec.z))
         
         SPTScale.make(.init(x: scale, y: scale), object: longitudeCircleObject)
-        SPTOrientation.make(.init(x: 0.5 * Float.pi), object: longitudeCircleObject)
+        SPTOrientation.make(.init(eulerX: 0.5 * Float.pi, y: 0.0, z: 0.0), object: longitudeCircleObject)
         SPTLineLookDepthBias.make(.guideLineLayer2, object: longitudeCircleObject)
     }
     

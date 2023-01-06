@@ -72,14 +72,14 @@ class SphericalPositionAnimatorBindingsComponent: Component {
         latitudeCircleObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: sphericalPosition.origin), object: latitudeCircleObject)
         SPTScale.make(.init(x: sphericalPosition.radius, y: sphericalPosition.radius), object: latitudeCircleObject)
-        SPTOrientation.make(.init(y: 0.5 * Float.pi + sphericalPosition.longitude), object: latitudeCircleObject)
+        SPTOrientation.make(.init(eulerY: 0.5 * Float.pi + sphericalPosition.longitude, x: 0.0, z: 0.0), object: latitudeCircleObject)
         
         longitudeCircleObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: .init(x: sphericalPosition.origin.x, y: objectCartesian.y, z: sphericalPosition.origin.z)), object: longitudeCircleObject)
         
         let scale = simd_length(.init(x: radiusDirection.x, y: radiusDirection.z))
         SPTScale.make(.init(x: scale, y: scale), object: longitudeCircleObject)
-        SPTOrientation.make(.init(x: 0.5 * Float.pi), object: longitudeCircleObject)
+        SPTOrientation.make(.init(eulerX: 0.5 * Float.pi, y: 0.0, z: 0.0), object: longitudeCircleObject)
         
         originObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: sphericalPosition.origin), object: originObject)

@@ -9,36 +9,6 @@
 
 #include "Vector.h"
 
-simd_float3x3 SPTMatrix3x3CreateEulerRotationX(float rx) {
-    const auto c = cosf(rx);
-    const auto s = sinf(rx);
-    return simd_float3x3 {
-        simd_float3 {1.f, 0.f, 0.f},
-        simd_float3 {0.f, c, s},
-        simd_float3 {0.f, -s, c}
-    };
-}
-
-simd_float3x3 SPTMatrix3x3CreateEulerRotationY(float ry) {
-    const auto c = cosf(ry);
-    const auto s = sinf(ry);
-    return simd_float3x3 {
-        simd_float3 {c, 0.f, -s},
-        simd_float3 {0.f, 1.f, 0.f},
-        simd_float3 {s, 0.f, c}
-    };
-}
-
-simd_float3x3 SPTMatrix3x3CreateEulerRotationZ(float rz) {
-    const auto c = cosf(rz);
-    const auto s = sinf(rz);
-    return simd_float3x3 {
-        simd_float3 {c, s, 0.f},
-        simd_float3 {-s, c, 0.f},
-        simd_float3 {0.f, 0.f, 1.f},
-    };
-}
-
 simd_float3x3 SPTMatrix3x3CreateOrthonormal(simd_float3 normDirection, SPTAxis axis) {
     
     const simd_float3 ortho1 = simd_normalize(SPTVectorCreateOrthogonal(normDirection));

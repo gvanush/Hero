@@ -73,8 +73,9 @@ class MeshObjectInspectorModel: ObservableObject {
     }
     
     func editOrientation(axis: Axis, dismiss: DismissAction) {
-        rootViewModel.activeToolViewModel = rootViewModel.orientToolViewModel
-        rootViewModel.orientToolViewModel.selectedObjectViewModel!.axis = axis
+        // TODO
+//        rootViewModel.activeToolViewModel = rootViewModel.orientToolViewModel
+//        rootViewModel.orientToolViewModel.selectedObjectViewModel!.axis = axis
         dismiss()
     }
     
@@ -214,9 +215,10 @@ struct MeshObjectInspector: View {
     
     func orientationView() -> some View {
         Section("Orientation") {
-            SceneEditableParam(title: "X", valueText: textFor(model.orientation.euler.rotation.x, formatter: model.rotationFormatter), editAction: { model.editOrientation(axis: .x, dismiss: dismiss) })
+            // TODO
+            /*SceneEditableParam(title: "X", valueText: textFor(model.orientation.euler.rotation.x, formatter: model.rotationFormatter), editAction: { model.editOrientation(axis: .x, dismiss: dismiss) })
             SceneEditableParam(title: "Y", valueText: textFor(model.orientation.euler.rotation.y, formatter: model.rotationFormatter), editAction: { model.editOrientation(axis: .y, dismiss: dismiss) })
-            SceneEditableParam(title: "Z", valueText: textFor(model.orientation.euler.rotation.z, formatter: model.rotationFormatter), editAction: { model.editOrientation(axis: .z, dismiss: dismiss) })
+            SceneEditableParam(title: "Z", valueText: textFor(model.orientation.euler.rotation.z, formatter: model.rotationFormatter), editAction: { model.editOrientation(axis: .z, dismiss: dismiss) })*/
         }
     }
     

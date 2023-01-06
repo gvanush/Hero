@@ -9,34 +9,12 @@
 #include "Scene.hpp"
 #include "Transformation.hpp"
 #include "ComponentObserverUtil.hpp"
-#include "Matrix.h"
+#include "Matrix+Orientation.h"
 
 #include <simd/simd.h>
 
 
 namespace spt::Orientation {
-
-simd_float3x3 computeEulerOrientationMatrix(const SPTEulerOrientation& eulerOrientation) {
-    
-    const auto& xMat = SPTMatrix3x3CreateEulerRotationX(eulerOrientation.rotation.x);
-    const auto& yMat = SPTMatrix3x3CreateEulerRotationY(eulerOrientation.rotation.y);
-    const auto& zMat = SPTMatrix3x3CreateEulerRotationZ(eulerOrientation.rotation.z);
-    
-    switch (eulerOrientation.order) {
-        case SPTEulerOrderXYZ:
-            return simd_mul(zMat, simd_mul(yMat, xMat));
-        case SPTEulerOrderXZY:
-            return simd_mul(yMat, simd_mul(zMat, xMat));
-        case SPTEulerOrderYXZ:
-            return simd_mul(zMat, simd_mul(xMat, yMat));
-        case SPTEulerOrderYZX:
-            return simd_mul(xMat, simd_mul(zMat, yMat));
-        case SPTEulerOrderZXY:
-            return simd_mul(yMat, simd_mul(xMat, zMat));
-        case SPTEulerOrderZYX:
-            return simd_mul(xMat, simd_mul(yMat, zMat));
-    }
-}
 
 simd_float3x3 computeLookAtMatrix(simd_float3 pos, const SPTLookAtPointOrientation& orientation) {
     const auto sign = (orientation.positive ? 1 : -1);
@@ -133,23 +111,38 @@ simd_float3x3 computeZXAxesMatrix(const SPTZXAxesOrientation& orientation) {
 simd_float3x3 getMatrix(const spt::Registry& registry, SPTEntity entity, const simd_float3& position) {
     
     if(const auto orientation = registry.try_get<SPTOrientation>(entity)) {
-        switch (orientation->type) {
-            case SPTOrientationTypeEuler: {
-                return computeEulerOrientationMatrix(orientation->euler);
+        switch (orientation->model) {
+            case SPTOrientationModelEulerXYZ: {
+                return SPTMatrix3x3CreateEulerXYZOrientation(orientation->euler);
             }
-            case SPTOrientationTypeLookAtPoint: {
+            case SPTOrientationModelEulerXZY: {
+                return SPTMatrix3x3CreateEulerXZYOrientation(orientation->euler);
+            }
+            case SPTOrientationModelEulerYXZ: {
+                return SPTMatrix3x3CreateEulerYXZOrientation(orientation->euler);
+            }
+            case SPTOrientationModelEulerYZX: {
+                return SPTMatrix3x3CreateEulerYZXOrientation(orientation->euler);
+            }
+            case SPTOrientationModelEulerZXY: {
+                return SPTMatrix3x3CreateEulerZXYOrientation(orientation->euler);
+            }
+            case SPTOrientationModelEulerZYX: {
+                return SPTMatrix3x3CreateEulerZYXOrientation(orientation->euler);
+            }
+            case SPTOrientationModelLookAtPoint: {
                 return computeLookAtMatrix(position, orientation->lookAtPoint);
             }
-            case SPTOrientationTypeLookAtDirection: {
+            case SPTOrientationModelLookAtDirection: {
                 return computeLookAtDirectionMatrix(orientation->lookAtDirection);
             }
-            case SPTOrientationTypeXYAxis: {
+            case SPTOrientationModelXYAxis: {
                 return computeXYAxesMatrix(orientation->xyAxes);
             }
-            case SPTOrientationTypeYZAxis: {
+            case SPTOrientationModelYZAxis: {
                 return computeYZAxesMatrix(orientation->yzAxes);
             }
-            case SPTOrientationTypeZXAxis: {
+            case SPTOrientationModelZXAxis: {
                 return computeZXAxesMatrix(orientation->zxAxes);
             }
         }
@@ -158,10 +151,6 @@ simd_float3x3 getMatrix(const spt::Registry& registry, SPTEntity entity, const s
     return matrix_identity_float3x3;
 }
 
-}
-
-bool SPTEulerOrientationEqual(SPTEulerOrientation lhs, SPTEulerOrientation rhs) {
-    return simd_equal(lhs.rotation, rhs.rotation) && lhs.order == rhs.order;
 }
 
 bool SPTLookAtPointOrientationEqual(SPTLookAtPointOrientation lhs, SPTLookAtPointOrientation rhs) {
@@ -191,22 +180,27 @@ bool SPTZXAxesOrientationEqual(SPTZXAxesOrientation lhs, SPTZXAxesOrientation rh
 }
 
 bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
-    if(lhs.type != rhs.type) {
+    if(lhs.model != rhs.model) {
         return false;
     }
     
-    switch (lhs.type) {
-        case SPTOrientationTypeEuler:
-            return SPTEulerOrientationEqual(lhs.euler, rhs.euler);
-        case SPTOrientationTypeLookAtPoint:
+    switch (lhs.model) {
+        case SPTOrientationModelEulerXYZ:
+        case SPTOrientationModelEulerXZY:
+        case SPTOrientationModelEulerYXZ:
+        case SPTOrientationModelEulerYZX:
+        case SPTOrientationModelEulerZXY:
+        case SPTOrientationModelEulerZYX:
+            return simd_equal(lhs.euler, rhs.euler);
+        case SPTOrientationModelLookAtPoint:
             return SPTLookAtPointOrientationEqual(lhs.lookAtPoint, rhs.lookAtPoint);
-        case SPTOrientationTypeLookAtDirection:
+        case SPTOrientationModelLookAtDirection:
             return SPTLookAtDirectionOrientationEqual(lhs.lookAtDirection, rhs.lookAtDirection);
-        case SPTOrientationTypeXYAxis:
+        case SPTOrientationModelXYAxis:
             return SPTXYAxesOrientationEqual(lhs.xyAxes, rhs.xyAxes);
-        case SPTOrientationTypeYZAxis:
+        case SPTOrientationModelYZAxis:
             return SPTYZAxesOrientationEqual(lhs.yzAxes, rhs.yzAxes);
-        case SPTOrientationTypeZXAxis:
+        case SPTOrientationModelZXAxis:
             return SPTZXAxesOrientationEqual(lhs.zxAxes, rhs.zxAxes);
     }
 }
@@ -242,6 +236,51 @@ SPTOrientation SPTOrientationGet(SPTObject object) {
 bool SPTOrientationExists(SPTObject object) {
     auto& registry = spt::Scene::getRegistry(object);
     return registry.all_of<SPTOrientation>(object.entity);
+}
+
+simd_float3x3 SPTOrientationGetMatrix(SPTOrientation orientation) {
+    switch (orientation.model) {
+        case SPTOrientationModelEulerXYZ:
+            return SPTMatrix3x3CreateEulerXYZOrientation(orientation.euler);
+        case SPTOrientationModelEulerXZY:
+            return SPTMatrix3x3CreateEulerXZYOrientation(orientation.euler);
+        case SPTOrientationModelEulerYXZ:
+            return SPTMatrix3x3CreateEulerYXZOrientation(orientation.euler);
+        case SPTOrientationModelEulerYZX:
+            return SPTMatrix3x3CreateEulerYZXOrientation(orientation.euler);
+        case SPTOrientationModelEulerZXY:
+            return  SPTMatrix3x3CreateEulerZXYOrientation(orientation.euler);
+        case SPTOrientationModelEulerZYX:
+            return SPTMatrix3x3CreateEulerZYXOrientation(orientation.euler);
+        default:
+            // TODO
+            assert(false);
+            return matrix_identity_float3x3;
+    }
+}
+
+SPTOrientation SPTOrientationToEulerXYZ(SPTOrientation orientation) {
+    return {SPTOrientationModelEulerXYZ, .euler = SPTMatrix3x3GetEulerXYZOrientationAngles(SPTOrientationGetMatrix(orientation))};
+}
+
+SPTOrientation SPTOrientationToEulerXZY(SPTOrientation orientation) {
+    return {SPTOrientationModelEulerXZY, .euler = SPTMatrix3x3GetEulerXZYOrientationAngles(SPTOrientationGetMatrix(orientation))};
+}
+
+SPTOrientation SPTOrientationToEulerYXZ(SPTOrientation orientation) {
+    return {SPTOrientationModelEulerYXZ, .euler = SPTMatrix3x3GetEulerYXZOrientationAngles(SPTOrientationGetMatrix(orientation))};
+}
+
+SPTOrientation SPTOrientationToEulerYZX(SPTOrientation orientation) {
+    return {SPTOrientationModelEulerYZX, .euler = SPTMatrix3x3GetEulerYZXOrientationAngles(SPTOrientationGetMatrix(orientation))};
+}
+
+SPTOrientation SPTOrientationToEulerZXY(SPTOrientation orientation) {
+    return {SPTOrientationModelEulerZXY, .euler = SPTMatrix3x3GetEulerZXYOrientationAngles(SPTOrientationGetMatrix(orientation))};
+}
+
+SPTOrientation SPTOrientationToEulerZYX(SPTOrientation orientation) {
+    return {SPTOrientationModelEulerZYX, .euler = SPTMatrix3x3GetEulerZYXOrientationAngles(SPTOrientationGetMatrix(orientation))};
 }
 
 SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTObserverUserInfo userInfo) {

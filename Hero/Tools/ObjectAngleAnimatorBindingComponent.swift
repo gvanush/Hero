@@ -108,10 +108,10 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
         
         bindingWillChangeSubscription = animatableProperty.onAnimatorBindingWillChangeSink(object: object, callback: { [unowned self] newValue in
 
-            let p0 = orthoNormal * SPTMatrix3x3.createEulerRotationX(newValue.valueAt0) * orthoNormalTranspose * objectPosVec
+            let p0 = orthoNormal * SPTOrientationMatrix3x3.createEulerXOrientation(newValue.valueAt0) * orthoNormalTranspose * objectPosVec
             SPTPosition.update(.init(cartesian: origin + p0), object: point0Object)
             
-            let p1 = orthoNormal * SPTMatrix3x3.createEulerRotationX(newValue.valueAt1) * orthoNormalTranspose * objectPosVec
+            let p1 = orthoNormal * SPTOrientationMatrix3x3.createEulerXOrientation(newValue.valueAt1) * orthoNormalTranspose * objectPosVec
             SPTPosition.update(.init(cartesian: origin + p1), object: point1Object)
 
             SPTArcLook.update(.init(color: guideColor.rgba, radius: arcRadius, startAngle: newValue.valueAt0, endAngle: newValue.valueAt1, thickness: .guideLineBoldThickness), object: arcObject)
@@ -130,12 +130,12 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
         let orthoNormal = SPTMatrix3x3.createOrthonormal(normDirection: normRotationAxis, axis: .X)
         let orthoNormalTranspose = simd_transpose(orthoNormal)
         
-        let p0 = orthoNormal * SPTMatrix3x3.createEulerRotationX(binding.valueAt0) * orthoNormalTranspose * objectPosVec
+        let p0 = orthoNormal * SPTOrientationMatrix3x3.createEulerXOrientation(binding.valueAt0) * orthoNormalTranspose * objectPosVec
         
         point0Object = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: origin + p0), object: point0Object)
 
-        let p1 = orthoNormal * SPTMatrix3x3.createEulerRotationX(binding.valueAt1) * orthoNormalTranspose * objectPosVec
+        let p1 = orthoNormal * SPTOrientationMatrix3x3.createEulerXOrientation(binding.valueAt1) * orthoNormalTranspose * objectPosVec
         
         point1Object = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: origin + p1), object: point1Object)
