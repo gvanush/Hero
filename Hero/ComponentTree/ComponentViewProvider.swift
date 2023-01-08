@@ -50,6 +50,10 @@ class ComponentViewProvider<RC> {
     func viewFor(_ component: EulerOrientationComponent) -> AnyView? {
         nil
     }
+    
+    func viewFor(_ component: PointAtDirectionComponent) -> AnyView? {
+        nil
+    }
 }
 
 final class EmptyComponentViewProvider<RC>: ComponentViewProvider<RC> {

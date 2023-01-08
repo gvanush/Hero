@@ -79,6 +79,25 @@ class OrientationComponent: MultiVariantComponent, BasicToolSelectedObjectRootCo
                 orientation = orientation.toEulerZXY
             case .eulerZYX:
                 orientation = orientation.toEulerZYX
+            case .pointAtDirection:
+                // TODO
+                fatalError()
+                /*var axis = SPTAxis.X
+                switch orientationModel {
+                case .eulerXYZ, .eulerXZY:
+                    break
+                case .eulerYXZ, .eulerYZX:
+                    axis = .Y
+                case .eulerZXY, .eulerZYX:
+                    axis = .Z
+                case .pointAtDirection:
+                    axis = orientation.pointAtDirection.axis
+                default:
+                    // TODO
+                    fatalError()
+                }
+                orientation = orientation.toPointAtDirection(axis: axis, directionLength: 5.0)*/
+                
             default:
                 fatalError()
             }
@@ -94,15 +113,10 @@ class OrientationComponent: MultiVariantComponent, BasicToolSelectedObjectRootCo
         switch orientationModel {
         case .eulerXYZ, .eulerXZY, .eulerYXZ, .eulerYZX, .eulerZXY, .eulerZYX:
             activeComponent = EulerOrientationComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
-        case .lookAtPoint:
-            fatalError()
-        case .lookAtDirection:
-            fatalError()
-        case .xyAxis:
-            fatalError()
-        case .yzAxis:
-            fatalError()
-        case .zxAxis:
+        case .pointAtDirection:
+            activeComponent = PointAtDirectionComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
+        default:
+            // TODO
             fatalError()
         }
         variantCancellable = activeComponent.objectWillChange.sink { [weak self] in

@@ -14,6 +14,13 @@ const simd_float3 float3_zero = {};
 const simd_float3 float3_infinity = {INFINITY, INFINITY, INFINITY};
 const simd_float3 float3_negative_infinity = {-INFINITY, -INFINITY, -INFINITY};
 
+const simd_float3 SPTVectorLeft = {-1.f, 0.f, 0.f};
+const simd_float3 SPTVectorRight = {1.f, 0.f, 0.f};
+const simd_float3 SPTVectorUp = {0.f, 1.f, 0.f};
+const simd_float3 SPTVectorDown = {0.f, -1.f, 0.f};
+const simd_float3 SPTVectorForward = {0.f, 0.f, -1.f};
+const simd_float3 SPTVectorBackward = {0.f, 0.f, 1.f};
+
 inline static simd_float3 SPTVectorRadiansToDegrees(simd_float3 rad) {
     return rad * 180.f / M_PI;
 }
@@ -80,4 +87,15 @@ inline static simd_float3 SPTVectorCreateOrthogonal(simd_float3 vec) {
 
 inline static bool SPTVectorCollinear(simd_float3 vec1, simd_float3 vec2, float tolerance) {
     return simd_length(simd_cross(vec1, vec2)) < tolerance;
+}
+
+inline static simd_float3 SPTVectorGetPositiveDirection(SPTAxis axis) {
+    switch (axis) {
+        case SPTAxisX:
+            return SPTVectorRight;
+        case SPTAxisY:
+            return SPTVectorUp;
+        case SPTAxisZ:
+            return SPTVectorBackward;
+    }
 }

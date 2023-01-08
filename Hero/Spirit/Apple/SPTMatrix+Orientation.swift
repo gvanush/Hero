@@ -48,6 +48,11 @@ enum SPTOrientationMatrix3x3 {
     }
     
     
+    static func createVectorToVector(_ normVec: simd_float3, _ normTargetVec: simd_float3) -> simd_float3x3 {
+        SPTMatrix3x3CreateVectorToVector(normVec, normTargetVec)
+    }
+    
+    
     static func getEulerXYZOrientationAngles(_ matrix: simd_float3x3) -> simd_float3 {
         SPTMatrix3x3GetEulerXYZOrientationAngles(matrix)
     }

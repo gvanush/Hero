@@ -58,6 +58,10 @@ extension SPTOrientation: SPTObservableComponent {
         self.init(model: .eulerZYX, .init(euler: euler))
     }
     
+    init(direction: simd_float3, axis: SPTAxis, angle: Float) {
+        self.init(model: .pointAtDirection, .init(pointAtDirection: .init(direction: direction, axis: axis, angle: angle)))
+    }
+    
     init(target: simd_float3, up: simd_float3, axis: SPTAxis, positive: Bool = true) {
         self.init(lookAtPoint: .init(target: target, up: up, axis: axis, positive: positive))
     }
@@ -152,6 +156,10 @@ extension SPTOrientation: SPTObservableComponent {
     
     var toEulerZYX: SPTOrientation {
         SPTOrientationToEulerZYX(self)
+    }
+    
+    func toPointAtDirection(axis: SPTAxis, directionLength: Float = 1.0) -> SPTOrientation {
+        SPTOrientationToPointAtDirection(self, axis, directionLength)
     }
     
     static func onDidEmergeSink(object: SPTObject, callback: @escaping DidEmergeCallback) -> SPTAnySubscription {

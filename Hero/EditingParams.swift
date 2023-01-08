@@ -93,6 +93,10 @@ struct ObjectPropertyEulerOrientationEditingParams: ObjectPropertyVectorEditingP
     var z = ObjectPropertyFloatEditingParams()
 }
 
+struct ObjectPropertyPointAtDirectionOrientationEditingParams {
+    var angle = ObjectPropertyFloatEditingParams()
+}
+
 struct ObjectPropertyCartesianPositionAnimatorBindingEditingParams: ObjectPropertyVectorEditingParams {
     var x = AnimatorBindingEditingParams()
     var y = AnimatorBindingEditingParams()
@@ -203,6 +207,17 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
     }
     
+    @Published private var pointAtDirectionOrientationParams = [SPTObject : ObjectPropertyPointAtDirectionOrientationEditingParams]()
+    
+    subscript(pointAtDirectionOrientationOf object: SPTObject) -> ObjectPropertyPointAtDirectionOrientationEditingParams {
+        get {
+            pointAtDirectionOrientationParams[object, default: .init()]
+        }
+        set {
+            pointAtDirectionOrientationParams[object] = newValue
+        }
+    }
+    
     // MARK: Position animator binding
     @Published private var cartesianPositionBindingParams = [SPTObject : ObjectPropertyCartesianPositionAnimatorBindingEditingParams]()
     
@@ -282,6 +297,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         uniformScaleParams[duplicate] = uniformScaleParams[original]
         
         eulerOrientationParams[duplicate] = eulerOrientationParams[original]
+        pointAtDirectionOrientationParams[duplicate] = pointAtDirectionOrientationParams[original]
         
         cartesianPositionBindingParams[duplicate] = cartesianPositionBindingParams[original]
         linearPositionBindingParams[duplicate] = linearPositionBindingParams[original]
@@ -302,6 +318,7 @@ class ObjectPropertyEditingParams: ObservableObject {
         uniformScaleParams.removeValue(forKey: object)
         
         eulerOrientationParams.removeValue(forKey: object)
+        pointAtDirectionOrientationParams.removeValue(forKey: object)
         
         cartesianPositionBindingParams.removeValue(forKey: object)
         linearPositionBindingParams.removeValue(forKey: object)

@@ -28,6 +28,8 @@ extension SPTOrientationModel: CaseIterable, Identifiable, Displayable {
             return "Euler ZXY"
         case .eulerZYX:
             return "Euler ZYX"
+        case .pointAtDirection:
+            return "Point To Direction"
         case .lookAtPoint:
             fatalError()
         case .lookAtDirection:
@@ -41,7 +43,7 @@ extension SPTOrientationModel: CaseIterable, Identifiable, Displayable {
         }
     }
     
-    public static var allCases: [SPTOrientationModel] = [.eulerXYZ, .eulerXZY, .eulerYXZ, .eulerYZX, .eulerZXY, .eulerZYX]
+    public static var allCases: [SPTOrientationModel] = [.eulerXYZ, .eulerXZY, .eulerYXZ, .eulerYZX, .eulerZXY, .eulerZYX/*, .pointAtDirection*/]
     
 }
 

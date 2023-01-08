@@ -10,6 +10,7 @@
 #include "Transformation.hpp"
 #include "ComponentObserverUtil.hpp"
 #include "Matrix+Orientation.h"
+#include "Vector.h"
 
 #include <simd/simd.h>
 
@@ -130,6 +131,9 @@ simd_float3x3 getMatrix(const spt::Registry& registry, SPTEntity entity, const s
             case SPTOrientationModelEulerZYX: {
                 return SPTMatrix3x3CreateEulerZYXOrientation(orientation->euler);
             }
+            case SPTOrientationModelPointAtDirection: {
+                return SPTMatrix3x3CreateVectorToVector(SPTVectorGetPositiveDirection(orientation->pointAtDirection.axis), simd_normalize(orientation->pointAtDirection.direction));
+            }
             case SPTOrientationModelLookAtPoint: {
                 return computeLookAtMatrix(position, orientation->lookAtPoint);
             }
@@ -151,6 +155,10 @@ simd_float3x3 getMatrix(const spt::Registry& registry, SPTEntity entity, const s
     return matrix_identity_float3x3;
 }
 
+}
+
+bool SPTPointAtDirectionOrientationEqual(SPTPointAtDirectionOrientation lhs, SPTPointAtDirectionOrientation rhs) {
+    return simd_equal(lhs.direction, rhs.direction) && lhs.axis == rhs.axis && lhs.angle == rhs.angle;
 }
 
 bool SPTLookAtPointOrientationEqual(SPTLookAtPointOrientation lhs, SPTLookAtPointOrientation rhs) {
@@ -192,6 +200,8 @@ bool SPTOrientationEqual(SPTOrientation lhs, SPTOrientation rhs) {
         case SPTOrientationModelEulerZXY:
         case SPTOrientationModelEulerZYX:
             return simd_equal(lhs.euler, rhs.euler);
+        case SPTOrientationModelPointAtDirection:
+            return SPTPointAtDirectionOrientationEqual(lhs.pointAtDirection, rhs.pointAtDirection);
         case SPTOrientationModelLookAtPoint:
             return SPTLookAtPointOrientationEqual(lhs.lookAtPoint, rhs.lookAtPoint);
         case SPTOrientationModelLookAtDirection:
@@ -252,6 +262,8 @@ simd_float3x3 SPTOrientationGetMatrix(SPTOrientation orientation) {
             return  SPTMatrix3x3CreateEulerZXYOrientation(orientation.euler);
         case SPTOrientationModelEulerZYX:
             return SPTMatrix3x3CreateEulerZYXOrientation(orientation.euler);
+        case SPTOrientationModelPointAtDirection:
+            return SPTMatrix3x3CreateVectorToVector(SPTVectorGetPositiveDirection(orientation.pointAtDirection.axis), simd_normalize(orientation.pointAtDirection.direction));
         default:
             // TODO
             assert(false);
@@ -281,6 +293,29 @@ SPTOrientation SPTOrientationToEulerZXY(SPTOrientation orientation) {
 
 SPTOrientation SPTOrientationToEulerZYX(SPTOrientation orientation) {
     return {SPTOrientationModelEulerZYX, .euler = SPTMatrix3x3GetEulerZYXOrientationAngles(SPTOrientationGetMatrix(orientation))};
+}
+
+SPTOrientation SPTOrientationToPointAtDirection(SPTOrientation orientation, SPTAxis axis, float directionLength) {
+    const auto& matrix = SPTOrientationGetMatrix(orientation);
+    
+    // TODO (angle is ignored)
+    SPTPointAtDirectionOrientation pointAtDirection;
+    pointAtDirection.axis = axis;
+    pointAtDirection.angle = 0.f;
+    switch (axis) {
+        case SPTAxisX:
+            pointAtDirection.direction = matrix.columns[0];
+            break;
+        case SPTAxisY:
+            pointAtDirection.direction = matrix.columns[1];
+            break;
+        case SPTAxisZ:
+            pointAtDirection.direction = matrix.columns[2];
+            break;
+    }
+    pointAtDirection.direction *= directionLength;
+    
+    return {.model = SPTOrientationModelPointAtDirection, .pointAtDirection = pointAtDirection};
 }
 
 SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTObserverUserInfo userInfo) {

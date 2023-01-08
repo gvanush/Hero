@@ -22,6 +22,7 @@ typedef enum {
     SPTOrientationModelEulerYZX,
     SPTOrientationModelEulerZXY,
     SPTOrientationModelEulerZYX,
+    SPTOrientationModelPointAtDirection,
     SPTOrientationModelLookAtPoint,
     SPTOrientationModelLookAtDirection,
     SPTOrientationModelXYAxis,
@@ -29,6 +30,13 @@ typedef enum {
     SPTOrientationModelZXAxis,
 } __attribute__((enum_extensibility(closed))) SPTOrientationModel;
 
+typedef struct {
+    simd_float3 direction;
+    SPTAxis axis;
+    float angle;
+} SPTPointAtDirectionOrientation;
+
+bool SPTPointAtDirectionOrientationEqual(SPTPointAtDirectionOrientation lhs, SPTPointAtDirectionOrientation rhs);
 
 // When 'axis' is x, 'up' is used to compute y axis
 // When 'axis' is y, 'up' is used to compute z axis
@@ -76,6 +84,7 @@ typedef struct {
     SPTOrientationModel model;
     union {
         simd_float3 euler;
+        SPTPointAtDirectionOrientation pointAtDirection;
         SPTLookAtPointOrientation lookAtPoint;
         SPTLookAtDirectionOrientation lookAtDirection;
         SPTXYAxesOrientation xyAxes;
@@ -106,6 +115,8 @@ SPTOrientation SPTOrientationToEulerYXZ(SPTOrientation orientation);
 SPTOrientation SPTOrientationToEulerYZX(SPTOrientation orientation);
 SPTOrientation SPTOrientationToEulerZXY(SPTOrientation orientation);
 SPTOrientation SPTOrientationToEulerZYX(SPTOrientation orientation);
+
+SPTOrientation SPTOrientationToPointAtDirection(SPTOrientation orientation, SPTAxis axis, float directionLength);
 
 typedef void (* _Nonnull SPTOrientationWillChangeObserver) (SPTOrientation, SPTObserverUserInfo);
 SPTObserverToken SPTOrientationAddWillChangeObserver(SPTObject object, SPTOrientationWillChangeObserver observer, SPTObserverUserInfo userInfo);

@@ -14,7 +14,7 @@ protocol DistinctValueSet: Identifiable, Equatable, CaseIterable {
 
 extension DistinctValueSet {
     
-    var id: Self { self }
+    public var id: Self { self }
     
 }
 

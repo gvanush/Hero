@@ -6,6 +6,8 @@
 //
 
 #include "Matrix+Orientation.h"
+#include "Geometry.h"
+#include "Matrix.h"
 
 #include <cmath>
 
@@ -93,6 +95,30 @@ simd_float3x3 SPTMatrix3x3CreateEulerZYXOrientation(simd_float3 angles) {
     const auto& zMat = SPTMatrix3x3CreateEulerZOrientation(angles.z);
     
     return simd_mul(xMat, simd_mul(yMat, zMat));
+}
+
+
+simd_float3x3 SPTMatrix3x3CreateVectorToVector(simd_float3 normVec, simd_float3 normTargetVec) {
+
+    // NOTE: Real-Time Rendering 4th Edition page 83
+    const auto e = simd_dot(normVec, normTargetVec);
+    if(e < 0.0001 - 1.f) {
+        const auto& orthonormal = SPTMatrix3x3CreateOrthonormal(normTargetVec, SPTAxisX);
+        return simd_mul(orthonormal, simd_mul(SPTMatrix3x3CreateEulerZOrientation(M_PI), simd_transpose(orthonormal)));
+    }
+    const auto h = 1.f / (1.f + e);
+    const auto cross = simd_cross(normVec, normTargetVec);
+    const auto xy = cross.x * cross.y;
+    const auto yz = cross.y * cross.z;
+    const auto zx = cross.z * cross.x;
+    
+    // The issue is that when 'normVec' and 'normTargetVec' point to diferrent half spaces (aka angle is bigger than 90 degrees) upon changing 'normTargetVec' orthonormal axes rotate unexpectedly (aka object rotates around 'normTargetVec'). Below formula (which is derived from quaternions) needs to be understood
+    
+    return {
+        simd_float3 {e + h * cross.x * cross.x, h * xy + cross.z, h * zx - cross.y},
+        simd_float3 {h * xy - cross.z, e + h * cross.y * cross.y, h * yz + cross.x},
+        simd_float3 {h * zx + cross.y, h * yz - cross.x, e + h * cross.z * cross.z},
+    };
 }
 
 
