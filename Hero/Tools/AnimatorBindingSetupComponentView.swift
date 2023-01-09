@@ -200,9 +200,6 @@ struct AnimatorBindingSetupComponentView<AnimatorBindingComponent, RC>: View whe
                         }
                         .tag(component.id)
                     }
-                    .onAppear {
-                        actionBarModel.scrollToObjectSection()
-                    }
             }
         }
     }

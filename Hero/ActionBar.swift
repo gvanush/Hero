@@ -14,8 +14,6 @@ class ActionBarModel: ObservableObject {
     @Published fileprivate private(set) var toolSectionItems = [AnyActionBarItem]()
     @Published fileprivate private(set) var objectSectionItems = [AnyActionBarItem]()
     
-    @Published fileprivate var objectSectionScrollToggle = false
-    
     fileprivate var animateChanges = false
     
     fileprivate var allItemsCount: Int {
@@ -50,10 +48,6 @@ class ActionBarModel: ObservableObject {
         } else {
             objectSectionItems = items
         }
-    }
-    
-    func scrollToObjectSection() {
-        objectSectionScrollToggle.toggle()
     }
     
     func onAppear() {
@@ -96,51 +90,42 @@ struct ActionBar: View {
     @ObservedObject var model: ActionBarModel
     
     var body: some View {
-        ScrollViewReader { scrollViewProxy in
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 0.0) {
-                    
-                    sectionView(items: model.commonSectionItems)
-                    
-                    if !model.commonSectionItems.isEmpty && !model.toolSectionItems.isEmpty {
-                        divider
-                    }
-                    
-                    sectionView(items: model.toolSectionItems)
-                        .tint(.primary)
-                    
-                    if (!model.commonSectionItems.isEmpty || !model.toolSectionItems.isEmpty) && !model.objectSectionItems.isEmpty {
-                        divider
-                    }
-                    
-                    sectionView(items: model.objectSectionItems)
-                        .tint(.primarySelectionColor)
-                }
-            }
-            .frame(width: Self.itemSize.width, height: CGFloat(Self.slotCount) * Self.itemSize.height)
-            // This is a weird fix for button tap area not being matched
-            // to its content size when it is inside a scroll view
-            .onTapGesture {}
-            .onChange(of: model.objectSectionScrollToggle) { _ in
-                if let firstId = model.objectSectionItems.first?.id {
-                    withAnimation {
-                        scrollViewProxy.scrollTo(firstId, anchor: .bottom)
-                    }
-                }
-            }
+        VStack(spacing: 4.0) {
+            sectionView(items: model.commonSectionItems)
+            
+            sectionView(items: model.toolSectionItems)
+                .tint(.primary)
+            
+            sectionView(items: model.objectSectionItems)
+                .tint(.primarySelectionColor)
         }
+        // This is a weird fix for button tap area not being matched
+        // to its content size when it is inside a scroll view
+        .onTapGesture {}
         .onAppear {
             model.onAppear()
         }
     }
     
     func sectionView(items: [AnyActionBarItem]) -> some View {
-        ForEach(items.reversed()) { item in
-            item.view
-                .frame(size: Self.itemSize)
-                .transition(.identity)
+        Group {
+            if !items.isEmpty {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 0.0) {
+                        ForEach(items.reversed()) { item in
+                            item.view
+                                .frame(size: Self.itemSize)
+                                .transition(.identity)
+                        }
+                        .imageScale(.medium)
+                    }
+                }
+                .frame(width: Self.itemSize.width, height: CGFloat(min(items.count, Self.maxSlotCount)) * Self.itemSize.height)
+                .background(Material.thin)
+                .cornerRadius(10.0)
+                .shadow(radius: 1.0)
+            }
         }
-        .imageScale(.medium)
     }
     
     var divider: some View {
@@ -150,7 +135,7 @@ struct ActionBar: View {
     }
     
     static let itemSize = CGSize(width: 44.0, height: 44.0)
-    static let slotCount = 3
+    static let maxSlotCount = 3
 }
     
 extension View {
@@ -196,10 +181,13 @@ struct ActionBar_Previews: PreviewProvider {
                             }
                             ActionBarMenu(title: "Model", iconName: "circle", selected: $axis)
                         }
+                        .actionBarObjectSection {
+                            ActionBarButton(iconName: "minus") {
+                                
+                            }
+                        }
                     
                     ActionBar(model: actionBarModel)
-                        .background(Material.thin)
-                        .cornerRadius(10.0)
                 }
             }
         }

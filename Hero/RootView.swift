@@ -189,9 +189,6 @@ struct RootView: View {
             .environmentObject(userInteractionState)
             .overlay(alignment: .bottomTrailing) {
                 ActionBar(model: actionBarModel)
-                    .background(Material.thin, ignoresSafeAreaEdges: [])
-                    .cornerRadius(10.0)
-                    .shadow(radius: 1.0)
                     .padding(Self.sceneUIInsets)
                     .visible(userInteractionState.isIdle)
             }

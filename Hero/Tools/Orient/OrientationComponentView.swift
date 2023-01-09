@@ -139,9 +139,6 @@ struct OrientationComponentView<RC>: View {
                 ActionBarMenu(title: "Orientation Model", iconName: "slider.horizontal.3", selected: $component.orientationModel)
                     .tag(component.id)
             }
-            .onAppear {
-                actionBarModel.scrollToObjectSection()
-            }
     }
     
 }

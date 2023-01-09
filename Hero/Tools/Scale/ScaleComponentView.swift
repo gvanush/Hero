@@ -117,9 +117,6 @@ struct ScaleComponentView<RC>: View {
                 ActionBarMenu(title: "Scale Model", iconName: "slider.horizontal.3", selected: $component.scaleModel)
                     .tag(component.id)
             }
-            .onAppear {
-                actionBarModel.scrollToObjectSection()
-            }
     }
     
 }

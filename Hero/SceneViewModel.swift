@@ -24,7 +24,6 @@ class SceneViewModel: ObservableObject {
 
     private(set) var viewCameraObject: SPTObject
     
-    private var objectSelector: ObjectSelector?
     private var focusedObjectPositionWillChangeSubscription: SPTAnySubscription?
     
     @Published var focusedObject: SPTObject? {
@@ -56,8 +55,13 @@ class SceneViewModel: ObservableObject {
             guard selectedObject != newValue else {
                 return
             }
+            if let selectedObject {
+                SPTOutlineLook.destroy(object: selectedObject)
+            }
+            if let newValue {
+                SPTOutlineLook.make(.init(color: UIColor.primarySelectionColor.rgba, thickness: 5.0, categories: LookCategories.guide.rawValue), object: newValue)
+            }
             focusedObject = newValue
-            objectSelector = ObjectSelector(object: newValue)
         }
     }
     

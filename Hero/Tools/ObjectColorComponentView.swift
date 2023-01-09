@@ -202,9 +202,6 @@ struct ObjectColorComponentView<C, RC>: View where C: SPTObservableComponent {
                 ActionBarMenu(title: "Color Model", iconName: "slider.horizontal.3", selected: $component.colorModel)
                     .tag(component.id)
             }
-            .onAppear {
-                actionBarModel.scrollToObjectSection()
-            }
     }
     
 }

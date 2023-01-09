@@ -133,9 +133,6 @@ struct PositionComponentView<RC>: View {
                 ActionBarMenu(title: "Coordinate System", iconName: "slider.horizontal.3", selected: $component.coordinateSystem)
                     .tag(component.id)
             }
-            .onAppear {
-                actionBarModel.scrollToObjectSection()
-            }
     }
     
 }
