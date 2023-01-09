@@ -196,6 +196,31 @@ void PlayableScene::prepareTransformationAnimations(const Scene& scene, const st
         }
     });
     
+    // Orientation
+    
+    // Euler
+    
+    auto eulerOrientationXView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationX>>();
+    eulerOrientationXView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].orientationRecord.euler.x = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    auto eulerOrientationYView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationY>>();
+    eulerOrientationYView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].orientationRecord.euler.y = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
+    auto eulerOrientationZView = scene.registry.view<spt::AnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationZ>>();
+    eulerOrientationZView.each([&animatorIdToValueIndex, &transformAnimatedEntityRecord] (auto entity, const auto& comp) {
+        if(auto it = animatorIdToValueIndex.find(comp.base.animatorId); it != animatorIdToValueIndex.end()) {
+            transformAnimatedEntityRecord[entity].orientationRecord.euler.z = AnimatorBindingItemBase{ comp.base, it->second };
+        }
+    });
+    
     // Scale
     
     // XYZ
@@ -230,7 +255,7 @@ void PlayableScene::prepareTransformationAnimations(const Scene& scene, const st
     for(auto& item: transformAnimatedEntityRecord) {
         item.second.basePosition = registry.get<SPTPosition>(item.first);
         item.second.baseScale = registry.get<SPTScale>(item.first);
-        item.second.baseOrientation = SPTMatrix4x4CreateUpperLeft(Orientation::getMatrix(registry, item.first, SPTPositionToCartesian(item.second.basePosition).cartesian));
+        item.second.baseOrientation = registry.get<SPTOrientation>(item.first);
         registry.emplace<spt::Transformation::AnimatorRecord>(item.first, item.second);
     }
     

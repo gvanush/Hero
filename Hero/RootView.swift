@@ -65,6 +65,7 @@ class RootViewModel: ObservableObject {
     let scaleToolViewModel: ScaleToolViewModel
     let shadeToolViewModel: ShadeToolViewModel
     let animatePositionToolViewModel: AnimatePositionToolViewModel
+    let animateOrientationToolViewModel: AnimateOrientationToolViewModel
     let animateScaleToolViewModel: AnimateScaleToolViewModel
     let animateShadeToolViewModel: AnimateShadeToolViewModel
     
@@ -75,6 +76,7 @@ class RootViewModel: ObservableObject {
         scaleToolViewModel,
         shadeToolViewModel,
         animatePositionToolViewModel,
+        animateOrientationToolViewModel,
         animateScaleToolViewModel,
         animateShadeToolViewModel
     ]
@@ -101,6 +103,7 @@ class RootViewModel: ObservableObject {
         self.scaleToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.shadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animatePositionToolViewModel = .init(sceneViewModel: sceneViewModel)
+        self.animateOrientationToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateScaleToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateShadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         
@@ -328,7 +331,7 @@ struct RootView: View {
             case .animatePosition:
                 AnimatePositionToolView(model: model.animatePositionToolViewModel)
             case .animateOrientation:
-                EmptyView()
+                AnimateOrientationToolView(model: model.animateOrientationToolViewModel)
             case .animateScale:
                 AnimateScaleToolView(model: model.animateScaleToolViewModel)
             case .animateShade:

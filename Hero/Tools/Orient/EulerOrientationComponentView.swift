@@ -88,8 +88,10 @@ class EulerOrientationComponent: BasicComponent<Axis> {
                 SPTOrientation.make(.init(eulerY: 0.0, x: 0.0, z: orientation.euler.z), object: guide)
             case .eulerZXY:
                 SPTOrientation.make(.init(eulerZ: 0.0, x: 0.0, y: orientation.euler.y), object: guide)
-            default:
+            case .eulerYZX, .eulerZYX:
                 break
+            default:
+                fatalError()
             }
             
         case .y:
@@ -105,6 +107,8 @@ class EulerOrientationComponent: BasicComponent<Axis> {
                 SPTOrientation.make(.init(eulerY: 0.0, z: orientation.euler.z, x: orientation.euler.x), object: guide)
             case .eulerZYX:
                 SPTOrientation.make(.init(eulerZ: 0.0, y: 0.0, x: orientation.euler.x), object: guide)
+            case .eulerXZY, .eulerZXY:
+                break
             default:
                 break
             }
@@ -122,8 +126,10 @@ class EulerOrientationComponent: BasicComponent<Axis> {
                 SPTOrientation.make(.init(eulerZ: 0.0, x: orientation.euler.x, y: orientation.euler.y), object: guide)
             case .eulerZYX:
                 SPTOrientation.make(.init(eulerZ: 0.0, y: orientation.euler.y, x: orientation.euler.x), object: guide)
-            default:
+            case .eulerXYZ, .eulerYXZ:
                 break
+            default:
+                fatalError()
             }
         }
 
@@ -134,6 +140,10 @@ class EulerOrientationComponent: BasicComponent<Axis> {
         guard let object = guideObject else { return }
         SPTSceneProxy.destroyObject(object)
         guideObject = nil
+    }
+    
+    override var title: String {
+        "Orientation"
     }
     
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {

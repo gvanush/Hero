@@ -26,6 +26,10 @@ typedef enum {
     SPTAnimatableObjectPropertyCylindricalPositionLongitude,
     SPTAnimatableObjectPropertyCylindricalPositionHeight,
     
+    SPTAnimatableObjectPropertyEulerOrientationX,
+    SPTAnimatableObjectPropertyEulerOrientationY,
+    SPTAnimatableObjectPropertyEulerOrientationZ,
+    
     SPTAnimatableObjectPropertyXYZScaleX,
     SPTAnimatableObjectPropertyXYZScaleY,
     SPTAnimatableObjectPropertyXYZScaleZ,

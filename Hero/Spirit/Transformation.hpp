@@ -11,6 +11,7 @@
 #include "Base.h"
 #include "Transformation.h"
 #include "Position.h"
+#include "Orientation.h"
 #include "Scale.h"
 #include "AnimatorBinding.hpp"
 
@@ -53,6 +54,16 @@ struct Transformation {
             };
         };
         
+        struct OrientationRecord {
+            union {
+                struct {
+                    AnimatorBindingItemBase x;
+                    AnimatorBindingItemBase y;
+                    AnimatorBindingItemBase z;
+                } euler;
+            };
+        };
+        
         struct ScaleRecord {
             union {
                 struct {
@@ -67,7 +78,8 @@ struct Transformation {
         PositionRecord positionRecord;
         SPTPosition basePosition;
         
-        simd_float4x4 baseOrientation;
+        OrientationRecord orientationRecord;
+        SPTOrientation baseOrientation;
         
         ScaleRecord scaleRecord;
         SPTScale baseScale;

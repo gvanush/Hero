@@ -85,5 +85,9 @@ class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
     override func viewFor(_ component: PointAtDirectionComponent) -> AnyView? {
         AnyView(PointAtDirectionComponentView(component: component))
     }
+    
+    override func viewFor(_ component: EulerOrientationFieldAnimatorBindingComponent) -> AnyView? {
+        AnyView(EulerOrientationFieldAnimatorBindingComponentView(component: component))
+    }
 }
 

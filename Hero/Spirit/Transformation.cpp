@@ -14,6 +14,7 @@
 #include "ComponentObserverUtil.hpp"
 #include "Base.hpp"
 #include "Matrix.h"
+#include "Matrix+Orientation.h"
 
 #include <queue>
 
@@ -75,7 +76,24 @@ simd_float4x4 computeTransformationMatrix(const spt::Registry& registry, SPTEnti
             break;
     }
     
-    matrix = simd_mul(animRecord.baseOrientation, matrix);
+    auto orientation = animRecord.baseOrientation;
+    switch (orientation.model) {
+        case SPTOrientationModelEulerXYZ:
+        case SPTOrientationModelEulerXZY:
+        case SPTOrientationModelEulerYXZ:
+        case SPTOrientationModelEulerYZX:
+        case SPTOrientationModelEulerZXY:
+        case SPTOrientationModelEulerZYX:
+            orientation.euler.x += evaluateAnimatorBinding(animRecord.orientationRecord.euler.x.binding, animatorValues[animRecord.orientationRecord.euler.x.index]);
+            orientation.euler.y += evaluateAnimatorBinding(animRecord.orientationRecord.euler.y.binding, animatorValues[animRecord.orientationRecord.euler.y.index]);
+            orientation.euler.z += evaluateAnimatorBinding(animRecord.orientationRecord.euler.z.binding, animatorValues[animRecord.orientationRecord.euler.z.index]);
+            break;
+        default:
+            assert(false);
+            break;
+    }
+    
+    matrix = simd_mul(SPTMatrix4x4CreateUpperLeft(SPTOrientationGetMatrix(orientation)), matrix);
     
     auto position = animRecord.basePosition;
     

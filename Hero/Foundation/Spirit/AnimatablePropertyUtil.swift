@@ -32,6 +32,12 @@ extension SPTAnimatableObjectProperty: Displayable {
             return "Longitude"
         case .cylindricalPositionHeight:
             return "Height"
+        case .eulerOrientationX:
+            return "X"
+        case .eulerOrientationY:
+            return "Y"
+        case .eulerOrientationZ:
+            return "Z"
         case .xyzScaleX:
             return "X"
         case .xyzScaleY:

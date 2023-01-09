@@ -119,6 +119,12 @@ struct ObjectPropertySphericalPositionAnimatorBindingEditingParams {
     var latitude = AnimatorBindingEditingParams()
 }
 
+struct ObjectPropertyEulerOrientationAnimatorBindingEditingParams: ObjectPropertyVectorEditingParams {
+    var x = AnimatorBindingEditingParams()
+    var y = AnimatorBindingEditingParams()
+    var z = AnimatorBindingEditingParams()
+}
+
 struct ObjectPropertyXYZScaleAnimatorBindingEditingParams: ObjectPropertyVectorEditingParams {
     var x = AnimatorBindingEditingParams()
     var y = AnimatorBindingEditingParams()
@@ -263,6 +269,18 @@ class ObjectPropertyEditingParams: ObservableObject {
         }
     }
     
+    // MARK: Orientation animator binding
+    @Published private var eulerOrientationBindingParams = [SPTObject : ObjectPropertyEulerOrientationAnimatorBindingEditingParams]()
+    
+    subscript(eulerOrientationBindingOf object: SPTObject) -> ObjectPropertyEulerOrientationAnimatorBindingEditingParams {
+        get {
+            eulerOrientationBindingParams[object, default: .init()]
+        }
+        set {
+            eulerOrientationBindingParams[object] = newValue
+        }
+    }
+    
     // MARK: Scale animator binding
     @Published private var xyzScaleBindingParams = [SPTObject : ObjectPropertyXYZScaleAnimatorBindingEditingParams]()
     
@@ -304,6 +322,8 @@ class ObjectPropertyEditingParams: ObservableObject {
         cylindricalPositionBindingParams[duplicate] = cylindricalPositionBindingParams[original]
         sphericalPositionBindingParams[duplicate] = sphericalPositionBindingParams[original]
         
+        eulerOrientationBindingParams[duplicate] = eulerOrientationBindingParams[original]
+        
         xyzScaleBindingParams[duplicate] = xyzScaleBindingParams[original]
         uniformScaleParams[duplicate] = uniformScaleParams[original]
     }
@@ -324,6 +344,8 @@ class ObjectPropertyEditingParams: ObservableObject {
         linearPositionBindingParams.removeValue(forKey: object)
         cylindricalPositionBindingParams.removeValue(forKey: object)
         sphericalPositionBindingParams.removeValue(forKey: object)
+        
+        eulerOrientationBindingParams.removeValue(forKey: object)
         
         xyzScaleBindingParams.removeValue(forKey: object)
         uniformScaleParams.removeValue(forKey: object)

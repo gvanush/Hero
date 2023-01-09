@@ -1,15 +1,17 @@
 //
-//  XYZScaleFieldAnimatorBindingComponentView.swift
+//  EulerOrientationFieldAnimatorBindingComponent.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 30.12.22.
+//  Created by Vanush Grigoryan on 09.01.23.
 //
 
+import Foundation
 import SwiftUI
 
-class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
+
+class EulerOrientationFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty>, AnimatorBindingComponentProtocol {
     
-    private let fieldKeyPath: WritableKeyPath<SPTScale, Float>
+    private let fieldKeyPath: WritableKeyPath<SPTOrientation, Float>
     private var bindingWillChangeSubscription: SPTAnySubscription?
     private var guideObject: SPTObject!
     private var lineObject: SPTObject!
@@ -19,15 +21,15 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
     required override init(animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         switch animatableProperty {
-        case .xyzScaleX:
-            fieldKeyPath = \.xyz.x
-            editingParamsKeyPath = \.[xyzScaleBindingOf: object].x
-        case .xyzScaleY:
-            fieldKeyPath = \.xyz.y
-            editingParamsKeyPath = \.[xyzScaleBindingOf: object].y
-        case .xyzScaleZ:
-            fieldKeyPath = \.xyz.z
-            editingParamsKeyPath = \.[xyzScaleBindingOf: object].z
+        case .eulerOrientationX:
+            fieldKeyPath = \.euler.x
+            editingParamsKeyPath = \.[eulerOrientationBindingOf: object].x
+        case .eulerOrientationY:
+            fieldKeyPath = \.euler.y
+            editingParamsKeyPath = \.[eulerOrientationBindingOf: object].y
+        case .eulerOrientationZ:
+            fieldKeyPath = \.euler.z
+            editingParamsKeyPath = \.[eulerOrientationBindingOf: object].z
         default:
             fatalError()
         }
@@ -36,16 +38,65 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         
         lineObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(SPTPosition.get(object: object), object: lineObject)
-        SPTOrientation.make(SPTOrientation.get(object: object), object: lineObject)
         SPTLineLookDepthBias.make(.guideLineLayer3, object: lineObject)
         
+        let orientation = SPTOrientation.get(object: object)
+        
         switch animatableProperty {
-        case .xyzScaleX:
+        case .eulerOrientationX:
             SPTScale.make(.init(x: 500.0), object: lineObject)
-        case .xyzScaleY:
+            
+            switch orientation.model {
+            case .eulerXYZ:
+                SPTOrientation.make(.init(eulerX: 0.0, y: orientation.euler.y, z: orientation.euler.z), object: lineObject)
+            case .eulerXZY:
+                SPTOrientation.make(.init(eulerX: 0.0, z: orientation.euler.z, y: orientation.euler.y), object: lineObject)
+            case .eulerYXZ:
+                SPTOrientation.make(.init(eulerY: 0.0, x: 0.0, z: orientation.euler.z), object: lineObject)
+            case .eulerZXY:
+                SPTOrientation.make(.init(eulerZ: 0.0, x: 0.0, y: orientation.euler.y), object: lineObject)
+            case .eulerYZX, .eulerZYX:
+                break
+            default:
+                fatalError()
+            }
+            
+        case .eulerOrientationY:
             SPTScale.make(.init(y: 500.0), object: lineObject)
-        case .xyzScaleZ:
+            
+            switch orientation.model {
+            case .eulerXYZ:
+                SPTOrientation.make(.init(eulerX: 0.0, y: 0.0, z: orientation.euler.z), object: lineObject)
+            case .eulerYXZ:
+                SPTOrientation.make(.init(eulerY: 0.0, x: orientation.euler.x, z: orientation.euler.z), object: lineObject)
+            case .eulerYZX:
+                SPTOrientation.make(.init(eulerY: 0.0, z: orientation.euler.z, x: orientation.euler.x), object: lineObject)
+            case .eulerZYX:
+                SPTOrientation.make(.init(eulerZ: 0.0, y: 0.0, x: orientation.euler.x), object: lineObject)
+            case .eulerXZY, .eulerZXY:
+                break
+            default:
+                fatalError()
+            }
+            
+        case .eulerOrientationZ:
             SPTScale.make(.init(z: 500.0), object: lineObject)
+            
+            switch orientation.model {
+            case .eulerXZY:
+                SPTOrientation.make(.init(eulerX: 0.0, z: 0.0, y: orientation.euler.y), object: lineObject)
+            case .eulerYZX:
+                SPTOrientation.make(.init(eulerY: 0.0, z: 0.0, x: orientation.euler.x), object: lineObject)
+            case .eulerZXY:
+                SPTOrientation.make(.init(eulerZ: 0.0, x: orientation.euler.x, y: orientation.euler.y), object: lineObject)
+            case .eulerZYX:
+                SPTOrientation.make(.init(eulerZ: 0.0, y: orientation.euler.y, x: orientation.euler.x), object: lineObject)
+            case .eulerXYZ, .eulerYXZ:
+                break
+            default:
+                fatalError()
+            }
+            
         default:
             fatalError()
         }
@@ -69,13 +120,13 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         var lineColor: UIColor!
         var polylineId: SPTPolylineId!
         switch animatableProperty {
-        case .xyzScaleX:
+        case .eulerOrientationX:
             lineColor = .xAxisLight
             polylineId = sceneViewModel.xAxisLineMeshId
-        case .xyzScaleY:
+        case .eulerOrientationY:
             lineColor = .yAxisLight
             polylineId = sceneViewModel.yAxisLineMeshId
-        case .xyzScaleZ:
+        case .eulerOrientationZ:
             lineColor = .zAxisLight
             polylineId = sceneViewModel.zAxisLineMeshId
         default:
@@ -139,14 +190,14 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
         case .valueAt1:
             updateGuideField(self.binding.valueAt1)
         case .animator:
-            updateGuideField(SPTScale.get(object: object)[keyPath: fieldKeyPath])
+            updateGuideField(SPTOrientation.get(object: object)[keyPath: fieldKeyPath])
         }
     }
     
     private func updateGuideField(_ value: Float) {
-        var scale = SPTScale.get(object: guideObject)
-        scale[keyPath: fieldKeyPath] = value
-        SPTScale.update(scale, object: guideObject)
+        var orientation = SPTOrientation.get(object: guideObject)
+        orientation[keyPath: fieldKeyPath] = value
+        SPTOrientation.update(orientation, object: guideObject)
     }
     
     override func accept<RC>(_ provider: ComponentViewProvider<RC>) -> AnyView? {
@@ -156,9 +207,9 @@ class XYZScaleFieldAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAni
 }
 
 
-struct XYZScaleFieldAnimatorBindingComponentView: View {
+struct EulerOrientationFieldAnimatorBindingComponentView: View {
     
-    @ObservedObject var component: XYZScaleFieldAnimatorBindingComponent
+    @ObservedObject var component: EulerOrientationFieldAnimatorBindingComponent
     @EnvironmentObject var editingParams: ObjectPropertyEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
@@ -168,11 +219,11 @@ struct XYZScaleFieldAnimatorBindingComponentView: View {
             case .animator:
                 AnimatorControl(animatorId: $component.binding.animatorId)
             case .valueAt0:
-                FloatSelector(value: $component.binding.valueAt0, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping), formatter: Formatters.distance) { editingState in
+                FloatSelector(value: $component.binding.valueAt0InDegrees, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping), formatter: Formatters.distance) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .valueAt1:
-                FloatSelector(value: $component.binding.valueAt1, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping), formatter: Formatters.distance) { editingState in
+                FloatSelector(value: $component.binding.valueAt1InDegrees, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping), formatter: Formatters.distance) { editingState in
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             }

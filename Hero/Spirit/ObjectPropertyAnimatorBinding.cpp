@@ -44,6 +44,15 @@ void SPTObjectPropertyBindAnimator(SPTAnimatableObjectProperty property, SPTObje
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::bindAnimator<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, animatorBinding);
         }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyEulerOrientationX>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyEulerOrientationY>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::bindAnimator<SPTAnimatableObjectPropertyEulerOrientationZ>(object, animatorBinding);
+        }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::bindAnimator<SPTAnimatableObjectPropertyXYZScaleX>(object, animatorBinding);
         }
@@ -111,6 +120,15 @@ void SPTObjectPropertyUpdateAnimatorBinding(SPTAnimatableObjectProperty property
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationX>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationY>(object, animatorBinding);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationZ>(object, animatorBinding);
         }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::updateAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleX>(object, animatorBinding);
@@ -180,6 +198,15 @@ void SPTObjectPropertyUnbindAnimator(SPTAnimatableObjectProperty property, SPTOb
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::unbindAnimator<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyEulerOrientationX>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyEulerOrientationY>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::unbindAnimator<SPTAnimatableObjectPropertyEulerOrientationZ>(object);
+        }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::unbindAnimator<SPTAnimatableObjectPropertyXYZScaleX>(object);
         }
@@ -247,6 +274,15 @@ void SPTObjectPropertyUnbindAnimatorIfBound(SPTAnimatableObjectProperty property
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyEulerOrientationX>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyEulerOrientationY>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyEulerOrientationZ>(object);
         }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::unbindAnimatorIfBound<SPTAnimatableObjectPropertyXYZScaleX>(object);
@@ -316,6 +352,15 @@ SPTAnimatorBinding SPTObjectPropertyGetAnimatorBinding(SPTAnimatableObjectProper
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::getAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationX>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationY>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::getAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationZ>(object);
+        }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::getAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleX>(object);
         }
@@ -383,6 +428,15 @@ const SPTAnimatorBinding* _Nullable SPTObjectPropertyTryGetAnimatorBinding(SPTAn
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationX>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationY>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyEulerOrientationZ>(object);
         }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::tryGetAnimatorBinding<SPTAnimatableObjectPropertyXYZScaleX>(object);
@@ -452,6 +506,15 @@ bool SPTObjectPropertyIsAnimatorBound(SPTAnimatableObjectProperty property, SPTO
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::isAnimatorBound<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object);
         }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyEulerOrientationX>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyEulerOrientationY>(object);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::isAnimatorBound<SPTAnimatableObjectPropertyEulerOrientationZ>(object);
+        }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::isAnimatorBound<SPTAnimatableObjectPropertyXYZScaleX>(object);
         }
@@ -519,6 +582,15 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillChangeObserver(SPTAnimat
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyEulerOrientationX>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyEulerOrientationY>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyEulerOrientationZ>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::addAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, observer, userInfo);
@@ -588,6 +660,15 @@ void SPTObjectPropertyRemoveAnimatorBindingWillChangeObserver(SPTAnimatableObjec
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyEulerOrientationX>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyEulerOrientationY>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyEulerOrientationZ>(object, token);
+        }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::removeAnimatorBindingWillChangeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, token);
         }
@@ -655,6 +736,15 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidChangeObserver(SPTAnimata
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyEulerOrientationX>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyEulerOrientationY>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyEulerOrientationZ>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::addAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, observer, userInfo);
@@ -724,6 +814,15 @@ void SPTObjectPropertyRemoveAnimatorBindingDidChangeObserver(SPTAnimatableObject
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyEulerOrientationX>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyEulerOrientationY>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyEulerOrientationZ>(object, token);
+        }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::removeAnimatorBindingDidChangeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, token);
         }
@@ -791,6 +890,15 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingDidEmergeObserver(SPTAnimata
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyEulerOrientationX>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyEulerOrientationY>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyEulerOrientationZ>(object, observer, userInfo);
         }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::addAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, observer, userInfo);
@@ -860,6 +968,15 @@ void SPTObjectPropertyRemoveAnimatorBindingDidEmergeObserver(SPTAnimatableObject
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
         }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyEulerOrientationX>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyEulerOrientationY>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyEulerOrientationZ>(object, token);
+        }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::removeAnimatorBindingDidEmergeObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, token);
         }
@@ -928,6 +1045,15 @@ SPTObserverToken SPTObjectPropertyAddAnimatorBindingWillPerishObserver(SPTAnimat
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, observer, userInfo);
         }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyEulerOrientationX>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyEulerOrientationY>(object, observer, userInfo);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyEulerOrientationZ>(object, observer, userInfo);
+        }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::addAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, observer, userInfo);
         }
@@ -995,6 +1121,15 @@ void SPTObjectPropertyRemoveAnimatorBindingWillPerishObserver(SPTAnimatableObjec
         }
         case SPTAnimatableObjectPropertyCylindricalPositionHeight: {
             return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyCylindricalPositionHeight>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationX: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyEulerOrientationX>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationY: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyEulerOrientationY>(object, token);
+        }
+        case SPTAnimatableObjectPropertyEulerOrientationZ: {
+            return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyEulerOrientationZ>(object, token);
         }
         case SPTAnimatableObjectPropertyXYZScaleX: {
             return spt::removeAnimatorBindingWillPerishObserver<SPTAnimatableObjectPropertyXYZScaleX>(object, token);
