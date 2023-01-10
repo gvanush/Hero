@@ -29,3 +29,9 @@ extension SPTAnimatorBinding {
     }
     
 }
+
+
+struct SPTAnimatorBindingPropertyId<AP, PT>: Hashable where AP: SPTAnimatableProperty {
+    let animatableProperty: AP
+    let propertyKeyPath: KeyPath<SPTAnimatorBinding, PT>
+}

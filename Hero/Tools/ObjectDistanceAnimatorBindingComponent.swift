@@ -11,8 +11,6 @@ import SwiftUI
 class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnimatableObjectProperty> {
     
     private let normAxisDirection: simd_float3
-    fileprivate var editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>
-    
     private var lineObject: SPTObject!
     private var point0Object: SPTObject!
     private var point1Object: SPTObject!
@@ -20,10 +18,9 @@ class ObjectDistanceAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAn
     var selectedGuideColor: UIColor = .guide1Light
     private var bindingWillChangeSubscription: SPTAnySubscription?
     
-    init(normAxisDirection: simd_float3, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    init(normAxisDirection: simd_float3, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         self.normAxisDirection = normAxisDirection
-        self.editingParamsKeyPath = editingParamsKeyPath
         
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
@@ -154,12 +151,12 @@ struct DistanceAnimatorBindingComponentView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                FloatSelector(value: $component.binding.valueAt0, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping), formatter: Formatters.distance) { editingState in
+                FloatSelector(value: $component.binding.valueAt0, scale: editingParam(\.valueAt0).scale, isSnappingEnabled: editingParam(\.valueAt0).isSnapping, formatter: Formatters.distance) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color(uiColor: component.selectedGuideColor))
             case .valueAt1:
-                FloatSelector(value: $component.binding.valueAt1, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping), formatter: Formatters.distance) { editingState in
+                FloatSelector(value: $component.binding.valueAt1, scale: editingParam(\.valueAt1).scale, isSnappingEnabled: editingParam(\.valueAt1).isSnapping, formatter: Formatters.distance) { editingState in
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color(uiColor: component.selectedGuideColor))
@@ -167,9 +164,9 @@ struct DistanceAnimatorBindingComponentView: View {
         }
         .transition(.identity)
     }
- 
-    func editingParamBinding<T>(keyPath: WritableKeyPath<AnimatorBindingEditingParams, T>) -> Binding<T> {
-        _editingParams.projectedValue[dynamicMember: component.editingParamsKeyPath.appending(path: keyPath)]
-    }
     
+    func editingParam(_ keyPath: KeyPath<SPTAnimatorBinding, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: SPTAnimatorBindingPropertyId(animatableProperty: component.animatableProperty, propertyKeyPath: keyPath), component.object]
+    }
+ 
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 
 class SphericalPositionAnimatorBindingsComponent: Component {
@@ -104,7 +105,7 @@ class SphericalPositionLatitudeAnimatorBindingComponent: ObjectAngleAnimatorBind
         }
         
         let angle = 0.5 * Float.pi + position.spherical.longitude
-        super.init(origin: position.spherical.origin, normRotationAxis: .init(x: sinf(angle), y: 0.0, z: cosf(angle)), editingParamsKeyPath: \.[sphericalPositionBindingOf: object].latitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(origin: position.spherical.origin, normRotationAxis: .init(x: sinf(angle), y: 0.0, z: cosf(angle)), animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
         guideColor = .guide2Dark
         selectedGuideColor = .guide2Light
@@ -123,7 +124,7 @@ class SphericalPositionLongitudeAnimatorBindingComponent: ObjectAngleAnimatorBin
         }
 
         let origin = simd_float3(x: position.spherical.origin.x, y: position.spherical.toCartesian.y, z: position.spherical.origin.z)
-        super.init(origin: origin, normRotationAxis: .up, editingParamsKeyPath: \.[sphericalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(origin: origin, normRotationAxis: .up, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
         guideColor = .guide3Dark
         selectedGuideColor = .guide3Light
@@ -144,7 +145,7 @@ class SphericalPositionRadiusAnimatorBindingComponent: ObjectDistanceAnimatorBin
         let cartesian = position.spherical.toCartesian
 
         let axisDirection = (position.spherical.radius.sign == .plus ? 1.0 : -1.0) * simd_normalize(cartesian - position.spherical.origin)
-        super.init(normAxisDirection: axisDirection, editingParamsKeyPath: \.[sphericalPositionBindingOf: object].radius, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(normAxisDirection: axisDirection, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
     
 }

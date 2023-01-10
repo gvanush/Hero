@@ -55,7 +55,7 @@ class PointAtDirectionComponent: BasicComponent<PointAtDirectionComponentPropert
         let guideCartesian = SPTPosition.get(object: object).toCartesian.cartesian + SPTOrientation.get(object: object).pointAtDirection.direction
         SPTPosition.make(.init(cartesian: guideCartesian), object: guidePointObject)
         
-        directionPoint = CartesianPositionComponent(title: "Direction", editingParamsKeyPath: \.[cartesianPositionOf: guidePointObject], object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
+        directionPoint = CartesianPositionComponent(title: "Direction", object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
         directionPoint.objectSelectionColor = UIColor.guide1Light
         
         let cancellable = directionPoint.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
@@ -138,7 +138,7 @@ struct PointAtDirectionComponentView: View {
         Group {
             switch component.selectedProperty {
             case .angle:
-                FloatSelector(value: $component.orientation.pointAtDirection.angle, scale: $editingParams[linearPositionOf: component.object].factor.scale, isSnappingEnabled: $editingParams[linearPositionOf: component.object].factor.isSnapping, formatter: component.angleFormatter) { editingState in
+                FloatSelector(value: $component.orientation.pointAtDirection.angle, scale: editingParam(\.angle).scale, isSnappingEnabled: editingParam(\.angle).isSnapping, formatter: component.angleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .axis:
@@ -148,4 +148,9 @@ struct PointAtDirectionComponentView: View {
         .tint(Color.primarySelectionColor)
         .transition(.identity)
     }
+    
+    func editingParam(_ keyPath: KeyPath<SPTPointAtDirectionOrientation, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: (\SPTOrientation.pointAtDirection).appending(path: keyPath), component.object]
+    }
+    
 }

@@ -78,7 +78,7 @@ class LinearPositionOffsetAnimatorBindingComponent: ObjectDistanceAnimatorBindin
             fatalError()
         }
 
-        super.init(normAxisDirection: simd_normalize(position.linear.direction), editingParamsKeyPath: \.[linearPositionBindingOf: object].offset, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(normAxisDirection: simd_normalize(position.linear.direction), animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
     
 }

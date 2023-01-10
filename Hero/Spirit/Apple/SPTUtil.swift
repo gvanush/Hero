@@ -54,7 +54,7 @@ protocol SPTObservableComponent: SPTComponent {
 }
 
 
-protocol SPTAnimatableProperty: Identifiable {
+protocol SPTAnimatableProperty: Identifiable, Hashable {
     
     typealias AnimatorBindingDidEmergeCallback = ObjectDidEmergeCallback<SPTAnimatorBinding>
     typealias AnimatorBindingDidEmergeSubscription = SPTSubscription<AnimatorBindingDidEmergeCallback>

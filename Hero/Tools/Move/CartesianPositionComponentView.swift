@@ -11,7 +11,6 @@ import SwiftUI
 class CartesianPositionComponent: BasicComponent<Axis> {
     
     let storedTitle: String
-    let editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, ObjectPropertyCartesianPositionEditingParams>
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     let distanceFormatter = Formatters.distance
@@ -20,9 +19,8 @@ class CartesianPositionComponent: BasicComponent<Axis> {
     @SPTObservedComponent private(set) var position: SPTPosition
     private var guideObject: SPTObject?
     
-    init(title: String, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, ObjectPropertyCartesianPositionEditingParams>, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    init(title: String, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.storedTitle = title
-        self.editingParamsKeyPath = editingParamsKeyPath
         self.object = object
         self.sceneViewModel = sceneViewModel
         
@@ -106,15 +104,15 @@ struct CartesianPositionComponentView: View {
         Group {
             switch component.selectedProperty {
             case .x:
-                FloatSelector(value: $component.cartesian.x, scale: editingParamBinding(keyPath: \.x.scale), isSnappingEnabled: editingParamBinding(keyPath: \.x.isSnapping), formatter: component.distanceFormatter) { editingState in
+                FloatSelector(value: $component.cartesian.x, scale: editingParam(\.x).scale, isSnappingEnabled: editingParam(\.x).isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .y:
-                FloatSelector(value: $component.cartesian.y, scale: editingParamBinding(keyPath: \.y.scale), isSnappingEnabled: editingParamBinding(keyPath: \.y.isSnapping), formatter: component.distanceFormatter) { editingState in
+                FloatSelector(value: $component.cartesian.y, scale: editingParam(\.y).scale, isSnappingEnabled: editingParam(\.y).isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .z:
-                FloatSelector(value: $component.cartesian.z, scale: editingParamBinding(keyPath: \.z.scale), isSnappingEnabled: editingParamBinding(keyPath: \.z.isSnapping), formatter: component.distanceFormatter) { editingState in
+                FloatSelector(value: $component.cartesian.z, scale: editingParam(\.z).scale, isSnappingEnabled: editingParam(\.z).isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             }
@@ -123,8 +121,8 @@ struct CartesianPositionComponentView: View {
         .transition(.identity)
     }
     
-    func editingParamBinding<T>(keyPath: WritableKeyPath<ObjectPropertyCartesianPositionEditingParams, T>) -> Binding<T> {
-        _editingParams.projectedValue[dynamicMember: component.editingParamsKeyPath.appending(path: keyPath)]
+    func editingParam(_ keyPath: KeyPath<simd_float3, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: (\SPTPosition.cartesian).appending(path: keyPath), component.object]
     }
     
 }

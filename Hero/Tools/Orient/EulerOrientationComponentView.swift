@@ -163,21 +163,25 @@ struct EulerOrientationComponentView: View {
         Group {
             switch component.selectedProperty {
             case .x:
-                FloatSelector(value: $component.euler.xInDegrees, scale: $editingParams[eulerOrientationOf: component.object].x.scale, isSnappingEnabled: $editingParams[eulerOrientationOf: component.object].x.isSnapping, formatter: component.angleFormatter) { editingState in
+                FloatSelector(value: $component.euler.xInDegrees, scale: editingParam(\.x).scale, isSnappingEnabled: editingParam(\.x).isSnapping, formatter: component.angleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .y:
-                FloatSelector(value: $component.euler.yInDegrees, scale: $editingParams[eulerOrientationOf: component.object].y.scale, isSnappingEnabled: $editingParams[eulerOrientationOf: component.object].y.isSnapping, formatter: component.angleFormatter) { editingState in
+                FloatSelector(value: $component.euler.yInDegrees, scale: editingParam(\.y).scale, isSnappingEnabled: editingParam(\.y).isSnapping, formatter: component.angleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .z:
-                FloatSelector(value: $component.euler.zInDegrees, scale: $editingParams[eulerOrientationOf: component.object].z.scale, isSnappingEnabled: $editingParams[eulerOrientationOf: component.object].z.isSnapping, formatter: component.angleFormatter) { editingState in
+                FloatSelector(value: $component.euler.zInDegrees, scale: editingParam(\.z).scale, isSnappingEnabled: editingParam(\.z).isSnapping, formatter: component.angleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             }
         }
         .tint(Color.primarySelectionColor)
         .transition(.identity)
+    }
+    
+    func editingParam(_ keyPath: KeyPath<simd_float3, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: (\SPTOrientation.euler).appending(path: keyPath), component.object]
     }
     
 }

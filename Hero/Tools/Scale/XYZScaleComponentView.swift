@@ -100,21 +100,25 @@ struct XYZScaleComponentView: View {
         Group {
             switch component.selectedProperty {
             case .x:
-                FloatSelector(value: $component.scale.xyz.x, scale: $editingParams[xyzScaleOf: component.object].x.scale, isSnappingEnabled: $editingParams[xyzScaleOf: component.object].x.isSnapping, formatter: component.scaleFormatter) { editingState in
+                FloatSelector(value: $component.scale.xyz.x, scale: editingParam(\.x).scale, isSnappingEnabled: editingParam(\.x).isSnapping, formatter: component.scaleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .y:
-                FloatSelector(value: $component.scale.xyz.y, scale: $editingParams[xyzScaleOf: component.object].y.scale, isSnappingEnabled: $editingParams[xyzScaleOf: component.object].y.isSnapping, formatter: component.scaleFormatter) { editingState in
+                FloatSelector(value: $component.scale.xyz.y, scale: editingParam(\.y).scale, isSnappingEnabled: editingParam(\.y).isSnapping, formatter: component.scaleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .z:
-                FloatSelector(value: $component.scale.xyz.z, scale: $editingParams[xyzScaleOf: component.object].z.scale, isSnappingEnabled: $editingParams[xyzScaleOf: component.object].z.isSnapping, formatter: component.scaleFormatter) { editingState in
+                FloatSelector(value: $component.scale.xyz.z, scale: editingParam(\.z).scale, isSnappingEnabled: editingParam(\.z).isSnapping, formatter: component.scaleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             }
         }
         .tint(Color.primarySelectionColor)
         .transition(.identity)
+    }
+    
+    func editingParam(_ keyPath: KeyPath<simd_float3, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: (\SPTScale.xyz).appending(path: keyPath), component.object]
     }
     
 }

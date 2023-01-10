@@ -63,7 +63,7 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
         let guidePointObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: position), object: guidePointObject)
         
-        let subcomponent = CartesianPositionComponent(title: title, editingParamsKeyPath: \.[cartesianPositionOf: guidePointObject], object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
+        let subcomponent = CartesianPositionComponent(title: title, object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
         subcomponent.objectSelectionColor = UIColor.guide1Light
         
         let cancellable = subcomponent.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
@@ -166,7 +166,7 @@ struct LinearPositionComponentView: View {
         Group {
             switch component.selectedProperty {
             case .offset:
-                FloatSelector(value: $component.linearPosition.offset, scale: $editingParams[linearPositionOf: component.object].factor.scale, isSnappingEnabled: $editingParams[linearPositionOf: component.object].factor.isSnapping, formatter: component.distanceFormatter) { editingState in
+                FloatSelector(value: $component.linearPosition.offset, scale: editingParam(\.offset).scale, isSnappingEnabled: editingParam(\.offset).isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             }
@@ -174,4 +174,9 @@ struct LinearPositionComponentView: View {
         .tint(Color.primarySelectionColor)
         .transition(.identity)
     }
+    
+    func editingParam(_ keyPath: KeyPath<SPTLinearCoordinates, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: (\SPTPosition.linear).appending(path: keyPath), component.object]
+    }
+    
 }

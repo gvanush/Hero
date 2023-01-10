@@ -72,7 +72,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
         let guidePointObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: sphericalPosition.origin), object: guidePointObject)
         
-        origin = CartesianPositionComponent(title: "Origin", editingParamsKeyPath: \.[cartesianPositionOf: guidePointObject], object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
+        origin = CartesianPositionComponent(title: "Origin", object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
         origin.objectSelectionColor = UIColor.guide1Light
         
         let cancellable = origin.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
@@ -227,20 +227,24 @@ struct SphericalPositionComponentView: View {
         Group {
             switch component.selectedProperty {
             case .latitude:
-                FloatSelector(value: $component.sphericalPosition.latitudeInDegrees, scale: $editingParams[sphericalPositionOf: component.object].latitude.scale, isSnappingEnabled: $editingParams[sphericalPositionOf: component.object].latitude.isSnapping, formatter: component.angleFormatter) { editingState in
+                FloatSelector(value: $component.sphericalPosition.latitudeInDegrees, scale: editingParam(\.latitude).scale, isSnappingEnabled: editingParam(\.latitude).isSnapping, formatter: component.angleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .longitude:
-                FloatSelector(value: $component.sphericalPosition.longitudeInDegrees, scale: $editingParams[sphericalPositionOf: component.object].longitude.scale, isSnappingEnabled: $editingParams[sphericalPositionOf: component.object].longitude.isSnapping, formatter: component.angleFormatter) { editingState in
+                FloatSelector(value: $component.sphericalPosition.longitudeInDegrees, scale: editingParam(\.longitude).scale, isSnappingEnabled: editingParam(\.longitude).isSnapping, formatter: component.angleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .radius:
-                FloatSelector(value: $component.sphericalPosition.radius, scale: $editingParams[sphericalPositionOf: component.object].radius.scale, isSnappingEnabled: $editingParams[sphericalPositionOf: component.object].radius.isSnapping, formatter: component.distanceFormatter) { editingState in
+                FloatSelector(value: $component.sphericalPosition.radius, scale: editingParam(\.radius).scale, isSnappingEnabled: editingParam(\.radius).isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             }
         }
         .tint(Color.primarySelectionColor)
         .transition(.identity)
+    }
+    
+    func editingParam(_ keyPath: KeyPath<SPTSphericalCoordinates, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: (\SPTPosition.spherical).appending(path: keyPath), component.object]
     }
 }

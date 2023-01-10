@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 
 class CylindricalPositionAnimatorBindingsComponent: Component {
@@ -100,7 +101,7 @@ class CylindricalPositionRadiusAnimatorBindingComponent: ObjectDistanceAnimatorB
         let cartesian = position.cylindrical.toCartesian
 
         let axisDirection = (position.cylindrical.radius.sign == .plus ? 1.0 : -1.0) * simd_normalize(simd_float3(x: cartesian.x - position.cylindrical.origin.x, y: 0.0, z: cartesian.z - position.cylindrical.origin.z))
-        super.init(normAxisDirection: axisDirection, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].radius, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(normAxisDirection: axisDirection, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
     }
 
 }
@@ -115,7 +116,7 @@ class CylindricalPositionHeightAnimatorBindingComponent: ObjectDistanceAnimatorB
             fatalError()
         }
 
-        super.init(normAxisDirection: .up, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].height, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(normAxisDirection: .up, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
         guideColor = .guide2Dark
         selectedGuideColor = .guide2Light
@@ -133,7 +134,7 @@ class CylindricalPositionLongitudetAnimatorBindingComponent: ObjectAngleAnimator
             fatalError()
         }
 
-        super.init(origin: .init(x: position.cylindrical.origin.x, y: position.cylindrical.origin.y + position.cylindrical.height, z: position.cylindrical.origin.z), normRotationAxis: .up, editingParamsKeyPath: \.[cylindricalPositionBindingOf: object].longitude, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(origin: .init(x: position.cylindrical.origin.x, y: position.cylindrical.origin.y + position.cylindrical.height, z: position.cylindrical.origin.z), normRotationAxis: .up, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
         guideColor = .guide3Dark
         selectedGuideColor = .guide3Light

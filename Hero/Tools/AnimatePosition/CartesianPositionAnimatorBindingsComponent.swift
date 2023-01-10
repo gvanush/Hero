@@ -90,23 +90,18 @@ class CartesianPositionFieldAnimatorBindingComponent: ObjectDistanceAnimatorBind
         }
         
         var axisDirection: simd_float3!
-        var editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>!
-        
         switch animatableProperty {
         case .cartesianPositionX:
             axisDirection = .right
-            editingParamsKeyPath = \.[cartesianPositionBindingOf: object].x
         case .cartesianPositionY:
             axisDirection = .up
-            editingParamsKeyPath = \.[cartesianPositionBindingOf: object].y
         case .cartesianPositionZ:
             axisDirection = .backward
-            editingParamsKeyPath = \.[cartesianPositionBindingOf: object].z
         default:
             fatalError()
         }
         
-        super.init(normAxisDirection: axisDirection, editingParamsKeyPath: editingParamsKeyPath, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
+        super.init(normAxisDirection: axisDirection, animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
         switch animatableProperty {
         case .cartesianPositionX:

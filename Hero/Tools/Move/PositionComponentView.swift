@@ -104,7 +104,7 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
         self.variantTag = coordinateSystem.rawValue
         switch coordinateSystem {
         case .cartesian:
-            activeComponent = CartesianPositionComponent(title: "Position", editingParamsKeyPath: \.[cartesianPositionOf: object], object: object, sceneViewModel: sceneViewModel, parent: parent)
+            activeComponent = CartesianPositionComponent(title: "Position", object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .linear:
             activeComponent = LinearPositionComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .spherical:

@@ -13,7 +13,6 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
  
     private let origin: simd_float3
     private let normRotationAxis: simd_float3
-    fileprivate var editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>
     
     private var point0Object: SPTObject!
     private var point1Object: SPTObject!
@@ -22,11 +21,10 @@ class ObjectAngleAnimatorBindingComponent: AnimatorBindingComponentBase<SPTAnima
     var selectedGuideColor: UIColor = .guide1Light
     private var bindingWillChangeSubscription: SPTAnySubscription?
     
-    init(origin: simd_float3, normRotationAxis: simd_float3, editingParamsKeyPath: ReferenceWritableKeyPath<ObjectPropertyEditingParams, AnimatorBindingEditingParams>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
+    init(origin: simd_float3, normRotationAxis: simd_float3, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         
         self.origin = origin
         self.normRotationAxis = normRotationAxis
-        self.editingParamsKeyPath = editingParamsKeyPath
         
         super.init(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: parent)
         
@@ -168,12 +166,12 @@ struct AngleAnimatorBindingComponentView: View {
                 AnimatorControl(animatorId: $component.binding.animatorId)
                     .tint(Color.primarySelectionColor)
             case .valueAt0:
-                FloatSelector(value: $component.binding.valueAt0InDegrees, scale: editingParamBinding(keyPath: \.valueAt0.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt0.isSnapping), formatter: Formatters.angle) { editingState in
+                FloatSelector(value: $component.binding.valueAt0InDegrees, scale: editingParam(\.valueAt0).scale, isSnappingEnabled: editingParam(\.valueAt0).isSnapping, formatter: Formatters.angle) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color(uiColor: component.selectedGuideColor))
             case .valueAt1:
-                FloatSelector(value: $component.binding.valueAt1InDegrees, scale: editingParamBinding(keyPath: \.valueAt1.scale), isSnappingEnabled: editingParamBinding(keyPath: \.valueAt1.isSnapping), formatter: Formatters.angle) { editingState in
+                FloatSelector(value: $component.binding.valueAt1InDegrees, scale: editingParam(\.valueAt1).scale, isSnappingEnabled: editingParam(\.valueAt1).isSnapping, formatter: Formatters.angle) { editingState in
                    userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
                 .tint(Color(uiColor: component.selectedGuideColor))
@@ -181,9 +179,9 @@ struct AngleAnimatorBindingComponentView: View {
         }
         .transition(.identity)
     }
- 
-    func editingParamBinding<T>(keyPath: WritableKeyPath<AnimatorBindingEditingParams, T>) -> Binding<T> {
-        _editingParams.projectedValue[dynamicMember: component.editingParamsKeyPath.appending(path: keyPath)]
+    
+    func editingParam(_ keyPath: KeyPath<SPTAnimatorBinding, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: SPTAnimatorBindingPropertyId(animatableProperty: component.animatableProperty, propertyKeyPath: keyPath), component.object]
     }
     
 }

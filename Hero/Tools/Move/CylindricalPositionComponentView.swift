@@ -77,7 +77,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
         let guidePointObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: cylindricalPosition.origin), object: guidePointObject)
         
-        origin = CartesianPositionComponent(title: "Origin", editingParamsKeyPath: \.[cartesianPositionOf: guidePointObject], object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
+        origin = CartesianPositionComponent(title: "Origin", object: guidePointObject, sceneViewModel: sceneViewModel, parent: self)
         origin.objectSelectionColor = UIColor.guide1Light
         
         let cancellable = origin.$isDisclosed.dropFirst().sink { [unowned self] isDisclosed in
@@ -236,15 +236,15 @@ struct CylindricalPositionComponentView: View {
         Group {
             switch component.selectedProperty {
             case .longitude:
-                FloatSelector(value: $component.cylindricalPosition.longitudeInDegrees, scale: $editingParams[cylindricalPositionOf: component.object].longitude.scale, isSnappingEnabled: $editingParams[cylindricalPositionOf: component.object].longitude.isSnapping, formatter: component.angleFormatter) { editingState in
+                FloatSelector(value: $component.cylindricalPosition.longitudeInDegrees, scale: editingParam(\.longitude).scale, isSnappingEnabled: editingParam(\.longitude).isSnapping, formatter: component.angleFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .radius:
-                FloatSelector(value: $component.cylindricalPosition.radius, scale: $editingParams[cylindricalPositionOf: component.object].radius.scale, isSnappingEnabled: $editingParams[cylindricalPositionOf: component.object].radius.isSnapping, formatter: component.distanceFormatter) { editingState in
+                FloatSelector(value: $component.cylindricalPosition.radius, scale: editingParam(\.radius).scale, isSnappingEnabled: editingParam(\.radius).isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             case .height:
-                FloatSelector(value: $component.cylindricalPosition.height, scale: $editingParams[cylindricalPositionOf: component.object].height.scale, isSnappingEnabled: $editingParams[cylindricalPositionOf: component.object].height.isSnapping, formatter: component.distanceFormatter) { editingState in
+                FloatSelector(value: $component.cylindricalPosition.height, scale: editingParam(\.height).scale, isSnappingEnabled: editingParam(\.height).isSnapping, formatter: component.distanceFormatter) { editingState in
                     userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
                 }
             }
@@ -252,4 +252,9 @@ struct CylindricalPositionComponentView: View {
         .tint(Color.primarySelectionColor)
         .transition(.identity)
     }
+    
+    func editingParam(_ keyPath: KeyPath<SPTCylindricalCoordinates, Float>) -> Binding<ObjectPropertyFloatEditingParams> {
+        $editingParams[floatPropertyId: (\SPTPosition.cylindrical).appending(path: keyPath), component.object]
+    }
+    
 }
