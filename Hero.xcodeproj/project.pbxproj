@@ -83,6 +83,7 @@
 		B753B78E296BE58A0018F96D /* OrientationAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B78D296BE58A0018F96D /* OrientationAnimatorBindingsComponent.swift */; };
 		B753B790296C01270018F96D /* EulerOrientationAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B78F296C01270018F96D /* EulerOrientationAnimatorBindingsComponent.swift */; };
 		B753B792296C0EF70018F96D /* EulerOrientationFieldAnimatorBindingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B791296C0EF70018F96D /* EulerOrientationFieldAnimatorBindingComponent.swift */; };
+		B753B798296DF6140018F96D /* monkey.obj in Resources */ = {isa = PBXBuildFile; fileRef = B753B797296DF6140018F96D /* monkey.obj */; };
 		B757DB6C28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB6B28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift */; };
 		B757DB6F28A3E37500BB5DB4 /* AnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */; };
 		B757DB7228A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */; };
@@ -329,6 +330,7 @@
 		B753B78D296BE58A0018F96D /* OrientationAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
 		B753B78F296C01270018F96D /* EulerOrientationAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EulerOrientationAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
 		B753B791296C0EF70018F96D /* EulerOrientationFieldAnimatorBindingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EulerOrientationFieldAnimatorBindingComponent.swift; sourceTree = "<group>"; };
+		B753B797296DF6140018F96D /* monkey.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = monkey.obj; sourceTree = "<group>"; };
 		B757DB6B28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBindingSetupComponentView.swift; sourceTree = "<group>"; };
 		B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatorBinding.cpp; sourceTree = "<group>"; };
 		B757DB7028A3E38B00BB5DB4 /* AnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorBinding.h; sourceTree = "<group>"; };
@@ -585,6 +587,7 @@
 		B72175FD274CF1CF0047016B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B753B797296DF6140018F96D /* monkey.obj */,
 				B723583D2756147200337547 /* plane.obj */,
 				B72175FE274CF1DE0047016B /* circle.obj */,
 				B723583F27568C6300337547 /* cube.obj */,
@@ -1198,6 +1201,7 @@
 				B7235844275691C000337547 /* cone.obj in Resources */,
 				B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */,
 				B72175FF274CF1DE0047016B /* circle.obj in Resources */,
+				B753B798296DF6140018F96D /* monkey.obj in Resources */,
 				B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
