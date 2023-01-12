@@ -99,7 +99,11 @@ SPTCylindricalCoordinates SPTCylindricalCoordinatesMultiplyScalar(SPTCylindrical
 
 // MARK: Conversions
 simd_float3 SPTLinearCoordinatesToCartesian(SPTLinearCoordinates linear) {
-    return linear.origin + linear.offset * simd_normalize(linear.direction);
+    const auto dirLength = simd_length(linear.direction);
+    if(dirLength < 0.0001) {
+        return linear.origin;
+    }
+    return linear.origin + linear.offset / dirLength * linear.direction;
 }
 
 simd_float3 SPTSphericalCoordinatesToCartesian(SPTSphericalCoordinates spherical) {

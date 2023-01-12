@@ -46,6 +46,8 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
         }
         .onAppear {
             
+            rootComponent.awake()
+            
             rootComponent.appear()
             
             let activeIndexPath = activeComponent.indexPathIn(rootComponent)!
@@ -65,6 +67,8 @@ struct ComponentTreeNavigationView<RC>: View where RC: Component {
             }
             
             rootComponent.disappear()
+            
+            rootComponent.sleep()
         }
         
     }

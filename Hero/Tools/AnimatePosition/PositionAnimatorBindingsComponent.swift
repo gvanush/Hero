@@ -5,7 +5,7 @@
 //  Created by Vanush Grigoryan on 01.12.22.
 //
 
-import Foundation
+import SwiftUI
 import Combine
 
 

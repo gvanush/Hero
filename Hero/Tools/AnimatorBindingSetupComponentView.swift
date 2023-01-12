@@ -39,9 +39,16 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
     
     @Published var animatorBindingComponent: AnimatorBindingComponent? {
         willSet {
+            
+            guard animatorBindingComponent != newValue, isAwake else {
+                return
+            }
+            
             if isActive {
                 animatorBindingComponent?.deactivate()
             }
+            
+            newValue?.awake()
             
             if let parent = parent {
                 if parent.isDisclosed {
@@ -64,6 +71,8 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
                 animatorBindingComponent?.disappear()
             }
             
+            animatorBindingComponent?.sleep()
+            
             if isActive {
                 newValue?.activate()
             }
@@ -84,29 +93,39 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
         
         super.init(parent: parent)
         
-        bindingDidEmergeSubscription = animatableProperty.onAnimatorBindingDidEmergeSink(object: object) { [weak self] _ in
-            self?.setupAnimatorBindingComponent()
+        bindingDidEmergeSubscription = animatableProperty.onAnimatorBindingDidEmergeSink(object: object) { [unowned self] _ in
+            self.setupAnimatorBindingComponent()
         }
         
-        bindingWillPerishSubscription = animatableProperty.onAnimatorBindingWillPerishSink(object: object, callback: { [weak self] in
-            self?.animatorBindingComponent = nil
-            self?.editViewComponentCancellable = nil
+        bindingWillPerishSubscription = animatableProperty.onAnimatorBindingWillPerishSink(object: object, callback: { [unowned self] in
+            self.animatorBindingComponent = nil
+            self.editViewComponentCancellable = nil
         })
-        
+
         if animatableProperty.isAnimatorBound(object: object) {
             setupAnimatorBindingComponent()
         }
         
     }
     
-    override func activate() {
-        super.activate()
-        animatorBindingComponent?.activate()
+    override func awake() {
+        super.awake()
+        animatorBindingComponent?.awake()
     }
     
-    override func deactivate() {
-        animatorBindingComponent?.deactivate()
-        super.deactivate()
+    override func sleep() {
+        animatorBindingComponent?.sleep()
+        super.sleep()
+    }
+    
+    override func appear() {
+        super.appear()
+        animatorBindingComponent?.appear()
+    }
+
+    override func disappear() {
+        animatorBindingComponent?.disappear()
+        super.disappear()
     }
     
     override func disclose() {
@@ -121,20 +140,20 @@ class AnimatorBindingSetupComponent<AnimatorBindingComponent>: Component where A
         isDisclosed = false
     }
     
-    override func appear() {
-        super.appear()
-        animatorBindingComponent?.appear()
+    override func activate() {
+        super.activate()
+        animatorBindingComponent?.activate()
     }
-
-    override func disappear() {
-        animatorBindingComponent?.disappear()
-        super.disappear()
+    
+    override func deactivate() {
+        animatorBindingComponent?.deactivate()
+        super.deactivate()
     }
     
     private func setupAnimatorBindingComponent() {
         animatorBindingComponent = AnimatorBindingComponent(animatableProperty: animatableProperty, object: object, sceneViewModel: sceneViewModel, parent: nil)
-        editViewComponentCancellable = animatorBindingComponent!.objectWillChange.sink { [weak self] in
-            self?.objectWillChange.send()
+        editViewComponentCancellable = animatorBindingComponent!.objectWillChange.sink { [unowned self] in
+            self.objectWillChange.send()
         }
     }
     
@@ -186,8 +205,6 @@ struct AnimatorBindingSetupComponentView<AnimatorBindingComponent, RC>: View whe
     
     @ObservedObject var component: AnimatorBindingSetupComponent<AnimatorBindingComponent>
     let provider: ComponentViewProvider<RC>
-    
-    @EnvironmentObject private var actionBarModel: ActionBarModel
     
     var body: some View {
         Group {

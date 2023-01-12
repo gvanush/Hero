@@ -12,7 +12,8 @@ import SwiftUI
 class Component: Identifiable, ObservableObject, Equatable {
     
     private(set) weak var parent: Component?
-    @Published var isActive = false
+    private(set) var isAwake = false
+    @Published private(set) var isActive = false
     @Published var isDisclosed = false
     var variantTag: UInt32 = 0
     
@@ -33,26 +34,49 @@ class Component: Identifiable, ObservableObject, Equatable {
     
     var isSetup: Bool { true }
     
-    func onActive() { }
+    func onAwake() {}
     
-    func onInactive() { }
-    
-    func onDisclose() { }
-    
-    func onClose() { }
+    func onSleep() {}
     
     func onVisible() {}
     
     func onInvisible() {}
     
-    func activate() {
-        isActive = true
-        onActive()
+    func onDisclose() { }
+    
+    func onClose() { }
+    
+    func onActive() { }
+    
+    func onInactive() { }
+    
+    
+    func awake() {
+        isAwake = true
+        onAwake()
+        if let subcomponents = subcomponents {
+            for subcomponent in subcomponents {
+                subcomponent.awake()
+            }
+        }
     }
     
-    func deactivate() {
-        isActive = false
-        onInactive()
+    func sleep() {
+        isAwake = false
+        if let subcomponents = subcomponents {
+            for subcomponent in subcomponents.reversed() {
+                subcomponent.sleep()
+            }
+        }
+        onSleep()
+    }
+    
+    func appear() {
+        onVisible()
+    }
+    
+    func disappear() {
+        onInvisible()
     }
     
     func disclose() {
@@ -68,19 +92,21 @@ class Component: Identifiable, ObservableObject, Equatable {
     func close() {
         isDisclosed = false
         if let subcomponents = subcomponents {
-            for subcomponent in subcomponents {
+            for subcomponent in subcomponents.reversed() {
                 subcomponent.disappear()
             }
         }
         onClose()
     }
     
-    func appear() {
-        onVisible()
+    func activate() {
+        isActive = true
+        onActive()
     }
     
-    func disappear() {
-        onInvisible()
+    func deactivate() {
+        isActive = false
+        onInactive()
     }
     
     func indexPathIn(_ root: Component) -> IndexPath? {
@@ -162,9 +188,16 @@ class MultiVariantComponent: Component {
     
     @Published var activeComponent: Component! {
         willSet {
+            
+            guard activeComponent != newValue, isAwake else {
+                return
+            }
+            
             if isActive {
                 activeComponent.deactivate()
             }
+            
+            newValue.awake()
             
             if let parent = parent {
                 if parent.isDisclosed {
@@ -184,8 +217,10 @@ class MultiVariantComponent: Component {
                     activeComponent.disappear()
                 }
             } else {
-                activeComponent?.disappear()
+                activeComponent.disappear()
             }
+            
+            activeComponent.sleep()
             
             if isActive {
                 newValue.activate()
@@ -193,14 +228,24 @@ class MultiVariantComponent: Component {
         }
     }
     
-    override func activate() {
-        super.activate()
-        activeComponent.activate()
+    override func awake() {
+        super.awake()
+        activeComponent.awake()
     }
     
-    override func deactivate() {
-        activeComponent.deactivate()
-        super.deactivate()
+    override func sleep() {
+        activeComponent.sleep()
+        super.sleep()
+    }
+    
+    override func appear() {
+        super.appear()
+        activeComponent.appear()
+    }
+
+    override func disappear() {
+        activeComponent.disappear()
+        super.disappear()
     }
     
     override func disclose() {
@@ -214,15 +259,15 @@ class MultiVariantComponent: Component {
         onClose()
         isDisclosed = false
     }
-        
-    override func appear() {
-        super.appear()
-        activeComponent.appear()
+    
+    override func activate() {
+        super.activate()
+        activeComponent.activate()
     }
-
-    override func disappear() {
-        activeComponent.disappear()
-        super.disappear()
+    
+    override func deactivate() {
+        activeComponent.deactivate()
+        super.deactivate()
     }
     
     override var id: ObjectIdentifier {

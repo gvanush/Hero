@@ -33,9 +33,9 @@ class SPTObservedAnimatorBinding<P> where P: SPTAnimatableProperty {
         self.object = object
         self.cachedValue = property.getAnimatorBinding(object: object)
         
-        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [weak self] newValue in
-            self!.publisher?.send()
-            self!.cachedValue = newValue
+        willChangeSubscription = property.onAnimatorBindingWillChangeSink(object: object) { [unowned self] newValue in
+            self.publisher?.send()
+            self.cachedValue = newValue
         }
 
     }
