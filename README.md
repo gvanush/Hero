@@ -2,6 +2,12 @@
 
 The repository for Generative, a 3d visual animated content creation tool using generative creation techniques.
 
+For prototype demo please follow this Youtube [link](https://youtu.be/U8yfsQi5EvM)
+
+To try the prototype on iOS (requires version 16 or higher) devices please follow this [link](https://testflight.apple.com/join/MWc3Axez)
+
+For 3D animated content created using the prototype please follow this [link](https://www.instagram.com/g.e.n.e.r.a.t.i.v.e/)
+
 ## Structure
 
 ### Hero 
