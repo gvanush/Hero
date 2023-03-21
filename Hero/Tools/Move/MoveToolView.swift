@@ -43,15 +43,59 @@ class MoveToolViewModel: BasicToolViewModel<MoveToolSelectedObjectViewModel, Pos
     }
 }
 
+fileprivate struct SelectedObjectView: View {
+    
+    private let object: SPTObject
+    
+    @State private var activeCompIndexPath = IndexPath()
+    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    init(object: SPTObject) {
+        self.object = object
+    }
+    
+    var body: some View {
+        CompTreeView(activeIndexPath: $activeCompIndexPath, defaultActionView: { controller in
+            ObjectCompActionView(controller: (controller as! any ObjectCompController))
+        }) {
+            
+            switch SPTPosition.get(object: object).coordinateSystem {
+            case .cartesian:
+                Comp("Cartesian") { CartesianPositionCompController(object: object, sceneViewModel: sceneViewModel) }
+            case .linear:
+                Comp("Linear") {
+                    
+                }
+            case .spherical:
+                Comp("Spherical") {
+                    
+                }
+            case .cylindrical:
+                Comp("Cylindrical") {
+                    
+                }
+            }
+            
+        }
+        .padding(.horizontal, 8.0)
+        .padding(.bottom, 8.0)
+        .background {
+            Color.clear
+                .contentShape(Rectangle())
+        }
+    }
+    
+}
+
 
 struct MoveToolView: View {
     
-    @ObservedObject var model: MoveToolViewModel
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        if let selectedObjectVM = model.selectedObjectViewModel {
-            SelectedObjectControlsView(model: selectedObjectVM)
-                .id(selectedObjectVM.object)
+        if let object = sceneViewModel.selectedObject {
+            SelectedObjectView(object: object)
         }
     }
 }

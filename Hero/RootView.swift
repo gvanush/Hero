@@ -318,7 +318,7 @@ struct RootView: View {
             case .inspect:
                 EmptyView()
             case .move:
-                MoveToolView(model: model.moveToolViewModel)
+                MoveToolView()
             case .orient:
                 OrientToolView(model: model.orientToolViewModel)
             case .scale:
@@ -335,6 +335,7 @@ struct RootView: View {
                 AnimateShadeToolView(model: model.animateShadeToolViewModel)
             }
         }
+        .environmentObject(sceneViewModel)
     }
     
     static let sceneUIInsets = EdgeInsets(top: 0.0, leading: 0.0, bottom: 80.0, trailing: 16.0)
