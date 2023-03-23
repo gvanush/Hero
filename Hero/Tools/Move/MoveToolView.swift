@@ -50,6 +50,7 @@ fileprivate struct SelectedObjectView: View {
     @State private var activeCompIndexPath = IndexPath()
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var editingParams: ObjectEditingParams
     
     init(object: SPTObject) {
         self.object = object
@@ -62,7 +63,9 @@ fileprivate struct SelectedObjectView: View {
             
             switch SPTPosition.get(object: object).coordinateSystem {
             case .cartesian:
-                Comp("Cartesian") { CartesianPositionCompController(object: object, sceneViewModel: sceneViewModel) }
+                Comp("Cartesian") {
+                    CartesianPositionCompController(object: object, sceneViewModel: sceneViewModel, editingParams: editingParams)
+                }
             case .linear:
                 Comp("Linear") {
                     
@@ -84,6 +87,7 @@ fileprivate struct SelectedObjectView: View {
             Color.clear
                 .contentShape(Rectangle())
         }
+        .id(object)
     }
     
 }

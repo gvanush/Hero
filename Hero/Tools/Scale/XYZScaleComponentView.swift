@@ -93,7 +93,7 @@ struct XYZScaleComponentView: View {
     
     @ObservedObject var component: XYZScaleComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

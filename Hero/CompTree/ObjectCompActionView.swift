@@ -22,14 +22,31 @@ struct ObjectPropertyInfo {
 
 protocol ObjectCompControllerProtocol: CompControllerProtocol {
     
-    var object: SPTObject { get }
-    
     func infoFor(_ property: Property) -> ObjectPropertyInfo
     
 }
 
+class ObjectCompControllerBase: CompControllerBase {
+    
+    let object: SPTObject
+    let componentId: AnyHashable
+    let editingParams: ObjectEditingParams
+    
+    init(object: SPTObject, componentId: AnyHashable, editingParams: ObjectEditingParams) {
+        self.object = object
+        self.componentId = componentId
+        self.editingParams = editingParams
+        
+        super.init(activePropertyIndex: editingParams[componentId: componentId, object].activeProperyIndex)
+    }
+    
+    override func onActivePropertyDidChange() {
+        editingParams[componentId: componentId, object].activeProperyIndex = activePropertyIndex!
+    }
+}
 
-typealias ObjectCompController = CompControllerBase & ObjectCompControllerProtocol
+
+typealias ObjectCompController = ObjectCompControllerBase & ObjectCompControllerProtocol
 
 struct ObjectCompActionView: View {
     
@@ -37,7 +54,7 @@ struct ObjectCompActionView: View {
     private let object: SPTObject
     private let propertyInfoGetter: (Int) -> ObjectPropertyInfo
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     init<C>(controller: C) where C: ObjectCompController {

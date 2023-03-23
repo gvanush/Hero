@@ -12,48 +12,17 @@ class CartesianPositionCompController: ObjectCompController {
     
     typealias Property = Axis
     
-    let object: SPTObject
     let sceneViewModel: SceneViewModel
     
     @SPTObservedComponent private(set) var position: SPTPosition
     private var guideObject: SPTObject?
     
-    func infoFor(_ property: Axis) -> ObjectPropertyInfo {
-        var propertyId: AnyHashable!
-        var value: Binding<Float>!
-        switch property {
-        case .x:
-            propertyId = \SPTPosition.cartesian.x
-            value = .init(get: {
-                return self.position.cartesian.x
-            }, set: {
-                self.position.cartesian.x = $0
-            })
-        case .y:
-            propertyId = \SPTPosition.cartesian.y
-            value = .init(get: {
-                self.position.cartesian.y
-            }, set: {
-                self.position.cartesian.y = $0
-            })
-        case .z:
-            propertyId = \SPTPosition.cartesian.z
-            value = .init(get: {
-                self.position.cartesian.z
-            }, set: {
-                self.position.cartesian.z = $0
-            })
-        }
-        return .init(id: propertyId, typeInfo: .float(value: value, formatter: Formatters.distance), controlTintColor: .primarySelectionColor)
-    }
-    
-    init(object: SPTObject, sceneViewModel: SceneViewModel) {
-        self.object = object
+    init(object: SPTObject, sceneViewModel: SceneViewModel, editingParams: ObjectEditingParams) {
         self.sceneViewModel = sceneViewModel
         
         _position = SPTObservedComponent(object: object)
         
-        super.init()
+        super.init(object: object, componentId: \SPTPosition.cartesian, editingParams: editingParams)
         
         _position.publisher = self.objectWillChange
     }
@@ -67,6 +36,8 @@ class CartesianPositionCompController: ObjectCompController {
     }
     
     override func onActivePropertyDidChange() {
+        super.onActivePropertyDidChange()
+        
         removeGuideObject()
         setupGuideObject()
     }
@@ -100,6 +71,35 @@ class CartesianPositionCompController: ObjectCompController {
         guard let object = guideObject else { return }
         SPTSceneProxy.destroyObject(object)
         guideObject = nil
+    }
+    
+    func infoFor(_ property: Axis) -> ObjectPropertyInfo {
+        var propertyId: AnyHashable!
+        var value: Binding<Float>!
+        switch property {
+        case .x:
+            propertyId = \SPTPosition.cartesian.x
+            value = .init(get: {
+                return self.position.cartesian.x
+            }, set: {
+                self.position.cartesian.x = $0
+            })
+        case .y:
+            propertyId = \SPTPosition.cartesian.y
+            value = .init(get: {
+                self.position.cartesian.y
+            }, set: {
+                self.position.cartesian.y = $0
+            })
+        case .z:
+            propertyId = \SPTPosition.cartesian.z
+            value = .init(get: {
+                self.position.cartesian.z
+            }, set: {
+                self.position.cartesian.z = $0
+            })
+        }
+        return .init(id: propertyId, typeInfo: .float(value: value, formatter: Formatters.distance), controlTintColor: .primarySelectionColor)
     }
     
 }

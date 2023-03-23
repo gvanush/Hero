@@ -159,7 +159,7 @@ struct LinearPositionComponentView: View {
     
     @ObservedObject var component: LinearPositionComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

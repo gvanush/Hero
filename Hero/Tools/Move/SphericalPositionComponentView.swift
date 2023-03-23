@@ -220,7 +220,7 @@ struct SphericalPositionComponentView: View {
     
     @ObservedObject var component: SphericalPositionComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

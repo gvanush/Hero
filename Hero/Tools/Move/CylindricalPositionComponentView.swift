@@ -229,7 +229,7 @@ struct CylindricalPositionComponentView: View {
     
     @ObservedObject var component: CylindricalPositionComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

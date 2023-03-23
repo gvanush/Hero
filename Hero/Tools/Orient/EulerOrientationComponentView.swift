@@ -156,7 +156,7 @@ struct EulerOrientationComponentView: View {
     
     @ObservedObject var component: EulerOrientationComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

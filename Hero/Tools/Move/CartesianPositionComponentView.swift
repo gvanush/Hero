@@ -97,7 +97,7 @@ struct CartesianPositionComponentView: View {
     
     @ObservedObject var component: CartesianPositionComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

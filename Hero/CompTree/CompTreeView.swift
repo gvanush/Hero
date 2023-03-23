@@ -59,8 +59,12 @@ extension CompControllerProtocol {
 
 class CompControllerBase: ObservableObject, Equatable {
     
-    private (set) var isActive = false
     @Published fileprivate(set) var activePropertyIndex: Int?
+    private (set) var isActive = false
+    
+    init(activePropertyIndex: Int? = nil) {
+        self.activePropertyIndex = activePropertyIndex
+    }
     
     fileprivate func activate() {
         isActive = true
@@ -164,11 +168,7 @@ fileprivate struct CompView: View {
         _activeIndexPath = activeIndexPath
         self.subviews = subviews
         
-        if let c = comp.makeController() {
-            _controller = .init(wrappedValue: c)
-        } else {
-            _controller = .init(wrappedValue: .init())
-        }
+        _controller = .init(wrappedValue: comp.makeController() ?? .init())
         
     }
     
@@ -295,12 +295,17 @@ fileprivate struct CompView: View {
         return indexPath.count - activeIndexPath.count
     }
     
-    func viewAt(_ indexPath: IndexPath) -> CompView {
-        guard !indexPath.isEmpty else {
+    func viewAt(_ indexPath: IndexPath) -> CompView? {
+        guard let i = indexPath.first else {
+            // Empty index path
             return self
         }
-        return subviews[indexPath.first!].viewAt(indexPath.dropFirst())
+        guard i < subviews.count else {
+            return nil
+        }
+        return subviews[i].viewAt(indexPath.dropFirst())
     }
+    
 }
 
 struct CompTreeView<CV>: View where CV: View {
@@ -321,12 +326,13 @@ struct CompTreeView<CV>: View where CV: View {
         } else {
             rootView = Self.buildRootView(.init("<Root>", subs: result), indexPath: .init(), activeIndexPath: activeIndexPath)
         }
+        
     }
     
     var body: some View { 
         VStack {
             if let activeController = activeController {
-                if let view = rootView.viewAt(activeIndexPath).actionView(activeController) {
+                if let view = rootView.viewAt(activeIndexPath)!.actionView(activeController) {
                     view
                 } else {
                     defaultActionView(activeController)
@@ -343,6 +349,12 @@ struct CompTreeView<CV>: View where CV: View {
         }
         .onPreferenceChange(ActiveControllerPreferenceKey.self) { controller in
             self.activeController = controller
+        }
+        .onAppear {
+            // Adjust active to valid ancestor
+            while activeIndexPath.count > 0 && rootView.viewAt(activeIndexPath) == nil {
+                activeIndexPath.removeLast()
+            }
         }
     }
     

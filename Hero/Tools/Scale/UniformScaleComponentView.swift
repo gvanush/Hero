@@ -49,7 +49,7 @@ struct UniformScaleComponentView: View {
     
     @ObservedObject var component: UniformScaleComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

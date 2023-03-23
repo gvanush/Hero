@@ -131,7 +131,7 @@ struct PointAtDirectionComponentView: View {
     
     @ObservedObject var component: PointAtDirectionComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

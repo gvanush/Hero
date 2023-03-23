@@ -156,7 +156,7 @@ struct AngleAnimatorBindingComponentView: View {
     
     @ObservedObject var component: ObjectAngleAnimatorBindingComponent
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {

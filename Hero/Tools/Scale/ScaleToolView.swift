@@ -24,7 +24,7 @@ fileprivate struct SelectedObjectControlsView: View {
     
     @ObservedObject var model: ScaleToolSelectedObjectViewModel
     
-    @EnvironmentObject var editingParams: ObjectPropertyEditingParams
+    @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
     var body: some View {
