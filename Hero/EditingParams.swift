@@ -14,7 +14,7 @@ struct ToolEditingParams {
 
 
 struct ObjectComponentEditingParams {
-    var activeProperyIndex = 0
+    var activePropertyIndex = 0
 }
 
 
@@ -40,9 +40,9 @@ class ObjectEditingParams: ObservableObject {
     
     
     // MARK: Component editing params
-    subscript(componentId componentId: AnyHashable, object: SPTObject) -> ObjectComponentEditingParams {
+    subscript(componentId componentId: AnyHashable, object: SPTObject, default defaultValue: @autoclosure () -> ObjectComponentEditingParams) -> ObjectComponentEditingParams {
         get {
-            compoentEditingParams[object, default: .init()][componentId, default: .init()]
+            compoentEditingParams[object, default: .init()][componentId, default: defaultValue()]
         }
         set {
             compoentEditingParams[object, default: .init()][componentId] = newValue

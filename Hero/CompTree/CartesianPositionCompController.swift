@@ -10,7 +10,11 @@ import SwiftUI
 
 class CartesianPositionCompController: ObjectCompController {
     
-    typealias Property = Axis
+    enum Property: Int, CompProperty {
+        case x
+        case y
+        case z
+    }
     
     let sceneViewModel: SceneViewModel
     
@@ -22,7 +26,7 @@ class CartesianPositionCompController: ObjectCompController {
         
         _position = SPTObservedComponent(object: object)
         
-        super.init(object: object, componentId: \SPTPosition.cartesian, editingParams: editingParams)
+        super.init(object: object, componentId: \SPTPosition.cartesian, editingParams: editingParams, defaultActiveProperty: Property.x)
         
         _position.publisher = self.objectWillChange
     }
@@ -73,7 +77,7 @@ class CartesianPositionCompController: ObjectCompController {
         guideObject = nil
     }
     
-    func infoFor(_ property: Axis) -> ObjectPropertyInfo {
+    func infoFor(_ property: Property) -> ObjectPropertyInfo {
         var propertyId: AnyHashable!
         var value: Binding<Float>!
         switch property {

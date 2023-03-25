@@ -43,42 +43,55 @@ class MoveToolViewModel: BasicToolViewModel<MoveToolSelectedObjectViewModel, Pos
     }
 }
 
+// TODO
+fileprivate class CoordinateSystemWrapper: ObservableObject {
+    
+    let object: SPTObject
+    
+    @SPTObservedComponentProperty<SPTPosition, SPTCoordinateSystem> var coordinateSystem: SPTCoordinateSystem
+    
+    init(object: SPTObject) {
+        self.object = object
+        
+        _coordinateSystem = .init(object: object, keyPath: \.coordinateSystem)
+        _coordinateSystem.publisher = self.objectWillChange
+        
+    }
+    
+}
+
 fileprivate struct SelectedObjectView: View {
     
     private let object: SPTObject
     
     @State private var activeCompIndexPath = IndexPath()
+    @StateObject private var coordinateSystemWrapper: CoordinateSystemWrapper
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var editingParams: ObjectEditingParams
     
     init(object: SPTObject) {
         self.object = object
+        _coordinateSystemWrapper = .init(wrappedValue: .init(object: object))
     }
     
     var body: some View {
         CompTreeView(activeIndexPath: $activeCompIndexPath, defaultActionView: { controller in
             ObjectCompActionView(controller: (controller as! any ObjectCompController))
         }) {
-            
-            switch SPTPosition.get(object: object).coordinateSystem {
-            case .cartesian:
-                Comp("Cartesian") {
-                    CartesianPositionCompController(object: object, sceneViewModel: sceneViewModel, editingParams: editingParams)
+            Comp("Position")
+                .controller {
+                    switch coordinateSystemWrapper.coordinateSystem {
+                    case .cartesian:
+                        return CartesianPositionCompController(object: object, sceneViewModel: sceneViewModel, editingParams: editingParams)
+                    case .linear:
+                        return CartesianPositionCompController(object: object, sceneViewModel: sceneViewModel, editingParams: editingParams)
+                    case .spherical:
+                        return CartesianPositionCompController(object: object, sceneViewModel: sceneViewModel, editingParams: editingParams)
+                    case .cylindrical:
+                        return CartesianPositionCompController(object: object, sceneViewModel: sceneViewModel, editingParams: editingParams)
+                    }
                 }
-            case .linear:
-                Comp("Linear") {
-                    
-                }
-            case .spherical:
-                Comp("Spherical") {
-                    
-                }
-            case .cylindrical:
-                Comp("Cylindrical") {
-                    
-                }
-            }
             
         }
         .padding(.horizontal, 8.0)

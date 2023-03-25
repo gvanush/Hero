@@ -165,6 +165,7 @@ struct RootView: View {
     @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
     
+    @State private var activeTool = Tool.inspect
     @State private var showsAnimatorsView = false
     @State private var showsNewObjectView = false
     @State private var showsSelectedObjectInspector = false
@@ -210,12 +211,15 @@ struct RootView: View {
                     }
                     .frame(height: Self.toolControlViewsAreaHeight)
                                         
-                    ToolSelector(activeToolViewModel: $model.activeToolViewModel, toolViewModels: model.toolViewModels)
-                        .contentHorizontalPadding(32.0)
-                        .padding(.vertical, 4.0)
-                        .background(Material.bar)
-                        .compositingGroup()
-                        .shadow(radius: 0.5)
+                    HStack {
+                        toolSelector()
+                        Spacer()
+                    }
+                    .padding(.horizontal, 16.0)
+                    .padding(.vertical, 8.0)
+                    .background(Material.bar)
+                    .compositingGroup()
+                    .shadow(radius: 0.5)
                 }
                 .visible(!userInteractionState.isNavigating)
             }
@@ -312,9 +316,33 @@ struct RootView: View {
         .padding(.horizontal)
     }
     
+    fileprivate func toolSelector() -> some View {
+        return Menu {
+            ForEach(Tool.allCases) { tool in
+                Button {
+                    self.activeTool = tool
+                } label: {
+                    HStack {
+                        Text(tool.title)
+                        Spacer()
+                        if tool == activeTool {
+                            Image(systemName: "checkmark.circle")
+                                .imageScale(.small)
+                        }
+                    }
+                }
+            }
+        } label: {
+            Image(activeTool.iconName)
+                .imageScale(.large)
+        }
+        .buttonStyle(.bordered)
+        .shadow(radius: 0.5)
+    }
+    
     func activeToolView() -> some View {
         Group {
-            switch model.activeToolViewModel.tool {
+            switch activeTool {
             case .inspect:
                 EmptyView()
             case .move:

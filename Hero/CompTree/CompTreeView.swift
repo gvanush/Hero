@@ -13,7 +13,13 @@ fileprivate let navigationAnimation = Animation.easeOut(duration: 0.25)
 @resultBuilder enum CompBuilder {
     
     static func buildBlock(_ comps: [Comp]...) -> [Comp] {
-        comps.flatMap { $0 }
+        var result = [Comp]()
+        for i in 0..<comps.count {
+            for comp in comps[i] {
+                result.append(comp.declarationID(i))
+            }
+        }
+        return result
     }
     
     static func buildExpression(_ expression: Comp) -> [Comp] {
@@ -24,23 +30,26 @@ fileprivate let navigationAnimation = Animation.easeOut(duration: 0.25)
         []
     }
     
-    static func buildOptional(_ component: [Comp]?) -> [Comp] {
-        component ?? []
+    static func buildOptional(_ components: [Comp]?) -> [Comp] {
+        components ?? []
     }
     
-    static func buildEither(first component: [Comp]) -> [Comp] {
-        component
+    static func buildEither(first components: [Comp]) -> [Comp] {
+        components.map { $0.variationID(1) }
     }
     
-    static func buildEither(second component: [Comp]) -> [Comp] {
-        component
+    static func buildEither(second components: [Comp]) -> [Comp] {
+        components.map { $0.variationID(2) }
     }
     
 }
 
+protocol CompProperty: RawRepresentable, CaseIterable, Displayable where Self.RawValue == Int {
+}
+
 protocol CompControllerProtocol: CompControllerBase {
     
-    associatedtype Property: RawRepresentable, CaseIterable, Displayable where Property.RawValue == Int
+    associatedtype Property: CompProperty
     
 }
 
@@ -59,11 +68,17 @@ extension CompControllerProtocol {
 
 class CompControllerBase: ObservableObject, Equatable {
     
+    let properties: [String]?
     @Published fileprivate(set) var activePropertyIndex: Int?
     private (set) var isActive = false
     
-    init(activePropertyIndex: Int? = nil) {
+    init(properties: [String]?, activePropertyIndex: Int?) {
+        self.properties = properties
         self.activePropertyIndex = activePropertyIndex
+    }
+    
+    convenience init<P>(activeProperty: P) where P: CompProperty {
+        self.init(properties: P.allCaseDisplayNames, activePropertyIndex: activeProperty.rawValue)
     }
     
     fileprivate func activate() {
@@ -104,86 +119,126 @@ class CompControllerBase: ObservableObject, Equatable {
 
 typealias CompController = CompControllerBase & CompControllerProtocol
 
-struct Comp {
+struct Comp: Identifiable {
     
     fileprivate let title: String
-    fileprivate let subs: [Comp]
-    fileprivate let makeController: () -> CompControllerBase?
-    fileprivate let properties: [String]?
+    fileprivate private(set) var subs: [Comp]
+    fileprivate private(set) var makeController: () -> CompControllerBase = { .init(properties: nil, activePropertyIndex: nil) }
     fileprivate private(set) var actionView: (CompControllerBase) -> AnyView? = { _ in nil }
+    fileprivate private(set) var optionsView: (CompControllerBase) -> AnyView? = { _ in nil }
     
-    init<C>(_ title: String, controller: @escaping () -> C, @CompBuilder builder: () -> [Comp])  where C: CompController {
+    private(set) var indexPath: IndexPath!
+    
+    fileprivate private(set) var declarationID = IndexPath()
+    fileprivate private(set) var variationID = IndexPath()
+    
+    init(_ title: String, @CompBuilder _ builder: () -> [Comp]) {
         self.title = title
         self.subs = builder()
-        self.makeController = controller
-        self.properties = C.Property.allCaseDisplayNames
     }
     
-    init(_ title: String, @CompBuilder builder: () -> [Comp]) {
-        self.title = title
-        self.subs = builder()
-        self.makeController = { nil }
-        self.properties = nil
-    }
-    
-    init<C>(_ title: String, controller: @escaping () -> C) where C: CompController {
+    init(_ title: String) {
         self.title = title
         self.subs = []
-        self.makeController = controller
-        self.properties = C.Property.allCaseDisplayNames
+    }
+    
+    var id: Int {
+        var hasher = Hasher()
+        hasher.combine(declarationID)
+        hasher.combine(variationID)
+        return hasher.finalize()
+    }
+    
+    func controller(_ controller: @escaping () -> CompControllerBase) -> Comp {
+        var comp = self
+        comp.makeController = controller
+        return comp
+    }
+    
+    func actionView(_ view: @escaping (CompControllerBase) -> some View) -> Comp {
+        var comp = self
+        comp.actionView = { AnyView(view($0)) }
+        return comp
+    }
+    
+    func optionsView(_ view: @escaping (CompControllerBase) -> some View) -> Comp {
+        var comp = self
+        comp.optionsView = { AnyView(view($0)) }
+        return comp
+    }
+    
+    func compAtIndexPath(_ indexPath: IndexPath) -> Comp? {
+        guard let firstIndex = indexPath.first else {
+            return self
+        }
+            
+        guard firstIndex < subs.count else {
+            return nil
+        }
+        
+        return subs[firstIndex].compAtIndexPath(indexPath.dropFirst())
     }
     
     fileprivate init(_ title: String, subs: [Comp]) {
         self.title = title
         self.subs = subs
-        self.makeController = { nil }
-        self.properties = nil
     }
     
-    func actionView(_ view: @escaping (CompControllerBase) -> AnyView?) -> Comp {
+    fileprivate func declarationID(_ id: Int) -> Comp {
         var comp = self
-        comp.actionView = view
+        comp.extendDeclarationID(id)
         return comp
     }
+    
+    private mutating func extendDeclarationID(_ id: Int) {
+        self.declarationID.append(id)
+        for index in self.subs.indices {
+            self.subs[index].extendDeclarationID(id)
+        }
+    }
+    
+    fileprivate func variationID(_ id: Int) -> Comp {
+        var comp = self
+        comp.variationID.append(id)
+        return comp
+    }
+    
+    fileprivate mutating func updateIndexPath(_ indexPath: IndexPath) {
+        self.indexPath = indexPath
+        for i in 0..<subs.count {
+            subs[i].updateIndexPath(indexPath.appending(i))
+        }
+    }
+    
 }
 
 fileprivate struct CompView: View {
     
-    let title: String
-    let properties: [String]?
-    let indexPath: IndexPath
+    let comp: Comp
     @Binding var activeIndexPath: IndexPath
-    let subviews: [CompView]
-    let actionView: (CompControllerBase) -> AnyView?
     
     @StateObject fileprivate var controller: CompControllerBase
     @Namespace private var matchedGeometryEffectNamespace
     
-    init(comp: Comp, indexPath: IndexPath, activeIndexPath: Binding<IndexPath>, subviews: [CompView]) {
-        
-        self.title = comp.title
-        self.properties = comp.properties
-        self.actionView = comp.actionView
-        self.indexPath = indexPath
+    init(comp: Comp, activeIndexPath: Binding<IndexPath>) {
+        self.comp = comp
         _activeIndexPath = activeIndexPath
-        self.subviews = subviews
-        
-        _controller = .init(wrappedValue: comp.makeController() ?? .init())
-        
+        _controller = .init(wrappedValue: comp.makeController())
     }
     
     var body: some View {
         ZStack {
             compTextView()
+                .preference(key: ActiveCompPreferenceKey.self, value: isActive ? .init(comp: comp, controller: controller) : nil)
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
                 
-                if let properties = properties {
+                if let properties = controller.properties {
                     propertyViews(properties)
                 }
                 
-                ForEach(subviews, id: \.indexPath) { subview in
-                    subview
+                ForEach(comp.subs, id: \.id) { subcomp in
+                    CompView(comp: subcomp, activeIndexPath: $activeIndexPath)
                 }
             }
         }
@@ -200,18 +255,18 @@ fileprivate struct CompView: View {
             }
         }
         .onChange(of: activeIndexPath) { [activeIndexPath] newValue in
-            if activeIndexPath == indexPath {
+            if activeIndexPath == comp.indexPath {
                 controller.deactivate()
             }
-            if newValue == indexPath {
+            if newValue == comp.indexPath {
                 controller.activate()
             }
         }
-        .preference(key: ActiveControllerPreferenceKey.self, value: isActive ? controller : nil)
+        
     }
     
     private func compTextView() -> some View {
-        textView(title)
+        textView(comp.title)
             .overlay {
                 VStack {
                     Spacer()
@@ -226,7 +281,7 @@ fileprivate struct CompView: View {
             .visible(isChildOfActive)
             .onTapGesture {
                 withAnimation(navigationAnimation) {
-                    activeIndexPath = indexPath
+                    activeIndexPath = comp.indexPath
                 }
             }
             .allowsHitTesting(isChildOfActive)
@@ -274,36 +329,25 @@ fileprivate struct CompView: View {
     }
     
     private var isActive: Bool {
-        indexPath == activeIndexPath
+        comp.indexPath == activeIndexPath
     }
     
     private var isChildOfActive: Bool {
-        guard !indexPath.isEmpty else {
+        guard !comp.indexPath.isEmpty else {
             return false
         }
-        return indexPath.dropLast() == activeIndexPath
+        return comp.indexPath.dropLast() == activeIndexPath
     }
     
     private var isDisclosed: Bool {
-        activeIndexPath.starts(with: indexPath)
+        activeIndexPath.starts(with: comp.indexPath)
     }
     
     private var distanceToActiveAncestor: Int? {
-        guard indexPath.starts(with: activeIndexPath) else {
+        guard comp.indexPath.starts(with: activeIndexPath) else {
             return nil
         }
-        return indexPath.count - activeIndexPath.count
-    }
-    
-    func viewAt(_ indexPath: IndexPath) -> CompView? {
-        guard let i = indexPath.first else {
-            // Empty index path
-            return self
-        }
-        guard i < subviews.count else {
-            return nil
-        }
-        return subviews[i].viewAt(indexPath.dropFirst())
+        return comp.indexPath.count - activeIndexPath.count
     }
     
 }
@@ -314,28 +358,30 @@ struct CompTreeView<CV>: View where CV: View {
     let defaultActionView: (CompControllerBase) -> CV?
     
     private let rootView: CompView
-    @State private var activeController: CompControllerBase?
+    @State private var activeCompData: ActiveCompData?
     
     init(activeIndexPath: Binding<IndexPath>, defaultActionView: @escaping (CompControllerBase) -> CV? = { _ in Optional<EmptyView>.none }, @CompBuilder builder: () -> [Comp]) {
         _activeIndexPath = activeIndexPath
         self.defaultActionView = defaultActionView
         
-        let result = builder()
-        if result.count == 1 {
-            rootView = Self.buildRootView(result.first!, indexPath: .init(), activeIndexPath: activeIndexPath)
+        let comps = builder()
+        var rootComp: Comp!
+        if comps.count == 1 {
+            rootComp = comps.first!
         } else {
-            rootView = Self.buildRootView(.init("<Root>", subs: result), indexPath: .init(), activeIndexPath: activeIndexPath)
+            rootComp = .init("<Root>", subs: comps)
         }
-        
+        rootComp.updateIndexPath(.init())
+        rootView = .init(comp: rootComp, activeIndexPath: activeIndexPath)
     }
     
     var body: some View { 
         VStack {
-            if let activeController = activeController {
-                if let view = rootView.viewAt(activeIndexPath)!.actionView(activeController) {
+            if let activeCompData = activeCompData {
+                if let view = activeCompData.comp.actionView(activeCompData.controller) {
                     view
                 } else {
-                    defaultActionView(activeController)
+                    defaultActionView(activeCompData.controller)
                 }
             }
             
@@ -346,35 +392,35 @@ struct CompTreeView<CV>: View where CV: View {
                 .cornerRadius(SelectorConst.cornerRadius)
                 .compositingGroup()
                 .shadow(radius: 1.0)
+                .id(rootView.comp.id)
         }
-        .onPreferenceChange(ActiveControllerPreferenceKey.self) { controller in
-            self.activeController = controller
+        .onPreferenceChange(ActiveCompPreferenceKey.self) { data in
+            self.activeCompData = data
         }
         .onAppear {
             // Adjust active to valid ancestor
-            while activeIndexPath.count > 0 && rootView.viewAt(activeIndexPath) == nil {
+            while activeIndexPath.count > 0 && rootView.comp.compAtIndexPath(activeIndexPath) == nil {
                 activeIndexPath.removeLast()
             }
         }
     }
     
-    fileprivate static func buildRootView(_ comp: Comp, indexPath: IndexPath, activeIndexPath: Binding<IndexPath>) -> CompView {
-        
-        .init(comp: comp, indexPath: indexPath, activeIndexPath: activeIndexPath, subviews: {
-            var subviews = [CompView]()
-            for i in 0..<comp.subs.count {
-                subviews.append(buildRootView(comp.subs[i], indexPath: indexPath.appending(i), activeIndexPath: activeIndexPath))
-            }
-            return subviews
-        }())
-        
+}
+
+fileprivate struct ActiveCompData: Equatable {
+    let comp: Comp
+    let controller: CompControllerBase
+    
+    static func == (lhs: ActiveCompData, rhs: ActiveCompData) -> Bool {
+        // TODO
+        lhs.controller == rhs.controller
     }
 }
 
-fileprivate struct ActiveControllerPreferenceKey: PreferenceKey {
-    static var defaultValue: CompControllerBase? { nil }
+fileprivate struct ActiveCompPreferenceKey: PreferenceKey {
+    static var defaultValue: ActiveCompData? { nil }
     
-    static func reduce(value: inout CompControllerBase?, nextValue: () -> CompControllerBase?) {
+    static func reduce(value: inout ActiveCompData?, nextValue: () -> ActiveCompData?) {
         value = value ?? nextValue()
     }
 }
@@ -384,19 +430,22 @@ struct CompTreeView_Previews: PreviewProvider {
     
     class DummyController: CompController {
         
-        enum Property: Int, RawRepresentable, CaseIterable, Displayable {
+        enum Property: Int, CompProperty {
             case a
             case b
             case c
         }
         
-        var activeProperty = Property.a
+        convenience init() {
+            self.init(activeProperty: Property.a)
+        }
     }
     
     struct ContentView: View {
         
         @State var activeIndexPath = IndexPath()
         @State var toggleAAA = false
+        @State var indicator = false
         @State var coordSystem = SPTCoordinateSystem.cartesian
         
         var body: some View {
@@ -405,27 +454,73 @@ struct CompTreeView_Previews: PreviewProvider {
                     Color.red
                 }) {
                     Comp("Human") {
-                        Comp("Head", controller: { DummyController() }).actionView { _ in
-                            AnyView(Color.green)
-                        }
-                        Comp("Belly") { DummyController() }.actionView { _ in
-                            AnyView(Color.blue)
-                        }
+                        Comp("Head")
+                            .controller {
+                                DummyController()
+                            }
+                            .actionView { _ in
+                                AnyView(Color.green)
+                            }
+                        Comp("Belly")
+                            .controller {
+                                DummyController()
+                            }
+                            .actionView { _ in
+                                AnyView(Color.blue)
+                            }
                     }
+                    .actionView { _ in
+                        AnyView(Color.cyan)
+                    }
+                    
                     Comp("Car") {
-                        Comp("Frame") { DummyController() }
-                        Comp("Motor") { DummyController() }
+                        Comp("Frame")
+                            .controller { DummyController() }
+                        Comp("Motor")
+                            .controller { DummyController() }
+                    }
+                    
+                    if toggleAAA {
+                        Comp("ToggleTrue")
+                            .controller {
+                                indicator.toggle()
+                                return DummyController()
+                            }
+                    }
+                    
+                    if !toggleAAA {
+                        Comp("ToggleFalse")
+                            .controller {
+                                indicator.toggle()
+                                return DummyController()
+                            }
                     }
                     
                     switch coordSystem {
                     case .cartesian:
-                        Comp("Cartesian") { DummyController() }
+                        Comp("Cartesian")
+                            .controller {
+                                indicator.toggle()
+                                return DummyController()
+                            }
                     case .linear:
-                        Comp("Linear")  { DummyController() }
+                        Comp("Linear")
+                            .controller {
+                                indicator.toggle()
+                                return DummyController()
+                            }
                     case .cylindrical:
-                        Comp("Cylindrical")  { DummyController() }
+                        Comp("Cylindrical")
+                            .controller {
+                                indicator.toggle()
+                                return DummyController()
+                            }
                     case .spherical:
-                        Comp("Spherical")  { DummyController() }
+                        Comp("Spherical")
+                            .controller {
+                                indicator.toggle()
+                                return DummyController()
+                            }
                     }
                     
                 }
@@ -440,6 +535,14 @@ struct CompTreeView_Previews: PreviewProvider {
                     
                     Spacer()
                     
+                    Button("Toggle") {
+                        withAnimation {
+                            toggleAAA.toggle()
+                        }
+                    }
+                    
+                    Spacer()
+                    
                     Picker("Coordinate System", selection: $coordSystem) {
                         ForEach(SPTCoordinateSystem.allCases, id: \.self) { s in
                             Text(s.displayName)
@@ -447,6 +550,10 @@ struct CompTreeView_Previews: PreviewProvider {
                         }
                     }
                 }
+                
+                Toggle(isOn: $indicator, label: {
+                    Text("Indicator")
+                })
             }
             .padding()
         }

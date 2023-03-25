@@ -31,18 +31,21 @@ class ObjectCompControllerBase: CompControllerBase {
     let object: SPTObject
     let componentId: AnyHashable
     let editingParams: ObjectEditingParams
+    let defaultEditingParams: ObjectComponentEditingParams
     
-    init(object: SPTObject, componentId: AnyHashable, editingParams: ObjectEditingParams) {
+    init<P>(object: SPTObject, componentId: AnyHashable, editingParams: ObjectEditingParams, defaultActiveProperty: P) where P: CompProperty {
         self.object = object
         self.componentId = componentId
         self.editingParams = editingParams
+        self.defaultEditingParams = .init(activePropertyIndex: defaultActiveProperty.rawValue)
         
-        super.init(activePropertyIndex: editingParams[componentId: componentId, object].activeProperyIndex)
+        super.init(properties: P.allCaseDisplayNames, activePropertyIndex: editingParams[componentId: componentId, object, default: defaultEditingParams].activePropertyIndex)
     }
     
     override func onActivePropertyDidChange() {
-        editingParams[componentId: componentId, object].activeProperyIndex = activePropertyIndex!
+        editingParams[componentId: componentId, object, default: defaultEditingParams].activePropertyIndex = activePropertyIndex!
     }
+    
 }
 
 
