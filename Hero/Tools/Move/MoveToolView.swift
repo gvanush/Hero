@@ -65,6 +65,7 @@ fileprivate struct SelectedObjectView: View {
     private let object: SPTObject
     
     @State private var activeCompIndexPath = IndexPath()
+    @State private var disclosedCompsData: [DisclosedCompData]?
     @StateObject private var coordinateSystemWrapper: CoordinateSystemWrapper
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
@@ -79,7 +80,7 @@ fileprivate struct SelectedObjectView: View {
         CompTreeView(activeIndexPath: $activeCompIndexPath, defaultActionView: { controller in
             ObjectCompActionView(controller: (controller as! any ObjectCompController))
         }) {
-            Comp("Position")
+            Comp("Position", subtitle: coordinateSystemWrapper.coordinateSystem.displayName)
                 .controller {
                     switch coordinateSystemWrapper.coordinateSystem {
                     case .cartesian:
@@ -100,7 +101,84 @@ fileprivate struct SelectedObjectView: View {
             Color.clear
                 .contentShape(Rectangle())
         }
+        .preference(key: ActiveToolItemViewPreferenceKey.self, value: .init(id: itemViewId, content: {
+            itemView()
+        }))
+        .onPreferenceChange(DisclosedCompsPreferenceKey.self, perform: {
+            self.disclosedCompsData = $0
+        })
         .id(object)
+    }
+    
+    private func itemView() -> some View {
+        HStack {
+            Divider()
+            ScrollView(.horizontal, showsIndicators: false) {
+                if let disclosedCompsData = disclosedCompsData {
+                    ForEach(disclosedCompsData, id: \.comp.id) { data in
+                        HStack {
+                            if data.comp.id != disclosedCompsData.first!.comp.id {
+                                Image(systemName: "chevron.right")
+                                    .imageScale(.large)
+                                    .foregroundColor(.secondary)
+                            }
+                            VStack(alignment: .leading) {
+                                Text(data.comp.title)
+                                    .fontWeight(activeCompIndexPath == data.comp.indexPath ? .regular : .medium)
+                                    .fixedSize()
+                                if let substitle = data.comp.subtitle {
+                                    Text(substitle)
+                                        .font(.system(.subheadline))
+                                        .foregroundColor(Color.secondaryLabel)
+                                        .fixedSize()
+                                }
+                            }
+                        }
+                        .onTapGesture {
+                            withAnimation {
+                                activeCompIndexPath = data.comp.indexPath
+                            }
+                        }
+                    }
+                }
+            }
+            coordinateSystemSelector()
+        }
+    }
+    
+    private func coordinateSystemSelector() -> some View {
+        Menu {
+            ForEach(SPTCoordinateSystem.allCases) { system in
+                Button {
+                    self.coordinateSystemWrapper.coordinateSystem = system
+                } label: {
+                    HStack {
+                        Text(system.displayName)
+                        Spacer()
+                        if system == self.coordinateSystemWrapper.coordinateSystem {
+                            Image(systemName: "checkmark.circle")
+                                .imageScale(.small)
+                        }
+                    }
+                }
+            }
+        } label: {
+            Image(systemName: "slider.horizontal.3")
+                .imageScale(.medium)
+        }
+        .buttonStyle(.bordered)
+        .shadow(radius: 0.5)
+    }
+    
+    var itemViewId: Int {
+        var hasher = Hasher()
+        hasher.combine(self.coordinateSystemWrapper.coordinateSystem.rawValue)
+        if let disclosedComps = disclosedCompsData {
+            for comp in disclosedComps {
+                hasher.combine(comp.comp.id)
+            }
+        }
+        return hasher.finalize()
     }
     
 }

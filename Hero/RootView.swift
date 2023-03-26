@@ -166,6 +166,7 @@ struct RootView: View {
     @StateObject private var userInteractionState: UserInteractionState
     
     @State private var activeTool = Tool.inspect
+    @State private var activeToolItemViewData: ViewPreferenceData?
     @State private var showsAnimatorsView = false
     @State private var showsNewObjectView = false
     @State private var showsSelectedObjectInspector = false
@@ -213,13 +214,19 @@ struct RootView: View {
                                         
                     HStack {
                         toolSelector()
-                        Spacer()
+                        Color.clear
+                            .frame(maxHeight: 44.0)
+                            .overlay {
+                                activeToolItemViewData?.view
+                            }
                     }
+                    .frame(maxWidth: .infinity)
                     .padding(.horizontal, 16.0)
                     .padding(.vertical, 8.0)
                     .background(Material.bar)
                     .compositingGroup()
                     .shadow(radius: 0.5)
+                    
                 }
                 .visible(!userInteractionState.isNavigating)
             }
@@ -317,7 +324,7 @@ struct RootView: View {
     }
     
     fileprivate func toolSelector() -> some View {
-        return Menu {
+        Menu {
             ForEach(Tool.allCases) { tool in
                 Button {
                     self.activeTool = tool
@@ -336,8 +343,8 @@ struct RootView: View {
             Image(activeTool.iconName)
                 .imageScale(.large)
         }
-        .buttonStyle(.bordered)
-        .shadow(radius: 0.5)
+        .buttonStyle(.borderedProminent)
+        .shadow(radius: 1.0)
     }
     
     func activeToolView() -> some View {
@@ -364,10 +371,21 @@ struct RootView: View {
             }
         }
         .environmentObject(sceneViewModel)
+        .onPreferenceChange(ActiveToolItemViewPreferenceKey.self, perform: {
+            self.activeToolItemViewData = $0
+        })
     }
     
     static let sceneUIInsets = EdgeInsets(top: 0.0, leading: 0.0, bottom: 80.0, trailing: 16.0)
     static let toolControlViewsAreaHeight: CGFloat = 129.0
+}
+
+struct ActiveToolItemViewPreferenceKey: PreferenceKey {
+    static var defaultValue: ViewPreferenceData?
+
+    static func reduce(value: inout ViewPreferenceData?, nextValue: () -> ViewPreferenceData?) {
+        value = value ?? nextValue()
+    }
 }
 
 struct RootView_Previews: PreviewProvider {

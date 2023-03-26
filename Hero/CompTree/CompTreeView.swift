@@ -121,7 +121,8 @@ typealias CompController = CompControllerBase & CompControllerProtocol
 
 struct Comp: Identifiable {
     
-    fileprivate let title: String
+    let title: String
+    private(set) var subtitle: String?
     fileprivate private(set) var subs: [Comp]
     fileprivate private(set) var makeController: () -> CompControllerBase = { .init(properties: nil, activePropertyIndex: nil) }
     fileprivate private(set) var actionView: (CompControllerBase) -> AnyView? = { _ in nil }
@@ -132,18 +133,22 @@ struct Comp: Identifiable {
     fileprivate private(set) var declarationID = IndexPath()
     fileprivate private(set) var variationID = IndexPath()
     
-    init(_ title: String, @CompBuilder _ builder: () -> [Comp]) {
+    init(_ title: String, subtitle: String? = nil, @CompBuilder _ builder: () -> [Comp]) {
         self.title = title
+        self.subtitle = subtitle
         self.subs = builder()
     }
     
-    init(_ title: String) {
+    init(_ title: String, subtitle: String? = nil) {
         self.title = title
+        self.subtitle = subtitle
         self.subs = []
     }
     
     var id: Int {
         var hasher = Hasher()
+        hasher.combine(title)
+        hasher.combine(subtitle)
         hasher.combine(declarationID)
         hasher.combine(variationID)
         return hasher.finalize()
@@ -229,7 +234,7 @@ fileprivate struct CompView: View {
     var body: some View {
         ZStack {
             compTextView()
-                .preference(key: ActiveCompPreferenceKey.self, value: isActive ? .init(comp: comp, controller: controller) : nil)
+                .preference(key: DisclosedCompsPreferenceKey.self, value: isDisclosed ? [.init(comp: comp, controller: controller)] : nil)
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
                 
@@ -358,7 +363,7 @@ struct CompTreeView<CV>: View where CV: View {
     let defaultActionView: (CompControllerBase) -> CV?
     
     private let rootView: CompView
-    @State private var activeCompData: ActiveCompData?
+    @State private var disclosedCompsData: [DisclosedCompData]?
     
     init(activeIndexPath: Binding<IndexPath>, defaultActionView: @escaping (CompControllerBase) -> CV? = { _ in Optional<EmptyView>.none }, @CompBuilder builder: () -> [Comp]) {
         _activeIndexPath = activeIndexPath
@@ -394,8 +399,8 @@ struct CompTreeView<CV>: View where CV: View {
                 .shadow(radius: 1.0)
                 .id(rootView.comp.id)
         }
-        .onPreferenceChange(ActiveCompPreferenceKey.self) { data in
-            self.activeCompData = data
+        .onPreferenceChange(DisclosedCompsPreferenceKey.self) { data in
+            self.disclosedCompsData = data
         }
         .onAppear {
             // Adjust active to valid ancestor
@@ -405,23 +410,30 @@ struct CompTreeView<CV>: View where CV: View {
         }
     }
     
+    private var activeCompData: DisclosedCompData? {
+        disclosedCompsData?.last
+    }
+    
 }
 
-fileprivate struct ActiveCompData: Equatable {
+struct DisclosedCompData: Equatable {
     let comp: Comp
     let controller: CompControllerBase
     
-    static func == (lhs: ActiveCompData, rhs: ActiveCompData) -> Bool {
-        // TODO
-        lhs.controller == rhs.controller
+    static func == (lhs: DisclosedCompData, rhs: DisclosedCompData) -> Bool {
+        lhs.comp.id == rhs.comp.id
     }
 }
 
-fileprivate struct ActiveCompPreferenceKey: PreferenceKey {
-    static var defaultValue: ActiveCompData? { nil }
+struct DisclosedCompsPreferenceKey: PreferenceKey {
+    static var defaultValue: [DisclosedCompData]?
     
-    static func reduce(value: inout ActiveCompData?, nextValue: () -> ActiveCompData?) {
-        value = value ?? nextValue()
+    static func reduce(value: inout [DisclosedCompData]?, nextValue: () -> [DisclosedCompData]?) {
+        if value == nil {
+            value = nextValue()
+        } else {
+            value!.append(contentsOf: nextValue() ?? [])
+        }
     }
 }
 
