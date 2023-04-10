@@ -62,7 +62,7 @@ extension SPTAnimator: Equatable {
                 ptr.withMemoryRebound(to: CChar.self, capacity: Int(kSPTAnimatorNameMaxLength) + 1) { charPtr in
                     newValue.utf8CString.withUnsafeBufferPointer { sourceCharPtr in
                         let length = min(sourceCharPtr.count, Int(kSPTAnimatorNameMaxLength))
-                        charPtr.assign(from: sourceCharPtr.baseAddress!, count: length)
+                        charPtr.update(from: sourceCharPtr.baseAddress!, count: length)
                         charPtr[length] = 0
                     }
                 }

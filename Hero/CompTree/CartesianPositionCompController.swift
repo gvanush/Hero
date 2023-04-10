@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-class CartesianPositionCompController: ObjectCompController {
+class CartesianPositionCompController<R>: ObjectCompController<R, simd_float3> {
     
     enum Property: Int, CompProperty {
         case x
@@ -17,18 +17,15 @@ class CartesianPositionCompController: ObjectCompController {
     }
     
     let sceneViewModel: SceneViewModel
-    
-    @SPTObservedComponent private(set) var position: SPTPosition
+    @SPTObservedComponent private var position: SPTPosition
     private var guideObject: SPTObject?
     
-    init(object: SPTObject, sceneViewModel: SceneViewModel, editingParams: ObjectEditingParams) {
+    init(compKeyPath: KeyPath<R, simd_float3>, activeProperty: Property, object: SPTObject, sceneViewModel: SceneViewModel) {
+        
         self.sceneViewModel = sceneViewModel
+        _position = .init(object: object)
         
-        _position = SPTObservedComponent(object: object)
-        
-        super.init(object: object, componentId: \SPTPosition.cartesian, editingParams: editingParams, defaultActiveProperty: Property.x)
-        
-        _position.publisher = self.objectWillChange
+        super.init(compKeyPath: compKeyPath, activeProperty: activeProperty, object: object)
     }
     
     override func onActive() {
@@ -40,8 +37,6 @@ class CartesianPositionCompController: ObjectCompController {
     }
     
     override func onActivePropertyDidChange() {
-        super.onActivePropertyDidChange()
-        
         removeGuideObject()
         setupGuideObject()
     }
@@ -56,11 +51,11 @@ class CartesianPositionCompController: ObjectCompController {
         case .x:
             SPTScale.make(.init(x: 500.0), object: guide)
             SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
-            
+
         case .y:
             SPTScale.make(.init(y: 500.0), object: guide)
             SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
-            
+
         case .z:
             SPTScale.make(.init(z: 500.0), object: guide)
             SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.zAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
@@ -78,25 +73,25 @@ class CartesianPositionCompController: ObjectCompController {
     }
     
     func infoFor(_ property: Property) -> ObjectPropertyInfo {
-        var propertyId: AnyHashable!
+        var propertyId: KeyPath<R, Float>!
         var value: Binding<Float>!
         switch property {
         case .x:
-            propertyId = \SPTPosition.cartesian.x
+            propertyId = compKeyPath.appending(path: \.x)
             value = .init(get: {
-                return self.position.cartesian.x
+                self.position.cartesian.x
             }, set: {
                 self.position.cartesian.x = $0
             })
         case .y:
-            propertyId = \SPTPosition.cartesian.y
+            propertyId = compKeyPath.appending(path: \.y)
             value = .init(get: {
                 self.position.cartesian.y
             }, set: {
                 self.position.cartesian.y = $0
             })
         case .z:
-            propertyId = \SPTPosition.cartesian.z
+            propertyId = compKeyPath.appending(path: \.z)
             value = .init(get: {
                 self.position.cartesian.z
             }, set: {

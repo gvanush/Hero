@@ -40,7 +40,7 @@ class ObjectEditingParams: ObservableObject {
     
     
     // MARK: Component editing params
-    subscript(componentId componentId: AnyHashable, object: SPTObject, default defaultValue: @autoclosure () -> ObjectComponentEditingParams) -> ObjectComponentEditingParams {
+    subscript(componentId componentId: AnyHashable, object: SPTObject, default defaultValue: @autoclosure () -> ObjectComponentEditingParams = .init()) -> ObjectComponentEditingParams {
         get {
             compoentEditingParams[object, default: .init()][componentId, default: defaultValue()]
         }

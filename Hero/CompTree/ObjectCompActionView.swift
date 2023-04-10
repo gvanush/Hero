@@ -18,38 +18,34 @@ struct ObjectPropertyInfo {
     let controlTintColor: Color
 }
 
-
-
 protocol ObjectCompControllerProtocol: CompControllerProtocol {
+    
+    var compId: AnyHashable { get }
     
     func infoFor(_ property: Property) -> ObjectPropertyInfo
     
 }
 
-class ObjectCompControllerBase: CompControllerBase {
+class ObjectCompControllerBase<R, V>: CompControllerBase {
     
+    let compKeyPath: KeyPath<R, V>
     let object: SPTObject
-    let componentId: AnyHashable
-    let editingParams: ObjectEditingParams
-    let defaultEditingParams: ObjectComponentEditingParams
-    
-    init<P>(object: SPTObject, componentId: AnyHashable, editingParams: ObjectEditingParams, defaultActiveProperty: P) where P: CompProperty {
+
+    init<P>(compKeyPath: KeyPath<R, V>, activeProperty: P, object: SPTObject) where P: CompProperty {
+        self.compKeyPath = compKeyPath
         self.object = object
-        self.componentId = componentId
-        self.editingParams = editingParams
-        self.defaultEditingParams = .init(activePropertyIndex: defaultActiveProperty.rawValue)
         
-        super.init(properties: P.allCaseDisplayNames, activePropertyIndex: editingParams[componentId: componentId, object, default: defaultEditingParams].activePropertyIndex)
+        super.init(activeProperty: activeProperty)
     }
-    
-    override func onActivePropertyDidChange() {
-        editingParams[componentId: componentId, object, default: defaultEditingParams].activePropertyIndex = activePropertyIndex!
+
+    var compId: AnyHashable {
+        compKeyPath
     }
     
 }
 
 
-typealias ObjectCompController = ObjectCompControllerBase & ObjectCompControllerProtocol
+typealias ObjectCompController<R, V> = ObjectCompControllerBase<R, V> & ObjectCompControllerProtocol
 
 struct ObjectCompActionView: View {
     
@@ -60,9 +56,9 @@ struct ObjectCompActionView: View {
     @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var userInteractionState: UserInteractionState
     
-    init<C>(controller: C) where C: ObjectCompController {
+    init<C>(object: SPTObject, controller: C) where C: ObjectCompControllerProtocol {
         self.controller = controller
-        self.object = controller.object
+        self.object = object
         self.propertyInfoGetter = { activePropertyIndex in
             controller.infoFor(.init(rawValue: activePropertyIndex)!)
         }

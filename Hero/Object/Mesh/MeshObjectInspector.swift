@@ -45,7 +45,7 @@ class MeshObjectInspectorModel: ObservableObject {
     }
     
     func editPosition(axis: Axis, dismiss: DismissAction) {
-        rootViewModel.activeToolViewModel = rootViewModel.moveToolViewModel
+//        rootViewModel.activeToolViewModel = rootViewModel.moveToolViewModel
         // TODO
 //        rootViewModel.moveToolViewModel.selectedObjectViewModel!.axis = axis
         dismiss()

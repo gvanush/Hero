@@ -71,14 +71,16 @@ class CompControllerBase: ObservableObject, Equatable {
     let properties: [String]?
     @Published fileprivate(set) var activePropertyIndex: Int?
     private (set) var isActive = false
+    private (set) var isDisclosed = false
     
     init(properties: [String]?, activePropertyIndex: Int?) {
         self.properties = properties
         self.activePropertyIndex = activePropertyIndex
     }
     
-    convenience init<P>(activeProperty: P) where P: CompProperty {
-        self.init(properties: P.allCaseDisplayNames, activePropertyIndex: activeProperty.rawValue)
+    init<P>(activeProperty: P) where P: CompProperty {
+        self.properties = P.allCaseDisplayNames
+        self.activePropertyIndex = activeProperty.rawValue
     }
     
     fileprivate func activate() {
@@ -91,9 +93,15 @@ class CompControllerBase: ObservableObject, Equatable {
         onInactive()
     }
     
-    func onAwake() { }
+    fileprivate func disclose() {
+        isDisclosed = true
+        onDisclose()
+    }
     
-    func onSleep() { }
+    fileprivate func close() {
+        isDisclosed = false
+        onClose()
+    }
     
     func onVisible() { }
     
@@ -234,7 +242,9 @@ fileprivate struct CompView: View {
     var body: some View {
         ZStack {
             compTextView()
+                .preference(key: ActiveCompPropertyChangePreferenceKey.self, value: isActive && controller.activePropertyIndex != nil ? .init(comp: comp, controller: controller, activePropertyIndex: controller.activePropertyIndex!) : nil)
                 .preference(key: DisclosedCompsPreferenceKey.self, value: isDisclosed ? [.init(comp: comp, controller: controller)] : nil)
+                
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
                 
@@ -250,6 +260,11 @@ fileprivate struct CompView: View {
         .frame(maxWidth: isDisclosed || isChildOfActive ? .infinity : 0.0)
         .visible(isDisclosed || isChildOfActive)
         .onAppear {
+            
+            if isDisclosed {
+                controller.disclose()
+            }
+            
             if isActive {
                 controller.activate()
             }
@@ -258,16 +273,30 @@ fileprivate struct CompView: View {
             if isActive {
                 controller.deactivate()
             }
+            
+            if isDisclosed {
+                controller.close()
+            }
         }
         .onChange(of: activeIndexPath) { [activeIndexPath] newValue in
             if activeIndexPath == comp.indexPath {
                 controller.deactivate()
             }
+            
+            if activeIndexPath.starts(with: comp.indexPath) {
+                if !newValue.starts(with: comp.indexPath) {
+                    controller.close()
+                }
+            } else {
+                if newValue.starts(with: comp.indexPath) {
+                    controller.disclose()
+                }
+            }
+            
             if newValue == comp.indexPath {
                 controller.activate()
             }
         }
-        
     }
     
     private func compTextView() -> some View {
@@ -320,11 +349,11 @@ fileprivate struct CompView: View {
                     guard index != controller.activePropertyIndex else {
                         return
                     }
+                    controller.onActivePropertyWillChange()
                     withAnimation(navigationAnimation) {
-                        controller.onActivePropertyWillChange()
                         controller.activePropertyIndex = index
-                        controller.onActivePropertyDidChange()
                     }
+                    controller.onActivePropertyDidChange()
                 }
             
         })
@@ -362,7 +391,7 @@ struct CompTreeView<CV>: View where CV: View {
     @Binding var activeIndexPath: IndexPath
     let defaultActionView: (CompControllerBase) -> CV?
     
-    private let rootView: CompView
+    private var rootComp: Comp?
     @State private var disclosedCompsData: [DisclosedCompData]?
     
     init(activeIndexPath: Binding<IndexPath>, defaultActionView: @escaping (CompControllerBase) -> CV? = { _ in Optional<EmptyView>.none }, @CompBuilder builder: () -> [Comp]) {
@@ -370,43 +399,42 @@ struct CompTreeView<CV>: View where CV: View {
         self.defaultActionView = defaultActionView
         
         let comps = builder()
-        var rootComp: Comp!
-        if comps.count == 1 {
+        switch comps.count {
+        case 0:
+            rootComp = nil
+        case 1:
             rootComp = comps.first!
-        } else {
+        default:
             rootComp = .init("<Root>", subs: comps)
         }
-        rootComp.updateIndexPath(.init())
-        rootView = .init(comp: rootComp, activeIndexPath: activeIndexPath)
+        rootComp?.updateIndexPath(.init())
     }
     
     var body: some View { 
         VStack {
-            if let activeCompData = activeCompData {
-                if let view = activeCompData.comp.actionView(activeCompData.controller) {
+            if let activeCompData = activeCompData, let controller = activeCompData.controller {
+                if let view = activeCompData.comp.actionView(controller) {
                     view
                 } else {
-                    defaultActionView(activeCompData.controller)
+                    defaultActionView(controller)
                 }
             }
             
-            rootView
-                .padding(3.0)
-                .frame(height: viewHeight)
-                .background(Material.regular)
-                .cornerRadius(SelectorConst.cornerRadius)
-                .compositingGroup()
-                .shadow(radius: 1.0)
-                .id(rootView.comp.id)
+            Group {
+                if let rootComp = rootComp {
+                    CompView(comp: rootComp, activeIndexPath: $activeIndexPath)
+                        .id(rootComp.id)
+                }
+            }
+            .padding(3.0)
+            .frame(height: viewHeight)
+            .background(Material.regular)
+            .cornerRadius(SelectorConst.cornerRadius)
+            .compositingGroup()
+            .shadow(radius: 1.0)
         }
         .onPreferenceChange(DisclosedCompsPreferenceKey.self) { data in
-            self.disclosedCompsData = data
-        }
-        .onAppear {
-            // Adjust active to valid ancestor
-            while activeIndexPath.count > 0 && rootView.comp.compAtIndexPath(activeIndexPath) == nil {
-                activeIndexPath.removeLast()
-            }
+            disclosedCompsData = data
         }
     }
     
@@ -418,7 +446,7 @@ struct CompTreeView<CV>: View where CV: View {
 
 struct DisclosedCompData: Equatable {
     let comp: Comp
-    let controller: CompControllerBase
+    private(set) weak var controller: CompControllerBase?
     
     static func == (lhs: DisclosedCompData, rhs: DisclosedCompData) -> Bool {
         lhs.comp.id == rhs.comp.id
@@ -437,6 +465,24 @@ struct DisclosedCompsPreferenceKey: PreferenceKey {
     }
 }
 
+struct ActiveCompPropertyChangePreferenceKey: PreferenceKey {
+    
+    struct Data: Equatable {
+        let comp: Comp
+        private(set) weak var controller: CompControllerBase?
+        let activePropertyIndex: Int
+        
+        static func == (lhs: Data, rhs: Data) -> Bool {
+            lhs.comp.id == rhs.comp.id && lhs.activePropertyIndex == rhs.activePropertyIndex
+        }
+    }
+    
+    static var defaultValue: Data?
+    
+    static func reduce(value: inout Data?, nextValue: () -> Data?) {
+        value = value ?? nextValue()
+    }
+}
 
 struct CompTreeView_Previews: PreviewProvider {
     

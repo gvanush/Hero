@@ -60,7 +60,6 @@ class RootViewModel: ObservableObject {
     let animatorsViewModel: AnimatorsViewModel
     
     let inspectToolViewModel: InspectToolViewModel
-    let moveToolViewModel: MoveToolViewModel
     let orientToolViewModel: OrientToolViewModel
     let scaleToolViewModel: ScaleToolViewModel
     let shadeToolViewModel: ShadeToolViewModel
@@ -71,7 +70,6 @@ class RootViewModel: ObservableObject {
     
     lazy var toolViewModels: [ToolViewModel] = [
         inspectToolViewModel,
-        moveToolViewModel,
         orientToolViewModel,
         scaleToolViewModel,
         shadeToolViewModel,
@@ -98,7 +96,6 @@ class RootViewModel: ObservableObject {
         self.animatorsViewModel = .init()
         
         self.inspectToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.moveToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.orientToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.scaleToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.shadeToolViewModel = .init(sceneViewModel: sceneViewModel)

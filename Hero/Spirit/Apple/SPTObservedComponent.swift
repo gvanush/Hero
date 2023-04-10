@@ -22,15 +22,47 @@ class SPTObservedComponent<C> where C: SPTObservableComponent {
         self.object = object
         self.cachedValue = C.get(object: object)
         
-        willChangeSubscription = C.onWillChangeSink(object: object) { [weak self] newValue in
-            self!.publisher?.send()
-            self!.cachedValue = newValue
+        willChangeSubscription = C.onWillChangeSink(object: object) { [unowned self] newValue in
+            self.publisher?.send()
+            self.cachedValue = newValue
         }
 
     }
     
     var wrappedValue: C {
         set { C.update(newValue, object: object) }
+        get { cachedValue }
+    }
+    
+}
+
+class SPTObservableComponentProperty<C, V>: ObservableObject where C: SPTObservableComponent, V: Equatable {
+    
+    let object: SPTObject
+    let keyPath: WritableKeyPath<C, V>
+    private var willChangeSubscription: SPTAnySubscription?
+    private var cachedValue: V
+    
+    init(object: SPTObject, keyPath: WritableKeyPath<C, V>) {
+        self.object = object
+        self.keyPath = keyPath
+        self.cachedValue = C.get(object: object)[keyPath: keyPath]
+        
+        willChangeSubscription = C.onWillChangeSink(object: object) { [unowned self] newValue in
+            if self.cachedValue != newValue[keyPath: keyPath] {
+                self.objectWillChange.send()
+                self.cachedValue = newValue[keyPath: keyPath]
+            }
+        }
+
+    }
+    
+    var value: V {
+        set {
+            var component = C.get(object: object)
+            component[keyPath: keyPath] = newValue
+            C.update(component, object: object)
+        }
         get { cachedValue }
     }
     

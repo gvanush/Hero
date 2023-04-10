@@ -189,6 +189,7 @@
 		B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F5128905A1400224E09 /* PanAnimatorViewGraphView.swift */; };
 		B7E30F5628906D4800224E09 /* SignalGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E30F5528906D4800224E09 /* SignalGraphView.swift */; };
 		B7E30F592891492100224E09 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = B7E30F582891492100224E09 /* DequeModule */; };
+		B7E3A7FD29D22F630076B09B /* LinearPositionCompController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E3A7FC29D22F630076B09B /* LinearPositionCompController.swift */; };
 		B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481C9274183BD003DA5B1 /* Transformation.cpp */; };
 		B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481CD2742307B003DA5B1 /* Camera.cpp */; };
 		B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E481D12742EE20003DA5B1 /* Base.cpp */; };
@@ -461,6 +462,7 @@
 		B7E30F4E288E7E0500224E09 /* AnimatorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorUtil.swift; sourceTree = "<group>"; };
 		B7E30F5128905A1400224E09 /* PanAnimatorViewGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanAnimatorViewGraphView.swift; sourceTree = "<group>"; };
 		B7E30F5528906D4800224E09 /* SignalGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalGraphView.swift; sourceTree = "<group>"; };
+		B7E3A7FC29D22F630076B09B /* LinearPositionCompController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPositionCompController.swift; sourceTree = "<group>"; };
 		B7E481C9274183BD003DA5B1 /* Transformation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transformation.cpp; sourceTree = "<group>"; };
 		B7E481CA274183BD003DA5B1 /* Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scale.h; sourceTree = "<group>"; };
 		B7E481CD2742307B003DA5B1 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -596,6 +598,7 @@
 				B71C953929C3CF37002F09C2 /* CompTreeView.swift */,
 				B71C955229C8F251002F09C2 /* ObjectCompActionView.swift */,
 				B71C953D29C75947002F09C2 /* CartesianPositionCompController.swift */,
+				B7E3A7FC29D22F630076B09B /* LinearPositionCompController.swift */,
 			);
 			path = CompTree;
 			sourceTree = "<group>";
@@ -1386,6 +1389,7 @@
 				B7FD15AE2935D67700B6E7DC /* SphericalPositionComponentView.swift in Sources */,
 				B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */,
 				B760C5C1294B394F0026B785 /* BundleUtil.swift in Sources */,
+				B7E3A7FD29D22F630076B09B /* LinearPositionCompController.swift in Sources */,
 				B7FD15A829351CB200B6E7DC /* PositionUtil.swift in Sources */,
 				B742447C2899366200A09808 /* AnimatorSource.cpp in Sources */,
 				B7643B2629027C7900F6A05B /* RandomSeedSelector.swift in Sources */,
