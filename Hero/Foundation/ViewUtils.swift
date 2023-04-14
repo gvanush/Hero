@@ -66,19 +66,3 @@ struct SizeModifier: ViewModifier {
         content.background(sizeView)
     }
 }
-
-struct ViewPreferenceData: Equatable {
-    
-    let id: AnyHashable
-    let view: AnyView
-    
-    init(id: some Hashable, @ViewBuilder content: () -> some View) {
-        self.id = id
-        self.view = AnyView(content())
-    }   
-    
-    static func == (lhs: ViewPreferenceData, rhs: ViewPreferenceData) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-}

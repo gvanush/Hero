@@ -26,6 +26,8 @@ class CartesianPositionCompController<R>: ObjectCompController<R, simd_float3> {
         _position = .init(object: object)
         
         super.init(compKeyPath: compKeyPath, activeProperty: activeProperty, object: object)
+        
+        _position.publisher = self.objectWillChange
     }
     
     override func onActive() {

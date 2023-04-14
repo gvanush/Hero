@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-class LinearPositionCompContext {
+
+fileprivate class LinearPositionCompContext {
     
     let originObject: SPTObject
     let directionObject: SPTObject
@@ -23,6 +24,7 @@ class LinearPositionCompContext {
     }
 }
 
+
 fileprivate enum PositionCompContext {
     case cartesian
     case linear(LinearPositionCompContext)
@@ -30,36 +32,54 @@ fileprivate enum PositionCompContext {
     case cylindrical
 }
 
+
+class MoveToolModel: ObservableObject {
+    
+    struct Item {
+        var activeCompIndexPath: IndexPath
+        fileprivate var disclosedCompsData: [DisclosedCompData]?
+        fileprivate var positionCompContext: PositionCompContext?
+    }
+    
+    @Published private var items = [SPTObject : Item]()
+    
+    subscript (object: SPTObject) -> Item! {
+        get {
+            items[object, default: .init(activeCompIndexPath: .init())]
+        }
+        set {
+            items[object] = newValue
+        }
+    }
+    
+}
+
+
 fileprivate struct SelectedObjectView: View {
     
     private let object: SPTObject
     
-    @State private var activeCompIndexPath = IndexPath()
-    @State private var disclosedCompsData: [DisclosedCompData]?
-    @StateObject private var coordinateSystem: SPTObservableComponentProperty<SPTPosition, SPTCoordinateSystem>
-    @State private var positionCompContext: PositionCompContext?
-    
+    @EnvironmentObject var model: MoveToolModel
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var editingParams: ObjectEditingParams
     
     init(object: SPTObject) {
         self.object = object
-        _coordinateSystem = .init(wrappedValue: .init(object: object, keyPath: \.coordinateSystem))
     }
     
     var body: some View {
-        CompTreeView(activeIndexPath: $activeCompIndexPath, defaultActionView: { controller in
+        CompTreeView(activeIndexPath: $model[object].activeCompIndexPath, defaultActionView: { controller in
             ObjectCompActionView(object: object, controller: (controller as! (any ObjectCompControllerProtocol)))
         }) {
             
-            switch positionCompContext {
+            switch model[object].positionCompContext {
             case .cartesian:
                 Comp("Position", subtitle: "Cartesian")
                     .controller {
                         let compKeyPath = \SPTPosition.cartesian
                         return CartesianPositionCompController(
                             compKeyPath: compKeyPath,
-                            activeProperty: .init(rawValue: editingParams[componentId: compKeyPath, object].activePropertyIndex)!,
+                            activeProperty: .x,
                             object: object,
                             sceneViewModel: sceneViewModel)
                     }
@@ -104,11 +124,8 @@ fileprivate struct SelectedObjectView: View {
             Color.clear
                 .contentShape(Rectangle())
         }
-        .preference(key: ActiveToolItemViewPreferenceKey.self, value: .init(id: itemViewId, content: {
-            itemView()
-        }))
         .onPreferenceChange(DisclosedCompsPreferenceKey.self, perform: {
-            self.disclosedCompsData = $0
+            model[object].disclosedCompsData = $0
         })
         .onPreferenceChange(ActiveCompPropertyChangePreferenceKey.self, perform: { data in
             
@@ -119,6 +136,82 @@ fileprivate struct SelectedObjectView: View {
             let controller = data.controller as! (any ObjectCompControllerProtocol)
             editingParams[componentId: controller.compId, object].activePropertyIndex = controller.activePropertyIndex!
         })
+        .onAppear {
+            model[object] = .init(activeCompIndexPath: .init())
+        }
+        .onDisappear {
+            model[object] = nil
+        }
+    }
+    
+}
+
+
+struct MoveToolView: View {
+    
+    @ObservedObject var model: MoveToolModel
+    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    var body: some View {
+        if let object = sceneViewModel.selectedObject {
+            SelectedObjectView(object: object)
+                .id(object)
+                .environmentObject(model)
+        }
+    }
+}
+
+fileprivate struct SelectedObjectBarView: View {
+    
+    let object: SPTObject
+    
+    @StateObject private var coordinateSystem: SPTObservableComponentProperty<SPTPosition, SPTCoordinateSystem>
+    @EnvironmentObject var model: MoveToolModel
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    init(object: SPTObject) {
+        self.object = object
+        
+        _coordinateSystem = .init(wrappedValue: .init(object: object, keyPath: \.coordinateSystem))
+    }
+    
+    var body: some View {
+        HStack {
+            Divider()
+            ScrollView(.horizontal, showsIndicators: false) {
+                if let disclosedCompsData = model[object].disclosedCompsData {
+                    HStack {
+                        ForEach(disclosedCompsData, id: \.compId) { data in
+                            HStack {
+                                if data.compId != disclosedCompsData.first!.compId {
+                                    Image(systemName: "chevron.right")
+                                        .imageScale(.large)
+                                        .foregroundColor(.secondary)
+                                }
+                                VStack(alignment: .leading) {
+                                    Text(data.title)
+                                        .fontWeight(.regular)
+                                        .fixedSize()
+                                    if let substitle = data.subtitle {
+                                        Text(substitle)
+                                            .font(.system(.subheadline))
+                                            .foregroundColor(Color.secondaryLabel)
+                                            .fixedSize()
+                                    }
+                                }
+                            }
+                            .onTapGesture {
+                                withAnimation {
+                                    model[object].activeCompIndexPath = data.indexPath
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            coordinateSystemSelector()
+        }
         .onChange(of: coordinateSystem.value, perform: { [oldValue = coordinateSystem.value] newValue in
             unbindAnimators(coordinateSystem: oldValue)
             update(coordinateSystem: newValue)
@@ -126,20 +219,19 @@ fileprivate struct SelectedObjectView: View {
         .onAppear {
             update(coordinateSystem: coordinateSystem.value)
         }
-        .id(object)
     }
     
     private func update(coordinateSystem: SPTCoordinateSystem) {
         
         switch coordinateSystem {
         case .cartesian:
-            positionCompContext = .cartesian
+            model[object].positionCompContext = .cartesian
         case .linear:
-            positionCompContext = .linear(.init(sceneViewModel: sceneViewModel))
+            model[object].positionCompContext = .linear(.init(sceneViewModel: sceneViewModel))
         case .spherical:
-            positionCompContext = .spherical
+            model[object].positionCompContext = .spherical
         case .cylindrical:
-            positionCompContext = .cylindrical
+            model[object].positionCompContext = .cylindrical
         }
     }
     
@@ -162,44 +254,6 @@ fileprivate struct SelectedObjectView: View {
         }
     }
     
-    private func itemView() -> some View {
-        HStack {
-            Divider()
-            ScrollView(.horizontal, showsIndicators: false) {
-                if let disclosedCompsData = disclosedCompsData {
-                    HStack {
-                        ForEach(disclosedCompsData, id: \.comp.id) { data in
-                            HStack {
-                                if data.comp.id != disclosedCompsData.first!.comp.id {
-                                    Image(systemName: "chevron.right")
-                                        .imageScale(.large)
-                                        .foregroundColor(.secondary)
-                                }
-                                VStack(alignment: .leading) {
-                                    Text(data.comp.title)
-                                        .fontWeight(activeCompIndexPath == data.comp.indexPath ? .regular : .medium)
-                                        .fixedSize()
-                                    if let substitle = data.comp.subtitle {
-                                        Text(substitle)
-                                            .font(.system(.subheadline))
-                                            .foregroundColor(Color.secondaryLabel)
-                                            .fixedSize()
-                                    }
-                                }
-                            }
-                            .onTapGesture {
-                                withAnimation {
-                                    activeCompIndexPath = data.comp.indexPath
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            coordinateSystemSelector()
-        }
-    }
-    
     private func coordinateSystemSelector() -> some View {
         Menu {
             ForEach(SPTCoordinateSystem.allCases) { system in
@@ -217,7 +271,7 @@ fileprivate struct SelectedObjectView: View {
                         SPTPosition.update(position.toCylindrical(origin: position.origin), object: object)
                     }
                     
-                    activeCompIndexPath = .init()
+                    model[object].activeCompIndexPath = .init()
                     
                 } label: {
                     HStack {
@@ -238,27 +292,22 @@ fileprivate struct SelectedObjectView: View {
         .shadow(radius: 0.5)
     }
     
-    var itemViewId: Int {
-        var hasher = Hasher()
-        hasher.combine(self.coordinateSystem.value.rawValue)
-        if let disclosedComps = disclosedCompsData {
-            for comp in disclosedComps {
-                hasher.combine(comp.comp.id)
-            }
-        }
-        return hasher.finalize()
-    }
-    
 }
 
 
-struct MoveToolView: View {
+struct MoveToolBarView: View {
+    
+    @ObservedObject var model: MoveToolModel
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
         if let object = sceneViewModel.selectedObject {
-            SelectedObjectView(object: object)
+            SelectedObjectBarView(object: object)
+                .transition(.identity)
+                .id(object)
+                .environmentObject(model)
         }
     }
+    
 }

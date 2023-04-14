@@ -159,11 +159,12 @@ struct RootView: View {
     
     @StateObject private var model: RootViewModel
     @StateObject private var sceneViewModel: SceneViewModel
+    @StateObject private var moveToolModel = MoveToolModel()
+    
     @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
     
     @State private var activeTool = Tool.inspect
-    @State private var activeToolItemViewData: ViewPreferenceData?
     @State private var showsAnimatorsView = false
     @State private var showsNewObjectView = false
     @State private var showsSelectedObjectInspector = false
@@ -214,7 +215,7 @@ struct RootView: View {
                         Color.clear
                             .frame(maxHeight: 44.0)
                             .overlay {
-                                activeToolItemViewData?.view
+                                activeToolBarView()
                             }
                     }
                     .frame(maxWidth: .infinity)
@@ -350,7 +351,7 @@ struct RootView: View {
             case .inspect:
                 EmptyView()
             case .move:
-                MoveToolView()
+                MoveToolView(model: moveToolModel)
             case .orient:
                 OrientToolView(model: model.orientToolViewModel)
             case .scale:
@@ -368,22 +369,38 @@ struct RootView: View {
             }
         }
         .environmentObject(sceneViewModel)
-        .onPreferenceChange(ActiveToolItemViewPreferenceKey.self, perform: {
-            self.activeToolItemViewData = $0
-        })
+    }
+    
+    func activeToolBarView() -> some View {
+        Group {
+            switch activeTool {
+            case .inspect:
+                EmptyView()
+            case .move:
+                MoveToolBarView(model: moveToolModel)
+            case .orient:
+                EmptyView()
+            case .scale:
+                EmptyView()
+            case .shade:
+                EmptyView()
+            case .animatePosition:
+                EmptyView()
+            case .animateOrientation:
+                EmptyView()
+            case .animateScale:
+                EmptyView()
+            case .animateShade:
+                EmptyView()
+            }
+        }
+        .environmentObject(sceneViewModel)
     }
     
     static let sceneUIInsets = EdgeInsets(top: 0.0, leading: 0.0, bottom: 80.0, trailing: 16.0)
     static let toolControlViewsAreaHeight: CGFloat = 129.0
 }
 
-struct ActiveToolItemViewPreferenceKey: PreferenceKey {
-    static var defaultValue: ViewPreferenceData?
-
-    static func reduce(value: inout ViewPreferenceData?, nextValue: () -> ViewPreferenceData?) {
-        value = value ?? nextValue()
-    }
-}
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
