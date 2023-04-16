@@ -205,8 +205,6 @@ struct RootView: View {
                         Color.clear
                         activeToolView()
                             .transition(.identity)
-                            .environmentObject(model.objectEditingParams)
-                            .environmentObject(userInteractionState)
                     }
                     .frame(height: Self.toolControlViewsAreaHeight)
                                         
@@ -369,6 +367,8 @@ struct RootView: View {
             }
         }
         .environmentObject(sceneViewModel)
+        .environmentObject(model.objectEditingParams)
+        .environmentObject(userInteractionState)
     }
     
     func activeToolBarView() -> some View {
@@ -395,6 +395,7 @@ struct RootView: View {
             }
         }
         .environmentObject(sceneViewModel)
+        .environmentObject(model.objectEditingParams)
     }
     
     static let sceneUIInsets = EdgeInsets(top: 0.0, leading: 0.0, bottom: 80.0, trailing: 16.0)

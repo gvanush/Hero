@@ -36,7 +36,6 @@ fileprivate enum PositionCompContext {
 class MoveToolModel: ObservableObject {
     
     struct Item {
-        var activeCompIndexPath: IndexPath
         fileprivate var disclosedCompsData: [DisclosedCompData]?
         fileprivate var positionCompContext: PositionCompContext?
     }
@@ -45,7 +44,7 @@ class MoveToolModel: ObservableObject {
     
     subscript (object: SPTObject) -> Item! {
         get {
-            items[object, default: .init(activeCompIndexPath: .init())]
+            items[object, default: .init()]
         }
         set {
             items[object] = newValue
@@ -68,7 +67,7 @@ fileprivate struct SelectedObjectView: View {
     }
     
     var body: some View {
-        CompTreeView(activeIndexPath: $model[object].activeCompIndexPath, defaultActionView: { controller in
+        CompTreeView(activeIndexPath: $editingParams[tool: .move, object].activeComponentIndexPath, defaultActionView: { controller in
             ObjectCompActionView(object: object, controller: (controller as! (any ObjectCompControllerProtocol)))
         }) {
             
@@ -79,7 +78,7 @@ fileprivate struct SelectedObjectView: View {
                         let compKeyPath = \SPTPosition.cartesian
                         return CartesianPositionCompController(
                             compKeyPath: compKeyPath,
-                            activeProperty: .x,
+                            activeProperty: .init(rawValue: editingParams[componentId: compKeyPath, object].activePropertyIndex)!,
                             object: object,
                             sceneViewModel: sceneViewModel)
                     }
@@ -136,9 +135,6 @@ fileprivate struct SelectedObjectView: View {
             let controller = data.controller as! (any ObjectCompControllerProtocol)
             editingParams[componentId: controller.compId, object].activePropertyIndex = controller.activePropertyIndex!
         })
-        .onAppear {
-            model[object] = .init(activeCompIndexPath: .init())
-        }
         .onDisappear {
             model[object] = nil
         }
@@ -169,6 +165,7 @@ fileprivate struct SelectedObjectBarView: View {
     @StateObject private var coordinateSystem: SPTObservableComponentProperty<SPTPosition, SPTCoordinateSystem>
     @EnvironmentObject var model: MoveToolModel
     @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var editingParams: ObjectEditingParams
     
     init(object: SPTObject) {
         self.object = object
@@ -203,7 +200,7 @@ fileprivate struct SelectedObjectBarView: View {
                             }
                             .onTapGesture {
                                 withAnimation {
-                                    model[object].activeCompIndexPath = data.indexPath
+                                    editingParams[tool: .move, object].activeComponentIndexPath = data.indexPath
                                 }
                             }
                         }
@@ -271,7 +268,7 @@ fileprivate struct SelectedObjectBarView: View {
                         SPTPosition.update(position.toCylindrical(origin: position.origin), object: object)
                     }
                     
-                    model[object].activeCompIndexPath = .init()
+                    editingParams[tool: .move, object].activeComponentIndexPath = .init()
                     
                 } label: {
                     HStack {
