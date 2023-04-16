@@ -229,7 +229,7 @@ fileprivate struct CompView<SCV>: View where SCV: View {
         ZStack {
             compTextView()
                 .preference(key: ActiveCompPropertyChangePreferenceKey.self, value: isActive && controller.activePropertyIndex != nil ? .init(compId: compId, controller: controller, activePropertyIndex: controller.activePropertyIndex!) : nil)
-                .preference(key: DisclosedCompsPreferenceKey.self, value: isDisclosed ? [.init(compId: compId, title: title, subtitle: subtitle, indexPath: indexPath, controller: controller)] : nil)
+                .preference(key: DisclosedCompsPreferenceKey.self, value: isDisclosed ? [.init(compId: compId, title: title, subtitle: subtitle, indexPath: indexPath, controller: controller)] : [])
                 
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
@@ -451,14 +451,10 @@ struct DisclosedCompData: Equatable {
 }
 
 struct DisclosedCompsPreferenceKey: PreferenceKey {
-    static var defaultValue: [DisclosedCompData]?
+    static var defaultValue = [DisclosedCompData]()
     
-    static func reduce(value: inout [DisclosedCompData]?, nextValue: () -> [DisclosedCompData]?) {
-        if value == nil {
-            value = nextValue()
-        } else {
-            value!.append(contentsOf: nextValue() ?? [])
-        }
+    static func reduce(value: inout [DisclosedCompData], nextValue: () -> [DisclosedCompData]) {
+        value.append(contentsOf: nextValue())
     }
 }
 

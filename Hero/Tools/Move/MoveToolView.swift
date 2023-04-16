@@ -123,8 +123,12 @@ fileprivate struct SelectedObjectView: View {
             Color.clear
                 .contentShape(Rectangle())
         }
-        .onPreferenceChange(DisclosedCompsPreferenceKey.self, perform: {
-            model[object].disclosedCompsData = $0
+        .onPreferenceChange(DisclosedCompsPreferenceKey.self, perform: { data in
+            model[object].disclosedCompsData = data
+            
+            if let lastCompController = data.last?.controller as? (any ObjectCompControllerProtocol) {
+                sceneViewModel.focusedObject = lastCompController.object
+            }
         })
         .onPreferenceChange(ActiveCompPropertyChangePreferenceKey.self, perform: { data in
             

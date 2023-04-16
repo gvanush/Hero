@@ -20,6 +20,7 @@ struct ObjectPropertyInfo {
 
 protocol ObjectCompControllerProtocol: CompControllerProtocol {
     
+    var object: SPTObject { get }
     var compId: AnyHashable { get }
     
     func infoFor(_ property: Property) -> ObjectPropertyInfo
