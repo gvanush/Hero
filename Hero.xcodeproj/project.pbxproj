@@ -75,6 +75,10 @@
 		B73E47F127D2270D00CB0AFC /* PointLook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B73E47EF27D2270D00CB0AFC /* PointLook.cpp */; };
 		B742447C2899366200A09808 /* AnimatorSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B742447A2899366200A09808 /* AnimatorSource.cpp */; };
 		B742447E289A8B0F00A09808 /* SPTMetadataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */; };
+		B748783629EDC29500F62B37 /* CompBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748783529EDC29500F62B37 /* CompBuilder.swift */; };
+		B748783829EDC3A900F62B37 /* CompController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748783729EDC3A900F62B37 /* CompController.swift */; };
+		B748783A29EDC5C400F62B37 /* Comp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748783929EDC5C400F62B37 /* Comp.swift */; };
+		B748783C29EDC69900F62B37 /* CompView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748783B29EDC69900F62B37 /* CompView.swift */; };
 		B753B77A29660EB90018F96D /* OrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77929660EB90018F96D /* OrientationComponentView.swift */; };
 		B753B77E29661A260018F96D /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77D29661A260018F96D /* OrientationUtil.swift */; };
 		B753B780296706490018F96D /* EulerOrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77F296706490018F96D /* EulerOrientationComponentView.swift */; };
@@ -324,6 +328,10 @@
 		B742447A2899366200A09808 /* AnimatorSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatorSource.cpp; sourceTree = "<group>"; };
 		B742447B2899366200A09808 /* AnimatorSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorSource.h; sourceTree = "<group>"; };
 		B742447D289A8B0F00A09808 /* SPTMetadataUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTMetadataUtil.swift; sourceTree = "<group>"; };
+		B748783529EDC29500F62B37 /* CompBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompBuilder.swift; sourceTree = "<group>"; };
+		B748783729EDC3A900F62B37 /* CompController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompController.swift; sourceTree = "<group>"; };
+		B748783929EDC5C400F62B37 /* Comp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comp.swift; sourceTree = "<group>"; };
+		B748783B29EDC69900F62B37 /* CompView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompView.swift; sourceTree = "<group>"; };
 		B753027227D3712800886134 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
 		B753B77929660EB90018F96D /* OrientationComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponentView.swift; sourceTree = "<group>"; };
 		B753B77D29661A260018F96D /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
@@ -595,7 +603,11 @@
 		B71C953829C3CEBB002F09C2 /* CompTree */ = {
 			isa = PBXGroup;
 			children = (
+				B748783529EDC29500F62B37 /* CompBuilder.swift */,
+				B748783B29EDC69900F62B37 /* CompView.swift */,
 				B71C953929C3CF37002F09C2 /* CompTreeView.swift */,
+				B748783729EDC3A900F62B37 /* CompController.swift */,
+				B748783929EDC5C400F62B37 /* Comp.swift */,
 				B71C955229C8F251002F09C2 /* ObjectCompActionView.swift */,
 				B71C953D29C75947002F09C2 /* CartesianPositionCompController.swift */,
 				B7E3A7FC29D22F630076B09B /* LinearPositionCompController.swift */,
@@ -1298,6 +1310,7 @@
 				B753B790296C01270018F96D /* EulerOrientationAnimatorBindingsComponent.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B753B77A29660EB90018F96D /* OrientationComponentView.swift in Sources */,
+				B748783A29EDC5C400F62B37 /* Comp.swift in Sources */,
 				B7AD7D1C294730F300129A07 /* BasicAnimatorView.swift in Sources */,
 				B7A78A6F2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
@@ -1316,6 +1329,7 @@
 				B7FD15A2292E61EC00B6E7DC /* CartesianPositionComponentView.swift in Sources */,
 				B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */,
 				B7C748A728E5647800E270FB /* ComponentTreeNavigationView.swift in Sources */,
+				B748783C29EDC69900F62B37 /* CompView.swift in Sources */,
 				B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */,
 				B757DB7628A80F0B00BB5DB4 /* AnimatorSelector.swift in Sources */,
 				B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */,
@@ -1364,6 +1378,7 @@
 				B70A6B1F293CCFE10092FDE1 /* SphericalPositionAnimatorBindingsComponent.swift in Sources */,
 				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,
 				B7643B2A2906700400F6A05B /* NoiseAnimatorView.swift in Sources */,
+				B748783629EDC29500F62B37 /* CompBuilder.swift in Sources */,
 				B753B77E29661A260018F96D /* OrientationUtil.swift in Sources */,
 				B76D4FC828AB7C990029E47B /* SPTUtil.swift in Sources */,
 				B753B78E296BE58A0018F96D /* OrientationAnimatorBindingsComponent.swift in Sources */,
@@ -1410,6 +1425,7 @@
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
 				B7643B3C290FAB9000F6A05B /* ShadeComponentView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
+				B748783829EDC3A900F62B37 /* CompController.swift in Sources */,
 				B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */,
 				B70A6B2C293E56D50092FDE1 /* AnimatorBindingUtil.swift in Sources */,
 				B70A6B28293E2E750092FDE1 /* Matrix.cpp in Sources */,
