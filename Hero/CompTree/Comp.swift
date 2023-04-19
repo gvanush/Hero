@@ -17,7 +17,7 @@ struct Comp: Identifiable {
     private(set) var subtitle: String?
     private(set) var subs: [Comp]
     
-    fileprivate(set) var makeController: () -> CompControllerBase = { .init(properties: nil, activePropertyIndex: nil) }
+    private(set) var makeController: () -> CompControllerBase = { .init(properties: nil, activePropertyIndex: nil) }
     
     private var declarationID = IndexPath()
     private var variationID = IndexPath()

@@ -79,6 +79,9 @@
 		B748783829EDC3A900F62B37 /* CompController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748783729EDC3A900F62B37 /* CompController.swift */; };
 		B748783A29EDC5C400F62B37 /* Comp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748783929EDC5C400F62B37 /* Comp.swift */; };
 		B748783C29EDC69900F62B37 /* CompView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748783B29EDC69900F62B37 /* CompView.swift */; };
+		B748784129EDE41600F62B37 /* ElementTreeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784029EDE41600F62B37 /* ElementTreeBuilder.swift */; };
+		B748784329EDF28300F62B37 /* ElementTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784229EDF28300F62B37 /* ElementTreeView.swift */; };
+		B748784529EEA66B00F62B37 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784429EEA66B00F62B37 /* Element.swift */; };
 		B753B77A29660EB90018F96D /* OrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77929660EB90018F96D /* OrientationComponentView.swift */; };
 		B753B77E29661A260018F96D /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77D29661A260018F96D /* OrientationUtil.swift */; };
 		B753B780296706490018F96D /* EulerOrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77F296706490018F96D /* EulerOrientationComponentView.swift */; };
@@ -332,6 +335,9 @@
 		B748783729EDC3A900F62B37 /* CompController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompController.swift; sourceTree = "<group>"; };
 		B748783929EDC5C400F62B37 /* Comp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comp.swift; sourceTree = "<group>"; };
 		B748783B29EDC69900F62B37 /* CompView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompView.swift; sourceTree = "<group>"; };
+		B748784029EDE41600F62B37 /* ElementTreeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementTreeBuilder.swift; sourceTree = "<group>"; };
+		B748784229EDF28300F62B37 /* ElementTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementTreeView.swift; sourceTree = "<group>"; };
+		B748784429EEA66B00F62B37 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 		B753027227D3712800886134 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
 		B753B77929660EB90018F96D /* OrientationComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponentView.swift; sourceTree = "<group>"; };
 		B753B77D29661A260018F96D /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
@@ -783,6 +789,16 @@
 			name = Point;
 			sourceTree = "<group>";
 		};
+		B748783D29EDE3E600F62B37 /* ElementTree */ = {
+			isa = PBXGroup;
+			children = (
+				B748784029EDE41600F62B37 /* ElementTreeBuilder.swift */,
+				B748784229EDF28300F62B37 /* ElementTreeView.swift */,
+				B748784429EEA66B00F62B37 /* Element.swift */,
+			);
+			path = ElementTree;
+			sourceTree = "<group>";
+		};
 		B753B77829660E7B0018F96D /* Orient */ = {
 			isa = PBXGroup;
 			children = (
@@ -866,6 +882,7 @@
 		B7791D1527258F7500E0C934 /* Hero */ = {
 			isa = PBXGroup;
 			children = (
+				B748783D29EDE3E600F62B37 /* ElementTree */,
 				B71C953829C3CEBB002F09C2 /* CompTree */,
 				B7104BBB2729261300582DCA /* Spirit */,
 				B7104BBC2729266D00582DCA /* Foundation */,
@@ -1341,6 +1358,7 @@
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
 				B7661CF1295EDD4D0070156D /* XYZScaleAnimatorBindingsComponent.swift in Sources */,
 				B753B792296C0EF70018F96D /* EulerOrientationFieldAnimatorBindingComponent.swift in Sources */,
+				B748784129EDE41600F62B37 /* ElementTreeBuilder.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
 				B7BECC3D295C76600091A96F /* ScaleComponentView.swift in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
@@ -1398,6 +1416,7 @@
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B7661CEF295EDA350070156D /* ScaleAnimatorBindingsComponent.swift in Sources */,
+				B748784329EDF28300F62B37 /* ElementTreeView.swift in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
 				B7BECC43295C9E6D0091A96F /* XYZScaleComponentView.swift in Sources */,
 				B7FD15B72939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift in Sources */,
@@ -1426,6 +1445,7 @@
 				B7643B3C290FAB9000F6A05B /* ShadeComponentView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
 				B748783829EDC3A900F62B37 /* CompController.swift in Sources */,
+				B748784529EEA66B00F62B37 /* Element.swift in Sources */,
 				B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */,
 				B70A6B2C293E56D50092FDE1 /* AnimatorBindingUtil.swift in Sources */,
 				B70A6B28293E2E750092FDE1 /* Matrix.cpp in Sources */,
