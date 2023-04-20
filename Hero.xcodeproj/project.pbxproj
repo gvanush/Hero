@@ -83,6 +83,9 @@
 		B748784329EDF28300F62B37 /* ElementTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784229EDF28300F62B37 /* ElementTreeView.swift */; };
 		B748784529EEA66B00F62B37 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784429EEA66B00F62B37 /* Element.swift */; };
 		B748784729F1A40100F62B37 /* CommonElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784629F1A40100F62B37 /* CommonElements.swift */; };
+		B748784929F1D36B00F62B37 /* ElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784829F1D36B00F62B37 /* ElementView.swift */; };
+		B748784B29F1D45400F62B37 /* ConditionalElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784A29F1D45400F62B37 /* ConditionalElements.swift */; };
+		B748784D29F1D52E00F62B37 /* UtilityElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784C29F1D52E00F62B37 /* UtilityElements.swift */; };
 		B753B77A29660EB90018F96D /* OrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77929660EB90018F96D /* OrientationComponentView.swift */; };
 		B753B77E29661A260018F96D /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77D29661A260018F96D /* OrientationUtil.swift */; };
 		B753B780296706490018F96D /* EulerOrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77F296706490018F96D /* EulerOrientationComponentView.swift */; };
@@ -340,6 +343,9 @@
 		B748784229EDF28300F62B37 /* ElementTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementTreeView.swift; sourceTree = "<group>"; };
 		B748784429EEA66B00F62B37 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 		B748784629F1A40100F62B37 /* CommonElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonElements.swift; sourceTree = "<group>"; };
+		B748784829F1D36B00F62B37 /* ElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementView.swift; sourceTree = "<group>"; };
+		B748784A29F1D45400F62B37 /* ConditionalElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalElements.swift; sourceTree = "<group>"; };
+		B748784C29F1D52E00F62B37 /* UtilityElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityElements.swift; sourceTree = "<group>"; };
 		B753027227D3712800886134 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
 		B753B77929660EB90018F96D /* OrientationComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponentView.swift; sourceTree = "<group>"; };
 		B753B77D29661A260018F96D /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
@@ -794,9 +800,12 @@
 		B748783D29EDE3E600F62B37 /* ElementTree */ = {
 			isa = PBXGroup;
 			children = (
+				B748784429EEA66B00F62B37 /* Element.swift */,
+				B748784829F1D36B00F62B37 /* ElementView.swift */,
+				B748784C29F1D52E00F62B37 /* UtilityElements.swift */,
+				B748784A29F1D45400F62B37 /* ConditionalElements.swift */,
 				B748784029EDE41600F62B37 /* ElementTreeBuilder.swift */,
 				B748784229EDF28300F62B37 /* ElementTreeView.swift */,
-				B748784429EEA66B00F62B37 /* Element.swift */,
 				B748784629F1A40100F62B37 /* CommonElements.swift */,
 			);
 			path = ElementTree;
@@ -1275,6 +1284,7 @@
 				B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */,
 				B73245B6274124C100708909 /* Renderer.mm in Sources */,
 				B76D4FCA28AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift in Sources */,
+				B748784929F1D36B00F62B37 /* ElementView.swift in Sources */,
 				B7235862276F2BEC00337547 /* OutlineLook.cpp in Sources */,
 				B7643B402912517000F6A05B /* RGBColorSelector.swift in Sources */,
 				B70A6B23293CEEF40092FDE1 /* LineLookDepthBias.swift in Sources */,
@@ -1312,6 +1322,7 @@
 				B7E481DA274648DB003DA5B1 /* MeshLook.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
 				B748784729F1A40100F62B37 /* CommonElements.swift in Sources */,
+				B748784D29F1D52E00F62B37 /* UtilityElements.swift in Sources */,
 				B7B711E028C1D8100077C7CD /* SPTPolylineLookUtil.swift in Sources */,
 				B7FD15B9293A4A1200B6E7DC /* CylindricalPositionAnimatorBindingsComponent.swift in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
@@ -1445,6 +1456,7 @@
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */,
 				B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */,
+				B748784B29F1D45400F62B37 /* ConditionalElements.swift in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
 				B7643B3C290FAB9000F6A05B /* ShadeComponentView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
