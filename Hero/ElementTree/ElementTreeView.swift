@@ -30,11 +30,11 @@ struct ElementNodeView<E>: View where E: Element {
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
                 
-                element.content.0.nodeView(indexPath: indexPath.appending(0), activeIndexPath: $activeIndexPath)
-                element.content.1.nodeView(indexPath: indexPath.appending(1), activeIndexPath: $activeIndexPath)
-                element.content.2.nodeView(indexPath: indexPath.appending(2), activeIndexPath: $activeIndexPath)
-                element.content.3.nodeView(indexPath: indexPath.appending(3), activeIndexPath: $activeIndexPath)
-                element.content.4.nodeView(indexPath: indexPath.appending(4), activeIndexPath: $activeIndexPath)
+//                element.content.0.nodeView(indexPath: indexPath.appending(0), activeIndexPath: $activeIndexPath)
+//                element.content.1.nodeView(indexPath: indexPath.appending(1), activeIndexPath: $activeIndexPath)
+//                element.content.2.nodeView(indexPath: indexPath.appending(2), activeIndexPath: $activeIndexPath)
+//                element.content.3.nodeView(indexPath: indexPath.appending(3), activeIndexPath: $activeIndexPath)
+//                element.content.4.nodeView(indexPath: indexPath.appending(4), activeIndexPath: $activeIndexPath)
                 
             }
         }
@@ -124,19 +124,23 @@ struct ElementTreeView<RE>: View where RE: Element {
 
     let rootElement: RE?
 
-    @State var activeIndexPath = IndexPath()
+    @Binding var activeIndexPath: IndexPath
     
-    init(rootElement: () -> RE) {
+    init(activeIndexPath: Binding<IndexPath>, rootElement: () -> RE) {
+        _activeIndexPath = activeIndexPath
         self.rootElement = rootElement()
     }
     
-    init(rootElement: () -> RE) where RE == EmptyElement {
+    init(activeIndexPath: Binding<IndexPath>, rootElement: () -> RE) where RE == EmptyElement {
+        _activeIndexPath = activeIndexPath
         self.rootElement = nil
     }
 
     var body: some View {
         if let rootElement = rootElement {
-            ElementNodeView(element: rootElement, indexPath: .init(), activeIndexPath: $activeIndexPath)
+            rootElement
+                .indexPath(.init())
+                .activeIndexPath($activeIndexPath)
                 .padding(3.0)
                 .frame(height: 38.0)
                 .background(Material.regular)
@@ -150,13 +154,37 @@ struct ElementTreeView<RE>: View where RE: Element {
 
 
 struct ElementTreeView_Previews: PreviewProvider {
-    static var previews: some View {
-        ElementTreeView {
-            CompositeElement(title: "Parent") {
-                LeafElement(title: "Leaf1", activeProperty: Axis.x)
-                LeafElement(title: "Leaf2", activeProperty: Axis.x)
-                LeafElement(title: "Leaf3", activeProperty: Axis.x)
+    
+    struct ContentView: View {
+        
+        @State var activeIndexPath = IndexPath()
+        
+        var body: some View {
+            VStack {
+                
+                ElementTreeView(activeIndexPath: $activeIndexPath) {
+                    CompositeElement(title: "Ancestor") {
+                        CompositeElement(title: "Parent") {
+                            LeafElement(title: "Leaf1", activeProperty: Axis.x)
+                            LeafElement(title: "Leaf2", activeProperty: Axis.x)
+                        }
+                        LeafElement(title: "Leaf3", activeProperty: Axis.x)
+                    }
+                }
+                
+                Button("Back") {
+                    withAnimation(navigationAnimation) {
+                        _ = activeIndexPath.removeLast()
+                    }
+                }
+                .disabled(activeIndexPath.isEmpty)
             }
         }
+        
+    }
+    
+    static var previews: some View {
+        ContentView()
+            .padding()
     }
 }

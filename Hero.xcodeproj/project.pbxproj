@@ -82,6 +82,7 @@
 		B748784129EDE41600F62B37 /* ElementTreeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784029EDE41600F62B37 /* ElementTreeBuilder.swift */; };
 		B748784329EDF28300F62B37 /* ElementTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784229EDF28300F62B37 /* ElementTreeView.swift */; };
 		B748784529EEA66B00F62B37 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784429EEA66B00F62B37 /* Element.swift */; };
+		B748784729F1A40100F62B37 /* CommonElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748784629F1A40100F62B37 /* CommonElements.swift */; };
 		B753B77A29660EB90018F96D /* OrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77929660EB90018F96D /* OrientationComponentView.swift */; };
 		B753B77E29661A260018F96D /* OrientationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77D29661A260018F96D /* OrientationUtil.swift */; };
 		B753B780296706490018F96D /* EulerOrientationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B77F296706490018F96D /* EulerOrientationComponentView.swift */; };
@@ -338,6 +339,7 @@
 		B748784029EDE41600F62B37 /* ElementTreeBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementTreeBuilder.swift; sourceTree = "<group>"; };
 		B748784229EDF28300F62B37 /* ElementTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementTreeView.swift; sourceTree = "<group>"; };
 		B748784429EEA66B00F62B37 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
+		B748784629F1A40100F62B37 /* CommonElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonElements.swift; sourceTree = "<group>"; };
 		B753027227D3712800886134 /* RayCast.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RayCast.hpp; sourceTree = "<group>"; };
 		B753B77929660EB90018F96D /* OrientationComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponentView.swift; sourceTree = "<group>"; };
 		B753B77D29661A260018F96D /* OrientationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationUtil.swift; sourceTree = "<group>"; };
@@ -795,6 +797,7 @@
 				B748784029EDE41600F62B37 /* ElementTreeBuilder.swift */,
 				B748784229EDF28300F62B37 /* ElementTreeView.swift */,
 				B748784429EEA66B00F62B37 /* Element.swift */,
+				B748784629F1A40100F62B37 /* CommonElements.swift */,
 			);
 			path = ElementTree;
 			sourceTree = "<group>";
@@ -1308,6 +1311,7 @@
 				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshLook.cpp in Sources */,
 				B73245B027410CA400708909 /* Scene.cpp in Sources */,
+				B748784729F1A40100F62B37 /* CommonElements.swift in Sources */,
 				B7B711E028C1D8100077C7CD /* SPTPolylineLookUtil.swift in Sources */,
 				B7FD15B9293A4A1200B6E7DC /* CylindricalPositionAnimatorBindingsComponent.swift in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
