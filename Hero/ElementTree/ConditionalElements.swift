@@ -8,40 +8,47 @@
 import SwiftUI
 
 
-struct OptionalElement<C1, C2, C3, C4, C5>: Element
-where C1: Element, C2: Element, C3: Element, C4: Element, C5: Element {
-    
-     
-    var title: String {
-        fatalError()
-    }
+struct OptionalElement<E>: Element
+where E: Element {
     
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
     
-    var content: TupleElement<(C1, C2, C3, C4, C5)> {
-        fatalError()
-    }
-    
-    var elements: TupleElement<(C1, C2, C3, C4, C5)>?
+    var element: E?
     
     @Namespace var namespace
     
-    init(elements: TupleElement<(C1, C2, C3, C4, C5)>?) {
-        self.elements = elements
+    init(element: E?) {
+        self.element = element
     }
     
-    var nodeCount: Int {
-        if let elements = elements {
-            return elements.value.0.nodeCount + elements.value.1.nodeCount + elements.value.2.nodeCount + elements.value.3.nodeCount + elements.value.4.nodeCount
-        }
-        return 0
+    var sizeAsContent: Int {
+        element?.sizeAsContent ?? 0
     }
     
     var body: some View {
-        if let elements = elements {
-            elementGroupView(elements, baseIndexPath: indexPath.dropLast(), offset: indexPath.last!)
+        if let element = element {
+            element
+                .indexPath(indexPath)
+                .activeIndexPath(_activeIndexPath.projectedValue)
                 .transition(AnyTransition.opacity.animation(elementNavigationAnimation))
         }
     }
+    
+    var title: String {
+        fatalError()
+    }
+    
+    var content: some Element {
+        fatalError()
+    }
+    
+    var faceView: Never {
+        fatalError()
+    }
+    
+    var propertyView: Never {
+        fatalError()
+    }
+    
 }

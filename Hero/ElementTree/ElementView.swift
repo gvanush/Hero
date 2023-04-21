@@ -19,7 +19,9 @@ extension Element {
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
                 propertyView
-                elementGroupView(content, baseIndexPath: indexPath, offset: 0)
+                content
+                    .indexPath(indexPath.appending(0))
+                    .activeIndexPath(_activeIndexPath.projectedValue)
             }
             
         }
@@ -80,30 +82,6 @@ extension Element {
         .frame(maxWidth: isActive ? .infinity : 0.0)
         .visible(isActive)
         .allowsHitTesting(isActive)
-    }
-    
-    func elementGroupView(_ elements: TupleElement<(C1, C2, C3, C4, C5)>, baseIndexPath: IndexPath, offset: Int) -> some View {
-        Group {
-            elements.value.0
-                .indexPath(baseIndexPath.appending(offset))
-                .activeIndexPath(_activeIndexPath.projectedValue)
-            
-            elements.value.1
-                .indexPath(baseIndexPath.appending(offset + elements.value.0.nodeCount))
-                .activeIndexPath(_activeIndexPath.projectedValue)
-            
-            elements.value.2
-                .indexPath(baseIndexPath.appending(offset + elements.value.0.nodeCount + elements.value.1.nodeCount))
-                .activeIndexPath(_activeIndexPath.projectedValue)
-            
-            elements.value.3
-                .indexPath(baseIndexPath.appending(offset + elements.value.0.nodeCount + elements.value.1.nodeCount + elements.value.2.nodeCount))
-                .activeIndexPath(_activeIndexPath.projectedValue)
-            
-            elements.value.4
-                .indexPath(baseIndexPath.appending(offset + elements.value.0.nodeCount + elements.value.1.nodeCount + elements.value.2.nodeCount + elements.value.3.nodeCount))
-                .activeIndexPath(_activeIndexPath.projectedValue)
-        }
     }
     
     private var distanceToActiveAncestor: Int? {

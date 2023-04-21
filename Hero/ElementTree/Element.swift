@@ -17,32 +17,25 @@ protocol Element: View {
     var indexPath: IndexPath! { get set }
     var _activeIndexPath: Binding<IndexPath>! { get set }
     
-    associatedtype C1: Element = EmptyElement
-    associatedtype C2: Element = EmptyElement
-    associatedtype C3: Element = EmptyElement
-    associatedtype C4: Element = EmptyElement
-    associatedtype C5: Element = EmptyElement
+    associatedtype Content: Element = EmptyElement
     
-    var content: TupleElement<(C1, C2, C3, C4, C5)> { get }
+    @ElementBuilder var content: Content { get }
     
-    var nodeCount: Int { get }
+    var sizeAsContent: Int { get }
     
     associatedtype Property: ElementProperty = Never
     var activeProperty: Property { get nonmutating set }
  
     associatedtype FaceView: View
     var faceView: FaceView { get }
-    
+
     associatedtype PropertyView: View
     var propertyView: PropertyView { get }
     
     var namespace: Namespace.ID { get }
-    
-    func indexPath(_ indexPath: IndexPath) -> Self
-    
-    func activeIndexPath(_ indexPath: Binding<IndexPath>) -> Self
-    
+        
 }
+
 
 extension Element {
     
@@ -82,8 +75,8 @@ extension Element {
         return copy
     }
     
-    var nodeCount: Int {
-        1 + content.value.0.nodeCount + content.value.1.nodeCount + content.value.2.nodeCount + content.value.3.nodeCount + content.value.4.nodeCount
+    var sizeAsContent: Int {
+        1
     }
     
 }
@@ -102,10 +95,10 @@ extension Element where Property == Never {
     
 }
 
-extension Element where C1 == EmptyElement, C2 == EmptyElement, C3 == EmptyElement, C4 == EmptyElement, C5 == EmptyElement {
+extension Element where Content == EmptyElement {
     
-    var content: TupleElement<(C1, C2, C3, C4, C5)> {
-        .init((.init(), .init(), .init(), .init(), .init()))
+    var content: EmptyElement{
+        .init()
     }
     
 }

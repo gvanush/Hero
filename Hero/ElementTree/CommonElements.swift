@@ -8,18 +8,18 @@
 import SwiftUI
 
 
-struct CompositeElement<C1, C2, C3, C4, C5>: Element
-where C1: Element, C2: Element, C3: Element, C4: Element, C5: Element {
+struct CompositeElement<C>: Element
+where C: Element {
     
     let title: String
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
     
-    var content: TupleElement<(C1, C2, C3, C4, C5)>
+    var content: C
     
     @Namespace var namespace
     
-    init(title: String, @ElementBuilder content: () -> TupleElement<(C1, C2, C3, C4, C5)>) {
+    init(title: String, @ElementBuilder content: () -> C) {
         self.title = title
         self.content = content()
     }

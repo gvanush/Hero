@@ -39,6 +39,27 @@ struct ElementTreeView<RE>: View where RE: Element {
     
 }
 
+struct TestElement: Element {
+    
+    var title: String {
+        "TestElement"
+    }
+    
+    var indexPath: IndexPath!
+    var _activeIndexPath: Binding<IndexPath>!
+    
+    @Namespace var namespace
+    
+    var content: some Element {
+        LeafElement(title: "L1", activeProperty: Axis.x)
+        LeafElement(title: "L2", activeProperty: Axis.x)
+        LeafElement(title: "L3", activeProperty: Axis.x)
+        LeafElement(title: "L4", activeProperty: Axis.x)
+        LeafElement(title: "L5", activeProperty: Axis.x)
+    }
+    
+}
+
 
 struct ElementTreeView_Previews: PreviewProvider {
     
@@ -56,13 +77,11 @@ struct ElementTreeView_Previews: PreviewProvider {
                         CompositeElement(title: "Parent") {
                             if selector {
                                 LeafElement(title: "Leaf1", activeProperty: Axis.x)
-                                if true {
-                                    LeafElement(title: "Leaf11", activeProperty: Axis.x)
-                                }
                             }
                             LeafElement(title: "Leaf2", activeProperty: Axis.x)
                         }
                         LeafElement(title: "Leaf3", activeProperty: Axis.x)
+                        TestElement()
                     }
                 }
                 
@@ -83,6 +102,9 @@ struct ElementTreeView_Previews: PreviewProvider {
                     }
                 }
                 .padding()
+            }
+            .onChange(of: activeIndexPath) { newValue in
+                print("active index path: \(newValue)")
             }
         }
         
