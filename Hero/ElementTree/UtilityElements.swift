@@ -37,13 +37,8 @@ struct EmptyElement: Element {
         fatalError()
     }
     
-    var content: (Never, Never, Never, Never, Never) {
-        get {
-            fatalError()
-        }
-        set {
-            
-        }
+    var content: TupleElement<(Never, Never, Never, Never, Never)> {
+        fatalError()
     }
     
     var nodeCount: Int {
@@ -55,6 +50,50 @@ struct EmptyElement: Element {
     }
     
 }
+
+struct TupleElement<T> : Element {
+
+    public var value: T
+
+    init(_ value: T) {
+        self.value = value
+    }
+    
+    var title: String {
+        fatalError()
+    }
+
+    var indexPath: IndexPath! {
+        get {
+            fatalError()
+        }
+        set {
+            fatalError()
+        }
+    }
+    
+    var _activeIndexPath: Binding<IndexPath>! {
+        get {
+            fatalError()
+        }
+        set {
+            fatalError()
+        }
+    }
+    
+    var namespace: Namespace.ID {
+        fatalError()
+    }
+ 
+    var content: TupleElement<(Never, Never, Never, Never, Never)> {
+        fatalError()
+    }
+    
+    var nodeCount: Int {
+        fatalError()
+    }
+}
+
 
 extension Never: Element {
     
@@ -84,13 +123,8 @@ extension Never: Element {
         fatalError()
     }
     
-    var content: (Never, Never, Never, Never, Never) {
-        get {
-            fatalError()
-        }
-        set {
-            
-        }
+    var content: TupleElement<(Never, Never, Never, Never, Never)> {
+        fatalError()
     }
     
     var nodeCount: Int {

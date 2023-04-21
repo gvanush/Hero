@@ -23,7 +23,7 @@ protocol Element: View {
     associatedtype C4: Element = EmptyElement
     associatedtype C5: Element = EmptyElement
     
-    var content: (C1, C2, C3, C4, C5) { get set }
+    var content: TupleElement<(C1, C2, C3, C4, C5)> { get }
     
     var nodeCount: Int { get }
     
@@ -83,7 +83,7 @@ extension Element {
     }
     
     var nodeCount: Int {
-        1 + content.0.nodeCount + content.1.nodeCount + content.2.nodeCount + content.3.nodeCount + content.4.nodeCount
+        1 + content.value.0.nodeCount + content.value.1.nodeCount + content.value.2.nodeCount + content.value.3.nodeCount + content.value.4.nodeCount
     }
     
 }
@@ -104,13 +104,8 @@ extension Element where Property == Never {
 
 extension Element where C1 == EmptyElement, C2 == EmptyElement, C3 == EmptyElement, C4 == EmptyElement, C5 == EmptyElement {
     
-    var content: (C1, C2, C3, C4, C5) {
-        get {
-            (.init(), .init(), .init(), .init(), .init())
-        }
-        set {
-            
-        }
+    var content: TupleElement<(C1, C2, C3, C4, C5)> {
+        .init((.init(), .init(), .init(), .init(), .init()))
     }
     
 }

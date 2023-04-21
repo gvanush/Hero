@@ -82,26 +82,26 @@ extension Element {
         .allowsHitTesting(isActive)
     }
     
-    func elementGroupView(_ elements: (C1, C2, C3, C4, C5), baseIndexPath: IndexPath, offset: Int) -> some View {
+    func elementGroupView(_ elements: TupleElement<(C1, C2, C3, C4, C5)>, baseIndexPath: IndexPath, offset: Int) -> some View {
         Group {
-            elements.0
+            elements.value.0
                 .indexPath(baseIndexPath.appending(offset))
                 .activeIndexPath(_activeIndexPath.projectedValue)
             
-            elements.1
-                .indexPath(baseIndexPath.appending(offset + elements.0.nodeCount))
+            elements.value.1
+                .indexPath(baseIndexPath.appending(offset + elements.value.0.nodeCount))
                 .activeIndexPath(_activeIndexPath.projectedValue)
             
-            elements.2
-                .indexPath(baseIndexPath.appending(offset + elements.0.nodeCount + elements.1.nodeCount))
+            elements.value.2
+                .indexPath(baseIndexPath.appending(offset + elements.value.0.nodeCount + elements.value.1.nodeCount))
                 .activeIndexPath(_activeIndexPath.projectedValue)
             
-            elements.3
-                .indexPath(baseIndexPath.appending(offset + elements.0.nodeCount + elements.1.nodeCount + elements.2.nodeCount))
+            elements.value.3
+                .indexPath(baseIndexPath.appending(offset + elements.value.0.nodeCount + elements.value.1.nodeCount + elements.value.2.nodeCount))
                 .activeIndexPath(_activeIndexPath.projectedValue)
             
-            elements.4
-                .indexPath(baseIndexPath.appending(offset + elements.0.nodeCount + elements.1.nodeCount + elements.2.nodeCount + elements.3.nodeCount))
+            elements.value.4
+                .indexPath(baseIndexPath.appending(offset + elements.value.0.nodeCount + elements.value.1.nodeCount + elements.value.2.nodeCount + elements.value.3.nodeCount))
                 .activeIndexPath(_activeIndexPath.projectedValue)
         }
     }

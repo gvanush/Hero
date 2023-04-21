@@ -15,11 +15,11 @@ where C1: Element, C2: Element, C3: Element, C4: Element, C5: Element {
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
     
-    var content: (C1, C2, C3, C4, C5)
+    var content: TupleElement<(C1, C2, C3, C4, C5)>
     
     @Namespace var namespace
     
-    init(title: String, @ElementBuilder content: () -> (C1, C2, C3, C4, C5)) {
+    init(title: String, @ElementBuilder content: () -> TupleElement<(C1, C2, C3, C4, C5)>) {
         self.title = title
         self.content = content()
     }

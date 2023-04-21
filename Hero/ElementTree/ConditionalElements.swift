@@ -19,26 +19,21 @@ where C1: Element, C2: Element, C3: Element, C4: Element, C5: Element {
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
     
-    var content: (C1, C2, C3, C4, C5) {
-        get {
-            fatalError()
-        }
-        set {
-            
-        }
+    var content: TupleElement<(C1, C2, C3, C4, C5)> {
+        fatalError()
     }
     
-    var elements: (C1, C2, C3, C4, C5)?
+    var elements: TupleElement<(C1, C2, C3, C4, C5)>?
     
     @Namespace var namespace
     
-    init(elements: (C1, C2, C3, C4, C5)?) {
+    init(elements: TupleElement<(C1, C2, C3, C4, C5)>?) {
         self.elements = elements
     }
     
     var nodeCount: Int {
         if let elements = elements {
-            return elements.0.nodeCount + elements.1.nodeCount + elements.2.nodeCount + elements.3.nodeCount + elements.4.nodeCount
+            return elements.value.0.nodeCount + elements.value.1.nodeCount + elements.value.2.nodeCount + elements.value.3.nodeCount + elements.value.4.nodeCount
         }
         return 0
     }
