@@ -77,8 +77,9 @@ struct ElementTreeView_Previews: PreviewProvider {
                         CompositeElement(title: "Parent") {
                             if selector {
                                 LeafElement(title: "Leaf1", activeProperty: Axis.x)
+                            } else {
+                                LeafElement(title: "Leaf2", activeProperty: Axis.y)
                             }
-                            LeafElement(title: "Leaf2", activeProperty: Axis.x)
                         }
                         LeafElement(title: "Leaf3", activeProperty: Axis.x)
                         TestElement()

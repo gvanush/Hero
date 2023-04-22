@@ -39,9 +39,19 @@ import SwiftUI
         .init((element1, element2, element3, element4, element5))
     }
 
-    static func buildOptional<E1, E2, E3, E4, E5>(_ elements: TupleElement<E1, E2, E3, E4, E5>?) -> OptionalElement<TupleElement<E1, E2, E3, E4, E5>>
-    where E1: Element, E2: Element, E3: Element, E4: Element, E5: Element {
-        .init(element: elements)
+    static func buildOptional<E>(_ element: E?) -> OptionalElement<E>
+    where E: Element {
+        .init(element: element)
+    }
+    
+    static func buildEither<E>(first element: E) -> E
+    where E: Element {
+        element
+    }
+    
+    static func buildEither<E>(second element: E) -> E
+    where E: Element {
+        element
     }
     
 }
