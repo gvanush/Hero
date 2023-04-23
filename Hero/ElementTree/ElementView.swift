@@ -9,16 +9,18 @@ import SwiftUI
 
 let elementNavigationAnimation = Animation.easeOut(duration: 0.25)
 let elementPropertyNavigationAnimation = Animation.easeOut(duration: 0.25)
-
+let elementActionViewHeigh = 75.0
 
 extension Element {
     
     var body: some View {
         ZStack {
+            
             faceView
             
             HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
                 propertyView
+                
                 content
                     .indexPath(indexPath.appending(0))
                     .activeIndexPath(_activeIndexPath.projectedValue)
@@ -27,6 +29,13 @@ extension Element {
         }
         .frame(maxWidth: isDisclosed || isChildOfActive ? .infinity : 0.0)
         .visible(isDisclosed || isChildOfActive)
+        .overlay(alignment: .bottom) {
+            if isActive {
+                actionView
+                    .frame(height: elementActionViewHeigh)
+                    .offset(y: -elementSelectionViewHeight - 8.0)
+            }
+        }
     }
     
     var faceView: some View {

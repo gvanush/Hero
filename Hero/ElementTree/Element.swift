@@ -25,12 +25,9 @@ protocol Element: View {
     
     associatedtype Property: ElementProperty = Never
     var activeProperty: Property { get nonmutating set }
- 
-    associatedtype FaceView: View
-    var faceView: FaceView { get }
-
-    associatedtype PropertyView: View
-    var propertyView: PropertyView { get }
+    
+    associatedtype ActionView: View = EmptyView
+    @ViewBuilder var actionView: ActionView { get }
     
     var namespace: Namespace.ID { get }
         
@@ -97,11 +94,16 @@ extension Element where Property == Never {
 
 extension Element where Content == EmptyElement {
     
-    var content: EmptyElement{
+    var content: Content {
         .init()
     }
     
 }
 
-
-
+extension Element where ActionView == EmptyView {
+    
+    var actionView: ActionView {
+        .init()
+    }
+    
+}
