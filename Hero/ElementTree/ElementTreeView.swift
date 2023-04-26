@@ -8,45 +8,40 @@
 import SwiftUI
 
 let elementSelectionViewHeight = 38.0
+let elementSelectionViewPadding = 3.0
+
 
 struct ElementTreeView<RE>: View where RE: Element {
 
-    let rootElement: RE?
+    let rootElement: RE
 
     @Binding var activeIndexPath: IndexPath
     
-    init(activeIndexPath: Binding<IndexPath>, rootElement: () -> RE) {
+    init(activeIndexPath: Binding<IndexPath>, @ElementBuilder rootElement: () -> RE) {
         _activeIndexPath = activeIndexPath
         self.rootElement = rootElement()
     }
-    
-    init(activeIndexPath: Binding<IndexPath>, rootElement: () -> RE) where RE == EmptyElement {
-        _activeIndexPath = activeIndexPath
-        self.rootElement = nil
-    }
+
 
     var body: some View {
-        if let rootElement = rootElement {
-            rootElement
-                .indexPath(.init())
-                .activeIndexPath($activeIndexPath)
-                .padding(3.0)
-                .frame(height: elementSelectionViewHeight)
-                .background(content: {
-                    Color.clear
-                        .background(Material.regular)
-                        .cornerRadius(SelectorConst.cornerRadius)
-                        .compositingGroup()
-                        .shadow(radius: 1.0)
-                    
-                })
-        }
+        rootElement
+            .indexPath(.init(index: 0))
+            .activeIndexPath($activeIndexPath)
+            .padding(elementSelectionViewPadding)
+            .frame(height: elementSelectionViewHeight)
+            .background(content: {
+                Color.clear
+                    .background(Material.regular)
+                    .cornerRadius(SelectorConst.cornerRadius)
+                    .compositingGroup()
+                    .shadow(radius: 1.0)
+            })
     }
     
 }
 
 
-struct LeafElement: Element {
+fileprivate struct LeafElement: Element {
     
     enum Property: ElementProperty {
         case x
@@ -55,7 +50,6 @@ struct LeafElement: Element {
     }
     
     let title: String
-    let actionViewColor: Color
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
     
@@ -64,9 +58,8 @@ struct LeafElement: Element {
     
     @Namespace var namespace
     
-    init(title: String, activeProperty: Property, actionViewColor: Color = .red) {
+    init(title: String, activeProperty: Property) {
         self.title = title
-        self.actionViewColor = actionViewColor
         _activeProperty = .init(wrappedValue: activeProperty)
     }
     
@@ -80,9 +73,24 @@ struct LeafElement: Element {
             Color.blue
         }
     }
+    
+    var faceView: some View {
+        Text(title)
+            .font(.callout)
+            .overlay {
+                VStack {
+                    Spacer()
+                    Image(systemName: "ellipsis")
+                        .imageScale(.small)
+                        .fontWeight(.light)
+                        .foregroundColor(.primary)
+                }
+                .padding(.bottom, -3.0)
+            }
+    }
 }
 
-struct TestElement: Element {
+fileprivate struct TestElement: Element {
     
     var title: String {
         "TestElement"
@@ -94,13 +102,27 @@ struct TestElement: Element {
     @Namespace var namespace
     
     var content: some Element {
-        LeafElement(title: "L1", activeProperty: .x, actionViewColor: .red)
-        LeafElement(title: "L2", activeProperty: .x, actionViewColor: .green)
-        LeafElement(title: "L3", activeProperty: .x, actionViewColor: .blue)
-        LeafElement(title: "L4", activeProperty: .x, actionViewColor: .yellow)
-        LeafElement(title: "L5", activeProperty: .x, actionViewColor: .cyan)
+        LeafElement(title: "L1", activeProperty: .x)
+        LeafElement(title: "L2", activeProperty: .x)
+        LeafElement(title: "L3", activeProperty: .x)
+        LeafElement(title: "L4", activeProperty: .x)
+        LeafElement(title: "L5", activeProperty: .x)
     }
     
+    var faceView: some View {
+        Text(title)
+            .font(.callout)
+            .overlay {
+                VStack {
+                    Spacer()
+                    Image(systemName: "ellipsis")
+                        .imageScale(.small)
+                        .fontWeight(.light)
+                        .foregroundColor(.primary)
+                }
+                .padding(.bottom, -3.0)
+            }
+    }
 }
 
 
@@ -119,9 +141,11 @@ struct ElementTreeView_Previews: PreviewProvider {
                     CompositeElement(title: "Ancestor") {
                         CompositeElement(title: "Parent") {
                             if selector {
+                                TestElement()
                                 LeafElement(title: "Leaf1", activeProperty: .x)
                             } else {
-                                LeafElement(title: "Leaf2", activeProperty: .y)
+                                
+                                LeafElement(title: "Leaf1", activeProperty: .x)
                             }
                         }
                         LeafElement(title: "Leaf3", activeProperty: .x)

@@ -119,6 +119,7 @@ class RootViewModel: ObservableObject {
         _ = animatorsViewModel.makeOscillatorAnimator()
         _ = animatorsViewModel.makeValueNoise()
         _ = animatorsViewModel.makePerlinNoise()
+        
     }
     
     func createObject(meshId: SPTMeshId, position: simd_float3, scale: Float) {
@@ -147,9 +148,15 @@ class RootViewModel: ObservableObject {
         for toolVM in toolViewModels {
             toolVM.onObjectDestroy(object)
         }
-        objectEditingParams.onObjectDestroy(object)
         
-        SPTSceneProxy.destroyObjectDeferred(object)
+        // Schedule object removal at the end of the run loop when
+        // SwiftUI already processed all view lifecycle events
+        let runLoopObserver = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, CFRunLoopActivity.beforeWaiting.rawValue, false, 0, { _, _ in
+            self.objectEditingParams.onObjectDestroy(object)
+            SPTSceneProxy.destroyObject(object)
+        })
+        CFRunLoopAddObserver(CFRunLoopGetCurrent(), runLoopObserver, .defaultMode)
+     
     }
     
 }
@@ -200,12 +207,13 @@ struct RootView: View {
                     .visible(userInteractionState.isIdle)
             }
             .safeAreaInset(edge: .bottom, spacing: 0.0) {
-                VStack(spacing: 0.0) {
+                VStack(spacing: 8.0) {
                     ZStack(alignment: .bottom) {
                         Color.clear
                         activeToolView()
                             .transition(.identity)
                     }
+                    .padding(.horizontal, 8.0)
                     .frame(height: Self.toolControlViewsAreaHeight)
                                         
                     HStack {
@@ -224,6 +232,11 @@ struct RootView: View {
                     .shadow(radius: 0.5)
                     
                 }
+                .background(content: {
+                    // To block touches behind
+                    Color.clear
+                        .contentShape(Rectangle())
+                })
                 .visible(!userInteractionState.isNavigating)
             }
             .actionBarCommonSection {

@@ -14,23 +14,9 @@ struct EmptyElement: Element {
         fatalError()
     }
     
-    var indexPath: IndexPath! {
-        get {
-            fatalError()
-        }
-        set {
-            
-        }
-    }
+    var indexPath: IndexPath!
     
-    var _activeIndexPath: Binding<IndexPath>! {
-        get {
-            nil
-        }
-        set {
-            
-        }
-    }
+    var _activeIndexPath: Binding<IndexPath>!
     
     var namespace: Namespace.ID {
         fatalError()

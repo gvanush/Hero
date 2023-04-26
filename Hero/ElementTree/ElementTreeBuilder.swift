@@ -10,8 +10,8 @@ import SwiftUI
 
 @resultBuilder struct ElementBuilder {
     
-    static func buildBlock() -> TupleElement<EmptyElement, EmptyElement, EmptyElement, EmptyElement, EmptyElement> {
-        .init((.init(), .init(), .init(), .init(), .init()))
+    static func buildBlock() -> EmptyElement {
+        .init()
     }
 
     static func buildBlock<E>(_ element: E) -> TupleElement<E, EmptyElement, EmptyElement, EmptyElement, EmptyElement>
@@ -44,14 +44,14 @@ import SwiftUI
         .init(element: element)
     }
     
-    static func buildEither<E>(first element: E) -> E
-    where E: Element {
-        element
+    static func buildEither<TE, FE>(first element: TE) -> ConditionalElement<TE, FE>
+    where TE: Element, FE: Element {
+        .init(trueElement: element)
     }
     
-    static func buildEither<E>(second element: E) -> E
-    where E: Element {
-        element
+    static func buildEither<TE, FE>(second element: FE) -> ConditionalElement<TE, FE>
+    where TE: Element, FE: Element {
+        .init(falseElement: element)
     }
     
 }

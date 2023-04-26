@@ -21,7 +21,7 @@ class PointAtDirectionComponent: BasicComponent<PointAtDirectionComponentPropert
     
     let angleFormatter = Formatters.angle
     
-    @SPTObservedComponent var orientation: SPTOrientation
+    @SPTListenedComponent var orientation: SPTOrientation
     
     private var directionPoint: CartesianPositionComponent!
     private var cancellables = Set<AnyCancellable>()

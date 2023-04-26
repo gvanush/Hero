@@ -11,7 +11,7 @@ import Combine
 
 class ObjectRGBAColorComponent<C>: BasicComponent<RGBColorChannel> where C: SPTObservableComponent {
 
-    @SPTObservedComponentProperty<C, SPTRGBAColor> var color: SPTRGBAColor
+    @SPTListenedComponentProperty<C, SPTRGBAColor> var color: SPTRGBAColor
 
     init(keyPath: WritableKeyPath<C, SPTRGBAColor>, object: SPTObject, parent: Component?) {
         
@@ -62,7 +62,7 @@ struct ObjectRGBAColorComponentView<C>: View where C: SPTObservableComponent {
 
 class ObjectHSBAColorComponent<C>: BasicComponent<HSBColorChannel> where C: SPTObservableComponent {
 
-    @SPTObservedComponentProperty<C, SPTHSBAColor> var color: SPTHSBAColor
+    @SPTListenedComponentProperty<C, SPTHSBAColor> var color: SPTHSBAColor
 
     init(keyPath: WritableKeyPath<C, SPTHSBAColor>, object: SPTObject, parent: Component?) {
         
@@ -115,7 +115,7 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
     
     private let keyPath: WritableKeyPath<C, SPTColor>
     private let object: SPTObject
-    @SPTObservedComponent private var component: C
+    @SPTListenedComponent private var component: C
     
     private var componentSubscription: SPTAnySubscription?
     private var variantCancellable: AnyCancellable?

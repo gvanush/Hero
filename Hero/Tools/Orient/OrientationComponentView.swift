@@ -18,7 +18,7 @@ class OrientationComponent: MultiVariantComponent, BasicToolSelectedObjectRootCo
     private var originPointObject: SPTObject
     private var positionSubscription: SPTAnySubscription?
     
-    @SPTObservedComponent private var orientation: SPTOrientation
+    @SPTListenedComponent private var orientation: SPTOrientation
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object

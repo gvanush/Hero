@@ -14,7 +14,7 @@ class EulerOrientationComponent: BasicComponent<Axis> {
     
     let angleFormatter = Formatters.angle
     
-    @SPTObservedComponent private var orientation: SPTOrientation
+    @SPTListenedComponent private var orientation: SPTOrientation
     
     private var guideObject: SPTObject?
     

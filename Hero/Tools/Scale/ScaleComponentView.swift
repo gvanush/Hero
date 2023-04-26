@@ -18,7 +18,7 @@ class ScaleComponent: MultiVariantComponent, BasicToolSelectedObjectRootComponen
     private var originPointObject: SPTObject
     private var scaleSubscription: SPTAnySubscription?
     
-    @SPTObservedComponent private var scale: SPTScale
+    @SPTListenedComponent private var scale: SPTScale
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object

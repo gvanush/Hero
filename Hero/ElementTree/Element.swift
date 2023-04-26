@@ -10,9 +10,13 @@ import SwiftUI
 
 typealias ElementProperty = Hashable & CaseIterable & Displayable
 
-protocol Element: View {
+enum ElementEmptyProperty: ElementProperty {
+    case none
     
-    var title: String { get }
+    static var allCases = [ElementEmptyProperty]()
+}
+
+protocol Element: View {
     
     var indexPath: IndexPath! { get set }
     var _activeIndexPath: Binding<IndexPath>! { get set }
@@ -23,13 +27,30 @@ protocol Element: View {
     
     var sizeAsContent: Int { get }
     
-    associatedtype Property: ElementProperty = Never
+    associatedtype Property: ElementProperty = ElementEmptyProperty
     var activeProperty: Property { get nonmutating set }
     
     associatedtype ActionView: View = EmptyView
     @ViewBuilder var actionView: ActionView { get }
     
+    associatedtype FaceView: View
+    @ViewBuilder var faceView: FaceView { get }
+    
     var namespace: Namespace.ID { get }
+    
+    func onAwake()
+    
+    func onSleep()
+    
+    func onDisclose()
+    
+    func onClose()
+    
+    func onActive()
+    
+    func onInactive()
+    
+    func onActivePropertyChange()
         
 }
 
@@ -76,14 +97,41 @@ extension Element {
         1
     }
     
+    func onAwake() {
+        
+    }
+    
+    func onSleep() {
+        
+    }
+    
+    func onDisclose() {
+        
+    }
+    
+    func onClose() {
+        
+    }
+    
+    func onActive() {
+        
+    }
+    
+    func onInactive() {
+        
+    }
+    
+    func onActivePropertyChange() {
+        
+    }
 }
 
 
-extension Element where Property == Never {
+extension Element where Property == ElementEmptyProperty {
     
     var activeProperty: Property {
         get {
-            fatalError()
+            .none
         }
         nonmutating set {
             

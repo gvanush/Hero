@@ -110,7 +110,7 @@ class MeshObjectInspectorModel: ObservableObject {
     let shininessFormatter = Formatters.shininess
     let colorChannelFormatter = Formatters.colorChannel
     
-    @SPTObservedComponentProperty<SPTMeshLook, SPTMeshShading> var shading: SPTMeshShading
+    @SPTListenedComponentProperty<SPTMeshLook, SPTMeshShading> var shading: SPTMeshShading
     
     var colorModel: SPTColorModel {
         get {

@@ -31,7 +31,6 @@ where E: Element {
             element
                 .indexPath(indexPath)
                 .activeIndexPath(_activeIndexPath.projectedValue)
-                .transition(AnyTransition.opacity.animation(elementNavigationAnimation))
         }
     }
     

@@ -18,7 +18,7 @@ class PositionComponent: MultiVariantComponent, BasicToolSelectedObjectRootCompo
     private var originPointObject: SPTObject
     private var positionSubscription: SPTAnySubscription?
     
-    @SPTObservedComponent private var position: SPTPosition
+    @SPTListenedComponent private var position: SPTPosition
     
     required init(object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
         self.object = object

@@ -19,7 +19,7 @@ class ShadeComponent: BasicComponent<ShadeComponent.Property>, BasicToolSelected
     let object: SPTObject
     let sceneViewModel: SceneViewModel
     
-    @SPTObservedComponent var meshLook: SPTMeshLook
+    @SPTListenedComponent var meshLook: SPTMeshLook
     
     lazy private(set) var color = ColorComponent(keyPath: \.shading.blinnPhong.color, object: object, parent: self)
     

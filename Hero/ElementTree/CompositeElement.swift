@@ -24,4 +24,20 @@ where C: Element {
         self.content = content()
     }
     
+    var faceView: some View {
+        Text(title)
+            .font(.callout)
+            .overlay {
+                VStack {
+                    Spacer()
+                    Image(systemName: "ellipsis")
+                        .imageScale(.small)
+                        .fontWeight(.light)
+                        .foregroundColor(.primary)
+                }
+                .padding(.bottom, 1.0)
+                .padding(.bottom, -3.0)
+            }
+    }
+    
 }

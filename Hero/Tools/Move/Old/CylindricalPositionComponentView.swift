@@ -22,7 +22,7 @@ class CylindricalPositionComponent: BasicComponent<CylindricalPositionComponentP
     let distanceFormatter = Formatters.distance
     let angleFormatter = Formatters.angle
 
-    @SPTObservedComponentProperty<SPTPosition, SPTCylindricalCoordinates> var cylindricalPosition: SPTCylindricalCoordinates
+    @SPTListenedComponentProperty<SPTPosition, SPTCylindricalCoordinates> var cylindricalPosition: SPTCylindricalCoordinates
     
     var origin: CartesianPositionComponent!
     

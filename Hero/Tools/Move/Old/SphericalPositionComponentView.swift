@@ -22,7 +22,7 @@ class SphericalPositionComponent: BasicComponent<SphericalPositionComponentPrope
     let distanceFormatter = Formatters.distance
     let angleFormatter = Formatters.angle
 
-    @SPTObservedComponentProperty<SPTPosition, SPTSphericalCoordinates> var sphericalPosition: SPTSphericalCoordinates
+    @SPTListenedComponentProperty<SPTPosition, SPTSphericalCoordinates> var sphericalPosition: SPTSphericalCoordinates
     
     var origin: CartesianPositionComponent!
     

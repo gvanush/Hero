@@ -16,7 +16,7 @@ class CartesianPositionComponent: BasicComponent<Axis> {
     let distanceFormatter = Formatters.distance
     var objectSelectionColor = UIColor.primarySelectionColor
 
-    @SPTObservedComponent private(set) var position: SPTPosition
+    @SPTListenedComponent private(set) var position: SPTPosition
     private var guideObject: SPTObject?
     
     init(title: String, object: SPTObject, sceneViewModel: SceneViewModel, parent: Component?) {
@@ -24,7 +24,7 @@ class CartesianPositionComponent: BasicComponent<Axis> {
         self.object = object
         self.sceneViewModel = sceneViewModel
         
-        _position = SPTObservedComponent(object: object)
+        _position = SPTListenedComponent(object: object)
         
         super.init(selectedProperty: .x, parent: parent)
         

@@ -18,7 +18,7 @@ class LinearPositionComponent: BasicComponent<LinearPositionComponentProperty> {
     let sceneViewModel: SceneViewModel
     let distanceFormatter = Formatters.distance
 
-    @SPTObservedComponentProperty<SPTPosition, SPTLinearCoordinates> var linearPosition: SPTLinearCoordinates
+    @SPTListenedComponentProperty<SPTPosition, SPTLinearCoordinates> var linearPosition: SPTLinearCoordinates
     
     var origin: CartesianPositionComponent!
     var directionPoint: CartesianPositionComponent!
