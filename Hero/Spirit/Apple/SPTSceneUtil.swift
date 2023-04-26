@@ -28,7 +28,4 @@ class SPTSceneProxy {
         SPTSceneDestroyObject(object)
     }
     
-    static func destroyObjectDeferred(_ object: SPTObject) {
-        SPTSceneDestroyObjectDeferred(object)
-    }
 }

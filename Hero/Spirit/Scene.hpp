@@ -29,8 +29,6 @@ public:
     
     void updateLooks();
     
-    void onPostRender();
-    
     double time() const { return _time; }
     
     static Registry& getRegistry(SPTHandle sceneHandle) {
@@ -43,14 +41,10 @@ public:
     
     static void destroyObject(SPTObject object);
     
-    static void destroyObjectDeferred(SPTObject object);
-    
     Registry registry;
     
 private:
     Transformation::GroupType _transformationGroup;
-    std::vector<SPTEntity> _entitiesScheduledToDestroy;
-    std::vector<SPTEntity> _entitiesToDestroy;
     double _time;
 };
 
