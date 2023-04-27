@@ -1,5 +1,5 @@
 //
-//  SPTObservedComponentProperty.swift
+//  SPTObservableComponentProperty.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 24.04.23.
@@ -8,44 +8,47 @@
 import SwiftUI
 
 
-@propertyWrapper
-class SPTObservedComponentProperty<C, V>: ObservableObject
-where C: SPTObservableComponent, V: Equatable {
+@dynamicMemberLookup
+class SPTObservableComponentProperty<C, V>: ObservableObject
+where C: SPTInspectableComponent, V: Equatable {
     
     let object: SPTObject
-    let keyPath: WritableKeyPath<C, V>
+    let propertyKeyPath: WritableKeyPath<C, V>
     private var willChangeSubscription: SPTAnySubscription?
     private var cachedValue: V
     
     init(object: SPTObject, keyPath: WritableKeyPath<C, V>) {
         self.object = object
-        self.keyPath = keyPath
+        self.propertyKeyPath = keyPath
         self.cachedValue = C.get(object: object)[keyPath: keyPath]
 
         willChangeSubscription = C.onWillChangeSink(object: object) { [unowned self] newValue in
             if self.cachedValue != newValue[keyPath: keyPath] {
-                self.objectWillChange.send()
                 self.cachedValue = newValue[keyPath: keyPath]
             }
         }
     }
     
-    var wrappedValue: V {
+    subscript<T>(dynamicMember keyPath: WritableKeyPath<V, T>) -> T {
+        get {
+            cachedValue[keyPath: keyPath]
+        }
         set {
             var component = C.get(object: object)
-            component[keyPath: keyPath] = newValue
+            component[keyPath: propertyKeyPath.appending(path: keyPath)] = newValue
             C.update(component, object: object)
         }
-        get { cachedValue }
     }
     
-    var projectedValue: Binding<V> {
-        .init {
-            self.wrappedValue
-        } set: {
-            self.wrappedValue = $0
+    var value: V {
+        get {
+            cachedValue
         }
-
+        set {
+            var component = C.get(object: object)
+            component[keyPath: propertyKeyPath] = newValue
+            C.update(component, object: object)
+        }
     }
     
 }

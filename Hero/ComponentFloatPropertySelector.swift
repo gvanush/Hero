@@ -14,12 +14,13 @@ where ID: Hashable {
     let object: SPTObject
     let id: ID
     @Binding var value: Float
+    let formatter: FloatFormatter
     
     @EnvironmentObject private var editingParams: ObjectEditingParams
     @EnvironmentObject private var userInteractionState: UserInteractionState
     
     var body: some View {
-        FloatSelector(value: $value, scale: editingParam.scale, isSnappingEnabled: editingParam.isSnapping) { editingState in
+        FloatSelector(value: $value, scale: editingParam.scale, isSnappingEnabled: editingParam.isSnapping, formatter: formatter) { editingState in
             userInteractionState.isEditing = (editingState != .idle && editingState != .snapping)
         }
     }

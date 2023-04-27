@@ -1,5 +1,5 @@
 //
-//  SPTObservedComponent.swift
+//  SPTObservableComponent.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 24.04.23.
@@ -8,9 +8,9 @@
 import SwiftUI
 
 
-@propertyWrapper
-class SPTObservedComponent<C>: ObservableObject
-where C: SPTObservableComponent {
+@dynamicMemberLookup
+class SPTObservableComponent<C>: ObservableObject
+where C: SPTInspectableComponent {
     
     let object: SPTObject
     private var willChangeSubscription: SPTAnySubscription?
@@ -26,18 +26,23 @@ where C: SPTObservableComponent {
         }
     }
     
-    var wrappedValue: C {
-        set {
-            C.update(newValue, object: object)
+    subscript<T>(dynamicMember keyPath: WritableKeyPath<C, T>) -> T {
+        get {
+            cachedValue[keyPath: keyPath]
         }
-        get { cachedValue }
+        set {
+            var value = cachedValue
+            value[keyPath: keyPath] = newValue
+            C.update(value, object: object)
+        }
     }
     
-    var projectedValue: Binding<C> {
-        .init {
-            self.wrappedValue
-        } set: {
-            self.wrappedValue = $0
+    var value: C {
+        get {
+            cachedValue
+        }
+        set {
+            C.update(newValue, object: object)
         }
     }
     

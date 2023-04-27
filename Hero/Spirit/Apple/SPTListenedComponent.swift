@@ -10,7 +10,7 @@ import Combine
 
 
 @propertyWrapper
-class SPTListenedComponent<C> where C: SPTObservableComponent {
+class SPTListenedComponent<C> where C: SPTInspectableComponent {
     
     let object: SPTObject
     private var willChangeSubscription: SPTAnySubscription?
@@ -36,7 +36,7 @@ class SPTListenedComponent<C> where C: SPTObservableComponent {
     
 }
 
-class SPTListenableComponentProperty<C, V>: ObservableObject where C: SPTObservableComponent, V: Equatable {
+class SPTListenableComponentProperty<C, V>: ObservableObject where C: SPTInspectableComponent, V: Equatable {
     
     let object: SPTObject
     let keyPath: WritableKeyPath<C, V>
@@ -69,7 +69,7 @@ class SPTListenableComponentProperty<C, V>: ObservableObject where C: SPTObserva
 }
 
 @propertyWrapper
-class SPTListenedComponentProperty<C, V> where C: SPTObservableComponent, V: Equatable {
+class SPTListenedComponentProperty<C, V> where C: SPTInspectableComponent, V: Equatable {
     
     let object: SPTObject
     let keyPath: WritableKeyPath<C, V>
@@ -105,7 +105,7 @@ class SPTListenedComponentProperty<C, V> where C: SPTObservableComponent, V: Equ
 
 
 @propertyWrapper
-class SPTListenedOptionalComponent<C> where C: SPTObservableComponent {
+class SPTListenedOptionalComponent<C> where C: SPTInspectableComponent {
     
     let object: SPTObject
     private var didEmergeSubscription: SPTAnySubscription?

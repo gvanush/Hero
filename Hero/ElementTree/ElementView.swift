@@ -15,6 +15,10 @@ let elementActionViewHeigh = 75.0
 extension Element {
     
     var body: some View {
+        defaultBody
+    }
+    
+    var defaultBody: some View {
         ZStack {
             
             faceView

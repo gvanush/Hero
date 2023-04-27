@@ -20,7 +20,7 @@ struct LinearPositionElement: ComponentElement {
     
     let object: SPTObject
     
-    @SPTObservedComponentProperty<SPTPosition, SPTLinearCoordinates> private var linear: SPTLinearCoordinates
+    @StateObject private var linear: SPTObservableComponentProperty<SPTPosition, SPTLinearCoordinates>
     @ComponentActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
@@ -31,7 +31,7 @@ struct LinearPositionElement: ComponentElement {
     
     init(object: SPTObject) {
         self.object = object
-        _linear = .init(object: object, keyPath: Self.keyPath)
+        _linear = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
         _activeProperty = .init(object: object, componentId: Self.keyPath)
     }
     
@@ -124,7 +124,7 @@ struct LinearPositionElement: ComponentElement {
         Group {
             switch activeProperty {
             case .offset:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.offset), value: $linear.offset)
+                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.offset), value: $linear.offset, formatter: Formatters.distance)
             }
         }
         .tint(.primarySelectionColor)

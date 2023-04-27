@@ -9,7 +9,7 @@ import Foundation
 import simd
 
 
-extension SPTPosition: SPTObservableComponent {
+extension SPTPosition: SPTInspectableComponent {
     
     init(cartesian: simd_float3) {
         self.init(coordinateSystem: .cartesian, .init(cartesian: cartesian))
@@ -33,6 +33,14 @@ extension SPTPosition: SPTObservableComponent {
     
     init(origin: simd_float3, radius: Float, longitude: Float, latitude: Float) {
         self.init(spherical: .init(origin: origin, radius: radius, longitude: longitude, latitude: latitude))
+    }
+    
+    init(cylindrical: SPTCylindricalCoordinates) {
+        self.init(coordinateSystem: .cylindrical, .init(cylindrical: cylindrical))
+    }
+    
+    init(origin: simd_float3, radius: Float, longitude: Float, height: Float) {
+        self.init(cylindrical: .init(origin: origin, radius: radius, longitude: longitude, height: height))
     }
     
     var origin: simd_float3 {

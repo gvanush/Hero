@@ -12,14 +12,14 @@ fileprivate struct SelectedObjectView: View {
     
     let object: SPTObject
     
-    @SPTObservedComponent private var position: SPTPosition
+    @StateObject private var position: SPTObservableComponent<SPTPosition>
     
     @EnvironmentObject var model: MoveToolModel
     @EnvironmentObject var editingParams: ObjectEditingParams
     
     init(object: SPTObject) {
         self.object = object
-        _position = .init(object: object)
+        _position = .init(wrappedValue: .init(object: object))
     }
     
     var body: some View {
@@ -31,7 +31,7 @@ fileprivate struct SelectedObjectView: View {
             case .linear:
                 LinearPositionElement(object: object)
             case .cylindrical:
-                EmptyElement()
+                CylindricalPositionElement(object: object)
             case .spherical:
                 EmptyElement()
             }

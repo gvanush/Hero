@@ -12,7 +12,7 @@ fileprivate struct SelectedObjectBarView: View {
     
     let object: SPTObject
     
-    @SPTObservedComponentProperty<SPTPosition, SPTCoordinateSystem> private var coordinateSystem: SPTCoordinateSystem
+    @StateObject private var coordinateSystem: SPTObservableComponentProperty<SPTPosition, SPTCoordinateSystem>
     @EnvironmentObject var model: MoveToolModel
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var editingParams: ObjectEditingParams
@@ -20,7 +20,7 @@ fileprivate struct SelectedObjectBarView: View {
     init(object: SPTObject) {
         self.object = object
         
-        _coordinateSystem = .init(object: object, keyPath: \.coordinateSystem)
+        _coordinateSystem = .init(wrappedValue: .init(object: object, keyPath: \.coordinateSystem))
     }
     
     var body: some View {
@@ -59,7 +59,7 @@ fileprivate struct SelectedObjectBarView: View {
             }
             coordinateSystemSelector()
         }
-        .onChange(of: coordinateSystem, perform: { [oldValue = coordinateSystem] newValue in
+        .onChange(of: coordinateSystem.value, perform: { [oldValue = coordinateSystem.value] newValue in
             unbindAnimators(coordinateSystem: oldValue)
         })
     }
@@ -106,7 +106,7 @@ fileprivate struct SelectedObjectBarView: View {
                     HStack {
                         Text(system.displayName)
                         Spacer()
-                        if system == self.coordinateSystem {
+                        if system == self.coordinateSystem.value {
                             Image(systemName: "checkmark.circle")
                                 .imageScale(.small)
                         }

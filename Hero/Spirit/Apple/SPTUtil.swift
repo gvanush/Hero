@@ -29,7 +29,7 @@ protocol SPTComponent: Equatable {
     
 }
 
-protocol SPTObservableComponent: SPTComponent {
+protocol SPTInspectableComponent: SPTComponent {
     
     typealias DidEmergeCallback = ObjectDidEmergeCallback<Self>
     typealias DidEmergeSubscription = SPTSubscription<DidEmergeCallback>

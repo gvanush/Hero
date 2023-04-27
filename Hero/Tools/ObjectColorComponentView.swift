@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 
-class ObjectRGBAColorComponent<C>: BasicComponent<RGBColorChannel> where C: SPTObservableComponent {
+class ObjectRGBAColorComponent<C>: BasicComponent<RGBColorChannel> where C: SPTInspectableComponent {
 
     @SPTListenedComponentProperty<C, SPTRGBAColor> var color: SPTRGBAColor
 
@@ -33,7 +33,7 @@ class ObjectRGBAColorComponent<C>: BasicComponent<RGBColorChannel> where C: SPTO
     
 }
 
-struct ObjectRGBAColorComponentView<C>: View where C: SPTObservableComponent {
+struct ObjectRGBAColorComponentView<C>: View where C: SPTInspectableComponent {
     
     @ObservedObject var component: ObjectRGBAColorComponent<C>
     @EnvironmentObject var userInteractionState: UserInteractionState
@@ -60,7 +60,7 @@ struct ObjectRGBAColorComponentView<C>: View where C: SPTObservableComponent {
     }
 }
 
-class ObjectHSBAColorComponent<C>: BasicComponent<HSBColorChannel> where C: SPTObservableComponent {
+class ObjectHSBAColorComponent<C>: BasicComponent<HSBColorChannel> where C: SPTInspectableComponent {
 
     @SPTListenedComponentProperty<C, SPTHSBAColor> var color: SPTHSBAColor
 
@@ -84,7 +84,7 @@ class ObjectHSBAColorComponent<C>: BasicComponent<HSBColorChannel> where C: SPTO
     
 }
 
-struct ObjectHSBAColorComponentView<C>: View where C: SPTObservableComponent {
+struct ObjectHSBAColorComponentView<C>: View where C: SPTInspectableComponent {
     
     @ObservedObject var component: ObjectHSBAColorComponent<C>
     @EnvironmentObject var userInteractionState: UserInteractionState
@@ -111,7 +111,7 @@ struct ObjectHSBAColorComponentView<C>: View where C: SPTObservableComponent {
     }
 }
 
-class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableComponent {
+class ObjectColorComponent<C>: MultiVariantComponent where C: SPTInspectableComponent {
     
     private let keyPath: WritableKeyPath<C, SPTColor>
     private let object: SPTObject
@@ -189,7 +189,7 @@ class ObjectColorComponent<C>: MultiVariantComponent where C: SPTObservableCompo
     }
 }
 
-struct ObjectColorComponentView<C, RC>: View where C: SPTObservableComponent {
+struct ObjectColorComponentView<C, RC>: View where C: SPTInspectableComponent {
     
     @ObservedObject var component: ObjectColorComponent<C>
     let viewProvider: ComponentViewProvider<RC>

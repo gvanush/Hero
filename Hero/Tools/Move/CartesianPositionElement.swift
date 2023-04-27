@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct CartesianPositionElement<C>: ComponentElement
-where C: SPTObservableComponent {
+where C: SPTInspectableComponent {
     
     enum Property: Int, ElementProperty {
         case x
@@ -41,11 +41,11 @@ where C: SPTObservableComponent {
         Group {
             switch activeProperty {
             case .x:
-                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.x), value: $cartesian.x)
+                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.x), value: $cartesian.x, formatter: Formatters.distance)
             case .y:
-                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.y), value: $cartesian.y)
+                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.y), value: $cartesian.y, formatter: Formatters.distance)
             case .z:
-                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.z), value: $cartesian.z)
+                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.z), value: $cartesian.z, formatter: Formatters.distance)
             }
         }
         .tint(controlTint)

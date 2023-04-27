@@ -22,7 +22,6 @@ struct ElementTreeView<RE>: View where RE: Element {
         self.rootElement = rootElement()
     }
 
-
     var body: some View {
         rootElement
             .indexPath(.init(index: 0))
