@@ -33,7 +33,7 @@ fileprivate struct SelectedObjectView: View {
             case .cylindrical:
                 CylindricalPositionElement(object: object)
             case .spherical:
-                EmptyElement()
+                SphericalPositionElement(object: object)
             }
             
         }

@@ -33,12 +33,6 @@ class ComponentViewProvider<RC> {
     
     func viewFor(_ component: CartesianPositionComponent) -> AnyView? { nil }
     
-    func viewFor(_ component: LinearPositionComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: CylindricalPositionComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: SphericalPositionComponent) -> AnyView? { nil }
-    
     func viewFor(_ component: XYZScaleComponent) -> AnyView? { nil }
     
     func viewFor(_ component: UniformScaleComponent) -> AnyView? { nil }

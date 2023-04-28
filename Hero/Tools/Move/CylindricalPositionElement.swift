@@ -54,7 +54,7 @@ struct CylindricalPositionElement: ComponentElement {
             case .height:
                 ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.height), value: $cylindrical.height, formatter: Formatters.distance)
             case .longitude:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.radius), value: $cylindrical.longitudeInDegrees, formatter: Formatters.angle)
+                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.longitude), value: $cylindrical.longitudeInDegrees, formatter: Formatters.angle)
             }
         }
         .tint(.primarySelectionColor)
@@ -88,6 +88,10 @@ struct CylindricalPositionElement: ComponentElement {
         }
         pointLook.color = UIColor.guide1.rgba
         SPTPointLook.update(pointLook, object: originPointObject)
+    }
+    
+    func onActivePropertyChange() {
+        updateActiveGuideObject()
     }
     
     func onActive() {
@@ -165,10 +169,6 @@ struct CylindricalPositionElement: ComponentElement {
         SPTSceneProxy.destroyObject(circleObject)
         SPTSceneProxy.destroyObject(circleCenterObject)
         SPTSceneProxy.destroyObject(yAxisObject)
-    }
-    
-    func onActivePropertyChange() {
-        updateActiveGuideObject()
     }
     
     private func updateActiveGuideObject() {
