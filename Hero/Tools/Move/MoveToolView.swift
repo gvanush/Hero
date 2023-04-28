@@ -16,6 +16,9 @@ fileprivate struct SelectedObjectView: View {
     
     @EnvironmentObject var model: MoveToolModel
     @EnvironmentObject var editingParams: ObjectEditingParams
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    @State private var originPointObject: SPTObject!
     
     init(object: SPTObject) {
         self.object = object
@@ -40,8 +43,17 @@ fileprivate struct SelectedObjectView: View {
         .onPreferenceChange(ComponentDisclosedElementsPreferenceKey.self) {
             model[object].disclosedElementsData = $0
         }
+        .onChange(of: position.value, perform: { newValue in
+            SPTPosition.update(newValue, object: originPointObject)
+        })
+        .onAppear {
+            originPointObject = sceneViewModel.scene.makeObject()
+            SPTPosition.make(position.value, object: originPointObject)
+            SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+        }
         .onDisappear {
             model[object] = nil
+            SPTSceneProxy.destroyObject(originPointObject)
         }
     }
     
