@@ -27,7 +27,7 @@ where E: Element {
     }
     
     var body: some View {
-        if let element = element {
+        if let element {
             element
                 .indexPath(indexPath)
                 .activeIndexPath(_activeIndexPath.projectedValue)

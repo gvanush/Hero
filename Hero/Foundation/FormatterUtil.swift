@@ -54,7 +54,7 @@ class BasicFloatFormatter: FloatFormatter {
     init(fractionDigits: Int? = nil, roundingMode: NumberFormatter.RoundingMode = .halfEven) {
         super.init()
         
-        if let fractionDigits = fractionDigits {
+        if let fractionDigits {
             updateFractionDigits(fractionDigits)
         }
         self.numberFormatter.roundingMode = roundingMode

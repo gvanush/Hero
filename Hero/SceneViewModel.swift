@@ -28,9 +28,9 @@ class SceneViewModel: ObservableObject {
     
     @Published var focusedObject: SPTObject? {
         willSet {
-            if let newObject = newValue {
+            if let newValue {
                 if isFocusEnabled {
-                    updateFocusedObject(newObject)
+                    updateFocusedObject(newValue)
                 }
             } else {
                 focusedObjectPositionWillChangeSubscription = nil
@@ -41,8 +41,8 @@ class SceneViewModel: ObservableObject {
     @Published var isFocusEnabled = false {
         willSet {
             if newValue {
-                if let object = focusedObject {
-                    updateFocusedObject(object)
+                if let focusedObject {
+                    updateFocusedObject(focusedObject)
                 }
             } else {
                 focusedObjectPositionWillChangeSubscription = nil

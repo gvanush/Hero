@@ -275,7 +275,7 @@ void SPTTransformationSetParent(SPTObject object, SPTEntity parentEntity) {
     assert(!SPTTransformationIsDescendant(SPTObject {parentEntity, object.sceneHandle}, object));
     
     auto& registry = spt::Scene::getRegistry(object);
-    assert(registry.valid(parentEntity));
+    assert(parentEntity == kSPTNullEntity || registry.valid(parentEntity));
     
     auto& tran = registry.get<spt::Transformation>(object.entity);
     

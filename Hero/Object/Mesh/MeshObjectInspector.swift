@@ -188,7 +188,7 @@ struct MeshObjectInspector: View {
         }
         .sheet(item: $animatorSelectorItem, content: { property in
             AnimatorSelector { animatorId in
-                if let animatorId = animatorId {
+                if let animatorId {
                     model.bindAnimator(id: animatorId, property: property)
                 }
                 animatorSelectorItem = nil
@@ -260,7 +260,7 @@ struct MeshObjectInspector: View {
     @ViewBuilder
     func itemViewFor(_ animatorBinding: SPTAnimatorBinding?, title: String, property: SPTAnimatableObjectProperty, onEdit: @escaping () -> Void) -> some View {
         LabeledContent(title) {
-            if let animatorBinding = animatorBinding {
+            if let animatorBinding {
                 Text(model.getAnimator(id: animatorBinding.animatorId).name)
             }
             Button {
@@ -290,7 +290,7 @@ struct MeshObjectInspector_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        let factory = ObjectFactory(scene: sceneViewModel.scene)
+        let factory = SceneGraph(scene: sceneViewModel.scene)
         let object = factory.makeMesh(meshId: MeshRegistry.standard.meshRecords.first!.id, lookCategories: [.renderableModel, .renderable], position: .zero)
         sceneViewModel.selectedObject = object
         

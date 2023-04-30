@@ -137,7 +137,7 @@ class SPTListenedOptionalComponent<C> where C: SPTInspectableComponent {
     
     var wrappedValue: C? {
         set {
-            if let newValue = newValue {
+            if let newValue {
                 C.makeOrUpdate(newValue, object: object)
             } else {
                 C.destroy(object: object)

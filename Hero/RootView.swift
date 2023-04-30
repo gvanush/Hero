@@ -88,7 +88,7 @@ class RootViewModel: ObservableObject {
         }
     }
     
-    let objectFactory: ObjectFactory
+    let sceneGraph: SceneGraph
     let objectEditingParams = ObjectEditingParams()
     
     init(sceneViewModel: SceneViewModel) {
@@ -106,7 +106,7 @@ class RootViewModel: ObservableObject {
         
         self.activeToolViewModel = inspectToolViewModel
         
-        objectFactory = ObjectFactory(scene: sceneViewModel.scene)
+        sceneGraph = SceneGraph(scene: sceneViewModel.scene)
         
         // Create default object
         var defaultObjectPosition = SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin
@@ -123,13 +123,13 @@ class RootViewModel: ObservableObject {
     }
     
     func createObject(meshId: SPTMeshId, position: simd_float3, scale: Float) {
-        let object = objectFactory.makeMesh(meshId: meshId, lookCategories: [.renderable, .renderableModel], position: position, scale: scale)
+        let object = sceneGraph.makeMesh(meshId: meshId, lookCategories: [.renderable, .renderableModel], position: position, scale: scale)
         sceneViewModel.selectedObject = object
         sceneViewModel.focusedObject = object
     }
     
     func duplicateObject(_ original: SPTObject) {
-        let duplicate = objectFactory.duplicateObject(original)
+        let duplicate = sceneGraph.duplicateObject(original)
         for toolVM in toolViewModels {
             toolVM.onObjectDuplicate(original: original, duplicate: duplicate)
         }
@@ -153,7 +153,7 @@ class RootViewModel: ObservableObject {
         // SwiftUI already processed all view lifecycle events
         let runLoopObserver = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, CFRunLoopActivity.beforeWaiting.rawValue, false, 0, { _, _ in
             self.objectEditingParams.onObjectDestroy(object)
-            SPTSceneProxy.destroyObject(object)
+            self.sceneGraph.destroyObject(object)
         })
         CFRunLoopAddObserver(CFRunLoopGetCurrent(), runLoopObserver, .defaultMode)
      

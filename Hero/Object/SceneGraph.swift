@@ -1,5 +1,5 @@
 //
-//  ObjectFactory.swift
+//  SceneGraph.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 27.02.22.
@@ -12,17 +12,20 @@ enum ObjectType: Int32 {
     case mesh
 }
 
-class ObjectFactory {
+class SceneGraph: ObservableObject {
     
     let scene: SPTSceneProxy
     private var meshNumber = 1
     private var generatorNumber = 1
+    
+    @Published var rootObjects = [SPTObject]()
     
     init(scene: SPTSceneProxy) {
         self.scene = scene
     }
     
     func makeMesh(meshId: SPTMeshId, lookCategories: LookCategories, position: simd_float3, scale: Float = 1.0) -> SPTObject {
+        
         let object = scene.makeObject()
         SPTMetadataMake(object, .init(tag: ObjectType.mesh.rawValue, name: "Mesh.\(meshNumber)"))
         SPTPosition.make(.init(cartesian: position), object: object)
@@ -31,6 +34,9 @@ class ObjectFactory {
         SPTMeshLook.make(.init(material: SPTPhongMaterial(color: UIColor.darkGray.sptColor(model: .HSB), shininess: 0.5), meshId: meshId, categories: lookCategories.rawValue), object: object)
         SPTRayCastableMake(object)
         meshNumber += 1
+        
+        rootObjects.append(object)
+        
         return object
     }
     
@@ -50,7 +56,33 @@ class ObjectFactory {
         }
 
         meshNumber += 1
+        
+        rootObjects.append(object)
+        
         return duplicate
+    }
+    
+    func destroyObject(_ object: SPTObject) {
+        SPTSceneProxy.destroyObject(object)
+        rootObjects.removeAll { $0 == object }
+    }
+    
+    func setParent(_ parent: SPTObject?, object: SPTObject) {
+        let parentEntity = parent?.entity ?? kSPTNullEntity
+        let oldParent = SPTTransformationGetNode(object).parent
+        guard parentEntity != oldParent else {
+            return
+        }
+        
+        SPTTransformationSetParent(object, parentEntity)
+        if let parent {
+            if oldParent == kSPTNullEntity {
+                rootObjects.removeAll { $0 == object }
+            }
+        } else {
+            rootObjects.append(object)
+        }
+        
     }
     
     func makeRandomMeshes(lookCategories: LookCategories) {
@@ -69,6 +101,8 @@ class ObjectFactory {
             
             SPTRayCastableMake(object)
             meshNumber += 1
+            
+            rootObjects.append(object)
         }
     }
     

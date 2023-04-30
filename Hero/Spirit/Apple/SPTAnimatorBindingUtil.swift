@@ -82,7 +82,7 @@ class SPTObservedOptionalAnimatorBinding<P> where P: SPTAnimatableProperty {
     
     var wrappedValue: SPTAnimatorBinding? {
         set {
-            if let newValue = newValue {
+            if let newValue {
                 property.bindOrUpdate(newValue, object: object)
             } else {
                 property.unbindAnimator(object: object)
