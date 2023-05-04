@@ -50,14 +50,6 @@ class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
         AnyView(CartesianPositionComponentView(component: component))
     }
     
-    override func viewFor(_ component: XYZScaleComponent) -> AnyView? {
-        AnyView(XYZScaleComponentView(component: component))
-    }
-    
-    override func viewFor(_ component: UniformScaleComponent) -> AnyView? {
-        AnyView(UniformScaleComponentView(component: component))
-    }
-    
     override func viewFor(_ component: XYZScaleFieldAnimatorBindingComponent) -> AnyView? {
         AnyView(XYZScaleFieldAnimatorBindingComponentView(component: component))
     }

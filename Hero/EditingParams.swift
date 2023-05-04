@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct ToolEditingParams {
-    var activeComponentIndexPath = IndexPath(index: 0)
+    var activeElementIndexPath = IndexPath(index: 0)
 }
 
 

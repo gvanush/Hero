@@ -16,7 +16,7 @@ extension SPTScaleModel: CaseIterable, Identifiable, Displayable {
     var displayName: String {
         switch self {
         case .XYZ:
-            return "Along axes"
+            return "XYZ"
         case .uniform:
             return "Uniform"
         }

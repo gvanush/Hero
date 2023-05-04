@@ -6,54 +6,62 @@
 //
 
 import SwiftUI
-import Combine
-
-class ScaleToolComponentViewProvider: MeshObjectComponentViewProvider<ScaleComponent> {
-    
-    override func viewForRoot(_ root: ScaleComponent) -> AnyView? {
-        AnyView(ScaleComponentView(component: root, viewProvider: self))
-    }
-    
-}
-
-class ScaleToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<ScaleComponent> {
-}
 
 
-fileprivate struct SelectedObjectControlsView: View {
+fileprivate struct SelectedObjectView: View {
     
-    @ObservedObject var model: ScaleToolSelectedObjectViewModel
+    let object: SPTObject
     
+    @StateObject private var scale: SPTObservableComponent<SPTScale>
+    
+    @EnvironmentObject var model: BasicToolModel
     @EnvironmentObject var editingParams: ObjectEditingParams
-    @EnvironmentObject var userInteractionState: UserInteractionState
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    @State private var originPointObject: SPTObject!
+    
+    init(object: SPTObject) {
+        self.object = object
+        _scale = .init(wrappedValue: .init(object: object))
+    }
     
     var body: some View {
-        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: ScaleToolComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
-            .padding(.horizontal, 8.0)
-            .padding(.bottom, 8.0)
-            .background {
-                Color.clear
-                    .contentShape(Rectangle())
+        ElementTreeView(activeIndexPath: $editingParams[tool: .move, object].activeElementIndexPath) {
+            switch scale.model {
+            case .XYZ:
+                XYZScaleElement(object: object)
+            case .uniform:
+                UniformScaleElement(object: object)
             }
+        }
+        .onPreferenceChange(ComponentDisclosedElementsPreferenceKey.self) {
+            model[object].disclosedElementsData = $0
+        }
+        .onAppear {
+            originPointObject = sceneViewModel.scene.makeObject()
+            SPTPosition.make(SPTPosition.get(object: object), object: originPointObject)
+            SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+        }
+        .onDisappear {
+            model[object] = nil
+            SPTSceneProxy.destroyObject(originPointObject)
+        }
     }
     
 }
 
-class ScaleToolViewModel: BasicToolViewModel<ScaleToolSelectedObjectViewModel, ScaleComponent> {
-    
-    init(sceneViewModel: SceneViewModel) {
-        super.init(tool: .scale, sceneViewModel: sceneViewModel)
-    }
-    
-}
 
 struct ScaleToolView: View {
-    @ObservedObject var model: ScaleToolViewModel
+    
+    @ObservedObject var model: BasicToolModel
+    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        if let selectedObjectVM = model.selectedObjectViewModel {
-            SelectedObjectControlsView(model: selectedObjectVM)
-                .id(selectedObjectVM.object)
+        if let object = sceneViewModel.selectedObject {
+            SelectedObjectView(object: object)
+                .id(object)
+                .environmentObject(model)
         }
     }
 }

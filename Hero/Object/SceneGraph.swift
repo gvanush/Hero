@@ -75,7 +75,7 @@ class SceneGraph: ObservableObject {
         }
         
         SPTTransformationSetParent(object, parentEntity)
-        if let parent {
+        if parent != nil {
             if oldParent == kSPTNullEntity {
                 rootObjects.removeAll { $0 == object }
             }

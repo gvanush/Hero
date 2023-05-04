@@ -1,5 +1,5 @@
 //
-//  MoveToolModel.swift
+//  BasicToolModel.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 25.04.23.
@@ -8,15 +8,15 @@
 import Foundation
 
 
-class MoveToolModel: ObservableObject {
+class BasicToolModel: ObservableObject {
     
-    struct Item {
+    struct ObjectData {
         var disclosedElementsData: [ComponentElementData]?
     }
     
-    @Published private var items = [SPTObject : Item]()
+    @Published private var items = [SPTObject : ObjectData]()
     
-    subscript (object: SPTObject) -> Item! {
+    subscript (object: SPTObject) -> ObjectData! {
         get {
             items[object, default: .init()]
         }

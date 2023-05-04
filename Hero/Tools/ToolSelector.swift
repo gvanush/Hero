@@ -159,12 +159,10 @@ struct ToolSelector_Previews: PreviewProvider {
         static let sceneViewModel = SceneViewModel()
         static let inspectToolViewModel = InspectToolViewModel(sceneViewModel: sceneViewModel)
         static let orientToolViewModel = OrientToolViewModel(sceneViewModel: sceneViewModel)
-        static let scaleToolViewModel = ScaleToolViewModel(sceneViewModel: sceneViewModel)
         static let animatePositionToolView = AnimatePositionToolViewModel(sceneViewModel: sceneViewModel)
         static let toolViewModels: [ToolViewModel] = [
             inspectToolViewModel,
             orientToolViewModel,
-            scaleToolViewModel,
             animatePositionToolView,
         ]
     }

@@ -14,7 +14,7 @@ fileprivate struct SelectedObjectView: View {
     
     @StateObject private var position: SPTObservableComponent<SPTPosition>
     
-    @EnvironmentObject var model: MoveToolModel
+    @EnvironmentObject var model: BasicToolModel
     @EnvironmentObject var editingParams: ObjectEditingParams
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -26,7 +26,7 @@ fileprivate struct SelectedObjectView: View {
     }
     
     var body: some View {
-        ElementTreeView(activeIndexPath: $editingParams[tool: .move, object].activeComponentIndexPath) {
+        ElementTreeView(activeIndexPath: $editingParams[tool: .move, object].activeElementIndexPath) {
             
             switch position.coordinateSystem {
             case .cartesian:
@@ -62,7 +62,7 @@ fileprivate struct SelectedObjectView: View {
 
 struct MoveToolView: View {
     
-    @ObservedObject var model: MoveToolModel
+    @ObservedObject var model: BasicToolModel
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     

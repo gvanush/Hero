@@ -13,7 +13,7 @@ fileprivate struct SelectedObjectBarView: View {
     let object: SPTObject
     
     @StateObject private var coordinateSystem: SPTObservableComponentProperty<SPTPosition, SPTCoordinateSystem>
-    @EnvironmentObject var model: MoveToolModel
+    @EnvironmentObject var model: BasicToolModel
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var editingParams: ObjectEditingParams
     
@@ -26,37 +26,7 @@ fileprivate struct SelectedObjectBarView: View {
     var body: some View {
         HStack {
             Divider()
-            ScrollView(.horizontal, showsIndicators: false) {
-                if let disclosedElementsData = model[object].disclosedElementsData {
-                    HStack {
-                        ForEach(disclosedElementsData, id: \.id) { data in
-                            HStack {
-                                if data.id != disclosedElementsData.first!.id {
-                                    Image(systemName: "chevron.right")
-                                        .imageScale(.large)
-                                        .foregroundColor(.secondary)
-                                }
-                                VStack(alignment: .leading) {
-                                    Text(data.title)
-                                        .fontWeight(.regular)
-                                        .fixedSize()
-                                    if let substitle = data.subtitle {
-                                        Text(substitle)
-                                            .font(.system(.subheadline))
-                                            .foregroundColor(Color.secondaryLabel)
-                                            .fixedSize()
-                                    }
-                                }
-                            }
-                            .onTapGesture {
-                                withAnimation {
-                                    editingParams[tool: .move, object].activeComponentIndexPath = data.indexPath
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            BasicToolNavigationView(tool: .move, object: object)
             coordinateSystemSelector()
         }
         .onChange(of: coordinateSystem.value, perform: { [oldValue = coordinateSystem.value] newValue in
@@ -87,21 +57,7 @@ fileprivate struct SelectedObjectBarView: View {
         Menu {
             ForEach(SPTCoordinateSystem.allCases) { system in
                 Button {
-                    let position = SPTPosition.get(object: object)
-                    
-                    switch system {
-                    case .cartesian:
-                        SPTPosition.update(position.toCartesian, object: object)
-                    case .linear:
-                        SPTPosition.update(position.toLinear(origin: position.origin), object: object)
-                    case .spherical:
-                        SPTPosition.update(position.toSpherical(origin: position.origin), object: object)
-                    case .cylindrical:
-                        SPTPosition.update(position.toCylindrical(origin: position.origin), object: object)
-                    }
-                    
-                    editingParams[tool: .move, object].activeComponentIndexPath = .init(index: 0)
-                    
+                    setCoordinateSystem(system)
                 } label: {
                     HStack {
                         Text(system.displayName)
@@ -121,12 +77,29 @@ fileprivate struct SelectedObjectBarView: View {
         .shadow(radius: 0.5)
     }
     
+    func setCoordinateSystem(_ system: SPTCoordinateSystem) {
+        let position = SPTPosition.get(object: object)
+        
+        switch system {
+        case .cartesian:
+            SPTPosition.update(position.toCartesian, object: object)
+        case .linear:
+            SPTPosition.update(position.toLinear(origin: position.origin), object: object)
+        case .spherical:
+            SPTPosition.update(position.toSpherical(origin: position.origin), object: object)
+        case .cylindrical:
+            SPTPosition.update(position.toCylindrical(origin: position.origin), object: object)
+        }
+        
+        editingParams[tool: .move, object].activeElementIndexPath = .init(index: 0)
+    }
+    
 }
 
 
 struct MoveToolBarView: View {
     
-    @ObservedObject var model: MoveToolModel
+    @ObservedObject var model: BasicToolModel
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     

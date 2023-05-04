@@ -176,19 +176,20 @@
 		B7B8227729F7DED6000C59E7 /* LinearPositionElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227629F7DED6000C59E7 /* LinearPositionElement.swift */; };
 		B7B8227929F80D76000C59E7 /* ComponentFloatPropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227829F80D76000C59E7 /* ComponentFloatPropertySelector.swift */; };
 		B7B8227B29F87B19000C59E7 /* MoveToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227A29F87B19000C59E7 /* MoveToolBarView.swift */; };
-		B7B8227D29F87BDF000C59E7 /* MoveToolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227C29F87BDF000C59E7 /* MoveToolModel.swift */; };
+		B7B8227D29F87BDF000C59E7 /* BasicToolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227C29F87BDF000C59E7 /* BasicToolModel.swift */; };
 		B7B8227F29F99132000C59E7 /* CylindricalPositionElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227E29F99132000C59E7 /* CylindricalPositionElement.swift */; };
 		B7B8228329FBD97A000C59E7 /* SphericalPositionElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8228229FBD97A000C59E7 /* SphericalPositionElement.swift */; };
 		B7B8228A29FBE4D2000C59E7 /* CartesianPositionComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8228929FBE4D2000C59E7 /* CartesianPositionComponentView.swift */; };
 		B7B8228D29FC2EBC000C59E7 /* ObjectHierarchyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8228C29FC2EBC000C59E7 /* ObjectHierarchyView.swift */; };
+		B7B822992A02F2B5000C59E7 /* BasicToolNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B822982A02F2B5000C59E7 /* BasicToolNavigationView.swift */; };
+		B7B8229B2A02F6A6000C59E7 /* ScaleToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8229A2A02F6A6000C59E7 /* ScaleToolBarView.swift */; };
+		B7B8229D2A0419BF000C59E7 /* UniformScaleElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8229C2A0419BF000C59E7 /* UniformScaleElement.swift */; };
+		B7B8229F2A041C5E000C59E7 /* XYZScaleElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8229E2A041C5E000C59E7 /* XYZScaleElement.swift */; };
 		B7BCB11827D4D3C500F5AFB1 /* Metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */; };
 		B7BCB11C27D6AB2300F5AFB1 /* SPTObjectUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */; };
 		B7BCB11E27D75A6A00F5AFB1 /* SPTSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BCB11D27D75A6A00F5AFB1 /* SPTSubscription.swift */; };
-		B7BECC3D295C76600091A96F /* ScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC3C295C76600091A96F /* ScaleComponentView.swift */; };
 		B7BECC40295C83CC0091A96F /* y_axis_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7BECC3E295C83CC0091A96F /* y_axis_line.obj */; };
 		B7BECC41295C83CC0091A96F /* z_axis_line.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7BECC3F295C83CC0091A96F /* z_axis_line.obj */; };
-		B7BECC43295C9E6D0091A96F /* XYZScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC42295C9E6D0091A96F /* XYZScaleComponentView.swift */; };
-		B7BECC45295C9F9D0091A96F /* UniformScaleComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC44295C9F9D0091A96F /* UniformScaleComponentView.swift */; };
 		B7BECC47295CAA600091A96F /* ScaleUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7BECC46295CAA600091A96F /* ScaleUtil.swift */; };
 		B7C7489B28D1A3EE00E270FB /* NewObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489A28D1A3EE00E270FB /* NewObjectView.swift */; };
 		B7C7489D28D2FFC700E270FB /* SceneUIToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C7489C28D2FFC700E270FB /* SceneUIToggle.swift */; };
@@ -460,20 +461,21 @@
 		B7B8227629F7DED6000C59E7 /* LinearPositionElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPositionElement.swift; sourceTree = "<group>"; };
 		B7B8227829F80D76000C59E7 /* ComponentFloatPropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentFloatPropertySelector.swift; sourceTree = "<group>"; };
 		B7B8227A29F87B19000C59E7 /* MoveToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToolBarView.swift; sourceTree = "<group>"; };
-		B7B8227C29F87BDF000C59E7 /* MoveToolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToolModel.swift; sourceTree = "<group>"; };
+		B7B8227C29F87BDF000C59E7 /* BasicToolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicToolModel.swift; sourceTree = "<group>"; };
 		B7B8227E29F99132000C59E7 /* CylindricalPositionElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylindricalPositionElement.swift; sourceTree = "<group>"; };
 		B7B8228229FBD97A000C59E7 /* SphericalPositionElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphericalPositionElement.swift; sourceTree = "<group>"; };
 		B7B8228929FBE4D2000C59E7 /* CartesianPositionComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartesianPositionComponentView.swift; sourceTree = "<group>"; };
 		B7B8228C29FC2EBC000C59E7 /* ObjectHierarchyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectHierarchyView.swift; sourceTree = "<group>"; };
+		B7B822982A02F2B5000C59E7 /* BasicToolNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicToolNavigationView.swift; sourceTree = "<group>"; };
+		B7B8229A2A02F6A6000C59E7 /* ScaleToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleToolBarView.swift; sourceTree = "<group>"; };
+		B7B8229C2A0419BF000C59E7 /* UniformScaleElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformScaleElement.swift; sourceTree = "<group>"; };
+		B7B8229E2A041C5E000C59E7 /* XYZScaleElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYZScaleElement.swift; sourceTree = "<group>"; };
 		B7BCB11627D4D3C500F5AFB1 /* Metadata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Metadata.cpp; sourceTree = "<group>"; };
 		B7BCB11727D4D3C500F5AFB1 /* Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		B7BCB11B27D6AB2300F5AFB1 /* SPTObjectUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObjectUtil.swift; sourceTree = "<group>"; };
 		B7BCB11D27D75A6A00F5AFB1 /* SPTSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTSubscription.swift; sourceTree = "<group>"; };
-		B7BECC3C295C76600091A96F /* ScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleComponentView.swift; sourceTree = "<group>"; };
 		B7BECC3E295C83CC0091A96F /* y_axis_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = y_axis_line.obj; sourceTree = "<group>"; };
 		B7BECC3F295C83CC0091A96F /* z_axis_line.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = z_axis_line.obj; sourceTree = "<group>"; };
-		B7BECC42295C9E6D0091A96F /* XYZScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYZScaleComponentView.swift; sourceTree = "<group>"; };
-		B7BECC44295C9F9D0091A96F /* UniformScaleComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformScaleComponentView.swift; sourceTree = "<group>"; };
 		B7BECC46295CAA600091A96F /* ScaleUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleUtil.swift; sourceTree = "<group>"; };
 		B7C7489828D0427900E270FB /* AnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AnimatorBinding.hpp; sourceTree = "<group>"; };
 		B7C7489928D0EF9C00E270FB /* Orientation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Orientation.hpp; sourceTree = "<group>"; };
@@ -994,9 +996,9 @@
 			isa = PBXGroup;
 			children = (
 				B7C748A028E377F600E270FB /* ScaleToolView.swift */,
-				B7BECC3C295C76600091A96F /* ScaleComponentView.swift */,
-				B7BECC42295C9E6D0091A96F /* XYZScaleComponentView.swift */,
-				B7BECC44295C9F9D0091A96F /* UniformScaleComponentView.swift */,
+				B7B8229A2A02F6A6000C59E7 /* ScaleToolBarView.swift */,
+				B7B8229C2A0419BF000C59E7 /* UniformScaleElement.swift */,
+				B7B8229E2A041C5E000C59E7 /* XYZScaleElement.swift */,
 			);
 			path = Scale;
 			sourceTree = "<group>";
@@ -1137,7 +1139,9 @@
 		B7EDBDBE28F355410048EF93 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				B7B8227C29F87BDF000C59E7 /* BasicToolModel.swift */,
 				B7FD159E292E47D200B6E7DC /* Move */,
+				B7BECC3B295C76280091A96F /* Scale */,
 				B757DB6B28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift */,
 				B7643B38290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift */,
 				B70ABF31291E8D2900919F50 /* AnimatorBindingComponent.swift */,
@@ -1151,13 +1155,13 @@
 				B7643B32290BE85700F6A05B /* AnimatePosition */,
 				B753B77829660E7B0018F96D /* Orient */,
 				B753B78A296BE4520018F96D /* AnimateOrientation */,
-				B7BECC3B295C76280091A96F /* Scale */,
 				B7661CEB295ED73C0070156D /* AnimateScale */,
 				B7643B3A290FAAAA00F6A05B /* Shade */,
 				B70ABF2A291D75F500919F50 /* AnimateShade */,
 				B7EDBDBA28EE97D70048EF93 /* ToolSelector.swift */,
 				B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */,
 				B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */,
+				B7B822982A02F2B5000C59E7 /* BasicToolNavigationView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1186,7 +1190,6 @@
 				B7B8228B29FBE4E0000C59E7 /* Old */,
 				B7C7489E28E2D7D100E270FB /* MoveToolView.swift */,
 				B7B8227A29F87B19000C59E7 /* MoveToolBarView.swift */,
-				B7B8227C29F87BDF000C59E7 /* MoveToolModel.swift */,
 				B7B8226729F5B0FD000C59E7 /* CartesianPositionElement.swift */,
 				B7B8227629F7DED6000C59E7 /* LinearPositionElement.swift */,
 				B7B8227E29F99132000C59E7 /* CylindricalPositionElement.swift */,
@@ -1314,6 +1317,7 @@
 				B7AA99ED27B81FB70033B459 /* DistinctValueSet.swift in Sources */,
 				B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */,
 				B7C90C712950F95200A2850E /* Action.cpp in Sources */,
+				B7B8229F2A041C5E000C59E7 /* XYZScaleElement.swift in Sources */,
 				B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */,
 				B70A6B25293E1C910092FDE1 /* ObjectAngleAnimatorBindingComponent.swift in Sources */,
 				B7661CF5295F13970070156D /* UniformScaleAnimatorBindingsComponent.swift in Sources */,
@@ -1321,10 +1325,12 @@
 				B7643B31290BD31B00F6A05B /* EditingParams.swift in Sources */,
 				B7B8227B29F87B19000C59E7 /* MoveToolBarView.swift in Sources */,
 				B753B7892969CA0C0018F96D /* SpiritGeometryUtil.swift in Sources */,
+				B7B8229D2A0419BF000C59E7 /* UniformScaleElement.swift in Sources */,
 				B7E625832916DF6500343B67 /* SPTColorUtil.swift in Sources */,
 				B757DB6F28A3E37500BB5DB4 /* AnimatorBinding.cpp in Sources */,
 				B753B78529686A180018F96D /* Matrix+Orientation.cpp in Sources */,
 				B70ABF30291D9F6200919F50 /* AnimatablePropertyUtil.swift in Sources */,
+				B7B822992A02F2B5000C59E7 /* BasicToolNavigationView.swift in Sources */,
 				B723584D2757749300337547 /* RayCast.cpp in Sources */,
 				B7D19EB427310DFC005C9F82 /* BindingUtil.swift in Sources */,
 				B73B1D9729F32E7D002C9767 /* NeverElement.swift in Sources */,
@@ -1342,7 +1348,7 @@
 				B7FD15B9293A4A1200B6E7DC /* CylindricalPositionAnimatorBindingsComponent.swift in Sources */,
 				B7B8227929F80D76000C59E7 /* ComponentFloatPropertySelector.swift in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
-				B7B8227D29F87BDF000C59E7 /* MoveToolModel.swift in Sources */,
+				B7B8227D29F87BDF000C59E7 /* BasicToolModel.swift in Sources */,
 				B7B711EC28C70ACC0077C7CD /* SPTPlayViewController.mm in Sources */,
 				B7B711EE28C70B1B0077C7CD /* SPTPlayView.swift in Sources */,
 				B787799528FC36E500E3CDA7 /* RandomAnimatorView.swift in Sources */,
@@ -1394,7 +1400,6 @@
 				B753B792296C0EF70018F96D /* EulerOrientationFieldAnimatorBindingComponent.swift in Sources */,
 				B748784129EDE41600F62B37 /* ElementTreeBuilder.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
-				B7BECC3D295C76600091A96F /* ScaleComponentView.swift in Sources */,
 				B73245B32741188500708909 /* SPTViewController.mm in Sources */,
 				B7643B3E2910509F00F6A05B /* ObjectColorComponentView.swift in Sources */,
 				B7C90C742951911D00A2850E /* ActionUtil.swift in Sources */,
@@ -1440,7 +1445,6 @@
 				B7EDBDC028F3558F0048EF93 /* InspectToolView.swift in Sources */,
 				B70ABF2C291D767700919F50 /* AnimateShadeToolView.swift in Sources */,
 				B7A78A71292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift in Sources */,
-				B7BECC45295C9F9D0091A96F /* UniformScaleComponentView.swift in Sources */,
 				B7643B2F29084DAF00F6A05B /* SPTEasingUtil.swift in Sources */,
 				B7B8226A29F68F2F000C59E7 /* SPTObservableComponent.swift in Sources */,
 				B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */,
@@ -1450,7 +1454,6 @@
 				B7661CEF295EDA350070156D /* ScaleAnimatorBindingsComponent.swift in Sources */,
 				B748784329EDF28300F62B37 /* ElementTreeView.swift in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
-				B7BECC43295C9E6D0091A96F /* XYZScaleComponentView.swift in Sources */,
 				B7FD15B72939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift in Sources */,
 				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
 				B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */,
@@ -1469,6 +1472,7 @@
 				B73E47EA27D0168400CB0AFC /* SPTOrientationUtil.swift in Sources */,
 				B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */,
 				B73A700328840DB70043F9FF /* AnimatorsView.swift in Sources */,
+				B7B8229B2A02F6A6000C59E7 /* ScaleToolBarView.swift in Sources */,
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */,
 				B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */,

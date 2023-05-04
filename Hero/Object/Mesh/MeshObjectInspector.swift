@@ -59,7 +59,7 @@ class MeshObjectInspectorModel: ObservableObject {
     }
     
     func editScale(axis: Axis, dismiss: DismissAction) {
-        rootViewModel.activeToolViewModel = rootViewModel.scaleToolViewModel
+//        rootViewModel.activeToolViewModel = rootViewModel.scaleToolViewModel
         // TODO
 //        rootViewModel.scaleToolViewModel.selectedObjectViewModel!.axis = axis
         dismiss()

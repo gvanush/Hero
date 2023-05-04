@@ -61,7 +61,6 @@ class RootViewModel: ObservableObject {
     
     let inspectToolViewModel: InspectToolViewModel
     let orientToolViewModel: OrientToolViewModel
-    let scaleToolViewModel: ScaleToolViewModel
     let shadeToolViewModel: ShadeToolViewModel
     let animatePositionToolViewModel: AnimatePositionToolViewModel
     let animateOrientationToolViewModel: AnimateOrientationToolViewModel
@@ -71,7 +70,6 @@ class RootViewModel: ObservableObject {
     lazy var toolViewModels: [ToolViewModel] = [
         inspectToolViewModel,
         orientToolViewModel,
-        scaleToolViewModel,
         shadeToolViewModel,
         animatePositionToolViewModel,
         animateOrientationToolViewModel,
@@ -97,7 +95,6 @@ class RootViewModel: ObservableObject {
         
         self.inspectToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.orientToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.scaleToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.shadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animatePositionToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateOrientationToolViewModel = .init(sceneViewModel: sceneViewModel)
@@ -166,7 +163,8 @@ struct RootView: View {
     
     @StateObject private var model: RootViewModel
     @StateObject private var sceneViewModel: SceneViewModel
-    @StateObject private var moveToolModel = MoveToolModel()
+    @StateObject private var moveToolModel = BasicToolModel()
+    @StateObject private var scaleToolModel = BasicToolModel()
     
     @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
@@ -366,7 +364,7 @@ struct RootView: View {
             case .orient:
                 OrientToolView(model: model.orientToolViewModel)
             case .scale:
-                ScaleToolView(model: model.scaleToolViewModel)
+                ScaleToolView(model: scaleToolModel)
             case .shade:
                 ShadeToolView(model: model.shadeToolViewModel)
             case .animatePosition:
@@ -394,7 +392,7 @@ struct RootView: View {
             case .orient:
                 EmptyView()
             case .scale:
-                EmptyView()
+                ScaleToolBarView(model: scaleToolModel)
             case .shade:
                 EmptyView()
             case .animatePosition:
