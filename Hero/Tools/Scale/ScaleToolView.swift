@@ -26,7 +26,7 @@ fileprivate struct SelectedObjectView: View {
     }
     
     var body: some View {
-        ElementTreeView(activeIndexPath: $editingParams[tool: .move, object].activeElementIndexPath) {
+        ElementTreeView(activeIndexPath: $editingParams[tool: .scale, object].activeElementIndexPath) {
             switch scale.model {
             case .XYZ:
                 XYZScaleElement(object: object)

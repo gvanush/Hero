@@ -27,9 +27,9 @@ fileprivate struct SelectedObjectBarView: View {
         HStack {
             Divider()
             BasicToolNavigationView(tool: .scale, object: object)
-            coordinateSystemSelector()
+            scaleModelSelector()
         }
-        .onChange(of: scaleModel.value, perform: { [oldValue = scaleModel.value] newValue in
+        .onChange(of: scaleModel.value, perform: { [oldValue = scaleModel.value] _ in
             unbindAnimators(model: oldValue)
         })
     }
@@ -46,7 +46,7 @@ fileprivate struct SelectedObjectBarView: View {
         }
     }
     
-    private func coordinateSystemSelector() -> some View {
+    private func scaleModelSelector() -> some View {
         Menu {
             ForEach(SPTScaleModel.allCases) { model in
                 Button {

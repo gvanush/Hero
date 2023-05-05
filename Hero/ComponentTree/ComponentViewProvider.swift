@@ -37,14 +37,6 @@ class ComponentViewProvider<RC> {
     
     func viewFor(_ component: UniformScaleFieldAnimatorBindingComponent) -> AnyView? { nil }
     
-    func viewFor(_ component: EulerOrientationComponent) -> AnyView? {
-        nil
-    }
-    
-    func viewFor(_ component: PointAtDirectionComponent) -> AnyView? {
-        nil
-    }
-    
     func viewFor(_ component: EulerOrientationFieldAnimatorBindingComponent) -> AnyView? {
         nil
     }

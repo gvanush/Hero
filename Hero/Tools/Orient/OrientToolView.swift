@@ -6,51 +6,57 @@
 //
 
 import SwiftUI
-import Combine
 
-class OrientToolComponentViewProvider: MeshObjectComponentViewProvider<OrientationComponent> {
+
+fileprivate struct SelectedObjectView: View {
     
-    override func viewForRoot(_ root: OrientationComponent) -> AnyView? {
-        AnyView(OrientationComponentView(component: root, viewProvider: self))
+    let object: SPTObject
+    
+    @StateObject private var orientation: SPTObservableComponent<SPTOrientation>
+    
+    @EnvironmentObject var model: BasicToolModel
+    @EnvironmentObject var editingParams: ObjectEditingParams
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    @State private var originPointObject: SPTObject!
+    
+    init(object: SPTObject) {
+        self.object = object
+        _orientation = .init(wrappedValue: .init(object: object))
     }
-    
-}
-
-class OrientToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<OrientationComponent> {
-}
-
-fileprivate struct SelectedObjectControlsView: View {
-    
-    @ObservedObject var model: OrientToolSelectedObjectViewModel
     
     var body: some View {
-        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: OrientToolComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
-            .padding(.horizontal, 8.0)
-            .padding(.bottom, 8.0)
-            .background {
-                Color.clear
-                    .contentShape(Rectangle())
-            }
+        ElementTreeView(activeIndexPath: $editingParams[tool: .orient, object].activeElementIndexPath) {
+            EulerOrientationElement(object: object, model: orientation.model)
+        }
+        .onPreferenceChange(ComponentDisclosedElementsPreferenceKey.self) {
+            model[object].disclosedElementsData = $0
+        }
+        .onAppear {
+            originPointObject = sceneViewModel.scene.makeObject()
+            SPTPosition.make(SPTPosition.get(object: object), object: originPointObject)
+            SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+        }
+        .onDisappear {
+            model[object] = nil
+            SPTSceneProxy.destroyObject(originPointObject)
+        }
     }
     
-}
-
-class OrientToolViewModel: BasicToolViewModel<OrientToolSelectedObjectViewModel, OrientationComponent> {
-    
-    init(sceneViewModel: SceneViewModel) {
-        super.init(tool: .orient, sceneViewModel: sceneViewModel)
-    }
 }
 
 
 struct OrientToolView: View {
     
-    @ObservedObject var model: OrientToolViewModel
+    @ObservedObject var model: BasicToolModel
+    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        if let selectedObjectVM = model.selectedObjectViewModel {
-            SelectedObjectControlsView(model: selectedObjectVM)
-                .id(selectedObjectVM.object)
+        if let object = sceneViewModel.selectedObject {
+            SelectedObjectView(object: object)
+                .id(object)
+                .environmentObject(model)
         }
     }
 }
