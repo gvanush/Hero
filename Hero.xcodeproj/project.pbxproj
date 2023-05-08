@@ -218,6 +218,7 @@
 		B7E625832916DF6500343B67 /* SPTColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E625822916DF6500343B67 /* SPTColorUtil.swift */; };
 		B7EB66892A0976B400364618 /* ObjectOrientationModelSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66882A0976B400364618 /* ObjectOrientationModelSelector.swift */; };
 		B7EB668B2A09797200364618 /* ObjectScaleModelSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB668A2A09797200364618 /* ObjectScaleModelSelector.swift */; };
+		B7EB668D2A097FB200364618 /* BasicToolElementActionViewPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB668C2A097FB200364618 /* BasicToolElementActionViewPlaceholder.swift */; };
 		B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */; };
 		B7EDBDC028F3558F0048EF93 /* InspectToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */; };
 		B7EDBDC228F6826F0048EF93 /* AnimatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */; };
@@ -513,6 +514,7 @@
 		B7E625822916DF6500343B67 /* SPTColorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTColorUtil.swift; sourceTree = "<group>"; };
 		B7EB66882A0976B400364618 /* ObjectOrientationModelSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectOrientationModelSelector.swift; sourceTree = "<group>"; };
 		B7EB668A2A09797200364618 /* ObjectScaleModelSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectScaleModelSelector.swift; sourceTree = "<group>"; };
+		B7EB668C2A097FB200364618 /* BasicToolElementActionViewPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicToolElementActionViewPlaceholder.swift; sourceTree = "<group>"; };
 		B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolViewModel.swift; sourceTree = "<group>"; };
 		B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectToolView.swift; sourceTree = "<group>"; };
 		B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorControl.swift; sourceTree = "<group>"; };
@@ -1157,6 +1159,7 @@
 				B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */,
 				B7EDBDBF28F3558F0048EF93 /* InspectToolView.swift */,
 				B7B822982A02F2B5000C59E7 /* BasicToolNavigationView.swift */,
+				B7EB668C2A097FB200364618 /* BasicToolElementActionViewPlaceholder.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1290,6 +1293,7 @@
 				B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */,
 				B7C7489D28D2FFC700E270FB /* SceneUIToggle.swift in Sources */,
 				B721760A2750AD990047016B /* Buffer_metal.mm in Sources */,
+				B7EB668D2A097FB200364618 /* BasicToolElementActionViewPlaceholder.swift in Sources */,
 				B7791DAB2726768B00E0C934 /* UIColorUtil.swift in Sources */,
 				B73245B6274124C100708909 /* Renderer.mm in Sources */,
 				B76D4FCA28AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift in Sources */,

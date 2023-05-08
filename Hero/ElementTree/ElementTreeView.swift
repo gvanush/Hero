@@ -8,11 +8,9 @@
 import SwiftUI
 
 let elementOptionsViewMatchedGeometryID = "elementOptionsViewMatchedGeometryID"
-let elementSelectionViewHeight = 38.0
-let elementSelectionViewPadding = 3.0
+let elementActionViewMatchedGeometryID = "elementActionViewMatchedGeometryID"
 let elementNavigationAnimation = Animation.easeOut(duration: 0.25)
 let elementPropertyNavigationAnimation = Animation.easeOut(duration: 0.25)
-let elementActionViewHeigh = 75.0
 
 
 struct ElementTreeView<RE>: View where RE: Element {
@@ -30,8 +28,8 @@ struct ElementTreeView<RE>: View where RE: Element {
         rootElement
             .indexPath(.init(index: 0))
             .activeIndexPath($activeIndexPath)
-            .padding(elementSelectionViewPadding)
-            .frame(height: elementSelectionViewHeight)
+            .padding(3.0)
+            .frame(height: 38.0)
             .background(content: {
                 Color.clear
                     .background(Material.regular)

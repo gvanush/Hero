@@ -26,12 +26,16 @@ fileprivate struct SelectedObjectView: View {
     }
     
     var body: some View {
-        ElementTreeView(activeIndexPath: $editingParams[tool: .scale, object].activeElementIndexPath) {
-            switch scale.model {
-            case .XYZ:
-                XYZScaleElement(object: object)
-            case .uniform:
-                UniformScaleElement(object: object)
+        VStack {
+            BasicToolElementActionViewPlaceholder(object: object)
+            
+            ElementTreeView(activeIndexPath: $editingParams[tool: .scale, object].activeElementIndexPath) {
+                switch scale.model {
+                case .XYZ:
+                    XYZScaleElement(object: object)
+                case .uniform:
+                    UniformScaleElement(object: object)
+                }
             }
         }
         .onPreferenceChange(DisclosedElementsPreferenceKey.self) {

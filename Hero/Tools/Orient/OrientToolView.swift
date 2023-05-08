@@ -26,8 +26,12 @@ fileprivate struct SelectedObjectView: View {
     }
     
     var body: some View {
-        ElementTreeView(activeIndexPath: $editingParams[tool: .orient, object].activeElementIndexPath) {
-            EulerOrientationElement(object: object, model: orientation.model)
+        VStack {
+            BasicToolElementActionViewPlaceholder(object: object)
+            
+            ElementTreeView(activeIndexPath: $editingParams[tool: .orient, object].activeElementIndexPath) {
+                EulerOrientationElement(object: object, model: orientation.model)
+            }
         }
         .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
             model[object].disclosedElementsData = $0

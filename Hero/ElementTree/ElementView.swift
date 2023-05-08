@@ -37,18 +37,14 @@ extension Element {
         }
         .frame(maxWidth: isDisclosed || isChildOfActive ? .infinity : 0.0)
         .visible(isDisclosed || isChildOfActive)
-        .overlay(alignment: .bottom) {
-            Group {
-                if isActive {
-                    actionView
-                        .frame(height: elementActionViewHeigh)
-                        .offset(y: -elementSelectionViewHeight - 8.0)
-                        .transition(.identity)
-                }
-            }
-            .padding(-elementSelectionViewPadding)
-        }
         .overlay(alignment: .center) {
+            if isActive {
+                actionView
+                    .transition(.identity)
+                    .matchedGeometryEffect(id: elementActionViewMatchedGeometryID, in: namespace, properties: .frame, isSource: false)
+            }
+        }
+        .overlay {
             if isActive {
                 optionsView
                     .transition(.identity)

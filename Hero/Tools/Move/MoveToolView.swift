@@ -26,21 +26,26 @@ fileprivate struct SelectedObjectView: View {
     }
     
     var body: some View {
-        ElementTreeView(activeIndexPath: $editingParams[tool: .move, object].activeElementIndexPath) {
+        VStack {
             
-            switch position.coordinateSystem {
-            case .cartesian:
-                CartesianPositionElement(object: object, keyPath: \SPTPosition.cartesian, position: $position.cartesian, optionsView: {
-                    ObjectCoordinateSystemSelector(object: object)
-                })
-            case .linear:
-                LinearPositionElement(object: object)
-            case .cylindrical:
-                CylindricalPositionElement(object: object)
-            case .spherical:
-                SphericalPositionElement(object: object)
+            BasicToolElementActionViewPlaceholder(object: object)
+            
+            ElementTreeView(activeIndexPath: $editingParams[tool: .move, object].activeElementIndexPath) {
+                
+                switch position.coordinateSystem {
+                case .cartesian:
+                    CartesianPositionElement(object: object, keyPath: \SPTPosition.cartesian, position: $position.cartesian, optionsView: {
+                        ObjectCoordinateSystemSelector(object: object)
+                    })
+                case .linear:
+                    LinearPositionElement(object: object)
+                case .cylindrical:
+                    CylindricalPositionElement(object: object)
+                case .spherical:
+                    SphericalPositionElement(object: object)
+                }
+                
             }
-            
         }
         .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
             model[object].disclosedElementsData = $0
