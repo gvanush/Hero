@@ -29,7 +29,7 @@ fileprivate struct SelectedObjectView: View {
         ElementTreeView(activeIndexPath: $editingParams[tool: .orient, object].activeElementIndexPath) {
             EulerOrientationElement(object: object, model: orientation.model)
         }
-        .onPreferenceChange(ComponentDisclosedElementsPreferenceKey.self) {
+        .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
             model[object].disclosedElementsData = $0
         }
         .onAppear {

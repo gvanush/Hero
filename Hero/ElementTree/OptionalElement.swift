@@ -34,6 +34,10 @@ where E: Element {
         }
     }
     
+    var id: Never {
+        fatalError()
+    }
+    
     var title: String {
         fatalError()
     }

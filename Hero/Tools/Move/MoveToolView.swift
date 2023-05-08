@@ -40,7 +40,7 @@ fileprivate struct SelectedObjectView: View {
             }
             
         }
-        .onPreferenceChange(ComponentDisclosedElementsPreferenceKey.self) {
+        .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
             model[object].disclosedElementsData = $0
         }
         .onChange(of: position.value, perform: { newValue in

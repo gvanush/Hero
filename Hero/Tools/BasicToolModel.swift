@@ -11,7 +11,7 @@ import Foundation
 class BasicToolModel: ObservableObject {
     
     struct ObjectData {
-        var disclosedElementsData: [ComponentElementData]?
+        var disclosedElementsData: [ElementData]?
     }
     
     @Published private var items = [SPTObject : ObjectData]()

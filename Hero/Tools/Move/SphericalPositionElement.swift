@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SphericalPositionElement: ComponentElement {
+struct SphericalPositionElement: Element {
 
     static let keyPath = \SPTPosition.spherical
     static let originKeyPath = \SPTPosition.spherical.origin

@@ -34,7 +34,7 @@ fileprivate struct SelectedObjectView: View {
                 UniformScaleElement(object: object)
             }
         }
-        .onPreferenceChange(ComponentDisclosedElementsPreferenceKey.self) {
+        .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
             model[object].disclosedElementsData = $0
         }
         .onAppear {

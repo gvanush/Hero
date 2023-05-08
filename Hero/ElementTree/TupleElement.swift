@@ -20,6 +20,10 @@ where E1: Element, E2: Element, E3: Element, E4: Element, E5: Element {
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
     
+    var id: Never {
+        fatalError()
+    }
+    
     var title: String {
         fatalError()
     }

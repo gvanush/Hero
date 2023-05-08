@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct CylindricalPositionElement: ComponentElement {
+struct CylindricalPositionElement: Element {
     
     static let keyPath = \SPTPosition.cylindrical
     static let originKeyPath = \SPTPosition.cylindrical.origin

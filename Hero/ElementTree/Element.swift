@@ -7,6 +7,20 @@
 
 import SwiftUI
 
+struct ElementData: Equatable {
+    let id: AnyHashable
+    let title: String
+    var subtitle: String?
+    let indexPath: IndexPath
+}
+
+struct DisclosedElementsPreferenceKey: PreferenceKey {
+    static var defaultValue = [ElementData]()
+
+    static func reduce(value: inout [ElementData], nextValue: () -> [ElementData]) {
+        value.append(contentsOf: nextValue())
+    }
+}
 
 typealias ElementProperty = Hashable & CaseIterable & Displayable
 
@@ -16,7 +30,11 @@ enum ElementEmptyProperty: ElementProperty {
     static var allCases = [ElementEmptyProperty]()
 }
 
-protocol Element: View {
+protocol Element: View, Identifiable {
+    
+    var title: String { get }
+    
+    var subtitle: String? { get }
     
     var indexPath: IndexPath! { get set }
     var _activeIndexPath: Binding<IndexPath>! { get set }
@@ -32,9 +50,6 @@ protocol Element: View {
     
     associatedtype ActionView: View = EmptyView
     @ViewBuilder var actionView: ActionView { get }
-    
-    associatedtype FaceView: View
-    @ViewBuilder var faceView: FaceView { get }
     
     var namespace: Namespace.ID { get }
     
@@ -56,6 +71,10 @@ protocol Element: View {
 
 
 extension Element {
+    
+    var subtitle: String? {
+        nil
+    }
     
     var activeIndexPath: IndexPath {
         get {
@@ -143,14 +162,6 @@ extension Element where Property == ElementEmptyProperty {
 extension Element where Content == EmptyElement {
     
     var content: Content {
-        .init()
-    }
-    
-}
-
-extension Element where ActionView == EmptyView {
-    
-    var actionView: ActionView {
         .init()
     }
     

@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct CartesianPositionElement<C>: ComponentElement
+struct CartesianPositionElement<C>: Element
 where C: SPTInspectableComponent {
     
     enum Property: Int, ElementProperty {

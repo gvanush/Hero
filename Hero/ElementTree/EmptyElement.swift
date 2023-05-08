@@ -10,6 +10,10 @@ import SwiftUI
 
 struct EmptyElement: Element {
     
+    var id: Never {
+        fatalError()
+    }
+    
     var title: String {
         fatalError()
     }

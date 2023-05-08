@@ -8,9 +8,10 @@
 import SwiftUI
 
 
-struct CompositeElement<C>: Element
-where C: Element {
+struct CompositeElement<ID, C>: Element
+where ID: Hashable, C: Element {
     
+    let id: ID
     let title: String
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
@@ -19,25 +20,10 @@ where C: Element {
     
     @Namespace var namespace
     
-    init(title: String, @ElementBuilder content: () -> C) {
+    init(id: ID, title: String, @ElementBuilder content: () -> C) {
         self.title = title
+        self.id = id
         self.content = content()
-    }
-    
-    var faceView: some View {
-        Text(title)
-            .font(.callout)
-            .overlay {
-                VStack {
-                    Spacer()
-                    Image(systemName: "ellipsis")
-                        .imageScale(.small)
-                        .fontWeight(.light)
-                        .foregroundColor(.primary)
-                }
-                .padding(.bottom, 1.0)
-                .padding(.bottom, -3.0)
-            }
     }
     
 }

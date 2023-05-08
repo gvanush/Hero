@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct LinearPositionElement: ComponentElement {
+struct LinearPositionElement: Element {
     
     static let keyPath = \SPTPosition.linear
     static let originKeyPath = \SPTPosition.linear.origin

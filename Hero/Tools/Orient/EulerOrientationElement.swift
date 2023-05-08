@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct EulerOrientationElement: ComponentElement {
+struct EulerOrientationElement: Element {
     
     static let keyPath = \SPTOrientation.euler
     

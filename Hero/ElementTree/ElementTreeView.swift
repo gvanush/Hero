@@ -40,7 +40,8 @@ struct ElementTreeView<RE>: View where RE: Element {
 }
 
 
-fileprivate struct LeafElement: Element {
+fileprivate struct LeafElement<ID>: Element
+where ID: Hashable {
     
     enum Property: ElementProperty {
         case x
@@ -48,6 +49,7 @@ fileprivate struct LeafElement: Element {
         case z
     }
     
+    let id: ID
     let title: String
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
@@ -57,7 +59,8 @@ fileprivate struct LeafElement: Element {
     
     @Namespace var namespace
     
-    init(title: String, activeProperty: Property) {
+    init(id: ID, title: String, activeProperty: Property) {
+        self.id = id
         self.title = title
         _activeProperty = .init(wrappedValue: activeProperty)
     }
@@ -89,42 +92,6 @@ fileprivate struct LeafElement: Element {
     }
 }
 
-fileprivate struct TestElement: Element {
-    
-    var title: String {
-        "TestElement"
-    }
-    
-    var indexPath: IndexPath!
-    var _activeIndexPath: Binding<IndexPath>!
-    
-    @Namespace var namespace
-    
-    var content: some Element {
-        LeafElement(title: "L1", activeProperty: .x)
-        LeafElement(title: "L2", activeProperty: .x)
-        LeafElement(title: "L3", activeProperty: .x)
-        LeafElement(title: "L4", activeProperty: .x)
-        LeafElement(title: "L5", activeProperty: .x)
-    }
-    
-    var faceView: some View {
-        Text(title)
-            .font(.callout)
-            .overlay {
-                VStack {
-                    Spacer()
-                    Image(systemName: "ellipsis")
-                        .imageScale(.small)
-                        .fontWeight(.light)
-                        .foregroundColor(.primary)
-                }
-                .padding(.bottom, -3.0)
-            }
-    }
-}
-
-
 struct ElementTreeView_Previews: PreviewProvider {
     
     struct ContentView: View {
@@ -137,18 +104,16 @@ struct ElementTreeView_Previews: PreviewProvider {
             VStack {
                 
                 ElementTreeView(activeIndexPath: $activeIndexPath) {
-                    CompositeElement(title: "Ancestor") {
-                        CompositeElement(title: "Parent") {
+                    CompositeElement(id: "Ancestor", title: "Ancestor") {
+                        CompositeElement(id: "Parent", title: "Parent") {
                             if selector {
-                                TestElement()
-                                LeafElement(title: "Leaf1", activeProperty: .x)
+                                LeafElement(id: "Leaf1", title: "Leaf1", activeProperty: .x)
                             } else {
                                 
-                                LeafElement(title: "Leaf1", activeProperty: .x)
+                                LeafElement(id: "Leaf2", title: "Leaf2", activeProperty: .x)
                             }
                         }
-                        LeafElement(title: "Leaf3", activeProperty: .x)
-                        TestElement()
+                        LeafElement(id: "Leaf3", title: "Leaf3", activeProperty: .x)
                     }
                 }
                 

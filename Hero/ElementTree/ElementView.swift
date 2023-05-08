@@ -97,6 +97,28 @@ extension Element {
         }
     }
     
+    var faceView: some View {
+        Text(title)
+            .font(Font.system(size: 15, weight: .regular))
+            .foregroundColor(.secondary)
+            .fixedSize(horizontal: true, vertical: false)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.horizontal, isChildOfActive ? 8.0 : 0.0)
+            .contentShape(Rectangle())
+            .overlay {
+                VStack {
+                    Spacer()
+                    Image(systemName: "ellipsis")
+                        .imageScale(.small)
+                        .fontWeight(.light)
+                        .foregroundColor(.primary)
+                }
+                .padding(.bottom, 1.0)
+            }
+            .scaleEffect(x: textHorizontalScale)
+            .preference(key: DisclosedElementsPreferenceKey.self, value: isDisclosed ? [.init(id: id, title: title, subtitle: subtitle, indexPath: indexPath)] : [])
+    }
+    
     var propertyView: some View {
         ForEach(Array(Property.allCases), id: \.self) { prop in
             Text(prop.displayName)
@@ -121,6 +143,27 @@ extension Element {
         .frame(maxWidth: isActive ? .infinity : 0.0)
         .visible(isActive)
         .allowsHitTesting(isActive)
+    }
+ 
+    private var textHorizontalScale: CGFloat {
+        guard let distance = distanceToActiveAncestor else { return 1.0 }
+        return pow(1.3, 1.0 - CGFloat(distance))
+    }
+    
+    private var distanceToActiveAncestor: Int? {
+        guard indexPath.starts(with: activeIndexPath) else {
+            return nil
+        }
+        return indexPath.count - activeIndexPath.count
+    }
+    
+}
+
+
+extension Element where ActionView == EmptyView {
+    
+    var actionView: ActionView {
+        .init()
     }
     
 }

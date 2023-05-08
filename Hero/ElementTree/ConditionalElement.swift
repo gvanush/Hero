@@ -41,6 +41,10 @@ where TE: Element, FE: Element {
             .activeIndexPath(_activeIndexPath.projectedValue)
     }
     
+    var id: Never {
+        fatalError()
+    }
+    
     var title: String {
         fatalError()
     }

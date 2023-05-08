@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct UniformScaleElement: ComponentElement {
+struct UniformScaleElement: Element {
     
     static let keyPath = \SPTScale.uniform
     

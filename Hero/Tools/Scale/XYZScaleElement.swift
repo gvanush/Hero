@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct XYZScaleElement: ComponentElement {
+struct XYZScaleElement: Element {
     
     static let keyPath = \SPTScale.xyz
     

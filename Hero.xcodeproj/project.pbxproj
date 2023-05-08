@@ -169,7 +169,6 @@
 		B7B8226A29F68F2F000C59E7 /* SPTObservableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8226929F68F2F000C59E7 /* SPTObservableComponent.swift */; };
 		B7B8226C29F6DC38000C59E7 /* SPTObservableComponentProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8226B29F6DC37000C59E7 /* SPTObservableComponentProperty.swift */; };
 		B7B8227029F6E373000C59E7 /* ComponentActiveProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8226F29F6E373000C59E7 /* ComponentActiveProperty.swift */; };
-		B7B8227229F711E9000C59E7 /* ComponentElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227129F711E9000C59E7 /* ComponentElement.swift */; };
 		B7B8227429F733F1000C59E7 /* ConditionalElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227329F733F1000C59E7 /* ConditionalElement.swift */; };
 		B7B8227729F7DED6000C59E7 /* LinearPositionElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227629F7DED6000C59E7 /* LinearPositionElement.swift */; };
 		B7B8227929F80D76000C59E7 /* ComponentFloatPropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B8227829F80D76000C59E7 /* ComponentFloatPropertySelector.swift */; };
@@ -452,7 +451,6 @@
 		B7B8226929F68F2F000C59E7 /* SPTObservableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObservableComponent.swift; sourceTree = "<group>"; };
 		B7B8226B29F6DC37000C59E7 /* SPTObservableComponentProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObservableComponentProperty.swift; sourceTree = "<group>"; };
 		B7B8226F29F6E373000C59E7 /* ComponentActiveProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentActiveProperty.swift; sourceTree = "<group>"; };
-		B7B8227129F711E9000C59E7 /* ComponentElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentElement.swift; sourceTree = "<group>"; };
 		B7B8227329F733F1000C59E7 /* ConditionalElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalElement.swift; sourceTree = "<group>"; };
 		B7B8227629F7DED6000C59E7 /* LinearPositionElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPositionElement.swift; sourceTree = "<group>"; };
 		B7B8227829F80D76000C59E7 /* ComponentFloatPropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentFloatPropertySelector.swift; sourceTree = "<group>"; };
@@ -907,7 +905,6 @@
 				B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */,
 				B7643B30290BD31B00F6A05B /* EditingParams.swift */,
 				B7B8226F29F6E373000C59E7 /* ComponentActiveProperty.swift */,
-				B7B8227129F711E9000C59E7 /* ComponentElement.swift */,
 				B7B8227829F80D76000C59E7 /* ComponentFloatPropertySelector.swift */,
 				B7B8228C29FC2EBC000C59E7 /* ObjectHierarchyView.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
@@ -1346,7 +1343,6 @@
 				B7B711EC28C70ACC0077C7CD /* SPTPlayViewController.mm in Sources */,
 				B7B711EE28C70B1B0077C7CD /* SPTPlayView.swift in Sources */,
 				B787799528FC36E500E3CDA7 /* RandomAnimatorView.swift in Sources */,
-				B7B8227229F711E9000C59E7 /* ComponentElement.swift in Sources */,
 				B7C748A128E377F600E270FB /* ScaleToolView.swift in Sources */,
 				B7B711DC28C13B570077C7CD /* Materials.cpp in Sources */,
 				B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */,
