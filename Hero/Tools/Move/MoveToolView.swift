@@ -30,7 +30,9 @@ fileprivate struct SelectedObjectView: View {
             
             switch position.coordinateSystem {
             case .cartesian:
-                CartesianPositionElement(object: object, keyPath: \SPTPosition.cartesian, position: $position.cartesian)
+                CartesianPositionElement(object: object, keyPath: \SPTPosition.cartesian, position: $position.cartesian, optionsView: {
+                    ObjectCoordinateSystemSelector(object: object)
+                })
             case .linear:
                 LinearPositionElement(object: object)
             case .cylindrical:

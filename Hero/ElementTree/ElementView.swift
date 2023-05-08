@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-let elementNavigationAnimation = Animation.easeOut(duration: 0.25)
-let elementPropertyNavigationAnimation = Animation.easeOut(duration: 0.25)
-let elementActionViewHeigh = 75.0
-
 
 extension Element {
     
@@ -51,6 +47,13 @@ extension Element {
                 }
             }
             .padding(-elementSelectionViewPadding)
+        }
+        .overlay(alignment: .center) {
+            if isActive {
+                optionsView
+                    .transition(.identity)
+                    .matchedGeometryEffect(id: elementOptionsViewMatchedGeometryID, in: namespace, properties: .position, isSource: false)
+            }
         }
         .onChange(of: isDisclosed, perform: { newValue in
             if newValue {
@@ -116,7 +119,7 @@ extension Element {
                 .padding(.bottom, 1.0)
             }
             .scaleEffect(x: textHorizontalScale)
-            .preference(key: DisclosedElementsPreferenceKey.self, value: isDisclosed ? [.init(id: id, title: title, subtitle: subtitle, indexPath: indexPath)] : [])
+            .preference(key: DisclosedElementsPreferenceKey.self, value: isDisclosed ? [.init(id: id, title: title, subtitle: subtitle, indexPath: indexPath, namespace: namespace)] : [])
     }
     
     var propertyView: some View {
@@ -166,4 +169,12 @@ extension Element where ActionView == EmptyView {
         .init()
     }
     
+}
+
+extension Element where OptionsView == EmptyView {
+
+    var optionsView: OptionsView {
+        .init()
+    }
+
 }

@@ -1,20 +1,18 @@
 //
-//  OrientToolBarView.swift
+//  ObjectOrientationModelSelector.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 05.05.23.
+//  Created by Vanush Grigoryan on 08.05.23.
 //
 
 import SwiftUI
 
-
-fileprivate struct SelectedObjectBarView: View {
+struct ObjectOrientationModelSelector: View {
     
     let object: SPTObject
     
     @StateObject private var orientationModel: SPTObservableComponentProperty<SPTOrientation, SPTOrientationModel>
-    @EnvironmentObject var model: BasicToolModel
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
     @EnvironmentObject var editingParams: ObjectEditingParams
     
     init(object: SPTObject) {
@@ -24,18 +22,10 @@ fileprivate struct SelectedObjectBarView: View {
     }
     
     var body: some View {
-        HStack {
-            Divider()
-            BasicToolNavigationView(tool: .orient, object: object)
-            orientationModelSelector()
-        }
-    }
-    
-    private func orientationModelSelector() -> some View {
         Menu {
             ForEach(SPTOrientationModel.allCases) { model in
                 Button {
-                    setOrientationModel(model)
+                    updateOrientationModel(model)
                 } label: {
                     HStack {
                         Text(model.displayName)
@@ -55,7 +45,7 @@ fileprivate struct SelectedObjectBarView: View {
         .shadow(radius: 0.5)
     }
     
-    func setOrientationModel(_ model: SPTOrientationModel) {
+    func updateOrientationModel(_ model: SPTOrientationModel) {
         let orientation = SPTOrientation.get(object: object)
         
         switch model {
@@ -77,23 +67,4 @@ fileprivate struct SelectedObjectBarView: View {
         
         editingParams[tool: .orient, object].activeElementIndexPath = .init(index: 0)
     }
-    
-}
-
-
-struct OrientToolBarView: View {
-    
-    @ObservedObject var model: BasicToolModel
-    
-    @EnvironmentObject var sceneViewModel: SceneViewModel
-    
-    var body: some View {
-        if let object = sceneViewModel.selectedObject {
-            SelectedObjectBarView(object: object)
-                .transition(.identity)
-                .id(object)
-                .environmentObject(model)
-        }
-    }
-    
 }

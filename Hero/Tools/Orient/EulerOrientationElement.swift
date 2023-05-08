@@ -49,6 +49,10 @@ struct EulerOrientationElement: Element {
         .tint(Color.primarySelectionColor)
     }
     
+    var optionsView: some View {
+        ObjectOrientationModelSelector(object: object)
+    }
+    
     func onActive() {
         setupGuideObject()
     }

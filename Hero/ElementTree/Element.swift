@@ -12,6 +12,7 @@ struct ElementData: Equatable {
     let title: String
     var subtitle: String?
     let indexPath: IndexPath
+    let namespace: Namespace.ID
 }
 
 struct DisclosedElementsPreferenceKey: PreferenceKey {
@@ -50,6 +51,9 @@ protocol Element: View, Identifiable {
     
     associatedtype ActionView: View = EmptyView
     @ViewBuilder var actionView: ActionView { get }
+    
+    associatedtype OptionsView: View = EmptyView
+    @ViewBuilder var optionsView: OptionsView { get }
     
     var namespace: Namespace.ID { get }
     

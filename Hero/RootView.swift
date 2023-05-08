@@ -211,6 +211,7 @@ struct RootView: View {
                     }
                     .padding(.horizontal, 8.0)
                     .frame(height: Self.toolControlViewsAreaHeight)
+                    .zIndex(1)
                                         
                     HStack {
                         toolSelector()
@@ -386,11 +387,11 @@ struct RootView: View {
             case .inspect:
                 EmptyView()
             case .move:
-                MoveToolBarView(model: moveToolModel)
+                BasicToolBarView(model: moveToolModel)
             case .orient:
-                OrientToolBarView(model: orientToolModel)
+                BasicToolBarView(model: orientToolModel)
             case .scale:
-                ScaleToolBarView(model: scaleToolModel)
+                BasicToolBarView(model: scaleToolModel)
             case .shade:
                 EmptyView()
             case .animatePosition:

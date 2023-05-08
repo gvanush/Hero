@@ -47,6 +47,10 @@ struct XYZScaleElement: Element {
         .tint(Color.primarySelectionColor)
     }
     
+    var optionsView: some View {
+        ObjectScaleModelSelector(object: object)
+    }
+    
     func onActive() {
         setupGuideObject()
     }

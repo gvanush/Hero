@@ -8,8 +8,8 @@
 import SwiftUI
 
 
-struct CartesianPositionElement<C>: Element
-where C: SPTInspectableComponent {
+struct CartesianPositionElement<C, OV>: Element
+where C: SPTInspectableComponent, OV: View {
     
     enum Property: Int, ElementProperty {
         case x
@@ -27,12 +27,14 @@ where C: SPTInspectableComponent {
     @ComponentActiveProperty var activeProperty: Property
     @State private var guideObject: SPTObject?
     
+    let optionsView: OV
     
-    init(title: String = "Position", subtitle: String? = "Cartesian", object: SPTObject, keyPath: WritableKeyPath<C, simd_float3>, position: Binding<simd_float3>) {
+    init(title: String = "Position", subtitle: String? = "Cartesian", object: SPTObject, keyPath: WritableKeyPath<C, simd_float3>, position: Binding<simd_float3>, @ViewBuilder optionsView: () -> OV = { EmptyView() }) {
         self.title = title
         self.subtitle = subtitle
         self.object = object
         self.keyPath = keyPath
+        self.optionsView = optionsView()
         _cartesian = position
         _activeProperty = .init(object: object, componentId: keyPath)
     }

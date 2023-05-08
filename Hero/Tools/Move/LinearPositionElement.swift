@@ -130,6 +130,10 @@ struct LinearPositionElement: Element {
         .tint(.primarySelectionColor)
     }
     
+    var optionsView: some View {
+        ObjectCoordinateSystemSelector(object: object)
+    }
+    
     func onAwake() {
         setupOrigin()
         setupDirection()

@@ -90,6 +90,10 @@ struct CylindricalPositionElement: Element {
         SPTPointLook.update(pointLook, object: originPointObject)
     }
     
+    var optionsView: some View {
+        ObjectCoordinateSystemSelector(object: object)
+    }
+    
     func onActivePropertyChange() {
         updateActiveGuideObject()
     }

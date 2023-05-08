@@ -38,6 +38,10 @@ struct UniformScaleElement: Element {
         .tint(.primarySelectionColor)
     }
     
+    var optionsView: some View {
+        ObjectScaleModelSelector(object: object)
+    }
+    
     var id: some Hashable {
         Self.keyPath
     }

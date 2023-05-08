@@ -7,8 +7,12 @@
 
 import SwiftUI
 
+let elementOptionsViewMatchedGeometryID = "elementOptionsViewMatchedGeometryID"
 let elementSelectionViewHeight = 38.0
 let elementSelectionViewPadding = 3.0
+let elementNavigationAnimation = Animation.easeOut(duration: 0.25)
+let elementPropertyNavigationAnimation = Animation.easeOut(duration: 0.25)
+let elementActionViewHeigh = 75.0
 
 
 struct ElementTreeView<RE>: View where RE: Element {
