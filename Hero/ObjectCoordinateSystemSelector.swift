@@ -62,7 +62,6 @@ struct ObjectCoordinateSystemSelector: View {
             SPTPosition.update(position.toCylindrical(origin: position.origin), object: object)
         }
         
-        editingParams[tool: .move, object].activeElementIndexPath = .init(index: 0)
     }
     
     private func unbindAnimators(coordinateSystem: SPTCoordinateSystem) {

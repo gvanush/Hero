@@ -24,7 +24,7 @@ struct EulerOrientationElement: Element {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     @StateObject private var euler: SPTObservableComponentProperty<SPTOrientation, simd_float3>
-    @ComponentActiveProperty var activeProperty: Property
+    @ObjectComponentActiveProperty var activeProperty: Property
     
     @State private var guideObject: SPTObject?
     
@@ -39,11 +39,11 @@ struct EulerOrientationElement: Element {
         Group {
             switch activeProperty {
             case .x:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.x), value: $euler.xInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.xInDegrees), value: $euler.xInDegrees, formatter: Formatters.angle)
             case .y:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.y), value: $euler.yInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.yInDegrees), value: $euler.yInDegrees, formatter: Formatters.angle)
             case .z:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.z), value: $euler.zInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.zInDegrees), value: $euler.zInDegrees, formatter: Formatters.angle)
             }
         }
         .tint(Color.primarySelectionColor)

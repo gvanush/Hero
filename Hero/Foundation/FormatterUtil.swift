@@ -8,6 +8,8 @@
 import Foundation
 
 enum Formatters {
+    
+    static let genericFloat = BasicFloatFormatter()
 
     static let distance = BasicFloatFormatter()
     

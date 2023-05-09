@@ -22,7 +22,7 @@ struct CylindricalPositionElement: Element {
     let object: SPTObject
     
     @StateObject private var cylindrical: SPTObservableComponentProperty<SPTPosition, SPTCylindricalCoordinates>
-    @ComponentActiveProperty var activeProperty: Property
+    @ObjectComponentActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -50,11 +50,11 @@ struct CylindricalPositionElement: Element {
         Group {
             switch activeProperty {
             case .radius:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.radius), value: $cylindrical.radius, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.radius), value: $cylindrical.radius, formatter: Formatters.distance)
             case .height:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.height), value: $cylindrical.height, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.height), value: $cylindrical.height, formatter: Formatters.distance)
             case .longitude:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.longitude), value: $cylindrical.longitudeInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.longitudeInDegrees), value: $cylindrical.longitudeInDegrees, formatter: Formatters.angle)
             }
         }
         .tint(.primarySelectionColor)

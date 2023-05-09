@@ -18,7 +18,7 @@ struct UniformScaleElement: Element {
     let object: SPTObject
     
     @StateObject private var uniform: SPTObservableComponentProperty<SPTScale, Float>
-    @ComponentActiveProperty var activeProperty: Property
+    @ObjectComponentActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -32,7 +32,7 @@ struct UniformScaleElement: Element {
         Group {
             switch activeProperty {
             case .value:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath, value: $uniform.value, formatter: Formatters.scale)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath, value: $uniform.value, formatter: Formatters.scale)
             }
         }
         .tint(.primarySelectionColor)

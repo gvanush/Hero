@@ -24,6 +24,7 @@ where C: SPTInspectableComponent, V: Equatable {
 
         willChangeSubscription = C.onWillChangeSink(object: object) { [unowned self] newValue in
             if self.cachedValue != newValue[keyPath: keyPath] {
+                self.objectWillChange.send()
                 self.cachedValue = newValue[keyPath: keyPath]
             }
         }

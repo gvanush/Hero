@@ -21,7 +21,7 @@ struct SphericalPositionElement: Element {
     let object: SPTObject
     
     @StateObject private var spherical: SPTObservableComponentProperty<SPTPosition, SPTSphericalCoordinates>
-    @ComponentActiveProperty var activeProperty: Property
+    @ObjectComponentActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -77,11 +77,11 @@ struct SphericalPositionElement: Element {
         Group {
             switch activeProperty {
             case .radius:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.radius), value: $spherical.radius, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.radius), value: $spherical.radius, formatter: Formatters.distance)
             case .latitude:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.latitude), value: $spherical.latitudeInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.latitudeInDegrees), value: $spherical.latitudeInDegrees, formatter: Formatters.angle)
             case .longitude:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.longitude), value: $spherical.longitudeInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.longitudeInDegrees), value: $spherical.longitudeInDegrees, formatter: Formatters.angle)
             }
         }
         .tint(.primarySelectionColor)

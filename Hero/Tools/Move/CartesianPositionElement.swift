@@ -18,13 +18,13 @@ where C: SPTInspectableComponent, OV: View {
     }
     
     let object: SPTObject
-    let keyPath: KeyPath<C, simd_float3>
+    let keyPath: WritableKeyPath<C, simd_float3>
     @Binding private var cartesian: simd_float3
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var editingParams: ObjectEditingParams
     
-    @ComponentActiveProperty var activeProperty: Property
+    @ObjectComponentActiveProperty var activeProperty: Property
     @State private var guideObject: SPTObject?
     
     let optionsView: OV
@@ -43,11 +43,11 @@ where C: SPTInspectableComponent, OV: View {
         Group {
             switch activeProperty {
             case .x:
-                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.x), value: $cartesian.x, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object, id: keyPath.appending(path: \.x), value: $cartesian.x, formatter: Formatters.distance)
             case .y:
-                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.y), value: $cartesian.y, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object, id: keyPath.appending(path: \.y), value: $cartesian.y, formatter: Formatters.distance)
             case .z:
-                ComponentFloatPropertySelector(object: object, id: keyPath.appending(path: \.z), value: $cartesian.z, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object, id: keyPath.appending(path: \.z), value: $cartesian.z, formatter: Formatters.distance)
             }
         }
         .tint(controlTint)

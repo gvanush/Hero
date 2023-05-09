@@ -1,5 +1,5 @@
 //
-//  ComponentActiveProperty.swift
+//  ObjectComponentActiveProperty.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 24.04.23.
@@ -9,7 +9,7 @@ import SwiftUI
 
 
 @propertyWrapper
-struct ComponentActiveProperty<P>: DynamicProperty
+struct ObjectComponentActiveProperty<P>: DynamicProperty
 where P: RawRepresentable, P.RawValue == Int {
     
     let object: SPTObject

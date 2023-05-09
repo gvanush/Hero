@@ -65,6 +65,5 @@ struct ObjectOrientationModelSelector: View {
             fatalError()
         }
         
-        editingParams[tool: .orient, object].activeElementIndexPath = .init(index: 0)
     }
 }

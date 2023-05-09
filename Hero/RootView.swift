@@ -59,30 +59,17 @@ class RootViewModel: ObservableObject {
     let sceneViewModel: SceneViewModel
     let animatorsViewModel: AnimatorsViewModel
     
-    let inspectToolViewModel: InspectToolViewModel
-    let shadeToolViewModel: ShadeToolViewModel
     let animatePositionToolViewModel: AnimatePositionToolViewModel
     let animateOrientationToolViewModel: AnimateOrientationToolViewModel
     let animateScaleToolViewModel: AnimateScaleToolViewModel
     let animateShadeToolViewModel: AnimateShadeToolViewModel
     
     lazy var toolViewModels: [ToolViewModel] = [
-        inspectToolViewModel,
-        shadeToolViewModel,
         animatePositionToolViewModel,
         animateOrientationToolViewModel,
         animateScaleToolViewModel,
         animateShadeToolViewModel
     ]
-    
-    @Published var activeToolViewModel: ToolViewModel {
-        willSet {
-            activeToolViewModel.onInactive()
-        }
-        didSet {
-            activeToolViewModel.onActive()
-        }
-    }
     
     let sceneGraph: SceneGraph
     let objectEditingParams = ObjectEditingParams()
@@ -91,14 +78,10 @@ class RootViewModel: ObservableObject {
         self.sceneViewModel = sceneViewModel
         self.animatorsViewModel = .init()
         
-        self.inspectToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.shadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animatePositionToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateOrientationToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateScaleToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateShadeToolViewModel = .init(sceneViewModel: sceneViewModel)
-        
-        self.activeToolViewModel = inspectToolViewModel
         
         sceneGraph = SceneGraph(scene: sceneViewModel.scene)
         
@@ -163,6 +146,7 @@ struct RootView: View {
     @StateObject private var moveToolModel = BasicToolModel()
     @StateObject private var orientToolModel = BasicToolModel()
     @StateObject private var scaleToolModel = BasicToolModel()
+    @StateObject private var shadeToolModel = BasicToolModel()
     
     @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
@@ -170,7 +154,6 @@ struct RootView: View {
     @State private var activeTool = Tool.inspect
     @State private var showsAnimatorsView = false
     @State private var showsNewObjectView = false
-    @State private var showsSelectedObjectInspector = false
     @State private var playableScene: SPTPlayableSceneProxy?
     @State private var showsBuildMetadata = false
 
@@ -188,7 +171,7 @@ struct RootView: View {
         ActionBarItemReader(model: actionBarModel) {
             SceneView(model: sceneViewModel, uiEdgeInsets: Self.sceneUIInsets)
                 .lookCategories([.renderableModel, .guide])
-            .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
+            .renderingPaused(showsAnimatorsView || showsNewObjectView || playableScene != nil)
             .environmentObject(userInteractionState)
             .overlay(alignment: .bottomTrailing) {
                 ActionBar(model: actionBarModel)
@@ -262,9 +245,6 @@ struct RootView: View {
                 model.createObject(meshId: meshId, position: SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin, scale: 5.0)
             }
         }
-        .sheet(isPresented: $showsSelectedObjectInspector) {
-            MeshObjectInspector(model: .init(object: sceneViewModel.selectedObject!, rootViewModel: model))
-        }
         .fullScreenCover(item: $playableScene, content: { scene in
             PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))
         })
@@ -274,12 +254,6 @@ struct RootView: View {
             if scenePhase == .active && newScenePhase == .inactive {
                 playableScene = nil
             }
-        }
-        .onAppear {
-            model.activeToolViewModel.onActive()
-        }
-        .onDisappear {
-            model.activeToolViewModel.onInactive()
         }
     }
     
@@ -365,7 +339,7 @@ struct RootView: View {
             case .scale:
                 ScaleToolView(model: scaleToolModel)
             case .shade:
-                ShadeToolView(model: model.shadeToolViewModel)
+                ShadeToolView(model: shadeToolModel)
             case .animatePosition:
                 AnimatePositionToolView(model: model.animatePositionToolViewModel)
             case .animateOrientation:
@@ -387,13 +361,13 @@ struct RootView: View {
             case .inspect:
                 EmptyView()
             case .move:
-                BasicToolBarView(model: moveToolModel)
+                BasicToolBarView(tool: .move, model: moveToolModel)
             case .orient:
-                BasicToolBarView(model: orientToolModel)
+                BasicToolBarView(tool: .orient, model: orientToolModel)
             case .scale:
-                BasicToolBarView(model: scaleToolModel)
+                BasicToolBarView(tool: .scale, model: scaleToolModel)
             case .shade:
-                EmptyView()
+                BasicToolBarView(tool: .shade, model: shadeToolModel)
             case .animatePosition:
                 EmptyView()
             case .animateOrientation:

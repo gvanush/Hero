@@ -72,14 +72,14 @@ extension Color {
 }
 
 
-enum RGBColorChannel: Int, CaseIterable, Displayable {
+enum RGBColorChannel: Int, ElementProperty {
     case red
     case green
     case blue
 }
 
 
-enum HSBColorChannel: Int, CaseIterable, Displayable {
+enum HSBColorChannel: Int, ElementProperty {
     case hue
     case saturation
     case brightness

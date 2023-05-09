@@ -13,12 +13,6 @@ class ComponentViewProvider<RC> {
     
     func viewForRoot(_ root: RC) -> AnyView? { nil }
     
-    func viewFor<C>(_ component: ObjectColorComponent<C>) -> AnyView? where C: SPTInspectableComponent { nil }
-    
-    func viewFor<C>(_ component: ObjectRGBAColorComponent<C>) -> AnyView? where C: SPTInspectableComponent { nil }
-    
-    func viewFor<C>(_ component: ObjectHSBAColorComponent<C>) -> AnyView? where C: SPTInspectableComponent { nil }
-    
     func viewFor<AnimatorBindingComponent>(_ component: AnimatorBindingSetupComponent<AnimatorBindingComponent>) -> AnyView? { nil }
     
     func viewFor(_ component: ObjectDistanceAnimatorBindingComponent) -> AnyView? { nil }

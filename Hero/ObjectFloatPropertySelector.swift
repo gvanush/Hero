@@ -1,5 +1,5 @@
 //
-//  ComponentFloatPropertySelector.swift
+//  ObjectFloatPropertySelector.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 25.04.23.
@@ -8,13 +8,20 @@
 import SwiftUI
 
 
-struct ComponentFloatPropertySelector<ID>: View
+struct ObjectFloatPropertySelector<ID>: View
 where ID: Hashable {
     
     let object: SPTObject
     let id: ID
     @Binding var value: Float
     let formatter: FloatFormatter
+    
+    init(object: SPTObject, id: ID, value: Binding<Float>, formatter: FloatFormatter = Formatters.genericFloat) {
+        self.object = object
+        self.id = id
+        _value = value
+        self.formatter = formatter
+    }
     
     @EnvironmentObject private var editingParams: ObjectEditingParams
     @EnvironmentObject private var userInteractionState: UserInteractionState

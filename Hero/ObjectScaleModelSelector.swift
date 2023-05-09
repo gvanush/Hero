@@ -48,7 +48,7 @@ struct ObjectScaleModelSelector: View {
         })
     }
     
-    func updateScaleModel(_ model: SPTScaleModel) {
+    private func updateScaleModel(_ model: SPTScaleModel) {
         let scale = SPTScale.get(object: object)
         
         switch model {
@@ -58,7 +58,6 @@ struct ObjectScaleModelSelector: View {
             SPTScale.update(.init(uniform: scale.xyz.minComponent), object: object)
         }
         
-        editingParams[tool: .scale, object].activeElementIndexPath = .init(index: 0)
     }
     
     private func unbindAnimators(model: SPTScaleModel) {

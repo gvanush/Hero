@@ -9,40 +9,36 @@ import SwiftUI
 import Combine
 
 
-class ShadeToolComponentViewProvider: MeshObjectComponentViewProvider<ShadeComponent> {
+fileprivate struct SelectedObjectView: View {
     
-    override func viewForRoot(_ root: ShadeComponent) -> AnyView? {
-        AnyView(ShadeComponentView(component: root))
+    let object: SPTObject
+    
+    @StateObject private var position: SPTObservableComponent<SPTPosition>
+    
+    @EnvironmentObject var model: BasicToolModel
+    @EnvironmentObject var editingParams: ObjectEditingParams
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    init(object: SPTObject) {
+        self.object = object
+        _position = .init(wrappedValue: .init(object: object))
     }
-    
-}
-
-
-class ShadeToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<ShadeComponent> {
-}
-
-
-fileprivate struct SelectedObjectControlsView: View {
-    
-    @ObservedObject var model: ShadeToolSelectedObjectViewModel
     
     var body: some View {
-        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: ShadeToolComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
-            .padding(.horizontal, 8.0)
-            .padding(.bottom, 8.0)
-            .background {
-                Color.clear
-                    .contentShape(Rectangle())
+        VStack {
+            
+            BasicToolElementActionViewPlaceholder(object: object)
+            
+            ElementTreeView(activeIndexPath: $editingParams[tool: .shade, object].activeElementIndexPath) {
+                ShadeElement(object: object)
             }
-    }
-    
-}
-
-
-class ShadeToolViewModel: BasicToolViewModel<ShadeToolSelectedObjectViewModel, ShadeComponent> {
-    
-    init(sceneViewModel: SceneViewModel) {
-        super.init(tool: .shade, sceneViewModel: sceneViewModel)
+        }
+        .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
+            model[object].disclosedElementsData = $0
+        }
+        .onDisappear {
+            model[object] = nil
+        }
     }
     
 }
@@ -50,12 +46,15 @@ class ShadeToolViewModel: BasicToolViewModel<ShadeToolSelectedObjectViewModel, S
 
 struct ShadeToolView: View {
     
-    @ObservedObject var model: ShadeToolViewModel
+    @ObservedObject var model: BasicToolModel
+    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        if let selectedObjectVM = model.selectedObjectViewModel {
-            SelectedObjectControlsView(model: selectedObjectVM)
-                .id(selectedObjectVM.object)
+        if let object = sceneViewModel.selectedObject {
+            SelectedObjectView(object: object)
+                .id(object)
+                .environmentObject(model)
         }
     }
 }

@@ -21,7 +21,7 @@ struct XYZScaleElement: Element {
     let object: SPTObject
     
     @StateObject private var xyz: SPTObservableComponentProperty<SPTScale, simd_float3>
-    @ComponentActiveProperty var activeProperty: Property
+    @ObjectComponentActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -37,11 +37,11 @@ struct XYZScaleElement: Element {
         Group {
             switch activeProperty {
             case .x:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.x), value: $xyz.x, formatter: Formatters.scale)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.x), value: $xyz.x, formatter: Formatters.scale)
             case .y:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.y), value: $xyz.y, formatter: Formatters.scale)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.y), value: $xyz.y, formatter: Formatters.scale)
             case .z:
-                ComponentFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.z), value: $xyz.z, formatter: Formatters.scale)
+                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.z), value: $xyz.z, formatter: Formatters.scale)
             }
         }
         .tint(Color.primarySelectionColor)
