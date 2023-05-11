@@ -37,7 +37,7 @@ struct SphericalPositionElement: Element {
     }
     
     var body: some View {
-        defaultBody
+        elementBody
             .onChange(of: spherical.value) { newValue in
                 updateGuideObjects(spherical: newValue)
             }

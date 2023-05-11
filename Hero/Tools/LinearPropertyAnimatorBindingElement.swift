@@ -1,5 +1,5 @@
 //
-//  LinearlyVaryingPropertyAnimatorBindingElement.swift
+//  LinearPropertyAnimatorBindingElement.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 10.05.23.
@@ -8,21 +8,9 @@
 import SwiftUI
 
 
-struct LinearlyVaryingPropertyAnimatorBindingElement: Element {
+struct LinearPropertyAnimatorBindingElement: ObjectPropertyAnimatorBindingElement {
     
-    enum Property: Int, ElementProperty {
-        case valueAt0
-        case valueAt1
-        
-        var displayName: String {
-            switch self {
-            case .valueAt0:
-                return "Value:0"
-            case .valueAt1:
-                return "Value:1"
-            }
-        }
-    }
+    typealias Property = AnimatorBindingProperty
     
     let title: String
     let normAxisDirection: simd_float3
@@ -32,14 +20,14 @@ struct LinearlyVaryingPropertyAnimatorBindingElement: Element {
     let activeGuideColor: UIColor
     
     @ObjectElementActiveProperty var activeProperty: Property
-    @StateObject var binding: SPTObservableAnimatorBinding<SPTAnimatableObjectProperty>
+    var _binding: StateObject<SPTObservableAnimatorBinding<SPTAnimatableObjectProperty>>
     
-    @EnvironmentObject private var sceneViewModel: SceneViewModel
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
-    @State private var showsAnimatorSelector = false
-    @State private var lineObject: SPTObject!
-    @State private var point0Object: SPTObject!
-    @State private var point1Object: SPTObject!
+    var _showsAnimatorSelector: State<Bool>
+    @State var lineObject: SPTObject!
+    @State var point0Object: SPTObject!
+    @State var point1Object: SPTObject!
     
     init(title: String, normAxisDirection: simd_float3, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, guideColor: UIColor = .guide1Dark, activeGuideColor: UIColor = .guide1Light) {
         self.title = title
@@ -51,19 +39,17 @@ struct LinearlyVaryingPropertyAnimatorBindingElement: Element {
         
         _activeProperty = .init(object: object, elementId: animatableProperty)
         _binding = .init(wrappedValue: .init(property: animatableProperty, object: object))
-    }
-    
-    var optionsView: some View {
-        AnimatorBindingOptionsView(property: animatableProperty, object: object)
+        
+        _showsAnimatorSelector = .init(wrappedValue: false)
     }
     
     var actionView: some View {
         switch activeProperty {
         case .valueAt0:
-            ObjectFloatPropertySelector(object: object, id: SPTAnimatorBindingPropertyId(animatableProperty: animatableProperty, propertyKeyPath: \.valueAt0), value: $binding.valueAt0, formatter: Formatters.distance)
+            ObjectFloatPropertySelector(object: object, id: SPTAnimatorBindingPropertyId(animatableProperty: animatableProperty, propertyKeyPath: \.valueAt0), value: _binding.projectedValue.valueAt0, formatter: Formatters.distance)
                 .tint(Color(uiColor: activeGuideColor))
         case .valueAt1:
-            ObjectFloatPropertySelector(object: object, id: SPTAnimatorBindingPropertyId(animatableProperty: animatableProperty, propertyKeyPath: \.valueAt1), value: $binding.valueAt1, formatter: Formatters.distance)
+            ObjectFloatPropertySelector(object: object, id: SPTAnimatorBindingPropertyId(animatableProperty: animatableProperty, propertyKeyPath: \.valueAt1), value: _binding.projectedValue.valueAt1, formatter: Formatters.distance)
                 .tint(Color(uiColor: activeGuideColor))
         }
     }
@@ -87,6 +73,14 @@ struct LinearlyVaryingPropertyAnimatorBindingElement: Element {
     func onClose() {
         SPTPointLook.destroy(object: point0Object)
         SPTPointLook.destroy(object: point1Object)
+    }
+    
+    func onParentDisclosed() {
+        SPTPolylineLook.make(.init(color: guideColor.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
+    }
+    
+    func onParentClosed() {
+        SPTPolylineLook.destroy(object: lineObject)
     }
     
     func onAwake() {
@@ -115,37 +109,8 @@ struct LinearlyVaryingPropertyAnimatorBindingElement: Element {
         SPTSceneProxy.destroyObject(point1Object)
     }
     
-    func onParentDisclosed() {
-        SPTPolylineLook.make(.init(color: guideColor.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
-    }
-    
-    func onParentClosed() {
-        SPTPolylineLook.destroy(object: lineObject)
-    }
-    
-    func onPrepare() {
-        showsAnimatorSelector = true
-    }
-    
-    var isReady: Bool {
-        animatableProperty.isAnimatorBound(object: object)
-    }
-    
     var body: some View {
-        defaultBody
-            .sheet(isPresented: $showsAnimatorSelector) {
-                AnimatorSelector { animatorId in
-                    if let animatorId {
-                        animatableProperty.bind(.init(animatorId: animatorId, valueAt0: -5.0, valueAt1: 5.0), object: object)
-                    }
-                    showsAnimatorSelector = false
-                    activeIndexPath = indexPath
-                }
-            }
-    }
-    
-    var rearView: some View {
-        defaultRearView
+        animatorBindingElementBody
             .onChange(of: binding.value) { newValue in
                 
                 guard let binding = newValue else {
@@ -163,36 +128,11 @@ struct LinearlyVaryingPropertyAnimatorBindingElement: Element {
                 SPTPosition.update(.init(cartesian: 0.5 * (point0Position.cartesian + point1Position.cartesian)), object: lineObject)
                 SPTScale.update(.init(x: 0.5 * (binding.valueAt1 - binding.valueAt0)), object: lineObject)
             }
-            .onChange(of: activeProperty) { newValue in
-                var point0Look = SPTPointLook.get(object: point0Object)
-                var point1Look = SPTPointLook.get(object: point1Object)
-                
-                switch newValue {
-                case .valueAt0:
-                    point0Look.color = activeGuideColor.rgba
-                    point1Look.color = guideColor.rgba
-                    sceneViewModel.focusedObject = point0Object
-                case .valueAt1:
-                    point0Look.color = guideColor.rgba
-                    point1Look.color = activeGuideColor.rgba
-                    sceneViewModel.focusedObject = point1Object
-                }
-                
-                SPTPointLook.update(point0Look, object: point0Object)
-                SPTPointLook.update(point1Look, object: point1Object)
-            }
     }
     
-    var subtitle: String? {
-        if let animatorId = binding.value?.animatorId {
-            return SPTAnimator.get(id: animatorId).name
-        }
-        return nil
-    }
+    var defaultValueAt0: Float { -5.0 }
     
-    var id: some Hashable {
-        animatableProperty
-    }
+    var defaultValueAt1: Float { 5.0 }
     
     var _activeIndexPath: Binding<IndexPath>!
     var indexPath: IndexPath!

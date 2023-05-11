@@ -141,7 +141,7 @@ struct EulerOrientationElement: Element {
     }
     
     var body: some View {
-        defaultBody
+        elementBody
             .id(model)
     }
     

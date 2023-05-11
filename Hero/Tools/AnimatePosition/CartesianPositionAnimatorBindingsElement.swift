@@ -19,9 +19,9 @@ struct CartesianPositionAnimatorBindingsElement: Element {
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     
     var content: some Element {
-        LinearlyVaryingPropertyAnimatorBindingElement(title: "X", normAxisDirection: .right, animatableProperty: .cartesianPositionX, object: object, guideColor: .xAxisDark, activeGuideColor: .xAxisLight)
-        LinearlyVaryingPropertyAnimatorBindingElement(title: "Y", normAxisDirection: .up, animatableProperty: .cartesianPositionY, object: object, guideColor: .yAxisDark, activeGuideColor: .yAxisLight)
-        LinearlyVaryingPropertyAnimatorBindingElement(title: "Z", normAxisDirection: .backward, animatableProperty: .cartesianPositionZ, object: object, guideColor: .zAxisDark, activeGuideColor: .zAxisLight)
+        LinearPropertyAnimatorBindingElement(title: "X", normAxisDirection: .right, animatableProperty: .cartesianPositionX, object: object, guideColor: .xAxisDark, activeGuideColor: .xAxisLight)
+        LinearPropertyAnimatorBindingElement(title: "Y", normAxisDirection: .up, animatableProperty: .cartesianPositionY, object: object, guideColor: .yAxisDark, activeGuideColor: .yAxisLight)
+        LinearPropertyAnimatorBindingElement(title: "Z", normAxisDirection: .backward, animatableProperty: .cartesianPositionZ, object: object, guideColor: .zAxisDark, activeGuideColor: .zAxisLight)
     }
     
     func onActive() {

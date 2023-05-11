@@ -11,10 +11,10 @@ import SwiftUI
 extension Element {
     
     var body: some View {
-        defaultBody
+        elementBody
     }
     
-    var defaultBody: some View {
+    var elementBody: some View {
         ZStack {
             
             faceView
@@ -31,7 +31,14 @@ extension Element {
                 .allowsHitTesting(isChildOfActive)
             
             if isReady {
-                rearView
+                HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
+                    propertyView
+                    
+                    content
+                        .indexPath(indexPath.appending(0))
+                        .activeIndexPath(_activeIndexPath.projectedValue)
+                }
+                .transition(.identity)
             }
             
         }
@@ -52,7 +59,7 @@ extension Element {
             }
         }
         .onChange(of: isReady, perform: { newValue in
-            if isReady {
+            if newValue {
                 onAwake()
             }
         })
@@ -84,7 +91,7 @@ extension Element {
             }
         })
         .onChange(of: isReady, perform: { newValue in
-            if !isReady {
+            if !newValue {
                 onSleep()
                 if activeIndexPath == indexPath {
                     withAnimation(elementNavigationAnimation) {
@@ -94,6 +101,10 @@ extension Element {
             }
         })
         .onChange(of: activeProperty) { _ in
+            guard isReady else {
+                return
+            }
+            
             onActivePropertyChange()
         }
         .onAppear {
@@ -137,21 +148,6 @@ extension Element {
             onSleep()
             
         }
-    }
-    
-    var rearView: some View {
-        defaultRearView
-    }
-    
-    var defaultRearView: some View {
-        HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
-            propertyView
-            
-            content
-                .indexPath(indexPath.appending(0))
-                .activeIndexPath(_activeIndexPath.projectedValue)
-        }
-        .transition(.identity)
     }
     
     var faceView: some View {

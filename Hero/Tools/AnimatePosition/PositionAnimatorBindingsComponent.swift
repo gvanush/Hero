@@ -63,7 +63,7 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
         case .spherical:
             activeComponent = SphericalPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .cylindrical:
-            activeComponent = CylindricalPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
+            break
         }
         variantCancellable = activeComponent.objectWillChange.sink { [unowned self] in
             self.objectWillChange.send()

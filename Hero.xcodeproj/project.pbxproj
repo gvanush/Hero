@@ -221,10 +221,13 @@
 		B7EB66952A0AB44100364618 /* RGBAColorElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66942A0AB44100364618 /* RGBAColorElement.swift */; };
 		B7EB66972A0ABAF400364618 /* HSBAColorElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66962A0ABAF400364618 /* HSBAColorElement.swift */; };
 		B7EB66992A0BCC1F00364618 /* CartesianPositionAnimatorBindingsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66982A0BCC1F00364618 /* CartesianPositionAnimatorBindingsElement.swift */; };
-		B7EB669B2A0BE0E000364618 /* LinearlyVaryingPropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB669A2A0BE0E000364618 /* LinearlyVaryingPropertyAnimatorBindingElement.swift */; };
+		B7EB669B2A0BE0E000364618 /* LinearPropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB669A2A0BE0E000364618 /* LinearPropertyAnimatorBindingElement.swift */; };
 		B7EB669D2A0C110A00364618 /* SPTObservableAnimatorBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB669C2A0C110A00364618 /* SPTObservableAnimatorBinding.swift */; };
 		B7EB669F2A0D381900364618 /* AnimatorBindingOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB669E2A0D381900364618 /* AnimatorBindingOptionsView.swift */; };
 		B7EB66A12A0D412700364618 /* LinearPositionAnimatorBindingsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66A02A0D412700364618 /* LinearPositionAnimatorBindingsElement.swift */; };
+		B7EB66A32A0D47C400364618 /* CylindricalPositionAnimatorBindingsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66A22A0D47C400364618 /* CylindricalPositionAnimatorBindingsElement.swift */; };
+		B7EB66A52A0D4BCE00364618 /* RadialPropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66A42A0D4BCE00364618 /* RadialPropertyAnimatorBindingElement.swift */; };
+		B7EB66A72A0D4CBD00364618 /* ObjectPropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66A62A0D4CBD00364618 /* ObjectPropertyAnimatorBindingElement.swift */; };
 		B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */; };
 		B7EDBDC228F6826F0048EF93 /* AnimatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */; };
 		B7FD159B292BFF9800B6E7DC /* CoordinateSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */; };
@@ -234,7 +237,6 @@
 		B7FD15AC29354CF100B6E7DC /* circle_outline.obj in Resources */ = {isa = PBXBuildFile; fileRef = B7FD15AB29354CF100B6E7DC /* circle_outline.obj */; };
 		B7FD15B029388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15AF29388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift */; };
 		B7FD15B72939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15B62939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift */; };
-		B7FD15B9293A4A1200B6E7DC /* CylindricalPositionAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD15B8293A4A1200B6E7DC /* CylindricalPositionAnimatorBindingsComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -521,10 +523,13 @@
 		B7EB66942A0AB44100364618 /* RGBAColorElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBAColorElement.swift; sourceTree = "<group>"; };
 		B7EB66962A0ABAF400364618 /* HSBAColorElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBAColorElement.swift; sourceTree = "<group>"; };
 		B7EB66982A0BCC1F00364618 /* CartesianPositionAnimatorBindingsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartesianPositionAnimatorBindingsElement.swift; sourceTree = "<group>"; };
-		B7EB669A2A0BE0E000364618 /* LinearlyVaryingPropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearlyVaryingPropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
+		B7EB669A2A0BE0E000364618 /* LinearPropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
 		B7EB669C2A0C110A00364618 /* SPTObservableAnimatorBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTObservableAnimatorBinding.swift; sourceTree = "<group>"; };
 		B7EB669E2A0D381900364618 /* AnimatorBindingOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBindingOptionsView.swift; sourceTree = "<group>"; };
 		B7EB66A02A0D412700364618 /* LinearPositionAnimatorBindingsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearPositionAnimatorBindingsElement.swift; sourceTree = "<group>"; };
+		B7EB66A22A0D47C400364618 /* CylindricalPositionAnimatorBindingsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylindricalPositionAnimatorBindingsElement.swift; sourceTree = "<group>"; };
+		B7EB66A42A0D4BCE00364618 /* RadialPropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialPropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
+		B7EB66A62A0D4CBD00364618 /* ObjectPropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectPropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
 		B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolViewModel.swift; sourceTree = "<group>"; };
 		B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorControl.swift; sourceTree = "<group>"; };
 		B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoordinateSystem.cpp; sourceTree = "<group>"; };
@@ -535,7 +540,6 @@
 		B7FD15AB29354CF100B6E7DC /* circle_outline.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = circle_outline.obj; sourceTree = "<group>"; };
 		B7FD15AF29388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
 		B7FD15B62939391500B6E7DC /* ObjectDistanceAnimatorBindingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDistanceAnimatorBindingComponent.swift; sourceTree = "<group>"; };
-		B7FD15B8293A4A1200B6E7DC /* CylindricalPositionAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylindricalPositionAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -854,8 +858,8 @@
 				B7923B8A28E9C89300D8F66F /* AnimatePositionToolView.swift */,
 				B7EB66982A0BCC1F00364618 /* CartesianPositionAnimatorBindingsElement.swift */,
 				B7EB66A02A0D412700364618 /* LinearPositionAnimatorBindingsElement.swift */,
+				B7EB66A22A0D47C400364618 /* CylindricalPositionAnimatorBindingsElement.swift */,
 				B7FD15AF29388E6300B6E7DC /* PositionAnimatorBindingsComponent.swift */,
-				B7FD15B8293A4A1200B6E7DC /* CylindricalPositionAnimatorBindingsComponent.swift */,
 				B70A6B1E293CCFE10092FDE1 /* SphericalPositionAnimatorBindingsComponent.swift */,
 			);
 			path = AnimatePosition;
@@ -1151,7 +1155,9 @@
 				B7B8227A29F87B19000C59E7 /* BasicToolBarView.swift */,
 				B7EB66942A0AB44100364618 /* RGBAColorElement.swift */,
 				B7EB66962A0ABAF400364618 /* HSBAColorElement.swift */,
-				B7EB669A2A0BE0E000364618 /* LinearlyVaryingPropertyAnimatorBindingElement.swift */,
+				B7EB669A2A0BE0E000364618 /* LinearPropertyAnimatorBindingElement.swift */,
+				B7EB66A42A0D4BCE00364618 /* RadialPropertyAnimatorBindingElement.swift */,
+				B7EB66A62A0D4CBD00364618 /* ObjectPropertyAnimatorBindingElement.swift */,
 				B7FD159E292E47D200B6E7DC /* Move */,
 				B7BECC3B295C76280091A96F /* Scale */,
 				B753B77829660E7B0018F96D /* Orient */,
@@ -1359,9 +1365,9 @@
 				B7B711E028C1D8100077C7CD /* SPTPolylineLookUtil.swift in Sources */,
 				B7B8227429F733F1000C59E7 /* ConditionalElement.swift in Sources */,
 				B7EB66972A0ABAF400364618 /* HSBAColorElement.swift in Sources */,
-				B7FD15B9293A4A1200B6E7DC /* CylindricalPositionAnimatorBindingsComponent.swift in Sources */,
 				B7B8227929F80D76000C59E7 /* ObjectFloatPropertySelector.swift in Sources */,
 				B7104BCA272C07B300582DCA /* BezierRoundedRectangle.swift in Sources */,
+				B7EB66A52A0D4BCE00364618 /* RadialPropertyAnimatorBindingElement.swift in Sources */,
 				B7B8227D29F87BDF000C59E7 /* BasicToolModel.swift in Sources */,
 				B7B711EC28C70ACC0077C7CD /* SPTPlayViewController.mm in Sources */,
 				B7B711EE28C70B1B0077C7CD /* SPTPlayView.swift in Sources */,
@@ -1407,6 +1413,7 @@
 				B7643B2C2907C8CD00F6A05B /* EasingSelector.swift in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7B8228329FBD97A000C59E7 /* SphericalPositionElement.swift in Sources */,
+				B7EB66A32A0D47C400364618 /* CylindricalPositionAnimatorBindingsElement.swift in Sources */,
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
 				B7661CF1295EDD4D0070156D /* XYZScaleAnimatorBindingsComponent.swift in Sources */,
 				B753B792296C0EF70018F96D /* EulerOrientationFieldAnimatorBindingComponent.swift in Sources */,
@@ -1424,7 +1431,7 @@
 				B70ABF32291E8D2900919F50 /* AnimatorBindingComponent.swift in Sources */,
 				B7235855275E984500337547 /* PolylineLook.cpp in Sources */,
 				B7661CED295ED75C0070156D /* AnimateScaleToolView.swift in Sources */,
-				B7EB669B2A0BE0E000364618 /* LinearlyVaryingPropertyAnimatorBindingElement.swift in Sources */,
+				B7EB669B2A0BE0E000364618 /* LinearPropertyAnimatorBindingElement.swift in Sources */,
 				B7AD7D10293E6A3D00129A07 /* SPTVectorUtil.swift in Sources */,
 				B7B8227729F7DED6000C59E7 /* LinearPositionElement.swift in Sources */,
 				B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */,
@@ -1489,6 +1496,7 @@
 				B73A700328840DB70043F9FF /* AnimatorsView.swift in Sources */,
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */,
+				B7EB66A72A0D4CBD00364618 /* ObjectPropertyAnimatorBindingElement.swift in Sources */,
 				B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */,
 				B748784B29F1D45400F62B37 /* OptionalElement.swift in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,

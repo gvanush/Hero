@@ -39,7 +39,7 @@ fileprivate struct SelectedObjectView: View {
                 case .linear:
                     LinearPositionAnimatorBindingsElement(object: object)
                 case .cylindrical:
-                    EmptyElement()
+                    CylindricalPositionAnimatorBindingsElement(object: object)
                 case .spherical:
                     EmptyElement()
                 }

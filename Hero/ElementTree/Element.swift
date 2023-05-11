@@ -51,9 +51,6 @@ protocol Element: View, Identifiable {
     associatedtype Property: ElementProperty = ElementEmptyProperty
     var activeProperty: Property { get nonmutating set }
     
-    associatedtype RearView: View = EmptyView
-    @ViewBuilder var rearView: RearView { get }
-    
     associatedtype ActionView: View = EmptyView
     @ViewBuilder var actionView: ActionView { get }
     

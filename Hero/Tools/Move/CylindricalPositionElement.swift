@@ -40,7 +40,7 @@ struct CylindricalPositionElement: Element {
     }
     
     var body: some View {
-        defaultBody
+        elementBody
             .onChange(of: cylindrical.value) { newValue in
                 updateGuideObjects(cylindrical: newValue)
             }

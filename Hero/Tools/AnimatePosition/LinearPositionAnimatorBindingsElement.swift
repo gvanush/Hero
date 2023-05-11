@@ -18,7 +18,11 @@ struct LinearPositionAnimatorBindingsElement: Element {
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     
     var content: some Element {
-        LinearlyVaryingPropertyAnimatorBindingElement(title: "Offset", normAxisDirection: simd_normalize(SPTPosition.get(object: object).linear.direction), animatableProperty: .linearPositionOffset, object: object)
+        LinearPropertyAnimatorBindingElement(title: "Offset", normAxisDirection: simd_normalize(SPTPosition.get(object: object).linear.direction), animatableProperty: .linearPositionOffset, object: object)
+    }
+    
+    func onActive() {
+        sceneViewModel.focusedObject = object
     }
     
     func onDisclose() {
