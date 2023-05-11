@@ -18,14 +18,14 @@ struct UniformScaleElement: Element {
     let object: SPTObject
     
     @StateObject private var uniform: SPTObservableComponentProperty<SPTScale, Float>
-    @ObjectComponentActiveProperty var activeProperty: Property
+    @ObjectElementActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     init(object: SPTObject) {
         self.object = object
         _uniform = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
-        _activeProperty = .init(object: object, componentId: Self.keyPath)
+        _activeProperty = .init(object: object, elementId: Self.keyPath)
     }
     
     var actionView: some View {

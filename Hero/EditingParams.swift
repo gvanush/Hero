@@ -39,13 +39,13 @@ class ObjectEditingParams: ObservableObject {
     @Published private var toolEditingParams = [SPTObject : [Tool : ToolEditingParams]]()
     
     
-    // MARK: Component editing params
-    subscript(componentId componentId: AnyHashable, object: SPTObject, default defaultValue: @autoclosure () -> ObjectComponentEditingParams = .init()) -> ObjectComponentEditingParams {
+    // MARK: Element editing params
+    subscript(elementId elementId: AnyHashable, object: SPTObject, default defaultValue: @autoclosure () -> ObjectComponentEditingParams = .init()) -> ObjectComponentEditingParams {
         get {
-            compoentEditingParams[object, default: .init()][componentId, default: defaultValue()]
+            compoentEditingParams[object, default: .init()][elementId, default: defaultValue()]
         }
         set {
-            compoentEditingParams[object, default: .init()][componentId] = newValue
+            compoentEditingParams[object, default: .init()][elementId] = newValue
         }
     }
     

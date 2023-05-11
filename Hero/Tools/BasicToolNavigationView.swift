@@ -32,7 +32,7 @@ struct BasicToolNavigationView: View {
                                     .fixedSize()
                                 if let substitle = data.subtitle {
                                     Text(substitle)
-                                        .font(.system(.subheadline))
+                                        .font(.system(.footnote))
                                         .foregroundColor(Color.secondaryLabel)
                                         .fixedSize()
                                 }

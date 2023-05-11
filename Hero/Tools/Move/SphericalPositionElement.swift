@@ -21,7 +21,7 @@ struct SphericalPositionElement: Element {
     let object: SPTObject
     
     @StateObject private var spherical: SPTObservableComponentProperty<SPTPosition, SPTSphericalCoordinates>
-    @ObjectComponentActiveProperty var activeProperty: Property
+    @ObjectElementActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -33,7 +33,7 @@ struct SphericalPositionElement: Element {
     init(object: SPTObject) {
         self.object = object
         _spherical = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
-        _activeProperty = .init(object: object, componentId: Self.keyPath)
+        _activeProperty = .init(object: object, elementId: Self.keyPath)
     }
     
     var body: some View {

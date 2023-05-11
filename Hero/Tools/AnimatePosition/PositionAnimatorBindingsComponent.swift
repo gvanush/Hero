@@ -57,7 +57,7 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
         self.variantTag = coordinateSystem.rawValue
         switch coordinateSystem {
         case .cartesian:
-            activeComponent = CartesianPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
+            break
         case .linear:
             activeComponent = LinearPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .spherical:

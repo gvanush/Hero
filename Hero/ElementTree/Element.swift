@@ -37,6 +37,8 @@ protocol Element: View, Identifiable {
     
     var subtitle: String? { get }
     
+    var isReady: Bool { get }
+    
     var indexPath: IndexPath! { get set }
     var _activeIndexPath: Binding<IndexPath>! { get set }
     
@@ -48,6 +50,9 @@ protocol Element: View, Identifiable {
     
     associatedtype Property: ElementProperty = ElementEmptyProperty
     var activeProperty: Property { get nonmutating set }
+    
+    associatedtype RearView: View = EmptyView
+    @ViewBuilder var rearView: RearView { get }
     
     associatedtype ActionView: View = EmptyView
     @ViewBuilder var actionView: ActionView { get }
@@ -61,6 +66,10 @@ protocol Element: View, Identifiable {
     
     func onSleep()
     
+    func onParentDisclosed()
+    
+    func onParentClosed()
+    
     func onDisclose()
     
     func onClose()
@@ -70,11 +79,17 @@ protocol Element: View, Identifiable {
     func onInactive()
     
     func onActivePropertyChange()
+    
+    func onPrepare()
         
 }
 
 
 extension Element {
+    
+    var isReady: Bool {
+        true
+    }
     
     var subtitle: String? {
         nil
@@ -90,7 +105,7 @@ extension Element {
     }
     
     var isActive: Bool {
-        indexPath == activeIndexPath
+        isReady && indexPath == activeIndexPath
     }
     
     var isChildOfActive: Bool {
@@ -101,7 +116,11 @@ extension Element {
     }
     
     var isDisclosed: Bool {
-        activeIndexPath.starts(with: indexPath)
+        isReady && activeIndexPath.starts(with: indexPath)
+    }
+    
+    var isParentDisclosed: Bool {
+        isReady && (indexPath.isEmpty || activeIndexPath.starts(with: indexPath.dropLast()))
     }
     
     func indexPath(_ indexPath: IndexPath) -> Self {
@@ -128,6 +147,14 @@ extension Element {
         
     }
     
+    func onParentDisclosed() {
+        
+    }
+    
+    func onParentClosed() {
+        
+    }
+    
     func onDisclose() {
         
     }
@@ -147,6 +174,11 @@ extension Element {
     func onActivePropertyChange() {
         
     }
+    
+    func onPrepare() {
+        
+    }
+    
 }
 
 

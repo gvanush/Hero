@@ -21,7 +21,7 @@ struct XYZScaleElement: Element {
     let object: SPTObject
     
     @StateObject private var xyz: SPTObservableComponentProperty<SPTScale, simd_float3>
-    @ObjectComponentActiveProperty var activeProperty: Property
+    @ObjectElementActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -30,7 +30,7 @@ struct XYZScaleElement: Element {
     init(object: SPTObject) {
         self.object = object
         _xyz = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
-        _activeProperty = .init(object: object, componentId: Self.keyPath)
+        _activeProperty = .init(object: object, elementId: Self.keyPath)
     }
     
     var actionView: some View {

@@ -20,18 +20,18 @@ extension Element {
             faceView
                 .visible(isChildOfActive)
                 .onTapGesture {
-                    withAnimation(elementNavigationAnimation) {
-                        activeIndexPath = indexPath
+                    if isReady {
+                        withAnimation(elementNavigationAnimation) {
+                            activeIndexPath = indexPath
+                        }
+                    } else {
+                        onPrepare()
                     }
                 }
                 .allowsHitTesting(isChildOfActive)
             
-            HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
-                propertyView
-                
-                content
-                    .indexPath(indexPath.appending(0))
-                    .activeIndexPath(_activeIndexPath.projectedValue)
+            if isReady {
+                rearView
             }
             
         }
@@ -51,6 +51,16 @@ extension Element {
                     .matchedGeometryEffect(id: elementOptionsViewMatchedGeometryID, in: namespace, properties: .position, isSource: false)
             }
         }
+        .onChange(of: isReady, perform: { newValue in
+            if isReady {
+                onAwake()
+            }
+        })
+        .onChange(of: isParentDisclosed, perform: { newValue in
+            if newValue {
+                onParentDisclosed()
+            }
+        })
         .onChange(of: isDisclosed, perform: { newValue in
             if newValue {
                 onDisclose()
@@ -68,12 +78,35 @@ extension Element {
                 onClose()
             }
         })
+        .onChange(of: isParentDisclosed, perform: { newValue in
+            if !newValue {
+                onParentClosed()
+            }
+        })
+        .onChange(of: isReady, perform: { newValue in
+            if !isReady {
+                onSleep()
+                if activeIndexPath == indexPath {
+                    withAnimation(elementNavigationAnimation) {
+                        _ = activeIndexPath.removeLast()
+                    }
+                }
+            }
+        })
         .onChange(of: activeProperty) { _ in
             onActivePropertyChange()
         }
         .onAppear {
             
+            guard isReady else {
+                return
+            }
+            
             onAwake()
+            
+            if isParentDisclosed {
+                onParentDisclosed()
+            }
             
             if isDisclosed {
                 onDisclose()
@@ -82,8 +115,13 @@ extension Element {
             if isActive {
                 onActive()
             }
+            
         }
         .onDisappear {
+            guard isReady else {
+                return
+            }
+            
             if isActive {
                 onInactive()
             }
@@ -92,8 +130,28 @@ extension Element {
                 onClose()
             }
             
+            if isParentDisclosed {
+                onParentClosed()
+            }
+            
             onSleep()
+            
         }
+    }
+    
+    var rearView: some View {
+        defaultRearView
+    }
+    
+    var defaultRearView: some View {
+        HStack(spacing: isChildOfActive ? 4.0 : 0.0) {
+            propertyView
+            
+            content
+                .indexPath(indexPath.appending(0))
+                .activeIndexPath(_activeIndexPath.projectedValue)
+        }
+        .transition(.identity)
     }
     
     var faceView: some View {
@@ -107,12 +165,12 @@ extension Element {
             .overlay {
                 VStack {
                     Spacer()
-                    Image(systemName: "ellipsis")
+                    Image(systemName: isReady ? "ellipsis" : "minus")
                         .imageScale(.small)
                         .fontWeight(.light)
                         .foregroundColor(.primary)
                 }
-                .padding(.bottom, 1.0)
+                .padding(.bottom, isReady ? 1.0 : 2.0)
             }
             .scaleEffect(x: textHorizontalScale)
             .preference(key: DisclosedElementsPreferenceKey.self, value: isDisclosed ? [.init(id: id, title: title, subtitle: subtitle, indexPath: indexPath, namespace: namespace)] : [])

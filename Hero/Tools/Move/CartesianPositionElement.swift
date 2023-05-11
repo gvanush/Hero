@@ -24,7 +24,7 @@ where C: SPTInspectableComponent, OV: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var editingParams: ObjectEditingParams
     
-    @ObjectComponentActiveProperty var activeProperty: Property
+    @ObjectElementActiveProperty var activeProperty: Property
     @State private var guideObject: SPTObject?
     
     let optionsView: OV
@@ -36,7 +36,7 @@ where C: SPTInspectableComponent, OV: View {
         self.keyPath = keyPath
         self.optionsView = optionsView()
         _cartesian = position
-        _activeProperty = .init(object: object, componentId: keyPath)
+        _activeProperty = .init(object: object, elementId: keyPath)
     }
     
     var actionView: some View {

@@ -19,12 +19,12 @@ struct ShadeElement: Element {
     
     let object: SPTObject
     
-    @ObjectComponentActiveProperty var activeProperty: Property
+    @ObjectElementActiveProperty var activeProperty: Property
     @StateObject private var colorModel: SPTObservableComponentProperty<SPTMeshLook, SPTColorModel>
     
     init(object: SPTObject) {
         self.object = object
-        _activeProperty = .init(object: object, componentId: Self.keyPath)
+        _activeProperty = .init(object: object, elementId: Self.keyPath)
         _colorModel = .init(wrappedValue: .init(object: object, keyPath: \.shading.blinnPhong.color.model))
     }
     

@@ -1,5 +1,5 @@
 //
-//  ObjectComponentActiveProperty.swift
+//  ObjectElementActiveProperty.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 24.04.23.
@@ -9,25 +9,25 @@ import SwiftUI
 
 
 @propertyWrapper
-struct ObjectComponentActiveProperty<P>: DynamicProperty
+struct ObjectElementActiveProperty<P>: DynamicProperty
 where P: RawRepresentable, P.RawValue == Int {
     
     let object: SPTObject
-    let componentId: AnyHashable
+    let elementId: AnyHashable
     
     @EnvironmentObject var editingParams: ObjectEditingParams
     
-    init(object: SPTObject, componentId: AnyHashable) {
+    init(object: SPTObject, elementId: AnyHashable) {
         self.object = object
-        self.componentId = componentId
+        self.elementId = elementId
     }
     
     var wrappedValue: P {
         nonmutating set {
-            editingParams[componentId: componentId, object].activePropertyIndex = newValue.rawValue
+            editingParams[elementId: elementId, object].activePropertyIndex = newValue.rawValue
         }
         get {
-            .init(rawValue: editingParams[componentId: componentId, object].activePropertyIndex)!
+            .init(rawValue: editingParams[elementId: elementId, object].activePropertyIndex)!
         }
     }
     

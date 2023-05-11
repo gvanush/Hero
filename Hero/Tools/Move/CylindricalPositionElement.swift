@@ -22,7 +22,7 @@ struct CylindricalPositionElement: Element {
     let object: SPTObject
     
     @StateObject private var cylindrical: SPTObservableComponentProperty<SPTPosition, SPTCylindricalCoordinates>
-    @ObjectComponentActiveProperty var activeProperty: Property
+    @ObjectElementActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -36,7 +36,7 @@ struct CylindricalPositionElement: Element {
     init(object: SPTObject) {
         self.object = object
         _cylindrical = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
-        _activeProperty = .init(object: object, componentId: Self.keyPath)
+        _activeProperty = .init(object: object, elementId: Self.keyPath)
     }
     
     var body: some View {

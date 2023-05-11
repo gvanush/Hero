@@ -24,7 +24,7 @@ struct EulerOrientationElement: Element {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     @StateObject private var euler: SPTObservableComponentProperty<SPTOrientation, simd_float3>
-    @ObjectComponentActiveProperty var activeProperty: Property
+    @ObjectElementActiveProperty var activeProperty: Property
     
     @State private var guideObject: SPTObject?
     
@@ -32,7 +32,7 @@ struct EulerOrientationElement: Element {
         self.object = object
         self.model = model
         _euler = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
-        _activeProperty = .init(object: object, componentId: Self.keyPath)
+        _activeProperty = .init(object: object, elementId: Self.keyPath)
     }
     
     var actionView: some View {

@@ -16,7 +16,7 @@ where C: SPTInspectableComponent {
     let object: SPTObject
     let keyPath: WritableKeyPath<C, SPTColor>
     
-    @ObjectComponentActiveProperty var activeProperty: Property
+    @ObjectElementActiveProperty var activeProperty: Property
     @StateObject var rgba: SPTObservableComponentProperty<C, SPTRGBAColor>
     
     @EnvironmentObject var userInteractionState: UserInteractionState
@@ -24,7 +24,7 @@ where C: SPTInspectableComponent {
     init(object: SPTObject, keyPath: WritableKeyPath<C, SPTColor>) {
         self.object = object
         self.keyPath = keyPath
-        _activeProperty = .init(object: object, componentId: keyPath)
+        _activeProperty = .init(object: object, elementId: keyPath)
         _rgba = .init(wrappedValue: .init(object: object, keyPath: keyPath.appending(path: \.rgba)))
     }
     
