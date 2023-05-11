@@ -59,7 +59,7 @@ class PositionAnimatorBindingsComponent: MultiVariantComponent, BasicToolSelecte
         case .cartesian:
             break
         case .linear:
-            activeComponent = LinearPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
+            break
         case .spherical:
             activeComponent = SphericalPositionAnimatorBindingsComponent(object: object, sceneViewModel: sceneViewModel, parent: parent)
         case .cylindrical:

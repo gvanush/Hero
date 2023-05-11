@@ -20,7 +20,7 @@ struct BasicToolNavigationView: View {
             if let disclosedElementsData = model[object].disclosedElementsData {
                 HStack {
                     ForEach(disclosedElementsData, id: \.id) { data in
-                        HStack {
+                        HStack(spacing: 6.0) {
                             if data.id != disclosedElementsData.first!.id {
                                 Image(systemName: "chevron.right")
                                     .imageScale(.large)
