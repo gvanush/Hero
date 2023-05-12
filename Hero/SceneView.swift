@@ -103,14 +103,13 @@ struct SceneView: View {
                             focusToggle()
                         }
                         .padding(.leading, 8.0)
-                        .visible(userInteractionState.isIdle)
                         Spacer()
                         ZoomView()
                             .frame(width: 16.0, alignment: .trailing)
                             .contentShape(Rectangle())
                             .gesture(zoomDragGesture(viewportSize: viewportSize))
-                            .visible(!userInteractionState.isNavigating)
                     }
+                    .visible(userInteractionState.isIdle)
                     HStack {
                         panAreaView(viewportSize: viewportSize)
                         Spacer()

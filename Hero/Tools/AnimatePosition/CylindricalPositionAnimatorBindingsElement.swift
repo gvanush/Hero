@@ -19,9 +19,9 @@ struct CylindricalPositionAnimatorBindingsElement: Element {
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     
     var content: some Element {
-        LinearPropertyAnimatorBindingElement(title: "Radius", normAxisDirection: radiusNormAxisDirection, animatableProperty: .cylindricalPositionRadius, object: object)
-        LinearPropertyAnimatorBindingElement(title: "Height", normAxisDirection: .up, animatableProperty: .cylindricalPositionHeight, object: object, guideColor: .guide2Dark, activeGuideColor: .guide2Light)
-        RadialPropertyAnimatorBindingElement(title: "Longitude", origin: longitudeOrigin, normRotationAxis: .up, animatableProperty: .cylindricalPositionLongitude, object: object, guideColor: .guide3Dark, activeGuideColor: .guide3Light)
+        LinearPositionPropertyAnimatorBindingElement(title: "Radius", normAxisDirection: radiusNormAxisDirection, animatableProperty: .cylindricalPositionRadius, object: object)
+        LinearPositionPropertyAnimatorBindingElement(title: "Height", normAxisDirection: .up, animatableProperty: .cylindricalPositionHeight, object: object, guideColor: .guide2Dark, activeGuideColor: .guide2Light)
+        RadialPositionPropertyAnimatorBindingElement(title: "Longitude", origin: longitudeOrigin, normRotationAxis: .up, animatableProperty: .cylindricalPositionLongitude, object: object, guideColor: .guide3Dark, activeGuideColor: .guide3Light)
     }
     
     var longitudeOrigin: simd_float3 {

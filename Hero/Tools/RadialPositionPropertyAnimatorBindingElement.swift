@@ -1,5 +1,5 @@
 //
-//  RadialPropertyAnimatorBindingElement.swift
+//  RadialPositionPropertyAnimatorBindingElement.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 11.05.23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RadialPropertyAnimatorBindingElement: ObjectPropertyAnimatorBindingElement {
+struct RadialPositionPropertyAnimatorBindingElement: PositionPropertyAnimatorBindingElement {
 
     typealias Property = AnimatorBindingProperty
     

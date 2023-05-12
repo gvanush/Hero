@@ -14,10 +14,10 @@ struct BasicToolElementActionViewPlaceholder: View {
     @EnvironmentObject private var model: BasicToolModel
     
     var body: some View {
-        if let namespace = model[object].disclosedElementsData?.last?.namespace {
+        if let data = model[object].disclosedElementsData?.last, data.hasActionView {
             Color.clear
                 .frame(height: 75.0)
-                .matchedGeometryEffect(id: elementActionViewMatchedGeometryID, in: namespace, properties: .frame)
+                .matchedGeometryEffect(id: elementActionViewMatchedGeometryID, in: data.namespace, properties: .frame)
         }
     }
 }

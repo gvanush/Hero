@@ -101,7 +101,7 @@ extension Element {
             }
         })
         .onChange(of: activeProperty) { _ in
-            guard isReady else {
+            guard isDisclosed else {
                 return
             }
             
@@ -169,7 +169,7 @@ extension Element {
                 .padding(.bottom, isReady ? 1.0 : 2.0)
             }
             .scaleEffect(x: textHorizontalScale)
-            .preference(key: DisclosedElementsPreferenceKey.self, value: isDisclosed ? [.init(id: id, title: title, subtitle: subtitle, indexPath: indexPath, namespace: namespace)] : [])
+            .preference(key: DisclosedElementsPreferenceKey.self, value: isDisclosed ? [.init(id: id, title: title, subtitle: subtitle, indexPath: indexPath, namespace: namespace, hasActionView: type(of: actionView) != EmptyView.self)] : [])
     }
     
     var propertyView: some View {

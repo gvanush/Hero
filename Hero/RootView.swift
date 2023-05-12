@@ -59,12 +59,10 @@ class RootViewModel: ObservableObject {
     let sceneViewModel: SceneViewModel
     let animatorsViewModel: AnimatorsViewModel
     
-    let animateOrientationToolViewModel: AnimateOrientationToolViewModel
     let animateScaleToolViewModel: AnimateScaleToolViewModel
     let animateShadeToolViewModel: AnimateShadeToolViewModel
     
     lazy var toolViewModels: [ToolViewModel] = [
-        animateOrientationToolViewModel,
         animateScaleToolViewModel,
         animateShadeToolViewModel
     ]
@@ -76,7 +74,6 @@ class RootViewModel: ObservableObject {
         self.sceneViewModel = sceneViewModel
         self.animatorsViewModel = .init()
         
-        self.animateOrientationToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateScaleToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateShadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         
@@ -145,11 +142,12 @@ struct RootView: View {
     @StateObject private var scaleToolModel = BasicToolModel()
     @StateObject private var shadeToolModel = BasicToolModel()
     @StateObject private var animatePositionToolModel = BasicToolModel()
+    @StateObject private var animateOrientationToolModel = BasicToolModel()
     
     @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
     
-    @State private var activeTool = Tool.inspect
+    @State private var activeTool = Tool.move
     @State private var showsAnimatorsView = false
     @State private var showsNewObjectView = false
     @State private var playableScene: SPTPlayableSceneProxy?
@@ -174,7 +172,7 @@ struct RootView: View {
             .overlay(alignment: .bottomTrailing) {
                 ActionBar(model: actionBarModel)
                     .padding(Self.sceneUIInsets)
-                    .visible(userInteractionState.isIdle)
+                    .visible(userInteractionState.isIdle && activeTool.purpose == .build)
             }
             .safeAreaInset(edge: .top, spacing: 0.0) {
                 topbar()
@@ -185,14 +183,15 @@ struct RootView: View {
             }
             .safeAreaInset(edge: .bottom, spacing: 0.0) {
                 VStack(spacing: 8.0) {
-                    ZStack(alignment: .bottom) {
-                        Color.clear
-                        activeToolView()
-                            .transition(.identity)
-                    }
-                    .padding(.horizontal, 8.0)
-                    .frame(height: Self.toolControlViewsAreaHeight)
-                    .zIndex(1)
+                    activeToolView()
+                        .transition(.identity)
+                        .padding(.horizontal, 8.0)
+                        .background(content: {
+                            Color.clear
+                                .contentShape(Rectangle())
+                        })
+                        .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
+                        .zIndex(1)
                                         
                     HStack {
                         toolSelector()
@@ -210,11 +209,6 @@ struct RootView: View {
                     .shadow(radius: 0.5)
                     
                 }
-                .background(content: {
-                    // To block touches behind
-                    Color.clear
-                        .contentShape(Rectangle())
-                })
                 .visible(!userInteractionState.isNavigating)
             }
             .actionBarCommonSection {
@@ -328,8 +322,6 @@ struct RootView: View {
     func activeToolView() -> some View {
         Group {
             switch activeTool {
-            case .inspect:
-                EmptyView()
             case .move:
                 MoveToolView(model: moveToolModel)
             case .orient:
@@ -341,7 +333,7 @@ struct RootView: View {
             case .animatePosition:
                 AnimatePositionToolView(model: animatePositionToolModel)
             case .animateOrientation:
-                AnimateOrientationToolView(model: model.animateOrientationToolViewModel)
+                AnimateOrientationToolView(model: animateOrientationToolModel)
             case .animateScale:
                 AnimateScaleToolView(model: model.animateScaleToolViewModel)
             case .animateShade:
@@ -356,8 +348,6 @@ struct RootView: View {
     func activeToolBarView() -> some View {
         Group {
             switch activeTool {
-            case .inspect:
-                EmptyView()
             case .move:
                 BasicToolBarView(tool: .move, model: moveToolModel)
             case .orient:
@@ -369,7 +359,7 @@ struct RootView: View {
             case .animatePosition:
                 BasicToolBarView(tool: .animatePosition, model: animatePositionToolModel)
             case .animateOrientation:
-                EmptyView()
+                BasicToolBarView(tool: .animateOrientation, model: animateOrientationToolModel)
             case .animateScale:
                 EmptyView()
             case .animateShade:

@@ -18,7 +18,7 @@ struct LinearPositionAnimatorBindingsElement: Element {
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     
     var content: some Element {
-        LinearPropertyAnimatorBindingElement(title: "Offset", normAxisDirection: simd_normalize(SPTPosition.get(object: object).linear.direction), animatableProperty: .linearPositionOffset, object: object)
+        LinearPositionPropertyAnimatorBindingElement(title: "Offset", normAxisDirection: simd_normalize(SPTPosition.get(object: object).linear.direction), animatableProperty: .linearPositionOffset, object: object)
     }
     
     func onActive() {

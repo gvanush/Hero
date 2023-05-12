@@ -13,6 +13,7 @@ struct ElementData: Equatable {
     var subtitle: String?
     let indexPath: IndexPath
     let namespace: Namespace.ID
+    let hasActionView: Bool
 }
 
 struct DisclosedElementsPreferenceKey: PreferenceKey {

@@ -1,5 +1,5 @@
 //
-//  ObjectPropertyAnimatorBindingElement.swift
+//  PropertyAnimatorBindingElement.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 11.05.23.
@@ -21,7 +21,7 @@ enum AnimatorBindingProperty: Int, ElementProperty {
     }
 }
 
-protocol ObjectPropertyAnimatorBindingElement: Element where Property == AnimatorBindingProperty {
+protocol PropertyAnimatorBindingElement: Element where Property == AnimatorBindingProperty {
     
     var object: SPTObject { get }
     
@@ -39,37 +39,14 @@ protocol ObjectPropertyAnimatorBindingElement: Element where Property == Animato
     
     var defaultValueAt1: Float { get }
     
-    var point0Object: SPTObject! { get }
-    
-    var point1Object: SPTObject! { get }
-    
     var sceneViewModel: SceneViewModel { get }
     
 }
 
-extension ObjectPropertyAnimatorBindingElement {
+extension PropertyAnimatorBindingElement {
     
     var optionsView: some View {
         AnimatorBindingOptionsView(property: animatableProperty, object: object)
-    }
-    
-    func onActivePropertyChange() {
-        var point0Look = SPTPointLook.get(object: point0Object)
-        var point1Look = SPTPointLook.get(object: point1Object)
-        
-        switch activeProperty {
-        case .valueAt0:
-            point0Look.color = activeGuideColor.rgba
-            point1Look.color = guideColor.rgba
-            sceneViewModel.focusedObject = point0Object
-        case .valueAt1:
-            point0Look.color = guideColor.rgba
-            point1Look.color = activeGuideColor.rgba
-            sceneViewModel.focusedObject = point1Object
-        }
-        
-        SPTPointLook.update(point0Look, object: point0Object)
-        SPTPointLook.update(point1Look, object: point1Object)
     }
     
     func onPrepare() {
@@ -86,9 +63,9 @@ extension ObjectPropertyAnimatorBindingElement {
                 AnimatorSelector { animatorId in
                     if let animatorId {
                         animatableProperty.bind(.init(animatorId: animatorId, valueAt0: defaultValueAt0, valueAt1: defaultValueAt1), object: object)
+                        activeIndexPath = indexPath
                     }
                     showsAnimatorSelector = false
-                    activeIndexPath = indexPath
                 }
             }
     }

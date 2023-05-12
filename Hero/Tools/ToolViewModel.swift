@@ -9,8 +9,12 @@ import Foundation
 
 
 enum Tool: Int, CaseIterable, Identifiable {
+
+    enum Purpose {
+        case build
+        case animate
+    }
     
-    case inspect
     case move
     case orient
     case scale
@@ -24,8 +28,6 @@ enum Tool: Int, CaseIterable, Identifiable {
     
     var title: String {
         switch self {
-        case .inspect:
-            return "Inspect"
         case .move:
             return "Move"
         case .orient:
@@ -47,8 +49,6 @@ enum Tool: Int, CaseIterable, Identifiable {
     
     var iconName: String {
         switch self {
-        case .inspect:
-            return "inspect"
         case .move:
             return "move"
         case .orient:
@@ -65,6 +65,15 @@ enum Tool: Int, CaseIterable, Identifiable {
             return "animscale"
         case .animateShade:
             return "animshade"
+        }
+    }
+    
+    var purpose: Purpose {
+        switch self {
+        case .move, .orient, .scale, .shade:
+            return .build
+        case .animatePosition, .animateScale, .animateOrientation, .animateShade:
+            return .animate
         }
     }
 }

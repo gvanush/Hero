@@ -1,5 +1,5 @@
 //
-//  LinearPropertyAnimatorBindingElement.swift
+//  LinearPositionPropertyAnimatorBindingElement.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 10.05.23.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct LinearPropertyAnimatorBindingElement: ObjectPropertyAnimatorBindingElement {
+struct LinearPositionPropertyAnimatorBindingElement: PositionPropertyAnimatorBindingElement {
     
     typealias Property = AnimatorBindingProperty
     

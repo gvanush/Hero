@@ -1,5 +1,5 @@
 //
-//  SpherialPositionAnimatorBindingsElement.swift
+//  SphericalPositionAnimatorBindingsElement.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 11.05.23.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct SpherialPositionAnimatorBindingsElement: Element {
+struct SphericalPositionAnimatorBindingsElement: Element {
     
     let object: SPTObject
     
@@ -20,9 +20,9 @@ struct SpherialPositionAnimatorBindingsElement: Element {
     @EnvironmentObject private var sceneViewModel: SceneViewModel
     
     var content: some Element {
-        LinearPropertyAnimatorBindingElement(title: "Radius", normAxisDirection: radiusNormAxisDirection, animatableProperty: .sphericalPositionRadius, object: object)
-        RadialPropertyAnimatorBindingElement(title: "Latitude", origin: SPTPosition.get(object: object).spherical.origin, normRotationAxis: latitudeNormAxisDirection, animatableProperty: .sphericalPositionLatitude, object: object, guideColor: .guide2Dark, activeGuideColor: .guide2Light)
-        RadialPropertyAnimatorBindingElement(title: "Longitude", origin: longitudeOrigin, normRotationAxis: .up, animatableProperty: .sphericalPositionLongitude, object: object, guideColor: .guide3Dark, activeGuideColor: .guide3Light)
+        LinearPositionPropertyAnimatorBindingElement(title: "Radius", normAxisDirection: radiusNormAxisDirection, animatableProperty: .sphericalPositionRadius, object: object)
+        RadialPositionPropertyAnimatorBindingElement(title: "Latitude", origin: SPTPosition.get(object: object).spherical.origin, normRotationAxis: latitudeNormAxisDirection, animatableProperty: .sphericalPositionLatitude, object: object, guideColor: .guide2Dark, activeGuideColor: .guide2Light)
+        RadialPositionPropertyAnimatorBindingElement(title: "Longitude", origin: longitudeOrigin, normRotationAxis: .up, animatableProperty: .sphericalPositionLongitude, object: object, guideColor: .guide3Dark, activeGuideColor: .guide3Light)
     }
     
     var radiusNormAxisDirection: simd_float3 {
