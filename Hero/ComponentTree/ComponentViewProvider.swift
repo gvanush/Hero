@@ -21,10 +21,6 @@ class ComponentViewProvider<RC> {
     
     func viewFor(_ component: ObjectHSBAColorChannelAnimatorBindingComponent) -> AnyView? { nil }
     
-    func viewFor(_ component: XYZScaleFieldAnimatorBindingComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: UniformScaleFieldAnimatorBindingComponent) -> AnyView? { nil }
-    
 }
 
 final class EmptyComponentViewProvider<RC>: ComponentViewProvider<RC> {

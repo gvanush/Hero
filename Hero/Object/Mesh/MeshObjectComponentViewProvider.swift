@@ -26,13 +26,5 @@ class MeshObjectComponentViewProvider<RC>: ComponentViewProvider<RC> {
         AnyView(ObjectHSBAColorChannelAnimatorBindingComponentView(component: component))
     }
     
-    override func viewFor(_ component: XYZScaleFieldAnimatorBindingComponent) -> AnyView? {
-        AnyView(XYZScaleFieldAnimatorBindingComponentView(component: component))
-    }
-    
-    override func viewFor(_ component: UniformScaleFieldAnimatorBindingComponent) -> AnyView? {
-        AnyView(UniformScaleFieldAnimatorBindingComponentView(component: component))
-    }
-    
 }
 

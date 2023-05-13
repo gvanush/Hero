@@ -106,11 +106,6 @@
 		B7643B39290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B38290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift */; };
 		B7643B402912517000F6A05B /* RGBColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3F2912516F00F6A05B /* RGBColorSelector.swift */; };
 		B7661CED295ED75C0070156D /* AnimateScaleToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661CEC295ED75C0070156D /* AnimateScaleToolView.swift */; };
-		B7661CEF295EDA350070156D /* ScaleAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661CEE295EDA350070156D /* ScaleAnimatorBindingsComponent.swift */; };
-		B7661CF1295EDD4D0070156D /* XYZScaleAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661CF0295EDD4D0070156D /* XYZScaleAnimatorBindingsComponent.swift */; };
-		B7661CF3295F12550070156D /* XYZScaleFieldAnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661CF2295F12550070156D /* XYZScaleFieldAnimatorBindingComponentView.swift */; };
-		B7661CF5295F13970070156D /* UniformScaleAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661CF4295F13970070156D /* UniformScaleAnimatorBindingsComponent.swift */; };
-		B7661CF7295F145B0070156D /* UniformScaleFieldAnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661CF6295F145B0070156D /* UniformScaleFieldAnimatorBindingComponentView.swift */; };
 		B769F2632918EBE400C10661 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F2622918EBE400C10661 /* ActionBar.swift */; };
 		B769F265291ADF3B00C10661 /* ActionBarContentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */; };
 		B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */; };
@@ -384,11 +379,6 @@
 		B7643B38290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicToolSelectedObjectViewModel.swift; sourceTree = "<group>"; };
 		B7643B3F2912516F00F6A05B /* RGBColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColorSelector.swift; sourceTree = "<group>"; };
 		B7661CEC295ED75C0070156D /* AnimateScaleToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimateScaleToolView.swift; sourceTree = "<group>"; };
-		B7661CEE295EDA350070156D /* ScaleAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
-		B7661CF0295EDD4D0070156D /* XYZScaleAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYZScaleAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
-		B7661CF2295F12550070156D /* XYZScaleFieldAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYZScaleFieldAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
-		B7661CF4295F13970070156D /* UniformScaleAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformScaleAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
-		B7661CF6295F145B0070156D /* UniformScaleFieldAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformScaleFieldAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
 		B769F2622918EBE400C10661 /* ActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBar.swift; sourceTree = "<group>"; };
 		B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarContentBuilder.swift; sourceTree = "<group>"; };
 		B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPropertyAnimatorBinding.cpp; sourceTree = "<group>"; };
@@ -886,11 +876,6 @@
 				B7EB66B62A10227900364618 /* ScalePropertyAnimatorBindingElement.swift */,
 				B7EB66B22A10183E00364618 /* LinearScalePropertyAnimatorBindingElement.swift */,
 				B7EB66B82A1024B900364618 /* UniformScalePropertyAnimatorBindingElement.swift */,
-				B7661CEE295EDA350070156D /* ScaleAnimatorBindingsComponent.swift */,
-				B7661CF0295EDD4D0070156D /* XYZScaleAnimatorBindingsComponent.swift */,
-				B7661CF2295F12550070156D /* XYZScaleFieldAnimatorBindingComponentView.swift */,
-				B7661CF4295F13970070156D /* UniformScaleAnimatorBindingsComponent.swift */,
-				B7661CF6295F145B0070156D /* UniformScaleFieldAnimatorBindingComponentView.swift */,
 			);
 			path = AnimateScale;
 			sourceTree = "<group>";
@@ -1331,7 +1316,6 @@
 				B7C90C712950F95200A2850E /* Action.cpp in Sources */,
 				B7B8229F2A041C5E000C59E7 /* XYZScaleElement.swift in Sources */,
 				B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */,
-				B7661CF5295F13970070156D /* UniformScaleAnimatorBindingsComponent.swift in Sources */,
 				B7E481CF2742307B003DA5B1 /* Camera.cpp in Sources */,
 				B7643B31290BD31B00F6A05B /* EditingParams.swift in Sources */,
 				B7B8227B29F87B19000C59E7 /* BasicToolBarView.swift in Sources */,
@@ -1370,7 +1354,6 @@
 				B7C748A128E377F600E270FB /* ScaleToolView.swift in Sources */,
 				B7B711DC28C13B570077C7CD /* Materials.cpp in Sources */,
 				B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */,
-				B7661CF3295F12550070156D /* XYZScaleFieldAnimatorBindingComponentView.swift in Sources */,
 				B7643B39290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */,
@@ -1383,7 +1366,6 @@
 				B7AD7D1C294730F300129A07 /* BasicAnimatorView.swift in Sources */,
 				B7A78A6F2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
-				B7661CF7295F145B0070156D /* UniformScaleFieldAnimatorBindingComponentView.swift in Sources */,
 				B769F2632918EBE400C10661 /* ActionBar.swift in Sources */,
 				B7B8227F29F99132000C59E7 /* CylindricalPositionElement.swift in Sources */,
 				B757DB7D28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift in Sources */,
@@ -1411,7 +1393,6 @@
 				B7B8228329FBD97A000C59E7 /* SphericalPositionElement.swift in Sources */,
 				B7EB66A32A0D47C400364618 /* CylindricalPositionAnimatorBindingsElement.swift in Sources */,
 				B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */,
-				B7661CF1295EDD4D0070156D /* XYZScaleAnimatorBindingsComponent.swift in Sources */,
 				B748784129EDE41600F62B37 /* ElementTreeBuilder.swift in Sources */,
 				B7EB66912A0A799200364618 /* ObjectFloatPropertySlider.swift in Sources */,
 				B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */,
@@ -1467,7 +1448,6 @@
 				B757DB6C28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
-				B7661CEF295EDA350070156D /* ScaleAnimatorBindingsComponent.swift in Sources */,
 				B748784329EDF28300F62B37 /* ElementTreeView.swift in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
 				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
