@@ -15,7 +15,7 @@ extension SPTMeshShading: Equatable {
     
 }
 
-extension SPTMeshLook: SPTObservableComponent {
+extension SPTMeshLook: SPTInspectableComponent {
     
     init(material: SPTPlainColorMaterial, meshId: SPTMeshId, categories: SPTLookCategories = kSPTLookCategoriesAll) {
         self.init(shading: .init(type: .plainColor, .init(plainColor: material)), meshId: meshId, categories: categories)

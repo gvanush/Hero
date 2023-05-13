@@ -8,7 +8,7 @@
 import Foundation
 
 
-extension SPTOrientation: SPTObservableComponent {
+extension SPTOrientation: SPTInspectableComponent {
     
     init(eulerX x: Float, y: Float, z: Float) {
         self.init(eulerXYZ: .init(x: x, y: y, z: z))

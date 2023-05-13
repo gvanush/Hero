@@ -15,7 +15,7 @@ class SPTPlayableSceneProxy: Identifiable {
     init(scene: SPTSceneProxy, viewCameraEntity: SPTEntity, animatorIds: [SPTAnimatorId]? = nil) {
         var descriptor = SPTPlayableSceneDescriptor()
         descriptor.viewCameraEntity = viewCameraEntity
-        if let animatorIds = animatorIds {
+        if let animatorIds {
             handle = animatorIds.withUnsafeBufferPointer({ bufferPtr in
                 descriptor.animatorIds = bufferPtr.baseAddress!
                 descriptor.animatorsSize = UInt32(bufferPtr.count)

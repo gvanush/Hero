@@ -66,22 +66,9 @@ void Scene::updateLooks() {
     MeshLook::update(registry);
 }
 
-void Scene::onPostRender() {
-    for (auto entity: _entitiesToDestroy) {
-        destroyEntity(registry, entity);
-    }
-    _entitiesToDestroy.clear();
-    _entitiesToDestroy = std::move(_entitiesScheduledToDestroy);
-}
-
 void Scene::destroyObject(SPTObject object) {
     assert(!SPTIsNull(object));
     destroyEntity(getRegistry(object), object.entity);
-}
-
-void Scene::destroyObjectDeferred(SPTObject object) {
-    assert(!SPTIsNull(object));
-    static_cast<spt::Scene*>(object.sceneHandle)->_entitiesScheduledToDestroy.push_back(object.entity);
 }
 
 }
@@ -103,8 +90,4 @@ SPTObject SPTSceneMakeObject(SPTHandle sceneHandle) {
 
 void SPTSceneDestroyObject(SPTObject object) {
     spt::Scene::destroyObject(object);
-}
-
-void SPTSceneDestroyObjectDeferred(SPTObject object) {
-    spt::Scene::destroyObjectDeferred(object);
 }

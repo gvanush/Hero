@@ -11,7 +11,7 @@ import Foundation
 extension RawRepresentable {
     
     init?(rawValue: Self.RawValue?) {
-        if let rawValue = rawValue {
+        if let rawValue {
             self.init(rawValue: rawValue)
         } else {
             return nil

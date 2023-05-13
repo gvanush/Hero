@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct FloatSlider: View {
     
     @Binding var value: Float
@@ -45,6 +46,7 @@ struct FloatSlider: View {
     static let padding = 4.0
     static let cornerRadius = 11.0
 }
+
 
 struct FloatSlider_Previews: PreviewProvider {
     

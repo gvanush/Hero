@@ -51,8 +51,8 @@ struct SPTPlayView: UIViewControllerRepresentable {
         vc.mtkView.clearColor = clearColor
         vc.renderingContext.lookCategories = lookCategories
         vc.viewCameraEntity = viewCameraEntity
-        if let loc = panLocation {
-            vc.panLocation = .init(cgPoint: loc)
+        if let panLocation {
+            vc.panLocation = .init(cgPoint: panLocation)
         } else {
             vc.panLocation = nil
         }

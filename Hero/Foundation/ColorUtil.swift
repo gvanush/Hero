@@ -21,6 +21,30 @@ extension Color {
     static let primarySelectionColor = Color(uiColor: .primarySelectionColor)
     static let primaryLightSelectionColor = Color(uiColor: .primaryLightSelectionColor)
     
+    static let xAxis = Color(uiColor: .xAxis)
+    static let xAxisLight = Color(uiColor: .xAxisLight)
+    static let xAxisDark = Color(uiColor: .xAxisDark)
+    
+    static let yAxis = Color(uiColor: .yAxis)
+    static let yAxisLight = Color(uiColor: .yAxisLight)
+    static let yAxisDark = Color(uiColor: .yAxisDark)
+    
+    static let zAxis = Color(uiColor: .zAxis)
+    static let zAxisLight = Color(uiColor: .zAxisLight)
+    static let zAxisDark = Color(uiColor: .zAxisDark)
+    
+    static let guide1 = Color(uiColor: .guide1)
+    static let guide1Light = Color(uiColor: .guide1Light)
+    static let guide1Dark = Color(uiColor: .guide1Dark)
+    
+    static let guide2 = Color(uiColor: .guide2)
+    static let guide2Light = Color(uiColor: .guide2Light)
+    static let guide2Dark = Color(uiColor: .guide2Dark)
+    
+    static let guide3 = Color(uiColor: .guide3)
+    static let guide3Light = Color(uiColor: .guide3Light)
+    static let guide3Dark = Color(uiColor: .guide3Dark)
+    
     static let label = Color(uiColor: .label)
     static let secondaryLabel = Color(uiColor: .secondaryLabel)
     static let tertiaryLabel = Color(uiColor: .tertiaryLabel)
@@ -48,14 +72,14 @@ extension Color {
 }
 
 
-enum RGBColorChannel: Int, CaseIterable, Displayable {
+enum RGBColorChannel: Int, ElementProperty {
     case red
     case green
     case blue
 }
 
 
-enum HSBColorChannel: Int, CaseIterable, Displayable {
+enum HSBColorChannel: Int, ElementProperty {
     case hue
     case saturation
     case brightness

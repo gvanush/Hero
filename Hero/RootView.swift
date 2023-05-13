@@ -59,57 +59,22 @@ class RootViewModel: ObservableObject {
     let sceneViewModel: SceneViewModel
     let animatorsViewModel: AnimatorsViewModel
     
-    let inspectToolViewModel: InspectToolViewModel
-    let moveToolViewModel: MoveToolViewModel
-    let orientToolViewModel: OrientToolViewModel
-    let scaleToolViewModel: ScaleToolViewModel
-    let shadeToolViewModel: ShadeToolViewModel
-    let animatePositionToolViewModel: AnimatePositionToolViewModel
-    let animateOrientationToolViewModel: AnimateOrientationToolViewModel
-    let animateScaleToolViewModel: AnimateScaleToolViewModel
     let animateShadeToolViewModel: AnimateShadeToolViewModel
     
     lazy var toolViewModels: [ToolViewModel] = [
-        inspectToolViewModel,
-        moveToolViewModel,
-        orientToolViewModel,
-        scaleToolViewModel,
-        shadeToolViewModel,
-        animatePositionToolViewModel,
-        animateOrientationToolViewModel,
-        animateScaleToolViewModel,
         animateShadeToolViewModel
     ]
     
-    @Published var activeToolViewModel: ToolViewModel {
-        willSet {
-            activeToolViewModel.onInactive()
-        }
-        didSet {
-            activeToolViewModel.onActive()
-        }
-    }
-    
-    let objectFactory: ObjectFactory
-    let objectPropertyEditingParams = ObjectPropertyEditingParams()
+    let sceneGraph: SceneGraph
+    let objectEditingParams = ObjectEditingParams()
     
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
         self.animatorsViewModel = .init()
         
-        self.inspectToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.moveToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.orientToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.scaleToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.shadeToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.animatePositionToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.animateOrientationToolViewModel = .init(sceneViewModel: sceneViewModel)
-        self.animateScaleToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateShadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         
-        self.activeToolViewModel = inspectToolViewModel
-        
-        objectFactory = ObjectFactory(scene: sceneViewModel.scene)
+        sceneGraph = SceneGraph(scene: sceneViewModel.scene)
         
         // Create default object
         var defaultObjectPosition = SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin
@@ -122,20 +87,21 @@ class RootViewModel: ObservableObject {
         _ = animatorsViewModel.makeOscillatorAnimator()
         _ = animatorsViewModel.makeValueNoise()
         _ = animatorsViewModel.makePerlinNoise()
+        
     }
     
     func createObject(meshId: SPTMeshId, position: simd_float3, scale: Float) {
-        let object = objectFactory.makeMesh(meshId: meshId, lookCategories: [.renderable, .renderableModel], position: position, scale: scale)
+        let object = sceneGraph.makeMesh(meshId: meshId, lookCategories: [.renderable, .renderableModel], position: position, scale: scale)
         sceneViewModel.selectedObject = object
         sceneViewModel.focusedObject = object
     }
     
     func duplicateObject(_ original: SPTObject) {
-        let duplicate = objectFactory.duplicateObject(original)
+        let duplicate = sceneGraph.duplicateObject(original)
         for toolVM in toolViewModels {
             toolVM.onObjectDuplicate(original: original, duplicate: duplicate)
         }
-        objectPropertyEditingParams.onObjectDuplicate(original: original, duplicate: duplicate)
+        objectEditingParams.onObjectDuplicate(original: original, duplicate: duplicate)
         sceneViewModel.selectedObject = duplicate
         sceneViewModel.focusedObject = duplicate
     }
@@ -150,9 +116,15 @@ class RootViewModel: ObservableObject {
         for toolVM in toolViewModels {
             toolVM.onObjectDestroy(object)
         }
-        objectPropertyEditingParams.onObjectDestroy(object)
         
-        SPTSceneProxy.destroyObjectDeferred(object)
+        // Schedule object removal at the end of the run loop when
+        // SwiftUI already processed all view lifecycle events
+        let runLoopObserver = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, CFRunLoopActivity.beforeWaiting.rawValue, false, 0, { _, _ in
+            self.objectEditingParams.onObjectDestroy(object)
+            self.sceneGraph.destroyObject(object)
+        })
+        CFRunLoopAddObserver(CFRunLoopGetCurrent(), runLoopObserver, .defaultMode)
+     
     }
     
 }
@@ -162,12 +134,20 @@ struct RootView: View {
     
     @StateObject private var model: RootViewModel
     @StateObject private var sceneViewModel: SceneViewModel
+    @StateObject private var moveToolModel = BasicToolModel()
+    @StateObject private var orientToolModel = BasicToolModel()
+    @StateObject private var scaleToolModel = BasicToolModel()
+    @StateObject private var shadeToolModel = BasicToolModel()
+    @StateObject private var animatePositionToolModel = BasicToolModel()
+    @StateObject private var animateOrientationToolModel = BasicToolModel()
+    @StateObject private var animateScaleToolModel = BasicToolModel()
+    
     @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
     
+    @State private var activeTool = Tool.move
     @State private var showsAnimatorsView = false
     @State private var showsNewObjectView = false
-    @State private var showsSelectedObjectInspector = false
     @State private var playableScene: SPTPlayableSceneProxy?
     @State private var showsBuildMetadata = false
 
@@ -185,12 +165,12 @@ struct RootView: View {
         ActionBarItemReader(model: actionBarModel) {
             SceneView(model: sceneViewModel, uiEdgeInsets: Self.sceneUIInsets)
                 .lookCategories([.renderableModel, .guide])
-            .renderingPaused(showsAnimatorsView || showsNewObjectView || showsSelectedObjectInspector || playableScene != nil)
+            .renderingPaused(showsAnimatorsView || showsNewObjectView || playableScene != nil)
             .environmentObject(userInteractionState)
             .overlay(alignment: .bottomTrailing) {
                 ActionBar(model: actionBarModel)
                     .padding(Self.sceneUIInsets)
-                    .visible(userInteractionState.isIdle)
+                    .visible(userInteractionState.isIdle && activeTool.purpose == .build)
             }
             .safeAreaInset(edge: .top, spacing: 0.0) {
                 topbar()
@@ -200,22 +180,35 @@ struct RootView: View {
                     .visible(userInteractionState.isIdle)
             }
             .safeAreaInset(edge: .bottom, spacing: 0.0) {
-                VStack(spacing: 0.0) {
+                VStack(spacing: 8.0) {
                     ZStack(alignment: .bottom) {
                         Color.clear
                         activeToolView()
                             .transition(.identity)
-                            .environmentObject(model.objectPropertyEditingParams)
-                            .environmentObject(userInteractionState)
+                            .padding(.horizontal, 8.0)
+                            .background(content: {
+                                Color.clear
+                                    .contentShape(Rectangle())
+                            })
+                            .zIndex(1)
                     }
-                    .frame(height: Self.toolControlViewsAreaHeight)
+                    .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
                                         
-                    ToolSelector(activeToolViewModel: $model.activeToolViewModel, toolViewModels: model.toolViewModels)
-                        .contentHorizontalPadding(32.0)
-                        .padding(.vertical, 4.0)
-                        .background(Material.bar)
-                        .compositingGroup()
-                        .shadow(radius: 0.5)
+                    HStack {
+                        toolSelector()
+                        Color.clear
+                            .frame(maxHeight: 44.0)
+                            .overlay {
+                                activeToolBarView()
+                            }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 16.0)
+                    .padding(.vertical, 8.0)
+                    .background(Material.bar)
+                    .compositingGroup()
+                    .shadow(radius: 0.5)
+                    
                 }
                 .visible(!userInteractionState.isNavigating)
             }
@@ -245,9 +238,6 @@ struct RootView: View {
                 model.createObject(meshId: meshId, position: SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin, scale: 5.0)
             }
         }
-        .sheet(isPresented: $showsSelectedObjectInspector) {
-            MeshObjectInspector(model: .init(object: sceneViewModel.selectedObject!, rootViewModel: model))
-        }
         .fullScreenCover(item: $playableScene, content: { scene in
             PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))
         })
@@ -257,12 +247,6 @@ struct RootView: View {
             if scenePhase == .active && newScenePhase == .inactive {
                 playableScene = nil
             }
-        }
-        .onAppear {
-            model.activeToolViewModel.onActive()
-        }
-        .onDisappear {
-            model.activeToolViewModel.onInactive()
         }
     }
     
@@ -312,34 +296,85 @@ struct RootView: View {
         .padding(.horizontal)
     }
     
+    fileprivate func toolSelector() -> some View {
+        Menu {
+            ForEach(Tool.allCases) { tool in
+                Button {
+                    self.activeTool = tool
+                } label: {
+                    HStack {
+                        Text(tool.title)
+                        Spacer()
+                        if tool == activeTool {
+                            Image(systemName: "checkmark.circle")
+                                .imageScale(.small)
+                        }
+                    }
+                }
+            }
+        } label: {
+            Image(activeTool.iconName)
+                .imageScale(.large)
+        }
+        .buttonStyle(.borderedProminent)
+        .shadow(radius: 1.0)
+    }
+    
     func activeToolView() -> some View {
         Group {
-            switch model.activeToolViewModel.tool {
-            case .inspect:
-                EmptyView()
+            switch activeTool {
             case .move:
-                MoveToolView(model: model.moveToolViewModel)
+                MoveToolView(model: moveToolModel)
             case .orient:
-                OrientToolView(model: model.orientToolViewModel)
+                OrientToolView(model: orientToolModel)
             case .scale:
-                ScaleToolView(model: model.scaleToolViewModel)
+                ScaleToolView(model: scaleToolModel)
             case .shade:
-                ShadeToolView(model: model.shadeToolViewModel)
+                ShadeToolView(model: shadeToolModel)
             case .animatePosition:
-                AnimatePositionToolView(model: model.animatePositionToolViewModel)
+                AnimatePositionToolView(model: animatePositionToolModel)
             case .animateOrientation:
-                AnimateOrientationToolView(model: model.animateOrientationToolViewModel)
+                AnimateOrientationToolView(model: animateOrientationToolModel)
             case .animateScale:
-                AnimateScaleToolView(model: model.animateScaleToolViewModel)
+                AnimateScaleToolView(model: animateScaleToolModel)
             case .animateShade:
                 AnimateShadeToolView(model: model.animateShadeToolViewModel)
             }
         }
+        .environmentObject(sceneViewModel)
+        .environmentObject(model.objectEditingParams)
+        .environmentObject(userInteractionState)
+    }
+    
+    func activeToolBarView() -> some View {
+        Group {
+            switch activeTool {
+            case .move:
+                BasicToolBarView(tool: .move, model: moveToolModel)
+            case .orient:
+                BasicToolBarView(tool: .orient, model: orientToolModel)
+            case .scale:
+                BasicToolBarView(tool: .scale, model: scaleToolModel)
+            case .shade:
+                BasicToolBarView(tool: .shade, model: shadeToolModel)
+            case .animatePosition:
+                BasicToolBarView(tool: .animatePosition, model: animatePositionToolModel)
+            case .animateOrientation:
+                BasicToolBarView(tool: .animateOrientation, model: animateOrientationToolModel)
+            case .animateScale:
+                BasicToolBarView(tool: .animateScale, model: animateScaleToolModel)
+            case .animateShade:
+                EmptyView()
+            }
+        }
+        .environmentObject(sceneViewModel)
+        .environmentObject(model.objectEditingParams)
     }
     
     static let sceneUIInsets = EdgeInsets(top: 0.0, leading: 0.0, bottom: 80.0, trailing: 16.0)
     static let toolControlViewsAreaHeight: CGFloat = 129.0
 }
+
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {

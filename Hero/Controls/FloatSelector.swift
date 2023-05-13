@@ -101,7 +101,7 @@ struct FloatSelector: View {
         }
     }
         
-    init(value: Binding<Float>, valueTransformer: ValueTransformer = .identity, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>, formatter: FloatFormatter = BasicFloatFormatter(), onStateChange: @escaping (EditingState) -> Void = { _ in }) {
+    init(value: Binding<Float>, valueTransformer: ValueTransformer = .identity, scale: Binding<Scale>, isSnappingEnabled: Binding<Bool>, formatter: FloatFormatter = Formatters.genericFloat, onStateChange: @escaping (EditingState) -> Void = { _ in }) {
         _value = value
         self.valueTransformer = valueTransformer
         _scale = scale

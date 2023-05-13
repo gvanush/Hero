@@ -55,7 +55,7 @@ class ObjectHSBAColorAnimatorBindingsComponent: Component, BasicToolSelectedObje
     
 }
 
-class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPTObservableComponent {
+class ObjectColorAnimatorBindingComponent<C>: MultiVariantComponent where C: SPTInspectableComponent {
     
     private let keyPath: WritableKeyPath<C, SPTColor>
     private let object: SPTObject

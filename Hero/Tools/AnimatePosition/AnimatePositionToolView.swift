@@ -9,31 +9,58 @@ import SwiftUI
 import Combine
 
 
-class AnimatePositionToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<PositionAnimatorBindingsComponent> {
-}
-
-
-fileprivate struct SelectedObjectControlsView: View {
+fileprivate struct SelectedObjectView: View {
     
-    @ObservedObject var model: AnimatePositionToolSelectedObjectViewModel
+    let object: SPTObject
     
-    var body: some View {
-        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: MeshObjectComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
-            .padding(.horizontal, 8.0)
-            .padding(.bottom, 8.0)
-            .background {
-                Color.clear
-                    .contentShape(Rectangle())
-            }
+    @StateObject private var position: SPTObservableComponent<SPTPosition>
+    
+    @EnvironmentObject var model: BasicToolModel
+    @EnvironmentObject var editingParams: ObjectEditingParams
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    @State private var originPointObject: SPTObject!
+    
+    init(object: SPTObject) {
+        self.object = object
+        _position = .init(wrappedValue: .init(object: object))
     }
     
-}
-
-
-class AnimatePositionToolViewModel: BasicToolViewModel<AnimatePositionToolSelectedObjectViewModel, PositionAnimatorBindingsComponent> {
-    
-    init(sceneViewModel: SceneViewModel) {
-        super.init(tool: .animatePosition, sceneViewModel: sceneViewModel)
+    var body: some View {
+        VStack {
+            
+            BasicToolElementActionViewPlaceholder(object: object)
+            
+            ElementTreeView(activeIndexPath: $editingParams[tool: .animatePosition, object].activeElementIndexPath) {
+                
+                switch position.coordinateSystem {
+                case .cartesian:
+                    CartesianPositionAnimatorBindingsElement(object: object)
+                case .linear:
+                    LinearPositionAnimatorBindingsElement(object: object)
+                case .cylindrical:
+                    CylindricalPositionAnimatorBindingsElement(object: object)
+                case .spherical:
+                    SphericalPositionAnimatorBindingsElement(object: object)
+                }
+                
+            }
+        }
+        .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
+            model[object].disclosedElementsData = $0
+        }
+        .onChange(of: position.value, perform: { newValue in
+            SPTPosition.update(newValue, object: originPointObject)
+        })
+        .onAppear {
+            originPointObject = sceneViewModel.scene.makeObject()
+            SPTPosition.make(position.value, object: originPointObject)
+            SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+        }
+        .onDisappear {
+            model[object] = nil
+            SPTSceneProxy.destroyObject(originPointObject)
+        }
     }
     
 }
@@ -41,12 +68,16 @@ class AnimatePositionToolViewModel: BasicToolViewModel<AnimatePositionToolSelect
 
 struct AnimatePositionToolView: View {
     
-    @ObservedObject var model: AnimatePositionToolViewModel
+    @ObservedObject var model: BasicToolModel
+    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        if let selectedObjectVM = model.selectedObjectViewModel {
-            SelectedObjectControlsView(model: selectedObjectVM)
-                .id(selectedObjectVM.object)
+        if let object = sceneViewModel.selectedObject {
+            SelectedObjectView(object: object)
+                .id(object)
+                .environmentObject(model)
         }
     }
+    
 }

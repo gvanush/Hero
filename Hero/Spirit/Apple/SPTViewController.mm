@@ -94,7 +94,6 @@
         [commandBuffer commit];
     }
     
-    scene->onPostRender();
 }
 
 -(void) mtkView: (nonnull MTKView*) view drawableSizeWillChange: (CGSize) size {

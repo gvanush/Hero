@@ -252,7 +252,7 @@ struct PanAnimatorSetBoundsView: View {
             })
             .onChanged { value in
                 var delta = value.translation
-                if let prevTranslation = prevTranslation {
+                if let prevTranslation {
                     delta.width -= prevTranslation.width
                     delta.height -= prevTranslation.height
                 }

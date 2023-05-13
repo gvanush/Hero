@@ -13,17 +13,7 @@ class ComponentViewProvider<RC> {
     
     func viewForRoot(_ root: RC) -> AnyView? { nil }
     
-    func viewFor<C>(_ component: ObjectColorComponent<C>) -> AnyView? where C: SPTObservableComponent { nil }
-    
-    func viewFor<C>(_ component: ObjectRGBAColorComponent<C>) -> AnyView? where C: SPTObservableComponent { nil }
-    
-    func viewFor<C>(_ component: ObjectHSBAColorComponent<C>) -> AnyView? where C: SPTObservableComponent { nil }
-    
     func viewFor<AnimatorBindingComponent>(_ component: AnimatorBindingSetupComponent<AnimatorBindingComponent>) -> AnyView? { nil }
-    
-    func viewFor(_ component: ObjectDistanceAnimatorBindingComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: ObjectAngleAnimatorBindingComponent) -> AnyView? { nil }
     
     func viewFor(_ component: ShininessAnimatorBindingComponent) -> AnyView? { nil }
     
@@ -31,33 +21,10 @@ class ComponentViewProvider<RC> {
     
     func viewFor(_ component: ObjectHSBAColorChannelAnimatorBindingComponent) -> AnyView? { nil }
     
-    func viewFor(_ component: CartesianPositionComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: LinearPositionComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: CylindricalPositionComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: SphericalPositionComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: XYZScaleComponent) -> AnyView? { nil }
-    
-    func viewFor(_ component: UniformScaleComponent) -> AnyView? { nil }
-    
     func viewFor(_ component: XYZScaleFieldAnimatorBindingComponent) -> AnyView? { nil }
     
     func viewFor(_ component: UniformScaleFieldAnimatorBindingComponent) -> AnyView? { nil }
     
-    func viewFor(_ component: EulerOrientationComponent) -> AnyView? {
-        nil
-    }
-    
-    func viewFor(_ component: PointAtDirectionComponent) -> AnyView? {
-        nil
-    }
-    
-    func viewFor(_ component: EulerOrientationFieldAnimatorBindingComponent) -> AnyView? {
-        nil
-    }
 }
 
 final class EmptyComponentViewProvider<RC>: ComponentViewProvider<RC> {

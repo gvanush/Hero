@@ -6,52 +6,78 @@
 //
 
 import SwiftUI
-import Combine
 
 
-class MoveToolComponentViewProvider: MeshObjectComponentViewProvider<PositionComponent> {
+fileprivate struct SelectedObjectView: View {
     
-    override func viewForRoot(_ root: PositionComponent) -> AnyView? {
-        AnyView(PositionComponentView(component: root, viewProvider: self))
+    let object: SPTObject
+    
+    @StateObject private var position: SPTObservableComponent<SPTPosition>
+    
+    @EnvironmentObject var model: BasicToolModel
+    @EnvironmentObject var editingParams: ObjectEditingParams
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    @State private var originPointObject: SPTObject!
+    
+    init(object: SPTObject) {
+        self.object = object
+        _position = .init(wrappedValue: .init(object: object))
     }
-    
-}
-
-class MoveToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<PositionComponent> {
-}
-
-fileprivate struct SelectedObjectControlsView: View {
-    
-    @ObservedObject var model: MoveToolSelectedObjectViewModel
     
     var body: some View {
-        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: MoveToolComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
-            .padding(.horizontal, 8.0)
-            .padding(.bottom, 8.0)
-            .background {
-                Color.clear
-                    .contentShape(Rectangle())
+        VStack {
+            
+            BasicToolElementActionViewPlaceholder(object: object)
+            
+            ElementTreeView(activeIndexPath: $editingParams[tool: .move, object].activeElementIndexPath) {
+                
+                switch position.coordinateSystem {
+                case .cartesian:
+                    CartesianPositionElement(object: object, keyPath: \SPTPosition.cartesian, position: $position.cartesian, optionsView: {
+                        ObjectCoordinateSystemSelector(object: object)
+                    })
+                case .linear:
+                    LinearPositionElement(object: object)
+                case .cylindrical:
+                    CylindricalPositionElement(object: object)
+                case .spherical:
+                    SphericalPositionElement(object: object)
+                }
+                
             }
+        }
+        .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
+            model[object].disclosedElementsData = $0
+        }
+        .onChange(of: position.value, perform: { newValue in
+            SPTPosition.update(newValue, object: originPointObject)
+        })
+        .onAppear {
+            originPointObject = sceneViewModel.scene.makeObject()
+            SPTPosition.make(position.value, object: originPointObject)
+            SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+        }
+        .onDisappear {
+            model[object] = nil
+            SPTSceneProxy.destroyObject(originPointObject)
+        }
     }
     
-}
-
-class MoveToolViewModel: BasicToolViewModel<MoveToolSelectedObjectViewModel, PositionComponent> {
-    
-    init(sceneViewModel: SceneViewModel) {
-        super.init(tool: .move, sceneViewModel: sceneViewModel)
-    }
 }
 
 
 struct MoveToolView: View {
     
-    @ObservedObject var model: MoveToolViewModel
+    @ObservedObject var model: BasicToolModel
+    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        if let selectedObjectVM = model.selectedObjectViewModel {
-            SelectedObjectControlsView(model: selectedObjectVM)
-                .id(selectedObjectVM.object)
+        if let object = sceneViewModel.selectedObject {
+            SelectedObjectView(object: object)
+                .id(object)
+                .environmentObject(model)
         }
     }
 }

@@ -133,7 +133,7 @@ class RandomAnimatorViewModel: BasicAnimatorViewModel<RandomAnimatorComponent> {
         }
 
         var interpolate = false
-        if let lastValue = lastValue {
+        if let lastValue {
             interpolate = (lastValue == value)
         }
 
