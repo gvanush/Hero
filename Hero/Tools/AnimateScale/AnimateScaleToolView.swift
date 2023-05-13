@@ -7,41 +7,72 @@
 
 import SwiftUI
 
-class AnimateScaleToolSelectedObjectViewModel: BasicToolSelectedObjectViewModel<ScaleAnimatorBindingsComponent> {
-}
-
-fileprivate struct SelectedObjectControlsView: View {
+fileprivate struct SelectedObjectView: View {
     
-    @ObservedObject var model: AnimateScaleToolSelectedObjectViewModel
+    let object: SPTObject
     
-    var body: some View {
-        ComponentTreeNavigationView(rootComponent: model.rootComponent, activeComponent: $model.activeComponent, viewProvider: MeshObjectComponentViewProvider(), setupViewProvider: CommonComponentSetupViewProvider())
-            .padding(.horizontal, 8.0)
-            .padding(.bottom, 8.0)
-            .background {
-                Color.clear
-                    .contentShape(Rectangle())
-            }
+    @EnvironmentObject var model: BasicToolModel
+    @EnvironmentObject var editingParams: ObjectEditingParams
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    @State private var originPointObject: SPTObject!
+    @State private var twinObject: SPTObject!
+    
+    init(object: SPTObject) {
+        self.object = object
     }
     
-}
-
-class AnimateScaleToolViewModel: BasicToolViewModel<AnimateScaleToolSelectedObjectViewModel, ScaleAnimatorBindingsComponent> {
-    
-    init(sceneViewModel: SceneViewModel) {
-        super.init(tool: .animateScale, sceneViewModel: sceneViewModel)
+    var body: some View {
+        VStack {
+            
+            if let twinObject {
+                BasicToolElementActionViewPlaceholder(object: object)
+                
+                ElementTreeView(activeIndexPath: $editingParams[tool: .animateScale, object].activeElementIndexPath) {
+                    
+                    switch SPTScale.get(object: object).model {
+                    case .XYZ:
+                        XYZScaleAnimatorBindingsElement(object: object, twinObject: twinObject)
+                    case .uniform:
+                        UniformScaleAnimatorBindingsElement(object: object, twinObject: twinObject)
+                    }
+                    
+                }
+            }
+        }
+        .onPreferenceChange(DisclosedElementsPreferenceKey.self) {
+            model[object].disclosedElementsData = $0
+        }
+        .onAppear {
+            originPointObject = sceneViewModel.scene.makeObject()
+            SPTPosition.make(SPTPosition.get(object: object), object: originPointObject)
+            SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
+            
+            twinObject = sceneViewModel.makeTwin(object: object)
+            
+        }
+        .onDisappear {
+            model[object] = nil
+            SPTSceneProxy.destroyObject(originPointObject)
+            
+            sceneViewModel.destroyTwin(twinObject, object: object)
+        }
     }
     
 }
 
 struct AnimateScaleToolView: View {
     
-    @ObservedObject var model: AnimateScaleToolViewModel
+    @ObservedObject var model: BasicToolModel
+    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        if let selectedObjectVM = model.selectedObjectViewModel {
-            SelectedObjectControlsView(model: selectedObjectVM)
-                .id(selectedObjectVM.object)
+        if let object = sceneViewModel.selectedObject {
+            SelectedObjectView(object: object)
+                .id(object)
+                .environmentObject(model)
         }
     }
+    
 }

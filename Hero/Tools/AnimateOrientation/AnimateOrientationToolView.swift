@@ -60,40 +60,14 @@ fileprivate struct SelectedObjectView: View {
             SPTPosition.make(SPTPosition.get(object: object), object: originPointObject)
             SPTPointLook.make(.init(color: UIColor.primarySelectionColor.rgba, size: .guidePointRegularSize, categories: LookCategories.guide.rawValue), object: originPointObject)
             
-            twinObject = sceneViewModel.scene.makeObject()
-            SPTPosition.make(SPTPosition.get(object: object), object: twinObject)
-            SPTScale.make(SPTScale.get(object: object), object: twinObject)
-            SPTOrientation.make(SPTOrientation.get(object: object), object: twinObject)
-            
-            var meshLook = SPTMeshLook.get(object: object)
-            meshLook.categories &= ~LookCategories.renderableModel.rawValue
-            SPTMeshLook.update(meshLook, object: object)
-            
-            meshLook.categories = LookCategories.guide.rawValue
-            SPTMeshLook.make(meshLook, object: twinObject)
-            
-            if var outlineLook = SPTOutlineLook.tryGet(object: object) {
-                SPTOutlineLook.make(outlineLook, object: twinObject)
-                
-                outlineLook.categories &= ~LookCategories.guide.rawValue
-                SPTOutlineLook.update(outlineLook, object: object)
-            }
+            twinObject = sceneViewModel.makeTwin(object: object)
             
         }
         .onDisappear {
             model[object] = nil
             SPTSceneProxy.destroyObject(originPointObject)
             
-            var meshLook = SPTMeshLook.get(object: object)
-            meshLook.categories |= LookCategories.renderableModel.rawValue
-            SPTMeshLook.update(meshLook, object: object)
-            
-            if var outlineLook = SPTOutlineLook.tryGet(object: object) {
-                outlineLook.categories |= LookCategories.guide.rawValue
-                SPTOutlineLook.update(outlineLook, object: object)
-            }
-            
-            SPTSceneProxy.destroyObject(twinObject)
+            sceneViewModel.destroyTwin(twinObject, object: object)
         }
     }
     

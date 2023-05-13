@@ -59,11 +59,9 @@ class RootViewModel: ObservableObject {
     let sceneViewModel: SceneViewModel
     let animatorsViewModel: AnimatorsViewModel
     
-    let animateScaleToolViewModel: AnimateScaleToolViewModel
     let animateShadeToolViewModel: AnimateShadeToolViewModel
     
     lazy var toolViewModels: [ToolViewModel] = [
-        animateScaleToolViewModel,
         animateShadeToolViewModel
     ]
     
@@ -74,7 +72,6 @@ class RootViewModel: ObservableObject {
         self.sceneViewModel = sceneViewModel
         self.animatorsViewModel = .init()
         
-        self.animateScaleToolViewModel = .init(sceneViewModel: sceneViewModel)
         self.animateShadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         
         sceneGraph = SceneGraph(scene: sceneViewModel.scene)
@@ -143,6 +140,7 @@ struct RootView: View {
     @StateObject private var shadeToolModel = BasicToolModel()
     @StateObject private var animatePositionToolModel = BasicToolModel()
     @StateObject private var animateOrientationToolModel = BasicToolModel()
+    @StateObject private var animateScaleToolModel = BasicToolModel()
     
     @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
@@ -183,15 +181,18 @@ struct RootView: View {
             }
             .safeAreaInset(edge: .bottom, spacing: 0.0) {
                 VStack(spacing: 8.0) {
-                    activeToolView()
-                        .transition(.identity)
-                        .padding(.horizontal, 8.0)
-                        .background(content: {
-                            Color.clear
-                                .contentShape(Rectangle())
-                        })
-                        .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
-                        .zIndex(1)
+                    ZStack(alignment: .bottom) {
+                        Color.clear
+                        activeToolView()
+                            .transition(.identity)
+                            .padding(.horizontal, 8.0)
+                            .background(content: {
+                                Color.clear
+                                    .contentShape(Rectangle())
+                            })
+                            .zIndex(1)
+                    }
+                    .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
                                         
                     HStack {
                         toolSelector()
@@ -335,7 +336,7 @@ struct RootView: View {
             case .animateOrientation:
                 AnimateOrientationToolView(model: animateOrientationToolModel)
             case .animateScale:
-                AnimateScaleToolView(model: model.animateScaleToolViewModel)
+                AnimateScaleToolView(model: animateScaleToolModel)
             case .animateShade:
                 AnimateShadeToolView(model: model.animateShadeToolViewModel)
             }
@@ -361,7 +362,7 @@ struct RootView: View {
             case .animateOrientation:
                 BasicToolBarView(tool: .animateOrientation, model: animateOrientationToolModel)
             case .animateScale:
-                EmptyView()
+                BasicToolBarView(tool: .animateScale, model: animateScaleToolModel)
             case .animateShade:
                 EmptyView()
             }

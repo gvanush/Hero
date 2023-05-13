@@ -13,7 +13,7 @@ struct EulerOrientationAnimatorBindingsElement: Element {
     let object: SPTObject
     let twinObject: SPTObject
     
-    @StateObject var twinEuler: SPTObservableComponentProperty<SPTOrientation, simd_float3>
+    @StateObject private  var twinEuler: SPTObservableComponentProperty<SPTOrientation, simd_float3>
     
     @State private var xAxisObject: SPTObject!
     @State private var yAxisObject: SPTObject!
@@ -25,12 +25,6 @@ struct EulerOrientationAnimatorBindingsElement: Element {
         self.object = object
         self.twinObject = twinObject
         _twinEuler = .init(wrappedValue: .init(object: twinObject, keyPath: \.euler))
-    }
-    
-    func onDisclose() {
-        SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: xAxisObject)
-        SPTPolylineLook.make(.init(color: UIColor.yAxis.rgba, polylineId: sceneViewModel.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
-        SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: sceneViewModel.zAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: zAxisObject)
     }
     
     var content: some Element {
@@ -103,6 +97,12 @@ struct EulerOrientationAnimatorBindingsElement: Element {
         }
         
         return matrix * .backward
+    }
+    
+    func onDisclose() {
+        SPTPolylineLook.make(.init(color: UIColor.xAxis.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: xAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.yAxis.rgba, polylineId: sceneViewModel.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: yAxisObject)
+        SPTPolylineLook.make(.init(color: UIColor.zAxis.rgba, polylineId: sceneViewModel.zAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: zAxisObject)
     }
     
     func onClose() {
