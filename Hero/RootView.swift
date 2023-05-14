@@ -177,9 +177,9 @@ struct RootView: View {
                                 Color.clear
                                     .contentShape(Rectangle())
                             })
-                            .zIndex(1)
                     }
                     .frame(height: Self.toolControlViewsAreaHeight, alignment: .bottom)
+                    .zIndex(1)
                                         
                     HStack {
                         toolSelector()

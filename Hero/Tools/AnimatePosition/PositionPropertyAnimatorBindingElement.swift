@@ -14,6 +14,10 @@ protocol PositionPropertyAnimatorBindingElement: PropertyAnimatorBindingElement 
     
     var point1Object: SPTObject! { get }
     
+    var guideColor: UIColor { get }
+    
+    var activeGuideColor: UIColor { get }
+    
 }
 
 extension PositionPropertyAnimatorBindingElement {

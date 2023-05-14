@@ -1,8 +1,8 @@
 //
-//  ToolViewModel.swift
+//  Tool.swift
 //  Hero
 //
-//  Created by Vanush Grigoryan on 09.10.22.
+//  Created by Vanush Grigoryan on 14.05.23.
 //
 
 import Foundation
@@ -76,36 +76,4 @@ enum Tool: Int, CaseIterable, Identifiable {
             return .animate
         }
     }
-}
-
-
-class ToolViewModel: ObservableObject, Identifiable, Equatable {
-    
-    let tool: Tool
-    let sceneViewModel: SceneViewModel
-    
-    init(tool: Tool, sceneViewModel: SceneViewModel) {
-        self.tool = tool
-        self.sceneViewModel = sceneViewModel
-    }
-    
-    func onActive() {}
-    
-    func onInactive() {}
-    
-    var activeComponent: Component? {
-        set { }
-        get { nil }
-    }
-    
-    func onObjectDuplicate(original: SPTObject, duplicate: SPTObject) {
-    }
-    
-    func onObjectDestroy(_ object: SPTObject) {
-    }
-    
-    static func == (lhs: ToolViewModel, rhs: ToolViewModel) -> Bool {
-        lhs === rhs
-    }
-    
 }

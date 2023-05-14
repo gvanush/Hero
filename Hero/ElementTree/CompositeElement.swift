@@ -13,6 +13,8 @@ where ID: Hashable, C: Element {
     
     let id: ID
     let title: String
+    var subtitle: String?
+    
     var indexPath: IndexPath!
     var _activeIndexPath: Binding<IndexPath>!
     
@@ -20,8 +22,9 @@ where ID: Hashable, C: Element {
     
     @Namespace var namespace
     
-    init(id: ID, title: String, @ElementBuilder content: () -> C) {
+    init(id: ID, title: String, subtitle: String? = nil, @ElementBuilder content: () -> C) {
         self.title = title
+        self.subtitle = subtitle
         self.id = id
         self.content = content()
     }

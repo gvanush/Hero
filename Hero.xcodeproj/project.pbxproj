@@ -14,9 +14,7 @@
 		B70A6B2A293E39060092FDE1 /* SPTMatrixUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B29293E39060092FDE1 /* SPTMatrixUtil.swift */; };
 		B70A6B2C293E56D50092FDE1 /* AnimatorBindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A6B2B293E56D50092FDE1 /* AnimatorBindingUtil.swift */; };
 		B70ABF2C291D767700919F50 /* AnimateShadeToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70ABF2B291D767700919F50 /* AnimateShadeToolView.swift */; };
-		B70ABF2E291D7A0900919F50 /* MeshLookAnimatorBindingsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70ABF2D291D7A0900919F50 /* MeshLookAnimatorBindingsComponent.swift */; };
 		B70ABF30291D9F6200919F50 /* AnimatablePropertyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70ABF2F291D9F6200919F50 /* AnimatablePropertyUtil.swift */; };
-		B70ABF32291E8D2900919F50 /* AnimatorBindingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70ABF31291E8D2900919F50 /* AnimatorBindingComponent.swift */; };
 		B7104BB827286B3700582DCA /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BB727286B3700582DCA /* SceneViewModel.swift */; };
 		B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC1272B00B700582DCA /* PropertySelector.swift */; };
 		B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7104BC3272B069F00582DCA /* ColorUtil.swift */; };
@@ -87,11 +85,9 @@
 		B753B7892969CA0C0018F96D /* SpiritGeometryUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B7882969CA0C0018F96D /* SpiritGeometryUtil.swift */; };
 		B753B78C296BE47B0018F96D /* AnimateOrientationToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753B78B296BE47B0018F96D /* AnimateOrientationToolView.swift */; };
 		B753B798296DF6140018F96D /* monkey.obj in Resources */ = {isa = PBXBuildFile; fileRef = B753B797296DF6140018F96D /* monkey.obj */; };
-		B757DB6C28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB6B28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift */; };
 		B757DB6F28A3E37500BB5DB4 /* AnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */; };
 		B757DB7228A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */; };
 		B757DB7628A80F0B00BB5DB4 /* AnimatorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7528A80F0B00BB5DB4 /* AnimatorSelector.swift */; };
-		B757DB7D28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7C28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift */; };
 		B757DB7F28A900CF00BB5DB4 /* SPTListenedComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B757DB7E28A900CF00BB5DB4 /* SPTListenedComponent.swift */; };
 		B75FA56B278ACD7E001EC7C5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA56A278ACD7D001EC7C5 /* RootView.swift */; };
 		B75FA573278D5001001EC7C5 /* StringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FA572278D5001001EC7C5 /* StringUtil.swift */; };
@@ -103,7 +99,6 @@
 		B7643B2F29084DAF00F6A05B /* SPTEasingUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B2E29084DAF00F6A05B /* SPTEasingUtil.swift */; };
 		B7643B31290BD31B00F6A05B /* EditingParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B30290BD31B00F6A05B /* EditingParams.swift */; };
 		B7643B37290F9DD800F6A05B /* ShadeToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B36290F9DD800F6A05B /* ShadeToolView.swift */; };
-		B7643B39290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B38290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift */; };
 		B7643B402912517000F6A05B /* RGBColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3F2912516F00F6A05B /* RGBColorSelector.swift */; };
 		B7661CED295ED75C0070156D /* AnimateScaleToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661CEC295ED75C0070156D /* AnimateScaleToolView.swift */; };
 		B769F2632918EBE400C10661 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F2622918EBE400C10661 /* ActionBar.swift */; };
@@ -111,7 +106,6 @@
 		B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */; };
 		B76D4FC828AB7C990029E47B /* SPTUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC728AB7C990029E47B /* SPTUtil.swift */; };
 		B76D4FCA28AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC928AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift */; };
-		B7718F4229200A17001107D5 /* ShininessAnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */; };
 		B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7791D1627258F7500E0C934 /* HeroApp.swift */; };
 		B7791D1B27258F7700E0C934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1A27258F7700E0C934 /* Assets.xcassets */; };
 		B7791D1E27258F7700E0C934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7791D1D27258F7700E0C934 /* Preview Assets.xcassets */; };
@@ -126,9 +120,6 @@
 		B787F2032892E50700AE784B /* DisplayLink in Frameworks */ = {isa = PBXBuildFile; productRef = B787F2022892E50700AE784B /* DisplayLink */; };
 		B7923B8B28E9C89300D8F66F /* AnimatePositionToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7923B8A28E9C89300D8F66F /* AnimatePositionToolView.swift */; };
 		B7928BE32794302D00C4F110 /* CoreGraphicsUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */; };
-		B7A78A6D292238650041C812 /* ObjectColorAnimatorBindingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A78A6C292238650041C812 /* ObjectColorAnimatorBindingComponent.swift */; };
-		B7A78A6F2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A78A6E2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift */; };
-		B7A78A71292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A78A70292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift */; };
 		B7AA99E227B5C1430033B459 /* ComparableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99E127B5C1430033B459 /* ComparableUtil.swift */; };
 		B7AA99E427B6CABB0033B459 /* SIMDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99E327B6CABB0033B459 /* SIMDUtil.swift */; };
 		B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */; };
@@ -139,7 +130,6 @@
 		B7AD7D16293F9B9700129A07 /* SPTArcLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD7D15293F9B9700129A07 /* SPTArcLookUtil.swift */; };
 		B7AD7D1C294730F300129A07 /* BasicAnimatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD7D1B294730F300129A07 /* BasicAnimatorView.swift */; };
 		B7AD7D1E294737C700129A07 /* OscillatorAnimatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AD7D1D294737C700129A07 /* OscillatorAnimatorView.swift */; };
-		B7B711D128BC96430077C7CD /* ComponentSetupViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */; };
 		B7B711D328C0FFB60077C7CD /* SPTPointLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */; };
 		B7B711D528C108D70077C7CD /* LookCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D428C108D70077C7CD /* LookCategories.swift */; };
 		B7B711D728C130740077C7CD /* SPTOutlineLookUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B711D628C130740077C7CD /* SPTOutlineLookUtil.swift */; };
@@ -227,8 +217,13 @@
 		B7EB66B72A10227900364618 /* ScalePropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66B62A10227900364618 /* ScalePropertyAnimatorBindingElement.swift */; };
 		B7EB66B92A1024B900364618 /* UniformScalePropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66B82A1024B900364618 /* UniformScalePropertyAnimatorBindingElement.swift */; };
 		B7EB66BB2A1128A700364618 /* ShadeAnimatorBindingsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66BA2A1128A700364618 /* ShadeAnimatorBindingsElement.swift */; };
-		B7EB66BD2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift */; };
-		B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */; };
+		B7EB66BD2A112CE000364618 /* ShininessPropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingElement.swift */; };
+		B7EB66BF2A1137C700364618 /* RGBColorChannelPropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66BE2A1137C700364618 /* RGBColorChannelPropertyAnimatorBindingElement.swift */; };
+		B7EB66C12A113BEB00364618 /* ObjectRGBColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66C02A113BEB00364618 /* ObjectRGBColorSelector.swift */; };
+		B7EB66C32A11597600364618 /* HSBColorChannelPropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66C22A11597600364618 /* HSBColorChannelPropertyAnimatorBindingElement.swift */; };
+		B7EB66C52A1159D900364618 /* ObjectHSBColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66C42A1159D900364618 /* ObjectHSBColorSelector.swift */; };
+		B7EB66C72A115B7300364618 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66C62A115B7300364618 /* Tool.swift */; };
+		B7EB66C92A115C1500364618 /* ComponentSetupViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66C82A115C1500364618 /* ComponentSetupViewProvider.swift */; };
 		B7EDBDC228F6826F0048EF93 /* AnimatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */; };
 		B7FD159B292BFF9800B6E7DC /* CoordinateSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */; };
 		B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FD159C292E067900B6E7DC /* SPTCoordinateSystemUtil.swift */; };
@@ -246,9 +241,7 @@
 		B70A6B29293E39060092FDE1 /* SPTMatrixUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTMatrixUtil.swift; sourceTree = "<group>"; };
 		B70A6B2B293E56D50092FDE1 /* AnimatorBindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBindingUtil.swift; sourceTree = "<group>"; };
 		B70ABF2B291D767700919F50 /* AnimateShadeToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimateShadeToolView.swift; sourceTree = "<group>"; };
-		B70ABF2D291D7A0900919F50 /* MeshLookAnimatorBindingsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshLookAnimatorBindingsComponent.swift; sourceTree = "<group>"; };
 		B70ABF2F291D9F6200919F50 /* AnimatablePropertyUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatablePropertyUtil.swift; sourceTree = "<group>"; };
-		B70ABF31291E8D2900919F50 /* AnimatorBindingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBindingComponent.swift; sourceTree = "<group>"; };
 		B7104BB727286B3700582DCA /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		B7104BC0272931AB00582DCA /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		B7104BC1272B00B700582DCA /* PropertySelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySelector.swift; sourceTree = "<group>"; };
@@ -357,12 +350,10 @@
 		B753B7882969CA0C0018F96D /* SpiritGeometryUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpiritGeometryUtil.swift; sourceTree = "<group>"; };
 		B753B78B296BE47B0018F96D /* AnimateOrientationToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimateOrientationToolView.swift; sourceTree = "<group>"; };
 		B753B797296DF6140018F96D /* monkey.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = monkey.obj; sourceTree = "<group>"; };
-		B757DB6B28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBindingSetupComponentView.swift; sourceTree = "<group>"; };
 		B757DB6D28A3E37500BB5DB4 /* AnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatorBinding.cpp; sourceTree = "<group>"; };
 		B757DB7028A3E38B00BB5DB4 /* AnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatorBinding.h; sourceTree = "<group>"; };
 		B757DB7128A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAnimatorBindingUtil.swift; sourceTree = "<group>"; };
 		B757DB7528A80F0B00BB5DB4 /* AnimatorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorSelector.swift; sourceTree = "<group>"; };
-		B757DB7C28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshObjectComponentViewProvider.swift; sourceTree = "<group>"; };
 		B757DB7E28A900CF00BB5DB4 /* SPTListenedComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTListenedComponent.swift; sourceTree = "<group>"; };
 		B75FA5692788C82C001EC7C5 /* Materials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Materials.h; sourceTree = "<group>"; };
 		B75FA56A278ACD7D001EC7C5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -378,7 +369,6 @@
 		B7643B30290BD31B00F6A05B /* EditingParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingParams.swift; sourceTree = "<group>"; };
 		B7643B35290F075200F6A05B /* RenderableMaterials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderableMaterials.h; sourceTree = "<group>"; };
 		B7643B36290F9DD800F6A05B /* ShadeToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadeToolView.swift; sourceTree = "<group>"; };
-		B7643B38290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicToolSelectedObjectViewModel.swift; sourceTree = "<group>"; };
 		B7643B3F2912516F00F6A05B /* RGBColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColorSelector.swift; sourceTree = "<group>"; };
 		B7661CEC295ED75C0070156D /* AnimateScaleToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimateScaleToolView.swift; sourceTree = "<group>"; };
 		B769F2622918EBE400C10661 /* ActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBar.swift; sourceTree = "<group>"; };
@@ -391,7 +381,6 @@
 		B76D4FC628AB6E340029E47B /* AnimatableObjectProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimatableObjectProperty.h; sourceTree = "<group>"; };
 		B76D4FC728AB7C990029E47B /* SPTUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTUtil.swift; sourceTree = "<group>"; };
 		B76D4FC928AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAnimatableObjectPropertyUtil.swift; sourceTree = "<group>"; };
-		B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShininessAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
 		B7791D1427258F7500E0C934 /* Hero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7791D1627258F7500E0C934 /* HeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroApp.swift; sourceTree = "<group>"; };
 		B7791D1A27258F7700E0C934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -409,9 +398,6 @@
 		B787799428FC36E500E3CDA7 /* RandomAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAnimatorView.swift; sourceTree = "<group>"; };
 		B7923B8A28E9C89300D8F66F /* AnimatePositionToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatePositionToolView.swift; sourceTree = "<group>"; };
 		B7928BE22794302D00C4F110 /* CoreGraphicsUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphicsUtil.swift; sourceTree = "<group>"; };
-		B7A78A6C292238650041C812 /* ObjectColorAnimatorBindingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectColorAnimatorBindingComponent.swift; sourceTree = "<group>"; };
-		B7A78A6E2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectRGBAColorChannelAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
-		B7A78A70292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectHSBAColorChannelAnimatorBindingComponentView.swift; sourceTree = "<group>"; };
 		B7AA99E127B5C1430033B459 /* ComparableUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparableUtil.swift; sourceTree = "<group>"; };
 		B7AA99E327B6CABB0033B459 /* SIMDUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMDUtil.swift; sourceTree = "<group>"; };
 		B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentViewUtil.swift; sourceTree = "<group>"; };
@@ -423,7 +409,6 @@
 		B7AD7D15293F9B9700129A07 /* SPTArcLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTArcLookUtil.swift; sourceTree = "<group>"; };
 		B7AD7D1B294730F300129A07 /* BasicAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAnimatorView.swift; sourceTree = "<group>"; };
 		B7AD7D1D294737C700129A07 /* OscillatorAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OscillatorAnimatorView.swift; sourceTree = "<group>"; };
-		B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentSetupViewProvider.swift; sourceTree = "<group>"; };
 		B7B711D228C0FFB60077C7CD /* SPTPointLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTPointLookUtil.swift; sourceTree = "<group>"; };
 		B7B711D428C108D70077C7CD /* LookCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookCategories.swift; sourceTree = "<group>"; };
 		B7B711D628C130740077C7CD /* SPTOutlineLookUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTOutlineLookUtil.swift; sourceTree = "<group>"; };
@@ -527,8 +512,13 @@
 		B7EB66B62A10227900364618 /* ScalePropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalePropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
 		B7EB66B82A1024B900364618 /* UniformScalePropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformScalePropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
 		B7EB66BA2A1128A700364618 /* ShadeAnimatorBindingsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadeAnimatorBindingsElement.swift; sourceTree = "<group>"; };
-		B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShininessPropertyAnimatorBindingsElement.swift; sourceTree = "<group>"; };
-		B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolViewModel.swift; sourceTree = "<group>"; };
+		B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShininessPropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
+		B7EB66BE2A1137C700364618 /* RGBColorChannelPropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColorChannelPropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
+		B7EB66C02A113BEB00364618 /* ObjectRGBColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectRGBColorSelector.swift; sourceTree = "<group>"; };
+		B7EB66C22A11597600364618 /* HSBColorChannelPropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HSBColorChannelPropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
+		B7EB66C42A1159D900364618 /* ObjectHSBColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectHSBColorSelector.swift; sourceTree = "<group>"; };
+		B7EB66C62A115B7300364618 /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
+		B7EB66C82A115C1500364618 /* ComponentSetupViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentSetupViewProvider.swift; sourceTree = "<group>"; };
 		B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorControl.swift; sourceTree = "<group>"; };
 		B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoordinateSystem.cpp; sourceTree = "<group>"; };
 		B7FD159A292BFF9800B6E7DC /* CoordinateSystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoordinateSystem.h; sourceTree = "<group>"; };
@@ -556,8 +546,9 @@
 			children = (
 				B70ABF2B291D767700919F50 /* AnimateShadeToolView.swift */,
 				B7EB66BA2A1128A700364618 /* ShadeAnimatorBindingsElement.swift */,
-				B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift */,
-				B70ABF2D291D7A0900919F50 /* MeshLookAnimatorBindingsComponent.swift */,
+				B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingElement.swift */,
+				B7EB66BE2A1137C700364618 /* RGBColorChannelPropertyAnimatorBindingElement.swift */,
+				B7EB66C22A11597600364618 /* HSBColorChannelPropertyAnimatorBindingElement.swift */,
 			);
 			path = AnimateShade;
 			sourceTree = "<group>";
@@ -844,7 +835,6 @@
 			isa = PBXGroup;
 			children = (
 				B717635F27B00CCF00CE5195 /* MeshRegistry.swift */,
-				B757DB7C28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift */,
 			);
 			path = Mesh;
 			sourceTree = "<group>";
@@ -869,6 +859,8 @@
 			children = (
 				B7643B36290F9DD800F6A05B /* ShadeToolView.swift */,
 				B7EB668E2A0A751300364618 /* ShadeElement.swift */,
+				B7EB66942A0AB44100364618 /* RGBAColorElement.swift */,
+				B7EB66962A0ABAF400364618 /* HSBAColorElement.swift */,
 			);
 			path = Shade;
 			sourceTree = "<group>";
@@ -902,9 +894,9 @@
 		B7791D1527258F7500E0C934 /* Hero */ = {
 			isa = PBXGroup;
 			children = (
-				B748783D29EDE3E600F62B37 /* ElementTree */,
 				B7104BBB2729261300582DCA /* Spirit */,
 				B7104BBC2729266D00582DCA /* Foundation */,
+				B748783D29EDE3E600F62B37 /* ElementTree */,
 				B7AA99E927B7F2FE0033B459 /* ComponentTree */,
 				B717635A27AE839F00CE5195 /* Object */,
 				B73A700128840CBE0043F9FF /* Animator */,
@@ -926,6 +918,8 @@
 				B7B8226F29F6E373000C59E7 /* ObjectElementActiveProperty.swift */,
 				B7B8227829F80D76000C59E7 /* ObjectFloatPropertySelector.swift */,
 				B7EB66902A0A799200364618 /* ObjectFloatPropertySlider.swift */,
+				B7EB66C02A113BEB00364618 /* ObjectRGBColorSelector.swift */,
+				B7EB66C42A1159D900364618 /* ObjectHSBColorSelector.swift */,
 				B7B8228C29FC2EBC000C59E7 /* ObjectHierarchyView.swift */,
 				B7791D222725D99900E0C934 /* Info.plist */,
 				B7791D1A27258F7700E0C934 /* Assets.xcassets */,
@@ -960,7 +954,7 @@
 				B7AA99EA27B7F32A0033B459 /* ComponentViewUtil.swift */,
 				B717635627ABF25500CE5195 /* Component.swift */,
 				B736450327B3BA1100FAD433 /* ComponentViewProvider.swift */,
-				B7B711D028BC96430077C7CD /* ComponentSetupViewProvider.swift */,
+				B7EB66C82A115C1500364618 /* ComponentSetupViewProvider.swift */,
 			);
 			path = ComponentTree;
 			sourceTree = "<group>";
@@ -1142,12 +1136,11 @@
 		B7EDBDBE28F355410048EF93 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				B7EB66C62A115B7300364618 /* Tool.swift */,
 				B7B8227C29F87BDF000C59E7 /* BasicToolModel.swift */,
 				B7B822982A02F2B5000C59E7 /* BasicToolNavigationView.swift */,
 				B7B8227A29F87B19000C59E7 /* BasicToolBarView.swift */,
 				B7EB668C2A097FB200364618 /* BasicToolElementActionViewPlaceholder.swift */,
-				B7EB66942A0AB44100364618 /* RGBAColorElement.swift */,
-				B7EB66962A0ABAF400364618 /* HSBAColorElement.swift */,
 				B7EB66A62A0D4CBD00364618 /* PropertyAnimatorBindingElement.swift */,
 				B7FD159E292E47D200B6E7DC /* Move */,
 				B7BECC3B295C76280091A96F /* Scale */,
@@ -1157,14 +1150,6 @@
 				B753B78A296BE4520018F96D /* AnimateOrientation */,
 				B7661CEB295ED73C0070156D /* AnimateScale */,
 				B70ABF2A291D75F500919F50 /* AnimateShade */,
-				B757DB6B28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift */,
-				B7643B38290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift */,
-				B70ABF31291E8D2900919F50 /* AnimatorBindingComponent.swift */,
-				B7A78A6C292238650041C812 /* ObjectColorAnimatorBindingComponent.swift */,
-				B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */,
-				B7A78A6E2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift */,
-				B7A78A70292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift */,
-				B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1307,7 +1292,6 @@
 				B70A6B23293CEEF40092FDE1 /* LineLookDepthBias.swift in Sources */,
 				B70A6B2A293E39060092FDE1 /* SPTMatrixUtil.swift in Sources */,
 				B7104BC4272B069F00582DCA /* ColorUtil.swift in Sources */,
-				B70ABF2E291D7A0900919F50 /* MeshLookAnimatorBindingsComponent.swift in Sources */,
 				B712240128BBDFB3006A31B1 /* FloatSlider.swift in Sources */,
 				B7235851275D34D000337547 /* Polyline.cpp in Sources */,
 				B753B783296869630018F96D /* SPTMatrix+Orientation.swift in Sources */,
@@ -1319,6 +1303,7 @@
 				B7AA99ED27B81FB70033B459 /* DistinctValueSet.swift in Sources */,
 				B73E65212A057AA600920ED0 /* EulerOrientationElement.swift in Sources */,
 				B7E481D22742EE20003DA5B1 /* Base.cpp in Sources */,
+				B7EB66C72A115B7300364618 /* Tool.swift in Sources */,
 				B7C90C712950F95200A2850E /* Action.cpp in Sources */,
 				B7B8229F2A041C5E000C59E7 /* XYZScaleElement.swift in Sources */,
 				B7D19EB827317025005C9F82 /* ScrollAnimationUtil.swift in Sources */,
@@ -1333,6 +1318,7 @@
 				B757DB6F28A3E37500BB5DB4 /* AnimatorBinding.cpp in Sources */,
 				B753B78529686A180018F96D /* Matrix+Orientation.cpp in Sources */,
 				B70ABF30291D9F6200919F50 /* AnimatablePropertyUtil.swift in Sources */,
+				B7EB66C92A115C1500364618 /* ComponentSetupViewProvider.swift in Sources */,
 				B7B822992A02F2B5000C59E7 /* BasicToolNavigationView.swift in Sources */,
 				B7EB66992A0BCC1F00364618 /* CartesianPositionAnimatorBindingsElement.swift in Sources */,
 				B723584D2757749300337547 /* RayCast.cpp in Sources */,
@@ -1341,7 +1327,7 @@
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7AD7D16293F9B9700129A07 /* SPTArcLookUtil.swift in Sources */,
 				B7E30F4D288E76BA00224E09 /* PanAnimatorViewBoundsView.swift in Sources */,
-				B7EB66BD2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift in Sources */,
+				B7EB66BD2A112CE000364618 /* ShininessPropertyAnimatorBindingElement.swift in Sources */,
 				B7E6257E29142CA600343B67 /* HSBColorSelector.swift in Sources */,
 				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshLook.cpp in Sources */,
@@ -1361,7 +1347,6 @@
 				B7C748A128E377F600E270FB /* ScaleToolView.swift in Sources */,
 				B7B711DC28C13B570077C7CD /* Materials.cpp in Sources */,
 				B7AA99EF27B8488B0033B459 /* GeometryUtil.swift in Sources */,
-				B7643B39290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift in Sources */,
 				B7791DBA2726821200E0C934 /* SceneView.swift in Sources */,
 				B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */,
 				B7EB66B92A1024B900364618 /* UniformScalePropertyAnimatorBindingElement.swift in Sources */,
@@ -1371,11 +1356,9 @@
 				B7B711E228C1E4720077C7CD /* PlayView.swift in Sources */,
 				B7791D812726762100E0C934 /* Shaders.metal in Sources */,
 				B7AD7D1C294730F300129A07 /* BasicAnimatorView.swift in Sources */,
-				B7A78A6F2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift in Sources */,
 				B75FA5812791EDD6001EC7C5 /* ViewUtils.swift in Sources */,
 				B769F2632918EBE400C10661 /* ActionBar.swift in Sources */,
 				B7B8227F29F99132000C59E7 /* CylindricalPositionElement.swift in Sources */,
-				B757DB7D28A8F0ED00BB5DB4 /* MeshObjectComponentViewProvider.swift in Sources */,
 				B7EB66A12A0D412700364618 /* LinearPositionAnimatorBindingsElement.swift in Sources */,
 				B72175FA274BC0A60047016B /* Mesh.cpp in Sources */,
 				B70A310A272F1502003432C4 /* AnimationCompletionObserver.swift in Sources */,
@@ -1394,7 +1377,6 @@
 				B7B711FB28CC45A90077C7CD /* SPTSceneUtil.swift in Sources */,
 				B7BECC47295CAA600091A96F /* ScaleUtil.swift in Sources */,
 				B717636427B1A7F500CE5195 /* IntegerField.swift in Sources */,
-				B7718F4229200A17001107D5 /* ShininessAnimatorBindingComponentView.swift in Sources */,
 				B7643B2C2907C8CD00F6A05B /* EasingSelector.swift in Sources */,
 				B7D19EBC273306F5005C9F82 /* Line.swift in Sources */,
 				B7B8228329FBD97A000C59E7 /* SphericalPositionElement.swift in Sources */,
@@ -1411,7 +1393,6 @@
 				B7AD7D1E294737C700129A07 /* OscillatorAnimatorView.swift in Sources */,
 				B73E47CF27C5827700CB0AFC /* Scale.cpp in Sources */,
 				B7EB66952A0AB44100364618 /* RGBAColorElement.swift in Sources */,
-				B70ABF32291E8D2900919F50 /* AnimatorBindingComponent.swift in Sources */,
 				B7235855275E984500337547 /* PolylineLook.cpp in Sources */,
 				B7661CED295ED75C0070156D /* AnimateScaleToolView.swift in Sources */,
 				B7EB669B2A0BE0E000364618 /* LinearPositionPropertyAnimatorBindingElement.swift in Sources */,
@@ -1425,9 +1406,7 @@
 				B7E30F5628906D4800224E09 /* SignalGraphView.swift in Sources */,
 				B7791D1727258F7500E0C934 /* HeroApp.swift in Sources */,
 				B7C9D6C528FD30BA00621BA1 /* IntegerUtil.swift in Sources */,
-				B7A78A6D292238650041C812 /* ObjectColorAnimatorBindingComponent.swift in Sources */,
 				B73E47E827D011E900CB0AFC /* SPTScaleUtil.swift in Sources */,
-				B7B711D128BC96430077C7CD /* ComponentSetupViewProvider.swift in Sources */,
 				B736450427B3BA1100FAD433 /* ComponentViewProvider.swift in Sources */,
 				B7923B8B28E9C89300D8F66F /* AnimatePositionToolView.swift in Sources */,
 				B73E65252A096E6800920ED0 /* ObjectCoordinateSystemSelector.swift in Sources */,
@@ -1439,6 +1418,7 @@
 				B7EB66B12A1014EF00364618 /* XYZScaleAnimatorBindingsElement.swift in Sources */,
 				B7217603274FF2800047016B /* APIObjectWrapper.cpp in Sources */,
 				B7643B2A2906700400F6A05B /* NoiseAnimatorView.swift in Sources */,
+				B7EB66C12A113BEB00364618 /* ObjectRGBColorSelector.swift in Sources */,
 				B753B77E29661A260018F96D /* OrientationUtil.swift in Sources */,
 				B76D4FC828AB7C990029E47B /* SPTUtil.swift in Sources */,
 				B73E47F127D2270D00CB0AFC /* PointLook.cpp in Sources */,
@@ -1449,15 +1429,14 @@
 				B7FD159B292BFF9800B6E7DC /* CoordinateSystem.cpp in Sources */,
 				B70ABF2C291D767700919F50 /* AnimateShadeToolView.swift in Sources */,
 				B7EB66B52A10201B00364618 /* UniformScaleAnimatorBindingsElement.swift in Sources */,
-				B7A78A71292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift in Sources */,
 				B7643B2F29084DAF00F6A05B /* SPTEasingUtil.swift in Sources */,
 				B7B8226A29F68F2F000C59E7 /* SPTObservableComponent.swift in Sources */,
 				B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */,
-				B757DB6C28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
 				B748784329EDF28300F62B37 /* ElementTreeView.swift in Sources */,
 				B7AA99EB27B7F32A0033B459 /* ComponentViewUtil.swift in Sources */,
+				B7EB66BF2A1137C700364618 /* RGBColorChannelPropertyAnimatorBindingElement.swift in Sources */,
 				B7E30F4F288E7E0500224E09 /* AnimatorUtil.swift in Sources */,
 				B7B711DE28C13E060077C7CD /* SPTMeshLookUtil.swift in Sources */,
 				B760C5C1294B394F0026B785 /* BundleUtil.swift in Sources */,
@@ -1475,13 +1454,13 @@
 				B7AA99E427B6CABB0033B459 /* SIMDUtil.swift in Sources */,
 				B757DB7228A3EA5800BB5DB4 /* SPTAnimatorBindingUtil.swift in Sources */,
 				B73E47EA27D0168400CB0AFC /* SPTOrientationUtil.swift in Sources */,
-				B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */,
 				B73A700328840DB70043F9FF /* AnimatorsView.swift in Sources */,
 				B7E481CB274183BD003DA5B1 /* Transformation.cpp in Sources */,
 				B7C748A328E37C0D00E270FB /* OrientToolView.swift in Sources */,
 				B7EB66A72A0D4CBD00364618 /* PropertyAnimatorBindingElement.swift in Sources */,
 				B7FD159D292E067900B6E7DC /* SPTCoordinateSystemUtil.swift in Sources */,
 				B748784B29F1D45400F62B37 /* OptionalElement.swift in Sources */,
+				B7EB66C32A11597600364618 /* HSBColorChannelPropertyAnimatorBindingElement.swift in Sources */,
 				B7EB66AF2A0E864000364618 /* PositionPropertyAnimatorBindingElement.swift in Sources */,
 				B7791D832726762100E0C934 /* SPTView.swift in Sources */,
 				B7104BC8272BBB1F00582DCA /* FloatSelector.swift in Sources */,
@@ -1497,6 +1476,7 @@
 				B7C9D6C328FD256600621BA1 /* AnimatorViewModel.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,
 				B73A7014288736370043F9FF /* SPTAnimatorUtil.swift in Sources */,
+				B7EB66C52A1159D900364618 /* ObjectHSBColorSelector.swift in Sources */,
 				B73E47E627D00D4700CB0AFC /* SPTPositionUtil.swift in Sources */,
 				B7E481DE2747782B003DA5B1 /* ResourceManager.cpp in Sources */,
 				B7B8226829F5B0FD000C59E7 /* CartesianPositionElement.swift in Sources */,

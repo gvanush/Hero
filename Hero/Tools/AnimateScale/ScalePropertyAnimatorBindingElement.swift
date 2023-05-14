@@ -14,6 +14,9 @@ protocol ScalePropertyAnimatorBindingElement: PropertyAnimatorBindingElement {
     
     var initialPropertyValue: Float! { get nonmutating set }
     
+    var guideColor: UIColor { get }
+    
+    var activeGuideColor: UIColor { get }
 }
 
 extension ScalePropertyAnimatorBindingElement {

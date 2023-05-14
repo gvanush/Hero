@@ -1,5 +1,5 @@
 //
-//  ShininessPropertyAnimatorBindingsElement.swift
+//  RGBColorChannelPropertyAnimatorBindingElement.swift
 //  Hero
 //
 //  Created by Vanush Grigoryan on 14.05.23.
@@ -8,16 +8,16 @@
 import SwiftUI
 
 
-struct ShininessPropertyAnimatorBindingsElement: PropertyAnimatorBindingElement {
+struct RGBColorChannelPropertyAnimatorBindingElement: PropertyAnimatorBindingElement {
     
     typealias Property = AnimatorBindingProperty
     
     let title: String
-    @Binding var propertyValue: Float
+    let channel: RGBColorChannel
+    @Binding var propertyValue: SPTRGBAColor
     let animatableProperty: SPTAnimatableObjectProperty
     let object: SPTObject
-    let guideColor: UIColor
-    let activeGuideColor: UIColor
+    let tintColor: UIColor
     
     @ObjectElementActiveProperty var activeProperty: Property
     var _binding: StateObject<SPTObservableAnimatorBinding<SPTAnimatableObjectProperty>>
@@ -25,15 +25,15 @@ struct ShininessPropertyAnimatorBindingsElement: PropertyAnimatorBindingElement 
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var _showsAnimatorSelector: State<Bool>
-    @State var initialPropertyValue: Float!
+    @State var initialPropertyValue: SPTRGBAColor!
     
-    init(title: String, propertyValue: Binding<Float>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, guideColor: UIColor = .guide1Dark, activeGuideColor: UIColor = .guide1Light) {
+    init(title: String, channel: RGBColorChannel, propertyValue: Binding<SPTRGBAColor>, animatableProperty: SPTAnimatableObjectProperty, object: SPTObject, tintColor: UIColor = .primarySelectionColor) {
         self.title = title
+        self.channel = channel
         _propertyValue = propertyValue
         self.animatableProperty = animatableProperty
         self.object = object
-        self.guideColor = guideColor
-        self.activeGuideColor = activeGuideColor
+        self.tintColor = tintColor
         
         _activeProperty = .init(object: object, elementId: animatableProperty)
         _binding = .init(wrappedValue: .init(property: animatableProperty, object: object))
@@ -44,11 +44,11 @@ struct ShininessPropertyAnimatorBindingsElement: PropertyAnimatorBindingElement 
     var actionView: some View {
         switch activeProperty {
         case .valueAt0:
-            ObjectFloatPropertySlider(value: _binding.projectedValue.valueAt0)
-                .tint(Color(uiColor: activeGuideColor))
+            ObjectRGBColorSelector(channel: channel, value: $propertyValue)
+                .tint(Color.primarySelectionColor)
         case .valueAt1:
-            ObjectFloatPropertySlider(value: _binding.projectedValue.valueAt1)
-                .tint(Color(uiColor: activeGuideColor))
+            ObjectRGBColorSelector(channel: channel, value: $propertyValue)
+                .tint(Color.primarySelectionColor)
         }
     }
     
@@ -79,9 +79,9 @@ struct ShininessPropertyAnimatorBindingsElement: PropertyAnimatorBindingElement 
     func updatePropertyValue(binding: SPTAnimatorBinding) {
         switch activeProperty {
         case .valueAt0:
-            propertyValue = binding.valueAt0
+            propertyValue.float4[channel.rawValue] = binding.valueAt0
         case .valueAt1:
-            propertyValue = binding.valueAt1
+            propertyValue.float4[channel.rawValue] = binding.valueAt1
         }
     }
     

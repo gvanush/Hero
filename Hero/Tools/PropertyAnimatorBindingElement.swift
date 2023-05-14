@@ -29,10 +29,6 @@ protocol PropertyAnimatorBindingElement: Element where Property == AnimatorBindi
     
     var _binding: StateObject<SPTObservableAnimatorBinding<SPTAnimatableObjectProperty>> { get }
     
-    var guideColor: UIColor { get }
-    
-    var activeGuideColor: UIColor { get }
-    
     var _showsAnimatorSelector: State<Bool> { get }
     
     var defaultValueAt0: Float { get }
