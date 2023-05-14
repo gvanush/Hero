@@ -7,19 +7,18 @@
 
 import SwiftUI
 
-struct ObjectFloatPropertySlider<C>: View
-where C: SPTInspectableComponent {
+struct ObjectFloatPropertySlider: View {
     
-    @StateObject private var value: SPTObservableComponentProperty<C, Float>
+    @Binding var value: Float
     
     @EnvironmentObject private var userInteractionState: UserInteractionState
     
-    init(object: SPTObject, keyPath: WritableKeyPath<C, Float>) {
-        _value = .init(wrappedValue: .init(object: object, keyPath: keyPath))
+    init(value: Binding<Float>) {
+        _value = value
     }
     
     var body: some View {
-        FloatSlider(value: $value.value) { isEditing in
+        FloatSlider(value: $value) { isEditing in
             userInteractionState.isEditing = isEditing
         }
     }

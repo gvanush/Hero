@@ -21,11 +21,13 @@ struct ShadeElement: Element {
     
     @ObjectElementActiveProperty var activeProperty: Property
     @StateObject private var colorModel: SPTObservableComponentProperty<SPTMeshLook, SPTColorModel>
+    @StateObject private var shininess: SPTObservableComponentProperty<SPTMeshLook, Float>
     
     init(object: SPTObject) {
         self.object = object
         _activeProperty = .init(object: object, elementId: Self.keyPath)
-        _colorModel = .init(wrappedValue: .init(object: object, keyPath: \.shading.blinnPhong.color.model))
+        _colorModel = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath.appending(path: \.color.model)))
+        _shininess = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath.appending(path: \.shininess)))
     }
     
     var content: some Element {
@@ -41,7 +43,7 @@ struct ShadeElement: Element {
         Group {
             switch activeProperty {
             case .shininess:
-                ObjectFloatPropertySlider(object: object, keyPath: Self.shininessKeyPath)
+                ObjectFloatPropertySlider(value: $shininess.value)
             }
         }
         .tint(.primarySelectionColor)

@@ -59,20 +59,12 @@ class RootViewModel: ObservableObject {
     let sceneViewModel: SceneViewModel
     let animatorsViewModel: AnimatorsViewModel
     
-    let animateShadeToolViewModel: AnimateShadeToolViewModel
-    
-    lazy var toolViewModels: [ToolViewModel] = [
-        animateShadeToolViewModel
-    ]
-    
     let sceneGraph: SceneGraph
     let objectEditingParams = ObjectEditingParams()
     
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
         self.animatorsViewModel = .init()
-        
-        self.animateShadeToolViewModel = .init(sceneViewModel: sceneViewModel)
         
         sceneGraph = SceneGraph(scene: sceneViewModel.scene)
         
@@ -98,9 +90,6 @@ class RootViewModel: ObservableObject {
     
     func duplicateObject(_ original: SPTObject) {
         let duplicate = sceneGraph.duplicateObject(original)
-        for toolVM in toolViewModels {
-            toolVM.onObjectDuplicate(original: original, duplicate: duplicate)
-        }
         objectEditingParams.onObjectDuplicate(original: original, duplicate: duplicate)
         sceneViewModel.selectedObject = duplicate
         sceneViewModel.focusedObject = duplicate
@@ -112,9 +101,6 @@ class RootViewModel: ObservableObject {
         }
         if object == sceneViewModel.focusedObject {
             sceneViewModel.focusedObject = nil
-        }
-        for toolVM in toolViewModels {
-            toolVM.onObjectDestroy(object)
         }
         
         // Schedule object removal at the end of the run loop when
@@ -141,6 +127,7 @@ struct RootView: View {
     @StateObject private var animatePositionToolModel = BasicToolModel()
     @StateObject private var animateOrientationToolModel = BasicToolModel()
     @StateObject private var animateScaleToolModel = BasicToolModel()
+    @StateObject private var animateShadeToolModel = BasicToolModel()
     
     @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
@@ -338,7 +325,7 @@ struct RootView: View {
             case .animateScale:
                 AnimateScaleToolView(model: animateScaleToolModel)
             case .animateShade:
-                AnimateShadeToolView(model: model.animateShadeToolViewModel)
+                AnimateShadeToolView(model: animateShadeToolModel)
             }
         }
         .environmentObject(sceneViewModel)
@@ -364,7 +351,7 @@ struct RootView: View {
             case .animateScale:
                 BasicToolBarView(tool: .animateScale, model: animateScaleToolModel)
             case .animateShade:
-                EmptyView()
+                BasicToolBarView(tool: .animateShade, model: animateShadeToolModel)
             }
         }
         .environmentObject(sceneViewModel)

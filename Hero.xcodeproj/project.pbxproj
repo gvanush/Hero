@@ -226,6 +226,8 @@
 		B7EB66B52A10201B00364618 /* UniformScaleAnimatorBindingsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66B42A10201B00364618 /* UniformScaleAnimatorBindingsElement.swift */; };
 		B7EB66B72A10227900364618 /* ScalePropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66B62A10227900364618 /* ScalePropertyAnimatorBindingElement.swift */; };
 		B7EB66B92A1024B900364618 /* UniformScalePropertyAnimatorBindingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66B82A1024B900364618 /* UniformScalePropertyAnimatorBindingElement.swift */; };
+		B7EB66BB2A1128A700364618 /* ShadeAnimatorBindingsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66BA2A1128A700364618 /* ShadeAnimatorBindingsElement.swift */; };
+		B7EB66BD2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift */; };
 		B7EDBDBD28F348C50048EF93 /* ToolViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */; };
 		B7EDBDC228F6826F0048EF93 /* AnimatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */; };
 		B7FD159B292BFF9800B6E7DC /* CoordinateSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */; };
@@ -524,6 +526,8 @@
 		B7EB66B42A10201B00364618 /* UniformScaleAnimatorBindingsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformScaleAnimatorBindingsElement.swift; sourceTree = "<group>"; };
 		B7EB66B62A10227900364618 /* ScalePropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalePropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
 		B7EB66B82A1024B900364618 /* UniformScalePropertyAnimatorBindingElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformScalePropertyAnimatorBindingElement.swift; sourceTree = "<group>"; };
+		B7EB66BA2A1128A700364618 /* ShadeAnimatorBindingsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadeAnimatorBindingsElement.swift; sourceTree = "<group>"; };
+		B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShininessPropertyAnimatorBindingsElement.swift; sourceTree = "<group>"; };
 		B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolViewModel.swift; sourceTree = "<group>"; };
 		B7EDBDC128F6826F0048EF93 /* AnimatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorControl.swift; sourceTree = "<group>"; };
 		B7FD1599292BFF9800B6E7DC /* CoordinateSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoordinateSystem.cpp; sourceTree = "<group>"; };
@@ -551,6 +555,8 @@
 			isa = PBXGroup;
 			children = (
 				B70ABF2B291D767700919F50 /* AnimateShadeToolView.swift */,
+				B7EB66BA2A1128A700364618 /* ShadeAnimatorBindingsElement.swift */,
+				B7EB66BC2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift */,
 				B70ABF2D291D7A0900919F50 /* MeshLookAnimatorBindingsComponent.swift */,
 			);
 			path = AnimateShade;
@@ -1137,7 +1143,9 @@
 			isa = PBXGroup;
 			children = (
 				B7B8227C29F87BDF000C59E7 /* BasicToolModel.swift */,
+				B7B822982A02F2B5000C59E7 /* BasicToolNavigationView.swift */,
 				B7B8227A29F87B19000C59E7 /* BasicToolBarView.swift */,
+				B7EB668C2A097FB200364618 /* BasicToolElementActionViewPlaceholder.swift */,
 				B7EB66942A0AB44100364618 /* RGBAColorElement.swift */,
 				B7EB66962A0ABAF400364618 /* HSBAColorElement.swift */,
 				B7EB66A62A0D4CBD00364618 /* PropertyAnimatorBindingElement.swift */,
@@ -1148,6 +1156,7 @@
 				B7643B32290BE85700F6A05B /* AnimatePosition */,
 				B753B78A296BE4520018F96D /* AnimateOrientation */,
 				B7661CEB295ED73C0070156D /* AnimateScale */,
+				B70ABF2A291D75F500919F50 /* AnimateShade */,
 				B757DB6B28A3C17100BB5DB4 /* AnimatorBindingSetupComponentView.swift */,
 				B7643B38290FA53400F6A05B /* BasicToolSelectedObjectViewModel.swift */,
 				B70ABF31291E8D2900919F50 /* AnimatorBindingComponent.swift */,
@@ -1155,10 +1164,7 @@
 				B7718F4129200A17001107D5 /* ShininessAnimatorBindingComponentView.swift */,
 				B7A78A6E2922743E0041C812 /* ObjectRGBAColorChannelAnimatorBindingComponentView.swift */,
 				B7A78A70292283260041C812 /* ObjectHSBAColorChannelAnimatorBindingComponentView.swift */,
-				B70ABF2A291D75F500919F50 /* AnimateShade */,
 				B7EDBDBC28F348C50048EF93 /* ToolViewModel.swift */,
-				B7B822982A02F2B5000C59E7 /* BasicToolNavigationView.swift */,
-				B7EB668C2A097FB200364618 /* BasicToolElementActionViewPlaceholder.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1335,6 +1341,7 @@
 				B7217607274FFA770047016B /* Device_metal.mm in Sources */,
 				B7AD7D16293F9B9700129A07 /* SPTArcLookUtil.swift in Sources */,
 				B7E30F4D288E76BA00224E09 /* PanAnimatorViewBoundsView.swift in Sources */,
+				B7EB66BD2A112CE000364618 /* ShininessPropertyAnimatorBindingsElement.swift in Sources */,
 				B7E6257E29142CA600343B67 /* HSBColorSelector.swift in Sources */,
 				B7D8252E279DCCA4008F28CE /* AnimationUtil.swift in Sources */,
 				B7E481DA274648DB003DA5B1 /* MeshLook.cpp in Sources */,
@@ -1409,6 +1416,7 @@
 				B7661CED295ED75C0070156D /* AnimateScaleToolView.swift in Sources */,
 				B7EB669B2A0BE0E000364618 /* LinearPositionPropertyAnimatorBindingElement.swift in Sources */,
 				B7AD7D10293E6A3D00129A07 /* SPTVectorUtil.swift in Sources */,
+				B7EB66BB2A1128A700364618 /* ShadeAnimatorBindingsElement.swift in Sources */,
 				B7B8227729F7DED6000C59E7 /* LinearPositionElement.swift in Sources */,
 				B7104BC2272B00B800582DCA /* PropertySelector.swift in Sources */,
 				B73E47D727CBDFDC00CB0AFC /* SceneGraph.swift in Sources */,
