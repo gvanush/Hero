@@ -102,7 +102,6 @@
 		B7643B402912517000F6A05B /* RGBColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643B3F2912516F00F6A05B /* RGBColorSelector.swift */; };
 		B7661CED295ED75C0070156D /* AnimateScaleToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7661CEC295ED75C0070156D /* AnimateScaleToolView.swift */; };
 		B769F2632918EBE400C10661 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F2622918EBE400C10661 /* ActionBar.swift */; };
-		B769F265291ADF3B00C10661 /* ActionBarContentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */; };
 		B76D4FC228AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */; };
 		B76D4FC828AB7C990029E47B /* SPTUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC728AB7C990029E47B /* SPTUtil.swift */; };
 		B76D4FCA28AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D4FC928AC0E1B0029E47B /* SPTAnimatableObjectPropertyUtil.swift */; };
@@ -372,7 +371,6 @@
 		B7643B3F2912516F00F6A05B /* RGBColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBColorSelector.swift; sourceTree = "<group>"; };
 		B7661CEC295ED75C0070156D /* AnimateScaleToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimateScaleToolView.swift; sourceTree = "<group>"; };
 		B769F2622918EBE400C10661 /* ActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBar.swift; sourceTree = "<group>"; };
-		B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarContentBuilder.swift; sourceTree = "<group>"; };
 		B76D4FC028AA25B60029E47B /* ObjectPropertyAnimatorBinding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPropertyAnimatorBinding.cpp; sourceTree = "<group>"; };
 		B76D4FC128AA25B60029E47B /* ObjectPropertyAnimatorBinding.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectPropertyAnimatorBinding.hpp; sourceTree = "<group>"; };
 		B76D4FC328AA25C50029E47B /* ObjectPropertyAnimatorBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectPropertyAnimatorBinding.h; sourceTree = "<group>"; };
@@ -913,7 +911,6 @@
 				B7104BB727286B3700582DCA /* SceneViewModel.swift */,
 				B7B711E128C1E4720077C7CD /* PlayView.swift */,
 				B769F2622918EBE400C10661 /* ActionBar.swift */,
-				B769F264291ADF3B00C10661 /* ActionBarContentBuilder.swift */,
 				B7643B30290BD31B00F6A05B /* EditingParams.swift */,
 				B7B8226F29F6E373000C59E7 /* ObjectElementActiveProperty.swift */,
 				B7B8227829F80D76000C59E7 /* ObjectFloatPropertySelector.swift */,
@@ -1471,7 +1468,6 @@
 				B70A6B2C293E56D50092FDE1 /* AnimatorBindingUtil.swift in Sources */,
 				B70A6B28293E2E750092FDE1 /* Matrix.cpp in Sources */,
 				B70A6B21293CEDA00092FDE1 /* SPTLineLookDepthBiasUtil.swift in Sources */,
-				B769F265291ADF3B00C10661 /* ActionBarContentBuilder.swift in Sources */,
 				B717635927AE836E00CE5195 /* EnumUtil.swift in Sources */,
 				B7C9D6C328FD256600621BA1 /* AnimatorViewModel.swift in Sources */,
 				B7D19EBA2731A456005C9F82 /* DragGestureUtil.swift in Sources */,

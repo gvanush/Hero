@@ -88,31 +88,6 @@ class RootViewModel: ObservableObject {
         sceneViewModel.focusedObject = object
     }
     
-    func duplicateObject(_ original: SPTObject) {
-        let duplicate = sceneGraph.duplicateObject(original)
-        objectEditingParams.onObjectDuplicate(original: original, duplicate: duplicate)
-        sceneViewModel.selectedObject = duplicate
-        sceneViewModel.focusedObject = duplicate
-    }
-    
-    func destroyObject(_ object: SPTObject) {
-        if object == sceneViewModel.selectedObject {
-            sceneViewModel.selectedObject = nil
-        }
-        if object == sceneViewModel.focusedObject {
-            sceneViewModel.focusedObject = nil
-        }
-        
-        // Schedule object removal at the end of the run loop when
-        // SwiftUI already processed all view lifecycle events
-        let runLoopObserver = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault, CFRunLoopActivity.beforeWaiting.rawValue, false, 0, { _, _ in
-            self.objectEditingParams.onObjectDestroy(object)
-            self.sceneGraph.destroyObject(object)
-        })
-        CFRunLoopAddObserver(CFRunLoopGetCurrent(), runLoopObserver, .defaultMode)
-     
-    }
-    
 }
 
 
@@ -129,7 +104,6 @@ struct RootView: View {
     @StateObject private var animateScaleToolModel = BasicToolModel()
     @StateObject private var animateShadeToolModel = BasicToolModel()
     
-    @StateObject private var actionBarModel: ActionBarModel
     @StateObject private var userInteractionState: UserInteractionState
     
     @State private var activeTool = Tool.move
@@ -144,20 +118,21 @@ struct RootView: View {
         let sceneVM = SceneViewModel()
         _sceneViewModel = .init(wrappedValue: sceneVM)
         _model = .init(wrappedValue: .init(sceneViewModel: sceneVM))
-        _actionBarModel = .init(wrappedValue: .init())
         _userInteractionState = .init(wrappedValue: .init())
     }
     
     var body: some View {
-        ActionBarItemReader(model: actionBarModel) {
-            SceneView(model: sceneViewModel, uiEdgeInsets: Self.sceneUIInsets)
-                .lookCategories([.renderableModel, .guide])
+        SceneView(model: sceneViewModel, uiEdgeInsets: Self.sceneUIInsets)
+            .lookCategories([.renderableModel, .guide])
             .renderingPaused(showsAnimatorsView || showsNewObjectView || playableScene != nil)
             .environmentObject(userInteractionState)
             .overlay(alignment: .bottomTrailing) {
-                ActionBar(model: actionBarModel)
+                ActionBar(showsNewObjectView: $showsNewObjectView)
                     .padding(Self.sceneUIInsets)
                     .visible(userInteractionState.isIdle && activeTool.purpose == .build)
+                    .environmentObject(sceneViewModel)
+                    .environmentObject(model.sceneGraph)
+                    .environmentObject(model.objectEditingParams)
             }
             .safeAreaInset(edge: .top, spacing: 0.0) {
                 topbar()
@@ -199,42 +174,26 @@ struct RootView: View {
                 }
                 .visible(!userInteractionState.isNavigating)
             }
-            .actionBarCommonSection {
-                ActionBarButton(iconName: "plus") {
-                    showsNewObjectView = true
-                }
-                
-                ActionBarButton(iconName: "plus.square.on.square", disabled: !sceneViewModel.isObjectSelected) {
-                    model.duplicateObject(sceneViewModel.selectedObject!)
-                }
-                
-                ActionBarButton(iconName: "trash", disabled: !sceneViewModel.isObjectSelected) {
-                    model.destroyObject(sceneViewModel.selectedObject!)
+            .statusBar(hidden: !userInteractionState.isIdle)
+            .persistentSystemOverlays(userInteractionState.isIdle ? .automatic : .hidden)
+            .sheet(isPresented: $showsAnimatorsView) {
+                AnimatorsView(model: model.animatorsViewModel)
+            }
+            .sheet(isPresented: $showsNewObjectView) {
+                NewObjectView() { meshId in
+                    model.createObject(meshId: meshId, position: SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin, scale: 5.0)
                 }
             }
-            .environmentObject(actionBarModel)
-            
-        }
-        .statusBar(hidden: !userInteractionState.isIdle)
-        .persistentSystemOverlays(userInteractionState.isIdle ? .automatic : .hidden)
-        .sheet(isPresented: $showsAnimatorsView) {
-            AnimatorsView(model: model.animatorsViewModel)
-        }
-        .sheet(isPresented: $showsNewObjectView) {
-            NewObjectView() { meshId in
-                model.createObject(meshId: meshId, position: SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin, scale: 5.0)
+            .fullScreenCover(item: $playableScene, content: { scene in
+                PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))
+            })
+            .onChange(of: scenePhase) { [scenePhase] newScenePhase in
+                // This should be part of 'PlayView' however for some reason
+                // scene phase notifications work on the root view of the app
+                if scenePhase == .active && newScenePhase == .inactive {
+                    playableScene = nil
+                }
             }
-        }
-        .fullScreenCover(item: $playableScene, content: { scene in
-            PlayView(model: PlayViewModel(scene: scene, viewCameraEntity: scene.params.viewCameraEntity))
-        })
-        .onChange(of: scenePhase) { [scenePhase] newScenePhase in
-            // This should be part of 'PlayView' however for some reason
-            // scene phase notifications work on the root view of the app
-            if scenePhase == .active && newScenePhase == .inactive {
-                playableScene = nil
-            }
-        }
     }
     
     func topbar() -> some View {
