@@ -70,7 +70,7 @@ struct RotationPropertyAnimatorBindingElement: PropertyAnimatorBindingElement {
     }
     
     func onParentDisclosed() {
-        SPTPolylineLook.make(.init(color: activeGuideColor.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
+        SPTPolylineLook.make(.init(color: activeGuideColor.rgba, polylineId: MeshRegistry.util.xAxisLineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
     }
     
     func onParentClosed() {

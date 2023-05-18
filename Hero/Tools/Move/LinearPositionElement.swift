@@ -149,7 +149,7 @@ struct LinearPositionElement: Element {
     func onDisclose() {
         SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointLargeSize, categories: LookCategories.guide.rawValue), object: originObject)
         SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointSmallSize, categories: LookCategories.guide.rawValue), object: directionObject)
-        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: lineGuideObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: MeshRegistry.util.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: lineGuideObject)
     }
     
     func onClose() {

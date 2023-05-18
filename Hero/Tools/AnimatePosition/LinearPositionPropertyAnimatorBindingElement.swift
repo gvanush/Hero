@@ -76,7 +76,7 @@ struct LinearPositionPropertyAnimatorBindingElement: PositionPropertyAnimatorBin
     }
     
     func onParentDisclosed() {
-        SPTPolylineLook.make(.init(color: guideColor.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
+        SPTPolylineLook.make(.init(color: guideColor.rgba, polylineId: MeshRegistry.util.xAxisLineMeshId, thickness: .guideLineBoldThickness, categories: LookCategories.guide.rawValue), object: lineObject)
     }
     
     func onParentClosed() {

@@ -74,15 +74,15 @@ struct XYZScaleElement: Element {
         switch activeProperty {
         case .x:
             SPTScale.make(.init(x: 500.0), object: guide)
-            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
+            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: MeshRegistry.util.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
             
         case .y:
             SPTScale.make(.init(y: 500.0), object: guide)
-            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: sceneViewModel.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
+            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: MeshRegistry.util.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
             
         case .z:
             SPTScale.make(.init(z: 500.0), object: guide)
-            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId: sceneViewModel.zAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
+            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId:MeshRegistry.util.zAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
         }
 
         guideObject = guide

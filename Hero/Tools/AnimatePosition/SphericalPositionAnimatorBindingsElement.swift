@@ -47,9 +47,9 @@ struct SphericalPositionAnimatorBindingsElement: Element {
     }
     
     func onDisclose() {
-        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: sceneViewModel.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
-        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: latitudeCircleObject)
-        SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: sceneViewModel.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: longitudeCircleObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide1.rgba, polylineId: MeshRegistry.util.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: radiusLineObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide2.rgba, polylineId: MeshRegistry.util.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: latitudeCircleObject)
+        SPTPolylineLook.make(.init(color: UIColor.guide3.rgba, polylineId: MeshRegistry.util.circleOutlineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: longitudeCircleObject)
         SPTPointLook.make(.init(color: UIColor.guide1.rgba, size: .guidePointLargeSize), object: originObject)
     }
     
