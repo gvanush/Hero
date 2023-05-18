@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-fileprivate let cameraInitialPosition = SPTPosition(origin: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi)
-fileprivate let cameraInitialOreintation = SPTOrientation(target: .zero, up: .up, axis: .Z, positive: false)
-
 
 class SceneViewModel: ObservableObject {
     
@@ -19,8 +16,6 @@ class SceneViewModel: ObservableObject {
     let zAxisLineMeshId: SPTMeshId
     let xAxisHalfLineMeshId: SPTMeshId
     let circleOutlineMeshId: SPTMeshId
-    
-    private var prevDragValue: DragGesture.Value?
 
     private(set) var viewCamera: ViewCamera
     
@@ -121,104 +116,11 @@ class SceneViewModel: ObservableObject {
         return object
     }
     
-    func resetCamera() {
-        isFocusEnabled = false
-        viewCamera.reset()
-    }
-    
-    private func focusOn(_ object: SPTObject, animated: Bool) {
-        viewCamera.focusOn(SPTPosition.get(object: object).toCartesian.cartesian, animated: animated)
-    }
-    
-    func cameraUp(latitude: Float) -> simd_float3 {
-        sinf(latitude) >= 0.0 ? .up : .down
-    }
-    
-    // MARK: Orbit
-    func orbit(dragValue: DragGesture.Value) {
-        
-        guard let prevDragValue = self.prevDragValue else {
-            self.prevDragValue = dragValue
-            return
-        }
-        self.prevDragValue = dragValue
-        
-        let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
-        let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
-        
-        viewCamera.orbit(deltaAngle: deltaAngle)
-        
-    }
-    
-    func finishOrbit(dragValue: DragGesture.Value) {
-        // Deliberately ignoring last drag value to avoid orbit nudge
-        prevDragValue = nil
-    }
-    
-    func cancelOrbit() {
-        prevDragValue = nil
-    }
-    
-    static let orbitTranslationPerHalfRevolution: Float = 300.0
-    
-    // MARK: Zoom
-    func zoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
-        
-        guard let prevDragValue = self.prevDragValue else {
-            self.prevDragValue = dragValue
-            return
-        }
-        self.prevDragValue = dragValue
-        
-        let deltaYTranslation = Float(dragValue.translation.height - prevDragValue.translation.height)
-        
-        viewCamera.zoom(deltaY: Self.zoomFactor * deltaYTranslation, viewportSize: viewportSize)
-        
-    }
-    
-    func finishZoom(dragValue: DragGesture.Value, viewportSize: CGSize) {
-        // Deliberately ignoring last drag value to avoid zoom nudge
-        prevDragValue = nil
-    }
-    
-    func cancelZoom() {
-        prevDragValue = nil
-    }
-    
-    // MARK: Pan
-    func pan(dragValue: DragGesture.Value, viewportSize: CGSize) {
-        
-        // NOTE: Typically the first non-zero drag translation is big which results to
-        // aggresive jerk on the start, hence first non-zero translation is ignored
-        guard let prevDragValue = self.prevDragValue else {
-            if dragValue.translation == .zero {
-                return
-            }
-            self.prevDragValue = dragValue
-            return
-        }
-        self.prevDragValue = dragValue
-        
-        let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
-        
-        viewCamera.pan(translation: deltaTranslation, viewportSize: viewportSize)
-        
-    }
-    
-    func finishPan(dragValue: DragGesture.Value, viewportSize: CGSize) {
-        // Deliberately ignoring last drag value to avoid pan nudge
-        prevDragValue = nil
-    }
-    
-    func cancelPan() {
-        prevDragValue = nil
-    }
-    
     private func updateFocusedObject(_ object: SPTObject) {
         focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: object) { [unowned self] newPos in
             viewCamera.focusOn(newPos.toCartesian.cartesian, animated: false)
         }
-        focusOn(object, animated: true)
+        viewCamera.focusOn(SPTPosition.get(object: object).toCartesian.cartesian, animated: true)
     }
     
     func makeTwin(object: SPTObject) -> SPTObject {
@@ -260,7 +162,5 @@ class SceneViewModel: ObservableObject {
         })
         CFRunLoopAddObserver(CFRunLoopGetCurrent(), runLoopObserver, .defaultMode)
     }
-    
-    static let zoomFactor: Float = 3.0
     
 }

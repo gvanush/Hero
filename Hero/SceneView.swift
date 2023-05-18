@@ -26,6 +26,7 @@ struct SceneView: View {
     @GestureState private var isOrbitDragGestureActive = false
     @GestureState private var isZoomDragGestureActive = false
     @GestureState private var isPanDragGestureActive = false
+    @State private var prevDragValue: DragGesture.Value?
     
     @Environment(\.colorScheme) var colorScheme
     @State private var clearColor = UIColor.sceneBgrColor.mtlClearColor
@@ -64,9 +65,7 @@ struct SceneView: View {
                             .renderingPaused(isRenderingPaused)
                             .lookCategories(lookCategories.rawValue)
                         
-                        // NOTE: Adding 'allowsHitTesting' to 'SPTView' will cause its underlying
-                        // view controller's 'viewWillAppear' to be called on each gesture start,
-                        // hence creating a separate view on top
+                        // Adding 'allowsHitTesting' to 'SPTView' will cause its underlying view controller's 'viewWillAppear' to be called on each gesture start, hence creating a separate view on top
                         Color.clear
                             .contentShape(Rectangle())
                             .gesture(orbitDragGesture)
@@ -84,51 +83,19 @@ struct SceneView: View {
                 }
                 .ignoresSafeArea()
                 
-                VStack(spacing: 0.0) {
-                    HStack(spacing: 0.0) {
-                        VStack {
-                            Spacer()
-                            Button {
-                                model.resetCamera()
-                            } label: {
-                                Image(systemName: "arrow.rectanglepath")
-                                    .imageScale(.medium)
-                                    .tint(.primary)
-                            }
-                            .frame(width: SceneViewConst.uiButtonSize, height: SceneViewConst.uiButtonSize, alignment: .center)
-                            .background(SceneViewConst.uiBgrMaterial, ignoresSafeAreaEdges: [])
-                            .cornerRadius(12.0)
-                            .shadow(radius: 1.0)
-                            
-                            focusToggle()
-                        }
-                        .padding(.leading, 8.0)
-                        Spacer()
-                        ZoomView()
-                            .frame(width: 16.0, alignment: .trailing)
-                            .contentShape(Rectangle())
-                            .gesture(zoomDragGesture(viewportSize: viewportSize))
-                    }
-                    .visible(userInteractionState.isIdle)
-                    HStack {
-                        panAreaView(viewportSize: viewportSize)
-                        Spacer()
-                        panAreaView(viewportSize: viewportSize)
-                    }
-                    .frame(height: uiEdgeInsets.bottom)
-                }
+                controlsView
             }
         }
         .onChange(of: isOrbitDragGestureActive) { newValue in
             userInteractionState.isNavigating = newValue
             if !newValue {
-                model.cancelOrbit()
+                prevDragValue = nil
             }
         }
         .onChange(of: isZoomDragGestureActive) { newValue in
             userInteractionState.isNavigating = newValue
             if !newValue {
-                model.cancelZoom()
+                prevDragValue = nil
             }
         }
         .onChange(of: isPanDragGestureActive) { newValue in
@@ -136,7 +103,7 @@ struct SceneView: View {
             if newValue {
                 model.isFocusEnabled = false
             } else {
-                model.cancelPan()
+                prevDragValue = nil
             }
         }
         .onChange(of: colorScheme) { _ in
@@ -145,58 +112,6 @@ struct SceneView: View {
         .onPreferenceChange(SizePreferenceKey.self) { size in
             viewportSize = size
         }
-    }
-    
-    func focusToggle() -> some View {
-        SceneUIToggle(isOn: $model.isFocusEnabled, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.spot")
-            .transition(.identity)
-    }
-    
-    var orbitDragGesture: some Gesture {
-        DragGesture()
-            .updating($isOrbitDragGestureActive, body: { _, state, _ in
-                state = true
-            })
-            .onChanged { value in
-                model.orbit(dragValue: value)
-            }
-            .onEnded { value in
-                model.finishOrbit(dragValue: value)
-            }
-    }
-    
-    func zoomDragGesture(viewportSize: CGSize) -> some Gesture {
-        DragGesture(minimumDistance: 0.0)
-            .updating($isZoomDragGestureActive, body: { _, state, _ in
-                state = true
-            })
-            .onChanged { value in
-                model.zoom(dragValue: value, viewportSize: viewportSize)
-            }
-            .onEnded { value in
-                model.finishZoom(dragValue: value, viewportSize: viewportSize)
-            }
-    }
-    
-    func panAreaView(viewportSize: CGSize) -> some View {
-        Color.clear
-            .frame(width: 44.0)
-            .contentShape(Rectangle())
-            .gesture(panDragGesture(viewportSize: viewportSize))
-            .ignoresSafeArea(edges: .bottom)
-    }
-    
-    func panDragGesture(viewportSize: CGSize) -> some Gesture {
-        DragGesture(minimumDistance: 0.0)
-            .updating($isPanDragGestureActive, body: { _, state, _ in
-                state = true
-            })
-            .onChanged { value in
-                model.pan(dragValue: value, viewportSize: viewportSize)
-            }
-            .onEnded { value in
-                model.finishPan(dragValue: value, viewportSize: viewportSize)
-            }
     }
     
     func sptViewPadding(safeArea: CGRect, fullArea: CGRect) -> EdgeInsets {
@@ -217,6 +132,136 @@ struct SceneView: View {
         }
         
         return insets
+    }
+    
+    var controlsView: some View {
+        VStack(spacing: 0.0) {
+            HStack(spacing: 0.0) {
+                VStack {
+                    Spacer()
+                    Button {
+                        model.isFocusEnabled = false
+                        model.viewCamera.reset()
+                    } label: {
+                        Image(systemName: "arrow.rectanglepath")
+                            .imageScale(.medium)
+                            .tint(.primary)
+                    }
+                    .frame(width: SceneViewConst.uiButtonSize, height: SceneViewConst.uiButtonSize, alignment: .center)
+                    .background(SceneViewConst.uiBgrMaterial, ignoresSafeAreaEdges: [])
+                    .cornerRadius(12.0)
+                    .shadow(radius: 1.0)
+                    
+                    SceneUIToggle(isOn: $model.isFocusEnabled, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.spot")
+                        .transition(.identity)
+                }
+                .padding(.leading, 8.0)
+                Spacer()
+                ZoomView()
+                    .frame(width: 16.0, alignment: .trailing)
+                    .contentShape(Rectangle())
+                    .gesture(zoomDragGesture(viewportSize: viewportSize))
+            }
+            .visible(userInteractionState.isIdle)
+            HStack {
+                panAreaView(viewportSize: viewportSize)
+                Spacer()
+                panAreaView(viewportSize: viewportSize)
+            }
+            .frame(height: uiEdgeInsets.bottom)
+        }
+    }
+    
+    // MARK: Orbit
+    var orbitDragGesture: some Gesture {
+        DragGesture()
+            .updating($isOrbitDragGestureActive, body: { _, state, _ in
+                state = true
+            })
+            .onChanged { value in
+                
+                guard let prevDragValue = self.prevDragValue else {
+                    self.prevDragValue = value
+                    return
+                }
+                self.prevDragValue = value
+                
+                let deltaTranslation = value.translation.float2 - prevDragValue.translation.float2
+                let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
+                
+                model.viewCamera.orbit(deltaAngle: deltaAngle)
+                
+            }
+            .onEnded { value in
+                // Deliberately ignoring last drag value to avoid orbit nudge
+                prevDragValue = nil
+            }
+    }
+    
+    static let orbitTranslationPerHalfRevolution: Float = 300.0
+    
+    // MARK: Zoom
+    func zoomDragGesture(viewportSize: CGSize) -> some Gesture {
+        DragGesture(minimumDistance: 0.0)
+            .updating($isZoomDragGestureActive, body: { _, state, _ in
+                state = true
+            })
+            .onChanged { value in
+                
+                guard let prevDragValue = self.prevDragValue else {
+                    self.prevDragValue = value
+                    return
+                }
+                self.prevDragValue = value
+                
+                let deltaYTranslation = Float(value.translation.height - prevDragValue.translation.height)
+                
+                model.viewCamera.zoom(deltaY: Self.zoomFactor * deltaYTranslation, viewportSize: viewportSize)
+                
+            }
+            .onEnded { value in
+                // Deliberately ignoring last drag value to avoid zoom nudge
+                prevDragValue = nil
+            }
+    }
+    
+    static let zoomFactor: Float = 3.0
+    
+    // MARK: Pan
+    func panAreaView(viewportSize: CGSize) -> some View {
+        Color.clear
+            .frame(width: 44.0)
+            .contentShape(Rectangle())
+            .gesture(panDragGesture(viewportSize: viewportSize))
+            .ignoresSafeArea(edges: .bottom)
+    }
+    
+    func panDragGesture(viewportSize: CGSize) -> some Gesture {
+        DragGesture(minimumDistance: 0.0)
+            .updating($isPanDragGestureActive, body: { _, state, _ in
+                state = true
+            })
+            .onChanged { value in
+                
+                // Typically the first non-zero drag translation is big which results to aggresive jerk on the start, hence first non-zero translation is ignored
+                guard let prevDragValue = self.prevDragValue else {
+                    if value.translation == .zero {
+                        return
+                    }
+                    self.prevDragValue = value
+                    return
+                }
+                self.prevDragValue = value
+                
+                let deltaTranslation = value.translation.float2 - prevDragValue.translation.float2
+                
+                model.viewCamera.pan(translation: deltaTranslation, viewportSize: viewportSize)
+                
+            }
+            .onEnded { value in
+                // Deliberately ignoring last drag value to avoid pan nudge
+                prevDragValue = nil
+            }
     }
     
 }
