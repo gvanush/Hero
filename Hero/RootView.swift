@@ -69,9 +69,7 @@ class RootViewModel: ObservableObject {
         sceneGraph = SceneGraph(scene: sceneViewModel.scene)
         
         // Create default object
-        var defaultObjectPosition = SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin
-        defaultObjectPosition.y += 5.0
-        createObject(meshId: MeshRegistry.standard.recordNamed("sphere")!.id, position: defaultObjectPosition, scale: 5.0)
+        createObject(meshId: MeshRegistry.standard.recordNamed("sphere")!.id, position: .init(x: 0.0, y: 5.0, z: 0.0), scale: 5.0)
         
         // Create default animators
         _ = animatorsViewModel.makePanAnimator()
@@ -181,7 +179,7 @@ struct RootView: View {
             }
             .sheet(isPresented: $showsNewObjectView) {
                 NewObjectView() { meshId in
-                    model.createObject(meshId: meshId, position: SPTPosition.get(object: sceneViewModel.viewCameraObject).spherical.origin, scale: 5.0)
+                    model.createObject(meshId: meshId, position: sceneViewModel.viewCamera.focusPoint, scale: 5.0)
                 }
             }
             .fullScreenCover(item: $playableScene, content: { scene in
@@ -207,7 +205,7 @@ struct RootView: View {
                 }
                 Spacer()
                 Button {
-                    playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCameraObject.entity)
+                    playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCamera.sptObject.entity)
                 } label: {
                     Image(systemName: "play")
                         .imageScale(.large)

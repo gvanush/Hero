@@ -22,7 +22,7 @@ class SceneViewModel: ObservableObject {
     
     private var prevDragValue: DragGesture.Value?
 
-    private(set) var viewCameraObject: SPTObject
+    private(set) var viewCamera: ViewCamera
     
     private var focusedObjectPositionWillChangeSubscription: SPTAnySubscription?
     
@@ -87,10 +87,7 @@ class SceneViewModel: ObservableObject {
         circleOutlineMeshId = SPTCreatePolylineFromFile(circleOutlinePath)
         
         // Setup view camera
-        viewCameraObject = scene.makeObject()
-        SPTPosition.make(cameraInitialPosition, object: viewCameraObject)
-        SPTOrientation.make(cameraInitialOreintation, object: viewCameraObject)
-        SPTCameraMakePerspective(viewCameraObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
+        viewCamera = .init(sptObject: scene.makeObject())
         
         // Setup coordinate grid
         let gridPath = Bundle.main.path(forResource: "coordinate_grid", ofType: "obj")!
@@ -112,8 +109,8 @@ class SceneViewModel: ObservableObject {
     }
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {
-        let locationInScene = SPTCameraConvertViewportToWorld(viewCameraObject, simd_float3(location.float2, 1.0), viewportSize.float2)
-        let cameraPos = SPTPosition.get(object: viewCameraObject).spherical.toCartesian
+        let locationInScene = viewCamera.convertViewportToWorld(point: .init(location.float2, 1.0), viewportSize: viewportSize.float2)
+        let cameraPos = viewCamera.position.toCartesian.cartesian
         
         let object = SPTRayCastScene(scene.handle, SPTRay(origin: cameraPos, direction: locationInScene - cameraPos), 0.0001).object
         
@@ -126,41 +123,11 @@ class SceneViewModel: ObservableObject {
     
     func resetCamera() {
         isFocusEnabled = false
-        SPTPosition.update(cameraInitialPosition, object: viewCameraObject)
-        SPTOrientation.update(cameraInitialOreintation, object: viewCameraObject)
+        viewCamera.reset()
     }
     
     private func focusOn(_ object: SPTObject, animated: Bool) {
-        focusOn(SPTPositionGet(object).toCartesian.cartesian, animated: animated)
-    }
-    
-    private func focusOn(_ point: simd_float3, animated: Bool) {
-        
-        var cameraPos = SPTPosition.get(object: viewCameraObject)
-        
-        let initialSin = sign(sinf(cameraPos.spherical.latitude))
-        
-        cameraPos = cameraPos.toSpherical(origin: point)
-        
-        if initialSin != sign(sinf(cameraPos.spherical.latitude)) {
-            // Maintaining same position but with original latitude sign to match with old camera orientation along z axis
-            cameraPos.spherical.latitude = -cameraPos.spherical.latitude
-            cameraPos.spherical.longitude += Float.pi
-        }
-        
-        SPTPosition.update(cameraPos, object: viewCameraObject)
-        
-        var cameraOrientation = SPTOrientation.get(object: viewCameraObject)
-        cameraOrientation.lookAtPoint.up = cameraUp(latitude: cameraPos.spherical.latitude)
-        
-        if animated {
-            SPTOrientation.update(cameraOrientation, object: viewCameraObject)
-            SPTOrientationAction.make(lookAtTarget: point, duration: 0.3, easing: .smoothStep, object: viewCameraObject)
-        } else {
-            cameraOrientation.lookAtPoint.target = point
-            SPTOrientation.update(cameraOrientation, object: viewCameraObject)
-        }
-        
+        viewCamera.focusOn(SPTPosition.get(object: object).toCartesian.cartesian, animated: animated)
     }
     
     func cameraUp(latitude: Float) -> simd_float3 {
@@ -179,16 +146,7 @@ class SceneViewModel: ObservableObject {
         let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
         let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
         
-        var cameraPos = SPTPosition.get(object: viewCameraObject)
-        
-        cameraPos.spherical.latitude -= deltaAngle.y
-        cameraPos.spherical.longitude -= deltaAngle.x
-        
-        SPTPosition.update(cameraPos, object: viewCameraObject)
-        
-        var orientation = SPTOrientation.get(object: viewCameraObject)
-        orientation.lookAtPoint.up = cameraUp(latitude: cameraPos.spherical.latitude)
-        SPTOrientation.update(orientation, object: viewCameraObject)
+        viewCamera.orbit(deltaAngle: deltaAngle)
         
     }
     
@@ -214,18 +172,7 @@ class SceneViewModel: ObservableObject {
         
         let deltaYTranslation = Float(dragValue.translation.height - prevDragValue.translation.height)
         
-        var cameraPos = SPTPositionGet(viewCameraObject)
-        
-        var viewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, cameraPos.spherical.origin, viewportSize.float2);
-        viewportPos.y += deltaYTranslation
-        
-        let scenePos = SPTCameraConvertViewportToWorld(viewCameraObject, viewportPos, viewportSize.float2)
-        
-        let deltaRadius = length(scenePos - cameraPos.spherical.origin)
-        
-        cameraPos.spherical.radius = max(cameraPos.spherical.radius + sign(deltaYTranslation) * Self.zoomFactor * deltaRadius, 0.01)
-        
-        SPTPositionUpdate(viewCameraObject, cameraPos)
+        viewCamera.zoom(deltaY: Self.zoomFactor * deltaYTranslation, viewportSize: viewportSize)
         
     }
     
@@ -254,19 +201,8 @@ class SceneViewModel: ObservableObject {
         
         let deltaTranslation = dragValue.translation.float2 - prevDragValue.translation.float2
         
-        var cameraPos = SPTPosition.get(object: viewCameraObject)
-        var centerViewportPos = SPTCameraConvertWorldToViewport(viewCameraObject, cameraPos.spherical.origin, viewportSize.float2);
+        viewCamera.pan(translation: deltaTranslation, viewportSize: viewportSize)
         
-        centerViewportPos.x -= deltaTranslation.x
-        centerViewportPos.y -= deltaTranslation.y
-        
-        cameraPos.spherical.origin = SPTCameraConvertViewportToWorld(viewCameraObject, centerViewportPos, viewportSize.float2)
-        
-        SPTPosition.update(cameraPos, object: viewCameraObject)
-        
-        var cameraOrientation = SPTOrientation.get(object: viewCameraObject)
-        cameraOrientation.lookAtPoint.target = cameraPos.spherical.origin
-        SPTOrientation.update(cameraOrientation, object: viewCameraObject)
     }
     
     func finishPan(dragValue: DragGesture.Value, viewportSize: CGSize) {
@@ -280,7 +216,7 @@ class SceneViewModel: ObservableObject {
     
     private func updateFocusedObject(_ object: SPTObject) {
         focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: object) { [unowned self] newPos in
-            self.focusOn(newPos.toCartesian.cartesian, animated: false)
+            viewCamera.focusOn(newPos.toCartesian.cartesian, animated: false)
         }
         focusOn(object, animated: true)
     }

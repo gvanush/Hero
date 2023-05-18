@@ -60,7 +60,7 @@ struct SceneView: View {
             ZStack {
                 GeometryReader { sptViewGeometry in
                     Group {
-                        SPTView(scene: model.scene, clearColor: clearColor, viewCameraEntity: model.viewCameraObject.entity)
+                        SPTView(scene: model.scene, clearColor: clearColor, viewCameraEntity: model.viewCamera.sptObject.entity)
                             .renderingPaused(isRenderingPaused)
                             .lookCategories(lookCategories.rawValue)
                         
