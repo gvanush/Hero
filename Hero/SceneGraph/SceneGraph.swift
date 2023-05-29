@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 
-// MARK: Object
+// MARK: Scene
 protocol Scene: ObservableObject
 where ObjectWillChangePublisher == ObservableObjectPublisher {
     
@@ -59,16 +59,6 @@ extension Object {
     
     var transformationChildren: [any Object<S>] {
         var children = [any Object<S>]()
-        var childEntity = SPTTransformationGetNode(sptObject).firstChild
-        while childEntity != kSPTNullEntity {
-            children.append(scene._getObject(entity: childEntity)!)
-            childEntity = SPTTransformationGetNode(.init(entity: childEntity, sceneHandle: sptObject.sceneHandle)).nextSibling
-        }
-        return children
-    }
-    
-    func getTransformationChildren() -> [any Object] {
-        var children = [any Object]()
         var childEntity = SPTTransformationGetNode(sptObject).firstChild
         while childEntity != kSPTNullEntity {
             children.append(scene._getObject(entity: childEntity)!)
