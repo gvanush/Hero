@@ -59,17 +59,11 @@ class RootViewModel: ObservableObject {
     let sceneViewModel: SceneViewModel
     let animatorsViewModel: AnimatorsViewModel
     
-    let sceneGraph: SceneGraph
     let objectEditingParams = ObjectEditingParams()
     
     init(sceneViewModel: SceneViewModel) {
         self.sceneViewModel = sceneViewModel
         self.animatorsViewModel = .init()
-        
-        sceneGraph = SceneGraph(scene: sceneViewModel.scene)
-        
-        // Create default object
-        createObject(meshId: MeshRegistry.standard.recordNamed("sphere")!.id, position: .init(x: 0.0, y: 5.0, z: 0.0), scale: 5.0)
         
         // Create default animators
         _ = animatorsViewModel.makePanAnimator()
@@ -80,17 +74,12 @@ class RootViewModel: ObservableObject {
         
     }
     
-    func createObject(meshId: SPTMeshId, position: simd_float3, scale: Float) {
-        let object = sceneGraph.makeMesh(meshId: meshId, lookCategories: [.renderable, .renderableModel], position: position, scale: scale)
-        sceneViewModel.selectedObject = object
-        sceneViewModel.focusedObject = object
-    }
-    
 }
 
 
 struct RootView: View {
     
+    @StateObject var scene = MainScene()
     @StateObject private var model: RootViewModel
     @StateObject private var sceneViewModel: SceneViewModel
     @StateObject private var moveToolModel = BasicToolModel()
@@ -120,7 +109,7 @@ struct RootView: View {
     }
     
     var body: some View {
-        SceneView(model: sceneViewModel, uiEdgeInsets: Self.sceneUIInsets)
+        SceneView(scene: scene, uiEdgeInsets: Self.sceneUIInsets)
             .lookCategories([.renderableModel, .guide])
             .renderingPaused(showsAnimatorsView || showsNewObjectView || playableScene != nil)
             .environmentObject(userInteractionState)
@@ -128,8 +117,7 @@ struct RootView: View {
                 ActionBar(showsNewObjectView: $showsNewObjectView)
                     .padding(Self.sceneUIInsets)
                     .visible(userInteractionState.isIdle && activeTool.purpose == .build)
-                    .environmentObject(sceneViewModel)
-                    .environmentObject(model.sceneGraph)
+                    .environmentObject(scene)
                     .environmentObject(model.objectEditingParams)
             }
             .safeAreaInset(edge: .top, spacing: 0.0) {
@@ -179,7 +167,13 @@ struct RootView: View {
             }
             .sheet(isPresented: $showsNewObjectView) {
                 NewObjectView() { meshId in
-                    model.createObject(meshId: meshId, position: sceneViewModel.viewCamera.focusPoint, scale: 5.0)
+                    
+                    let object = scene.makeObject {
+                        MeshUserObject(sptObject: $0, number: $1, meshId: meshId, position: scene.viewCamera.focusPoint, scale: 5.0)
+                    }
+                    scene.selectedObject = object
+                    scene.focusedObject = object
+                    
                 }
             }
             .fullScreenCover(item: $playableScene, content: { scene in
@@ -191,6 +185,14 @@ struct RootView: View {
                 if scenePhase == .active && newScenePhase == .inactive {
                     playableScene = nil
                 }
+            }
+            .onAppear {
+
+                let defaultObject = scene.makeObject {
+                    MeshUserObject(sptObject: $0, number: $1, meshId: MeshRegistry.standard.recordNamed("sphere")!.id, position: scene.viewCamera.focusPoint, scale: 5.0)
+                }
+                scene.selectedObject = defaultObject
+                scene.focusedObject = defaultObject
             }
     }
     
@@ -205,7 +207,7 @@ struct RootView: View {
                 }
                 Spacer()
                 Button {
-                    playableScene = SPTPlayableSceneProxy(scene: sceneViewModel.scene, viewCameraEntity: sceneViewModel.viewCamera.sptObject.entity)
+                    playableScene = SPTPlayableSceneProxy(scene: scene.sptScene, viewCameraEntity: scene.viewCamera.sptObject.entity)
                 } label: {
                     Image(systemName: "play")
                         .imageScale(.large)
@@ -220,10 +222,10 @@ struct RootView: View {
                 } else {
                     VStack {
                         Text("Generative")
-                            .font(sceneViewModel.isObjectSelected ? .caption2 : .headline)
+                            .font(scene.isObjectSelected ? .caption2 : .headline)
                             .foregroundColor(.primary)
-                        if let selectedMetadata = sceneViewModel.selectedObjectMetadata {
-                            Text(selectedMetadata.name)
+                        if let selected = scene.selectedObject {
+                            Text(selected.name)
                                 .font(.subheadline)
                                 .foregroundColor(.primarySelectionColor)
                                 .transition(AnyTransition.opacity.combined(with: .scale))
@@ -285,6 +287,7 @@ struct RootView: View {
                 AnimateShadeToolView(model: animateShadeToolModel)
             }
         }
+        .environmentObject(scene)
         .environmentObject(sceneViewModel)
         .environmentObject(model.objectEditingParams)
         .environmentObject(userInteractionState)
@@ -311,6 +314,7 @@ struct RootView: View {
                 BasicToolBarView(tool: .animateShade, model: animateShadeToolModel)
             }
         }
+        .environmentObject(scene)
         .environmentObject(sceneViewModel)
         .environmentObject(model.objectEditingParams)
     }

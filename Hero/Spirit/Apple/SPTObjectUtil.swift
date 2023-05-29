@@ -19,3 +19,7 @@ extension SPTObject: Hashable {
     }
     
 }
+
+extension SPTEntity: Hashable {
+    
+}

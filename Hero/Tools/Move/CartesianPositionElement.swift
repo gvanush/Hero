@@ -17,7 +17,7 @@ where C: SPTInspectableComponent, OV: View {
         case z
     }
     
-    let object: SPTObject
+    let object: any UserObject
     let keyPath: WritableKeyPath<C, simd_float3>
     @Binding private var cartesian: simd_float3
     
@@ -29,25 +29,25 @@ where C: SPTInspectableComponent, OV: View {
     
     let optionsView: OV
     
-    init(title: String = "Position", subtitle: String? = "Cartesian", object: SPTObject, keyPath: WritableKeyPath<C, simd_float3>, position: Binding<simd_float3>, @ViewBuilder optionsView: () -> OV = { EmptyView() }) {
+    init(title: String = "Position", subtitle: String? = "Cartesian", object: any UserObject, keyPath: WritableKeyPath<C, simd_float3>, position: Binding<simd_float3>, @ViewBuilder optionsView: () -> OV = { EmptyView() }) {
         self.title = title
         self.subtitle = subtitle
         self.object = object
         self.keyPath = keyPath
         self.optionsView = optionsView()
         _cartesian = position
-        _activeProperty = .init(object: object, elementId: keyPath)
+        _activeProperty = .init(object: object.sptObject, elementId: keyPath)
     }
     
     var actionView: some View {
         Group {
             switch activeProperty {
             case .x:
-                ObjectFloatPropertySelector(object: object, id: keyPath.appending(path: \.x), value: $cartesian.x, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object.sptObject, id: keyPath.appending(path: \.x), value: $cartesian.x, formatter: Formatters.distance)
             case .y:
-                ObjectFloatPropertySelector(object: object, id: keyPath.appending(path: \.y), value: $cartesian.y, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object.sptObject, id: keyPath.appending(path: \.y), value: $cartesian.y, formatter: Formatters.distance)
             case .z:
-                ObjectFloatPropertySelector(object: object, id: keyPath.appending(path: \.z), value: $cartesian.z, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object.sptObject, id: keyPath.appending(path: \.z), value: $cartesian.z, formatter: Formatters.distance)
             }
         }
         .tint(controlTint)

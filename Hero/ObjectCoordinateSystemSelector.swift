@@ -10,15 +10,12 @@ import SwiftUI
 
 struct ObjectCoordinateSystemSelector: View {
     
-    let object: SPTObject
-    
-    @StateObject private var coordinateSystem: SPTObservableComponentProperty<SPTPosition, SPTCoordinateSystem>
+    @ObservedObject @ObservableAnyUserObject var object: any UserObject
     
     @EnvironmentObject var editingParams: ObjectEditingParams
     
-    init(object: SPTObject) {
-        self.object = object
-        _coordinateSystem = .init(wrappedValue: .init(object: object, keyPath: \.coordinateSystem))
+    init(object: any UserObject) {
+        _object = .init(wrappedValue: .init(wrappedValue: object))
     }
     
     var body: some View {
@@ -30,7 +27,7 @@ struct ObjectCoordinateSystemSelector: View {
                     HStack {
                         Text(system.displayName)
                         Spacer()
-                        if system == self.coordinateSystem.value {
+                        if system == object.position.coordinateSystem {
                             Image(systemName: "checkmark.circle")
                                 .imageScale(.small)
                         }
@@ -43,23 +40,22 @@ struct ObjectCoordinateSystemSelector: View {
         }
         .buttonStyle(.bordered)
         .shadow(radius: 0.5)
-        .onChange(of: coordinateSystem.value, perform: { [oldValue = coordinateSystem.value] _ in
+        .onChange(of: object.position.coordinateSystem, perform: { [oldValue = object.position.coordinateSystem] _ in
             unbindAnimators(coordinateSystem: oldValue)
         })
     }
     
     func updateCoordinateSystem(_ system: SPTCoordinateSystem) {
-        let position = SPTPosition.get(object: object)
         
         switch system {
         case .cartesian:
-            SPTPosition.update(position.toCartesian, object: object)
+            object.position = object.position.toCartesian
         case .linear:
-            SPTPosition.update(position.toLinear(origin: position.origin), object: object)
+            object.position = object.position.toLinear(origin: object.position.origin)
         case .spherical:
-            SPTPosition.update(position.toSpherical(origin: position.origin), object: object)
+            object.position = object.position.toSpherical(origin: object.position.origin)
         case .cylindrical:
-            SPTPosition.update(position.toCylindrical(origin: position.origin), object: object)
+            object.position = object.position.toCylindrical(origin: object.position.origin)
         }
         
     }
@@ -67,19 +63,19 @@ struct ObjectCoordinateSystemSelector: View {
     private func unbindAnimators(coordinateSystem: SPTCoordinateSystem) {
         switch coordinateSystem {
         case .cartesian:
-            SPTAnimatableObjectProperty.cartesianPositionX.unbindAnimatorIfBound(object: object)
-            SPTAnimatableObjectProperty.cartesianPositionY.unbindAnimatorIfBound(object: object)
-            SPTAnimatableObjectProperty.cartesianPositionZ.unbindAnimatorIfBound(object: object)
+            SPTAnimatableObjectProperty.cartesianPositionX.unbindAnimatorIfBound(object: object.sptObject)
+            SPTAnimatableObjectProperty.cartesianPositionY.unbindAnimatorIfBound(object: object.sptObject)
+            SPTAnimatableObjectProperty.cartesianPositionZ.unbindAnimatorIfBound(object: object.sptObject)
         case .linear:
-            SPTAnimatableObjectProperty.linearPositionOffset.unbindAnimatorIfBound(object: object)
+            SPTAnimatableObjectProperty.linearPositionOffset.unbindAnimatorIfBound(object: object.sptObject)
         case .spherical:
-            SPTAnimatableObjectProperty.sphericalPositionLatitude.unbindAnimatorIfBound(object: object)
-            SPTAnimatableObjectProperty.sphericalPositionLongitude.unbindAnimatorIfBound(object: object)
-            SPTAnimatableObjectProperty.sphericalPositionRadius.unbindAnimatorIfBound(object: object)
+            SPTAnimatableObjectProperty.sphericalPositionLatitude.unbindAnimatorIfBound(object: object.sptObject)
+            SPTAnimatableObjectProperty.sphericalPositionLongitude.unbindAnimatorIfBound(object: object.sptObject)
+            SPTAnimatableObjectProperty.sphericalPositionRadius.unbindAnimatorIfBound(object: object.sptObject)
         case .cylindrical:
-            SPTAnimatableObjectProperty.cylindricalPositionLongitude.unbindAnimatorIfBound(object: object)
-            SPTAnimatableObjectProperty.cylindricalPositionRadius.unbindAnimatorIfBound(object: object)
-            SPTAnimatableObjectProperty.cylindricalPositionHeight.unbindAnimatorIfBound(object: object)
+            SPTAnimatableObjectProperty.cylindricalPositionLongitude.unbindAnimatorIfBound(object: object.sptObject)
+            SPTAnimatableObjectProperty.cylindricalPositionRadius.unbindAnimatorIfBound(object: object.sptObject)
+            SPTAnimatableObjectProperty.cylindricalPositionHeight.unbindAnimatorIfBound(object: object.sptObject)
         }
     }
 }

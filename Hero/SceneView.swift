@@ -16,7 +16,7 @@ struct SceneViewConst {
 
 struct SceneView: View {
     
-    @ObservedObject var model: SceneViewModel
+    @ObservedObject var scene: MainScene
     @State private var viewportSize = CGSize.zero
     let uiEdgeInsets: EdgeInsets
     
@@ -33,8 +33,8 @@ struct SceneView: View {
     
     @EnvironmentObject var userInteractionState: UserInteractionState
     
-    init(model: SceneViewModel, uiEdgeInsets: EdgeInsets = EdgeInsets()) {
-        self.model = model
+    init(scene: MainScene, uiEdgeInsets: EdgeInsets = EdgeInsets()) {
+        self.scene = scene
         self.uiEdgeInsets = uiEdgeInsets
     }
     
@@ -61,7 +61,7 @@ struct SceneView: View {
             ZStack {
                 GeometryReader { sptViewGeometry in
                     Group {
-                        SPTView(scene: model.scene, clearColor: clearColor, viewCameraEntity: model.viewCamera.sptObject.entity)
+                        SPTView(scene: scene.sptScene, clearColor: clearColor, viewCameraEntity: scene.viewCamera.sptObject.entity)
                             .renderingPaused(isRenderingPaused)
                             .lookCategories(lookCategories.rawValue)
                         
@@ -72,7 +72,7 @@ struct SceneView: View {
                             .onTapGesture { location in
                                 guard isSelectionEnabled else { return }
                                 withAnimation {
-                                    model.selectedObject = model.pickObjectAt(location, viewportSize: viewportSize)
+                                    scene.selectedObject = scene.pickObjectAt(location, viewportSize: viewportSize)
                                 }
                             }
                             .allowsHitTesting(!userInteractionState.isNavigating)
@@ -101,7 +101,7 @@ struct SceneView: View {
         .onChange(of: isPanDragGestureActive) { newValue in
             userInteractionState.isNavigating = newValue
             if newValue {
-                model.isFocusEnabled = false
+                scene.isFocusEnabled = false
             } else {
                 prevDragValue = nil
             }
@@ -140,8 +140,8 @@ struct SceneView: View {
                 VStack {
                     Spacer()
                     Button {
-                        model.isFocusEnabled = false
-                        model.viewCamera.reset()
+                        scene.isFocusEnabled = false
+                        scene.viewCamera.reset()
                     } label: {
                         Image(systemName: "arrow.rectanglepath")
                             .imageScale(.medium)
@@ -152,7 +152,7 @@ struct SceneView: View {
                     .cornerRadius(12.0)
                     .shadow(radius: 1.0)
                     
-                    SceneUIToggle(isOn: $model.isFocusEnabled, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.spot")
+                    SceneUIToggle(isOn: $scene.isFocusEnabled, offStateIconName: "camera.metering.center.weighted.average", onStateIconName: "camera.metering.spot")
                         .transition(.identity)
                 }
                 .padding(.leading, 8.0)
@@ -189,7 +189,7 @@ struct SceneView: View {
                 let deltaTranslation = value.translation.float2 - prevDragValue.translation.float2
                 let deltaAngle = Float.pi * deltaTranslation / Self.orbitTranslationPerHalfRevolution
                 
-                model.viewCamera.orbit(deltaAngle: deltaAngle)
+                scene.viewCamera.orbit(deltaAngle: deltaAngle)
                 
             }
             .onEnded { value in
@@ -216,7 +216,7 @@ struct SceneView: View {
                 
                 let deltaYTranslation = Float(value.translation.height - prevDragValue.translation.height)
                 
-                model.viewCamera.zoom(deltaY: Self.zoomFactor * deltaYTranslation, viewportSize: viewportSize)
+                scene.viewCamera.zoom(deltaY: Self.zoomFactor * deltaYTranslation, viewportSize: viewportSize)
                 
             }
             .onEnded { value in
@@ -255,7 +255,7 @@ struct SceneView: View {
                 
                 let deltaTranslation = value.translation.float2 - prevDragValue.translation.float2
                 
-                model.viewCamera.pan(translation: deltaTranslation, viewportSize: viewportSize)
+                scene.viewCamera.pan(translation: deltaTranslation, viewportSize: viewportSize)
                 
             }
             .onEnded { value in
@@ -285,10 +285,10 @@ struct SceneView_Previews: PreviewProvider {
     
     struct SceneViewContainer: View {
         
-        @StateObject var model = SceneViewModel()
+        @StateObject var scene = MainScene()
         
         var body: some View {
-            SceneView(model: model)
+            SceneView(scene: scene)
                 .environmentObject(UserInteractionState())
         }
     }

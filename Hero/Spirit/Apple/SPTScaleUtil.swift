@@ -10,6 +10,10 @@ import Foundation
 
 extension SPTScale: SPTInspectableComponent {
     
+    init() {
+        self.init(uniform: 1.0)
+    }
+    
     init(x: Float = 1.0, y: Float = 1.0, z: Float = 1.0) {
         self.init(xyz: .init(x: x, y: y, z: z))
     }

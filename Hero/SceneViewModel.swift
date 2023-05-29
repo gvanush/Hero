@@ -11,8 +11,6 @@ import SwiftUI
 class SceneViewModel: ObservableObject {
     
     let scene = SPTSceneProxy()
-
-    private(set) var viewCamera: ViewCamera
     
     private var focusedObjectPositionWillChangeSubscription: SPTAnySubscription?
     
@@ -20,7 +18,7 @@ class SceneViewModel: ObservableObject {
         willSet {
             if let newValue {
                 if isFocusEnabled {
-                    updateFocusedObject(newValue)
+                    
                 }
             } else {
                 focusedObjectPositionWillChangeSubscription = nil
@@ -32,41 +30,15 @@ class SceneViewModel: ObservableObject {
         willSet {
             if newValue {
                 if let focusedObject {
-                    updateFocusedObject(focusedObject)
+                    
                 }
             } else {
                 focusedObjectPositionWillChangeSubscription = nil
             }
         }
     }
-    
-    @Published var selectedObject: SPTObject? {
-        willSet {
-            guard selectedObject != newValue else {
-                return
-            }
-            if let selectedObject {
-                SPTOutlineLook.destroy(object: selectedObject)
-            }
-            if let newValue {
-                SPTOutlineLook.make(.init(color: UIColor.primarySelectionColor.rgba, thickness: 5.0, categories: LookCategories.guide.rawValue), object: newValue)
-            }
-            focusedObject = newValue
-        }
-    }
-    
-    var isObjectSelected: Bool {
-        return selectedObject != nil
-    }
-    
-    var selectedObjectMetadata: SPTMetadata? {
-        guard let selectedObject = selectedObject else { return nil }
-        return SPTMetadataGet(selectedObject)
-    }
 
     init() {
-        
-        viewCamera = .init(sptObject: scene.makeObject())
         
         // Setup coordinate grid
         let gridObject = scene.makeObject()
@@ -86,23 +58,7 @@ class SceneViewModel: ObservableObject {
     }
     
     func pickObjectAt(_ location: CGPoint, viewportSize: CGSize) -> SPTObject? {
-        let locationInScene = viewCamera.convertViewportToWorld(point: .init(location.float2, 1.0), viewportSize: viewportSize.float2)
-        let cameraPos = viewCamera.position.toCartesian.cartesian
-        
-        let object = SPTRayCastScene(scene.handle, SPTRay(origin: cameraPos, direction: locationInScene - cameraPos), 0.0001).object
-        
-        if SPTIsNull(object) {
-            return nil
-        }
-        
-        return object
-    }
-    
-    private func updateFocusedObject(_ object: SPTObject) {
-        focusedObjectPositionWillChangeSubscription = SPTPosition.onWillChangeSink(object: object) { [unowned self] newPos in
-            viewCamera.focusOn(newPos.toCartesian.cartesian, animated: false)
-        }
-        viewCamera.focusOn(SPTPosition.get(object: object).toCartesian.cartesian, animated: true)
+        nil
     }
     
     func makeTwin(object: SPTObject) -> SPTObject {

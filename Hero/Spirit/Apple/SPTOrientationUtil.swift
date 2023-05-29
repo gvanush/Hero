@@ -10,6 +10,10 @@ import Foundation
 
 extension SPTOrientation: SPTInspectableComponent {
     
+    init() {
+        self.init(eulerX: 0.0, y: 0.0, z: 0.0)
+    }
+    
     init(eulerX x: Float, y: Float, z: Float) {
         self.init(eulerXYZ: .init(x: x, y: y, z: z))
     }

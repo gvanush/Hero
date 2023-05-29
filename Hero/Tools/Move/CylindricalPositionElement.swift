@@ -19,9 +19,8 @@ struct CylindricalPositionElement: Element {
         case longitude
     }
     
-    let object: SPTObject
+    @ObservedObject @ObservableAnyUserObject var object: any UserObject
     
-    @StateObject private var cylindrical: SPTObservableComponentProperty<SPTPosition, SPTCylindricalCoordinates>
     @ObjectElementActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
@@ -33,15 +32,14 @@ struct CylindricalPositionElement: Element {
     @State private var circleCenterObject: SPTObject!
     @State private var yAxisObject: SPTObject!
     
-    init(object: SPTObject) {
-        self.object = object
-        _cylindrical = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
-        _activeProperty = .init(object: object, elementId: Self.keyPath)
+    init(object: any UserObject) {
+        _object = .init(wrappedValue: .init(wrappedValue: object))
+        _activeProperty = .init(object: object.sptObject, elementId: Self.keyPath)
     }
     
     var body: some View {
         elementBody
-            .onChange(of: cylindrical.value) { newValue in
+            .onChange(of: object.position.cylindrical) { newValue in
                 updateGuideObjects(cylindrical: newValue)
             }
     }
@@ -50,11 +48,11 @@ struct CylindricalPositionElement: Element {
         Group {
             switch activeProperty {
             case .radius:
-                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.radius), value: $cylindrical.radius, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object.sptObject, id: Self.keyPath.appending(path: \.radius), value: $object.position.cylindrical.radius, formatter: Formatters.distance)
             case .height:
-                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.height), value: $cylindrical.height, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object.sptObject, id: Self.keyPath.appending(path: \.height), value: $object.position.cylindrical.height, formatter: Formatters.distance)
             case .longitude:
-                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.longitudeInDegrees), value: $cylindrical.longitudeInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object.sptObject, id: Self.keyPath.appending(path: \.longitudeInDegrees), value: $object.position.cylindrical.longitudeInDegrees, formatter: Formatters.angle)
             }
         }
         .tint(.primarySelectionColor)
@@ -62,10 +60,10 @@ struct CylindricalPositionElement: Element {
     
     var content: some Element {
         CartesianPositionElement(title: "Origin", subtitle: nil, object: object, keyPath: Self.originKeyPath, position: .init(get: {
-            cylindrical.origin
+            object.position.cylindrical.origin
         }, set: {
             SPTPosition.update(.init(cartesian: $0), object: originPointObject)
-            cylindrical.origin = $0
+            object.position.cylindrical.origin = $0
         }))
         .onDisclose(onOriginDisclose)
         .onClose(onOriginClose)
@@ -100,7 +98,7 @@ struct CylindricalPositionElement: Element {
     
     func onActive() {
         updateActiveGuideObject()
-        sceneViewModel.focusedObject = object
+        sceneViewModel.focusedObject = object.sptObject
     }
     
     func onInactive() {
@@ -127,6 +125,8 @@ struct CylindricalPositionElement: Element {
     
     func onAwake() {
         
+        let cylindrical = object.position.cylindrical
+        
         // Setup origin
         originPointObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: cylindrical.origin), object: originPointObject)
@@ -140,7 +140,7 @@ struct CylindricalPositionElement: Element {
         
         // Setup height line
         heightLineObject = sceneViewModel.scene.makeObject()
-        var heightLinePosition = SPTPosition.get(object: object)
+        var heightLinePosition = SPTPosition.get(object: object.sptObject)
         heightLinePosition.cylindrical.height = 0.0
         SPTPosition.make(heightLinePosition, object: heightLineObject)
         SPTScale.make(.init(y: 500.0), object: heightLineObject)

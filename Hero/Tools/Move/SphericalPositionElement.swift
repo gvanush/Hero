@@ -18,9 +18,8 @@ struct SphericalPositionElement: Element {
         case longitude
     }
     
-    let object: SPTObject
+    @ObservedObject @ObservableAnyUserObject var object: any UserObject
     
-    @StateObject private var spherical: SPTObservableComponentProperty<SPTPosition, SPTSphericalCoordinates>
     @ObjectElementActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
@@ -30,25 +29,24 @@ struct SphericalPositionElement: Element {
     @State private var longitudeCircleObject: SPTObject!
     @State private var radiusLineObject: SPTObject!
     
-    init(object: SPTObject) {
-        self.object = object
-        _spherical = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
-        _activeProperty = .init(object: object, elementId: Self.keyPath)
+    init(object: any UserObject) {
+        _object = .init(wrappedValue: .init(wrappedValue: object))
+        _activeProperty = .init(object: object.sptObject, elementId: Self.keyPath)
     }
     
     var body: some View {
         elementBody
-            .onChange(of: spherical.value) { newValue in
+            .onChange(of: object.position.spherical) { newValue in
                 updateGuideObjects(spherical: newValue)
             }
     }
     
     var content: some Element {
         CartesianPositionElement(title: "Origin", subtitle: nil, object: object, keyPath: Self.originKeyPath, position: .init(get: {
-            spherical.origin
+            object.position.spherical.origin
         }, set: {
             SPTPosition.update(.init(cartesian: $0), object: originObject)
-            spherical.origin = $0
+            object.position.spherical.origin = $0
         }))
         .onDisclose(onOriginDisclose)
         .onClose(onOriginClose)
@@ -77,11 +75,11 @@ struct SphericalPositionElement: Element {
         Group {
             switch activeProperty {
             case .radius:
-                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.radius), value: $spherical.radius, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object.sptObject, id: Self.keyPath.appending(path: \.radius), value: $object.position.spherical.radius, formatter: Formatters.distance)
             case .latitude:
-                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.latitudeInDegrees), value: $spherical.latitudeInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object.sptObject, id: Self.keyPath.appending(path: \.latitudeInDegrees), value: $object.position.spherical.latitudeInDegrees, formatter: Formatters.angle)
             case .longitude:
-                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.longitudeInDegrees), value: $spherical.longitudeInDegrees, formatter: Formatters.angle)
+                ObjectFloatPropertySelector(object: object.sptObject, id: Self.keyPath.appending(path: \.longitudeInDegrees), value: $object.position.spherical.longitudeInDegrees, formatter: Formatters.angle)
             }
         }
         .tint(.primarySelectionColor)
@@ -97,7 +95,7 @@ struct SphericalPositionElement: Element {
     
     func onActive() {
         updateActiveGuideObject()
-        sceneViewModel.focusedObject = object
+        sceneViewModel.focusedObject = object.sptObject
     }
     
     func onInactive() {
@@ -119,6 +117,9 @@ struct SphericalPositionElement: Element {
     }
     
     func onAwake() {
+        
+        let spherical = object.position.spherical
+        
         // Setup origin
         originObject = sceneViewModel.scene.makeObject()
         SPTPosition.make(.init(cartesian: spherical.origin), object: originObject)
@@ -133,7 +134,7 @@ struct SphericalPositionElement: Element {
         // Setup longitude circle
         longitudeCircleObject = sceneViewModel.scene.makeObject()
         
-        let cartesian = SPTSphericalCoordinatesToCartesian(spherical.value)
+        let cartesian = SPTSphericalCoordinatesToCartesian(spherical)
         SPTPosition.make(.init(x: spherical.origin.x, y: cartesian.y, z: spherical.origin.z), object: longitudeCircleObject)
         
         let vec = cartesian - spherical.origin

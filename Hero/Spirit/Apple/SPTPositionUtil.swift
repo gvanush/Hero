@@ -11,6 +11,10 @@ import simd
 
 extension SPTPosition: SPTInspectableComponent {
     
+    init() {
+        self.init(cartesian: .zero)
+    }
+    
     init(cartesian: simd_float3) {
         self.init(coordinateSystem: .cartesian, .init(cartesian: cartesian))
     }

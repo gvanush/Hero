@@ -18,9 +18,8 @@ struct LinearPositionElement: Element {
         case offset
     }
     
-    let object: SPTObject
+    @ObservedObject @ObservableAnyUserObject var object: any UserObject
     
-    @StateObject private var linear: SPTObservableComponentProperty<SPTPosition, SPTLinearCoordinates>
     @ObjectElementActiveProperty var activeProperty: Property
     
     @EnvironmentObject var sceneViewModel: SceneViewModel
@@ -29,10 +28,9 @@ struct LinearPositionElement: Element {
     @State private var directionObject: SPTObject!
     @State private var lineGuideObject: SPTObject!
     
-    init(object: SPTObject) {
-        self.object = object
-        _linear = .init(wrappedValue: .init(object: object, keyPath: Self.keyPath))
-        _activeProperty = .init(object: object, elementId: Self.keyPath)
+    init(object: any UserObject) {
+        _object = .init(wrappedValue: .init(wrappedValue: object))
+        _activeProperty = .init(object: object.sptObject, elementId: Self.keyPath)
     }
     
     var content: some Element {
@@ -50,16 +48,16 @@ struct LinearPositionElement: Element {
     var originBinding: Binding<simd_float3> {
         .init(get: {
             
-            linear.origin
+            object.position.linear.origin
             
         }, set: { newValue in
             
-            linear.origin = newValue
+            object.position.linear.origin = newValue
             
             let originPosition = SPTPosition(cartesian: newValue)
             SPTPosition.update(originPosition, object: originObject)
             
-            let targetPosition = SPTPosition(cartesian: newValue + linear.direction)
+            let targetPosition = SPTPosition(cartesian: newValue + object.position.linear.direction)
             SPTPosition.update(targetPosition, object: directionObject)
 
             updateLine(originPosition: originPosition, targetPosition: targetPosition)
@@ -88,16 +86,16 @@ struct LinearPositionElement: Element {
     var directionBinding: Binding<simd_float3> {
         .init(get: {
             
-            linear.origin + linear.direction
+            object.position.linear.origin + object.position.linear.direction
             
         }, set: { newValue in
             
-            linear.direction = newValue - linear.origin
+            object.position.linear.direction = newValue - object.position.linear.origin
             
             let targetPosition = SPTPosition(cartesian: newValue)
             SPTPosition.update(targetPosition, object: directionObject)
 
-            updateLine(originPosition: .init(cartesian: linear.origin), targetPosition: targetPosition)
+            updateLine(originPosition: .init(cartesian: object.position.linear.origin), targetPosition: targetPosition)
             
         })
     }
@@ -124,7 +122,7 @@ struct LinearPositionElement: Element {
         Group {
             switch activeProperty {
             case .offset:
-                ObjectFloatPropertySelector(object: object, id: Self.keyPath.appending(path: \.offset), value: $linear.offset, formatter: Formatters.distance)
+                ObjectFloatPropertySelector(object: object.sptObject, id: Self.keyPath.appending(path: \.offset), value: $object.position.linear.offset, formatter: Formatters.distance)
             }
         }
         .tint(.primarySelectionColor)
@@ -162,7 +160,7 @@ struct LinearPositionElement: Element {
         var lineGuideLook = SPTPolylineLook.get(object: lineGuideObject)
         lineGuideLook.color = UIColor.guide1Light.rgba
         SPTPolylineLook.update(lineGuideLook, object: lineGuideObject)
-        sceneViewModel.focusedObject = object
+        sceneViewModel.focusedObject = object.sptObject
     }
     
     func onInactive() {
@@ -173,12 +171,12 @@ struct LinearPositionElement: Element {
     
     private func setupOrigin() {
         originObject = sceneViewModel.scene.makeObject()
-        SPTPosition.make(.init(cartesian: linear.origin), object: originObject)
+        SPTPosition.make(.init(cartesian: object.position.linear.origin), object: originObject)
     }
     
     private func setupDirection() {
         directionObject = sceneViewModel.scene.makeObject()
-        SPTPosition.make(.init(cartesian: linear.origin + linear.direction), object: directionObject)
+        SPTPosition.make(.init(cartesian: object.position.linear.origin + object.position.linear.direction), object: directionObject)
     }
     
     private func setupLine() {

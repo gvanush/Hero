@@ -59,12 +59,12 @@ struct ScaleToolView: View {
     
     @ObservedObject var model: BasicToolModel
     
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var scene: MainScene
     
     var body: some View {
-        if let object = sceneViewModel.selectedObject {
-            SelectedObjectView(object: object)
-                .id(object)
+        if let object = scene.selectedObject {
+            SelectedObjectView(object: object.sptObject)
+                .id(object.id)
                 .environmentObject(model)
         }
     }

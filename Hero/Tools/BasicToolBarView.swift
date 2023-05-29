@@ -41,7 +41,7 @@ struct BasicToolBarView: View {
     let tool: Tool
     @ObservedObject var model: BasicToolModel
     
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var scene: MainScene
     
     init(tool: Tool, model: BasicToolModel) {
         self.tool = tool
@@ -49,10 +49,10 @@ struct BasicToolBarView: View {
     }
     
     var body: some View {
-        if let object = sceneViewModel.selectedObject {
-            SelectedObjectBarView(tool: tool, object: object)
+        if let object = scene.selectedObject {
+            SelectedObjectBarView(tool: tool, object: object.sptObject)
                 .transition(.identity)
-                .id(object)
+                .id(object.id)
                 .environmentObject(model)
         }
     }

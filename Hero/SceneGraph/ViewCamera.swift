@@ -8,69 +8,23 @@
 import Foundation
 
 
-class Object: ObservableObject {
+fileprivate let initialPosition = SPTPosition(origin: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi)
+fileprivate let initialOreintation = SPTOrientation(target: .zero, up: .up, axis: .Z, positive: false)
+
+
+class ViewCamera<S>: LocatableObject, OrientableObject, CameraObject
+where S: Scene {
     
     let sptObject: SPTObject
-    
-    init(sptObject: SPTObject,
-         position: SPTPosition = .init(cartesian: .zero),
-         orientation: SPTOrientation = .init(eulerXYZ: .zero),
-         scale: SPTScale = .init(uniform: 1.0)) {
-        self.sptObject = sptObject
-        
-        SPTPosition.make(position, object: sptObject)
-        SPTOrientation.make(orientation, object: sptObject)
-        SPTScale.make(scale, object: sptObject)
-        
-    }
-    
-    var position: SPTPosition {
-        get {
-            SPTPosition.get(object: sptObject)
-        }
-        set {
-            objectWillChange.send()
-            SPTPosition.update(newValue, object: sptObject)
-        }
-    }
-    
-    var orientation: SPTOrientation {
-        get {
-            SPTOrientation.get(object: sptObject)
-        }
-        set {
-            objectWillChange.send()
-            SPTOrientation.update(newValue, object: sptObject)
-        }
-    }
-    
-    var scale: SPTScale {
-        get {
-            SPTScale.get(object: sptObject)
-        }
-        set {
-            objectWillChange.send()
-            SPTScale.update(newValue, object: sptObject)
-        }
-    }
-    
-    
-}
-
-class Camera: Object {
-    
-    func convertViewportToWorld(point: simd_float3, viewportSize: simd_float2) -> simd_float3 {
-        SPTCameraConvertViewportToWorld(sptObject, point, viewportSize)
-    }
-    
-}
-
-
-class ViewCamera: Camera {
+    weak var _scene: S!
     
     init(sptObject: SPTObject) {
-        super.init(sptObject: sptObject, position: Self.initialPosition, orientation: Self.initialOreintation, scale: .init(uniform: 1.0))
+        self.sptObject = sptObject
         
+        _buildLocatableObject(position: initialPosition)
+        _buildOrientableObject(orientation: initialOreintation)
+        
+        // TODO: After refactoring camera
         SPTCameraMakePerspective(sptObject, Float.pi / 3.0, 1.0, 0.1, 2000.0)
     }
     
@@ -152,14 +106,12 @@ class ViewCamera: Camera {
     }
     
     func reset() {
-        position = Self.initialPosition
-        orientation = Self.initialOreintation
+        position = initialPosition
+        orientation = initialOreintation
     }
     
     static func up(latitude: Float) -> simd_float3 {
         sinf(latitude) >= 0.0 ? .up : .down
     }
     
-    static let initialPosition = SPTPosition(origin: .zero, radius: 150.0, longitude: 0.25 * Float.pi, latitude: 0.25 * Float.pi)
-    static let initialOreintation = SPTOrientation(target: .zero, up: .up, axis: .Z, positive: false)
 }

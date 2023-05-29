@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BasicToolElementActionViewPlaceholder: View {
     
+    // TODO
     let object: SPTObject
     
     @EnvironmentObject private var model: BasicToolModel
