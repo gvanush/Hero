@@ -10,6 +10,10 @@ import simd
 
 extension UIColor {
     
+    convenience init(rgba: simd_float4) {
+        self.init(red: CGFloat(rgba.x), green: CGFloat(rgba.y), blue: CGFloat(rgba.z), alpha: CGFloat(rgba.w))
+    }
+    
     var rgba: simd_float4 {
         var red: CGFloat = 0
         var green: CGFloat = 0

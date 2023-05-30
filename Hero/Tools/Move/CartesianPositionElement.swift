@@ -21,11 +21,11 @@ where C: SPTInspectableComponent, OV: View {
     let keyPath: WritableKeyPath<C, simd_float3>
     @Binding private var cartesian: simd_float3
     
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var scene: MainScene
     @EnvironmentObject var editingParams: ObjectEditingParams
     
     @ObjectElementActiveProperty var activeProperty: Property
-    @State private var guideObject: SPTObject?
+    @State private var guideLine: AxisLine?
     
     let optionsView: OV
     
@@ -54,16 +54,16 @@ where C: SPTInspectableComponent, OV: View {
     }
     
     func onActivePropertyChange() {
-        removeGuideObject()
-        setupGuideObject()
+        removeGuideLine()
+        setupGuideLine()
     }
     
     func onActive() {
-        setupGuideObject()
+        setupGuideLine()
     }
     
     func onInactive() {
-        removeGuideObject()
+        removeGuideLine()
     }
     
     func onDisclose() {
@@ -74,33 +74,33 @@ where C: SPTInspectableComponent, OV: View {
         onCloseCallback()
     }
     
-    private func setupGuideObject() {
+    private func setupGuideLine() {
 
-        let guide = sceneViewModel.scene.makeObject()
-        SPTPosition.make(.init(cartesian: cartesian), object: guide)
-        SPTLineLookDepthBias.make(.guideLineLayer3, object: guide)
-
+        let guideLine = scene.makeObject {
+            AxisLine(sptObject: $0, length: 1000.0, thickness: .guideLineRegularThickness, lookCategories: LookCategories.guide)
+        }
+        
+        guideLine.position = .init(cartesian: cartesian)
+        
         switch activeProperty {
         case .x:
-            SPTScale.make(.init(x: 500.0), object: guide)
-            SPTPolylineLook.make(.init(color: UIColor.xAxisLight.rgba, polylineId: MeshRegistry.util.xAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
-            
+            guideLine.axis = .x
+            guideLine.color = .xAxisLight
         case .y:
-            SPTScale.make(.init(y: 500.0), object: guide)
-            SPTPolylineLook.make(.init(color: UIColor.yAxisLight.rgba, polylineId: MeshRegistry.util.yAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
-            
+            guideLine.axis = .y
+            guideLine.color = .yAxisLight
         case .z:
-            SPTScale.make(.init(z: 500.0), object: guide)
-            SPTPolylineLook.make(.init(color: UIColor.zAxisLight.rgba, polylineId:MeshRegistry.util.zAxisLineMeshId, thickness: .guideLineRegularThickness, categories: LookCategories.guide.rawValue), object: guide)
+            guideLine.axis = .z
+            guideLine.color = .zAxisLight
         }
+        
+        self.guideLine = guideLine
 
-        guideObject = guide
     }
     
-    private func removeGuideObject() {
-        guard let object = guideObject else { return }
-        SPTSceneProxy.destroyObject(object)
-        guideObject = nil
+    private func removeGuideLine() {
+        guideLine?.die()
+        guideLine = nil
     }
     
     var id: some Hashable {

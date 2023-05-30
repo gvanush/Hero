@@ -184,6 +184,32 @@ extension MeshObject {
     
 }
 
+// MARK: MeshObject
+protocol PolylineObject: Object {
+    
+}
+
+extension PolylineObject {
+    
+    var polylineLook: SPTPolylineLook {
+        get {
+            SPTPolylineLook.get(object: sptObject)
+        }
+        set {
+            SPTPolylineLook.update(newValue, object: sptObject)
+        }
+    }
+    
+    func _buildPolylineObject(polylineLook: SPTPolylineLook) {
+        SPTPolylineLook.make(polylineLook, object: sptObject)
+    }
+    
+    func _clonePolylineObject(original: SPTObject) {
+        SPTPolylineLook.make(.get(object: original), object: sptObject)
+    }
+    
+}
+
 // MARK: CameraObject
 protocol CameraObject: Object {
     
@@ -198,7 +224,7 @@ extension CameraObject {
 }
 
 
-// MARK: RayCastableObject: Object
+// MARK: RayCastableObject
 protocol RayCastableObject: Object {
     
 }
@@ -211,6 +237,20 @@ extension RayCastableObject {
     
     func _cloneRayCastableObject(original: SPTObject) {
         SPTRayCastableMake(sptObject)
+    }
+    
+}
+
+
+// MARK: DepthBiasedLineObject: Object
+protocol DepthBiasedLineObject: Object {
+    
+}
+
+extension DepthBiasedLineObject {
+    
+    func _buildDepthBiasedLineObject(bias: SPTLineLookDepthBias) {
+        SPTLineLookDepthBias.make(bias, object: sptObject)
     }
     
 }

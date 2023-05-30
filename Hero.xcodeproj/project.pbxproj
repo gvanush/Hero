@@ -47,6 +47,7 @@
 		B73245B32741188500708909 /* SPTViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B22741188500708909 /* SPTViewController.mm */; };
 		B73245B6274124C100708909 /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B4274124C100708909 /* Renderer.mm */; };
 		B73245B9274128FD00708909 /* Spirit.mm in Sources */ = {isa = PBXBuildFile; fileRef = B73245B7274128FD00708909 /* Spirit.mm */; };
+		B735961B2A26666000192809 /* AxisLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B735961A2A26666000192809 /* AxisLine.swift */; };
 		B736450427B3BA1100FAD433 /* ComponentViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B736450327B3BA1100FAD433 /* ComponentViewProvider.swift */; };
 		B73A700328840DB70043F9FF /* AnimatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A700228840DB70043F9FF /* AnimatorsView.swift */; };
 		B73A700528841C2E0043F9FF /* PanAnimatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A700428841C2E0043F9FF /* PanAnimatorView.swift */; };
@@ -304,6 +305,7 @@
 		B73245B5274124C100708909 /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		B73245B7274128FD00708909 /* Spirit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Spirit.mm; sourceTree = "<group>"; };
 		B73245B8274128FD00708909 /* Spirit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spirit.h; sourceTree = "<group>"; };
+		B735961A2A26666000192809 /* AxisLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxisLine.swift; sourceTree = "<group>"; };
 		B736450327B3BA1100FAD433 /* ComponentViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentViewProvider.swift; sourceTree = "<group>"; };
 		B73A700228840DB70043F9FF /* AnimatorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorsView.swift; sourceTree = "<group>"; };
 		B73A700428841C2E0043F9FF /* PanAnimatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanAnimatorView.swift; sourceTree = "<group>"; };
@@ -1146,6 +1148,7 @@
 				B7EB67102A1D343E00364618 /* UserObject.swift */,
 				B7EB67142A1E6D8F00364618 /* MeshUserObject.swift */,
 				B7EB66E72A15596E00364618 /* ViewCamera.swift */,
+				B735961A2A26666000192809 /* AxisLine.swift */,
 			);
 			path = SceneGraph;
 			sourceTree = "<group>";
@@ -1451,6 +1454,7 @@
 				B7643B2F29084DAF00F6A05B /* SPTEasingUtil.swift in Sources */,
 				B7EB67092A18B6E500364618 /* SceneGraph.swift in Sources */,
 				B7B8226A29F68F2F000C59E7 /* SPTObservableComponent.swift in Sources */,
+				B735961B2A26666000192809 /* AxisLine.swift in Sources */,
 				B7E30F5228905A1400224E09 /* PanAnimatorViewGraphView.swift in Sources */,
 				B73245B9274128FD00708909 /* Spirit.mm in Sources */,
 				B7791D842726762100E0C934 /* SPTRenderingContext.m in Sources */,
