@@ -1,6 +1,6 @@
 # Hero
 
-The repository for Generative, a mobile-based 3d visual animated content creation tool on mobile devices using generative creation techniques.
+The repository for Generative, a 3d visual animated content creation tool on mobile devices using generative creation techniques.
 
 For prototype demo please follow this Youtube [link](https://youtu.be/E0ktVodXODs)
 
