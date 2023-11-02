@@ -15,6 +15,7 @@
 
 #include <vector>
 #include <string_view>
+#include <cassert>
 
 namespace spt {
 

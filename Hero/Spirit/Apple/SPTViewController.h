@@ -19,13 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 -(instancetype) initWithSceneHandle: (SPTHandle) sceneHandle NS_DESIGNATED_INITIALIZER;
 -(instancetype) initWithCoder: (NSCoder*) coder NS_UNAVAILABLE;
 -(instancetype) initWithNibName: (NSString* _Nullable) nibNameOrNil bundle: (NSBundle* _Nullable) nibBundleOrNil NS_UNAVAILABLE;
-
--(void) setRenderingPaused: (BOOL) paused;
     
 @property (nonatomic, readonly) SPTHandle sceneHandle;
 @property (nonatomic, readwrite) SPTEntity viewCameraEntity;
 @property (nonatomic, readonly) MTKView* mtkView;
 @property (nonatomic, readonly) SPTRenderingContext* renderingContext;
+@property (nonatomic, readwrite, getter=isRenderingPaused) BOOL renderingPaused;
 
 @end
 

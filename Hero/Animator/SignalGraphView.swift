@@ -39,7 +39,7 @@ fileprivate func graphWidth(timespan: TimeInterval, signalMaxFrequency: Int, lin
  This all means that signal with higher frequency will be wider on the screen and move from right to left faster when
  new samples are pushed. However since presenting the oroginal signal is a priority this a acceptable and inteded.
  */
-fileprivate struct SignalGraph<V>: Shape where V: RandomAccessCollection, V.Element == SignalSample {
+fileprivate struct SignalGraph<V>: Shape where V: RandomAccessCollection & Sendable, V.Element == SignalSample {
     
     let samples: V
     let signalMaxFrequency: Int

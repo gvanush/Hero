@@ -32,7 +32,7 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void) viewDidLoad {
     [super viewDidLoad];
     
     _mtkView = [[MTKView alloc] initWithFrame: self.view.bounds device: [SPTRenderingContext device]];
@@ -45,19 +45,24 @@
     self.mtkView.delegate = self;
     [self.view addSubview: self.mtkView];
     [self updateViewportSize: self.mtkView.drawableSize];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(onApplicationWillResignActive) name: UIApplicationWillResignActiveNotification object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(onApplicationDidBecomeActive) name: UIApplicationDidBecomeActiveNotification object: nil];
 }
 
--(void) setRenderingPaused: (BOOL) paused {
-    if(paused == self.mtkView.paused) {
+-(void) setRenderingPaused: (BOOL) renderingPaused {
+    if(self.renderingPaused == renderingPaused) {
         return;
     }
-    self.mtkView.paused = paused;
-    if(!paused) {
-        [self updateViewportSize: self.mtkView.drawableSize];
+    _renderingPaused = renderingPaused;
+    
+    if([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+        self.mtkView.paused = renderingPaused;
     }
+    
 }
 
--(void)viewWillAppear:(BOOL)animated {
+-(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     
     _startTime = CACurrentMediaTime();
@@ -98,6 +103,15 @@
 
 -(void) mtkView: (nonnull MTKView*) view drawableSizeWillChange: (CGSize) size {
     [self updateViewportSize: size];
+}
+
+// MARK: Application lifecycle
+-(void) onApplicationWillResignActive {
+    self.mtkView.paused = YES;
+}
+
+-(void) onApplicationDidBecomeActive {
+    self.mtkView.paused = self.isRenderingPaused;
 }
 
 // MARK: Utils

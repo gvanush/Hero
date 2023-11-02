@@ -51,7 +51,7 @@ struct SPTView: UIViewControllerRepresentable {
     
     private func updateVC(_ vc: SPTViewController) {
         vc.mtkView.clearColor = clearColor
-        vc.setRenderingPaused(isRenderingPaused)
+        vc.isRenderingPaused = isRenderingPaused
         vc.renderingContext.lookCategories = lookCategories
         vc.viewCameraEntity = viewCameraEntity
     }
